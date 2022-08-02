@@ -66,7 +66,7 @@ const Contact = (props) => {
                   height={"30px"}
                   width={"30px"}
                 ></img>
-                <p className="ml-3">+91 96067 00006</p>
+                <p className="ml-3">+91 93424 99299</p>
               </div>
               <div className="row mt-4">
                 <img

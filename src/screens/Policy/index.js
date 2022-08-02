@@ -37,7 +37,7 @@ const PolicyScr = () => {
                             What are your rights?
                             Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information. You have the option to withdraw your consent that you have already provided by writing to us at the contact information provided below.
                             How do I exercise my rights?
-                            The easiest way to exercise your rights is by sending an email to us at: maplebell.tech@gmail.com, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.
+                            The easiest way to exercise your rights is by sending an email to us at: maplebell.official@gmail.com, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.
 
                             OVERVIEW of the Policy
 
@@ -167,8 +167,8 @@ const PolicyScr = () => {
                             Rajaji Nagar, Bengaluru,
 
                             Bengaluru Urban, Karnataka- 560010.
-                            Email Address: maplebell.tech@gmail.com
-                            Phone: 9606700006
+                            Email Address: maplebell.official@gmail.com
+                            Phone:  +91 93424 99299
                         </p>
                 </div>
             </div>
