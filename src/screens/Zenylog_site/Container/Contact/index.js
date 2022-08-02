@@ -48,7 +48,7 @@ const Contact = (props) => {
 
   return (
     <>
-      <div className="container-fluid mt-2">
+      <div id="Contact" className="container-fluid mt-2">
         <div className="card container-fluid">
           <h1 class="card-header">Contact us</h1>  
           <div className="row card-body">

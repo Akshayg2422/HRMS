@@ -5,7 +5,7 @@ import Group2 from "../../../../assets/images/Group2/Group2.png";
 const Home = (props) => {
   return (
     <>
-      <div className="row mt-3 mb-5 container-fluid">
+      <div id="Home" className="row mt-3 mb-5 container-fluid">
         <div className="col-sm-4 row justify-content-end align-items-center">
           <h1>
             DIGITALIZING <br /> HUMAN <br /> RESOURCES
@@ -15,7 +15,7 @@ const Home = (props) => {
           <img src={Group1} height={"100%"} width={"100%"}></img>
         </div>
       </div>
-      <div className="row mt-5">
+      <div id="AboutAs" className="row mt-5">
         <div className="col-sm-6 mt-5">
           <img src={Group2} height={"100%"} width={"80%"} align="right"></img>
         </div>

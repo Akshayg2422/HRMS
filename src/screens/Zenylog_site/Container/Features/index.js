@@ -16,7 +16,7 @@ const Features=(props)=>{
 
     return (
         <>
-        <div className='container-fluid' >
+        <div id='OurFeatures' className='container-fluid' >
         <div className="card container-fluid">
           <h1 class="card-header mt-4 mr-4 ml-5 mb-5">Our Features</h1>
           <div className="row justify-content-around">

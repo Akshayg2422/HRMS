@@ -45,17 +45,17 @@ const Navbar = (props) => {
 </div>
 <ul class="navbar-nav ml-lg-auto">
 <li class="nav-item">
-<a class="nav-link " href="#">Home</a>
+<a class="nav-link " href="#Home">Home</a>
 </li>
 <li class="nav-item">
-<a class="nav-link " href="#">About us</a>
+<a class="nav-link " href="#AboutAs">About us</a>
 </li>
 <li class="nav-item">
-<a class="nav-link " href="#">Our Features</a>
+<a class="nav-link " href="#OurFeatures">Our Features</a>
 </li><li class="nav-item">
-<a class="nav-link " href="#">Flow Chart</a>
+<a class="nav-link " href="#FLowChart">Flow Chart</a>
 </li><li class="nav-item">
-<a class="nav-link " href="#">Contact us</a>
+<a class="nav-link " href="#Contact">Contact us</a>
 </li>
 
 </ul>
