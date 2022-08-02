@@ -13,12 +13,12 @@ function Policy() {
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <ul onClick={()=>{navigate('/Policy')}} class="nav nav-footer justify-content-center justify-content-lg-end">
-                            <li data-toggle="modal" data-target="#exampleModal" class="nav-item">
+                        <ul  class="nav nav-footer justify-content-center justify-content-lg-end">
+                            <li onClick={()=>{navigate('/PrivacyPolicy')}} data-toggle="modal" data-target="#exampleModal" class="nav-item">
                                 <a class="nav-link" >Privacy Policy</a>
                             </li>
-                            <li class="nav-item" data-toggle="modal" data-target="#termsModel"  >
-                                <a class="nav-link" >Terms and Conditions</a>
+                            <li onClick={()=>{navigate('/TermsOfUse')}} class="nav-item" data-toggle="modal" data-target="#termsModel"  >
+                                <a class="nav-link" >Terms Of Use</a>
                             </li>
                         </ul>
                     </div>
