@@ -1,0 +1,17 @@
+export default {
+  brand: '#0B3173',
+  grey: '#6E6E6E',
+  darkGrey: '#545554',
+  lightGrey: '#E5E8EE',
+  midGray: '#CCCCCC',
+  placeHolder: '#0B317350',
+  shadow: '#6E81A830',
+  white: '#ffffff',
+  divider: '#0B317320',
+  payableText: '#454545',
+  authDivider: ' #D5D5D5',
+  colorWhite: '#FDFDFD',
+  colorAss: '#f5f5f5',
+  green: '#34AB36',
+  blackShadow: '#00000050',
+};

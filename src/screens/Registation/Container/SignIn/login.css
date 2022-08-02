@@ -1,0 +1,48 @@
+:root {
+  --purple: #51307c;
+  --white: #ffffff;
+}
+.fullcontent {
+  height: 100vh;
+  width: 100vw;
+}
+.logo-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 30px;
+}
+.logo-line img {
+  height: 20px;
+  width: 100px;
+}
+.button {
+  width: 140px;
+}
+
+.signcontent {
+  margin-left: 100px;
+  margin-right: 100px;
+  margin-top: 40px;
+}
+.signcontent h2 {
+  font-size: 42px;
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+.contbutton {
+  background: #51307c;
+  margin-top: 30px;
+}
+.socialmedia {
+  /* justify-content: center; */
+  display: flex;
+}
+.socialmedia span {
+  text-align: center;
+  margin-top: 40px;
+  margin-left: 180px;
+}
+.googlesignin {
+  margin-left: 70px;  
+}
