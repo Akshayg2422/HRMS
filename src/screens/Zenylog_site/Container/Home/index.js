@@ -1,6 +1,5 @@
 import React from "react";
-import Group1 from "../../../../assets/images/Group1/Group1.png";
-import Group2 from "../../../../assets/images/Group2/Group2.png";
+import {Icons} from '@assets'
 
 const Home = (props) => {
   return (
@@ -12,12 +11,12 @@ const Home = (props) => {
           </h1>
         </div>
         <div className="col-sm-8">
-          <img src={Group1} height={"100%"} width={"100%"}></img>
+          <img src={Icons.Group1} height={"100%"} width={"100%"}></img>
         </div>
       </div>
       <div id="AboutAs" className="row mt-5">
         <div className="col-sm-6 mt-5">
-          <img src={Group2} height={"100%"} width={"80%"} align="right"></img>
+          <img src={Icons.Group1} height={"100%"} width={"80%"} align="right"></img>
         </div>
         <div class="col-sm-6 row d-flex align-items-center justify-content-center ">
           <div class="col-lg-7">

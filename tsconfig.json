@@ -1,0 +1,51 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,  
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx", 
+    "paths": {
+      "@src/*": ["./src/*"],
+      "@components/*": ["./src/components*"],
+      "@components": ["./src/components"], 
+      "@modules/*": ["./src/modules*"],
+      "@modules": ["./src/modules"], 
+      "@utils/*": ["./src/utils*"],
+      "@utils": ["./src/utils"], 
+      "@contexts/*": ["./src/contexts*"],
+      "@contexts": ["./src/contexts"], 
+      "@assets/*": ["./src/assets*"],
+      "@assets": ["./src/assets"], 
+      "@api/*": ["./src/api*"],
+      "@api": ["./src/api"], 
+      "@store/*": ["./src/store*"],
+      "@store": ["./src/store"], 
+      "@i18n/*": ["./src/i18n*"],
+      "@i18n": ["./src/i18n"],
+      "@helpers/*": ["./src/helpers*"],
+      "@helpers": ["./src/helpers"], 
+      "@screens/*": ["./src/screens*"],
+      "@screens": ["./src/screens"], 
+    },   
+  },
+
+  "exclude": [
+    "node_modules", "babel.config.js", "jest.config.js", "jest-setup/*"
+  ]
+
+}
