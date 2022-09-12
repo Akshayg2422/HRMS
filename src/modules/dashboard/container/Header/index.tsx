@@ -150,7 +150,7 @@ const Header = () => {
               </li>
               <div className="media-body  d-none d-lg-block">
                 <span className="mb-0 text-white  font-weight-bold">
-                  {arr?.name}
+                  {/* {arr?.name} */}
                   {"puma"}
                 </span>
               </div>
@@ -169,7 +169,7 @@ const Header = () => {
                     <span className="avatar avatar-sm rounded-circle">
                       <img
                         alt="Image placeholder"
-                        // src={getImageUri(arr?.profile_photo)}
+                        src={getImageUri(arr?.profile_photo)}
                       />
                     </span>
                     <div className="media-body  ml-2 text-white d-none d-lg-block dropdown-toggle"></div>
