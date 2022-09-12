@@ -20,6 +20,8 @@ export const ROUTE = {
   ROUTE_FENCE_ADMIN:'/fence-admin',
   ROUTE_ASSIGN_LOCATION : '/assignLocation',
   ROUTE_PROFILE:'/profile',
+  ROUTE_PORTFOLIO:'/portfolio',
+
 
 }
 export const WELCOME_NOTE = [{key: '1', title: 'Geo tagging'}, {key: '2', title: 'Real-time statistics'}, {key: '3', title: 'Salary calculations'}, {key: '4', title: 'Payments and payslips'}, {key: '5', title: 'And much more!!!'}]
@@ -71,6 +73,8 @@ export const SORT_BUTTON = [{id: '1', name: 'Month', value: 'MH'},
 
 export const TABLE_ELEMENT_TEXT_BUTTON = 1
 export const TABLE_ELEMENT_TEXT_STATUS = 2
+export const TABLE_ELEMENT_TEXT_IMAGE = 3
+
 
 
 

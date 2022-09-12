@@ -11,7 +11,7 @@ import {
 } from './auth';
 import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header,Profile} from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import {DashboardStats} from './stats'
@@ -29,7 +29,7 @@ export {
   resendOtp,
   validateUser,
   Welcome, Login, Otp, Register, Report, Employee, Dashboard, Calendar, Location,
-
+  Portfolio,
   getEmployeeDetails,
   fetchDashboardDetails,
   Navbar,

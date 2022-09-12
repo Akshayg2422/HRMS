@@ -1,6 +1,6 @@
 import React from 'react'
-import {TABLE_ELEMENT_TEXT_BUTTON, TABLE_CONTENT_TYPE_REPORT} from '@utils'
-import {Container, Badge, ImageView} from '@components';
+import {TABLE_ELEMENT_TEXT_BUTTON, TABLE_CONTENT_TYPE_REPORT, TABLE_ELEMENT_TEXT_IMAGE} from '@utils'
+import {Container, Badge, ImageView, } from '@components';
 import {Icons} from '@assets'
 
 interface TableProps {
@@ -13,6 +13,8 @@ interface TableProps {
   tableOnClick?: (event: any, index: number, item: object) => void;
   tableValueOnClick?: (event: any, index: number, item: object) => void;
   tableContentType?: number;
+  comparisonDataSet?: { key: string, value: string, elt: number, elh?: string }
+
 }
 
 interface Element {
@@ -21,7 +23,7 @@ interface Element {
   elh: string
 }
 
-function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType}: TableProps) {
+function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
 
   const renderTableHeader = () => {
     const header = Object.keys(tableDataSet[0])
@@ -72,6 +74,9 @@ function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick
       case TABLE_ELEMENT_TEXT_BUTTON:
         element = <span className='text-primary'>{item.elv}</span>
         break;
+      case TABLE_ELEMENT_TEXT_IMAGE:
+        element = <span className='text-primary'>{item.elv}</span>
+        break;
     }
     return element;
   }
@@ -92,6 +97,7 @@ function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick
                 })
               )
             }
+           
           </tr>
 
         </thead>
@@ -120,6 +126,9 @@ function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick
                       })
                     )
                   }
+
+                
+                 
                 </tr>)
             })
           }
