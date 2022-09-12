@@ -5,7 +5,7 @@ import {ASYN_USER_AUTH} from '@utils'
 const STAGING = 'http://43.204.233.45/';
 const LOCAL_DEV = 'http://192.168.172.204:8000';
 const PROD = 'http://15.206.224.132/';
-export const REACT_APP_APP_URL = STAGING;
+export const REACT_APP_APP_URL = PROD;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
