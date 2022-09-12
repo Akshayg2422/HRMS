@@ -6,7 +6,7 @@ type RegisterFlowProps = {
 
 const RegisterFlow = ({ current }: RegisterFlowProps) => {
   const FLOW_DATA = [
-    { id: 1, heading: '1', title: "Admin profile" },
+    { id: 1, heading: '1', title: "adminProfile" },
     { id: 3, heading: '2', title: "Company profile" },
     { id: 4, heading: '3', title: "Document Upload" },
   ];

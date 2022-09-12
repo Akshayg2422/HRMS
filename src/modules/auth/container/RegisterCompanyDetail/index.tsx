@@ -41,7 +41,7 @@ function RegisterCompanyDetail() {
     >
       <InputText
         label={t("businessName")}
-        placeholder={"Type your Registered Business Name"}
+        placeholder={t("enteryourbussinessname")}
         validator={validateDefault}
         onChange={(e) => {
           if (setBusinessName) {

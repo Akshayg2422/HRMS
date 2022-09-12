@@ -1,11 +1,12 @@
 import React from 'react';
 import {Accordion} from '@components'
-
+import { useTranslation } from "react-i18next";
 
 function Welcome() {
+  const { t } = useTranslation();
 
   return (
-   <small>Website</small>
+   <small>{t("website")}</small>
   )
 
 }

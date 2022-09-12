@@ -150,8 +150,8 @@ const Header = () => {
               </li>
               <div className="media-body  d-none d-lg-block">
                 <span className="mb-0 text-white  font-weight-bold">
-                  {/* {arr?.name} */}
-                  {"puma"}
+                  {arr?.name}
+                  {/* {"puma"} */}
                 </span>
               </div>
             </ul>
