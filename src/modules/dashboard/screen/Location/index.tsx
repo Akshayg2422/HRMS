@@ -39,7 +39,7 @@ console.log("brancheslist",brancheslist)
     <Container>
       <Navbar />
       <div className='main-content'>
-        <h1>{'Location'}</h1>
+       
         {brancheslist && brancheslist.length >0 && <CommonTable tableTitle={"Branches"}  buttonOnClock={()=>manageBranchesHandler(undefined)} tableDataSet={normalizedEmployeeLog(brancheslist)} buttonText={'Add Branch'}/>}
       </div>
       </Container>

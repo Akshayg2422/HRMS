@@ -16,21 +16,14 @@ import moment from 'moment';
 import {REACT_APP_APP_URL} from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 
 const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 
 const useNav = () => useNavigate()
 
-
-
-
 const getImageUri =(imageUri:string)=>{
   return IMAGE_BASE_URL_DEV + imageUri
 }
-
-
-
 const getGenderByValue=(value:string)=>{
   return GENDER_LIST.find(item=>{
     return item.value === value
