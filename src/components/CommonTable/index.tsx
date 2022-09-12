@@ -10,6 +10,7 @@ interface CommonTableProps {
     elv: string,
     elh: string
   }>;
+  comparisonDataSet?: { key: string, value: string, elt: number, elv: string, elh: string }
   tableOnClick?: (event: any, index: number, item: object) => void;
   tableValueOnClick?: (event: any, index: number, item: object) => void;
   noHeader?: boolean;
@@ -42,7 +43,7 @@ interface GetPaginatorSetProps {
 
 
 
-function index({tableTitle, tableDataSet, additionalDataSet, noRecordText, tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock}: CommonTableProps) {
+function index({tableTitle, tableDataSet, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet}: CommonTableProps) {
 
   const CommonHeader = ({children}: CommonHeaderProps) => {
     return (
@@ -147,13 +148,13 @@ function index({tableTitle, tableDataSet, additionalDataSet, noRecordText, table
 
   const renderTable = () => {
 
-    if (tableDataSet.length < 0) {
-      return (<CommonHeader><NoRecordFound text={noRecordText} /></CommonHeader>);
+    if (tableDataSet.length <= 0) {
+      return (<CommonHeader><div className='p-5'><NoRecordFound text={noRecordText} /></div></CommonHeader>);
     }
 
     return (
       <CommonHeader>
-        <Table tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} />
+        <Table tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} comparisonDataSet={comparisonDataSet} />
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
       </CommonHeader>
     );

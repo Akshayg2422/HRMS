@@ -181,7 +181,7 @@ const EmployeeReducer = (state = initialState, action) => {
     //Get employees list
 
     case FETCH_EMPLOYEE_LIST:
-      state = { ...state, loading: true };
+      state = { ...state, loading: true , registeredEmployeesList:[]};
       break;
     case FETCH_EMPLOYEE_LIST_SUCCESS:
       const employeeRes = action.payload
@@ -314,6 +314,7 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS_SUCCESS:
+      console.log(JSON.stringify(action.payload));
       state = {
         ...state,
         loading: false,
