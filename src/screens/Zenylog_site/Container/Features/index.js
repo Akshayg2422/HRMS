@@ -1,19 +1,10 @@
 import React from 'react'
-import Attendance from "../../../../assets/images/Attendance/Attendance.png";
-import Dailystats from "../../../../assets/images/DailyStats/DailyStats.png";
-import Leave from "../../../../assets/images/Leave/Leave.png";
-import Timesheets from "../../../../assets/images/TimeSheets/TimeSheets.png";
-import EDocuments from "../../../../assets/images/E Document/EDocument.png";
-import Notifications from "../../../../assets/images/Notifications/Notifications.png";
-import SalaryCal from "../../../../assets/images/SalaryCalculations/SalaryCalculations.png";
-import Reports from "../../../../assets/images/GenerationReports/GenerationReports.png";
-import SalaryPay from "../../../../assets/images/SalaryPayments/Salarypayments.png";
-import Pettycash from "../../../../assets/images/PettyCash/PettyCash.png";
-import Payslip from "../../../../assets/images/PaySlips/PaySlips.png";
-import { Card} from '../../../../components';
-const Features=(props)=>{
-    
+import {Icons} from '@assets'
 
+import { Card} from '../../components';
+
+const Features=(props)=>{
+  
     return (
         <>
         <div id='OurFeatures' className='container-fluid' >
@@ -22,7 +13,7 @@ const Features=(props)=>{
           <div className="row justify-content-around">
             <div className="col-sm-3">
               <Card
-                image={Attendance}
+                image={Icons.Attendance}
                 title={"Attendance Management"}
                 text1={"Office checkin"}
                 text2={" Remote checkin"}
@@ -31,7 +22,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Attendance}
+                image={Icons.Attendance}
                 title={"Shift Management"}
                 text1={"Change Shift"}
                 text2={"Allocate Multiple Shift"}
@@ -40,7 +31,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Dailystats}
+                image={Icons.Dailystats}
                 title={"Daily Stats"}
                 text1={"Real Time"}
                 text2={"Location wise"}
@@ -50,7 +41,7 @@ const Features=(props)=>{
           <div className="row justify-content-around">
             <div className="col-sm-3">
               <Card
-                image={Leave}
+                image={Icons.Leave}
                 title={"Leave Management"}
                 text1={"Applying for leaves"}
                 text2={"Leave Record"}
@@ -59,7 +50,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Timesheets}
+                image={Icons.Timesheets}
                 title={"Time Sheets"}
                 text1={"Daily"}
                 text2={"Weekly"}
@@ -68,7 +59,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={EDocuments}
+                image={Icons.EDocuments}
                 title={"E- Documents"}
                 text1={"Go Paperless"}
                 text2={"Maintain All Records "}
@@ -79,7 +70,7 @@ const Features=(props)=>{
           <div className="row justify-content-around">
             <div className="col-sm-3">
               <Card
-                image={Notifications}
+                image={Icons.Notifications}
                 title={"Notifications"}
                 text1={"Create"}
                 text2={"Schedule"}
@@ -89,7 +80,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={SalaryCal}
+                image={Icons.SalaryCalculations}
                 title={"Salary Calculations"}
                 text1={"Real Time"}
                 text2={"Over Time (OT)"}
@@ -99,7 +90,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Reports}
+                image={Icons.ReportWeb}
                 title={"Generation of Reports"}
                 text1={"Attendance Repor"}
                 text2={"Log Report"}
@@ -111,7 +102,7 @@ const Features=(props)=>{
           <div className="row justify-content-around">
             <div className="col-sm-3">
               <Card
-                image={SalaryPay}
+                image={Icons.Salarypayments}
                 title={"Salary Payments"}
                 text1={"Individual"}
                 text2={"Bulk"}
@@ -120,7 +111,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Pettycash}
+                image={Icons.Pettycash}
                 title={"Petty Cash Payments"}
                 text1={"Instant Transfer"}
                 text2={"Individual Reports"}
@@ -129,7 +120,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Payslip}
+                image={Icons.PaySlips}
                 title={"Pay Slips"}
                 text1={"Auto generation"}
                 text2={"Instant Availability "}

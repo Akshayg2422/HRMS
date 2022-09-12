@@ -1,12 +1,8 @@
 import React, { useState } from "react";
-import { InputItem } from "../../../../components";
-import Location from "../../../../assets/images/Location/Location.png";
-import Instagram from "../../../../assets/images/Instagram/Instagram.png";
-import Facebook from "../../../../assets/images/Facebook/Facebook2@2x.png";
-import Twitter from "../../../../assets/images/Twitter/Twitter2.png";
-import Mail from "../../../../assets/images/Mail/Mail.png";
-import Mobile from "../../../../assets/images/Mobile/Mobile.png";
-import Linkedin from "../../../../assets/images/Linkedin/Linkedin.png";
+import {InputItem} from "../../components";
+
+import {Icons} from '@assets'
+
 const Contact = (props) => {
   const [Name, SetName] = useState("");
   const [Email, SetEmail] = useState("");
@@ -59,28 +55,28 @@ const Contact = (props) => {
                 to you within 24 hours
               </p>
 
-              <div className="row mt-5">
+              <div className="flex-row  mt-5">
                 <img
                   className="ml-3"
-                  src={Mobile}
+                  src={Icons.Mobile}
                   height={"30px"}
                   width={"30px"}
-                ></img>
-                <p className="ml-3">+91 93424 99299</p>
+                />
+                <p className="ml-3 ">+91 93424 99299</p>
               </div>
-              <div className="row mt-4">
+              <div className="flex-row mt-4">
                 <img
                   className="ml-3"
-                  src={Mail}
+                  src={Icons.Mail}
                   height={"30px"}
                   width={"30px"}
                 ></img>
                 <p className="ml-3">maplebell.official@gmail.com</p>
               </div>
-              <div className="row mt-4">
+              <div className="flex-row mt-4">
                 <img
                   className="ml-4 mt-2"
-                  src={Location}
+                  src={Icons.Location}
                   height={"30px"}
                   width={"20px"}
                 ></img>
@@ -91,16 +87,16 @@ const Contact = (props) => {
               </div>
               <div class="card-profile-stats d-flex  justify-content-center container">
                     <div>
-                      <img src={Instagram} height="30px" width={"30px"}></img>
+                      <img src={Icons.Instagram} height="30px" width={"30px"}></img>
                     </div>
                     <div>
-                      <img src={Facebook} height="30px" width={"20px"}></img>
+                      <img src={Icons.FacebookWeb} height="30px" width={"20px"}></img>
                     </div>
                     <div>
-                      <img src={Twitter} height="30px" width={"30px"}></img>
+                      <img src={Icons.Twitter} height="30px" width={"30px"}></img>
                     </div>
                     <div>
-                      <img src={Linkedin} height="30px" width={"30px"}></img>
+                      <img src={Icons.Linkedin} height="30px" width={"30px"}></img>
                     </div>
                 </div>
             </div>
