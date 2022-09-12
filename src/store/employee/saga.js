@@ -3,7 +3,7 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import { FETCH_DESIGNATION, FETCH_DEPARTMENT, FETCH_ALL_BRANCHES_LIST, FETCH_EMPLOYEE_DETAILS, FETCH_EMPLOYEE_LIST, POST_EMPLOYEE_ADDITION, FETCH_EMPLOYEE_TIME_SHEETS, FETCH_EMPLOYEE_CHECK_IN_LOGS, FETCH_CHECK_IN_DETAILED_LOG_PER_DAY, FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS,
 ADD_DEPARTMENT,
 ADD_DESIGNATION,
-ADD_FENCE_ADMIN } from "./actionTypes";
+ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG } from "./actionTypes";
 
 import {
   getDepartmentDataSuccess,
@@ -31,14 +31,19 @@ import {
   addDesignationSuccess,
   addDesignationFailure,
   addFenceAdminSuccess,
-  addFenceAdminFailure
-
+  addFenceAdminFailure,
+  getEmployeeAttendanceStatsSuccess,
+  getEmployeeAttendanceStatsFailure,
+  getEmployeeTodayStatusSuccess,
+  getEmployeeTodayStatusFailure,
+  getCheckInDetailedLogFailure,
+  getCheckInDetailedLogSuccess
 } from "./actions";
 
 import {fetchDesignationData, fetchDepartmentData, fetchAllBranchesList, fetchEmployeeDetails, fetchEmployeeList, postEmployeeAddition , fetchEmployeeTimeSheets, fetchEmployeeCheckInLogs, fetchCheckInDetailedLogPerDay, fetchEmployeeEachUserTimeSheets,
 postAddDepartment,
 postAddDesignation,
-postAddFenceAdmin} from "../../helpers/backend_helper";
+postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog} from "../../helpers/backend_helper";
 
 
 
@@ -237,6 +242,52 @@ function* addFenceAdmin(action) {
   }
 }
 
+function* getEmployeeAttendanceStats(action) {
+  try{
+    const response = yield call(fetchEmployeeAttendanceStats,action.payload);
+    if(response.success) {
+      yield put(getEmployeeAttendanceStatsSuccess(response.details));
+    } else {
+      yield put(getEmployeeAttendanceStatsFailure(response.error_message));
+    }
+  }
+  catch (error) {
+    yield put(getEmployeeAttendanceStatsFailure("Invalid Request"))
+  }
+}
+
+function* getEmployeeTodayStatus(action) {
+try{
+  const response = yield call(fetchEmployeeTodayStatus,action.payload)
+  console.log("fffffff",response);
+  if(response.success){
+    yield put(getEmployeeTodayStatusSuccess(response.details))
+  }
+  else{
+    yield put(getEmployeeTodayStatusFailure(response.error_message))
+  }
+}
+catch (error) {
+  yield put(getEmployeeTodayStatusFailure("Invalid Request"))
+}
+}
+
+function* getCheckInDetailedLog(action) {
+ 
+  try{
+    const response= yield call(fetchCheckInDetailedLog(action.payload))
+    if(response.success)
+    {
+      yield put(getCheckInDetailedLogSuccess(response.details))
+    }
+    else{
+      yield put(getCheckInDetailedLogFailure(response.error_message))
+    }
+  }
+  catch(error){
+    yield put(getCheckInDetailedLogFailure("Invalid Request"))
+  }
+}
 
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
@@ -252,6 +303,9 @@ function* EmployeeSaga() {
   yield takeLatest(ADD_DEPARTMENT, addDepartment);
   yield takeLatest(ADD_DESIGNATION, addDesignation);
   yield takeLatest(ADD_FENCE_ADMIN, addFenceAdmin);
+  yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_STATS,getEmployeeAttendanceStats)
+  yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS,getEmployeeTodayStatus)
+  yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG,getCheckInDetailedLog)
 }
 
 export default EmployeeSaga;

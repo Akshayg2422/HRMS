@@ -14,6 +14,7 @@ export const ROUTE = {
   ROUTE_WELCOME: '/landing',
   ROUTE_MANAGE_EMPLOYEE:'/manageemployee',
   ROUTE_DASHBOARD_STATS:'/dashboardstats',
+  ROUTE_DASHBOARD_ATTENDANCE:'/dashboardattendance',
   ROUTE_EMPLOYEE_LOG:'/employeelog',
   ROUTE_MANAGE_BRANCHES: "/managebranches",
   ROUTE_EMPLOYEE_TIME_SHEETS:'/employee-work-book',

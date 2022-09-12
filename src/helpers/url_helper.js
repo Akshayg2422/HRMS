@@ -41,6 +41,9 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   export const POST_ADD_DESIGNATION = '/employee/addDesignation';
   export const POST_ADD_DEPARTMENT = '/company/addDepartment';
   export const POST_ADD_FENCH_ADMIN = '/company/addFenchAdmin';
+  export const FETCH_EMPLOYEE_ATTENDANCE = '/attendance/attendanceDashboard';
+  export const FETCH_EMPLOYEE_TODAY_STATUS = "/attendance/v1/todaysStats"
+  export const FETCH_CHECK_IN_DETAILED_LOG="/attendance/getCheckinDetailedLogsPerDay";
 
 
 
