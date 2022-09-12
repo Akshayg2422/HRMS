@@ -1,14 +1,14 @@
-import Secondary from './button/Secondary';
-import Primary from './button/Primary';
-import Social from './button/Social';
-import Input from './input/InputDefault';
+import Secondary from './Button/Secondary';
+import Primary from './Button/Primary';
+import Social from './Button/Social';
+import Input from './Input/InputDefault';
 import Logo from './Logo';
 import Card from './Card';
 import WelcomeBoard from './WelcomeBoard';
 import ImageView from './ImageView';
 import Container from './Container';
 import ScreenTitle from './ScreenTitle';
-import DropDown from './DropDown';
+import DropDown from './Dropdown';
 import Divider from './Divider';
 import CheckBox from './CheckBox';
 import Modal from './Modal';
@@ -20,8 +20,8 @@ import TimePicker from './TimePicker'
 import Fileupload from './fileUpload';
 import Upload from './uploadViewer';
 import Badge from './Badge';
-import Sort from './button/Sort';
-import {InputNumber, InputDefault, InputText, InputMail} from './input'
+import Sort from './Button/Sort';
+import {InputNumber, InputDefault, InputText, InputMail} from './Input'
 import Search from './Search'
 import DateRangePicker from './DateRangePicker'
 import DatePicker from './DatePicker'
@@ -30,7 +30,7 @@ import Event from './Event'
 import CardTable from './CardTable'
 import CardHeading from './CardHeading'
 import InputHeading from './InputHeading'
-import Icon from './button/Icon'
+import Icon from './Button/Icon'
 import LineCharts from './LineCharts';
 import AppLoader from './AppLoader';
 import FormWrapper from './FormWrapper';

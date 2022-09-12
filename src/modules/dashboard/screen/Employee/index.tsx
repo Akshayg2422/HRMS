@@ -69,14 +69,14 @@ function EmployeeScreen() {
         <Card margin={'m-4'}>
           <Container flexDirection={'row'} alignItems={'align-items-center'}>
             <Container flexDirection={'row'} col={'col-9'} alignItems={'align-items-center'}>
-              <Container col={'col-4'}>
+              <Container col={'col-xl-4 col-md-6 col-sm-12'}>
                 <InputText placeholder={'Enter employee name'} label={'Employee Name'}
                   onChange={(e) => {
                     setSearchEmployee(e.target.value);
                   }}
                 />
               </Container>
-              <Container col={'col-4'}>
+              <Container col={'col-xl-4 col-md-6 col-sm-12'}>
                 <InputText placeholder={'Enter employee id'} label={'Employee Id'}
                   onChange={(e) => {
                     setSearchEmployeeById(e.target.value);
@@ -85,7 +85,7 @@ function EmployeeScreen() {
               </Container>
             </Container>
 
-            <Container col={'col-2'} flexDirection={'row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} onClick={() => goTo(navigation, ROUTE.ROUTE_DASHBOARD_STATS)}>
+            <Container col={'col-xl-2 col-md-6 col-sm-12'} flexDirection={'row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} onClick={() => goTo(navigation, ROUTE.ROUTE_DASHBOARD_STATS)}>
               <Icon type={'btn-primary'} icon={Icons.Search} />
             </Container>
 
