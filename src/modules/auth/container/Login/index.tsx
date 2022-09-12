@@ -42,7 +42,7 @@ function Login() {
           goTo(navigation, ROUTE.ROUTE_OTP);
         },
         onError: (error: string) => {
-          showToast('error', 'Invalid user');
+          showToast('error',t('invalidUser'));
         },
       })
     );
@@ -59,7 +59,7 @@ function Login() {
       };
       proceedValidateUser(params);
     } else {
-      showToast('error', 'Please enter mobile number');
+      showToast('error', t('pleaseEnterYourMobileNumber'));
     }
   };
 
@@ -88,9 +88,9 @@ function Login() {
         <Container padding={'pt-5'} />
         <small className={'text-center'}>{t('loginwith')}</small>
         <Container flexDirection={'flex-row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} display={'d-flex'} margin={'mt-4'}>
-          <Social icon={Icons.Facebook} text={'Facebook'} backgroundColor={'bg-facebook'} />
+          <Social icon={Icons.Facebook} text={t('facebook')} backgroundColor={'bg-facebook'} />
           <Container padding={'pl-2'} />
-          <Social icon={Icons.Google} text={'Google'} backgroundColor={'bg-google'} />
+          <Social icon={Icons.Google} text={t('google')} backgroundColor={'bg-google'} />
         </Container>
       </div>
     </Container>

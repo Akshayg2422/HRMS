@@ -69,7 +69,7 @@ function Otp() {
         goTo(navigation, ROUTE.ROUTE_DASHBOARD)
       },
       onError: (error: string) => {
-        showToast("error", "Invalid user");
+        showToast("error", t("invalidUser"));
       },
     }));
   };

@@ -169,7 +169,7 @@ function SignUp() {
           await localStorage.setItem(ASYN_USER_AUTH, jsonValue);
         },
         onError: (error: string) => {
-          showToast("error", "Invalid user");
+          showToast("error",t("invalidUser"));
         },
       })
     );
@@ -193,7 +193,7 @@ function SignUp() {
         verifyOTP(params);
       }
     } else {
-      showToast("error", "Something wrong");
+      showToast("error", t("somethingWrong"));
     }
   };
 
@@ -213,7 +213,7 @@ function SignUp() {
 
       dispatch(getRegisterAdmin({ params }));
     } else {
-      showToast("error", "field cannot be empty");
+      showToast("error", t("formInvalidParams"));
     }
   };
 
@@ -253,7 +253,7 @@ function SignUp() {
         })
       );
     } else {
-      showToast("error", "field cannot be empty");
+      showToast("error",  t("formInvalidParams"));
     }
 
 
@@ -334,7 +334,7 @@ function SignUp() {
         <div className="position-absolute fixed-bottom  d-flex aligns-item-center justify-content-center my-1">
           <Primary
             additionClass={"col-6"}
-            text={"SUBMIT"}
+            text={t("submit")}
             onClick={proceedNext}
           />
         </div>

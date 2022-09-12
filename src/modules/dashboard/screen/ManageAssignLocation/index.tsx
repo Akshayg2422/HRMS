@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getEmployeesList } from '../../../../store/employee/actions'
 import { goTo, useNav, ROUTE } from '@utils'
 import { Icons } from '@assets'
+import { useTranslation } from "react-i18next";
 
 function ManageAssignLocation() {
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const navigation = useNav()
     const [searchEmployee, setSearchEmployee] = useState("")
@@ -57,7 +58,7 @@ function ManageAssignLocation() {
                     <Container flexDirection={'row'} additionClass={'container'}>
                         <h1>{'Employees List'}</h1>
                         <Container col={'col-4'}>
-                            <InputText placeholder={'Enter employee name'}
+                            <InputText placeholder={t('enterEmployeeName')}
                                 onChange={(e) => {
                                     setSearchEmployee(e.target.value);
                                 }}
