@@ -2,24 +2,22 @@ import { takeLatest, put, call } from "redux-saga/effects";
 
 import { FETCH_DASHBOARD ,GET_CHECK_IN_DETAILED_LOG ,URL_CHECK_IN ,POST_DAILY_LOG} from "./actionTypes";
 
-import { dashboardSuccess, dashboardFail,checkInDetailedLogSuccess,checkInDetailedLogFail,checkInUserFail, checkInUserSuccess, dailyLogFail, dailyLogSuccess } from "./actions";
+import { getDashboardFail, getDashboardSuccess,checkInDetailedLogSuccess,checkInDetailedLogFail,checkInUserFail, checkInUserSuccess, dailyLogFail, dailyLogSuccess } from "./actions";
 
 import {deleteAccountUser, fetchDashboard,fetchCheckInDetailedLogPerDay, postCheckInUser, postDailyLog, postEditProfilePicture } from "../../helpers/backend_helper";
 import { deleteAccountUserFail, deleteAccountUserSuccess, editProfilePictureFail, editProfilePictureSuccess } from "../dashboard/actions";
 
-function* dashboard(action) {
+function* getDashboard(action) {
   try {
     const response = yield call(fetchDashboard, action.payload.params);
+  
     if (response.success) {
-      yield put(dashboardSuccess(response));
-      yield call(action.payload.onSuccess);
+      yield put(getDashboardSuccess(response.details));
     } else {
-      yield put(dashboardFail(response.error_message));
-      yield call(action.payload.onError);
+      yield put(getDashboardFail(response.error_message));
     }
   } catch (error) {
-    yield put(dashboardFail("Invalid Request"));
-    yield call(action.payload.onError);
+    yield put(getDashboardFail("Invalid Request"));
   }
 }
 
@@ -71,7 +69,6 @@ function* dailyLog(action) {
   }
 }
 
-
 function* deleteAccount(action) {
   try {
     const response = yield call(deleteAccountUser, action.payload.params);
@@ -104,9 +101,8 @@ function* editProfilePicture(action) {
   }
 }
 
-///watcher///
 function* DashboardSaga() {
-  yield takeLatest(FETCH_DASHBOARD, dashboard);
+  yield takeLatest(FETCH_DASHBOARD, getDashboard);
   yield takeLatest(GET_CHECK_IN_DETAILED_LOG, checkInLog);
   yield takeLatest(URL_CHECK_IN, checkIn);
   yield takeLatest(POST_DAILY_LOG, dailyLog);

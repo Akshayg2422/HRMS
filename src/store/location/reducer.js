@@ -10,12 +10,29 @@ GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS,
 GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS,
-UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE } from "./actionsType";
+UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE,
+UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER
+ } from "./actionsType";
+
+
+ type Branch = {
+  id?: string;
+  name?: string;
+  parent_id?: string;
+  has_location?: boolean;
+  fencing_radius?: number;
+  can_update_location?: boolean;
+  geo_location_id?: string;
+  fence_admin_id?: string;
+}
 
 const initialState={
     brancheslist:[],
     loading:false,
-    error:""
+    error:"",
+    associatedBranch: [],
+    associatedId:'',
+    defaultBranchId:''
 }
 
 const LocationReducer=(state=initialState,action)=>{
@@ -96,12 +113,28 @@ const LocationReducer=(state=initialState,action)=>{
         case GET_EMPLOYEE_CHECKIN_ASSOCIATIONS:
         state = { 
           ...state, 
-          loading: true };
+          loading: true ,
+          associatedBranch:[],
+          defaultBranchId:'',
+          associatedId:''
+        };
+        break;
+      case UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER:
+       
+        state = {
+          ...state,
+          loading: true,
+          associatedBranch: action.payload
+        };
         break;
       case GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS:
+        const associatedRes = action.payload
         state = {
           ...state,
           loading: false,
+          associatedBranch: associatedRes.associated_branch,
+          associatedId: associatedRes.id,
+          defaultBranchId: associatedRes.branch_id
         };
         break;
       case GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE:
