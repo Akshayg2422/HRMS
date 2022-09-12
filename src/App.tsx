@@ -8,7 +8,6 @@ import {
   Calendar,
   Location,
   Otp,
-  Website,
   Welcome,
   ManageEmployee,
   DashboardStats,

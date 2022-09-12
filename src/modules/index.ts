@@ -16,7 +16,7 @@ import { ManageEmployee, EmployeeLog, EmployeeWorkBook } from './employee';
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import {DashboardStats} from './stats'
 
-import {Website} from './home'
+
 import fenceAdmin from './fenceAdmin'
 export {
   getDashboardDetails,
@@ -29,7 +29,7 @@ export {
   resendOtp,
   validateUser,
   Welcome, Login, Otp, Register, Report, Employee, Dashboard, Calendar, Location,
-  Website,
+
   getEmployeeDetails,
   fetchDashboardDetails,
   Navbar,

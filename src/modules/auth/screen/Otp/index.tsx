@@ -34,6 +34,11 @@ function Otp() {
   const [counter, setCounter] = useState<number>(59);
   const maxLength = 1
 
+   const inputRef1 = React.createRef<HTMLInputElement>();
+   const inputRef2 = React.createRef<HTMLInputElement>();
+   const inputRef3 = React.createRef<HTMLInputElement>();
+   const inputRef4 = React.createRef<HTMLInputElement>();
+
   const [otp, setOtp] = useState({
     field1: "",
     field2: "",
@@ -103,16 +108,12 @@ function Otp() {
     reSendOTP(params);
   };
 
-  // const emailInputRef = React.useRef<HTMLHeadingElement>(null);
-  const inputRef1 = React.useRef<HTMLInputElement>(null);
-  const inputRef2 = React.useRef<HTMLInputElement>(null);
-  const inputRef3 = React.useRef<HTMLInputElement>(null);
-  const inputRef4 = React.useRef<HTMLInputElement>(null);
+ 
 
   const changeInputFocus = () => {
     if (otp.field1 === '' && inputRef1.current) {
       inputRef1.current.focus();
-    } else if (otp.field2=== '' && inputRef2.current) {
+    } else if (otp.field2 === '' && inputRef2.current) {
       inputRef2.current.focus();
     } else if (otp.field3 === '' && inputRef3.current) {
       inputRef3.current.focus();
@@ -123,9 +124,9 @@ function Otp() {
     }
   };
 
-useEffect(()=>{
-  changeInputFocus()
-}, [otp.field1,otp.field2,otp.field3,otp.field4]);
+  useEffect(() => {
+    changeInputFocus()
+  }, [otp.field1, otp.field2, otp.field3, otp.field4]);
 
   return (
     <Container
@@ -175,7 +176,7 @@ useEffect(()=>{
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);
               }
-
+            
             }}
           />
           <OtpInput
@@ -186,6 +187,7 @@ useEffect(()=>{
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);
               }
+             
             }}
           />
           <OtpInput

@@ -12,8 +12,8 @@ import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
 import { useDashboard } from "@contexts";
 import { goTo, ROUTE, useNav } from "@utils";
 import { useDispatch } from "react-redux";
-import { dashboard } from "../../../../store/dashboard/actions";
-
+import { getDashboard } from "../../../../store/dashboard/actions";
+import { useSelector } from "react-redux";
 const data = [
   {
     date: 12,
@@ -130,19 +130,22 @@ const dummyTable = [
 ];
 
 function Dashboard() {
-  const navigation = useNav();
   const dispatch = useDispatch()
 
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   useEffect(() => {
-    // fetchDashboardApi();
-    dispatch(dashboard({}))
+    dispatch(getDashboard({}))
   }, []);
 
   return (
     <>
       <Navbar />
       <div className="main-content">
-        <Header />
+        {dashboardDetails && dashboardDetails.user_details && <Header />}
         <Container additionClass={"main-description"}>
           <Container additionClass={"container-fluid"}>
             <DashBoardCard />
