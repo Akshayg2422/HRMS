@@ -13,7 +13,8 @@ import { useDashboard } from "@contexts";
 import { goTo, ROUTE, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard } from "../../../../store/dashboard/actions";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";import { useTranslation } from "react-i18next";
+
 const data = [
   {
     date: 12,
@@ -130,6 +131,8 @@ const dummyTable = [
 ];
 
 function Dashboard() {
+  const { t } = useTranslation();
+  const navigation = useNav();
   const dispatch = useDispatch()
 
 
@@ -180,7 +183,7 @@ function Dashboard() {
               </Container>
             </Container>
             <Container col={"col-7"}>
-              <CardTable tableDataSet={dummyTable} title={"Table "} />
+              <CardTable tableDataSet={dummyTable} title={t("table")} />
             </Container>
           </Container>
         </Container>

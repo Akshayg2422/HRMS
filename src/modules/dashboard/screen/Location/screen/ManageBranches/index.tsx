@@ -103,11 +103,11 @@ import {
         branchAddition({
           params,
           onSuccess: (success: object) => {
-            showToast("success", "Branch Added successfully");
+            showToast("success", t("branchAddedSuccessfully"));
             goBack(navigation)
           },
           onError: (error: string) => {
-            showToast("error", "formInvalidParams");
+            showToast("error", t("invalidParams"));
           },
         })
       );
@@ -117,8 +117,7 @@ import {
     const onChangeHandler = (e: any) => {
       setBranchDetails({ ...branchDetails, [e.target.name]: e.target.value });
     };
-  console.log("brancheslist",brancheslist)
-console.log("dassdad",branchDetails.parentbranch)
+
     return (
       <FormWrapper
         title={t("Add Company Branch")}

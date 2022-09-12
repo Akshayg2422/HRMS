@@ -7,6 +7,7 @@ import { getEmployeeCheckinAssociations, getAllBranchesList, updateEmployeeCheck
 
 
 import { Icons } from '@assets'
+import { useTranslation } from "react-i18next";
 
 type Branch = {
     id?: string;
@@ -19,7 +20,7 @@ type Branch = {
     fence_admin_id?: string;
 }
 function ManageAssignLocation() {
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const [searchEmployee, setSearchEmployee] = useState("")
@@ -133,7 +134,7 @@ function ManageAssignLocation() {
                             </div>
                             <div className='row col-lg-6 col-md-12 mb-3'>
                                 <div className='col-xl-6 col-md-12'>
-                                    <InputText placeholder={'Enter employee name'}
+                                    <InputText placeholder={t('enterEmployeeName')}
                                         onChange={(e) => {
                                             setSearchEmployee(e.target.value);
                                         }}

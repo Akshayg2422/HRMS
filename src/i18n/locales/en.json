@@ -8,6 +8,7 @@
 
   "mobileNumber": "Mobile Number",
   "enterYourMobileNumber":"Enter your mobile number",
+  "pleaseEnterYourMobileNumber":"Please enter your mobile number",
   "enterYourEmail":"Enter your Email",
   "continue":"CONTINUE",
   "loginwith":"Or login with",
@@ -15,6 +16,9 @@
   "welcome":"Welcome",
   "login":"Login",
   "back": "Back",
+  "facebook":"Facebook",
+  "google":"Google",
+  "website":"Website",
 
 
 
@@ -27,7 +31,7 @@
   "OTP?":"Didn't receive the OTP?",
   "resend": "Resend",
   "edit": "Edit",
-
+  "table": "Table",
 
 
 
@@ -64,10 +68,11 @@
   "invalidDepartment": "Invalid Department",
   "invalidCategory": "Invalid Category",
   "invalidDOB": "Invalid DOB",
-  "invalidGender": "invalidGender",
+  "invalidGender": "InvalidGender",
   "invalidBranch": "Invalid Branch",
   "invalidEmail": "Invalid Email",
-
+  "invalidUser":"Invalid User",
+  "somethingWrong":"Something wrong",
 
   
 
@@ -203,6 +208,13 @@
   "allRegisteredEmployee": "All Registered Employee",
   "employeeEditInformation": "Click on a employee name to edit information",
   "searchLocation": "Search Location",
+  "employeeName":"Employee Name",
+  "enterEmployeeName":"Enter employee name",
+  "employeeId":"Employee Id",
+  "enterEmployeeId":"Enter employee id",
+  "addEmployee":"Add Employee",
+  "branchAddedSuccessfully":"Branch Added successfully",
+  "employeeAddedSuccessfully":"Employee Added successfully",
  
 
   
@@ -240,6 +252,7 @@
   "inputNumber": "Input Number",
   "allRegisteredLocation": "All Registered Location",
   "formInvalidParams": "field cannot be empty",
+  "invalidParams":"Invalid Params",
   "userDetails": "User Details",
   "companyDetails": "Company Details",
   "upload": "Upload",
@@ -262,6 +275,7 @@
   "allRegisteredBranches": "All Registered Branches",
   "employeeList": "Employee List",
   "manageFenceAdmin":"Manage Fence Admin",
+  "fenceAdmin":"Fence Admin",
   "zenyfence":"Zenyfence",
   "logs":" Logs",
   "selectFenceAdminFromTheListBelow":"Select Fence Admin From The\nList Below",
@@ -295,6 +309,7 @@
   "time": "Time",
   "type": "Type",
   "addresss":"Address",
+  "branches":"Branches",
   "includeChild": "Include Sub Branches",
   "verifyOtp": "Verify Otp",
   "myLocation": "My Location",
@@ -304,7 +319,14 @@
   "getLocationAgain": "Get location again",
   "description": "description",
   "office": "Office",
-  "myCurrentLocation": "My Current Location"
+  "myCurrentLocation": "My Current Location",
+  "welcomeToZenylog":"Welcome to zenylog",
+  "googleHasBeenSuccessfullyRegisteredWithZenylog":"Google has been successfully registered with zenylog.",
+  "clickHereToLogin":"Click here to login",
+  "imageNotFound":"Image Not Found",
+  "details":"Details",
+  "pleaseSelect":"Please Select",
+  "departments":"Departments"
 
  
 }

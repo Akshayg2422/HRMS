@@ -97,7 +97,7 @@ const ManageEmployee = () => {
           preFillEmployeeDetails();
         },
         onError: (error: string) => {
-          showToast("error", "Invalid user");
+          showToast("error", t("invalidUser"));
         },
       })
     );
@@ -179,7 +179,7 @@ const ManageEmployee = () => {
       employeeAddition({
         params,
         onSuccess: (success: object) => {
-          showToast("success", "Employee Added successfully");
+          showToast("success",t("employeeAddedSuccessfully"));
           goBack(navigation)
         },
         onError: (error: string) => {
@@ -376,7 +376,7 @@ const ManageEmployee = () => {
       />
       <h5>{t("dataOfJoining")}</h5>
       <DatePicker
-        title="Please Select"
+        title={t("pleaseSelect")}
         icon={Icons.Calendar}
         iconPosition={"append"}
         value={employeeDetails.dateOfJoining}
@@ -405,7 +405,7 @@ const ManageEmployee = () => {
       <h4 className="mb-4">{t("attendanceDetails")}</h4>
       <h5 className="mb-2">{t("startTime")}</h5>
       <TimePicker
-        title="Please Select"
+        title={t("pleaseSelect")}
         icon={Icons.Calendar}
         iconPosition={"append"}
         value={employeeDetails.attendanceStartTime}
@@ -416,7 +416,7 @@ const ManageEmployee = () => {
       />
       <h5 className="mb-2">{t("endTime")}</h5>
       <TimePicker
-        title="Please Select"
+        title={t("pleaseSelect")}
         icon={Icons.Calendar}
         iconPosition={"append"}
         value={employeeDetails.attendanceEndTime}

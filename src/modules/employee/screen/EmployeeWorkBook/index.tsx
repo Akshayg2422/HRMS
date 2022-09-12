@@ -2,7 +2,7 @@ import { CommonTable, Sort, Container, Divider, Modal, NoRecordFound, ImageView,
 import React, { useEffect, useState } from 'react'
 import { getEmployeeEachUserTimeSheets, getEmployeesTimeSheets } from '../../../../store/employee/actions';
 import { useSelector, useDispatch } from "react-redux";
-import { t } from 'i18next';
+import { useTranslation } from "react-i18next";
 import { paginationHandler, getDisplayDateTimeFromMoment, getMomentObjFromServer, showToast } from '@utils'
 import { Icons } from '@assets'
 
@@ -15,7 +15,7 @@ type TimeSheetResponse = {
 }
 
 function EmployeeTimeSheets() {
-
+  const { t } = useTranslation();
   let dispatch = useDispatch();
   const [activeSort, setActiveSort] = useState<number>(0);
   const [type, setType] = useState<string>('daily');
@@ -101,9 +101,9 @@ function EmployeeTimeSheets() {
 
       <Modal showModel={model} title={'Logs'} size={'modal-xl'} toggle={() => setModel(!model)}>
         {employeeEachUserSheets && employeeEachUserSheets.length > 0 ? <><Container flexDirection={'flex-row'} display={'d-flex'} justifyContent={'justify-content-around'}>
-          <h5 className="mb-0 col">{'Details'}</h5>
-          <h5 className="mb-0 col">{'Time'}</h5>
-          <h5 className="mb-0 col">{'Address'}</h5>
+          <h5 className="mb-0 col">{t('details')}</h5>
+          <h5 className="mb-0 col">{t('time')}</h5>
+          <h5 className="mb-0 col">{t('addresss')}</h5>
           <h5 className="mb-0 col">{''}</h5>
         </Container>
           <Divider />
@@ -138,7 +138,7 @@ function EmployeeTimeSheets() {
                           item.attachments && item.attachments.length > 0 ?
                             <Carousel images={item.attachments} height={500} />
                             :
-                            <NoRecordFound text={'Image Not Found'} />
+                            <NoRecordFound text={t('imageNotFound')} />
                         }
                       </div>
                     </div>
