@@ -8,7 +8,7 @@ import WelcomeBoard from './WelcomeBoard';
 import ImageView from './ImageView';
 import Container from './Container';
 import ScreenTitle from './ScreenTitle';
-import DropDown from './DropDown';
+import DropDown from './Dropdown';
 import Divider from './Divider';
 import CheckBox from './CheckBox';
 import Modal from './Modal';
