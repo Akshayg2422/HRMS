@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployeeAttendanceStats, getSelectedCardType,getSelectedDepartmentName,getSelectedDepartmentId, getAttendanceConsolidatedCards } from "../../../../store/employee/actions";
 import React, { useEffect, useState} from "react";
 import { goTo, ROUTE, useNav } from "@utils";
+import { Navbar } from "@modules";
 
 const DashboardStats = () => {
   const { t } = useTranslation();
@@ -97,31 +98,34 @@ console.log("response data",employeeattendancedatalog);
 
 
   return (
-    <Container
-      additionClass={"row"}
-      justifyContent={"justify-content-around"}
-      margin={"m-4"}
-    >
-      <Container>
-        <h1>{t("dashboardDetails")}</h1>
-      </Container>
-      {employeeattendancedatalog?.cards?.map((el: any) => {
-        return (
-          <Card
-            additionClass="col-xl-3 col-md-3 "
-            margin={"m-2"}
-            children={
-              <Container
-                justifyContent={"justify-content-between"}
-                alignItems={"align-content-center"}
-                flexDirection={"column"}
-              >
-                <Container>
-                  <div className="text-center h1 font-weight-300">
-                    {el.count}
-                  </div>
-                  <div className="text-center h2">{el.title}</div>
-                </Container>
+    <>
+      <Navbar />
+      <Container additionClass={" main-content "}>
+        <Container
+          additionClass={"row"}
+          justifyContent={"justify-content-around"}
+          margin={"m-4"}
+        >
+          <Container >
+            <h1>{t("dashboardDetails")}</h1>
+          </Container>
+          {employeeattendancedatalog?.cards?.map((el: any) => {
+            return (
+              <Card
+                additionClass="col-xl-3 col-md-3 "
+                margin={"m-2"}
+                children={
+                  <Container
+                    justifyContent={"justify-content-between"}
+                    alignItems={"align-content-center"}
+                    flexDirection={"column"}
+                  >
+                    <Container>
+                      <div className="text-center h1 font-weight-300">
+                        {el.count}
+                      </div>
+                      <div className="text-center h2">{el.title}</div>
+                    </Container>
 
                 <Primary
                   additionClass={"btn-block"}
@@ -189,6 +193,8 @@ console.log("response data",employeeattendancedatalog);
                     </Container>
                 </Modal>
     </Container>
+  </Container>
+  </>
   );
 };
 

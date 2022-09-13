@@ -20,7 +20,7 @@ index({ title, children, onClick }: FormWrapperProps) {
                     <div className="card-body" >
                         <form id="create-form">
                             <div className='row justify-content-center'>
-                                <div className='col-7 my-3'>
+                                <div className='col-xl-8 col-md-10 my-3'>
                                     {
                                         children
                                     }

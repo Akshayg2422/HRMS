@@ -16,7 +16,7 @@ import {
   EmployeeLog,
   ManageBranches,
   EmployeeWorkBook,
-  Profile
+  Profile,
 } from "@modules";
 
 import { ROUTE } from "@utils";
@@ -26,7 +26,7 @@ import { ToastContainer } from "react-toastify";
 import { AppLoader } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation } from "./modules/dashboard/screen";
-import { ZenylogSite } from '@screens'
+import { ZenylogSite } from "@screens";
 function App() {
   return (
     <AppProvider>
@@ -62,34 +62,20 @@ function App() {
             />
             <Route
               path={ROUTE.ROUTE_DASHBOARD_ATTENDANCE}
-             element={<DashBoardAtttendance />}
+              element={<DashBoardAtttendance />}
             />
-             <Route
-              path={ROUTE.ROUTE_EMPLOYEE_LOG}
-              element={<EmployeeLog />}
-            />
+            <Route path={ROUTE.ROUTE_EMPLOYEE_LOG} element={<EmployeeLog />} />
             <Route
               path={ROUTE.ROUTE_EMPLOYEE_WORK_BOOK}
               element={<EmployeeWorkBook />}
             />
-            <Route
-              path={ROUTE.ROUTE_FENCE_ADMIN}
-              element={<FenceAdmin />}
-            />
+            <Route path={ROUTE.ROUTE_FENCE_ADMIN} element={<FenceAdmin />} />
             <Route
               path={ROUTE.ROUTE_ASSIGN_LOCATION}
               element={<ManageAssignLocation />}
             />
-            <Route
-              path={ROUTE.ROUTE_PROFILE}
-              element={<Profile />}
-            />
-            <Route
-              path={ROUTE.ROUTE_PORTFOLIO}
-              element={<Portfolio />}
-            />
-
-
+            <Route path={ROUTE.ROUTE_PROFILE} element={<Profile />} />
+            <Route path={ROUTE.ROUTE_PORTFOLIO} element={<Portfolio />} />
           </Routes>
         </DashboardProvider>
       </BrowserRouter>
