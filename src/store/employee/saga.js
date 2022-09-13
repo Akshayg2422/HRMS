@@ -3,7 +3,7 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import { FETCH_DESIGNATION, FETCH_DEPARTMENT, FETCH_ALL_BRANCHES_LIST, FETCH_EMPLOYEE_DETAILS, FETCH_EMPLOYEE_LIST, POST_EMPLOYEE_ADDITION, FETCH_EMPLOYEE_TIME_SHEETS, FETCH_EMPLOYEE_CHECK_IN_LOGS, FETCH_CHECK_IN_DETAILED_LOG_PER_DAY, FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS,
 ADD_DEPARTMENT,
 ADD_DESIGNATION,
-ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG } from "./actionTypes";
+ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS } from "./actionTypes";
 
 import {
   getDepartmentDataSuccess,
@@ -37,13 +37,15 @@ import {
   getEmployeeTodayStatusSuccess,
   getEmployeeTodayStatusFailure,
   getCheckInDetailedLogFailure,
-  getCheckInDetailedLogSuccess
+  getCheckInDetailedLogSuccess,
+  getAttendanceConsolidatedCardsSuccess,
+  getAttendanceConsolidatedCardsFailure
 } from "./actions";
 
 import {fetchDesignationData, fetchDepartmentData, fetchAllBranchesList, fetchEmployeeDetails, fetchEmployeeList, postEmployeeAddition , fetchEmployeeTimeSheets, fetchEmployeeCheckInLogs, fetchCheckInDetailedLogPerDay, fetchEmployeeEachUserTimeSheets,
 postAddDepartment,
 postAddDesignation,
-postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog} from "../../helpers/backend_helper";
+postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards} from "../../helpers/backend_helper";
 
 
 
@@ -262,7 +264,7 @@ function* getEmployeeAttendanceStats(action) {
 function* getEmployeeTodayStatus(action) {
 try{
   const response = yield call(fetchEmployeeTodayStatus,action.payload)
-  console.log("fffffff",response);
+  console.log("fffffff---------->",response);
   if(response.success){
     yield put(getEmployeeTodayStatusSuccess(response.details))
   }
@@ -292,6 +294,22 @@ function* getCheckInDetailedLog(action) {
   }
 }
 
+function* getAttendanceConsolidatedCardsData(action) { 
+  try {
+    const response = yield call(fetchAttendanceConsolidatedCards, action.payload.params);
+    console.log(JSON.stringify(response)+"=====---------response");
+    if (response.success) {
+      yield put(getAttendanceConsolidatedCardsSuccess(response.details));
+      yield call(action.payload.onSuccess);
+    } else {
+      yield put(getAttendanceConsolidatedCardsFailure(response.error_message));
+      yield call(action.payload.onError);
+    }
+  } catch (error) {
+    yield put(getAttendanceConsolidatedCardsFailure("Invalid Request"));
+  }
+}
+
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
   yield takeLatest(FETCH_DEPARTMENT, getDepartments);
@@ -309,6 +327,7 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_STATS,getEmployeeAttendanceStats)
   yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS,getEmployeeTodayStatus)
   yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG,getCheckInDetailedLog)
+  yield takeLatest(FETCH_ATTENDANCE_CONSOLIDATED_CARDS,getAttendanceConsolidatedCardsData)
 }
 
 export default EmployeeSaga;
