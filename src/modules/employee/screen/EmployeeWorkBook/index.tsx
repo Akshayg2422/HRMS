@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { paginationHandler, getDisplayDateTimeFromMoment, getMomentObjFromServer, showToast } from '@utils'
 import { Icons } from '@assets'
+import { Navbar } from '@modules';
 
 type TimeSheetResponse = {
   id?: string;
@@ -76,7 +77,9 @@ function EmployeeTimeSheets() {
   };
 
   return (
-    <div className='m-4'>
+    <>
+    <Navbar/>
+    <div className='main-content my-3'>
       <div className='col text-right mb-5'>
         <Sort sortData={sortData} activeIndex={activeSort} onClick={(index) => {
           setActiveSort(index);
@@ -154,6 +157,7 @@ function EmployeeTimeSheets() {
       </Modal>
 
     </div>
+    </>
   )
 }
 

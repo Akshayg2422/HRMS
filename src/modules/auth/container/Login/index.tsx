@@ -22,7 +22,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { getValidateUser } from "../../../../store/auth/actions";
 import { useSelector } from "react-redux";
-import { json } from "stream/consumers";
 
 function Login() {
   const navigation = useNav();
@@ -37,9 +36,6 @@ function Login() {
   const { t } = useTranslation();
 
   let dispatch = useDispatch();
-
-  console.log(JSON.parse(isLoggedIn)?.userLoggedIn);
-
 
   useEffect(() => {
     if (JSON.parse(isLoggedIn)?.userLoggedIn) {

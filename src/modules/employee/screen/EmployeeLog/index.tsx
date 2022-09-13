@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { paginationHandler, displayStringExists, getDisplayTimeFromMoment, getMomentObjFromServer, showToast } from '@utils'
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
+import { Navbar } from '@modules';
 
 type CheckInLog = {
   date?: string;
@@ -109,7 +110,9 @@ function EmployeeLog() {
   }
 
   return (
-    <div className='m-4'>
+    <Container>
+      <Navbar/>
+    <div className='main-content my-4'>
       <div className='col text-right mb-5'>
         <Sort sortData={employeeLogSort} activeIndex={activeSort} onClick={(index) => {
           setActiveSort(index);
@@ -117,7 +120,6 @@ function EmployeeLog() {
         }} />
       </div>
      
-
       {registeredEmployeesList && registeredEmployeesList.length > 0 &&
         <CommonTable
           tableTitle={t('employeeLog')}
@@ -209,6 +211,7 @@ function EmployeeLog() {
       </Modal>
       
     </div>
+    </Container>
   )
 }
 
