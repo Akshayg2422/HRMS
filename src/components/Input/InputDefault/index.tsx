@@ -1,8 +1,8 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState } from "react";
 import { InputProps } from "../../Interface";
 import "./input.css";
 
-function Input({
+const  Input = React.forwardRef(({
   label,
   size,
   value,
@@ -18,9 +18,8 @@ function Input({
   col,
   validator,
   name,
-  ref,
-  disabled
-}: InputProps) {
+  disabled,
+}: InputProps, ref: any )=> {
   const [validStatus, setValidStatus] = useState({ status: true, error: "" });
 
   return (
@@ -36,6 +35,7 @@ function Input({
         ref={ref}
         disabled={disabled}
         maxLength={maxLength}
+      
         onChange={(it) => {
           if (validator) {
             setValidStatus(validator(it.target.value));
@@ -52,6 +52,6 @@ function Input({
       )}
     </div>
   );
-}
+});
 
 export default Input;

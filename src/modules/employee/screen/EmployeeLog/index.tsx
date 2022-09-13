@@ -2,9 +2,10 @@ import { CommonTable, Container, Modal, Divider, Sort , NoRecordFound} from '@co
 import React, { useEffect, useState } from 'react'
 import { getEmployeesList, getEmployeesCheckInLogs, getCheckInDetailedLogPerDay } from '../../../../store/employee/actions';
 import { useSelector, useDispatch } from "react-redux";
-import { t } from 'i18next';
 import { paginationHandler, displayStringExists, getDisplayTimeFromMoment, getMomentObjFromServer, showToast } from '@utils'
 import moment from 'moment';
+import { useTranslation } from "react-i18next";
+import { Navbar } from '@modules';
 
 type CheckInLog = {
   date?: string;
@@ -18,6 +19,7 @@ type CheckInLog = {
 }
 
 function EmployeeLog() {
+  const { t } = useTranslation();
   let dispatch = useDispatch();
 
   const [model, setModel] = useState(false);
@@ -108,7 +110,9 @@ function EmployeeLog() {
   }
 
   return (
-    <div className='m-4'>
+    <Container>
+      <Navbar/>
+    <div className='main-content my-4'>
       <div className='col text-right mb-5'>
         <Sort sortData={employeeLogSort} activeIndex={activeSort} onClick={(index) => {
           setActiveSort(index);
@@ -116,7 +120,6 @@ function EmployeeLog() {
         }} />
       </div>
      
-
       {registeredEmployeesList && registeredEmployeesList.length > 0 &&
         <CommonTable
           tableTitle={t('employeeLog')}
@@ -189,7 +192,7 @@ function EmployeeLog() {
                                   )
                                 })
                               }
-                            </div> : <div className='row align-items-center'><small className="mb-0 text-center">{'No Logs Found'}</small></div>
+                            </div> : <div className='row align-items-center'><small className="mb-0 text-center">{t('noLogsFound')}</small></div>
 
 
                           }
@@ -208,6 +211,7 @@ function EmployeeLog() {
       </Modal>
       
     </div>
+    </Container>
   )
 }
 

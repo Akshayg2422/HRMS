@@ -231,11 +231,14 @@ function* addDesignation(action) {
 
 function* addFenceAdmin(action) { 
   try {
-    const response = yield call(postAddFenceAdmin, action.payload);
+    const response = yield call(postAddFenceAdmin, action.payload.params);
+    console.log(JSON.stringify(response)+"=====addFenceAdmin");
     if (response.success) {
       yield put(addFenceAdminSuccess(response.details));
+      yield call(action.payload.onSuccess);
     } else {
       yield put(addFenceAdminFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(addFenceAdminFailure("Invalid Request"));

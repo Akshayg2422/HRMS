@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -16,21 +16,14 @@ import moment from 'moment';
 import {REACT_APP_APP_URL} from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 
 const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 
 const useNav = () => useNavigate()
 
-
-
-
 const getImageUri =(imageUri:string)=>{
   return IMAGE_BASE_URL_DEV + imageUri
 }
-
-
-
 const getGenderByValue=(value:string)=>{
   return GENDER_LIST.find(item=>{
     return item.value === value
@@ -159,6 +152,7 @@ export {
   TABLE_ELEMENT_TEXT_BUTTON,
   EMPLOYEE_ADDITIONAL_DATA,
   TABLE_CONTENT_TYPE_REPORT,
+  TABLE_ELEMENT_TEXT_IMAGE,
   showToast,
   goBack,
   ASYN_USER_AUTH,

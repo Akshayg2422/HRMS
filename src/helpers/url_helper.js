@@ -1,7 +1,7 @@
 /***
  * Auth endpoints
  */
-export const VALIDATE_USER = "/authentication/validateUser";
+export const VALIDATE_USER = "/authentication/web/validateUser";
 export const VALIDATE_COMPANY_DETAILS = "/authentication/registerCompany";
 export const OTP_LOGIN = '/authentication/v1/otpLogin';
 export const RESEND_LOGIN_OTP = '/authentication/resendRegistationOtp';
