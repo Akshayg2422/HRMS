@@ -3,11 +3,12 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { getEmployeeAttendanceStats } from "../../../../store/employee/actions";
 import React, { useEffect } from "react";
-import { goTo,ROUTE, useNav } from "@utils";
+import { goTo, ROUTE, useNav } from "@utils";
+import { Navbar } from "@modules";
 
 const DashboardStats = () => {
   const { t } = useTranslation();
-  const navigation=useNav()
+  const navigation = useNav();
   let dispatch = useDispatch();
   const data = [
     { id: "1", name: "total" },
@@ -34,16 +35,15 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
-  const normalizedEmployeeAttendanceLog = (data:any) => {
-    
+  const normalizedEmployeeAttendanceLog = (data: any) => {
     return data?.departments_stats?.map((el: any) => {
       return {
-        Name : el.name,
-        Total : el.total,
+        Name: el.name,
+        Total: el.total,
         Present: el.present,
         Late: el.late,
-        Absent:el.absent,
-        "To Start":el.to_start
+        Absent: el.absent,
+        "To Start": el.to_start,
       };
     });
   };
@@ -71,57 +71,66 @@ const DashboardStats = () => {
     dispatch(getEmployeeAttendanceStats(params));
   }, []);
 
-
   return (
-    <Container
-      additionClass={"row"}
-      justifyContent={"justify-content-around"}
-      margin={"m-4"}
-    >
-      <Container>
-        <h1>{t("dashboardDetails")}</h1>
-      </Container>
-      {employeeattendancedatalog?.cards?.map((el: any) => {
-        return (
-          <Card
-            additionClass="col-xl-3 col-md-3 "
-            margin={"m-2"}
-            children={
-              <Container
-                justifyContent={"justify-content-between"}
-                alignItems={"align-content-center"}
-                flexDirection={"column"}
-              >
-                <Container>
-                  <div className="text-center h1 font-weight-300">
-                    {el.count}
-                  </div>
-                  <div className="text-center h2">{el.title}</div>
-                </Container>
+    <>
+      <Navbar />
+      <Container additionClass={" main-content "}>
+        <Container
+          additionClass={"row"}
+          justifyContent={"justify-content-around"}
+          margin={"m-4"}
+        >
+          <Container >
+            <h1>{t("dashboardDetails")}</h1>
+          </Container>
+          {employeeattendancedatalog?.cards?.map((el: any) => {
+            return (
+              <Card
+                additionClass="col-xl-3 col-md-3 "
+                margin={"m-2"}
+                children={
+                  <Container
+                    justifyContent={"justify-content-between"}
+                    alignItems={"align-content-center"}
+                    flexDirection={"column"}
+                  >
+                    <Container>
+                      <div className="text-center h1 font-weight-300">
+                        {el.count}
+                      </div>
+                      <div className="text-center h2">{el.title}</div>
+                    </Container>
 
-                <Primary
-                  additionClass={"btn-block"}
-                  text={t("Tap to View")}
-                  size={"btn-sm"}
-                  onClick={() =>{goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE)}}
-                />
-              </Container>
-            }
-          ></Card>
-        );
-      })}
-      <Container margin={"mt-5"}>
-        <Container>
-        <h1>{t("departments")}</h1>
-          {employeeattendancedatalog && employeeattendancedatalog.departments_types &&  (
-            <CommonTable
-              tableTitle={t("employeeLog")}
-              tableDataSet={normalizedEmployeeAttendanceLog(employeeattendancedatalog)}
-            />
-          )}
+                    <Primary
+                      additionClass={"btn-block"}
+                      text={t("Tap to View")}
+                      size={"btn-sm"}
+                      onClick={() => {
+                        goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+                      }}
+                    />
+                  </Container>
+                }
+              ></Card>
+            );
+          })}
+          <Container margin={"mt-5"}>
+            <Container>
+              <h1>{t("departments")}</h1>
+              {employeeattendancedatalog &&
+                employeeattendancedatalog.departments_types && (
+                  <CommonTable
+                    tableTitle={t("employeeLog")}
+                    tableDataSet={normalizedEmployeeAttendanceLog(
+                      employeeattendancedatalog
+                    )}
+                  />
+                )}
+            </Container>
+          </Container>
         </Container>
       </Container>
-    </Container>
+    </>
   );
 };
 

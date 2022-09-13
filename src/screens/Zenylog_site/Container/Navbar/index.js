@@ -1,5 +1,6 @@
 import React from "react";
 import {Icons} from '@assets'
+
 const Navbar = (props) => {
   return (
     <>
@@ -40,6 +41,9 @@ const Navbar = (props) => {
                 <a class="nav-link " href="#FLowChart">Flow Chart</a>
               </li><li class="nav-item">
                 <a class="nav-link " href="#Contact">Contact us</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link " href="/login" >Login</a>
               </li>
 
             </ul>
