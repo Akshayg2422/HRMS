@@ -3,10 +3,9 @@ import { Sort, CommonTable, Modal, Carousel , Table, NoRecordFound} from '@compo
 import moment from 'moment';
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
-import { getEmployeesList, getEmployeesCheckInLogs, getCheckInDetailedLogPerDay, getEmployeeEachUserTimeSheets } from '../../../../store/employee/actions';
-import { paginationHandler, displayStringExists, getDisplayTimeFromMoment, getMomentObjFromServer, showToast, getDisplayDateTimeFromMoment } from '@utils'
-import index from '@src/components/Table';
-import { Item } from '@src/screens/Zenylog_site/components/Input';
+import { getEmployeesCheckInLogs, getCheckInDetailedLogPerDay, getEmployeeEachUserTimeSheets } from '../../../../store/employee/actions';
+import { getDisplayTimeFromMoment, getMomentObjFromServer, getDisplayDateTimeFromMoment } from '@utils'
+
 
 type CheckInLog = {
     date?: string;
@@ -191,7 +190,6 @@ function PortFolio() {
                 </div>
             </div>
             <Modal title={'Attachment'} showModel={attachmentModel} toggle={() => setAttachmentModel(!attachmentModel)}>
-
                 {
                     attachment && attachment.length > 0 ? <Carousel images={attachment} height={500} /> : <></>
                 }
