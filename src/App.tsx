@@ -64,7 +64,7 @@ function App() {
               element={<EmployeeLog />}
             />
             <Route
-              path={ROUTE.ROUTE_EMPLOYEE_TIME_SHEETS}
+              path={ROUTE.ROUTE_EMPLOYEE_WORK_BOOK}
               element={<EmployeeWorkBook />}
             />
             <Route

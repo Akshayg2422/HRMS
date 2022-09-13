@@ -4145,6 +4145,8 @@
  .btn-group>.btn:active,
  .btn-group>.btn:focus {
      z-index: 1;
+         background-color: #f6f9fc;
+
  }
 
  .btn-toolbar {
@@ -4376,6 +4378,7 @@
  .input-group-text input[type=checkbox],
  .input-group-text input[type=radio] {
      margin-top: 0;
+     
  }
 
  .input-group-lg>.custom-select,
@@ -7586,7 +7589,7 @@ Zenylog
 
 
  .bg-primary {
-     background-color: #5e72e4 !important;
+     background-color: #52307c !important;
  }
 
  a.bg-primary:focus,
@@ -7694,6 +7697,8 @@ Zenylog
  button.bg-z-gray:hover {
      background-color: #F5F3F7 !important;
  }
+
+
 
 
  .bg-white {
@@ -16033,7 +16038,7 @@ Zenylog
 
  [data-toggle=buttons]:not(.btn-group-colors)>.btn.active {
      color: #fff;
-     background-color: #5e72e4;
+     background-color: #52307c;
  }
 
  .btn-group-colors>.btn {

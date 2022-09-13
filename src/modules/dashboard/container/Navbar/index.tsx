@@ -15,9 +15,8 @@ type NavItemProps = {
 const NavItem = ({item}: any) => {
   const navigate = useNav();
 
-
-  return <li className="active nav-item" onClick={() => navigate(item.route)} >
-    <a className="nav-link" aria-current="page" >
+  return <li className="nav-item"  onClick={() => navigate(item.route)} >
+    <a className=" nav-link"  >
       <i className={`${item.icon} text-white`}></i>
       <span className="nav-link-text text-white mt-2">{item.name}</span>
     </a>
@@ -28,7 +27,7 @@ const Navbar = ({ }) => {
 
 
   return (
-    <nav className="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs navbar-dark bg-default" id="sidenav-main">
+    <nav className="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs  bg-primary" id="sidenav-main">
       <div className="scrollbar-inner">
         <div className="sidenav-header d-flex  align-items-center">
           <a className="navbar-brand" href="#">

@@ -7,22 +7,15 @@ import {
   InputNumber,
 } from "@components";
 import { useSelector } from "react-redux";
-import {
-  getGenderByValue,
-  getImageUri,
-} from "@utils";
+import { getGenderByValue, getImageUri } from "@utils";
 import { useTranslation } from "react-i18next";
-import {Icons} from '@assets'
+import { Icons } from "@assets";
 
 const Profile = () => {
-
   const { t } = useTranslation();
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
-  
-
 
   return (
     <Container additionClass="row justify-content-center my-4">
@@ -32,13 +25,19 @@ const Profile = () => {
             <h1 className="text-black">{t("personalData")}</h1>
           </Container>
           <ImageView
-            icon={dashboardDetails && dashboardDetails.user_details ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
+            icon={
+              dashboardDetails && dashboardDetails.user_details.profile_photo
+                ? getImageUri(dashboardDetails.user_details.profile_photo)
+                : Icons.ProfilePlaceHolder
+            }
             additionClass={"rounded-circle col-lg-3  order-lg-2"}
             height={"130px"}
           ></ImageView>
           <Container additionClass={"text-center my-3"}>
             <h1 className="text-black">{dashboardDetails.user_details.name}</h1>
-            <h3 className="text-black">{dashboardDetails.user_details.designation}</h3>
+            <h3 className="text-black">
+              {dashboardDetails.user_details.designation}
+            </h3>
           </Container>
         </Container>
         <Divider />
@@ -51,7 +50,11 @@ const Profile = () => {
             label={t("mobileNumber")}
             value={dashboardDetails.user_details.mobile_number}
           />
-          <InputDefault disabled={true} label={t("email")} value={dashboardDetails.user_details.email} />
+          <InputDefault
+            disabled={true}
+            label={t("email")}
+            value={dashboardDetails.user_details.email}
+          />
           <InputDefault
             disabled={true}
             label={t("gender")}
