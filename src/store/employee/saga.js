@@ -91,13 +91,15 @@ function* getEmployeeDetails(action) {
     const response = yield call(fetchEmployeeDetails, action.payload.params);
     if (response.success) {
       yield put(getEmployeeDetailsSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(getEmployeeDetailsFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(getEmployeeDetailsFailure("Invalid Request"));
+   
+
   }
 }
 
@@ -117,6 +119,7 @@ function* getEmployeesList(action) {
 function* employeeAddition(action) {
   try {
     const response = yield call(postEmployeeAddition, action.payload.params);
+    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(employeeAdditionSuccess(response.details));
       yield call(action.payload.onSuccess);
@@ -205,27 +208,35 @@ function* getEmployeeEachUserTimeSheets(action) {
 
 function* addDepartment(action) { 
   try {
-    const response = yield call(postAddDepartment, action.payload);
+    const response = yield call(postAddDepartment, action.payload.params);
     if (response.success) {
       yield put(addDepartmentSuccess(response.details));
+      yield call(action.payload.onSuccess);
     } else {
       yield put(addDepartmentFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(addDepartmentFailure("Invalid Request"));
+    yield call(action.payload.onError);
   }
 }
 
 function* addDesignation(action) { 
   try {
-    const response = yield call(postAddDesignation, action.payload);
+    console.log(JSON.stringify(action.payload.params)+"======addDesignation");
+    const response = yield call(postAddDesignation, action.payload.params);
+    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(addDesignationSuccess(response.details));
+      yield call(action.payload.onSuccess);
     } else {
       yield put(addDesignationFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(addDesignationFailure("Invalid Request"));
+    yield call(action.payload.onError);
   }
 }
 

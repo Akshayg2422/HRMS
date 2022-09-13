@@ -88,6 +88,7 @@ export interface DatePickerProps {
   title?: string;
   onChange?: (currentDateString: string) => void
   value?:any
+  defaultValue?: string;
 }
 
 export interface TableProps {
