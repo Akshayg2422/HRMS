@@ -106,7 +106,7 @@ const DashboardStats = () => {
                       text={t("Tap to View")}
                       size={"btn-sm"}
                       onClick={() => {
-                        goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+                        // goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
                       }}
                     />
                   </Container>
