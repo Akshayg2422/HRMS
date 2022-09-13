@@ -8,7 +8,7 @@ import {
   Calendar,
   Location,
   Otp,
-  Website,
+  Portfolio,
   Welcome,
   ManageEmployee,
   DashboardStats,
@@ -25,7 +25,7 @@ import { ToastContainer } from "react-toastify";
 import { AppLoader } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation } from "./modules/dashboard/screen";
-import {ZenylogSite} from '@screens'
+import { ZenylogSite } from '@screens'
 function App() {
   return (
     <AppProvider>
@@ -59,12 +59,12 @@ function App() {
               path={ROUTE.ROUTE_DASHBOARD_STATS}
               element={<DashboardStats />}
             />
-             <Route
+            <Route
               path={ROUTE.ROUTE_EMPLOYEE_LOG}
               element={<EmployeeLog />}
             />
             <Route
-              path={ROUTE.ROUTE_EMPLOYEE_TIME_SHEETS}
+              path={ROUTE.ROUTE_EMPLOYEE_WORK_BOOK}
               element={<EmployeeWorkBook />}
             />
             <Route
@@ -77,8 +77,14 @@ function App() {
             />
             <Route
               path={ROUTE.ROUTE_PROFILE}
-              element={<Profile/>}
+              element={<Profile />}
             />
+            <Route
+              path={ROUTE.ROUTE_PORTFOLIO}
+              element={<Portfolio />}
+            />
+
+
           </Routes>
         </DashboardProvider>
       </BrowserRouter>

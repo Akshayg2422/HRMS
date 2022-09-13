@@ -12,7 +12,8 @@ import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
 import { useDashboard } from "@contexts";
 import { goTo, ROUTE, useNav } from "@utils";
 import { useDispatch } from "react-redux";
-import { dashboard } from "../../../../store/dashboard/actions";
+import { getDashboard } from "../../../../store/dashboard/actions";
+import { useSelector } from "react-redux";import { useTranslation } from "react-i18next";
 
 const data = [
   {
@@ -130,19 +131,24 @@ const dummyTable = [
 ];
 
 function Dashboard() {
+  const { t } = useTranslation();
   const navigation = useNav();
   const dispatch = useDispatch()
 
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   useEffect(() => {
-    // fetchDashboardApi();
-    dispatch(dashboard({}))
+    dispatch(getDashboard({}))
   }, []);
 
   return (
     <>
       <Navbar />
       <div className="main-content">
-        <Header />
+        {dashboardDetails && dashboardDetails.user_details && <Header />}
         <Container additionClass={"main-description"}>
           <Container additionClass={"container-fluid"}>
             <DashBoardCard />
@@ -177,7 +183,7 @@ function Dashboard() {
               </Container>
             </Container>
             <Container col={"col-7"}>
-              <CardTable tableDataSet={dummyTable} title={"Table "} />
+              <CardTable tableDataSet={dummyTable} title={t("table")} />
             </Container>
           </Container>
         </Container>

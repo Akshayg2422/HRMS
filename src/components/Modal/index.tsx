@@ -48,9 +48,9 @@ useEffect(() => {
           </div>
           <div className="modal-body">{children}</div>
 
-         { footer && <div className="modal-footer">
-            <button type="button" className="btn btn-primary" onClick={saveChange}>Save change</button>
-            <button type="button" className="btn btn-link  ml-auto" onClick={toggle}>Close</button>
+          {footer && <div className="modal-footer">
+            <button type="button" className="btn btn-link" onClick={toggle}>Close</button>
+            <button type="button" className="btn btn-primary ml-auto" onClick={saveChange}>Save change</button>
           </div>}
         </div>
       </div>

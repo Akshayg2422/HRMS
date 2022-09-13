@@ -19,8 +19,8 @@ import {
     EDIT_PROFILE_PICTURE_FAIL,
   } from "./actionTypes";
   
-  // Dashboard
-  export const dashboard = (params) => {
+
+  export const getDashboard = (params) => {
     return {
       type: FETCH_DASHBOARD,
       payload: params,
@@ -28,14 +28,14 @@ import {
     };
   };
   
-  export const dashboardSuccess = (response) => {
+  export const getDashboardSuccess = (response) => {
     return {
       type: FETCH_DASHBOARD_SUCCESS,
       payload: response,
     };
   };
   
-  export const dashboardFail = (error) => {
+  export const getDashboardFail = (error) => {
     return {
       type: FETCH_DASHBOARD_FAIL,
       payload: error,

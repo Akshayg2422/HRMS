@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Logo,
   Secondary,
@@ -6,35 +6,44 @@ import {
   InputNumber,
   Primary,
   Social,
-} from '@components';
-import { Icons } from '@assets';
-import { ROUTE, validateMobileNumber, showToast, goTo, useNav } from '@utils';
+} from "@components";
+import { Icons } from "@assets";
+import {
+  ROUTE,
+  validateMobileNumber,
+  showToast,
+  goTo,
+  useNav,
+  ASYN_USER_AUTH,
+} from "@utils";
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
-import { useDispatch } from 'react-redux';
-import { getValidateUser } from '../../../../store/auth/actions';
-import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { getValidateUser } from "../../../../store/auth/actions";
+import { useSelector } from "react-redux";
 
 function Login() {
-  const navigation = useNav()
+  const navigation = useNav();
   const { userValid, loading, success, error, mobileNumber } = useSelector(
     (state: any) => state.AuthReducer
   );
   const [mobile, setMobile] = useState<string | undefined>(mobileNumber);
+  const [isLoggedIn, setIsLoggedIn] = useState<any>( 
+  localStorage.getItem(ASYN_USER_AUTH) 
+  );
 
   const { t } = useTranslation();
 
   let dispatch = useDispatch();
 
-
-  console.log(mobileNumber + '===');
-
-
+  useEffect(() => {
+    if (JSON.parse(isLoggedIn)?.userLoggedIn) {
+      goTo(navigation, ROUTE.ROUTE_DASHBOARD);
+    }
+  }, []);
 
   const proceedValidateUser = (params: object) => {
-
-
     dispatch(
       getValidateUser({
         params,
@@ -42,7 +51,7 @@ function Login() {
           goTo(navigation, ROUTE.ROUTE_OTP);
         },
         onError: (error: string) => {
-          showToast('error', 'Invalid user');
+          showToast('error',t('invalidUser'));
         },
       })
     );
@@ -59,25 +68,31 @@ function Login() {
       };
       proceedValidateUser(params);
     } else {
-      showToast('error', 'Please enter mobile number');
+      showToast('error', t('pleaseEnterYourMobileNumber'));
     }
   };
 
   return (
     <Container
-      col={'col'}
-      display={'d-inline-flex'}
-      flexDirection={'flex-column'}
+      col={"col"}
+      display={"d-inline-flex"}
+      flexDirection={"flex-column"}
     >
       <Container
-        display={'d-inline-flex'}
-        justifyContent={'justify-content-between'}
-        additionClass={'container-fluid'}
-        margin={'mt-4'}>
-        <Logo additionClass={'col-sm-4'} />
-        <Secondary text={t('register')} onClick={() => goTo(navigation, ROUTE.ROUTE_REGISTER)} />
+        display={"d-inline-flex"}
+        justifyContent={"justify-content-between"}
+        additionClass={"container-fluid"}
+        margin={"mt-4"}
+      >
+        <Logo additionClass={"col-sm-4"} />
+        <Secondary
+          text={t("register")}
+          onClick={() => goTo(navigation, ROUTE.ROUTE_REGISTER)}
+        />
       </Container>
-      <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>{t('welcome')}</h1>
+      <h1 className="display-4 text-dark font-weight-bold pt-5 px-5">
+        {t("welcome")}
+      </h1>
 
       <div className='col-xl-9 col-md-12 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
         <InputNumber label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
@@ -88,13 +103,13 @@ function Login() {
         <Container padding={'pt-5'} />
         <small className={'text-center'}>{t('loginwith')}</small>
         <Container flexDirection={'flex-row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} display={'d-flex'} margin={'mt-4'}>
-          <Social icon={Icons.Facebook} text={'Facebook'} backgroundColor={'bg-facebook'} />
+          <Social icon={Icons.Facebook} text={t('facebook')} backgroundColor={'bg-facebook'} />
           <Container padding={'pl-2'} />
-          <Social icon={Icons.Google} text={'Google'} backgroundColor={'bg-google'} />
+          <Social icon={Icons.Google} text={t('google')} backgroundColor={'bg-google'} />
         </Container>
       </div>
     </Container>
-  )
+  );
 }
 
 export default Login;
