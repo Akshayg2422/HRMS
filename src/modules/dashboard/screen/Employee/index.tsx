@@ -7,10 +7,11 @@ import { employeeEdit, getEmployeesList } from "../../../../store/employee/actio
 import { Navbar } from '@modules'
 import { useSelector, useDispatch } from "react-redux";
 import { Employee } from '@api'
+import { useTranslation } from "react-i18next";
 
 function EmployeeScreen() {
   let dispatch = useDispatch();
-
+  const { t } = useTranslation();
  
   const [searchEmployee, setSearchEmployee] = useState("")
   const [searchEmployeeById, setSearchEmployeeById] = useState("")
@@ -70,14 +71,14 @@ function EmployeeScreen() {
           <Container flexDirection={'row'} alignItems={'align-items-center'}>
             <Container flexDirection={'row'} col={'col-9'} alignItems={'align-items-center'}>
               <Container col={'col-xl-4 col-md-6 col-sm-12'}>
-                <InputText placeholder={'Enter employee name'} label={'Employee Name'}
+                <InputText placeholder={t('enterEmployeeName')} label={t('employeeName')}
                   onChange={(e) => {
                     setSearchEmployee(e.target.value);
                   }}
                 />
               </Container>
               <Container col={'col-xl-4 col-md-6 col-sm-12'}>
-                <InputText placeholder={'Enter employee id'} label={'Employee Id'}
+                <InputText placeholder={t('enterEmployeeId')} label={t('employeeId')}
                   onChange={(e) => {
                     setSearchEmployeeById(e.target.value);
                   }}
@@ -89,7 +90,7 @@ function EmployeeScreen() {
               <Icon type={'btn-primary'} icon={Icons.Search} />
             </Container>
 
-            {registeredEmployeesList && registeredEmployeesList.length > 0 && <CommonTable noHeader buttonText={'Add Employee'} buttonOnClock={() => manageEmployeeHandler(undefined)} isPagination currentPage={currentPage} noOfPage={numOfPages} paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }} previousClick={() => paginationHandler('prev')} nextClick={() => paginationHandler('next')} tableDataSet={normalizedEmployeeLog(registeredEmployeesList)} additionalDataSet={EMPLOYEE_ADDITIONAL_DATA} tableOnClick={(e, index, item) => {
+            {registeredEmployeesList && registeredEmployeesList.length > 0 && <CommonTable noHeader buttonText={t('addEmployee')} buttonOnClock={() => manageEmployeeHandler(undefined)} isPagination currentPage={currentPage} noOfPage={numOfPages} paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }} previousClick={() => paginationHandler('prev')} nextClick={() => paginationHandler('next')} tableDataSet={normalizedEmployeeLog(registeredEmployeesList)} additionalDataSet={EMPLOYEE_ADDITIONAL_DATA} tableOnClick={(e, index, item) => {
             }} tableValueOnClick={(e, index, item) => {
               const current = registeredEmployeesList[index];
               manageEmployeeHandler(current.id);

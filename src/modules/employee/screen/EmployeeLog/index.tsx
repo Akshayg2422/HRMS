@@ -2,9 +2,9 @@ import { CommonTable, Container, Modal, Divider, Sort , NoRecordFound} from '@co
 import React, { useEffect, useState } from 'react'
 import { getEmployeesList, getEmployeesCheckInLogs, getCheckInDetailedLogPerDay } from '../../../../store/employee/actions';
 import { useSelector, useDispatch } from "react-redux";
-import { t } from 'i18next';
 import { paginationHandler, displayStringExists, getDisplayTimeFromMoment, getMomentObjFromServer, showToast } from '@utils'
 import moment from 'moment';
+import { useTranslation } from "react-i18next";
 
 type CheckInLog = {
   date?: string;
@@ -18,6 +18,7 @@ type CheckInLog = {
 }
 
 function EmployeeLog() {
+  const { t } = useTranslation();
   let dispatch = useDispatch();
 
   const [model, setModel] = useState(false);
@@ -189,7 +190,7 @@ function EmployeeLog() {
                                   )
                                 })
                               }
-                            </div> : <div className='row align-items-center'><small className="mb-0 text-center">{'No Logs Found'}</small></div>
+                            </div> : <div className='row align-items-center'><small className="mb-0 text-center">{t('noLogsFound')}</small></div>
 
 
                           }

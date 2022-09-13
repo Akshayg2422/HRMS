@@ -11,7 +11,8 @@ GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS,
 GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS,
-UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE } from "./actionsType"
+UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE,
+UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER } from "./actionsType"
 
 
 export const getAllBranchesList = (params) => {
@@ -120,6 +121,13 @@ export const getAllBranchesList = (params) => {
   export const getEmployeeCheckinAssociationsSuccess = (response) => {
     return {
       type: GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS,
+      payload: response,
+    };
+  };
+
+  export const updateEmployeeCheckinAssociationsReducer = (response) => {
+    return {
+      type: UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER,
       payload: response,
     };
   };

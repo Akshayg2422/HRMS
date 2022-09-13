@@ -33,7 +33,7 @@ const DashboardStats = () => {
       margin={"m-4"}
     >
       <Container>
-        <h1>{"Dashboard Details"}</h1>
+        <h1>{t("dashboardDetails")}</h1>
       </Container>
       {data.map((el) => {
         return (
@@ -64,7 +64,7 @@ const DashboardStats = () => {
       })}
       <Container margin={"mt-5"}>
         <Container>
-          <h1>{"Departments"}</h1>
+          <h1>{t("departments")}</h1>
         </Container>
         
       </Container>

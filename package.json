@@ -1,7 +1,6 @@
 {
   "name": "zenylog",
   "version": "0.1.0",
-  "homepage": "http://ec2-52-66-243-158.ap-south-1.compute.amazonaws.com",
   "dependencies": {
     "@craco/craco": "^6.4.5",
     "@fullcalendar/daygrid": "^5.11.2",

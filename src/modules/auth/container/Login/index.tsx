@@ -55,7 +55,7 @@ function Login() {
           goTo(navigation, ROUTE.ROUTE_OTP);
         },
         onError: (error: string) => {
-          showToast("error", "Invalid user");
+          showToast('error',t('invalidUser'));
         },
       })
     );
@@ -72,7 +72,7 @@ function Login() {
       };
       proceedValidateUser(params);
     } else {
-      showToast("error", "Please enter mobile number");
+      showToast('error', t('pleaseEnterYourMobileNumber'));
     }
   };
 
@@ -98,42 +98,18 @@ function Login() {
         {t("welcome")}
       </h1>
 
-      <div className="col-xl-9 col-md-12 d-flex flex-column aligns-item-center  align-self-center justify-content-center">
-        <InputNumber
-          label={t("mobileNumber")}
-          value={mobile}
-          placeholder={t("enterYourMobileNumber")}
-          validator={validateMobileNumber}
-          onChange={(e) => {
-            setMobile(e.target.value);
-          }}
-        />
-        <Container padding={"pt-3"} />
-        <Primary
-          additionClass={"btn-block"}
-          text={t("continue")}
-          onClick={() => proceedValidateUserApi()}
-        />
-        <Container padding={"pt-5"} />
-        <small className={"text-center"}>{t("loginwith")}</small>
-        <Container
-          flexDirection={"flex-row"}
-          justifyContent={"justify-content-center"}
-          alignItems={"align-items-center"}
-          display={"d-flex"}
-          margin={"mt-4"}
-        >
-          <Social
-            icon={Icons.Facebook}
-            text={"Facebook"}
-            backgroundColor={"bg-facebook"}
-          />
-          <Container padding={"pl-2"} />
-          <Social
-            icon={Icons.Google}
-            text={"Google"}
-            backgroundColor={"bg-google"}
-          />
+      <div className='col-xl-9 col-md-12 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
+        <InputNumber label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
+          setMobile(e.target.value);
+        }} />
+        <Container padding={'pt-3'} />
+        <Primary additionClass={'btn-block'} text={t('continue')} onClick={() => proceedValidateUserApi()} />
+        <Container padding={'pt-5'} />
+        <small className={'text-center'}>{t('loginwith')}</small>
+        <Container flexDirection={'flex-row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} display={'d-flex'} margin={'mt-4'}>
+          <Social icon={Icons.Facebook} text={t('facebook')} backgroundColor={'bg-facebook'} />
+          <Container padding={'pl-2'} />
+          <Social icon={Icons.Google} text={t('google')} backgroundColor={'bg-google'} />
         </Container>
       </div>
     </Container>

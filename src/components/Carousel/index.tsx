@@ -5,7 +5,7 @@ import{ImageView}from '@components'
 import {getImageUri} from '@utils'
 
 type CarouselProps = {
-    images: [],
+    images: Array<string>,
     isServer ?: boolean;
     height?: number | string;
     width?: number | string;

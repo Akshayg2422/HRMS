@@ -49,6 +49,9 @@ export const Icons = {
   Mobile: require('./icons/Mobile/Mobile.png'),
   Linkedin: require('./icons/Linkedin/Linkedin.png'),
   Zenylog: require('./icons/Zenylog/Zenylog.png'),
+  ProfilePlaceHolder: require('./icons/ProfilePlaceHolder/ProfilePlaceHolder.png'),
+  TickActive: require('./icons/TickActive/TickActive.png'),
+  TickDefault: require('./icons/TickDefault/TickDefault.png'),
 }
 
 
