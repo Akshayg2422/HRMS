@@ -61,7 +61,8 @@ export const NAV_ITEM = [
   {id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', route: ROUTE.ROUTE_FENCE_ADMIN},
   {id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_EMPLOYEE_LOG},
   {id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK},
-  {id: '8', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
+  {id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', route: ROUTE.ROUTE_DASHBOARD_STATS},
+  {id: '9', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
 
 ];
 
