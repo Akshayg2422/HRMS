@@ -62,7 +62,7 @@ function App() {
             />
             <Route
               path={ROUTE.ROUTE_DASHBOARD_ATTENDANCE}
-   s           element={<DashBoardAtttendance />}
+             element={<DashBoardAtttendance />}
             />
              <Route
               path={ROUTE.ROUTE_EMPLOYEE_LOG}
