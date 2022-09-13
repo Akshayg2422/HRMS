@@ -14,7 +14,7 @@ import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fet
 import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
-import {DashboardStats} from './stats'
+import {DashboardStats,DashBoardAtttendance} from './stats'
 
 
 import fenceAdmin from './fenceAdmin'
@@ -37,6 +37,7 @@ export {
   DashBoardCard,
   ManageEmployee,
   DashboardStats,
+  DashBoardAtttendance,
   EmployeeLog,
   ManageBranches,
   EmployeeWorkBook,

@@ -44,7 +44,16 @@ import {
   ADD_DESIGNATION_FAILURE,
   ADD_FENCE_ADMIN,
   ADD_FENCE_ADMIN_SUCCESS,
-  ADD_FENCE_ADMIN_FAILURE
+  ADD_FENCE_ADMIN_FAILURE,
+  FETCH_EMPLOYEE_ATTENDANCE_STATS,
+  FETCH_EMPLOYEE_ATTENDANCE_STATS_FAILURE,
+  FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS,
+  FETCH_EMPLOYEE_TODAY_STATUS,
+  FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS,
+  FETCH_EMPLOYEE_TODAY_STATUS_FAILURE,
+  FETCH_CHECK_IN_DETAILED_LOG,
+  FETCH_CHECK_IN_DETAILED_LOG_SUCCESS,
+  FETCH_CHECK_IN_DETAILED_LOG_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -427,6 +436,75 @@ export const addFenceAdminSuccess = (response) => {
 export const addFenceAdminFailure = (error) => {
   return {
     type: ADD_FENCE_ADMIN_FAILURE,
+    payload: error,
+  };
+};
+
+
+
+export const getEmployeeAttendanceStats =(params)=>{
+  return{
+    type: FETCH_EMPLOYEE_ATTENDANCE_STATS,
+    payload: params
+  }
+}
+
+
+export const getEmployeeAttendanceStatsSuccess = (response) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeAttendanceStatsFailure = (error) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_STATS_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const getEmployeeTodayStatus =(params)=>{
+  return{
+    type: FETCH_EMPLOYEE_TODAY_STATUS,
+    payload: params
+  }
+}
+
+
+export const getEmployeeTodayStatusSuccess = (response) => {
+  return {
+    type: FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeTodayStatusFailure = (error) => {
+  return {
+    type: FETCH_EMPLOYEE_TODAY_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+export const getCheckInDetailedLog=(params)=>{
+  return{
+    type: FETCH_CHECK_IN_DETAILED_LOG,
+    payload: params
+  }
+}
+
+
+export const getCheckInDetailedLogSuccess = (response) => {
+  return {
+    type: FETCH_CHECK_IN_DETAILED_LOG_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getCheckInDetailedLogFailure = (error) => {
+  return {
+    type: FETCH_CHECK_IN_DETAILED_LOG_FAILURE,
     payload: error,
   };
 };
