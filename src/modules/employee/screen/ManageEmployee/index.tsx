@@ -1,6 +1,4 @@
 import {
-  Card,
-  Container,
   DatePicker,
   DropDown,
   InputDefault,
@@ -9,6 +7,8 @@ import {
   InputText,
   FormWrapper,
   TimePicker,
+  Icon,
+  Modal
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -75,6 +75,10 @@ const ManageEmployee = () => {
     attendanceStartTime: getStartTime(),
     attendanceEndTime: getEndTime(),
   });
+
+  const [model, setModel] = useState(false);
+  const [modelTitle, setModelTitle] = useState('');
+
 
   useEffect(() => {
     dispatch(getDepartmentData({}));
@@ -173,8 +177,7 @@ const ManageEmployee = () => {
       ...(employeeDetails.kgid_No && { kgid_number: employeeDetails.kgid_No }),
     };
 
-    console.log("params---->", params);
-
+   
     dispatch(
       employeeAddition({
         params,
@@ -255,176 +258,194 @@ const ManageEmployee = () => {
   };
 
   return (
-    <FormWrapper
-      title={isEdit ? t("editEmployee") : t("newEmployee")}
-      onClick={onSubmit}
-    >
-      <InputText
-        label={t("fullName")}
-        placeholder={t("typeYourName")}
-        validator={validateName}
-        value={employeeDetails.firstName}
-        name={"firstName"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputText
-        label={t("lastName")}
-        placeholder={t("typeLastName")}
-        validator={validateDefault}
-        value={employeeDetails.lastName}
-        name={"lastName"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputNumber
-        label={t("mobileNumber")}
-        placeholder={t("enterYourMobileNumber")}
-        validator={validateMobileNumber}
-        value={employeeDetails.mobileNumber}
-        name={"mobileNumber"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputMail
-        label={t("email")}
-        placeholder={t("enterYourEmail")}
-        validator={validateEmail}
-        value={employeeDetails.e_Mail}
-        name={"e_Mail"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <DropDown
-        label={t("gender")}
-        placeholder={t("selectYourGender")}
-        data={GENDER_LIST}
-        name={"gender"}
-        value={employeeDetails.gender}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <DropDown
-        label={t("bloodGroup")}
-        placeholder={t("enterBloodGroup")}
-        data={BLOOD_GROUP_LIST}
-        name={"bloodGroup"}
-        value={employeeDetails.bloodGroup}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
+    <>
+      <FormWrapper
+        title={isEdit ? t("editEmployee") : t("newEmployee")}
+        onClick={onSubmit}>
+        <InputText
+          label={t("fullName")}
+          placeholder={t("typeYourName")}
+          validator={validateName}
+          value={employeeDetails.firstName}
+          name={"firstName"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <InputText
+          label={t("lastName")}
+          placeholder={t("typeLastName")}
+          validator={validateDefault}
+          value={employeeDetails.lastName}
+          name={"lastName"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <InputNumber
+          label={t("mobileNumber")}
+          placeholder={t("enterYourMobileNumber")}
+          validator={validateMobileNumber}
+          value={employeeDetails.mobileNumber}
+          name={"mobileNumber"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <InputMail
+          label={t("email")}
+          placeholder={t("enterYourEmail")}
+          validator={validateEmail}
+          value={employeeDetails.e_Mail}
+          name={"e_Mail"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <DropDown
+          label={t("gender")}
+          placeholder={t("selectYourGender")}
+          data={GENDER_LIST}
+          name={"gender"}
+          value={employeeDetails.gender}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <DropDown
+          label={t("bloodGroup")}
+          placeholder={t("enterBloodGroup")}
+          data={BLOOD_GROUP_LIST}
+          name={"bloodGroup"}
+          value={employeeDetails.bloodGroup}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
 
-      <InputDefault
-        label={t("pan")}
-        placeholder={t("enterPanNUmber")}
-        maxLength={10}
-        validator={validatePAN}
-        value={employeeDetails.panNo}
-        name={"panNo"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputDefault
-        label={t("aadhar")}
-        placeholder={t("typeypurAadharNo")}
-        // maxLength={10}
-        validator={validateAadhar}
-        value={employeeDetails.aadharrNo}
-        name={"aadharrNo"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <DropDown
-        label={t("designation")}
-        placeholder={t("enterDesignation")}
-        data={designationDropdownData}
-        name={"designation"}
-        value={employeeDetails.designation}
-        onChange={(event) => onChangeHandler(event)}
-      />
-      <DropDown
-        label={t("department")}
-        placeholder={t("enterDepartment")}
-        data={departmentDropdownData}
-        value={employeeDetails.department}
-        name={"department"}
-        onChange={(event) => onChangeHandler(event)}
-      />
-      <DropDown
-        label={t("branch")}
-        placeholder={t("branch")}
-        data={branchesDropdownData}
-        name={"branch"}
-        value={employeeDetails.branch}
-        onChange={(event) => onChangeHandler(event)}
-      />
-      <DropDown
-        label={t("category")}
-        placeholder={t("category")}
-        name={"employeeType"}
-        data={EMPLOYEE_TYPE}
-        value={employeeDetails.employeeType}
-        onChange={(event) => onChangeHandler(event)}
-      />
-      <h5>{t("dataOfJoining")}</h5>
-      <DatePicker
-        title={t("pleaseSelect")}
-        icon={Icons.Calendar}
-        iconPosition={"append"}
-        value={employeeDetails.dateOfJoining}
-        onChange={(date: string) =>
-          dateTimePickerHandler(date, "dateOfJoining")
-        }
-      />
-      <h5>{t("dateofBirth")}</h5>
-      <DatePicker
-        icon={Icons.Calendar}
-        iconPosition={"append"}
-        onChange={(date: string) => dateTimePickerHandler(date, "dob")}
-        value={employeeDetails.dob}
-      />
-      <InputDefault
-        label={t("kgid")}
-        placeholder={t("kgid")}
-        maxLength={10}
-        validator={validateDefault}
-        value={employeeDetails.kgid_No}
-        name={"kgid_No"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <h4 className="mb-4">{t("attendanceDetails")}</h4>
-      <h5 className="mb-2">{t("startTime")}</h5>
-      <TimePicker
-        title={t("pleaseSelect")}
-        icon={Icons.Calendar}
-        iconPosition={"append"}
-        value={employeeDetails.attendanceStartTime}
-        onChange={(time: any) =>
-          dateTimePickerHandler(time, "attendanceStartTime")
-        }
+        <InputDefault
+          label={t("pan")}
+          placeholder={t("enterPanNUmber")}
+          maxLength={10}
+          validator={validatePAN}
+          value={employeeDetails.panNo}
+          name={"panNo"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <InputDefault
+          label={t("aadhar")}
+          placeholder={t("typeypurAadharNo")}
+          // maxLength={10}
+          validator={validateAadhar}
+          value={employeeDetails.aadharrNo}
+          name={"aadharrNo"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <div className="row align-items-center">
+          <div className="col mt--2">
+            <DropDown
+              label={t("designation")}
+              placeholder={t("enterDesignation")}
+              data={designationDropdownData}
+              name={"designation"}
+              value={employeeDetails.designation}
+              onChange={(event) => onChangeHandler(event)}
+            />
+          </div>
+          <Icon text={'+'} />
+        </div>
+        <div className="row align-items-center">
+          <div className="col mt--2">
+            <DropDown
+              label={t("department")}
+              placeholder={t("enterDepartment")}
+              data={departmentDropdownData}
+              value={employeeDetails.department}
+              name={"department"}
+              onChange={(event) => onChangeHandler(event)}
+            />
+          </div>
+          <Icon text={'+'} />
+        </div>
+        <DropDown
+          label={t("branch")}
+          placeholder={t("branch")}
+          data={branchesDropdownData}
+          name={"branch"}
+          value={employeeDetails.branch}
+          onChange={(event) => onChangeHandler(event)}
+        />
+        <DropDown
+          label={t("category")}
+          placeholder={t("category")}
+          name={"employeeType"}
+          data={EMPLOYEE_TYPE}
+          value={employeeDetails.employeeType}
+          onChange={(event) => onChangeHandler(event)}
+        />
+        <h5>{t("dataOfJoining")}</h5>
+        <DatePicker
+          title={t("pleaseSelect")}
+          icon={Icons.Calendar}
+          iconPosition={"append"}
+          value={employeeDetails.dateOfJoining}
+          onChange={(date: string) =>
+            dateTimePickerHandler(date, "dateOfJoining")
+          }
+        />
+        <h5>{t("dateofBirth")}</h5>
+        <DatePicker
+          icon={Icons.Calendar}
+          iconPosition={"append"}
+          onChange={(date: string) => dateTimePickerHandler(date, "dob")}
+          value={employeeDetails.dob}
+        />
+        <InputDefault
+          label={t("kgid")}
+          placeholder={t("kgid")}
+          maxLength={10}
+          validator={validateDefault}
+          value={employeeDetails.kgid_No}
+          name={"kgid_No"}
+          onChange={(event) => {
+            onChangeHandler(event);
+          }}
+        />
+        <h4 className="mb-4">{t("attendanceDetails")}</h4>
+        <h5 className="mb-2">{t("startTime")}</h5>
+        <TimePicker
+          title={t("pleaseSelect")}
+          icon={Icons.Calendar}
+          iconPosition={"append"}
+          value={employeeDetails.attendanceStartTime}
+          onChange={(time: any) =>
+            dateTimePickerHandler(time, "attendanceStartTime")
+          }
         // value={employeeDetails.attendanceStartTime}
-      />
-      <h5 className="mb-2">{t("endTime")}</h5>
-      <TimePicker
-        title={t("pleaseSelect")}
-        icon={Icons.Calendar}
-        iconPosition={"append"}
-        value={employeeDetails.attendanceEndTime}
-        onChange={(time: any) =>
-          dateTimePickerHandler(time, "attendanceEndTime")
+        />
+        <h5 className="mb-2">{t("endTime")}</h5>
+        <TimePicker
+          title={t("pleaseSelect")}
+          icon={Icons.Calendar}
+          iconPosition={"append"}
+          value={employeeDetails.attendanceEndTime}
+          onChange={(time: any) =>
+            dateTimePickerHandler(time, "attendanceEndTime")
+          }
+        />
+      </FormWrapper>
+      <Modal title={modelTitle} showModel={model} toggle={() => setModel(!model)} footer saveChange={() => { }} >
+        {
+
+          <InputText />
+
         }
-      />
-    </FormWrapper>
+      </Modal>
+    </>
   );
 };
 
