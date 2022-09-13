@@ -12,6 +12,7 @@ import {
   Welcome,
   ManageEmployee,
   DashboardStats,
+  DashBoardAtttendance,
   EmployeeLog,
   ManageBranches,
   EmployeeWorkBook,
@@ -60,6 +61,10 @@ function App() {
               element={<DashboardStats />}
             />
             <Route
+              path={ROUTE.ROUTE_DASHBOARD_ATTENDANCE}
+   s           element={<DashBoardAtttendance />}
+            />
+             <Route
               path={ROUTE.ROUTE_EMPLOYEE_LOG}
               element={<EmployeeLog />}
             />

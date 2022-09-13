@@ -37,6 +37,10 @@ export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS,
  export const postAddDesignation = (payload) => post(url.POST_ADD_DESIGNATION,payload,{})
  export const postAddDepartment = (payload) => post(url.POST_ADD_DEPARTMENT,payload,{})
  export const postAddFenceAdmin = (payload) => post(url.POST_ADD_FENCH_ADMIN,payload,{})
+ export const fetchEmployeeAttendanceStats = (payload) => post(url.FETCH_EMPLOYEE_ATTENDANCE,payload,{})
+ export const fetchEmployeeTodayStatus = (payload) => post(url.FETCH_EMPLOYEE_TODAY_STATUS,payload,{})
+ export const fetchCheckInDetailedLog = (payload) => post(url.FETCH_CHECK_IN_DETAILED_LOG,payload,{})
+
 
 
 
