@@ -91,7 +91,7 @@ function FenceAdmin() {
     return (
         <>
             <Navbar />
-            <Container additionClass='main-content'>
+            <Container additionClass='main-content my-3'>
                 {brancheslist && brancheslist.length > 0 &&
                     <CommonTable
                         tableTitle={t('fenceAdmin')}

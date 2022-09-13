@@ -43,7 +43,7 @@ const initialState = {
   userDetails: {},
   natureOfBusiness: [],
   typeOfBusiness: [],
-  registerCurrentContainer: REGISTER_COMPANY_DETAILS
+  registerCurrentContainer: REGISTER_USER_DETAILS
 
 };
 
