@@ -151,7 +151,7 @@ const Header = () => {
               <div className="media-body  d-none d-lg-block">
                 <span className="mb-0 text-white  font-weight-bold">
                   {arr?.name}
-                  {"puma"}
+                  {/* {"puma"} */}
                 </span>
               </div>
             </ul>

@@ -43,8 +43,9 @@ import Otp from "../RegisterOtp";
 import {
   getRegisterAdmin,
   getValidateCompanyDetails,
-  getAdminVerificationOtp
-, uploadCompanyDocuments} from "../../../../store/auth/actions";
+  getAdminVerificationOtp,
+  uploadCompanyDocuments,
+} from "../../../../store/auth/actions";
 
 function SignUp() {
   const { t, i18n } = useTranslation();
@@ -86,7 +87,7 @@ function SignUp() {
     otp4,
     businesType,
     businessNature,
-    fileUpload
+    fileUpload,
   } = useAuth();
 
   const navigation = useNav();
@@ -255,18 +256,12 @@ function SignUp() {
     } else {
       showToast("error", "field cannot be empty");
     }
-
-
-
-
-
-  }
+  };
 
   const proceedDocumentUploadAPi = () => {
     let params: object = {};
 
     if (fileUpload) {
-
       for (let i = 0; i < fileUpload.length; i++) {
         const base64 = fileUpload[i].base64;
         const param = fileUpload[i].param;
@@ -275,22 +270,17 @@ function SignUp() {
         }
       }
 
-
-      dispatch(uploadCompanyDocuments({
-        params,
-        onSuccess: async (response: object) => {
-          goTo(navigation, ROUTE.ROUTE_DASHBOARD)
-        },
-        onError: (error: string) => {
-        },
-      }))
+      dispatch(
+        uploadCompanyDocuments({
+          params,
+          onSuccess: async (response: object) => {
+            goTo(navigation, ROUTE.ROUTE_DASHBOARD);
+          },
+          onError: (error: string) => {},
+        })
+      );
     }
-
-
-
-
-
-  }
+  };
 
   return (
     <Container flexDirection={"row"} height={"vh-100"} width={"vw-100"}>
@@ -298,7 +288,8 @@ function SignUp() {
       <Container
         col={"col"}
         display={"d-inline-flex"}
-        flexDirection={"flex-column"}>
+        flexDirection={"flex-column"}
+      >
         <Container
           display={"d-inline-flex"}
           justifyContent={"justify-content-between"}
@@ -308,7 +299,7 @@ function SignUp() {
           <Container>
             <Logo />
           </Container>
-          <Secondary text={t("login")} />5
+          <Secondary text={t("login")} />
         </Container>
         <RegisterFlow
           current={
