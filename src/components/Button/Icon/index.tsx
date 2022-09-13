@@ -6,10 +6,10 @@ interface ButtonIconProps {
   backgroundColor?: string
   icon?: any
   text?: string;
-  type: 'btn-outline-primary' | 'btn-primary'
+  type?: 'btn-outline-primary' | 'btn-primary'
 }
 
-function index({backgroundColor, icon, text, type}: ButtonIconProps) {
+function index({backgroundColor, icon, text, type = 'btn-primary'}: ButtonIconProps) {
   return (
     <button type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  align-items-center`} >
       <span className='btn-inner--icon'>

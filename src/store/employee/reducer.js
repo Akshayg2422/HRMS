@@ -44,7 +44,16 @@ import {
   ADD_DESIGNATION_FAILURE,
   ADD_FENCE_ADMIN,
   ADD_FENCE_ADMIN_SUCCESS,
-  ADD_FENCE_ADMIN_FAILURE
+  ADD_FENCE_ADMIN_FAILURE,
+  FETCH_EMPLOYEE_ATTENDANCE_STATS,
+  FETCH_EMPLOYEE_ATTENDANCE_STATS_FAILURE,
+  FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS,
+  FETCH_EMPLOYEE_TODAY_STATUS,
+  FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS,
+  FETCH_EMPLOYEE_TODAY_STATUS_FAILURE,
+  FETCH_CHECK_IN_DETAILED_LOG,
+  FETCH_CHECK_IN_DETAILED_LOG_SUCCESS,
+  FETCH_CHECK_IN_DETAILED_LOG_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -63,6 +72,9 @@ const initialState = {
   employeeEachUserSheets: [],
   employeeCheckInLogs: [],
   employeeCheckInDetailedLogPerDay: [],
+  employeeattendancedatalog:[],
+  employeeStatusLog:[],
+  checkinDetailedLog:[],
   total: '',
   total_count: ''
 };
@@ -392,6 +404,64 @@ const EmployeeReducer = (state = initialState, action) => {
           loading: false,
         };
         break;
+
+
+      case FETCH_EMPLOYEE_ATTENDANCE_STATS:
+        state={...state,loading:true}
+        break;
+        case FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS:
+          state = {
+            ...state,
+            loading: false,
+            employeeattendancedatalog: action.payload
+          };
+          break;
+    
+        case FETCH_EMPLOYEE_ATTENDANCE_STATS_FAILURE:
+          state = {
+            ...state,
+            error: action.payload,
+            loading: false,
+          };
+          break;
+
+          case FETCH_EMPLOYEE_TODAY_STATUS:
+            state={...state,loading:true}
+            break;
+            case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
+              state = {
+                ...state,
+                loading: false,
+                employeeStatusLog: action.payload
+              };
+              break;
+        
+            case FETCH_EMPLOYEE_TODAY_STATUS_FAILURE:
+              state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+              };
+              break;
+
+              case FETCH_CHECK_IN_DETAILED_LOG:
+            state={...state,loading:true}
+            break;
+            case FETCH_CHECK_IN_DETAILED_LOG_SUCCESS:
+              state = {
+                ...state,
+                loading: false,
+                checkinDetailedLog: action.payload
+              };
+              break;
+        
+            case FETCH_CHECK_IN_DETAILED_LOG_FAILURE:
+              state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+              };
+              break;
 
     default:
       state = { ...state };
