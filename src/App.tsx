@@ -17,6 +17,7 @@ import {
   ManageBranches,
   EmployeeWorkBook,
   Profile,
+  InActiveEmployeeList,
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -84,6 +85,8 @@ function App() {
             <Route path={ROUTE.ROUTE_PROFILE} element={<Profile />} />
             <Route path={ROUTE.ROUTE_PORTFOLIO} element={<Portfolio />} />
             <Route path={ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS} element={<ViewEmployeeDetails />} />
+            <Route path={ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST} element={<InActiveEmployeeList/>} />
+
           </Routes>
         </DashboardProvider>
       </BrowserRouter>

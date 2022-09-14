@@ -11,7 +11,7 @@ import {
 } from './auth';
 import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header,Profile} from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import {DashboardStats,DashBoardAtttendance} from './stats'
@@ -42,5 +42,6 @@ export {
   ManageBranches,
   EmployeeWorkBook,
   fenceAdmin,
-  Profile
+  Profile,
+  InActiveEmployeeList
 }

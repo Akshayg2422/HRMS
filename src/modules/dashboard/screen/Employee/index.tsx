@@ -10,12 +10,19 @@ import {
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
-import { EMPLOYEE_ADDITIONAL_DATA, goTo, useNav, ROUTE } from "@utils";
+import {
+  EMPLOYEE_ADDITIONAL_DATA,
+  goTo,
+  useNav,
+  ROUTE,
+  showToast,
+} from "@utils";
 import { useDashboard } from "@contexts";
 import {
   employeeEdit,
   getEmployeesList,
   getSelectedEmployeeId,
+  getUpdateEmployeeStatus,
 } from "../../../../store/employee/actions";
 import { Navbar } from "@modules";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,7 +34,7 @@ function EmployeeScreen() {
   const { t } = useTranslation();
   const [deleteModel, setDeleteModel] = useState(false);
   const [deletedUserModel, setDeletedUserModel] = useState(false);
-
+  const [deleteUserId, setDeleteUserId] = useState("");
   const [searchEmployee, setSearchEmployee] = useState("");
   const [searchEmployeeById, setSearchEmployeeById] = useState("");
 
@@ -79,11 +86,32 @@ function EmployeeScreen() {
     goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEE);
   };
 
-  const manageDeleteHandler = (id: string | undefined) => {
+  const manageDeleteHandler = (id: string) => {
+    setDeleteUserId(id);
     setDeleteModel(!deleteModel);
   };
 
+  const manageProceedHandler = () => {
+    setDeleteModel(!deleteModel);
+    const params = {
+      id: deleteUserId,
+      is_active: false,
+    };
+    dispatch(
+      getUpdateEmployeeStatus({
+        params,
+        onSuccess: (success: object) => {
+          getEmployeesApi(currentPage);
+          showToast("success", t("deleteSuccessfully"));
+        },
+        onError: (error: string) => {
+          showToast("error", t("Somthingwentworng"));
+        },
+      })
+    );
+  };
 
+ 
 
   return (
     <>
@@ -115,7 +143,6 @@ function EmployeeScreen() {
                 />
               </Container>
             </Container>
-
             <Container
               col={"col-xl-2 col-md-6 col-sm-12"}
               flexDirection={"row"}
@@ -130,14 +157,15 @@ function EmployeeScreen() {
                 text={t("addEmployee")}
                 onClick={() => manageEmployeeHandler(undefined)}
               />
-              <Primary text={t("deletedUser")} onClick={() =>setDeletedUserModel(!deletedUserModel)} />
+              <Primary
+                text={t("deletedUser")}
+                onClick={() =>  goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)}
+              />
             </Container>
 
             {registeredEmployeesList && registeredEmployeesList.length > 0 && (
               <CommonTable
                 noHeader
-                // buttonText={t("addEmployee")}
-                // buttonOnClock={() => manageEmployeeHandler(undefined)}
                 isPagination
                 currentPage={currentPage}
                 noOfPage={numOfPages}
@@ -180,15 +208,13 @@ function EmployeeScreen() {
                     text={t("cancel")}
                     onClick={() => setDeleteModel(!deleteModel)}
                   />
-                  <Primary text={t("proceed")} />
+                  <Primary
+                    text={t("proceed")}
+                    onClick={() => manageProceedHandler()}
+                  />
                 </Container>
               </Container>
             </Modal>
-            <Modal
-              title={t("deletedUser")}
-              showModel={deletedUserModel}
-              toggle={() => setDeletedUserModel(!deletedUserModel)}
-            ></Modal>
           </Container>
         </Card>
       </div>

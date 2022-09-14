@@ -119,8 +119,10 @@ function* getEmployeesList(action) {
     const response = yield call(fetchEmployeeList, action.payload.params);
     if (response.success) {
       yield put(getEmployeesListSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(getEmployeesListFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(getEmployeesListFailure("Invalid Request"));
