@@ -510,7 +510,7 @@ const EmployeeReducer = (state = initialState, action) => {
       //attendance consolidated cards
       
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS:
-      state = { ...state, loading: true }
+      state = { ...state, loading: true, attendanceConsolidatedCardsData: [] }
       break;
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS:
       state = {

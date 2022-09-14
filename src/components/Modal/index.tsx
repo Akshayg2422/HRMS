@@ -26,6 +26,14 @@ const closeModal=()=> {
   setDisplay('none')
 }
 
+  useEffect(() => {
+    if (showModel) {
+      document.body.style.overflow = 'hidden';
+    }
+    else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [showModel])
 
 useEffect(() => {
   showModel? openModal() : closeModal();

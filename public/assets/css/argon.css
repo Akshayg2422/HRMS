@@ -63,6 +63,10 @@
      display: block;
  }
 
+ .modal.fade.show  {
+    backdrop-filter: blur(5px);
+}
+
  body {
      font-family: Montserrat, sans-serif;
      font-size: 1rem;

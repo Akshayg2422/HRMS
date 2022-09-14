@@ -26,10 +26,13 @@ import {
 function* getAllBranches(action) {
   try {
     const response = yield call(fetchAllBranchesList, action.payload.params);
+   
     if (response.success) {
       yield put(getAllBranchesListSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(getAllBranchesListFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(getAllBranchesListFailure("Invalid Request"));

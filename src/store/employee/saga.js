@@ -314,13 +314,13 @@ function* getCheckInDetailedLog(action) {
 function* getAttendanceConsolidatedCardsData(action) { 
   try {
     const response = yield call(fetchAttendanceConsolidatedCards, action.payload.params);
-    console.log(JSON.stringify(response)+"=====---------response");
+
     if (response.success) {
       yield put(getAttendanceConsolidatedCardsSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(getAttendanceConsolidatedCardsFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(getAttendanceConsolidatedCardsFailure("Invalid Request"));
