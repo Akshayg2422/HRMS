@@ -41,6 +41,7 @@ export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS,
  export const fetchEmployeeTodayStatus = (payload) => post(url.FETCH_EMPLOYEE_TODAY_STATUS,payload,{})
  export const fetchCheckInDetailedLog = (payload) => post(url.FETCH_CHECK_IN_DETAILED_LOG,payload,{})
  export const fetchAttendanceConsolidatedCards = (payload) => post(url.FETCH_ATTENDANCE_CONSOLIDATED_CARDS,payload,{})
+ export const postUpdateEmployeeStatus = (payload) => post(url.UPDATE_EMPLOYEE_STATUS,payload,{})
 
 
 

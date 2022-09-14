@@ -37,11 +37,7 @@ function Login() {
 
   let dispatch = useDispatch();
 
-  useEffect(() => {
-    if (JSON.parse(isLoggedIn)?.userLoggedIn) {
-      goTo(navigation, ROUTE.ROUTE_DASHBOARD);
-    }
-  }, []);
+  
 
   const proceedValidateUser = (params: object) => {
     dispatch(
