@@ -4,7 +4,7 @@ import {Container, Badge, ImageView, } from '@components';
 import {Icons} from '@assets'
 
 interface TableProps {
-  displayDataSet: Array<{}>;
+  displayDataSet?: Array<{}>;
   tableDataSet?: Array<{}>;
   additionalDataSet?: Array<{
     elt: number,
@@ -27,10 +27,12 @@ interface Element {
 function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
 
   const renderTableHeader = () => {
-    const header = Object.keys(displayDataSet[0])
-    return header.map(key => {
-      return <th scope="col" key={key}>{key}</th>
-    })
+    if (displayDataSet) {
+      const header = Object.keys(displayDataSet[0])
+      return header.map(key => {
+        return <th scope="col" key={key}>{key}</th>
+      })
+    }
   }
 
   function renderTableValue(eachObject: object) {
@@ -103,7 +105,7 @@ function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, ta
 
         </thead>
         <tbody>
-          {
+          {displayDataSet && displayDataSet.length > 0 &&
             displayDataSet.map((each_table_obj: object, idx: number) => {
               return (
                 <tr key={idx} onClick={(e) => {
@@ -128,8 +130,8 @@ function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, ta
                     )
                   }
 
-                
-                 
+
+
                 </tr>)
             })
           }
