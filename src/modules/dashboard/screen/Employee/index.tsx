@@ -108,11 +108,12 @@ function EmployeeScreen() {
                   dispatch(getSelectedEmployeeId(selectedId))
                   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS)
                 }}
-                tableValueOnClick={(e, index, item, elv) => {
-                 console.log(elv);
+              tableValueOnClick={(e, index, item, elv) => {
+                if (elv === 'Edit') {
                   const current = registeredEmployeesList[index];
                   manageEmployeeHandler(current.id);
-                }} />
+                }
+              }} />
             }
           </Container>
 

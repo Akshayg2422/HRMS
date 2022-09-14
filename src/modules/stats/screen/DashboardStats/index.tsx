@@ -131,7 +131,7 @@ console.log("response data",employeeattendancedatalog);
                   additionClass={"btn-block"}
                   text={t("Tap to View")}
                   size={"btn-sm"}
-                  onClick={() => onSelected(el.type)}
+                  // onClick={() => onSelected(el.type)}
                 />
               </Container>
             }
@@ -181,7 +181,7 @@ console.log("response data",employeeattendancedatalog);
                                         additionClass={"btn-block"}
                                         text={t("Tap to View")}
                                         size={"btn-sm"}
-                                        onClick={() => onSelected(el.type)}
+                                        // onClick={() => onSelected(el.type)}
                                       />
                                     </Container>
                                   }
