@@ -205,8 +205,7 @@ const ManageEmployee = () => {
         ...(employeeDetails.kgid_No && { kgid_number: employeeDetails.kgid_No }),
       };
 
-      console.log(JSON.stringify(params) + '======employeeAddition');
-
+    
       dispatch(
         employeeAddition({
           params,

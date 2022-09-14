@@ -90,16 +90,29 @@ function EmployeeScreen() {
               <Icon type={'btn-primary'} icon={Icons.Search} />
             </Container>
 
-            {registeredEmployeesList && registeredEmployeesList.length > 0 && <CommonTable noHeader buttonText={t('addEmployee')} buttonOnClock={() => manageEmployeeHandler(undefined)} isPagination currentPage={currentPage} noOfPage={numOfPages} paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }} previousClick={() => paginationHandler('prev')} nextClick={() => paginationHandler('next')} displayDataSet={normalizedEmployeeLog(registeredEmployeesList)} additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
-              tableOnClick={(e, index, item) => {
-                const selectedId = registeredEmployeesList[index].id
-                dispatch(getSelectedEmployeeId(selectedId))
-                goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS)
-              }}
-              tableValueOnClick={(e, index, item) => {
-                const current = registeredEmployeesList[index];
-                manageEmployeeHandler(current.id);
-              }} />
+            {registeredEmployeesList && registeredEmployeesList.length > 0 && 
+              <CommonTable
+                noHeader
+                buttonText={t('addEmployee')}
+                buttonOnClock={() => manageEmployeeHandler(undefined)}
+                isPagination
+                currentPage={currentPage}
+                noOfPage={numOfPages}
+                paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }}
+                previousClick={() => paginationHandler('prev')}
+                nextClick={() => paginationHandler('next')}
+                displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+                additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+                tableOnClick={(e, index, item) => {
+                  const selectedId = registeredEmployeesList[index].id
+                  dispatch(getSelectedEmployeeId(selectedId))
+                  goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS)
+                }}
+                tableValueOnClick={(e, index, item, elv) => {
+                 console.log(elv);
+                  const current = registeredEmployeesList[index];
+                  manageEmployeeHandler(current.id);
+                }} />
             }
           </Container>
 
