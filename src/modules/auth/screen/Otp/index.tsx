@@ -71,7 +71,7 @@ function Otp() {
         const value = {userLoggedIn: true, userDetails: response,  mobileNumber};
         const jsonValue = JSON.stringify(value);
         await localStorage.setItem(ASYN_USER_AUTH, jsonValue);
-        goTo(navigation, ROUTE.ROUTE_DASHBOARD)
+        goTo(navigation, ROUTE.ROUTE_EMPLOYEE)
       },
       onError: (error: string) => {
         showToast("error", t("invalidUser"));
