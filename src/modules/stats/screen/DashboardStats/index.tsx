@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEmployeeAttendanceStats, getSelectedCardType, getSelectedDepartmentName, getSelectedDepartmentId, getAttendanceConsolidatedCards } from '../../../../store/employee/actions';
 import React, { useEffect, useState } from 'react';
-import { goTo, ROUTE, useNav } from '@utils';
+import { goTo, ROUTE, useNav , getServerDateFromMoment, getMomentObjFromServer} from '@utils';
 import { Navbar } from '@modules';
 import {Icons} from '@assets'
 
@@ -20,7 +20,7 @@ const DashboardStats = () => {
   const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
   const [selectedDepartmentName, setSelectedDepartmentName] = useState('');
   const [attendanceConsolidatedCardsData, setAttendanceConsolidatedCardsData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState('');
+  const [selectedDate, setSelectedDate] = useState(getServerDateFromMoment(getMomentObjFromServer(new Date())));
 
 
 
@@ -48,8 +48,11 @@ const DashboardStats = () => {
       include_child: true,
       selected_date: selectedDate,
     };
+
+    console.log(JSON.stringify(params)+"====");
+    
     dispatch(getEmployeeAttendanceStats(params));
-  }, []);
+  }, [selectedDate]);
 
   const proceedNext = (attendanceType: number, departmentId: number | string) => {
 
@@ -103,6 +106,7 @@ const DashboardStats = () => {
                   placeholder={'Select Date'}
                   icon={Icons.Calendar}
                   iconPosition={'prepend'}
+                  value={selectedDate}
                   onChange={(date: string) =>
                     setSelectedDate(date)
                   } />
