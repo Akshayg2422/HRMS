@@ -42,9 +42,9 @@ import {
       pincode:""
     });
   
-    useEffect(()=>{
-        dispatch(getAllBranchesList({}))
-          },[])
+    useEffect(() => {
+      dispatch(getAllBranchesList({}))
+    }, [])
 
   
     const validatePostParams = () => {
