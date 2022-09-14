@@ -57,6 +57,7 @@ import {
   SELECTED_CARD_TYPE,
   SELECTED_DEPARTMENT_NAME,
   SELECTED_DEPARTMENT_ID,
+  SELECTED_EMPLOYEE_ID,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
@@ -539,6 +540,15 @@ export const getSelectedDepartmentId = (type) => {
   return {
     type: SELECTED_DEPARTMENT_ID,
     payload: type,
+  };
+};
+
+//selected employee id for view employee details
+
+export const getSelectedEmployeeId = (id) => {
+  return {
+    type: SELECTED_EMPLOYEE_ID,
+    payload: id,
   };
 };
 
