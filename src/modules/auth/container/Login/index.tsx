@@ -39,7 +39,7 @@ function Login() {
 
   useEffect(() => {
     if (JSON.parse(isLoggedIn)?.userLoggedIn) {
-      goTo(navigation, ROUTE.ROUTE_DASHBOARD);
+      goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
     }
   }, []);
 
