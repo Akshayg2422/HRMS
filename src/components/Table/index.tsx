@@ -12,7 +12,7 @@ interface TableProps {
     elh: string
   }>;
   tableOnClick?: (event: any, index: number, item: object) => void;
-  tableValueOnClick?: (event: any, index: number, item: object) => void;
+  tableValueOnClick?: (event: any, index: number, item: object, elv: string) => void;
   tableContentType?: number;
   comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>
 
@@ -121,7 +121,7 @@ function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, ta
                       additionalDataSet.map(item => {
                         return item.elv && <td scope="row" onClick={(e) => {
                           if (tableValueOnClick) {
-                            tableValueOnClick(e, idx, each_table_obj)
+                            tableValueOnClick(e, idx, each_table_obj,item.elv)
                             e.preventDefault();
                             e.stopPropagation();
                           }

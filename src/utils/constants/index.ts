@@ -95,6 +95,11 @@ export const EMPLOYEE_ADDITIONAL_DATA = [
     elv: 'Edit',
     elh: 'Edit',
   },
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Delete',
+    elh: 'Delete',
+  },
 
 ]
 
