@@ -22,7 +22,7 @@ export const ROUTE = {
   ROUTE_ASSIGN_LOCATION : '/assign-location',
   ROUTE_PROFILE:'/profile',
   ROUTE_PORTFOLIO:'/portfolio',
-
+  ROUTE_VIEW_EMPLOYEE_DETAILS:'/viewemployeedetails'
 
 }
 export const WELCOME_NOTE = [{key: '1', title: 'Geo tagging'}, {key: '2', title: 'Real-time statistics'}, {key: '3', title: 'Salary calculations'}, {key: '4', title: 'Payments and payslips'}, {key: '5', title: 'And much more!!!'}]
