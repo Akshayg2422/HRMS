@@ -88,7 +88,7 @@ const ManageEmployee = () => {
     designation: '',
     department: '',
     branch: '',
-    dateOfJoining: '',
+    dateOfJoining: new Date(),
     dob: '',
     kgid_No: '',
     employeeType: '',
