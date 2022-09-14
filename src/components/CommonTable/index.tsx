@@ -13,7 +13,7 @@ interface CommonTableProps {
   }>;
   comparisonDataSet?: Array<{ key: string, value: string, elt: number, elv: string, elh: string }>
   tableOnClick?: (event: any, index: number, item: object) => void;
-  tableValueOnClick?: (event: any, index: number, item: object) => void;
+  tableValueOnClick?: (event: any, index: number, item: object, elv?: string) => void;
   noHeader?: boolean;
   noOfPage?: number;
   currentPage?: number;
