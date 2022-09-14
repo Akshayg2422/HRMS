@@ -5,10 +5,11 @@ interface FormWrapperProps {
     title?: string;
     children?: React.ReactNode;
     onClick?: () => void
+    hideFooter? : boolean
 }
 
 function 
-index({ title, children, onClick }: FormWrapperProps) {
+index({ title, children, onClick, hideFooter = false }: FormWrapperProps) {
     return (
         <div className="container p-6">
             <div className="row">
@@ -27,9 +28,9 @@ index({ title, children, onClick }: FormWrapperProps) {
                                 </div>
                             </div>
                         </form>
-                        <div className="row col-lg-4 ml-4 mt-4 mb-3 float-right">
+                        {!hideFooter && <div className="row col-lg-4 ml-4 mt-4 mb-3 float-right">
                             <Primary text={'Submit'} onClick={onClick} />
-                        </div>
+                        </div>}
                     </div>
                 </div>
             </div>

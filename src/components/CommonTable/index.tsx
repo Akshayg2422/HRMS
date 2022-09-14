@@ -3,16 +3,17 @@ import {NoRecordFound, Table, Primary} from '@components'
 
 interface CommonTableProps {
   noRecordText?: string;
-  tableDataSet: Array<{}>;
+  displayDataSet?: Array<{}>;
+  tableDataSet?: Array<{}>;
   tableTitle?: string;
   additionalDataSet?: Array<{
     elt: number,
     elv: string,
     elh: string
   }>;
-  comparisonDataSet?: { key: string, value: string, elt: number, elv: string, elh: string }
+  comparisonDataSet?: Array<{ key: string, value: string, elt: number, elv: string, elh: string }>
   tableOnClick?: (event: any, index: number, item: object) => void;
-  tableValueOnClick?: (event: any, index: number, item: object) => void;
+  tableValueOnClick?: (event: any, index: number, item: object, elv?: string) => void;
   noHeader?: boolean;
   noOfPage?: number;
   currentPage?: number;
@@ -22,7 +23,8 @@ interface CommonTableProps {
   paginationNumberClick?: (text: number) => void;
   buttonText?: string;
   buttonOnClock?: () => void;
-
+  tableChildren?: React.ReactNode;
+  
 }
 
 
@@ -43,7 +45,7 @@ interface GetPaginatorSetProps {
 
 
 
-function index({tableTitle, tableDataSet, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet}: CommonTableProps) {
+function index({tableTitle, displayDataSet,tableDataSet, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren}: CommonTableProps) {
 
   const CommonHeader = ({children}: CommonHeaderProps) => {
     return (
@@ -148,13 +150,13 @@ function index({tableTitle, tableDataSet, additionalDataSet, noRecordText = 'No 
 
   const renderTable = () => {
 
-    if (tableDataSet.length <= 0) {
+    if (displayDataSet && displayDataSet.length <= 0) {
       return (<CommonHeader><div className='p-5'><NoRecordFound text={noRecordText} /></div></CommonHeader>);
     }
 
     return (
       <CommonHeader>
-        <Table tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} comparisonDataSet={comparisonDataSet} />
+        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} comparisonDataSet={comparisonDataSet} />}
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
       </CommonHeader>
     );

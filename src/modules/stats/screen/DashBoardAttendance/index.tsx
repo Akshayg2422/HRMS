@@ -1,12 +1,16 @@
+import { CommonTable } from '@components';
 import React,{useEffect} from 'react'
 import { Button } from 'react-bootstrap';
 import { useDispatch,useSelector } from 'react-redux'
 import { getEmployeeTodayStatus,getCheckInDetailedLog } from "../../../../store/employee/actions";
+import { useTranslation } from "react-i18next";
+
+
 const DashBoardAtttendance=()=>{
 const dispatch=useDispatch(); 
+const { t } = useTranslation();
 
-
-
+const getTodayStats = () =>{
 const params={
     branch_id:"dd036ce7-53b4-4e5b-b36f-7c31344bef0d",
     child_ids:[
@@ -23,29 +27,47 @@ const params={
     "373b4c06-b2e8-497d-9563-fee5d42feb55"
     ],
     include_child:true,
-    department_id:"-1",
+    department_id:"c23a2ce4-ec64-4bc7-8eba-2a662dba6640",
     attendance_type:"-1",
     page_number:1,
     selected_date:"2022-09-12"
     }
 
-const params2={
-
-}
+    dispatch(getEmployeeTodayStatus(params))
+  }
 
 useEffect(()=>{
-  dispatch(getEmployeeTodayStatus(params))
+  getTodayStats()
 },[])
 
-const { employeeStatusLog,checkinDetailedLog } = useSelector(
+const { employeeStatusLog,checkinDetailedLog, cardType,selectedDepartmentId  } = useSelector(
     (state: any) => state.EmployeeReducer
   );
+
+  const normalizedEmployee = (data:any) => {
+    return data.map((el:any) => {
+      return {
+        name: el.name,
+        in: el.per_day_details.start_time,
+        out:  el.per_day_details.end_time,
+        remark: el.per_day_details ? el.per_day_details.day_status : '-',
+        Call: el.mobile_number,
+      };
+    });
+  };
 
   console.log("status",employeeStatusLog)
     return (
         <>
-           <h1>DashBoardAtttendance</h1> 
+           <h1>DashBoard Attendance</h1> 
            <Button onClick={()=>{dispatch(getCheckInDetailedLog())}}>Detailed Log</Button>
+           {employeeStatusLog && employeeStatusLog && (
+            <CommonTable
+              tableTitle={t("employeeLog")}
+              displayDataSet={normalizedEmployee(employeeStatusLog)}
+              tableOnClick={(e, index, item) =>{}}
+            />
+          )}
         </>
     )
 }

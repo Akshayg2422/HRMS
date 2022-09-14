@@ -4,16 +4,16 @@ import {Card, Table, CardHeading} from '@components'
 
 
 export interface CardTableProps {
-  tableDataSet: Array<{}>;
+  displayDataSet: Array<{}>;
   title?: string
 }
-function index({tableDataSet, title}: CardTableProps) {
+function index({displayDataSet, title}: CardTableProps) {
   return (
     <Card>
       {title &&
         <CardHeading title={title} />
       }
-      <Table tableDataSet={tableDataSet} />
+      <Table displayDataSet={displayDataSet} />
     </Card>
   )
 }

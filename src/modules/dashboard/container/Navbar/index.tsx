@@ -18,7 +18,7 @@ const NavItem = ({item}: any) => {
   return <li className="nav-item"  onClick={() => navigate(item.route)} >
     <a className=" nav-link"  >
       <i className={`${item.icon} text-white`}></i>
-      <span className="nav-link-text text-white mt-2">{item.name}</span>
+      <span className="nav-link-text text-white mt-2 ml-2">{item.name}</span>
     </a>
   </li >
 }
@@ -31,9 +31,11 @@ const Navbar = ({ }) => {
       <div className="scrollbar-inner">
         <div className="sidenav-header d-flex  align-items-center">
           <a className="navbar-brand" href="#">
-            <ImageView
+            {/* <ImageView
               icon={Icons.LogoSmall}
-            />
+              height={25}
+              width={25}
+            /> */}
           </a>
           <div className=" ml-auto ">
             <div className="sidenav-toggler d-none d-xl-block" data-action="sidenav-unpin" data-target="#sidenav-main">

@@ -33,7 +33,7 @@ function FenceAdmin() {
         (state: any) => state.LocationReducer
     );
 
-    const { registeredEmployeesList } = useSelector(
+    const { registeredEmployeesList, numOfPages, currentPage  } = useSelector(
         (state: any) => state.EmployeeReducer
     );
 
@@ -55,25 +55,34 @@ function FenceAdmin() {
     };
 
 
-    function getRegisteredFenceAdmin(index: number) {
-        const selectedBranch = brancheslist[index];
+    function getRegisteredFenceAdmin(pageNumber: number) {
 
-        console.log(JSON.stringify(selectedBranch) + "=====");
-        setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
-        setSelectedBranchId(selectedBranch.id);
         const params = {
             q: "",
-            page_number: 1,
-            branch_id: selectedBranch.id
-        }
-
+            page_number: pageNumber,
+            branch_id: selectedBranchId
+        }   
         dispatch(getEmployeesList({ params }))
-        setModel(!model)
     }
 
 
-    function addFenchAdminApiHandler(item: Employee) {
+    function getRegisteredFenceAdminDefault(id: string, pageNumber: number) {
+        const params = {
+            q: "",
+            page_number: pageNumber,
+            branch_id: id
+        }
+        dispatch(getEmployeesList({ params }))
+    }
 
+
+
+    function paginationHandler(type: 'next' | 'prev' | 'current', position?: number) {
+        let page = type === 'next' ? currentPage + 1 : type === 'prev' ? currentPage - 1 : position;
+        getRegisteredFenceAdmin(page)
+    }
+
+    function addFenceAdminApiHandler(item: Employee) {
         const params = { branch_id: selectedBranchId, employee_id: item.id }
         console.log(JSON.stringify(item));
         dispatch(addFenceAdmin({
@@ -88,6 +97,15 @@ function FenceAdmin() {
 
     }
 
+    function proceedModelHandler(index: number) {
+        const selectedBranch = brancheslist[index];
+        setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
+        setSelectedBranchId(selectedBranch.id);
+        getRegisteredFenceAdminDefault(selectedBranch.id,currentPage);
+        setModel(!model)
+        
+    }
+
     return (
         <>
             <Navbar />
@@ -95,43 +113,71 @@ function FenceAdmin() {
                 {brancheslist && brancheslist.length > 0 &&
                     <CommonTable
                         tableTitle={t('fenceAdmin')}
-                        tableDataSet={normalizedBranchList(brancheslist)}
+                        displayDataSet={normalizedBranchList(brancheslist)}
                         tableOnClick={(e, index, item) => {
-                            getRegisteredFenceAdmin(index)
+                           proceedModelHandler(index);
                         }}
                     />}
             </Container>
 
             {
                 <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => setModel(!model)}>
-                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? <div className='my-4'>
-                        {
-                            registeredEmployeesList.map((item: Employee, index: number) => {
-                                return (
-                                    <div className='row align-items-center mx-4' onClick={() =>addFenchAdminApiHandler(item)}>
-                                        <div className='col-8'>
-                                            <span className="text-xl text-gray">{item.name}</span>
-                                        </div>
-
-                                        <div className='col-4 text-right'>
-                                            {item.id === selectedEmployeeFenceId && <ImageView icon={
-                                                Icons.TickActive
-                                            } />
-                                            }
-                                        </div>
-                                        {index !== registeredEmployeesList.length - 1 && <Divider />}
-                                        <></>
-                                    </div>
-                                );
-                            })
-                        }
-                    </div> : <NoRecordFound />
+                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+                        <CommonTable
+                            noHeader
+                            isPagination
+                            currentPage={currentPage}
+                            noOfPage={numOfPages}
+                            paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }}
+                            previousClick={() => paginationHandler('prev')}
+                            nextClick={() => paginationHandler('next')}
+                            tableChildren={
+                                <EmployeeTable
+                                    employeeFenceId={selectedEmployeeFenceId}
+                                    tableDataSet={registeredEmployeesList}
+                                    proceedFenceAdmin={(item)=> addFenceAdminApiHandler(item)}
+                                />}
+                        />
+                    ) :
+                        <NoRecordFound />
                     }
                 </Modal>
             }
         </>
     )
 
+}
+
+type EmployeeTableProps = {
+    tableDataSet?: Array<Employee>;
+    employeeFenceId?: string;
+    proceedFenceAdmin?:(item : Employee)=> void;
+
+}
+
+
+const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: EmployeeTableProps) => {
+    return <div className='table-responsive'>
+        <table className='table align-items-center table-flush'>
+            <thead className='thead-light'>
+                <tr>
+                    <th scope='col'>{'Name'}</th>
+                    <th scope='col'>{''}</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                {
+                    tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
+                        return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
+                            <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
+                            <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
+                        </tr>
+                    })
+                }
+            </tbody>
+        </table>
+    </div>
 }
 
 export default FenceAdmin;

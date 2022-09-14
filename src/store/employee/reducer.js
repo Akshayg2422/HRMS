@@ -53,7 +53,14 @@ import {
   FETCH_EMPLOYEE_TODAY_STATUS_FAILURE,
   FETCH_CHECK_IN_DETAILED_LOG,
   FETCH_CHECK_IN_DETAILED_LOG_SUCCESS,
-  FETCH_CHECK_IN_DETAILED_LOG_FAILURE
+  FETCH_CHECK_IN_DETAILED_LOG_FAILURE,
+  SELECTED_CARD_TYPE,
+  SELECTED_DEPARTMENT_NAME,
+  SELECTED_DEPARTMENT_ID,
+  SELECTED_EMPLOYEE_ID,
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -72,11 +79,16 @@ const initialState = {
   employeeEachUserSheets: [],
   employeeCheckInLogs: [],
   employeeCheckInDetailedLogPerDay: [],
-  employeeattendancedatalog:[],
-  employeeStatusLog:[],
-  checkinDetailedLog:[],
+  employeeattendancedatalog: [],
+  employeeStatusLog: [],
+  checkinDetailedLog: [],
   total: '',
-  total_count: ''
+  total_count: '',
+  cardType: -1,
+  selectedDepartmentName:"",
+  selectedDepartmentId:"",
+  attendanceConsolidatedCardsData:[],
+  selectedEmployeeId:""
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -193,7 +205,12 @@ const EmployeeReducer = (state = initialState, action) => {
     //Get employees list
 
     case FETCH_EMPLOYEE_LIST:
-      state = { ...state, loading: true , registeredEmployeesList:[]};
+      state = {
+        ...state, loading: true,
+        registeredEmployeesList: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
       break;
     case FETCH_EMPLOYEE_LIST_SUCCESS:
       const employeeRes = action.payload
@@ -269,7 +286,7 @@ const EmployeeReducer = (state = initialState, action) => {
    */
 
     case FETCH_EMPLOYEE_CHECK_IN_LOGS:
-      state = { ...state, loading: true , employeeCheckInLogs:[]};
+      state = { ...state, loading: true, employeeCheckInLogs: [] };
       break;
 
     case FETCH_EMPLOYEE_CHECK_IN_LOGS_SUCCESS:
@@ -297,7 +314,7 @@ const EmployeeReducer = (state = initialState, action) => {
      */
 
     case FETCH_CHECK_IN_DETAILED_LOG_PER_DAY:
-      state = { ...state, loading: true, employeeCheckInDetailedLogPerDay:[] };
+      state = { ...state, loading: true, employeeCheckInDetailedLogPerDay: [] };
       break;
 
     case FETCH_CHECK_IN_DETAILED_LOG_PER_DAY_SUCCESS:
@@ -317,12 +334,12 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-  /**
-  * Each User Employee Time Sheets
-  */
+    /**
+    * Each User Employee Time Sheets
+    */
 
     case FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS:
-      state = { ...state, loading: true, employeeEachUserSheets:[] };
+      state = { ...state, loading: true, employeeEachUserSheets: [] };
       break;
 
     case FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS_SUCCESS:
@@ -342,126 +359,174 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-      /**
-       * Add department
-       */
+    /**
+     * Add department
+     */
+
+    case ADD_DEPARTMENT:
+      state = { ...state, loading: true };
+      break;
+    case ADD_DEPARTMENT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case ADD_DEPARTMENT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * Add designation
+     */
+
+    case ADD_DESIGNATION:
+      state = { ...state, loading: true };
+      break;
+    case ADD_DESIGNATION_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case ADD_DESIGNATION_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * Add fence admin
+     */
+
+    case ADD_FENCE_ADMIN:
+      state = { ...state, loading: true };
+      break;
+    case ADD_FENCE_ADMIN_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case ADD_FENCE_ADMIN_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
+    case FETCH_EMPLOYEE_ATTENDANCE_STATS:
+      state = { ...state, loading: true }
+      break;
+    case FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        employeeattendancedatalog: action.payload
+      };
+      break;
+
+    case FETCH_EMPLOYEE_ATTENDANCE_STATS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    case FETCH_EMPLOYEE_TODAY_STATUS:
+      state = { ...state, loading: true }
+      break;
+    case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        employeeStatusLog: action.payload
+      };
+      break;
+
+    case FETCH_EMPLOYEE_TODAY_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    case FETCH_CHECK_IN_DETAILED_LOG:
+      state = { ...state, loading: true }
+      break;
+    case FETCH_CHECK_IN_DETAILED_LOG_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        checkinDetailedLog: action.payload
+      };
+      break;
+
+    case FETCH_CHECK_IN_DETAILED_LOG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+   // Stats card type //
+    case SELECTED_CARD_TYPE:
+      state = {
+        ...state,
+        cardType: action.payload
+      };
+      break;
+      // Stats selected department name //
+    case SELECTED_DEPARTMENT_NAME:
+      state = {
+        ...state,
+        selectedDepartmentName: action.payload
+      };
+      break;
+      // Stats selected department id //
+    case SELECTED_DEPARTMENT_ID:
+      state = {
+        ...state,
+        selectedDepartmentId: action.payload
+      };
+      break;
+      // Stats selected employee id for view employee details//
+    case SELECTED_EMPLOYEE_ID:
+      state = {
+        ...state,
+        selectedEmployeeId: action.payload
+      };
+      break;
+      //attendance consolidated cards
       
-       case ADD_DEPARTMENT:
-        state = { ...state, loading: true };
-        break;
-      case ADD_DEPARTMENT_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-        };
-        break;
-      case ADD_DEPARTMENT_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
-        
-      /**
-       * Add designation
-       */
-      
-       case ADD_DESIGNATION:
-        state = { ...state, loading: true };
-        break;
-      case ADD_DESIGNATION_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-        };
-        break;
-      case ADD_DESIGNATION_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
+    case FETCH_ATTENDANCE_CONSOLIDATED_CARDS:
+      state = { ...state, loading: true }
+      break;
+    case FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        attendanceConsolidatedCardsData:action.payload
+      };
+      break;
 
-      /**
-       * Add fence admin
-       */
-      
-       case ADD_FENCE_ADMIN:
-        state = { ...state, loading: true };
-        break;
-      case ADD_FENCE_ADMIN_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-        };
-        break;
-      case ADD_FENCE_ADMIN_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
-
-
-      case FETCH_EMPLOYEE_ATTENDANCE_STATS:
-        state={...state,loading:true}
-        break;
-        case FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS:
-          state = {
-            ...state,
-            loading: false,
-            employeeattendancedatalog: action.payload
-          };
-          break;
-    
-        case FETCH_EMPLOYEE_ATTENDANCE_STATS_FAILURE:
-          state = {
-            ...state,
-            error: action.payload,
-            loading: false,
-          };
-          break;
-
-          case FETCH_EMPLOYEE_TODAY_STATUS:
-            state={...state,loading:true}
-            break;
-            case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
-              state = {
-                ...state,
-                loading: false,
-                employeeStatusLog: action.payload
-              };
-              break;
-        
-            case FETCH_EMPLOYEE_TODAY_STATUS_FAILURE:
-              state = {
-                ...state,
-                error: action.payload,
-                loading: false,
-              };
-              break;
-
-              case FETCH_CHECK_IN_DETAILED_LOG:
-            state={...state,loading:true}
-            break;
-            case FETCH_CHECK_IN_DETAILED_LOG_SUCCESS:
-              state = {
-                ...state,
-                loading: false,
-                checkinDetailedLog: action.payload
-              };
-              break;
-        
-            case FETCH_CHECK_IN_DETAILED_LOG_FAILURE:
-              state = {
-                ...state,
-                error: action.payload,
-                loading: false,
-              };
-              break;
+    case FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     default:
       state = { ...state };

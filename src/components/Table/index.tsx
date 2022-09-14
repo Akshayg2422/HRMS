@@ -4,16 +4,17 @@ import {Container, Badge, ImageView, } from '@components';
 import {Icons} from '@assets'
 
 interface TableProps {
-  tableDataSet: Array<{}>;
+  displayDataSet?: Array<{}>;
+  tableDataSet?: Array<{}>;
   additionalDataSet?: Array<{
     elt: number,
     elv: string,
     elh: string
   }>;
   tableOnClick?: (event: any, index: number, item: object) => void;
-  tableValueOnClick?: (event: any, index: number, item: object) => void;
+  tableValueOnClick?: (event: any, index: number, item: object, elv: string) => void;
   tableContentType?: number;
-  comparisonDataSet?: { key: string, value: string, elt: number, elh?: string }
+  comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>
 
 }
 
@@ -23,13 +24,15 @@ interface Element {
   elh: string
 }
 
-function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
+function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
 
   const renderTableHeader = () => {
-    const header = Object.keys(tableDataSet[0])
-    return header.map(key => {
-      return <th scope="col" key={key}>{key}</th>
-    })
+    if (displayDataSet) {
+      const header = Object.keys(displayDataSet[0])
+      return header.map(key => {
+        return <th scope="col" key={key}>{key}</th>
+      })
+    }
   }
 
   function renderTableValue(eachObject: object) {
@@ -102,8 +105,8 @@ function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick
 
         </thead>
         <tbody>
-          {
-            tableDataSet.map((each_table_obj: object, idx: number) => {
+          {displayDataSet && displayDataSet.length > 0 &&
+            displayDataSet.map((each_table_obj: object, idx: number) => {
               return (
                 <tr key={idx} onClick={(e) => {
                   if (tableOnClick) {
@@ -118,7 +121,7 @@ function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick
                       additionalDataSet.map(item => {
                         return item.elv && <td scope="row" onClick={(e) => {
                           if (tableValueOnClick) {
-                            tableValueOnClick(e, idx, each_table_obj)
+                            tableValueOnClick(e, idx, each_table_obj,item.elv)
                             e.preventDefault();
                             e.stopPropagation();
                           }
@@ -127,8 +130,8 @@ function index({tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick
                     )
                   }
 
-                
-                 
+
+
                 </tr>)
             })
           }

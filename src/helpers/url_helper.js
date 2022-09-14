@@ -45,5 +45,8 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   export const FETCH_EMPLOYEE_TODAY_STATUS = "/attendance/v1/todaysStats"
   export const FETCH_CHECK_IN_DETAILED_LOG="/attendance/getCheckinDetailedLogsPerDay";
 
+  export const FETCH_ATTENDANCE_CONSOLIDATED_CARDS =
+  '/attendance/attendanceConsolidatedCards';
+
 
 
