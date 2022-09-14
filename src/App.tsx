@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dashboard,
   Employee,
@@ -17,10 +17,11 @@ import {
   ManageBranches,
   EmployeeWorkBook,
   Profile,
+  InActiveEmployeeList,
 } from "@modules";
 
-import { ROUTE } from "@utils";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, AppProvider, DashboardProvider } from "@contexts";
 import { ToastContainer } from "react-toastify";
 import { AppLoader } from "@components";
@@ -30,6 +31,11 @@ import { ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 
 function App() {
+
+  const [isLoggedIn, setIsLoggedIn] = useState<any>(
+    localStorage.getItem(ASYN_USER_AUTH)
+  );
+
   return (
     <AppProvider>
       <AppLoader />
@@ -37,7 +43,7 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path={"/"} element={<ZenylogSite />} />
-            <Route path={ROUTE.ROUTE_LOGIN} element={<Login />} />
+            <Route path={ROUTE.ROUTE_LOGIN} element={ JSON.parse(isLoggedIn)?.userLoggedIn ?<Navigate to={ROUTE.ROUTE_DASHBOARD} replace />:<Login />} />
             <Route path={ROUTE.ROUTE_WELCOME} element={<Welcome />} />
             <Route path={ROUTE.ROUTE_OTP} element={<Otp />} />
             <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} />
@@ -45,7 +51,7 @@ function App() {
         </AuthProvider>
         <DashboardProvider>
           <Routes>
-            <Route path={ROUTE.ROUTE_DASHBOARD} element={<Dashboard />} />
+            <Route path={ROUTE.ROUTE_DASHBOARD} element={JSON.parse(isLoggedIn)?.userLoggedIn ===false ?<Navigate to={ROUTE.ROUTE_LOGIN} replace />: <Dashboard />  } />
             <Route path={ROUTE.ROUTE_EMPLOYEE} element={<Employee />} />
             <Route path={ROUTE.ROUTE_CALENDAR} element={<Calendar />} />
             <Route path={ROUTE.ROUTE_LOCATION} element={<Location />} />
@@ -79,6 +85,8 @@ function App() {
             <Route path={ROUTE.ROUTE_PROFILE} element={<Profile />} />
             <Route path={ROUTE.ROUTE_PORTFOLIO} element={<Portfolio />} />
             <Route path={ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS} element={<ViewEmployeeDetails />} />
+            <Route path={ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST} element={<InActiveEmployeeList/>} />
+
           </Routes>
         </DashboardProvider>
       </BrowserRouter>

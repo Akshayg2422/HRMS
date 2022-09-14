@@ -218,7 +218,14 @@
  
 
   
- 
+ "deleteUser":"Delete User",
+ "deleteWarningMessage":"Please click on Proceed to deactivate user",
+ "proceed":"Proceed",
+ "deletedUser":"Deleted Employee",
+ "deleteSuccessfully":"Deleted SuccessFully",
+ "enableMessage":"Please click on Proceed to Activate user",
+
+
  
   "home": "Home",
   "log": "Log",

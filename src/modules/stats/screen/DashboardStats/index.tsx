@@ -48,15 +48,20 @@ const DashboardStats = () => {
     dispatch(getEmployeeAttendanceStats(params));
   }, []);
 
-  const onSelected = (type: string | number) => {
-    dispatch(getSelectedCardType(type))
-    goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE)
-  }
+  const proceedNext = (attendanceType: string,  ) => {
+
+    const params = {
+      attendanceType: attendanceType,
+      departmentId: selectedDepartmentId,
+      selectedDate: '2022-09-14',
+    }
+
+    // dispatch(getSelectedCardType(type))
+    // goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE)
+  } 
 
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
-
-
     const params = {
       branch_id: '2b166a62-22ec-4fcd-a2fe-aab084cb6d37',
       child_ids: ['5b37ee6a-7666-4b82-b955-0dd2db63e9e3', '65599068-e89b-4ffa-881d-7172d12aaa34', '27e701ab-b359-40c7-b9e1-d543b11ba416'],
@@ -157,7 +162,7 @@ const DashboardStats = () => {
                             additionClass={'btn-block'}
                             text={t('Tap to View')}
                             size={'btn-sm'}
-                          // onClick={() => onSelected(el.type)}
+                            // onClick={() => onSelected(el.type)}
                           />
                         </Container>
                       </Card>
