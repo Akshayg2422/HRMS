@@ -69,7 +69,6 @@ import {
 const initialState = {
   loading: false,
   error: '',
-  // dashboardDetails: {},
   designationDropdownData: [],
   departmentDropdownData: [],
   branchesDropdownData: [],
@@ -87,11 +86,13 @@ const initialState = {
   checkinDetailedLog: [],
   total: '',
   total_count: '',
-  cardType: -1,
+  routeParams: {},
   selectedDepartmentName:"",
   selectedDepartmentId:"",
   attendanceConsolidatedCardsData:[],
-  selectedEmployeeId:""
+  selectedEmployeeId:"",
+  employeeAttendanceStats:[]
+
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -446,13 +447,21 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_EMPLOYEE_TODAY_STATUS:
-      state = { ...state, loading: true }
-      break;
-    case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
       state = {
         ...state,
-        loading: false,
-        employeeStatusLog: action.payload
+        loading: true,
+        employeeAttendanceStats: [],
+        numOfPages: 0,
+        currentPage: 1
+      }
+      break;
+    case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
+      const attendanceStats = action.payload
+      state = {
+        ...state,
+        employeeAttendanceStats: attendanceStats.employees.data,
+        numOfPages: attendanceStats.employees.num_pages,
+        currentPage: attendanceStats.employees.next_page === -1 ? attendanceStats.employees.num_pages : attendanceStats.employees.next_page - 1,
       };
       break;
 
@@ -484,9 +493,10 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
    // Stats card type //
     case SELECTED_CARD_TYPE:
+      console.log(JSON.stringify(action.payload)+"+======SELECTED_CARD_TYPE");
       state = {
         ...state,
-        cardType: action.payload
+        routeParams: action.payload
       };
       break;
       // Stats selected department name //

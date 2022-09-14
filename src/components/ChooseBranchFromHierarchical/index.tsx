@@ -106,9 +106,13 @@ function Hierarchical({ }: HierarchicalProps) {
 
     return (
         <div>
-            <div className='col text-right' onClick={() => setModel(!model)}>
-                <InputDefault disabled={true} />
-                <CheckBox text={'Include Sub Branches'} />
+            <div className='col text-right' >
+                <div onClick={() => setModel(!model)}>
+                    <InputDefault disabled={true} />
+                </div>
+                <div className='mt--3'>
+                    <CheckBox text={'Include Sub Branches'} />
+                </div>
             </div>
 
             <Modal showModel={model} toggle={() => setModel(!model)}>

@@ -285,18 +285,19 @@ function* getEmployeeAttendanceStats(action) {
 
 function* getEmployeeTodayStatus(action) {
 try{
-  const response = yield call(fetchEmployeeTodayStatus,action.payload)
-  console.log("fffffff---------->",response);
-  if(response.success){
-    yield put(getEmployeeTodayStatusSuccess(response.details))
+
+    const response = yield call(fetchEmployeeTodayStatus, action.payload)
+
+    if (response.success) {
+      yield put(getEmployeeTodayStatusSuccess(response.details))
+    }
+    else {
+      yield put(getEmployeeTodayStatusFailure(response.error_message))
+    }
   }
-  else{
-    yield put(getEmployeeTodayStatusFailure(response.error_message))
+  catch (error) {
+    yield put(getEmployeeTodayStatusFailure("Invalid Request"))
   }
-}
-catch (error) {
-  yield put(getEmployeeTodayStatusFailure("Invalid Request"))
-}
 }
 
 function* getCheckInDetailedLog(action) {
