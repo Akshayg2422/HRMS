@@ -51,7 +51,7 @@ function EmployeeLog() {
 
   useEffect(() => {
     getEmployeeLogs(currentPage);
-  }, [])
+  }, [startDate])
 
 
   function getEmployeeLogs(pageNumber: number) {

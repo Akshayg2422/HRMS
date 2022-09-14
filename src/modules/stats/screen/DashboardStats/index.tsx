@@ -30,7 +30,7 @@ const DashboardStats = () => {
       };
     });
   };
-console.log("response data",employeeattendancedatalog);
+
 
   const params = {
     branch_id: "dd036ce7-53b4-4e5b-b36f-7c31344bef0d",
@@ -82,9 +82,7 @@ console.log("response data",employeeattendancedatalog);
       include_child: false, 
       selected_date: "2022-09-13"
  }
-  console.log("params--->",params);
-  
-
+ 
   dispatch(getAttendanceConsolidatedCards({
     params,
      onSuccess: () => {
@@ -131,7 +129,7 @@ console.log("response data",employeeattendancedatalog);
                   additionClass={"btn-block"}
                   text={t("Tap to View")}
                   size={"btn-sm"}
-                  onClick={() => onSelected(el.type)}
+                  // onClick={() => onSelected(el.type)}
                 />
               </Container>
             }
@@ -181,7 +179,7 @@ console.log("response data",employeeattendancedatalog);
                                         additionClass={"btn-block"}
                                         text={t("Tap to View")}
                                         size={"btn-sm"}
-                                        onClick={() => onSelected(el.type)}
+                                        // onClick={() => onSelected(el.type)}
                                       />
                                     </Container>
                                   }
