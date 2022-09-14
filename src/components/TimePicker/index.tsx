@@ -5,7 +5,7 @@ import { ImageView } from '@components'
 
 
 
-function TimePicker({ icon, iconPosition, onChange,value, ...props }: DatePickerProps) {
+function TimePicker({ icon, iconPosition, onChange,value,defaultValue, ...props }: DatePickerProps) {
 
   const handleChange = (dates: Date[], currentDateString: string, self: any, data?: any) => {
     if (onChange) {

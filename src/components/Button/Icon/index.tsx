@@ -6,12 +6,13 @@ interface ButtonIconProps {
   backgroundColor?: string
   icon?: any
   text?: string;
-  type: 'btn-outline-primary' | 'btn-primary'
+  type?: 'btn-outline-primary' | 'btn-primary'
+  onClick?: () => void
 }
 
-function index({backgroundColor, icon, text, type}: ButtonIconProps) {
+function index({backgroundColor, icon, text, type = 'btn-primary', onClick}: ButtonIconProps) {
   return (
-    <button type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  align-items-center`} >
+    <button type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  align-items-center`} onClick={onClick}>
       <span className='btn-inner--icon'>
         {
           icon && <ImageView icon={icon} />

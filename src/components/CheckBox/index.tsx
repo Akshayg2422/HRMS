@@ -1,33 +1,25 @@
-import React from 'react';
-import {Container} from '@components';
+import React,{useRef} from 'react';
 import {ContainerProps} from '../Interface'
 
+
 interface CheckBoxProps extends ContainerProps {
-  label?: string;
-  data: Array<{id: string, name: string}>;
+  text?: string;
   error?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void 
+  checked?: boolean
 }
 
 
 
-const CheckBox = ({label, data, error, col, additionClass}: CheckBoxProps) => (
+const CheckBox = ({ text, onChange, checked }: CheckBoxProps) => {
 
+  return (
+    <div className="custom-control custom-checkbox">
+      <input type="checkbox" className="custom-control-input" id="customCheck1"  onChange={onChange} />
+      <label className="custom-control-label" htmlFor="customCheck1">{text}</label>
+    </div>
+  )
+}
 
-  <Container col={col}>
-    {label && <label className="form-control-label ml-2" >{label}</label>}
-
-      {
-        data.map((item, index) => (
-            <div className={`d-flex flex-row justify-content-between py-2 m-2 ${additionClass}`}>
-            <h5 className='text-black  font-weight-light mt-2'>{item.name}</h5>
-            <input type="checkbox"></input>
-            </div>
-        ))
-      }
-
-    {error && <code className="text-danger">{error}</code>}
-  </Container >
-
-)
 
 export default CheckBox;

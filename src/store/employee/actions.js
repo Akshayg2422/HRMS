@@ -53,7 +53,13 @@ import {
   FETCH_EMPLOYEE_TODAY_STATUS_FAILURE,
   FETCH_CHECK_IN_DETAILED_LOG,
   FETCH_CHECK_IN_DETAILED_LOG_SUCCESS,
-  FETCH_CHECK_IN_DETAILED_LOG_FAILURE
+  FETCH_CHECK_IN_DETAILED_LOG_FAILURE,
+  SELECTED_CARD_TYPE,
+  SELECTED_DEPARTMENT_NAME,
+  SELECTED_DEPARTMENT_ID,
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -505,6 +511,57 @@ export const getCheckInDetailedLogSuccess = (response) => {
 export const getCheckInDetailedLogFailure = (error) => {
   return {
     type: FETCH_CHECK_IN_DETAILED_LOG_FAILURE,
+    payload: error,
+  };
+};
+
+//get selected card type
+
+export const getSelectedCardType = (type) => {
+  return {
+    type: SELECTED_CARD_TYPE,
+    payload: type,
+  };
+};
+
+//get selected card type
+
+export const getSelectedDepartmentName = (type) => {
+  return {
+    type: SELECTED_DEPARTMENT_NAME,
+    payload: type,
+  };
+};
+
+//get selected card type
+
+export const getSelectedDepartmentId = (type) => {
+  return {
+    type: SELECTED_DEPARTMENT_ID,
+    payload: type,
+  };
+};
+
+//attendance consolidated cards
+
+export const getAttendanceConsolidatedCards=(params)=>{
+  return{
+    type: FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
+    payload: params
+  }
+}
+
+
+export const getAttendanceConsolidatedCardsSuccess = (response) => {
+  return {
+    type: FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getAttendanceConsolidatedCardsFailure = (error) => {
+  return {
+    type: FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
     payload: error,
   };
 };
