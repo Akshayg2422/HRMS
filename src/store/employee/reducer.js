@@ -205,7 +205,12 @@ const EmployeeReducer = (state = initialState, action) => {
     //Get employees list
 
     case FETCH_EMPLOYEE_LIST:
-      state = { ...state, loading: true, registeredEmployeesList: [] };
+      state = {
+        ...state, loading: true,
+        registeredEmployeesList: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
       break;
     case FETCH_EMPLOYEE_LIST_SUCCESS:
       const employeeRes = action.payload
