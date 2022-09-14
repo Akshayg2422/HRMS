@@ -4,7 +4,7 @@ import {ASYN_USER_AUTH} from '@utils'
 //apply base url for axios
 const STAGING = 'http://43.204.233.45/';
 const LOCAL_DEV = 'http://192.168.172.204:8000';
-const PROD = 'https://13.235.237.146/';
+const PROD = 'https://zenylog.com/';
 export const REACT_APP_APP_URL = PROD;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
