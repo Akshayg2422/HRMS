@@ -183,7 +183,7 @@ function Dashboard() {
               </Container>
             </Container>
             <Container col={"col-7"}>
-              <CardTable tableDataSet={dummyTable} title={t("table")} />
+              <CardTable displayDataSet={dummyTable} title={t("table")} />
             </Container>
           </Container>
         </Container>

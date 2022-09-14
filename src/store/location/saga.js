@@ -26,7 +26,6 @@ import {
 function* getAllBranches(action) {
   try {
     const response = yield call(fetchAllBranchesList, action.payload.params);
-    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(getAllBranchesListSuccess(response.details));
     } else {
@@ -38,10 +37,9 @@ function* getAllBranches(action) {
 }
 
 function* branchAddition(action) {
-  console.log("saga", action)
+
   try {
     const response = yield call(postBranchAddition, action.payload.params);
-    console.log("add emp response ", response);
     if (response.success) {
       yield put(branchAdditionSuccess(response.details));
       yield call(action.payload.onSuccess);
@@ -88,7 +86,6 @@ function* getEmployeeCheckinAssociations(action) {
 
   try {
     const response = yield call(fetchEmployeeCheckinAssociations, action.payload);
-    console.log(JSON.stringify(response) + "======getEmployeeCheckinAssociations");
     if (response.success) {
       yield put(getEmployeeCheckinAssociationsSuccess(response.details));
       yield call(action.payload.onSuccess);
@@ -104,7 +101,6 @@ function* getEmployeeCheckinAssociations(action) {
 function* updateEmployeeCheckinAssociations(action) {
   try {
     const response = yield call(postEmployeeCheckinAssociations, action.payload.params);
-    console.log(JSON.stringify(response));
 
     if (response.success) {
       yield put(updateEmployeeCheckinAssociationsSuccess(response.details));

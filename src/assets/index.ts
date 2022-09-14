@@ -52,6 +52,8 @@ export const Icons = {
   ProfilePlaceHolder: require('./icons/ProfilePlaceHolder/ProfilePlaceHolder.png'),
   TickActive: require('./icons/TickActive/TickActive.png'),
   TickDefault: require('./icons/TickDefault/TickDefault.png'),
+  LocationGray: require('./icons/LocationGray/LocationGray.png'),
+
 }
 
 

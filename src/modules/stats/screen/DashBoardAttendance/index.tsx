@@ -64,7 +64,7 @@ const { employeeStatusLog,checkinDetailedLog, cardType,selectedDepartmentId  } =
            {employeeStatusLog && employeeStatusLog && (
             <CommonTable
               tableTitle={t("employeeLog")}
-              tableDataSet={normalizedEmployee(employeeStatusLog)}
+              displayDataSet={normalizedEmployee(employeeStatusLog)}
               tableOnClick={(e, index, item) =>{}}
             />
           )}

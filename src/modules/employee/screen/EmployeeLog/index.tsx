@@ -126,7 +126,7 @@ function EmployeeLog() {
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
-          tableDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+          displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
           tableOnClick={(e, index, item) => {
             getUserCheckInLogs(index)
           }}
