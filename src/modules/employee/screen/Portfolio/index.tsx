@@ -186,7 +186,7 @@ function PortFolio() {
           </div>
           <CommonTable
             tableTitle={"My Work Book"}
-            tableDataSet={normalizedTimeSheet(employeeEachUserSheets)}
+            displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
             tableOnClick={(e, index, item) => {
               const attachment = employeeEachUserSheets[index].attachments;
               setAttachment(attachment);
@@ -208,7 +208,7 @@ function PortFolio() {
           </div>
           <CommonTable
             tableTitle={"My Log"}
-            tableDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
+            displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
             tableOnClick={(e, index, Item) => {
               getEmployeeCheckInDetailedLogPerDay(index);
             }}
@@ -234,7 +234,7 @@ function PortFolio() {
         {employeeCheckInDetailedLogPerDay &&
         employeeCheckInDetailedLogPerDay.length > 0 ? (
           <Table
-            tableDataSet={normalizedPerDayData(
+            displayDataSet={normalizedPerDayData(
               employeeCheckInDetailedLogPerDay
             )}
           />

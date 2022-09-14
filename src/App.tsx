@@ -27,6 +27,7 @@ import { AppLoader } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation } from "./modules/dashboard/screen";
 import { ZenylogSite } from "@screens";
+import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 
 function App() {
 
@@ -82,6 +83,7 @@ function App() {
             />
             <Route path={ROUTE.ROUTE_PROFILE} element={<Profile />} />
             <Route path={ROUTE.ROUTE_PORTFOLIO} element={<Portfolio />} />
+            <Route path={ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS} element={<ViewEmployeeDetails />} />
           </Routes>
         </DashboardProvider>
       </BrowserRouter>

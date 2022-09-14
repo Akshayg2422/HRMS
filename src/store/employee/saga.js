@@ -54,8 +54,10 @@ function* getDesignation(action) {
     const response = yield call(fetchDesignationData, action.payload.params);
     if (response.success) {
       yield put(getDesignationDataSuccess(response.details));
+      yield call(action.payload.onSuccess);
     } else {
       yield put(getDesignationDataFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(getDesignationDataFailure("Invalid Request"));
@@ -67,8 +69,10 @@ function* getDepartments(action) {
     const response = yield call(fetchDepartmentData, action.payload.params);
     if (response.success) {
       yield put(getDepartmentDataSuccess(response.details));
+      yield call(action.payload.onSuccess);
     } else {
       yield put(getDepartmentDataFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(getDepartmentDataFailure("Invalid Request"));
@@ -80,8 +84,10 @@ function* getAllBranches(action) {
     const response = yield call(fetchAllBranchesList, action.payload.params);
     if (response.success) {
       yield put(getAllBranchesListSuccess(response.details));
+      yield call(action.payload.onSuccess);
     } else {
       yield put(getAllBranchesListFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(getAllBranchesListFailure("Invalid Request"));

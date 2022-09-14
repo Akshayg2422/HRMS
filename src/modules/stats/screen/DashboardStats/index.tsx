@@ -144,7 +144,7 @@ console.log("response data",employeeattendancedatalog);
           {employeeattendancedatalog && employeeattendancedatalog.departments_types && (
             <CommonTable
               tableTitle={t("employeeLog")}
-              tableDataSet={normalizedEmployeeAttendanceLog(employeeattendancedatalog)}
+              displayDataSet={normalizedEmployeeAttendanceLog(employeeattendancedatalog)}
               tableOnClick={(e, index, item) =>{
 
                 dispatch(getSelectedDepartmentName(employeeattendancedatalog.departments_stats[index].name))

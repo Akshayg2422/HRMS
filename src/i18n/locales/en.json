@@ -326,7 +326,8 @@
   "imageNotFound":"Image Not Found",
   "details":"Details",
   "pleaseSelect":"Please Select",
-  "departments":"Departments"
+  "departments":"Departments",
+  "employeeDetailsUpdatedSuccessfully":"Employee Details Updated Successfully"
 
  
 }

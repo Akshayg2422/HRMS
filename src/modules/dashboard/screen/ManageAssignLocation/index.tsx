@@ -152,7 +152,7 @@ function ManageAssignLocation() {
                         registeredEmployeesList && registeredEmployeesList.length > 0 &&
                         <CommonTable
                             tableTitle={'Employee List'}
-                            tableDataSet={employeeList(registeredEmployeesList)}
+                            displayDataSet={employeeList(registeredEmployeesList)}
                             isPagination
                             currentPage={currentPage}
                             noOfPage={numOfPages}

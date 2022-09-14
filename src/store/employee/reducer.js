@@ -57,6 +57,7 @@ import {
   SELECTED_CARD_TYPE,
   SELECTED_DEPARTMENT_NAME,
   SELECTED_DEPARTMENT_ID,
+  SELECTED_EMPLOYEE_ID,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
@@ -86,7 +87,8 @@ const initialState = {
   cardType: -1,
   selectedDepartmentName:"",
   selectedDepartmentId:"",
-  attendanceConsolidatedCardsData:[]
+  attendanceConsolidatedCardsData:[],
+  selectedEmployeeId:""
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -491,6 +493,13 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         selectedDepartmentId: action.payload
+      };
+      break;
+      // Stats selected employee id for view employee details//
+    case SELECTED_EMPLOYEE_ID:
+      state = {
+        ...state,
+        selectedEmployeeId: action.payload
       };
       break;
       //attendance consolidated cards
