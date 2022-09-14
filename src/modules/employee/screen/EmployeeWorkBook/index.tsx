@@ -92,7 +92,7 @@ function EmployeeTimeSheets() {
           currentPage={currentPage}
           noOfPage={numOfPages}
           tableTitle={t('timeSheets')}
-          tableDataSet={normalizedEmployeeLog(employeeTimeSheets)}
+          displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
             getEmployeeEachUserTimeSheetsApi(index);
           }}

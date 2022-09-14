@@ -19,15 +19,12 @@ function LocationScreen() {
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.id,
-        resetRadius: "Reset Radius",
         name: el.name,
       };
     });
   };
 
   const manageBranchesHandler = (id: string | undefined) => {
-    // id ? dispatch(employeeEdit(id)) : dispatch(employeeEdit(undefined))
     goTo(navigation, ROUTE.ROUTE_MANAGE_BRANCHES);
   };
 
@@ -41,7 +38,7 @@ function LocationScreen() {
             <CommonTable
               tableTitle={"Branches"}
               buttonOnClock={() => manageBranchesHandler(undefined)}
-              tableDataSet={normalizedEmployeeLog(brancheslist)}
+              displayDataSet={normalizedEmployeeLog(brancheslist)}
               buttonText={"Add Branch"}
               tableOnClick={(e, index, item) => setModel(!model)}
             />

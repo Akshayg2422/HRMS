@@ -95,7 +95,7 @@ function FenceAdmin() {
                 {brancheslist && brancheslist.length > 0 &&
                     <CommonTable
                         tableTitle={t('fenceAdmin')}
-                        tableDataSet={normalizedBranchList(brancheslist)}
+                        displayDataSet={normalizedBranchList(brancheslist)}
                         tableOnClick={(e, index, item) => {
                             getRegisteredFenceAdmin(index)
                         }}

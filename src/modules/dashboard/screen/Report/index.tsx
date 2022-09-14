@@ -40,7 +40,7 @@ function index() {
 
         </Container>
 
-        <Table tableDataSet={sampleData} tableContentType={TABLE_CONTENT_TYPE_REPORT} />
+        <Table displayDataSet={sampleData} tableContentType={TABLE_CONTENT_TYPE_REPORT} />
       </Card>
       </div>
     </>
