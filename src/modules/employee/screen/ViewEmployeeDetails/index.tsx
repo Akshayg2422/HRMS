@@ -60,6 +60,12 @@ import {
         departmentDropdownData,
         branchesDropdownData,
     } = useSelector((state: any) => state.EmployeeReducer);
+
+    const { dashboardDetails } = useSelector(
+      (state: any) => state.DashboardReducer
+    );
+  
+    const [companyBranchDropdownData, setCompanyBranchDropdownData] = useState<any>()
     
   
     const [employeeDetails, setEmployeeDetails] = useState({
@@ -82,11 +88,41 @@ import {
       attendanceEndTime: '',
     });
   
+    const getAllSubBranches = (branchList:any, parent_id:string) => {
+      const branchListFiltered:any = [];
+      const getChild = (branchList:any, parent_id:string) =>
+        branchList
+          .filter((it:any) => it.parent_id === parent_id)
+          .map((it2:any) => {
+            branchListFiltered.push(it2);
+            getChild(branchList, it2.id);
+            return it2;
+          });
+      getChild(branchList, parent_id);
+      return branchListFiltered;
+    };
   
     useEffect(() => {
       dispatch(getDepartmentData({}));
       dispatch(getDesignationData({}));
-      dispatch(getAllBranchesList({}));
+      
+      const params = {}
+    dispatch(getAllBranchesList({ params,
+      onSuccess: (success: object) => {        
+        const parentBranch = branchesDropdownData.find(
+          (it:any) => it.id === dashboardDetails.company_branch.id,
+        );
+      setCompanyBranchDropdownData([ 
+        ...getAllSubBranches(
+        branchesDropdownData,
+        dashboardDetails.company_branch.id,
+      ),
+      parentBranch,])
+      },
+
+      onError: (error: string) => {
+      },}));
+
     }, []);
 
     useEffect(() => {
@@ -294,15 +330,16 @@ import {
           disabled={true}
         />
         <h4 className='mb-4'>{t('attendanceDetails')}</h4>
-        <h5 className='mb-2'>{t('startTime')}</h5>
         <InputText
+         label={t('startTime')}
           placeholder={t('startTime')}
           value={employeeDetails.attendanceStartTime ? employeeDetails.attendanceStartTime : '-:-'}
           disabled={true}
         // editable={false}
         />
-        <h5 className='mb-2'>{t('endTime')}</h5>
+      
         <InputText
+         label={t('endTime')}
           placeholder={t('endTime')}
           value={employeeDetails.attendanceEndTime ? employeeDetails.attendanceEndTime : '-:-'}
           disabled={true}
