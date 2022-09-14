@@ -57,6 +57,7 @@ function* branchAddition(action) {
 function* updateLocationRadius(action) {
   try {
     const response = yield call(updateBranchLocationRadius, action.payload.params);
+    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(updateBranchLocationRadiusSuccess(response.details));
       yield call(action.payload.onSuccess);
@@ -72,6 +73,7 @@ function* updateLocationRadius(action) {
 function* enableBranchRefence(action) {
   try {
     const response = yield call(postEnableBranchRefence, action.payload.params);
+    console.log(JSON.stringify(response));
     if (response.success) {
       yield put(enableBranchRefenceSuccess(response.details));
       yield call(action.payload.onSuccess);
