@@ -89,9 +89,23 @@ export interface DatePickerProps {
   onChange?: (currentDateString: string) => void
   value?:any
   defaultValue?: string;
+  placeholder?: string;
 }
 
 export interface TableProps {
   tableData: Array<{}>
 
 }
+
+export type LocationProps ={
+  name: string;
+  id: string;
+  has_location: boolean;
+  can_update_location: boolean;
+  parent_id: string;
+  fencing_radius: number;
+  geo_location_id: string;
+  fence_admin_id: string;
+  child?: any;
+}
+
