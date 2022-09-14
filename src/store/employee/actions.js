@@ -60,7 +60,10 @@ import {
   SELECTED_EMPLOYEE_ID,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
-  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
+  UPDATE_EMPLOYEE_STATUS,
+  UPDATE_EMPLOYEE_STATUS_SUCCESS,
+  UPDATE_EMPLOYEE_STATUS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -572,6 +575,30 @@ export const getAttendanceConsolidatedCardsSuccess = (response) => {
 export const getAttendanceConsolidatedCardsFailure = (error) => {
   return {
     type: FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
+    payload: error,
+  };
+};
+
+//delete employee
+
+export const getUpdateEmployeeStatus=(params)=>{
+  return{
+    type: UPDATE_EMPLOYEE_STATUS,
+    payload: params
+  }
+}
+
+
+export const getUpdateEmployeeStatusSuccess = (response) => {
+  return {
+    type: UPDATE_EMPLOYEE_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getUpdateEmployeeStatusFailure = (error) => {
+  return {
+    type: UPDATE_EMPLOYEE_STATUS_FAILURE,
     payload: error,
   };
 };

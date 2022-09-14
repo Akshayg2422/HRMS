@@ -60,7 +60,10 @@ import {
   SELECTED_EMPLOYEE_ID,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
-  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
+  UPDATE_EMPLOYEE_STATUS,
+  UPDATE_EMPLOYEE_STATUS_SUCCESS,
+  UPDATE_EMPLOYEE_STATUS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -521,6 +524,27 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+      //delete employee
+      
+    case UPDATE_EMPLOYEE_STATUS:
+      state = { 
+        ...state, 
+        loading: true }
+      break;
+    case UPDATE_EMPLOYEE_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case UPDATE_EMPLOYEE_STATUS_FAILURE:
       state = {
         ...state,
         error: action.payload,

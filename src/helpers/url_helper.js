@@ -48,5 +48,7 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   export const FETCH_ATTENDANCE_CONSOLIDATED_CARDS =
   '/attendance/attendanceConsolidatedCards';
 
+  export const UPDATE_EMPLOYEE_STATUS = 'employee/updateEmployeeStatus';
+
 
 

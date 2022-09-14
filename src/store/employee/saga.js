@@ -3,7 +3,8 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import { FETCH_DESIGNATION, FETCH_DEPARTMENT, FETCH_ALL_BRANCHES_LIST, FETCH_EMPLOYEE_DETAILS, FETCH_EMPLOYEE_LIST, POST_EMPLOYEE_ADDITION, FETCH_EMPLOYEE_TIME_SHEETS, FETCH_EMPLOYEE_CHECK_IN_LOGS, FETCH_CHECK_IN_DETAILED_LOG_PER_DAY, FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS,
 ADD_DEPARTMENT,
 ADD_DESIGNATION,
-ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS } from "./actionTypes";
+ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
+UPDATE_EMPLOYEE_STATUS } from "./actionTypes";
 
 import {
   getDepartmentDataSuccess,
@@ -39,13 +40,15 @@ import {
   getCheckInDetailedLogFailure,
   getCheckInDetailedLogSuccess,
   getAttendanceConsolidatedCardsSuccess,
-  getAttendanceConsolidatedCardsFailure
+  getAttendanceConsolidatedCardsFailure,
+  getUpdateEmployeeStatusSuccess,
+  getUpdateEmployeeStatusFailure
 } from "./actions";
 
 import {fetchDesignationData, fetchDepartmentData, fetchAllBranchesList, fetchEmployeeDetails, fetchEmployeeList, postEmployeeAddition , fetchEmployeeTimeSheets, fetchEmployeeCheckInLogs, fetchCheckInDetailedLogPerDay, fetchEmployeeEachUserTimeSheets,
 postAddDepartment,
 postAddDesignation,
-postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards} from "../../helpers/backend_helper";
+postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards,postUpdateEmployeeStatus} from "../../helpers/backend_helper";
 
 
 
@@ -327,6 +330,21 @@ function* getAttendanceConsolidatedCardsData(action) {
   }
 }
 
+function* getUpdateEmployeeStatus(action) { 
+  try {
+    const response = yield call(postUpdateEmployeeStatus, action.payload.params);
+    if (response.success) {
+      yield put(getUpdateEmployeeStatusSuccess(response.details));
+      yield call(action.payload.onSuccess);
+    } else {
+      yield put(getUpdateEmployeeStatusFailure(response.error_message));
+      yield call(action.payload.onError);
+    }
+  } catch (error) {
+    yield put(getUpdateEmployeeStatusFailure("Invalid Request"));
+  }
+}
+
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
   yield takeLatest(FETCH_DEPARTMENT, getDepartments);
@@ -345,6 +363,7 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS,getEmployeeTodayStatus)
   yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG,getCheckInDetailedLog)
   yield takeLatest(FETCH_ATTENDANCE_CONSOLIDATED_CARDS,getAttendanceConsolidatedCardsData)
+  yield takeLatest(UPDATE_EMPLOYEE_STATUS,getUpdateEmployeeStatus)
 }
 
 export default EmployeeSaga;
