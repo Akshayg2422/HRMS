@@ -38,6 +38,7 @@ const initialState = {
   // *** userValid *** //
   userValid: false,
   mobileNumber: "",
+  loading:false,
   error: "",
   success: "",
   userDetails: {},
