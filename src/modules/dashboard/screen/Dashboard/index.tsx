@@ -150,6 +150,10 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
+  useEffect(() => {
+    dispatch(getDashboard({}))
+  }, []);
+  
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     let branchListFiltered: any = [];
@@ -172,9 +176,7 @@ function Dashboard() {
 
 
 
-  useEffect(() => {
-    dispatch(getDashboard({}))
-  }, []);
+
 
   useEffect(() => {
 

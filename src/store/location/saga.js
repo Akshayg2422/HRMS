@@ -21,100 +21,178 @@ import {
 } from "./actions";
 
 
+import {
+  showLoader,
+  hideLoader
+} from '../app/actions'
 
 
 function* getAllBranches(action) {
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchAllBranchesList, action.payload.params);
-    console.log(JSON.stringify(response)+'=====getAllBranches');
+   
     if (response.success) {
+
+    yield put(hideLoader());
      
       yield put(getAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getAllBranchesListFailure("Invalid Request"));
+
   }
 }
 
 function* branchAddition(action) {
 
   try {
+
+    yield put(showLoader());
+
     const response = yield call(postBranchAddition, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(branchAdditionSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(branchAdditionFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(branchAdditionFailure("Invalid Request"));
+
   }
 }
 
 function* updateLocationRadius(action) {
   try {
+
+    yield put(showLoader());
+
     const response = yield call(updateBranchLocationRadius, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(updateBranchLocationRadiusSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(updateBranchLocationRadiusFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(updateBranchLocationRadiusFailure("Invalid Request"));
+
   }
 }
 
 function* enableBranchRefence(action) {
   try {
+
+    yield put(showLoader());
+
     const response = yield call(postEnableBranchRefence, action.payload.params);
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(enableBranchRefenceSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(enableBranchRefenceFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(enableBranchRefenceFailure("Invalid Request"));
+
   }
 }
 
 function* getEmployeeCheckinAssociations(action) {
 
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeCheckinAssociations, action.payload);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeeCheckinAssociationsSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeeCheckinAssociationsFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getEmployeeCheckinAssociationsFailure("Invalid Request"));
+
   }
 }
 
 function* updateEmployeeCheckinAssociations(action) {
   try {
+
+    yield put(showLoader());
+
     const response = yield call(postEmployeeCheckinAssociations, action.payload.params);
 
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(updateEmployeeCheckinAssociationsSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(updatetEmployeeCheckinAssociationsFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(updatetEmployeeCheckinAssociationsFailure("Invalid Request"));
+    
   }
 }
 
