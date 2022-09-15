@@ -26,8 +26,9 @@ import {
 function* getAllBranches(action) {
   try {
     const response = yield call(fetchAllBranchesList, action.payload.params);
-   
+    console.log(JSON.stringify(response)+'=====getAllBranches');
     if (response.success) {
+     
       yield put(getAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
     } else {

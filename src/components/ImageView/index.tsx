@@ -15,9 +15,10 @@ type ImageViewProps = {
   width?: number | string | undefined;
   additionClass?: string;
   style?: CSSProperties | undefined;
+  onClick?: (event: React.MouseEvent<HTMLElement>)=> void;
 }
-export default function ImageView({icon, alt, height, loading, sizes, width, additionClass, style}: ImageViewProps) {
+export default function ImageView({icon, alt, height, loading, sizes, width, additionClass, style, onClick}: ImageViewProps) {
   return (
-    <img className={additionClass} src={icon} alt={alt} height={height} width={width} loading={loading} sizes={sizes} style={style} />
+    <img className={additionClass} src={icon} alt={alt} height={height} width={width} loading={loading} sizes={sizes} style={style} onClick={onClick} />
   )
 }
