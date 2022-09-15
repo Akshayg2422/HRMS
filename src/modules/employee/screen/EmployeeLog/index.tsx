@@ -1,4 +1,4 @@
-import { CommonTable, Container, Modal, Divider, Sort, NoRecordFound } from '@components'
+import { CommonTable, Container, Modal, Divider, Sort, NoRecordFound, ChooseBranchFromHierarchical} from '@components'
 import React, { useEffect, useState } from 'react'
 import { getEmployeesList, getEmployeesCheckInLogs, getCheckInDetailedLogPerDay } from '../../../../store/employee/actions';
 import { useSelector, useDispatch } from "react-redux";
@@ -49,13 +49,18 @@ function EmployeeLog() {
     (state: any) => state.EmployeeReducer
   );
 
+  const {hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   useEffect(() => {
     getEmployeeLogs(currentPage);
-  }, [startDate])
+  }, [startDate,hierarchicalBranchIds])
 
 
   function getEmployeeLogs(pageNumber: number) {
     const params: object = {
+      ...hierarchicalBranchIds,
       page_number: pageNumber,
       q: ""
     }
@@ -118,6 +123,7 @@ function EmployeeLog() {
             setActiveSort(index);
             onTabChange(index)
           }} />
+          <ChooseBranchFromHierarchical />
         </div>
 
         {registeredEmployeesList && registeredEmployeesList.length > 0 &&

@@ -13,7 +13,7 @@ const DashboardStats = () => {
   let dispatch = useDispatch();
 
   const { employeeattendancedatalog } = useSelector(
-    (state: any) => state.EmployeeReducer
+    (state: any) => state.EmployeeReducer 
   );
 
   const { hierarchicalBranchName, hierarchicalBranchIds } = useSelector(
