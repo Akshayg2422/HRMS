@@ -137,7 +137,7 @@ const DashboardReducer = (state = initialState, action) => {
       };
       break;
     default:
-      state = { ...state };
+      state = state
       break;
   }
   return state;

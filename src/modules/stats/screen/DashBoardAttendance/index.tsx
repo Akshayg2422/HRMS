@@ -25,6 +25,7 @@ const DashBoardAttendance = ({ }) => {
 
   useEffect(() => {
     getTodayStats(currentPage);
+   
   }, [selectedAttendance, selectedDepartment])
 
 
@@ -127,11 +128,7 @@ const DashBoardAttendance = ({ }) => {
                 </div>
               </div>
             </div>
-
-
           </Container>
-
-
           {employeeAttendanceStats && employeeAttendanceStats.length > 0 ? (
             <CommonTable
               noHeader
