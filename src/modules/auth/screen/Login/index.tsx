@@ -7,7 +7,7 @@ function Welcome() {
 
 
   return (
-    <Container flexDirection={'row'}  height={'vh-100'} width={'vw-100'} >
+    <Container  flexDirection={'row'}  height={'vh-100'}  >
       <WelcomeBoard />
       <Login />
     </Container>

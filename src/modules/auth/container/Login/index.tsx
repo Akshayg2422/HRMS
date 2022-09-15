@@ -90,7 +90,7 @@ function Login() {
         {t("welcome")}
       </h1>
 
-      <div className='col-xl-9 col-md-12 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
+      <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
         <InputNumber label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
           setMobile(e.target.value);
         }} />
