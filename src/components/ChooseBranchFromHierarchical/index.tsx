@@ -14,6 +14,11 @@ function Hierarchical() {
         (state: any) => state.DashboardReducer
     );
 
+    const { brancheslist } = useSelector(
+        (state: any) => state.LocationReducer
+    );
+
+
 
     const [model, setModel] = useState(false);
     let dispatch = useDispatch();
@@ -21,11 +26,11 @@ function Hierarchical() {
     const [hierarchicalBranch, setHierarchicalBranch] = useState<any>({});
     const [structuredData, setStructuredData] = useState<Array<LocationProps>>([]);
 
-    console.log(JSON.stringify(hierarchicalBranchIds) + "=========");
-
+   
 
 
     const getAllSubBranches = (branchList: any, parent_id: string) => {
+   
         let branchListFiltered: any = [];
         const getChild = (branchList: any, parent_id: string) => {
             branchList
@@ -70,14 +75,14 @@ function Hierarchical() {
 
     useEffect(() => {
         const params = {}
+        console.log("=========paramsa");
+
         dispatch(getAllBranchesList({
             params,
-            onSuccess: (response: Array<LocationProps>) => {
-
+            onSuccess: async(response: Array<LocationProps>) => {
+                console.log(JSON.stringify(response)+"=========LocationProps");
                 setStructuredData(response);
                 const parentBranch = response.find(it => !it.parent_id);
-                console.log(JSON.stringify(parentBranch));
-
                 if (parentBranch) {
                     const hierarchicalBranchArray = {
                         ...parentBranch,
@@ -89,16 +94,18 @@ function Hierarchical() {
                         [hierarchicalBranchArray],
                     );
                     setHierarchicalBranch({ child: [filteredBranch] });
+
                 }
             },
             onError: () => {
+                console.log("=========error");
             },
         }))
     }, [])
 
 
-    function saveChildIdHandler(item: any) {
-        const childIds = getAllSubBranches(structuredData, item.id)
+    function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
+        const childIds = getAllSubBranches(allBranch, item.id)
         dispatch(setBranchHierarchical({ ids: { ...hierarchicalBranchIds, branch_id: item.id, child_ids: childIds }, name: item.name }))
         setModel(!model);
     }
@@ -122,10 +129,10 @@ function Hierarchical() {
             <Modal showModel={model} toggle={() => setModel(!model)}>
 
                 {
-                    hierarchicalBranch && hierarchicalBranch?.child && hierarchicalBranch?.child.length > 0 && hierarchicalBranch?.child.map((item: LocationProps, index: number) => {
+                    brancheslist && hierarchicalBranch && hierarchicalBranch?.child && hierarchicalBranch?.child.length > 0 && hierarchicalBranch?.child.map((item: LocationProps, index: number) => {
                         return (
                             <div className='accordion'>
-                                <SubLevelComponent index={index} item={item} onChange={(item) => saveChildIdHandler(item)} hierarchicalBranchIds={hierarchicalBranchIds} />
+                                <SubLevelComponent index={index} item={item} onChange={(array,item) => saveChildIdHandler(array,item)} hierarchicalBranchIds={hierarchicalBranchIds} defaultData={brancheslist} />
                             </div>
                         );
                     })
@@ -138,11 +145,12 @@ function Hierarchical() {
 type SubLevelComponentProps = {
     item: any;
     index: number;
-    onChange?: (item: LocationProps) => void
+    onChange?: (array:Array<LocationProps>, item: LocationProps) => void
     hierarchicalBranchIds: any;
+    defaultData: Array<LocationProps>;
 }
 
-const SubLevelComponent = ({ item, index, onChange, hierarchicalBranchIds }: SubLevelComponentProps) => {
+const SubLevelComponent = ({ item, index, onChange, hierarchicalBranchIds, defaultData }: SubLevelComponentProps) => {
     return (
         <>
             <div className="card-header" data-toggle="collapse" data-target={"#collapse" + item.id} >
@@ -156,7 +164,7 @@ const SubLevelComponent = ({ item, index, onChange, hierarchicalBranchIds }: Sub
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if (onChange) {
-                                    onChange(item)
+                                    onChange(defaultData, item)
                                 }
                             }}
                         />
@@ -167,7 +175,7 @@ const SubLevelComponent = ({ item, index, onChange, hierarchicalBranchIds }: Sub
                 <div className="card-body row align-items-center">
                     {
                         item.child && item.child.length > 0 && item.child.map((item: any, index: number) => {
-                            return <SubLevelComponent index={index} item={item} onChange={onChange} hierarchicalBranchIds={hierarchicalBranchIds} />
+                            return <SubLevelComponent index={index} item={item} onChange={onChange} hierarchicalBranchIds={hierarchicalBranchIds} defaultData={defaultData} />
                         })
                     }
                 </div>
