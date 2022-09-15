@@ -26,7 +26,7 @@ import { ToastContainer } from "react-toastify";
 import { AppLoader } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation } from "./modules/dashboard/screen";
-import { ZenylogSite } from "@screens";
+import { ZenylogSite, PolicyScr, TermsOfUse } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 
 function App() {
@@ -37,6 +37,8 @@ function App() {
         <AuthProvider>
           <Routes>
             <Route path={"/"} element={<ZenylogSite />} />
+            <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
+            <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
             <Route path={ROUTE.ROUTE_LOGIN} element={<Login />} />
             <Route path={ROUTE.ROUTE_WELCOME} element={<Welcome />} />
             <Route path={ROUTE.ROUTE_OTP} element={<Otp />} />
