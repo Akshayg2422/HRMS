@@ -49,9 +49,10 @@ const DashboardStats = () => {
       selected_date: selectedDate,
     };
 
-    console.log(JSON.stringify(params)+"====");
+    
     
     dispatch(getEmployeeAttendanceStats(params));
+   
   }, [selectedDate]);
 
   const proceedNext = (attendanceType: number, departmentId: number | string) => {
@@ -61,6 +62,7 @@ const DashboardStats = () => {
       departmentId: departmentId,
       selectedDate: '2022-09-14',
     }
+    
     dispatch(getSelectedCardType(params))
     goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE)
   }
@@ -195,7 +197,11 @@ const DashboardStats = () => {
                             additionClass={'btn-block'}
                             text={t('Tap to View')}
                             size={'btn-sm'}
-                            onClick={() => proceedNext(el.type, selectedDepartmentId)}
+                            onClick={() => {
+                              setModel(!model);
+                              proceedNext(el.type, selectedDepartmentId)
+                            }
+                            }
                           />
                         </Container>
                       </Card>
