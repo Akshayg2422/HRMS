@@ -7,6 +7,7 @@ import {
   Modal,
   Primary,
   Secondary,
+  ChooseBranchFromHierarchical
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -44,12 +45,17 @@ function EmployeeScreen() {
     (state: any) => state.EmployeeReducer
   );
 
+  const {hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   useEffect(() => {
     getEmployeesApi(currentPage);
-  }, [searchEmployee]);
+  }, [searchEmployee,hierarchicalBranchIds]);
 
   function getEmployeesApi(pageNumber: number) {
     const params: object = {
+      ...hierarchicalBranchIds,
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
@@ -142,6 +148,9 @@ function EmployeeScreen() {
                   }}
                 />
               </Container>
+              <Container col={"col-xl-4 col-md-6 col-sm-12"}>
+              <ChooseBranchFromHierarchical />
+              </Container>
             </Container>
             <Container
               col={"col-xl-2 col-md-6 col-sm-12"}
@@ -152,6 +161,7 @@ function EmployeeScreen() {
             >
               <Icon type={"btn-primary"} icon={Icons.Search} />
             </Container>
+            
             <Container margin={"my-3"} additionClass={"text-right"}>
               <Primary
                 text={t("addEmployee")}
