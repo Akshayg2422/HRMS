@@ -111,8 +111,6 @@ function EmployeeScreen() {
     );
   };
 
- 
-
   return (
     <>
       <Navbar />
@@ -121,7 +119,7 @@ function EmployeeScreen() {
           <Container flexDirection={"row"} alignItems={"align-items-center"}>
             <Container
               flexDirection={"row"}
-              col={"col-9"}
+              additionClass={'col-sm-9'}
               alignItems={"align-items-center"}
             >
               <Container col={"col-xl-4 col-md-6 col-sm-12"}>
@@ -142,24 +140,28 @@ function EmployeeScreen() {
                   }}
                 />
               </Container>
-            </Container>
-            <Container
-              col={"col-xl-2 col-md-6 col-sm-12"}
-              flexDirection={"row"}
+              <Container 
+              col={'col'}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
-              onClick={() => goTo(navigation, ROUTE.ROUTE_DASHBOARD_STATS)}
+              // onClick={() => goTo(navigation, ROUTE.ROUTE_DASHBOARD_STATS)}
             >
               <Icon type={"btn-primary"} icon={Icons.Search} />
             </Container>
-            <Container margin={"my-3"} additionClass={"text-right"}>
+            </Container>
+
+            <Container margin={"my-3"} display={'d-flex'} justifyContent={'justify-content-end'} >
               <Primary
                 text={t("addEmployee")}
                 onClick={() => manageEmployeeHandler(undefined)}
+                size={'btn-sm'}
               />
               <Primary
                 text={t("deletedUser")}
-                onClick={() =>  goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)}
+                onClick={() =>
+                  goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
+                }
+                size={'btn-sm'}
               />
             </Container>
 

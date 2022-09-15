@@ -152,8 +152,7 @@ function Dashboard() {
         <Container additionClass={"main-description"}>
           <Container additionClass={"container-fluid"}>
             <DashBoardCard />
-            <Container flexDirection={"row"}>
-              <Container col={"col-9"}>
+              <Container additionClass={'container-fluid mt-3'}>
                 <LineCharts
                   title={"Overview"}
                   datas={LineChartdata}
@@ -181,8 +180,7 @@ function Dashboard() {
                   })}
                 />
               </Container>
-            </Container>
-            <Container col={"col-7"}>
+            <Container  additionClass={'container-fluid mt-3'}>
               <CardTable displayDataSet={dummyTable} title={t("table")} />
             </Container>
           </Container>
