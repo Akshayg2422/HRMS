@@ -7,6 +7,7 @@ import {
   Modal,
   Primary,
   Secondary,
+  ChooseBranchFromHierarchical
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -44,12 +45,17 @@ function EmployeeScreen() {
     (state: any) => state.EmployeeReducer
   );
 
+  const {hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   useEffect(() => {
     getEmployeesApi(currentPage);
-  }, [searchEmployee]);
+  }, [searchEmployee,hierarchicalBranchIds]);
 
   function getEmployeesApi(pageNumber: number) {
     const params: object = {
+      ...hierarchicalBranchIds,
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
@@ -117,12 +123,12 @@ function EmployeeScreen() {
       <div className="main-content">
         <Card margin={"m-4"}>
           <Container flexDirection={"row"} alignItems={"align-items-center"}>
-            <Container
+          <Container
               flexDirection={"row"}
-              additionClass={'col-sm-9'}
+              additionClass={'col'}
               alignItems={"align-items-center"}
             >
-              <Container col={"col-xl-4 col-md-6 col-sm-12"}>
+              <Container col={"col-xl-3 col-md-6 col-sm-12"}>
                 <InputText
                   placeholder={t("enterEmployeeName")}
                   label={t("employeeName")}
@@ -131,7 +137,7 @@ function EmployeeScreen() {
                   }}
                 />
               </Container>
-              <Container col={"col-xl-4 col-md-6 col-sm-12"}>
+              <Container col={"col-xl-3 col-md-6 col-sm-12"}>
                 <InputText
                   placeholder={t("enterEmployeeId")}
                   label={t("employeeId")}
@@ -140,8 +146,12 @@ function EmployeeScreen() {
                   }}
                 />
               </Container>
+              <Container  col={"col-xl-3 col-md-6 col-sm-12"}  additionClass={'mt-xl-4'} >
+              <ChooseBranchFromHierarchical />
+              </Container>
               <Container 
               col={'col'}
+              additionClass={'mt-sm-3'}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
               // onClick={() => goTo(navigation, ROUTE.ROUTE_DASHBOARD_STATS)}
@@ -164,7 +174,6 @@ function EmployeeScreen() {
                 size={'btn-sm'}
               />
             </Container>
-
             {registeredEmployeesList && registeredEmployeesList.length > 0 && (
               <CommonTable
                 noHeader

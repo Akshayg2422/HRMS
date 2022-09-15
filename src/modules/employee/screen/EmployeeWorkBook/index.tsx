@@ -1,4 +1,4 @@
-import { CommonTable, Sort, Container, Divider, Modal, NoRecordFound, ImageView, Carousel } from '@components'
+import { CommonTable, Sort, Container, Divider, Modal, NoRecordFound, ImageView, Carousel, ChooseBranchFromHierarchical} from '@components'
 import React, { useEffect, useState } from 'react'
 import { getEmployeeEachUserTimeSheets, getEmployeesTimeSheets } from '../../../../store/employee/actions';
 import { useSelector, useDispatch } from "react-redux";
@@ -28,6 +28,10 @@ function EmployeeTimeSheets() {
     (state: any) => state.EmployeeReducer
   );
 
+  const {hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   const sortData = [
     { id: 1, title: 'Daily', },
     { id: 2, title: 'Weekly' },
@@ -37,11 +41,12 @@ function EmployeeTimeSheets() {
 
   useEffect(() => {
     getEmployeeTimeSheets(currentPage);
-  }, [])
+  }, [hierarchicalBranchIds])
 
 
   function getEmployeeTimeSheets(pageNumber: number) {
     const params: object = {
+      ...hierarchicalBranchIds,
       page_number: pageNumber,
       q: ""
     }
@@ -85,6 +90,7 @@ function EmployeeTimeSheets() {
           setActiveSort(index);
           onTabChange(index)
         }} />
+         <ChooseBranchFromHierarchical />
       </div>
       {employeeTimeSheets && employeeTimeSheets.length > 0 &&
         <CommonTable

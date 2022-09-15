@@ -14,6 +14,10 @@ const DashBoardAttendance = ({ }) => {
     (state: any) => state.EmployeeReducer
   );
 
+  const {hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   const [selectedDepartment, setSelectedDepartment] = useState(
     routeParams.departmentId
   );
@@ -31,9 +35,7 @@ const DashBoardAttendance = ({ }) => {
 
   const getTodayStats = (pageNumber: number) => {
     const params = {
-      branch_id: '2b166a62-22ec-4fcd-a2fe-aab084cb6d37',
-      child_ids: ['5b37ee6a-7666-4b82-b955-0dd2db63e9e3', '65599068-e89b-4ffa-881d-7172d12aaa34', '27e701ab-b359-40c7-b9e1-d543b11ba416'],
-      include_child: true,
+      ...hierarchicalBranchIds,
       department_id: selectedDepartment+'',
       attendance_type: selectedAttendance + '',
       selected_date: getServerDateFromMoment(

@@ -1,4 +1,4 @@
-import { Container, CommonTable, InputText, Icon, Modal, ImageView, Divider, Primary } from '@components'
+import { Container, CommonTable, InputText, Icon, Modal, ImageView, Divider, Primary, ChooseBranchFromHierarchical} from '@components'
 import React, { useEffect, useState } from 'react'
 import { Navbar } from '../../container'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,16 +35,19 @@ function ManageAssignLocation() {
         (state: any) => state.LocationReducer
     );
 
-
+    const {hierarchicalBranchIds } = useSelector(
+        (state: any) => state.DashboardReducer
+      );
 
 
 
     useEffect(() => {
         getConsolidatedEmployeeList(currentPage)
-    }, [])
+    }, [hierarchicalBranchIds])
 
     const getConsolidatedEmployeeList = (pageNumber: number) => {
-        const params = { page_number: pageNumber, ...(searchEmployee && { q: searchEmployee }) }
+        const params = { ...hierarchicalBranchIds,
+            page_number: pageNumber, ...(searchEmployee && { q: searchEmployee }) }
         dispatch(getEmployeesList({ params }))
     }
 
@@ -143,6 +146,7 @@ function ManageAssignLocation() {
                                 <div className='col-4 mt-2'>
                                     <Icon type={'btn-primary'} icon={Icons.Search} />
                                 </div>
+                                <ChooseBranchFromHierarchical />
                             </div>
                         </div>
 
