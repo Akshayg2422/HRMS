@@ -16,11 +16,17 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
+  const { hierarchicalBranchName, hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
+
   const [model, setModel] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
   const [selectedDepartmentName, setSelectedDepartmentName] = useState('');
   const [attendanceConsolidatedCardsData, setAttendanceConsolidatedCardsData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(getServerDateFromMoment(getMomentObjFromServer(new Date())));
+
 
 
 
@@ -43,24 +49,27 @@ const DashboardStats = () => {
 
   useEffect(() => {
     const params = {
-      branch_id: '2b166a62-22ec-4fcd-a2fe-aab084cb6d37',
-      child_ids: ['5b37ee6a-7666-4b82-b955-0dd2db63e9e3', '65599068-e89b-4ffa-881d-7172d12aaa34', '27e701ab-b359-40c7-b9e1-d543b11ba416'],
-      include_child: true,
+      ...hierarchicalBranchIds,
       selected_date: selectedDate,
     };
 
-    console.log(JSON.stringify(params)+"====");
+    console.log(JSON.stringify(params)+"======useEffect");
     
+
     dispatch(getEmployeeAttendanceStats(params));
-  }, [selectedDate]);
+   
+  }, [selectedDate,hierarchicalBranchIds]);
 
   const proceedNext = (attendanceType: number, departmentId: number | string) => {
 
     const params = {
       attendanceType: attendanceType,
       departmentId: departmentId,
-      selectedDate: '2022-09-14',
+      selectedDate: selectedDate
     }
+
+
+    
     dispatch(getSelectedCardType(params))
     goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE)
   }
@@ -68,9 +77,7 @@ const DashboardStats = () => {
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
     const params = {
-      branch_id: '2b166a62-22ec-4fcd-a2fe-aab084cb6d37',
-      child_ids: ['5b37ee6a-7666-4b82-b955-0dd2db63e9e3', '65599068-e89b-4ffa-881d-7172d12aaa34', '27e701ab-b359-40c7-b9e1-d543b11ba416'],
-      include_child: true,
+      ...hierarchicalBranchIds,
       selected_date: selectedDate,
       department_id: departmentId,
     };
@@ -195,7 +202,11 @@ const DashboardStats = () => {
                             additionClass={'btn-block'}
                             text={t('Tap to View')}
                             size={'btn-sm'}
-                            onClick={() => proceedNext(el.type, selectedDepartmentId)}
+                            onClick={() => {
+                              setModel(!model);
+                              proceedNext(el.type, selectedDepartmentId)
+                            }
+                            }
                           />
                         </Container>
                       </Card>
