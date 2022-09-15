@@ -17,8 +17,6 @@ const Header = () => {
     (state: any) => state.DashboardReducer
   );
 
-  console.log(JSON.stringify(dashboardDetails)+"========");
-  
 
 
   const DropdownHandler = (item: any) => {

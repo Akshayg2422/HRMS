@@ -1,22 +1,24 @@
-import { CommonTable, Card, Container, DropDown, NoRecordFound, } from '@components';
-import React, { useEffect, useState} from 'react'
+import { CommonTable, Card, Container, DropDown, NoRecordFound, Modal, Table } from '@components';
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getEmployeeTodayStatus } from "../../../../store/employee/actions";
+import { getEmployeeTodayStatus, getCheckInDetailedLogPerDay } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import { getServerDateFromMoment, getMomentObjFromServer, getDisplayTimeFromMoment } from '@utils'
-import {Navbar} from '@modules'
+import { Navbar } from '@modules'
 const DashBoardAttendance = ({ }) => {
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
-  const { routeParams, employeeAttendanceStats, numOfPages, currentPage, employeeattendancedatalog } = useSelector(
+  const { routeParams, employeeAttendanceStats, numOfPages, currentPage, employeeattendancedatalog, employeeCheckInDetailedLogPerDay } = useSelector(
     (state: any) => state.EmployeeReducer
   );
 
-  const {hierarchicalBranchIds } = useSelector(
+  const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
+
+  const [model, setModel] = useState(false);
 
   const [selectedDepartment, setSelectedDepartment] = useState(
     routeParams.departmentId
@@ -29,14 +31,13 @@ const DashBoardAttendance = ({ }) => {
 
   useEffect(() => {
     getTodayStats(currentPage);
-   
   }, [selectedAttendance, selectedDepartment])
 
 
   const getTodayStats = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
-      department_id: selectedDepartment+'',
+      department_id: selectedDepartment + '',
       attendance_type: selectedAttendance + '',
       selected_date: getServerDateFromMoment(
         getMomentObjFromServer(routeParams.selectedDate),
@@ -90,6 +91,30 @@ const DashBoardAttendance = ({ }) => {
     getTodayStats(page);
   }
 
+  function getEmployeeCheckInDetailedLogPerDay(index: number) {
+    const selectedUser = employeeAttendanceStats[index]
+    if (selectedUser.per_day_details && selectedUser.id) {
+      dispatch(
+        getCheckInDetailedLogPerDay({
+          date: selectedUser.per_day_details.date,
+          user_id: selectedUser.id,
+        })
+      );
+    }
+    setModel(!model);
+
+  }
+
+  const normalizedPerDayData = (data: any) => {
+    return data.map((it: any) => {
+      return {
+        Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
+        Type: it.type,
+        address: it.address_text,
+      };
+    });
+  };
+
 
   return (
     <>
@@ -139,6 +164,9 @@ const DashBoardAttendance = ({ }) => {
               paginationNumberClick={(currentPage) => {
                 paginationHandler("current", currentPage);
               }}
+              tableOnClick={(e, index, item) => {
+                getEmployeeCheckInDetailedLogPerDay(index)
+              }}
               previousClick={() => paginationHandler("prev")}
               nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployee(employeeAttendanceStats)}
@@ -146,6 +174,20 @@ const DashBoardAttendance = ({ }) => {
           ) : <NoRecordFound />}
         </Card>
       </div>
+      <Modal
+        showModel={model}
+        toggle={() => setModel(!model)}>
+        {employeeCheckInDetailedLogPerDay &&
+          employeeCheckInDetailedLogPerDay.length > 0 ? (
+          <Table
+            displayDataSet={normalizedPerDayData(
+              employeeCheckInDetailedLogPerDay
+            )}
+          />
+        ) : (
+          <NoRecordFound />
+        )}
+      </Modal>
     </>
   )
 }

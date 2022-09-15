@@ -24,6 +24,7 @@ import {
   
 
   export const getDashboard = (params) => {
+    console.log("getDashboard=====action");
     return {
       type: FETCH_DASHBOARD,
       payload: params,

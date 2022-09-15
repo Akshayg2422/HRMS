@@ -1,7 +1,7 @@
-import LoadingOverlay from "react-loading-overlay-ts";
-import { useSelector } from "react-redux";
-import "./loader.css";
-import styled, { css } from "styled-components";
+import LoadingOverlay from 'react-loading-overlay-ts';
+import { useSelector } from 'react-redux';
+import './loader.css';
+import styled, { css } from 'styled-components';
 
 const DarkBackground = styled.div<{ disappear: boolean }>`
   display: none; /* Hidden by default */
@@ -22,7 +22,9 @@ const DarkBackground = styled.div<{ disappear: boolean }>`
 `;
 
 function AppLoader() {
-  const { loading } = useSelector((state: any) => state.AuthReducer);
+  const { loading } = useSelector((state: any) => state.AppReducer);
+
+
 
   return (
     <div>
