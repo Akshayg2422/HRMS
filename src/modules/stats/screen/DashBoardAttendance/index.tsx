@@ -91,7 +91,6 @@ const DashBoardAttendance = ({ }) => {
 
   return (
     <>
-
       <Navbar />
       <div className='main-content'>
         <Card>

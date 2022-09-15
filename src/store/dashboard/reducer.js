@@ -17,12 +17,16 @@ import {
   EDIT_PROFILE_PICTURE,
   EDIT_PROFILE_PICTURE_SUCCESS,
   EDIT_PROFILE_PICTURE_FAIL,
+  SET_HIERARCHICAL_BRANCH_IDS,
+  SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   error: '',
-  dashboardDetails: {}
+  dashboardDetails: {},
+  hierarchicalBranchIds:{},
+  hierarchicalBranchName:''
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -136,6 +140,22 @@ const DashboardReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+    /**
+     * HIERARCHICAL branch set
+     */
+    case SET_HIERARCHICAL_BRANCH_IDS:
+      state = {
+        ...state,
+        hierarchicalBranchIds: action.payload.ids,
+        hierarchicalBranchName: action.payload.name
+      };
+      break;
+    case SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD:
+      state = {
+        ...state,
+        hierarchicalBranchIds: { ...state.hierarchicalBranchIds, include_child: action.payload.checkBoxStatus }
+      };
+        break;
     default:
       state = state
       break;
