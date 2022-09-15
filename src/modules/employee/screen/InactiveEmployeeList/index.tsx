@@ -8,6 +8,7 @@ import {
   Primary,
   Secondary,
   NoRecordFound,
+  ChooseBranchFromHierarchical
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -43,8 +44,13 @@ function InActiveEmployeeList() {
     (state: any) => state.EmployeeReducer
   );
 
+  const {hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   const manageInactiveEmployeeList = () => {
     const params: object = {
+      ...hierarchicalBranchIds,
       page_number: currentPage,
       is_active: false,
     };
@@ -61,10 +67,11 @@ function InActiveEmployeeList() {
 
   useEffect(() => {
     manageInactiveEmployeeList();
-  }, []);
+  }, [hierarchicalBranchIds]);
 
   function getEmployeesApi(pageNumber: number) {
     const params: object = {
+      ...hierarchicalBranchIds,
       page_number: pageNumber,
     };
 
@@ -126,6 +133,7 @@ function InActiveEmployeeList() {
         <Card margin={"m-4"}>
           <Container>
             <h2>{t("deletedUser")}</h2>
+            <ChooseBranchFromHierarchical />
             {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
               <CommonTable
                 noHeader
