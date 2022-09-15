@@ -2350,7 +2350,7 @@
  .form-control:disabled,
  .form-control[readonly] {
      opacity: 1;
-     background-color: #e9ecef;
+     background-color: #fff;
  }
 
  select.form-control:focus::-ms-value {

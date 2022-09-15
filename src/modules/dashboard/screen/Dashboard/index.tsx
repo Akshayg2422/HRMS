@@ -12,8 +12,15 @@ import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
 import { useDashboard } from "@contexts";
 import { goTo, ROUTE, useNav } from "@utils";
 import { useDispatch } from "react-redux";
-import { getDashboard } from "../../../../store/dashboard/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux";import { useTranslation } from "react-i18next";
+
+
+import {
+  getAllBranchesList,
+} from '../../../../store/location/actions';
+
+import { LocationProps } from '../../../../components/Interface';
 
 const data = [
   {
@@ -130,6 +137,9 @@ const dummyTable = [
   },
 ];
 
+
+
+
 function Dashboard() {
   const { t } = useTranslation();
   const navigation = useNav();
@@ -140,9 +150,51 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
+
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    let branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) => {
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
+    };
+    getChild(branchList, parent_id);
+
+    branchListFiltered = branchListFiltered.map((it: any) => {
+      return it.id;
+    });
+    return branchListFiltered;
+  };
+
+
+
   useEffect(() => {
     dispatch(getDashboard({}))
   }, []);
+
+  useEffect(() => {
+
+    if (dashboardDetails) {
+      const params = {}
+      dispatch(getAllBranchesList({
+        params,
+        onSuccess: (response: Array<LocationProps>) => {
+          const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
+          dispatch(setBranchHierarchical({ids:{ branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name}))
+        },
+        onError: () => {
+        },
+      }))
+    }
+
+  }, [dashboardDetails]);
+
+
+
 
   return (
     <>

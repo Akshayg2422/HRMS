@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import { Modal, InputDefault, CheckBox, ImageView } from '@components'
-
 import {
     getAllBranchesList,
 } from '../../store/location/actions';
 import { useSelector, useDispatch } from "react-redux";
 import { LocationProps } from '../Interface'
 import {Icons} from '@assets'
-type HierarchicalProps = {
+import { setBranchHierarchical, setBranchHierarchicalIncludeChild } from "../../store/dashboard/actions";
 
-}
+function Hierarchical() {
 
-function Hierarchical({ }: HierarchicalProps) {
+    const { hierarchicalBranchName, hierarchicalBranchIds , dashboardDetails} = useSelector(
+        (state: any) => state.DashboardReducer
+      );
+    
 
     const [model, setModel] = useState(false);
     let dispatch = useDispatch();
@@ -79,10 +81,8 @@ function Hierarchical({ }: HierarchicalProps) {
                         child: getChild(response, parentBranch.id),
 
                     };
-
-
                     const filteredBranch = getCurrentBranchNode(
-                        '2b166a62-22ec-4fcd-a2fe-aab084cb6d37',
+                        dashboardDetails.company_branch.id,
                         [hierarchicalBranchArray],
                     );
                     setHierarchicalBranch({ child: [filteredBranch] });
@@ -94,13 +94,10 @@ function Hierarchical({ }: HierarchicalProps) {
     }, [])
 
 
-    function saveChildIdHandler(item: any){
-        // console.log(item.name+"========");
-        // getAllSubBranches(structuredData, item.id)
-        console.log(item.id);
-        
-        console.log(JSON.stringify(getAllSubBranches(structuredData, item.id))+"===========saveChildIdHandler");
-        
+    function saveChildIdHandler(item: any) {
+        const childIds = getAllSubBranches(structuredData, item.id)
+        dispatch(setBranchHierarchical({ ids: { branch_id: item.id, child_ids: childIds, include_child: true }, name: item.name }))
+        setModel(!model);
     }
 
 
@@ -108,10 +105,12 @@ function Hierarchical({ }: HierarchicalProps) {
         <div>
             <div className='col text-right' >
                 <div onClick={() => setModel(!model)}>
-                    <InputDefault disabled={true} />
+                    <InputDefault disabled={true} value={hierarchicalBranchName}/>
                 </div>
                 <div className='mt--3'>
-                    <CheckBox text={'Include Sub Branches'} />
+                    <CheckBox text={'Include Sub Branches'}  checked={hierarchicalBranchIds.include_child} onChange={(e)=>{
+                        dispatch(setBranchHierarchicalIncludeChild({checkBoxStatus: e.target.checked}))
+                    }}/>
                 </div>
             </div>
 
@@ -121,7 +120,7 @@ function Hierarchical({ }: HierarchicalProps) {
                     hierarchicalBranch && hierarchicalBranch?.child && hierarchicalBranch?.child.length > 0 && hierarchicalBranch?.child.map((item: LocationProps, index: number) => {
                         return (
                             <div className='accordion'>
-                                <SubLevelComponent index={index} item={item} onChange={(item)=>saveChildIdHandler(item)}/>
+                                <SubLevelComponent index={index} item={item} onChange={(item)=>saveChildIdHandler(item)} hierarchicalBranchIds={hierarchicalBranchIds}/>
                             </div>
                         );
                     })
@@ -135,9 +134,10 @@ type SubLevelComponentProps = {
     item: any;
     index: number;
     onChange?: (item : LocationProps) => void
+    hierarchicalBranchIds: any;
 }
 
-const SubLevelComponent = ({ item, index , onChange}: SubLevelComponentProps) => {
+const SubLevelComponent = ({ item, index , onChange, hierarchicalBranchIds}: SubLevelComponentProps) => {
     return (
         <>
             <div className="card-header"  data-toggle="collapse" data-target={"#collapse" + item.id} >
@@ -150,9 +150,9 @@ const SubLevelComponent = ({ item, index , onChange}: SubLevelComponentProps) =>
                         if (onChange) {
                             onChange(item)
                         }
-                        
+
                     }}>
-                        <ImageView icon={Icons.TickDefault} />
+                        <ImageView icon={hierarchicalBranchIds.branch_id === item.id ? Icons.TickActive : Icons.TickDefault} />
                     </div>
                 </div>
             </div>
@@ -160,7 +160,7 @@ const SubLevelComponent = ({ item, index , onChange}: SubLevelComponentProps) =>
                 <div className="card-body row align-items-center">
                     {
                         item.child && item.child.length > 0 && item.child.map((item: any, index: number) => {
-                            return <SubLevelComponent index={index} item={item} onChange={onChange} />
+                            return <SubLevelComponent index={index} item={item} onChange={onChange} hierarchicalBranchIds={hierarchicalBranchIds}/>
                         })
                     }
                 </div>

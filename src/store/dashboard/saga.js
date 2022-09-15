@@ -14,7 +14,7 @@ function* getDashboard(action) {
     if (response.success) {
       yield put(getDashboardSuccess(response.details));
     } else {
-      yield put(getDashboardFail(response.error_message));
+      yield put(getDashboardFail(response.error_message));    
     }
   } catch (error) {
     yield put(getDashboardFail("Invalid Request"));
