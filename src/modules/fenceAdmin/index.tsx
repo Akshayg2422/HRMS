@@ -22,6 +22,7 @@ type Employee = {
 }
 
 function FenceAdmin() {
+
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [model, setModel] = useState(false);
@@ -108,17 +109,16 @@ function FenceAdmin() {
 
     return (
         <>
-            <Navbar />
-            <Container additionClass='main-content my-3'>
-                {brancheslist && brancheslist.length > 0 &&
-                    <CommonTable
-                        tableTitle={t('fenceAdmin')}
-                        displayDataSet={normalizedBranchList(brancheslist)}
-                        tableOnClick={(e, index, item) => {
-                           proceedModelHandler(index);
-                        }}
-                    />}
-            </Container>
+            {
+                brancheslist && brancheslist.length > 0 &&
+                <CommonTable
+                    tableTitle={t('fenceAdmin')}
+                    displayDataSet={normalizedBranchList(brancheslist)}
+                    tableOnClick={(e, index, item) => {
+                        proceedModelHandler(index);
+                    }}
+                />
+            }
 
             {
                 <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => setModel(!model)}>
@@ -135,7 +135,7 @@ function FenceAdmin() {
                                 <EmployeeTable
                                     employeeFenceId={selectedEmployeeFenceId}
                                     tableDataSet={registeredEmployeesList}
-                                    proceedFenceAdmin={(item)=> addFenceAdminApiHandler(item)}
+                                    proceedFenceAdmin={(item) => addFenceAdminApiHandler(item)}
                                 />}
                         />
                     ) :

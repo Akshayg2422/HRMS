@@ -8,6 +8,7 @@ import { Navbar } from '@modules';
 import {Icons} from '@assets'
 
 const DashboardStats = () => {
+
   const { t } = useTranslation();
   const navigation = useNav()
   let dispatch = useDispatch();
@@ -100,123 +101,115 @@ const DashboardStats = () => {
 
   return (
     <>
-      <Navbar />
-      <Container additionClass={'main-content'}>
-
-        <Container additionClass={'col mt-5'}>
-          <div className='row mt-3'>
-            <div className='col'>
+      <Container additionClass={'col'}>
+        <div className='row mt-3'>
+          <div className='col'>
+          </div>
+          <div className='row col-lg-7 col-md-10'>
+            <div className='col-lg-6 col-md-6 mt-2'>
+              <DatePicker
+                placeholder={'Select Date'}
+                icon={Icons.Calendar}
+                iconPosition={'prepend'}
+                value={selectedDate}
+                onChange={(date: string) =>
+                  setSelectedDate(date)
+                } />
             </div>
-            <div className='row col-lg-7 col-md-10'>
-              <div className='col-lg-6 col-md-6 mt-2'>
-                <DatePicker
-                  placeholder={'Select Date'}
-                  icon={Icons.Calendar}
-                  iconPosition={'prepend'}
-                  value={selectedDate}
-                  onChange={(date: string) =>
-                    setSelectedDate(date)
-                  } />
-              </div>
-              <div className='col-lg-6 col-md-6'>
-                <ChooseBranchFromHierarchical />
-              </div>
+            <div className='col-lg-6 col-md-6'>
+              <ChooseBranchFromHierarchical />
             </div>
           </div>
+        </div>
+      </Container>
+      <Container
+        additionClass={'row'}
+        justifyContent={'justify-content-around'}>
+        <div className="row align-items-center mb-3">
+          <div className="col" >
+            <h3 className="mb-0" >{t('dashboardDetails')}</h3>
+          </div>
+        </div>
+        <Container additionClass={'row'} >
+          {employeeattendancedatalog?.cards?.map((el: any) => {
+            return (
+              <Container additionClass={'col-xl-4 col-md-6'}>
+                <Card>
+                  <Container
+                    justifyContent={'justify-content-between'}
+                    alignItems={'align-content-center'}
+                    flexDirection={'column'}
+                  >
+                    <Container>
+                      <div className='text-center h1 font-weight-300'>
+                        {el.count}
+                      </div>
+                      <div className='text-center h2'>{el.title}</div>
+                    </Container>
+
+                    <Primary
+                      additionClass={'btn-block'}
+                      text={t('Tap to View')}
+                      size={'btn-sm'}
+                      onClick={() => proceedNext(el.type, -1)}
+                    />
+                  </Container>
+                </Card>
+              </Container>
+            );
+          })}
         </Container>
+        <Container margin={'m-6'}>
+          {employeeattendancedatalog && employeeattendancedatalog.departments_types && (
+            <CommonTable
+              tableTitle={t(t('departments'))}
+              displayDataSet={normalizedEmployeeAttendanceLog(employeeattendancedatalog)}
+              tableOnClick={(e, index, item) => {
+                console.log(employeeattendancedatalog.departments_stats[index].department_id + "=====");
 
-
-        <Container
-          additionClass={'row'}
-          justifyContent={'justify-content-around'}
-          margin={'m-3'}>
-          <div className="row align-items-center mb-3">
-            <div className="col" >
-              <h3 className="mb-0" >{t('dashboardDetails')}</h3>
-            </div>
-          </div>
+                setSelectedDepartmentName(employeeattendancedatalog.departments_stats[index].name)
+                setSelectedDepartmentId(employeeattendancedatalog.departments_stats[index].department_id)
+                getAttendanceConsolidatedData(employeeattendancedatalog.departments_stats[index].department_id);
+              }}
+            />
+          )}
+        </Container>
+        <Modal title={selectedDepartmentName} showModel={model} toggle={() => setModel(!model)}  >
           <Container additionClass={'row'} >
-            {employeeattendancedatalog?.cards?.map((el: any) => {
-              return (
-                <Container additionClass={'col-xl-4 col-md-6'}>
-                  <Card>
-                    <Container
-                      justifyContent={'justify-content-between'}
-                      alignItems={'align-content-center'}
-                      flexDirection={'column'}
-                    >
-                      <Container>
-                        <div className='text-center h1 font-weight-300'>
-                          {el.count}
-                        </div>
-                        <div className='text-center h2'>{el.title}</div>
-                      </Container>
-
-                      <Primary
-                        additionClass={'btn-block'}
-                        text={t('Tap to View')}
-                        size={'btn-sm'}
-                        onClick={() => proceedNext(el.type, -1)}
-                      />
-                    </Container>
-                  </Card>
-                </Container>
-              );
-            })}
-          </Container>
-          <Container margin={'m-6'}>
-
-            {employeeattendancedatalog && employeeattendancedatalog.departments_types && (
-              <CommonTable
-                tableTitle={t(t('departments'))}
-                displayDataSet={normalizedEmployeeAttendanceLog(employeeattendancedatalog)}
-                tableOnClick={(e, index, item) => {
-                  console.log(employeeattendancedatalog.departments_stats[index].department_id + "=====");
-
-                  setSelectedDepartmentName(employeeattendancedatalog.departments_stats[index].name)
-                  setSelectedDepartmentId(employeeattendancedatalog.departments_stats[index].department_id)
-                  getAttendanceConsolidatedData(employeeattendancedatalog.departments_stats[index].department_id);
-                }}
-              />
-            )}
-          </Container>
-          <Modal title={selectedDepartmentName} showModel={model} toggle={() => setModel(!model)}  >
-            <Container additionClass={'row'} >
-              {
-                attendanceConsolidatedCardsData.map((el: any, index: number) => {
-                  return (
-                    <Container additionClass={'col-xl-4 col-md-6'}>
-                      <Card>
-                        <Container
-                          justifyContent={'justify-content-between'}
-                          alignItems={'align-content-center'}
-                          flexDirection={'column'}>
-                          <Container>
-                            <div className='text-center h1 font-weight-300'>
-                              {el.count}
-                            </div>
-                            <div className='text-center h2'>{el.title}</div>
-                          </Container>
-
-                          <Primary
-                            additionClass={'btn-block'}
-                            text={t('Tap to View')}
-                            size={'btn-sm'}
-                            onClick={() => {
-                              setModel(!model);
-                              proceedNext(el.type, selectedDepartmentId)
-                            }
-                            }
-                          />
+            {
+              attendanceConsolidatedCardsData.map((el: any, index: number) => {
+                return (
+                  <Container additionClass={'col-xl-4 col-md-6'}>
+                    <Card>
+                      <Container
+                        justifyContent={'justify-content-between'}
+                        alignItems={'align-content-center'}
+                        flexDirection={'column'}>
+                        <Container>
+                          <div className='text-center h1 font-weight-300'>
+                            {el.count}
+                          </div>
+                          <div className='text-center h2'>{el.title}</div>
                         </Container>
-                      </Card>
-                    </Container>
-                  );
-                })
-              }
-            </Container>
-          </Modal>
-        </Container>
+
+                        <Primary
+                          additionClass={'btn-block'}
+                          text={t('Tap to View')}
+                          size={'btn-sm'}
+                          onClick={() => {
+                            setModel(!model);
+                            proceedNext(el.type, selectedDepartmentId)
+                          }
+                          }
+                        />
+                      </Container>
+                    </Card>
+                  </Container>
+                );
+              })
+            }
+          </Container>
+        </Modal>
       </Container>
     </>
   );

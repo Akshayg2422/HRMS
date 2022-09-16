@@ -16109,7 +16109,7 @@ Zenylog
 
  .btn-icon-only {
      width: 4.375rem;
-     height: 3.000rem;
+     height: calc(1.5em + 1.25rem + 2px);
      padding: 0;
  }
 

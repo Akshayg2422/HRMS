@@ -14,7 +14,11 @@ import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fet
 import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
-import {DashboardStats,DashBoardAtttendance} from './stats'
+import {DashboardStats,DashBoardAttendance} from './stats'
+import RequireAuth from './RequireAuth'
+import RequireAuthExist from './RequireAuthExist'
+
+
 
 
 import fenceAdmin from './fenceAdmin'
@@ -37,11 +41,13 @@ export {
   DashBoardCard,
   ManageEmployee,
   DashboardStats,
-  DashBoardAtttendance,
+  DashBoardAttendance,
   EmployeeLog,
   ManageBranches,
   EmployeeWorkBook,
   fenceAdmin,
   Profile,
-  InActiveEmployeeList
+  InActiveEmployeeList,
+  RequireAuth,
+  RequireAuthExist
 }

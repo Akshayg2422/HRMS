@@ -11,7 +11,7 @@ interface FormWrapperProps {
 function 
 index({ title, children, onClick, hideFooter = false }: FormWrapperProps) {
     return (
-        <div className="container p-6">
+        <div className="container p-5">
             <div className="row">
                 <div className="card">
                     <div className="card-header">
@@ -21,14 +21,14 @@ index({ title, children, onClick, hideFooter = false }: FormWrapperProps) {
                     <div className="card-body" >
                         <form id="create-form">
                             <div className='row justify-content-center'>
-                                <div className='col-xl-8 col-md-10 my-3'>
+                                <div className='col-xl-7 col-md-10 my-3'>
                                     {
                                         children
                                     }
                                 </div>
                             </div>
                         </form>
-                        {!hideFooter && <div className="row col-lg-4 ml-4 mt-4 mb-3 float-right">
+                        {!hideFooter && <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
                             <Primary text={'Submit'} onClick={onClick} />
                         </div>}
                     </div>

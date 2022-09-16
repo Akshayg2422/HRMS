@@ -137,179 +137,176 @@ function EmployeeLog() {
   }
 
   return (
-    <Container>
-      <Navbar />
-      <div className="main-content mt-4">
-        <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-4"}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-
-          <div className="col text-right my-sm-2 mt-3 mt-sm-0">
-            <Sort
-              sortData={employeeLogSort}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
+    <>
+      <Container additionClass={"row mx-2 my-4"}>
+        <Container col={"col-xl-4"}>
+          <ChooseBranchFromHierarchical />
         </Container>
 
-        {registeredEmployeesList && registeredEmployeesList.length > 0 && (
-          <CommonTable
-            tableTitle={t("employeeLog")}
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-            tableOnClick={(e, index, item) => {
-              getUserCheckInLogs(index);
+        <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+          <Sort
+            sortData={employeeLogSort}
+            activeIndex={activeSort}
+            onClick={(index) => {
+              setActiveSort(index);
+              onTabChange(index);
             }}
-            paginationNumberClick={(currentPage) => {
-              getEmployeeLogs(paginationHandler("current", currentPage));
-            }}
-            previousClick={() =>
-              getEmployeeLogs(paginationHandler("prev", currentPage))
-            }
-            nextClick={() =>
-              getEmployeeLogs(paginationHandler("next", currentPage))
-            }
           />
-        )}
-        <Modal
-          showModel={model}
-          title={"Logs"}
-          size={"modal-xl"}
-          toggle={() => setModel(!model)}
-        >
-          {employeeCheckInLogs && employeeCheckInLogs.length > 0 ? (
-            <>
-              <Container
-                flexDirection={"flex-row"}
-                display={"d-flex"}
-                justifyContent={"justify-content-around"}
-              >
-                <h5 className="mb-0 col">{"Date"}</h5>
-                <h5 className="mb-0 col">{"In"}</h5>
-                <h5 className="mb-0 col">{"Out"}</h5>
-                <h5 className="mb-0 col">{"Remark"}</h5>
-              </Container>
-              <Divider />
+        </div>
+      </Container>
 
-              <div>
-                {employeeCheckInLogs.map((item: CheckInLog, index: number) => {
-                  return (
-                    <div className="accordion" id="accordionExample">
-                      <div
-                        data-toggle="collapse"
-                        data-target={
-                          index === accordion ? "#collapse" + index : undefined
+      {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+        <CommonTable
+          tableTitle={t("employeeLog")}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+          tableOnClick={(e, index, item) => {
+            getUserCheckInLogs(index);
+          }}
+          paginationNumberClick={(currentPage) => {
+            getEmployeeLogs(paginationHandler("current", currentPage));
+          }}
+          previousClick={() =>
+            getEmployeeLogs(paginationHandler("prev", currentPage))
+          }
+          nextClick={() =>
+            getEmployeeLogs(paginationHandler("next", currentPage))
+          }
+        />
+      )}
+      <Modal
+        showModel={model}
+        title={"Logs"}
+        size={"modal-xl"}
+        toggle={() => setModel(!model)}
+      >
+        {employeeCheckInLogs && employeeCheckInLogs.length > 0 ? (
+          <>
+            <Container
+              flexDirection={"flex-row"}
+              display={"d-flex"}
+              justifyContent={"justify-content-around"}
+            >
+              <h5 className="mb-0 col">{"Date"}</h5>
+              <h5 className="mb-0 col">{"In"}</h5>
+              <h5 className="mb-0 col">{"Out"}</h5>
+              <h5 className="mb-0 col">{"Remark"}</h5>
+            </Container>
+            <Divider />
+
+            <div>
+              {employeeCheckInLogs.map((item: CheckInLog, index: number) => {
+                return (
+                  <div className="accordion" id="accordionExample">
+                    <div
+                      data-toggle="collapse"
+                      data-target={
+                        index === accordion ? "#collapse" + index : undefined
+                      }
+                      onClick={() => {
+                        if (accordion !== index) {
+                          setAccordion(index);
+                          getEmployeeCheckInDetailedLogPerDay(index);
                         }
-                        onClick={() => {
-                          if (accordion !== index) {
-                            setAccordion(index);
-                            getEmployeeCheckInDetailedLogPerDay(index);
-                          }
-                        }}
+                      }}
+                    >
+                      <Container
+                        flexDirection={"flex-row"}
+                        display={"d-flex"}
+                        justifyContent={"justify-content-around"}
                       >
-                        <Container
-                          flexDirection={"flex-row"}
-                          display={"d-flex"}
-                          justifyContent={"justify-content-around"}
-                        >
-                          <small className="mb-0 col">{item.date}</small>
-                          <small className="mb-0 col">
-                            {item.start_time
-                              ? getDisplayTimeFromMoment(
-                                  getMomentObjFromServer(item.start_time)
-                                )
-                              : "-"}
-                          </small>
-                          <small className="mb-0 col">
-                            {item.start_time
-                              ? getDisplayTimeFromMoment(
-                                  getMomentObjFromServer(item.end_time)
-                                )
-                              : "-"}
-                          </small>
-                          <small className="mb-0 col">{item.day_status}</small>
-                        </Container>
-                        <Divider />
-                      </div>
-
-                      {accordion === index && (
-                        <div
-                          className="collapse"
-                          id={
-                            index === accordion ? "collapse" + index : undefined
-                          }
-                        >
-                          <div className="card-body row align-items-center">
-                            {employeeCheckInDetailedLogPerDay &&
-                            employeeCheckInDetailedLogPerDay.length > 0 ? (
-                              <div>
-                                <Container
-                                  flexDirection={"flex-row"}
-                                  display={"d-flex"}
-                                  alignItems={"align-items-center"}
-                                >
-                                  <h5 className="mb-0 col">{"Time"}</h5>
-                                  <h5 className="mb-0 col">{"Type"}</h5>
-                                  <h5 className="mb-0 col">{"Address"}</h5>
-                                </Container>
-                                <Divider />
-                                {employeeCheckInDetailedLogPerDay.map(
-                                  (item: any, index: number) => {
-                                    return (
-                                      <>
-                                        <Container
-                                          flexDirection={"flex-row"}
-                                          display={"d-flex"}
-                                          alignItems={"align-items-center"}
-                                        >
-                                          <small className="mb-0 col">
-                                            {getDisplayTimeFromMoment(
-                                              getMomentObjFromServer(
-                                                item.checkin_time
-                                              )
-                                            )}
-                                          </small>
-                                          <small className="mb-0 col">
-                                            {item.type}
-                                          </small>
-                                          <small className="mb-0 col">
-                                            {item.address_text}
-                                          </small>
-                                        </Container>
-                                        <Divider />
-                                      </>
-                                    );
-                                  }
-                                )}
-                              </div>
-                            ) : (
-                              <div className="row align-items-center">
-                                <small className="mb-0 text-center">
-                                  {t("noLogsFound")}
-                                </small>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      )}
+                        <small className="mb-0 col">{item.date}</small>
+                        <small className="mb-0 col">
+                          {item.start_time
+                            ? getDisplayTimeFromMoment(
+                              getMomentObjFromServer(item.start_time)
+                            )
+                            : "-"}
+                        </small>
+                        <small className="mb-0 col">
+                          {item.start_time
+                            ? getDisplayTimeFromMoment(
+                              getMomentObjFromServer(item.end_time)
+                            )
+                            : "-"}
+                        </small>
+                        <small className="mb-0 col">{item.day_status}</small>
+                      </Container>
+                      <Divider />
                     </div>
-                  );
-                })}
-              </div>
-            </>
-          ) : (
-            <NoRecordFound />
-          )}
-        </Modal>
-      </div>
-    </Container>
+
+                    {accordion === index && (
+                      <div
+                        className="collapse"
+                        id={
+                          index === accordion ? "collapse" + index : undefined
+                        }
+                      >
+                        <div className="card-body row align-items-center">
+                          {employeeCheckInDetailedLogPerDay &&
+                            employeeCheckInDetailedLogPerDay.length > 0 ? (
+                            <div>
+                              <Container
+                                flexDirection={"flex-row"}
+                                display={"d-flex"}
+                                alignItems={"align-items-center"}
+                              >
+                                <h5 className="mb-0 col">{"Time"}</h5>
+                                <h5 className="mb-0 col">{"Type"}</h5>
+                                <h5 className="mb-0 col">{"Address"}</h5>
+                              </Container>
+                              <Divider />
+                              {employeeCheckInDetailedLogPerDay.map(
+                                (item: any, index: number) => {
+                                  return (
+                                    <>
+                                      <Container
+                                        flexDirection={"flex-row"}
+                                        display={"d-flex"}
+                                        alignItems={"align-items-center"}
+                                      >
+                                        <small className="mb-0 col">
+                                          {getDisplayTimeFromMoment(
+                                            getMomentObjFromServer(
+                                              item.checkin_time
+                                            )
+                                          )}
+                                        </small>
+                                        <small className="mb-0 col">
+                                          {item.type}
+                                        </small>
+                                        <small className="mb-0 col">
+                                          {item.address_text}
+                                        </small>
+                                      </Container>
+                                      <Divider />
+                                    </>
+                                  );
+                                }
+                              )}
+                            </div>
+                          ) : (
+                            <div className="row align-items-center">
+                              <small className="mb-0 text-center">
+                                {t("noLogsFound")}
+                              </small>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
+        ) : (
+          <NoRecordFound />
+        )}
+      </Modal>
+    </>
   );
 }
 

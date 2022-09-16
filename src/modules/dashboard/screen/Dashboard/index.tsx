@@ -200,45 +200,10 @@ function Dashboard() {
 
   return (
     <>
-      <Navbar />
-      <div className="main-content">
-        {dashboardDetails && dashboardDetails.user_details && <Header />}
-        <Container additionClass={"main-description"}>
-          <Container additionClass={"container-fluid"}>
-            <DashBoardCard />
-              <Container additionClass={'container-fluid mt-3'}>
-                <LineCharts
-                  title={"Overview"}
-                  datas={LineChartdata}
-                  height={280}
-                  themeColor={"#CBCBCB"}
-                  width={"95%"}
-                  linename1={"UV"}
-                  linename2={"PV"}
-                  lineDataKey1={"uv"}
-                  lineDataKey2={"pv"}
-                  StrokeLine2={"#82ca9d"}
-                  StrokeLine1={"#8884d8"}
-                  // yaxisLabel={"Amount"}
-                  // xaxisLabel={"Page"}
-                  dataKeyXaxis={"name"}
-                  children={ChartRadioData.map((Item) => {
-                    return (
-                      <>
-                        <label className={"mr-5"}>
-                          <input type="radio" name="options" />
-                          <span className="ml-2">{Item}</span>
-                        </label>
-                      </>
-                    );
-                  })}
-                />
-              </Container>
-            <Container  additionClass={'container-fluid mt-3'}>
-              <CardTable displayDataSet={dummyTable} title={t("table")} />
-            </Container>
-          </Container>
-        </Container>
+      {dashboardDetails && dashboardDetails.user_details && <div className="mx--3 my--4"><Header /></div>}
+
+      <div className='my-5'>
+        <DashBoardCard />
       </div>
     </>
   );

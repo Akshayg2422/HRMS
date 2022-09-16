@@ -5,6 +5,7 @@ import { getEmployeeTodayStatus, getCheckInDetailedLogPerDay } from "../../../..
 import { useTranslation } from "react-i18next";
 import { getServerDateFromMoment, getMomentObjFromServer, getDisplayTimeFromMoment } from '@utils'
 import { Navbar } from '@modules'
+
 const DashBoardAttendance = ({ }) => {
 
   const dispatch = useDispatch();
@@ -117,63 +118,61 @@ const DashBoardAttendance = ({ }) => {
 
 
   return (
-    <>
-      <Navbar />
-      <div className='main-content'>
-        <Card>
-          <Container additionClass={'col'}>
-            <div className='row mt-3'>
-              <div className='col'>
+    <div className='mx-3'>
+      <Card>
+        <Container additionClass={'col'}>
+          <div className='row mt-3'>
+            <div className='col'>
+            </div>
+            <div className='row col-lg-6 col-md-10'>
+              <div className='col-lg-6 col-md-12'>
+                <DropDown
+                  label={'Department'}
+                  placeholder={'Select Department'}
+                  data={employeeattendancedatalog.departments_types}
+                  value={selectedDepartment}
+                  onChange={(event) => {
+                    if (setSelectedDepartment) {
+                      setSelectedDepartment(event.target.value);
+                    }
+                  }}
+                />
               </div>
-              <div className='row col-lg-6 col-md-10'>
-                <div className='col-lg-6 col-md-12'>
-                  <DropDown
-                    label={'Department'}
-                    placeholder={'Select Department'}
-                    data={employeeattendancedatalog.departments_types}
-                    value={selectedDepartment}
-                    onChange={(event) => {
-                      if (setSelectedDepartment) {
-                        setSelectedDepartment(event.target.value);
-                      }
-                    }}
-                  />
-                </div>
-                <div className='col-lg-6 col-md-12'>
-                  <DropDown
-                    label={'Attendance'}
-                    placeholder={'Select Attendance'}
-                    data={employeeattendancedatalog.attendance_types}
-                    value={selectedAttendance}
-                    onChange={(event) => {
-                      if (setSelectedAttendance) {
-                        setSelectedAttendance(event.target.value);
-                      }
-                    }}
-                  />
-                </div>
+              <div className='col-lg-6 col-md-12'>
+                <DropDown
+                  label={'Attendance'}
+                  placeholder={'Select Attendance'}
+                  data={employeeattendancedatalog.attendance_types}
+                  value={selectedAttendance}
+                  onChange={(event) => {
+                    if (setSelectedAttendance) {
+                      setSelectedAttendance(event.target.value);
+                    }
+                  }}
+                />
               </div>
             </div>
-          </Container>
-          {employeeAttendanceStats && employeeAttendanceStats.length > 0 ? (
-            <CommonTable
-              noHeader
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              tableOnClick={(e, index, item) => {
-                getEmployeeCheckInDetailedLogPerDay(index)
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
-              displayDataSet={normalizedEmployee(employeeAttendanceStats)}
-            />
-          ) : <NoRecordFound />}
-        </Card>
-      </div>
+          </div>
+        </Container>
+        {employeeAttendanceStats && employeeAttendanceStats.length > 0 ? (
+          <CommonTable
+            noHeader
+            isPagination
+            currentPage={currentPage}
+            noOfPage={numOfPages}
+            paginationNumberClick={(currentPage) => {
+              paginationHandler("current", currentPage);
+            }}
+            tableOnClick={(e, index, item) => {
+              getEmployeeCheckInDetailedLogPerDay(index)
+            }}
+            previousClick={() => paginationHandler("prev")}
+            nextClick={() => paginationHandler("next")}
+            displayDataSet={normalizedEmployee(employeeAttendanceStats)}
+          />
+        ) : <NoRecordFound />}
+      </Card>
+
       <Modal
         showModel={model}
         toggle={() => setModel(!model)}>
@@ -188,7 +187,7 @@ const DashBoardAttendance = ({ }) => {
           <NoRecordFound />
         )}
       </Modal>
-    </>
+    </div>
   )
 }
 

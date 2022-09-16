@@ -128,61 +128,58 @@ function InActiveEmployeeList() {
 
   return (
     <>
-      <Navbar />
-      <Container additionClass={"main-content"}>
-        <Card margin={"m-4"}>
-          <Container>
-            <h2>{t("deletedUser")}</h2>
-            <ChooseBranchFromHierarchical />
-            {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-              <CommonTable
-                noHeader
-                isPagination
-                currentPage={currentPage}
-                noOfPage={numOfPages}
-                additionalDataSet={ENABLE_EMPLOYEE_DATA}
-                paginationNumberClick={(currentPage) => {
-                  paginationHandler("current", currentPage);
-                }}
-                previousClick={() => paginationHandler("prev")}
-                nextClick={() => paginationHandler("next")}
-                displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-                tableValueOnClick={(e, index, item, elv) => {
-                  if (elv === "Enable") {
-                    const current = registeredEmployeesList[index];
-                    enableModelHandler(current.id);
-                  }
-                }}
-              />
-            ) : (
-              <NoRecordFound />
-            )}
-            <Modal
-              title={t("EnableUser")}
-              showModel={enableUserModel}
-              toggle={() => setEnableUserModel(!enableUserModel)}
-            >
-              <Container>
-                <span className="ml-3">{t("enableMessage")}</span>
-                <Container
-                  margin={"m-5"}
-                  justifyContent={"justify-content-end"}
-                  display={"d-flex"}
-                >
-                  <Secondary
-                    text={t("cancel")}
-                    onClick={() => setEnableUserModel(!enableUserModel)}
-                  />
-                  <Primary
-                    text={t("proceed")}
-                    onClick={() => manageEmployeeStatus()}
-                  />
-                </Container>
+      <Card margin={"m-4"}>
+        <Container>
+          <h2>{t("deletedUser")}</h2>
+          <ChooseBranchFromHierarchical />
+          {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+            <CommonTable
+              noHeader
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              additionalDataSet={ENABLE_EMPLOYEE_DATA}
+              paginationNumberClick={(currentPage) => {
+                paginationHandler("current", currentPage);
+              }}
+              previousClick={() => paginationHandler("prev")}
+              nextClick={() => paginationHandler("next")}
+              displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+              tableValueOnClick={(e, index, item, elv) => {
+                if (elv === "Enable") {
+                  const current = registeredEmployeesList[index];
+                  enableModelHandler(current.id);
+                }
+              }}
+            />
+          ) : (
+            <NoRecordFound />
+          )}
+          <Modal
+            title={t("EnableUser")}
+            showModel={enableUserModel}
+            toggle={() => setEnableUserModel(!enableUserModel)}
+          >
+            <Container>
+              <span className="ml-3">{t("enableMessage")}</span>
+              <Container
+                margin={"m-5"}
+                justifyContent={"justify-content-end"}
+                display={"d-flex"}
+              >
+                <Secondary
+                  text={t("cancel")}
+                  onClick={() => setEnableUserModel(!enableUserModel)}
+                />
+                <Primary
+                  text={t("proceed")}
+                  onClick={() => manageEmployeeStatus()}
+                />
               </Container>
-            </Modal>
-          </Container>
-        </Card>
-      </Container>
+            </Container>
+          </Modal>
+        </Container>
+      </Card>
     </>
   );
 }

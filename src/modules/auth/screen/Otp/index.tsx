@@ -1,6 +1,6 @@
-import React, { RefObject, useEffect, useState } from "react";
-import { Container, ScreenTitle, Primary } from "@components";
-import { OtpInput } from "../../container";
+import React, { RefObject, useEffect, useState } from 'react';
+import { Container, ScreenTitle, Primary } from '@components';
+import { OtpInput } from '../../container';
 import {
   ROUTE,
   useNav,
@@ -10,19 +10,29 @@ import {
   goBack,
   ASYN_USER_AUTH,
   goTo
-} from "@utils";
+} from '@utils';
 
-import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getResendLoginOtp,
   proceedSignIn,
-} from "../../../../store/auth/actions";
+} from '../../../../store/auth/actions';
+
+import {
+  setUserLoginDetails
+} from '../../../../store/app/actions';
 
 
+type LoginResponse = {
+  token: string;
+  is_admin: string;
+  is_branch_admin: string;
+}
 
 function Otp() {
-  const navigation = useNav();
+  
+  const navigate = useNav();
   let dispatch = useDispatch();
 
   const { t } = useTranslation();
@@ -30,7 +40,7 @@ function Otp() {
     (state: any) => state.AuthReducer
   );
 
-  const [validOtp, setValidOtp] = useState("");
+  const [validOtp, setValidOtp] = useState('');
   const [counter, setCounter] = useState<number>(59);
   const maxLength = 1
 
@@ -40,10 +50,10 @@ function Otp() {
    const inputRef4 = React.createRef<HTMLInputElement>();
 
   const [otp, setOtp] = useState({
-    field1: "",
-    field2: "",
-    field3: "",
-    field4: "",
+    field1: '',
+    field2: '',
+    field3: '',
+    field4: '',
   });
 
   useEffect(() => {
@@ -66,15 +76,26 @@ function Otp() {
   const signInOTP =  (params: object) => {
     dispatch(proceedSignIn({
       params,
-      onSuccess:async(response: object) => {
-        console.log(JSON.stringify(response));
-        const value = {userLoggedIn: true, userDetails: response,  mobileNumber};
-        const jsonValue = JSON.stringify(value);
-        await localStorage.setItem(ASYN_USER_AUTH, jsonValue);
-        goTo(navigation, ROUTE.ROUTE_DASHBOARD)
+      onSuccess: async(response: LoginResponse) => {
+
+        if (response.is_admin || response.is_branch_admin) {
+
+          const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
+         
+          dispatch(setUserLoginDetails(params))
+          await localStorage.setItem(ASYN_USER_AUTH, response.token);
+
+          goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
+          
+        }else{
+          showToast('default', 'User is not a valid user')
+        }
+
+        
+
       },
       onError: (error: string) => {
-        showToast("error", t("invalidUser"));
+        showToast('error', t('invalidUser'));
       },
     }));
   };
@@ -119,9 +140,7 @@ function Otp() {
       inputRef3.current.focus();
     } else if (otp.field4 === '' && inputRef4.current) {
       inputRef4.current.focus();
-    } else {
-      handleSignIn();
-    }
+    } 
   };
 
   useEffect(() => {
@@ -130,46 +149,46 @@ function Otp() {
 
   return (
     <Container
-      col={"col"}
-      height={"vh-100"}
-      display={"d-flex"}
-      justifyContent={"justify-content-center"}
-      alignItems={"align-items-center"}
+      col={'col'}
+      height={'vh-100'}
+      display={'d-flex'}
+      justifyContent={'justify-content-center'}
+      alignItems={'align-items-center'}
     >
       <Container
-        display={"d-flex"}
-        flexDirection={"flex-column"}
-        justifyContent={"justify-content-center"}
-        alignItems={"align-items-center"}
+        display={'d-flex'}
+        flexDirection={'flex-column'}
+        justifyContent={'justify-content-center'}
+        alignItems={'align-items-center'}
       >
-        <ScreenTitle title={t("verifyOTP")} />
+        <ScreenTitle title={t('verifyOTP')} />
         <Container
-          flexDirection={"flex-row"}
-          textAlign={"text-center"}
-          justifyContent={"justify-content-center"}
-          alignItems={"align-items-center"}
-          textColor={"text-muted"}
-          margin={"mt-5"}
+          flexDirection={'flex-row'}
+          textAlign={'text-center'}
+          justifyContent={'justify-content-center'}
+          alignItems={'align-items-center'}
+          textColor={'text-muted'}
+          margin={'mt-5'}
         >
-          <small className={'text-center'}>{t("verificationCode") + "+91-" + mobileNumber}</small>
+          <small className={'text-center'}>{t('verificationCode') + '+91-' + mobileNumber}</small>
           <small
-            className="ml-2 text-primary text-center"
-            role="button" onClick={() => goBack(navigation)}>
-            {t("edit")}
+            className='ml-2 text-primary text-center'
+            role='button' onClick={() => goTo(navigate, ROUTE.ROUTE_LOGIN, true)}>
+            {t('edit')}
           </small>
         </Container>
-        <Container textAlign={"text-center"} textColor={"text-muted"}>
-          <small>{t("pleaseEnterItBelow")}</small>
+        <Container textAlign={'text-center'} textColor={'text-muted'}>
+          <small>{t('pleaseEnterItBelow')}</small>
         </Container>
 
         <Container
-          flexDirection={"row"}
-          justifyContent={"justify-content-center"}
-          alignItems={"align-items-center"}
-          margin={"mt-4"}
+          flexDirection={'row'}
+          justifyContent={'justify-content-center'}
+          alignItems={'align-items-center'}
+          margin={'mt-4'}
         >
           <OtpInput
-            name="field1"
+            name='field1'
             value={otp.field1}
             ref={inputRef1}
             onChange={(event) => {
@@ -180,7 +199,7 @@ function Otp() {
             }}
           />
           <OtpInput
-            name="field2"
+            name='field2'
             value={otp.field2}
             ref={inputRef2}
             onChange={(event) => {
@@ -191,7 +210,7 @@ function Otp() {
             }}
           />
           <OtpInput
-            name="field3"
+            name='field3'
             value={otp.field3}
             ref={inputRef3}
             onChange={(event) => {
@@ -201,7 +220,7 @@ function Otp() {
             }}
           />
           <OtpInput
-            name="field4"
+            name='field4'
             value={otp.field4}
             ref={inputRef4}
             onChange={(event) => {
@@ -212,30 +231,30 @@ function Otp() {
           />
         </Container>
 
-        <Container flexDirection={"flex-row"} padding={"pt-4"} col={"col"}>
-          <Primary text={t("signIn")} additionClass={'btn-block'} onClick={() => handleSignIn()} />
+        <Container flexDirection={'flex-row'} padding={'pt-4'} col={'col'}>
+          <Primary text={t('signIn')} additionClass={'btn-block'} onClick={() => handleSignIn()} />
         </Container>
 
         <Container
-          flexDirection={"flex-row"}
-          textAlign={"text-center"}
-          justifyContent={"justify-content-center"}
-          alignItems={"align-items-center"}
-          textColor={"text-muted"}
-          margin={"mt-3"}
+          flexDirection={'flex-row'}
+          textAlign={'text-center'}
+          justifyContent={'justify-content-center'}
+          alignItems={'align-items-center'}
+          textColor={'text-muted'}
+          margin={'mt-3'}
         >
-          <small>{t("OTP?")}</small>
+          <small>{t('OTP?')}</small>
           {counter === 0 ? (
             <small
-              className="ml-2 text-primary text-center"
-              role="button"
+              className='ml-2 text-primary text-center'
+              role='button'
               onClick={() => handleResendOtp()}
             >
-              {t("resend")}
+              {t('resend')}
             </small>
           ) : (
-            <small className="ml-2 text-primary text-center">
-              {`00:${counter < 10 ? "0" + counter : counter}`}
+            <small className='ml-2 text-primary text-center'>
+              {`00:${counter < 10 ? '0' + counter : counter}`}
             </small>
           )}
         </Container>

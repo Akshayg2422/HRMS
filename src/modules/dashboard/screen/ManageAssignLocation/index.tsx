@@ -8,6 +8,7 @@ import {
   Divider,
   Primary,
   ChooseBranchFromHierarchical,
+  NoRecordFound
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../../container";
@@ -140,47 +141,45 @@ function ManageAssignLocation() {
     );
   };
 
+  function proceedSearchApi() {
+    getConsolidatedEmployeeList(1);
+  }
+
   return (
     <>
-      <Container>
-        <Navbar />
-        <Container additionClass={"main-content "}>
-          <Container flexDirection={"row"} margin={"m-3"}>
-            <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
-              <InputText
-                placeholder={t("enterEmployeeName")}
-                onChange={(e) => {
-                  setSearchEmployee(e.target.value);
-                }}
-              />
-            </Container>
-            <Container col={"col mt-xl-2"}>
-              <Icon type={"btn-primary"} icon={Icons.Search} />
-            </Container>
-            <Container col={"col-xl-4 col-md-6"}>
-              <ChooseBranchFromHierarchical />
-            </Container>
-          </Container>
-          {registeredEmployeesList && registeredEmployeesList.length > 0 && (
-            <CommonTable
-              tableTitle={"Employee List"}
-              displayDataSet={employeeList(registeredEmployeesList)}
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              tableOnClick={(e, index, item) =>
-                getEmployeeAssociationBranch(index)
-              }
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
-            />
-          )}
+      <Container flexDirection={"row"} margin={"m-3"}>
+        <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
+          <InputText
+            placeholder={t("enterEmployeeName")}
+            onChange={(e) => {
+              setSearchEmployee(e.target.value);
+            }}
+          />
+        </Container>
+        <Container col={"col mt-xl-2"}>
+          <Icon type={"btn-primary"} icon={Icons.Search} onClick={proceedSearchApi} />
+        </Container>
+        <Container col={"col-xl-4 col-md-6"}>
+          <ChooseBranchFromHierarchical />
         </Container>
       </Container>
-
+      {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+        <CommonTable
+          tableTitle={"Employee List"}
+          displayDataSet={employeeList(registeredEmployeesList)}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          tableOnClick={(e, index, item) =>
+            getEmployeeAssociationBranch(index)
+          }
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+        /> 
+      ): <NoRecordFound/>}
       {brancheslist && brancheslist.length > 0 && (
         <Modal
           title={"All Registered Branches"}

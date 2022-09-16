@@ -10,7 +10,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const persistConfig = {
   key: 'zeny-q',
   storage,
-  blacklist: ['AppReducer']
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
