@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Sort,
   CommonTable,
@@ -6,16 +6,16 @@ import {
   Carousel,
   Table,
   NoRecordFound,
-} from "@components";
-import moment from "moment";
-import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
+} from '@components';
+import moment from 'moment';
+import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   getEmployeesList,
   getEmployeesCheckInLogs,
   getCheckInDetailedLogPerDay,
   getEmployeeEachUserTimeSheets,
-} from "../../../../store/employee/actions";
+} from '../../../../store/employee/actions';
 import {
   paginationHandler,
   displayStringExists,
@@ -23,10 +23,10 @@ import {
   getMomentObjFromServer,
   showToast,
   getDisplayDateTimeFromMoment,
-} from "@utils";
-import index from "@src/components/Table";
-import { Item } from "@src/screens/Zenylog_site/components/Input";
-import { Navbar } from "@modules";
+} from '@utils';
+import index from '@src/components/Table';
+import { Item } from '@src/screens/Zenylog_site/components/Input';
+import { Navbar } from '@modules';
 
 type CheckInLog = {
   date?: string;
@@ -52,29 +52,30 @@ type TimeSheetResponse = {
 };
 
 function PortFolio() {
+
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
   const employeeLogSort = [
-    { id: 1, title: t("last3Months") },
-    { id: 2, title: moment().format("MMMM") },
+    { id: 1, title: t('last3Months') },
+    { id: 2, title: moment().format('MMMM') },
   ];
 
   const sortData = [
-    { id: 1, title: "Daily" },
-    { id: 2, title: "Weekly" },
-    { id: 3, title: "Monthly" },
+    { id: 1, title: 'Daily' },
+    { id: 2, title: 'Weekly' },
+    { id: 3, title: 'Monthly' },
   ];
 
   const [activeSort, setActiveSort] = useState<number>(1);
   const [activeSortWorkBook, setActiveSortWorkBook] = useState<number>(0);
   const [startDate, setStartDate] = useState(
-    moment().startOf("month").format("yyyy-MM-DD")
+    moment().startOf('month').format('yyyy-MM-DD')
   );
   const [endDate, setEndDate] = useState(
-    moment().add(1, "days").format("yyyy-MM-DD")
+    moment().add(1, 'days').format('yyyy-MM-DD')
   );
-  const [type, setType] = useState<string>("daily");
+  const [type, setType] = useState<string>('daily');
 
   const [attachmentModel, setAttachmentModel] = useState<boolean>(false);
   const [logPerDayModel, setLogPerDayModel] = useState<boolean>(false);
@@ -107,7 +108,7 @@ function PortFolio() {
       })
     );
 
-    console.log(JSON.stringify(employeeEachUserSheets) + "======");
+    console.log(JSON.stringify(employeeEachUserSheets) + '======');
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -116,10 +117,10 @@ function PortFolio() {
         date: el.date,
         in: el.start_time
           ? getDisplayTimeFromMoment(getMomentObjFromServer(el.start_time))
-          : "-",
+          : '-',
         out: el.end_time
           ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
-          : "-",
+          : '-',
         remark: el.day_status,
       };
     });
@@ -149,9 +150,9 @@ function PortFolio() {
 
   const onTabChange = (index: number) => {
     if (index === 0) {
-      setStartDate(moment().add(-3, "month").format("yyyy-MM-DD"));
+      setStartDate(moment().add(-3, 'month').format('yyyy-MM-DD'));
     } else {
-      setStartDate(moment().startOf("month").format("yyyy-MM-DD"));
+      setStartDate(moment().startOf('month').format('yyyy-MM-DD'));
     }
   };
 
@@ -171,10 +172,9 @@ function PortFolio() {
 
   return (
     <>
-      <Navbar />
-      <div className="row main-content my-3">
-        <div className="col-xl-7 col-md-12 mt-3">
-          <div className="col  text-right mb-3">
+      <div className='row'>
+        <div className='col'>
+          <div className='col text-right mb-3'>
             <Sort
               sortData={sortData}
               activeIndex={activeSortWorkBook}
@@ -184,19 +184,20 @@ function PortFolio() {
               }}
             />
           </div>
-          <CommonTable
-            tableTitle={"My Work Book"}
-            displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
-            tableOnClick={(e, index, item) => {
-              const attachment = employeeEachUserSheets[index].attachments;
-              setAttachment(attachment);
-              setAttachmentModel(!attachmentModel);
-            }}
-          />
+        
+            <CommonTable
+              tableTitle={'My Work Book'}
+              displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
+              tableOnClick={(e, index, item) => {
+                const attachment = employeeEachUserSheets[index].attachments;
+                setAttachment(attachment);
+                setAttachmentModel(!attachmentModel);
+              }}
+            />
+         
         </div>
-
-        <div className="col-xl-5 col-md-12 mt-3">
-          <div className="col text-right mb-3">
+        <div className='col'>
+          <div className='col text-right mb-3'>
             <Sort
               sortData={employeeLogSort}
               activeIndex={activeSort}
@@ -206,17 +207,19 @@ function PortFolio() {
               }}
             />
           </div>
-          <CommonTable
-            tableTitle={"My Log"}
-            displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
-            tableOnClick={(e, index, Item) => {
-              getEmployeeCheckInDetailedLogPerDay(index);
-            }}
-          />
-        </div>
+    
+            <CommonTable
+              tableTitle={'My Log'}
+              displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
+              tableOnClick={(e, index, Item) => {
+                getEmployeeCheckInDetailedLogPerDay(index);
+              }}
+            />
+          </div>
+      
       </div>
       <Modal
-        title={"Attachment"}
+        title={'Attachment'}
         showModel={attachmentModel}
         toggle={() => setAttachmentModel(!attachmentModel)}
       >
@@ -226,13 +229,12 @@ function PortFolio() {
           <></>
         )}
       </Modal>
-
       <Modal
         showModel={logPerDayModel}
         toggle={() => setLogPerDayModel(!logPerDayModel)}
       >
         {employeeCheckInDetailedLogPerDay &&
-        employeeCheckInDetailedLogPerDay.length > 0 ? (
+          employeeCheckInDetailedLogPerDay.length > 0 ? (
           <Table
             displayDataSet={normalizedPerDayData(
               employeeCheckInDetailedLogPerDay
@@ -242,6 +244,7 @@ function PortFolio() {
           <NoRecordFound />
         )}
       </Modal>
+
     </>
   );
 }

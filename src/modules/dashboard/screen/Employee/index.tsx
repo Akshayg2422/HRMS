@@ -119,8 +119,6 @@ function EmployeeScreen() {
 
   return (
     <>
-      <Navbar />
-      <div className="main-content">
         <Card margin={"m-4"}>
           <Container flexDirection={"row"} alignItems={"align-items-center"}>
           <Container
@@ -228,7 +226,6 @@ function EmployeeScreen() {
             </Modal>
           </Container>
         </Card>
-      </div>
     </>
   );
 }

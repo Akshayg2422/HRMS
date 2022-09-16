@@ -37,8 +37,10 @@ function isExist(val: any) {
   return val ? val : ''
 }
 
-const goTo = (navigation: any, screen: string) => {
-  return navigation(screen)
+
+
+const goTo = (navigate: any, path: string, isReplace: boolean = false) => {
+  return navigate(path, { replace: isReplace })
 }
 
 const getMaxLengthForNumberInputs = (val: any, maxLength: number) => {

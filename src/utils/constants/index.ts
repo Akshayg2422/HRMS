@@ -12,7 +12,7 @@ export const ROUTE = {
   ROUTE_LOCATION: '/location',
   ROUTE_CALENDAR: '/calendar',
   ROUTE_WELCOME: '/landing',
-  ROUTE_MANAGE_EMPLOYEE:'/manageemployee',
+  ROUTE_MANAGE_EMPLOYEE:'/manage',
   ROUTE_DASHBOARD_STATS:'/dashboardstats',
   ROUTE_DASHBOARD_ATTENDANCE:'/dashboardattendance',
   ROUTE_EMPLOYEE_LOG:'/employeelog',
@@ -113,8 +113,6 @@ export const ENABLE_EMPLOYEE_DATA = [
     elh: 'Enable',
   }
 ]
-
-
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 

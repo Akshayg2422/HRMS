@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Logo,
   Secondary,
@@ -6,8 +6,8 @@ import {
   InputNumber,
   Primary,
   Social,
-} from "@components";
-import { Icons } from "@assets";
+} from '@components';
+import { Icons } from '@assets';
 import {
   ROUTE,
   validateMobileNumber,
@@ -15,23 +15,24 @@ import {
   goTo,
   useNav,
   ASYN_USER_AUTH,
-} from "@utils";
+} from '@utils';
 
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 
-import { useDispatch } from "react-redux";
-import { getValidateUser } from "../../../../store/auth/actions";
-import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { getValidateUser } from '../../../../store/auth/actions';
+import { useSelector } from 'react-redux';
 
 function Login() {
-  const navigation = useNav();
-  const { userValid, loading, success, error, mobileNumber } = useSelector(
+
+  const navigate = useNav();
+
+  const { mobileNumber } = useSelector(
     (state: any) => state.AuthReducer
   );
+
   const [mobile, setMobile] = useState<string | undefined>(mobileNumber);
-  const [isLoggedIn, setIsLoggedIn] = useState<any>( 
-  localStorage.getItem(ASYN_USER_AUTH) 
-  );
+ 
 
   const { t } = useTranslation();
 
@@ -44,7 +45,7 @@ function Login() {
       getValidateUser({
         params,
         onSuccess: (success: object) => {
-          goTo(navigation, ROUTE.ROUTE_OTP);
+          goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => {
           showToast('error',t('invalidUser'));
@@ -70,24 +71,23 @@ function Login() {
 
   return (
     <Container
-      col={"col"}
-      display={"d-inline-flex"}
-      flexDirection={"flex-column"}
-    >
+      col={'col'}
+      display={'d-inline-flex'}
+      flexDirection={'flex-column'}>
       <Container
-        display={"d-inline-flex"}
-        justifyContent={"justify-content-between"}
-        additionClass={"container-fluid"}
-        margin={"mt-4"}
+        display={'d-inline-flex'}
+        justifyContent={'justify-content-between'}
+        additionClass={'container-fluid'}
+        margin={'mt-4'}
       >
-        <Logo additionClass={"col-sm-4"} />
+        <Logo additionClass={'col-sm-4'} />
         <Secondary
-          text={t("register")}
-          onClick={() => goTo(navigation, ROUTE.ROUTE_REGISTER)}
+          text={t('register')}
+          onClick={() => goTo(navigate, ROUTE.ROUTE_REGISTER)}
         />
       </Container>
-      <h1 className="display-4 text-dark font-weight-bold pt-5 px-5">
-        {t("welcome")}
+      <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>
+        {t('welcome')}
       </h1>
 
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >

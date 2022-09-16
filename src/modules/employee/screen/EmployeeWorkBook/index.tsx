@@ -38,6 +38,7 @@ type TimeSheetResponse = {
 };
 
 function EmployeeTimeSheets() {
+
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [activeSort, setActiveSort] = useState<number>(0);
@@ -105,141 +106,138 @@ function EmployeeTimeSheets() {
 
   return (
     <>
-      <Navbar />
-      <div className="main-content my-3">
-        <Container additionClass={"row mx-2 my-4"}>
-          <Container col={'col-xl-4' }>
-            <ChooseBranchFromHierarchical />
-          </Container>
-
-          <div className="col text-right my-sm-2 mt-3 mt-sm-0">
-            <Sort
-              sortData={sortData}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
+      <Container additionClass={"row mx-2 my-4"}>
+        <Container col={'col-xl-4'}>
+          <ChooseBranchFromHierarchical />
         </Container>
 
-        {employeeTimeSheets && employeeTimeSheets.length > 0 && (
-          <CommonTable
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            tableTitle={t("timeSheets")}
-            displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
-            tableOnClick={(e, index, item) => {
-              getEmployeeEachUserTimeSheetsApi(index);
+        <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+          <Sort
+            sortData={sortData}
+            activeIndex={activeSort}
+            onClick={(index) => {
+              setActiveSort(index);
+              onTabChange(index);
             }}
-            paginationNumberClick={(currentPage) => {
-              getEmployeeTimeSheets(paginationHandler("current", currentPage));
-            }}
-            previousClick={() =>
-              getEmployeeTimeSheets(paginationHandler("prev", currentPage))
-            }
-            nextClick={() =>
-              getEmployeeTimeSheets(paginationHandler("next", currentPage))
-            }
           />
-        )}
+        </div>
+      </Container>
 
-        <Modal
-          showModel={model}
-          title={"Logs"}
-          size={"modal-xl"}
-          toggle={() => setModel(!model)}
-        >
-          {employeeEachUserSheets && employeeEachUserSheets.length > 0 ? (
-            <>
-              <Container
-                flexDirection={"flex-row"}
-                display={"d-flex"}
-                justifyContent={"justify-content-around"}
-              >
-                <h5 className="mb-0 col">{t("details")}</h5>
-                <h5 className="mb-0 col">{t("time")}</h5>
-                <h5 className="mb-0 col">{t("addresss")}</h5>
-                <h5 className="mb-0 col">{""}</h5>
-              </Container>
-              <Divider />
-              <div>
-                {employeeEachUserSheets.map(
-                  (item: TimeSheetResponse, index: number) => {
-                    return (
-                      <div className="accordion">
+      {employeeTimeSheets && employeeTimeSheets.length > 0 && (
+        <CommonTable
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          tableTitle={t("timeSheets")}
+          displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
+          tableOnClick={(e, index, item) => {
+            getEmployeeEachUserTimeSheetsApi(index);
+          }}
+          paginationNumberClick={(currentPage) => {
+            getEmployeeTimeSheets(paginationHandler("current", currentPage));
+          }}
+          previousClick={() =>
+            getEmployeeTimeSheets(paginationHandler("prev", currentPage))
+          }
+          nextClick={() =>
+            getEmployeeTimeSheets(paginationHandler("next", currentPage))
+          }
+        />
+      )}
+
+      <Modal
+        showModel={model}
+        title={"Logs"}
+        size={"modal-xl"}
+        toggle={() => setModel(!model)}
+      >
+        {employeeEachUserSheets && employeeEachUserSheets.length > 0 ? (
+          <>
+            <Container
+              flexDirection={"flex-row"}
+              display={"d-flex"}
+              justifyContent={"justify-content-around"}
+            >
+              <h5 className="mb-0 col">{t("details")}</h5>
+              <h5 className="mb-0 col">{t("time")}</h5>
+              <h5 className="mb-0 col">{t("addresss")}</h5>
+              <h5 className="mb-0 col">{""}</h5>
+            </Container>
+            <Divider />
+            <div>
+              {employeeEachUserSheets.map(
+                (item: TimeSheetResponse, index: number) => {
+                  return (
+                    <div className="accordion">
+                      <div
+                        data-toggle="collapse"
+                        data-target={
+                          index === accordion
+                            ? "#collapse" + index
+                            : undefined
+                        }
+                        id="accordionExample"
+                      >
+                        <Container
+                          flexDirection={"flex-row"}
+                          display={"d-flex"}
+                          justifyContent={"justify-content-around"}
+                        >
+                          <small className="mb-0 col">{item.details}</small>
+                          <small className="mb-0 col">
+                            {getDisplayDateTimeFromMoment(
+                              getMomentObjFromServer(item.time_stamp)
+                            )}
+                          </small>
+                          <small className="mb-0 col">
+                            {item.address?.address_text}
+                          </small>
+                          <div
+                            className="mb-0 col text-center"
+                            onClick={() => {
+                              if (accordion !== index) {
+                                setAccordion(index);
+                              }
+                            }}
+                          >
+                            <ImageView icon={Icons.Eye} />
+                          </div>
+                        </Container>
+                        <Divider />
+                      </div>
+
+                      {accordion === index && (
                         <div
-                          data-toggle="collapse"
-                          data-target={
+                          className="collapse"
+                          id={
                             index === accordion
-                              ? "#collapse" + index
+                              ? "collapse" + index
                               : undefined
                           }
-                          id="accordionExample"
                         >
-                          <Container
-                            flexDirection={"flex-row"}
-                            display={"d-flex"}
-                            justifyContent={"justify-content-around"}
-                          >
-                            <small className="mb-0 col">{item.details}</small>
-                            <small className="mb-0 col">
-                              {getDisplayDateTimeFromMoment(
-                                getMomentObjFromServer(item.time_stamp)
-                              )}
-                            </small>
-                            <small className="mb-0 col">
-                              {item.address?.address_text}
-                            </small>
-                            <div
-                              className="mb-0 col text-center"
-                              onClick={() => {
-                                if (accordion !== index) {
-                                  setAccordion(index);
-                                }
-                              }}
-                            >
-                              <ImageView icon={Icons.Eye} />
-                            </div>
-                          </Container>
-                          <Divider />
-                        </div>
-
-                        {accordion === index && (
-                          <div
-                            className="collapse"
-                            id={
-                              index === accordion
-                                ? "collapse" + index
-                                : undefined
-                            }
-                          >
-                            <div className="card-body row align-items-center">
-                              {item.attachments &&
+                          <div className="card-body row align-items-center">
+                            {item.attachments &&
                               item.attachments.length > 0 ? (
-                                <Carousel
-                                  images={item.attachments}
-                                  height={500}
-                                />
-                              ) : (
-                                <NoRecordFound text={t("imageNotFound")} />
-                              )}
-                            </div>
+                              <Carousel
+                                images={item.attachments}
+                                height={500}
+                              />
+                            ) : (
+                              <NoRecordFound text={t("imageNotFound")} />
+                            )}
                           </div>
-                        )}
-                      </div>
-                    );
-                  }
-                )}
-              </div>
-            </>
-          ) : (
-            <NoRecordFound />
-          )}
-        </Modal>
-      </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </>
+        ) : (
+          <NoRecordFound />
+        )}
+      </Modal>
     </>
   );
 }

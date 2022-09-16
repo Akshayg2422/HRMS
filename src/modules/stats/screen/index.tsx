@@ -1,3 +1,3 @@
 import DashboardStats from "./DashboardStats"
-import DashBoardAtttendance from "./DashBoardAttendance"
-export {DashboardStats,DashBoardAtttendance}
+import DashBoardAttendance from "./DashBoardAttendance"
+export {DashboardStats,DashBoardAttendance}
