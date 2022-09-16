@@ -147,6 +147,7 @@ const DashboardStats = () => {
                       <div className='text-center h2'>{el.title}</div>
                     </Container>
 
+<<<<<<< HEAD
                     <Primary
                       additionClass={'btn-block'}
                       text={t('Tap to View')}
@@ -155,6 +156,14 @@ const DashboardStats = () => {
                     />
                   </Container>
                 </Card>
+=======
+                <Primary
+                  additionClass={"btn-block"}
+                  text={t("Tap to View")}
+                  size={"btn-sm"}
+                  // onClick={() => onSelected(el.type)}
+                />
+>>>>>>> 95424b1e5e024427d4a9510d29615da722d78b48
               </Container>
             );
           })}
@@ -211,7 +220,50 @@ const DashboardStats = () => {
           </Container>
         </Modal>
       </Container>
+<<<<<<< HEAD
     </>
+=======
+      <Modal title={'All Registered Branches'} showModel={model} toggle={() => setModel(!model)}  >
+                    {/* <div className='my-4'> */}
+                    <Container additionClass={"row"}>
+                        {
+                            attendanceConsolidatedCardsData?.cards?.map((el:any, index: number) => {
+                                return (
+                                  <Card
+                                  additionClass="col-xl-3 col-md-3 "
+                                  margin={"m-2"}
+                                  children={
+                                    <Container
+                                      justifyContent={"justify-content-between"}
+                                      alignItems={"align-content-center"}
+                                      flexDirection={"column"}
+                                    >
+                                      <Container>
+                                        <div className="text-center h1 font-weight-300">
+                                          {el.count}
+                                        </div>
+                                        <div className="text-center h2">{el.title}</div>
+                                      </Container>
+                      
+                                      <Primary
+                                        additionClass={"btn-block"}
+                                        text={t("Tap to View")}
+                                        size={"btn-sm"}
+                                        // onClick={() => onSelected(el.type)}
+                                      />
+                                    </Container>
+                                  }
+                                ></Card>
+                                );
+                            })
+                        }
+                    {/* </div> */}
+                    </Container>
+                </Modal>
+    </Container>
+  </Container>
+  </>
+>>>>>>> 95424b1e5e024427d4a9510d29615da722d78b48
   );
 };
 

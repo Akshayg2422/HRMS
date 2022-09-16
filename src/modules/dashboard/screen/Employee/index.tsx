@@ -194,6 +194,7 @@ function EmployeeScreen() {
                   dispatch(getSelectedEmployeeId(selectedId));
                   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
                 }}
+<<<<<<< HEAD
                 tableValueOnClick={(e, index, item, elv) => {
                   const current = registeredEmployeesList[index];
                   if (elv === "Edit") {
@@ -228,6 +229,15 @@ function EmployeeScreen() {
                 </Container>
               </Container>
             </Modal>
+=======
+              tableValueOnClick={(e, index, item, elv) => {
+                if (elv === 'Edit') {
+                  const current = registeredEmployeesList[index];
+                  manageEmployeeHandler(current.id);
+                }
+              }} />
+            }
+>>>>>>> 95424b1e5e024427d4a9510d29615da722d78b48
           </Container>
         </Card>
     </>

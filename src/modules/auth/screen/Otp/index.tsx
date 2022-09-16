@@ -76,6 +76,7 @@ function Otp() {
   const signInOTP =  (params: object) => {
     dispatch(proceedSignIn({
       params,
+<<<<<<< HEAD
       onSuccess: async(response: LoginResponse) => {
 
         if (response.is_admin || response.is_branch_admin) {
@@ -93,6 +94,14 @@ function Otp() {
 
         
 
+=======
+      onSuccess:async(response: object) => {
+        console.log(JSON.stringify(response));
+        const value = {userLoggedIn: true, userDetails: response,  mobileNumber};
+        const jsonValue = JSON.stringify(value);
+        await localStorage.setItem(ASYN_USER_AUTH, jsonValue);
+        goTo(navigation, ROUTE.ROUTE_EMPLOYEE)
+>>>>>>> 95424b1e5e024427d4a9510d29615da722d78b48
       },
       onError: (error: string) => {
         showToast('error', t('invalidUser'));

@@ -38,7 +38,15 @@ function Login() {
 
   let dispatch = useDispatch();
 
+<<<<<<< HEAD
   
+=======
+  useEffect(() => {
+    if (JSON.parse(isLoggedIn)?.userLoggedIn) {
+      goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
+    }
+  }, []);
+>>>>>>> 95424b1e5e024427d4a9510d29615da722d78b48
 
   const proceedValidateUser = (params: object) => {
     dispatch(
