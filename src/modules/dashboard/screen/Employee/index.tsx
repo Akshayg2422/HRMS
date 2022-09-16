@@ -45,7 +45,7 @@ function EmployeeScreen() {
     (state: any) => state.EmployeeReducer
   );
 
-  const {hierarchicalBranchIds } = useSelector(
+  const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -82,8 +82,8 @@ function EmployeeScreen() {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     getEmployeesApi(page);
   }
 
@@ -123,123 +123,113 @@ function EmployeeScreen() {
 
   return (
     <>
-        <Card margin={"m-4"}>
-          <Container flexDirection={"row"} alignItems={"align-items-center"}>
+      <Card margin={"m-4"}>
+        <Container flexDirection={"row"} alignItems={"align-items-center"}>
           <Container
-              flexDirection={"row"}
-              additionClass={'col'}
-              alignItems={"align-items-center"}
-            >
-              <Container col={"col-xl-3 col-md-6 col-sm-12"}>
-                <InputText
-                  placeholder={t("enterEmployeeName")}
-                  label={t("employeeName")}
-                  onChange={(e) => {
-                    setSearchEmployee(e.target.value);
-                  }}
-                />
-              </Container>
-              <Container col={"col-xl-3 col-md-6 col-sm-12"}>
-                <InputText
-                  placeholder={t("enterEmployeeId")}
-                  label={t("employeeId")}
-                  onChange={(e) => {
-                    setSearchEmployeeById(e.target.value);
-                  }}
-                />
-              </Container>
-              <Container  col={"col-xl-3 col-md-6 col-sm-12"}  additionClass={'mt-xl-4'} >
+            flexDirection={"row"}
+            additionClass={'col'}
+            alignItems={"align-items-center"}
+          >
+            <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+              <InputText
+                placeholder={t("enterEmployeeName")}
+                label={t("employeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+            </Container>
+            <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+              <InputText
+                placeholder={t("enterEmployeeId")}
+                label={t("employeeId")}
+                onChange={(e) => {
+                  setSearchEmployeeById(e.target.value);
+                }}
+              />
+            </Container>
+            <Container col={"col-xl-3 col-md-6 col-sm-12"} additionClass={'mt-xl-4'} >
               <ChooseBranchFromHierarchical />
-              </Container>
+            </Container>
             <Container
               col={'col'}
               additionClass={'mt-sm-3'}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
-            onClick={proceedSearchApi}
+              onClick={proceedSearchApi}
             >
               <Icon type={"btn-primary"} icon={Icons.Search} />
             </Container>
-            </Container>
+          </Container>
 
-            <Container margin={"my-3"} display={'d-flex'} justifyContent={'justify-content-end'} >
-              <Primary
-                text={t("addEmployee")}
-                onClick={() => manageEmployeeHandler(undefined)}
-                size={'btn-sm'}
-              />
-              <Primary
-                text={t("deletedUser")}
-                onClick={() =>
-                  goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
-                }
-                size={'btn-sm'}
-              />
-            </Container>
-            {registeredEmployeesList && registeredEmployeesList.length > 0 && (
-              <CommonTable
-                noHeader
-                isPagination
-                currentPage={currentPage}
-                noOfPage={numOfPages}
-                paginationNumberClick={(currentPage) => {
-                  paginationHandler("current", currentPage);
-                }}
-                previousClick={() => paginationHandler("prev")}
-                nextClick={() => paginationHandler("next")}
-                displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-                additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
-                tableOnClick={(e, index, item) => {
-                  const selectedId = registeredEmployeesList[index].id;
-                  dispatch(getSelectedEmployeeId(selectedId));
-                  goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-                }}
-<<<<<<< HEAD
-                tableValueOnClick={(e, index, item, elv) => {
-                  const current = registeredEmployeesList[index];
-                  if (elv === "Edit") {
-                    manageEmployeeHandler(current.id);
-                  }
-                  if (elv === "Delete") {
-                    manageDeleteHandler(current.id);
-                  }
-                }}
-              />
-            )}
-            <Modal
-              title={t("deleteUser")}
-              showModel={deleteModel}
-              toggle={() => setDeleteModel(!deleteModel)}
-            >
-              <Container>
-                <span className="ml-3">{t("deleteWarningMessage")}</span>
-                <Container
-                  margin={"m-5"}
-                  justifyContent={"justify-content-end"}
-                  display={"d-flex"}
-                >
-                  <Secondary
-                    text={t("cancel")}
-                    onClick={() => setDeleteModel(!deleteModel)}
-                  />
-                  <Primary
-                    text={t("proceed")}
-                    onClick={() => manageProceedHandler()}
-                  />
-                </Container>
-              </Container>
-            </Modal>
-=======
+          <Container margin={"my-3"} display={'d-flex'} justifyContent={'justify-content-end'} >
+            <Primary
+              text={t("addEmployee")}
+              onClick={() => manageEmployeeHandler(undefined)}
+              size={'btn-sm'}
+            />
+            <Primary
+              text={t("deletedUser")}
+              onClick={() =>
+                goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
+              }
+              size={'btn-sm'}
+            />
+          </Container>
+          {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+            <CommonTable
+              noHeader
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              paginationNumberClick={(currentPage) => {
+                paginationHandler("current", currentPage);
+              }}
+              previousClick={() => paginationHandler("prev")}
+              nextClick={() => paginationHandler("next")}
+              displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+              additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+              tableOnClick={(e, index, item) => {
+                const selectedId = registeredEmployeesList[index].id;
+                dispatch(getSelectedEmployeeId(selectedId));
+                goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+              }}
               tableValueOnClick={(e, index, item, elv) => {
-                if (elv === 'Edit') {
-                  const current = registeredEmployeesList[index];
+                const current = registeredEmployeesList[index];
+                if (elv === "Edit") {
                   manageEmployeeHandler(current.id);
                 }
-              }} />
-            }
->>>>>>> 95424b1e5e024427d4a9510d29615da722d78b48
-          </Container>
-        </Card>
+                if (elv === "Delete") {
+                  manageDeleteHandler(current.id);
+                }
+              }}
+            />
+          )}
+          <Modal
+            title={t("deleteUser")}
+            showModel={deleteModel}
+            toggle={() => setDeleteModel(!deleteModel)}
+          >
+            <Container>
+              <span className="ml-3">{t("deleteWarningMessage")}</span>
+              <Container
+                margin={"m-5"}
+                justifyContent={"justify-content-end"}
+                display={"d-flex"}
+              >
+                <Secondary
+                  text={t("cancel")}
+                  onClick={() => setDeleteModel(!deleteModel)}
+                />
+                <Primary
+                  text={t("proceed")}
+                  onClick={() => manageProceedHandler()}
+                />
+              </Container>
+            </Container>
+          </Modal>
+        </Container>
+      </Card>
     </>
   );
 }
