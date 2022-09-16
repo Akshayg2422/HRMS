@@ -63,7 +63,8 @@ import {
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
   UPDATE_EMPLOYEE_STATUS,
   UPDATE_EMPLOYEE_STATUS_SUCCESS,
-  UPDATE_EMPLOYEE_STATUS_FAILURE
+  UPDATE_EMPLOYEE_STATUS_FAILURE,
+  RESET_REDUCER
 } from "./actionTypes";
 
 const initialState = {
@@ -87,11 +88,11 @@ const initialState = {
   total: '',
   total_count: '',
   routeParams: {},
-  selectedDepartmentName:"",
-  selectedDepartmentId:"",
-  attendanceConsolidatedCardsData:[],
-  selectedEmployeeId:"",
-  employeeAttendanceStats:[]
+  selectedDepartmentName: "",
+  selectedDepartmentId: "",
+  attendanceConsolidatedCardsData: [],
+  selectedEmployeeId: "",
+  employeeAttendanceStats: []
 
 };
 
@@ -491,37 +492,37 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
-   // Stats card type //
+    // Stats card type //
     case SELECTED_CARD_TYPE:
-      console.log(JSON.stringify(action.payload)+"+======SELECTED_CARD_TYPE");
+      console.log(JSON.stringify(action.payload) + "+======SELECTED_CARD_TYPE");
       state = {
         ...state,
         routeParams: action.payload
       };
       break;
-      // Stats selected department name //
+    // Stats selected department name //
     case SELECTED_DEPARTMENT_NAME:
       state = {
         ...state,
         selectedDepartmentName: action.payload
       };
       break;
-      // Stats selected department id //
+    // Stats selected department id //
     case SELECTED_DEPARTMENT_ID:
       state = {
         ...state,
         selectedDepartmentId: action.payload
       };
       break;
-      // Stats selected employee id for view employee details//
+    // Stats selected employee id for view employee details//
     case SELECTED_EMPLOYEE_ID:
       state = {
         ...state,
         selectedEmployeeId: action.payload
       };
       break;
-      //attendance consolidated cards
-      
+    //attendance consolidated cards
+
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS:
       state = { ...state, loading: true, attendanceConsolidatedCardsData: [] }
       break;
@@ -529,7 +530,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        attendanceConsolidatedCardsData:action.payload
+        attendanceConsolidatedCardsData: action.payload
       };
       break;
 
@@ -540,12 +541,13 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
-      //delete employee
-      
+    //delete employee
+
     case UPDATE_EMPLOYEE_STATUS:
-      state = { 
-        ...state, 
-        loading: true }
+      state = {
+        ...state,
+        loading: true
+      }
       break;
     case UPDATE_EMPLOYEE_STATUS_SUCCESS:
       state = {
@@ -560,6 +562,10 @@ const EmployeeReducer = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       };
+      break;
+
+    case RESET_REDUCER:
+      state = initialState;
       break;
 
     default:

@@ -25,7 +25,8 @@ import {
   TYPE_OF_BUSINESS_FAILURE,
   ADMIN_VERIFICATION_OTP,
   ADMIN_VERIFICATION_OTP_SUCCESS,
-  ADMIN_VERIFICATION_OTP_FAILURE
+  ADMIN_VERIFICATION_OTP_FAILURE,
+  RESET_REDUCER
 } from "./actionTypes";
 
 
@@ -38,7 +39,7 @@ const initialState = {
   // *** userValid *** //
   userValid: false,
   mobileNumber: "",
-  loading:false,
+  loading: false,
   error: "",
   success: "",
   userDetails: {},
@@ -241,6 +242,14 @@ const AuthReducer = (state = initialState, action) => {
         error: action.payload,
         loading: false,
       };
+      break;
+
+
+    /**
+     *  SET_LOGOUT
+     */
+    case RESET_REDUCER:
+      state = initialState;
       break;
 
 
