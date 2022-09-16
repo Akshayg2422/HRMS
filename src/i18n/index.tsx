@@ -11,7 +11,7 @@ const resources = {
   en,
   hi,
   ka,
-  ta
+  ta,
 }
 
 export const availableLanguages = Object.keys(resources)

@@ -63,7 +63,8 @@ import {
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
   UPDATE_EMPLOYEE_STATUS,
   UPDATE_EMPLOYEE_STATUS_SUCCESS,
-  UPDATE_EMPLOYEE_STATUS_FAILURE
+  UPDATE_EMPLOYEE_STATUS_FAILURE,
+  RESET_REDUCER
 } from "./actionTypes";
 
 // Delete Account
@@ -600,5 +601,16 @@ export const getUpdateEmployeeStatusFailure = (error) => {
   return {
     type: UPDATE_EMPLOYEE_STATUS_FAILURE,
     payload: error,
+  };
+};
+
+
+/**
+ * set Logout
+ */
+
+export const resetEmployee = () => {
+  return {
+    type: RESET_REDUCER,
   };
 };
