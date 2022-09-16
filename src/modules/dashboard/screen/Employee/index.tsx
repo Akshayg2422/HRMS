@@ -51,7 +51,7 @@ function EmployeeScreen() {
 
   useEffect(() => {
     getEmployeesApi(currentPage);
-  }, [searchEmployee,hierarchicalBranchIds]);
+  }, [hierarchicalBranchIds]);
 
   function getEmployeesApi(pageNumber: number) {
     const params: object = {
@@ -117,6 +117,10 @@ function EmployeeScreen() {
     );
   };
 
+  function proceedSearchApi() {
+    getEmployeesApi(currentPage);
+  }
+
   return (
     <>
         <Card margin={"m-4"}>
@@ -147,12 +151,12 @@ function EmployeeScreen() {
               <Container  col={"col-xl-3 col-md-6 col-sm-12"}  additionClass={'mt-xl-4'} >
               <ChooseBranchFromHierarchical />
               </Container>
-              <Container 
+            <Container
               col={'col'}
               additionClass={'mt-sm-3'}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
-              // onClick={() => goTo(navigation, ROUTE.ROUTE_DASHBOARD_STATS)}
+            onClick={proceedSearchApi}
             >
               <Icon type={"btn-primary"} icon={Icons.Search} />
             </Container>

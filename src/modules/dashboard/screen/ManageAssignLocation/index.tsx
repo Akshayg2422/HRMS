@@ -8,6 +8,7 @@ import {
   Divider,
   Primary,
   ChooseBranchFromHierarchical,
+  NoRecordFound
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../../container";
@@ -140,6 +141,10 @@ function ManageAssignLocation() {
     );
   };
 
+  function proceedSearchApi() {
+    getConsolidatedEmployeeList(1);
+  }
+
   return (
     <>
       <Container flexDirection={"row"} margin={"m-3"}>
@@ -152,13 +157,13 @@ function ManageAssignLocation() {
           />
         </Container>
         <Container col={"col mt-xl-2"}>
-          <Icon type={"btn-primary"} icon={Icons.Search} />
+          <Icon type={"btn-primary"} icon={Icons.Search} onClick={proceedSearchApi} />
         </Container>
         <Container col={"col-xl-4 col-md-6"}>
           <ChooseBranchFromHierarchical />
         </Container>
       </Container>
-      {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+      {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
           tableTitle={"Employee List"}
           displayDataSet={employeeList(registeredEmployeesList)}
@@ -173,8 +178,8 @@ function ManageAssignLocation() {
           }}
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
-        />
-      )}
+        /> 
+      ): <NoRecordFound/>}
       {brancheslist && brancheslist.length > 0 && (
         <Modal
           title={"All Registered Branches"}

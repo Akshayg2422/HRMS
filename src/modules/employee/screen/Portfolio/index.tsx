@@ -184,7 +184,7 @@ function PortFolio() {
               }}
             />
           </div>
-        
+          <div className='mr--3'>
             <CommonTable
               tableTitle={'My Work Book'}
               displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
@@ -194,7 +194,7 @@ function PortFolio() {
                 setAttachmentModel(!attachmentModel);
               }}
             />
-         
+          </div>
         </div>
         <div className='col'>
           <div className='col text-right mb-3'>
@@ -207,7 +207,7 @@ function PortFolio() {
               }}
             />
           </div>
-    
+          <div className='ml--3'>
             <CommonTable
               tableTitle={'My Log'}
               displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
@@ -216,7 +216,7 @@ function PortFolio() {
               }}
             />
           </div>
-      
+        </div>
       </div>
       <Modal
         title={'Attachment'}

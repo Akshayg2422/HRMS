@@ -118,7 +118,7 @@ const DashBoardAttendance = ({ }) => {
 
 
   return (
-    <>
+    <div className='mx-3'>
       <Card>
         <Container additionClass={'col'}>
           <div className='row mt-3'>
@@ -187,7 +187,7 @@ const DashBoardAttendance = ({ }) => {
           <NoRecordFound />
         )}
       </Modal>
-    </>
+    </div>
   )
 }
 
