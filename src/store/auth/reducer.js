@@ -38,6 +38,7 @@ const initialState = {
   // *** userValid *** //
   userValid: false,
   mobileNumber: "",
+  loading:false,
   error: "",
   success: "",
   userDetails: {},
@@ -245,7 +246,7 @@ const AuthReducer = (state = initialState, action) => {
 
 
     default:
-      state = { ...state };
+      state = state;
       break;
   }
 

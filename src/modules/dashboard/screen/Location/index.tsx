@@ -5,7 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence } from '../../../../store/location/actions';
 import { goTo, useNav, ROUTE } from '@utils';
 import {Icons} from '@assets'
+
 function LocationScreen() {
+
   const dispatch = useDispatch();
   const navigation = useNav();
 
@@ -72,48 +74,43 @@ function LocationScreen() {
 
   return (
     <>
-      <Container>
-        <Navbar />
-        <div className='main-content'>
-          {brancheslist && brancheslist.length > 0 && (
-            <CommonTable
-              tableTitle={'Branches'}
-              buttonOnClock={() => manageBranchesHandler(undefined)}
-              displayDataSet={normalizedEmployeeLog(brancheslist)}
-              buttonText={'Add Branch'}
-              tableChildren={
-                <LocationTable
-                  tableDataSet={brancheslist}
-                  resetRadiusOnchange={(item) => {
-                    setModelData(item)
-                    setModel(!model)
-                  }}
-                  enableReFetch={enableReFetchApi}
-                />}
-            />
-          )}
-          <Modal
-            title={'Select Radius'}
-            showModel={model}
-            toggle={() => setModel(!model)}>
-            
-              {DEFAULT_RADIUS_LIST.map(el => {
-                return (
-                  <div
-                    className='row align-items-center mx-4'
-                    onClick={()=>resetRadiusApi(el)}>
-                    <div className='row align-items-center'>
-                      <span className='col text-xl text-gray'>{el}</span>
-                      {modelData && modelData?.fencing_radius === el && <div className='col-2 text-right'><ImageView icon={Icons.TickActive} /></div>}
-                      <Divider />
-                    </div>
-                  </div>
-                );
-              })}
-          
-          </Modal>
-        </div>
-      </Container>
+      {brancheslist && brancheslist.length > 0 && (
+        <CommonTable
+          tableTitle={'Branches'}
+          buttonOnClock={() => manageBranchesHandler(undefined)}
+          displayDataSet={normalizedEmployeeLog(brancheslist)}
+          buttonText={'Add Branch'}
+          tableChildren={
+            <LocationTable
+              tableDataSet={brancheslist}
+              resetRadiusOnchange={(item) => {
+                setModelData(item)
+                setModel(!model)
+              }}
+              enableReFetch={enableReFetchApi}
+            />}
+        />
+      )}
+      <Modal
+        title={'Select Radius'}
+        showModel={model}
+        toggle={() => setModel(!model)}>
+
+        {DEFAULT_RADIUS_LIST.map(el => {
+          return (
+            <div
+              className='row align-items-center mx-4'
+              onClick={() => resetRadiusApi(el)}>
+              <div className='row align-items-center'>
+                <span className='col text-xl text-gray'>{el}</span>
+                {modelData && modelData?.fencing_radius === el && <div className='col-2 text-right'><ImageView icon={Icons.TickActive} /></div>}
+                <Divider />
+              </div>
+            </div>
+          );
+        })}
+
+      </Modal>
     </>
   );
 }

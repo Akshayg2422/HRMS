@@ -3,7 +3,8 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import { FETCH_DESIGNATION, FETCH_DEPARTMENT, FETCH_ALL_BRANCHES_LIST, FETCH_EMPLOYEE_DETAILS, FETCH_EMPLOYEE_LIST, POST_EMPLOYEE_ADDITION, FETCH_EMPLOYEE_TIME_SHEETS, FETCH_EMPLOYEE_CHECK_IN_LOGS, FETCH_CHECK_IN_DETAILED_LOG_PER_DAY, FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS,
 ADD_DEPARTMENT,
 ADD_DESIGNATION,
-ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS } from "./actionTypes";
+ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
+UPDATE_EMPLOYEE_STATUS } from "./actionTypes";
 
 import {
   getDepartmentDataSuccess,
@@ -39,118 +40,220 @@ import {
   getCheckInDetailedLogFailure,
   getCheckInDetailedLogSuccess,
   getAttendanceConsolidatedCardsSuccess,
-  getAttendanceConsolidatedCardsFailure
+  getAttendanceConsolidatedCardsFailure,
+  getUpdateEmployeeStatusSuccess,
+  getUpdateEmployeeStatusFailure
 } from "./actions";
 
 import {fetchDesignationData, fetchDepartmentData, fetchAllBranchesList, fetchEmployeeDetails, fetchEmployeeList, postEmployeeAddition , fetchEmployeeTimeSheets, fetchEmployeeCheckInLogs, fetchCheckInDetailedLogPerDay, fetchEmployeeEachUserTimeSheets,
 postAddDepartment,
 postAddDesignation,
-postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards} from "../../helpers/backend_helper";
+postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards,postUpdateEmployeeStatus} from "../../helpers/backend_helper";
 
-
+import {
+  showLoader,
+  hideLoader
+} from '../app/actions'
 
 function* getDesignation(action) {
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchDesignationData, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getDesignationDataSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(getDesignationDataFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getDesignationDataFailure("Invalid Request"));
+
   }
 }
 
 function* getDepartments(action) {
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchDepartmentData, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getDepartmentDataSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(getDepartmentDataFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+    
+    yield put(hideLoader());
     yield put(getDepartmentDataFailure("Invalid Request"));
+
   }
 }
 
 function* getAllBranches(action) {
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchAllBranchesList, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(getAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getAllBranchesListFailure("Invalid Request"));
+
   }
 }
 
 function* getEmployeeDetails(action) {
+  
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeDetails, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeeDetailsSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeeDetailsFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getEmployeeDetailsFailure("Invalid Request"));
    
-
   }
 }
 
 function* getEmployeesList(action) {
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeList, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeesListSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeesListFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getEmployeesListFailure("Invalid Request"));
+
   }
 }
 
 function* employeeAddition(action) {
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(postEmployeeAddition, action.payload.params);
-    console.log(JSON.stringify(response));
+
+    
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(employeeAdditionSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(employeeAdditionFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(employeeAdditionFailure("Invalid Request"));
+
   }
 }
 
 function* getEmployeesTimeSheets(action) {
   
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeTimeSheets, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeesTimeSheetsSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeesTimeSheetsFailure(response.error_message));
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getEmployeesTimeSheetsFailure("Invalid Request"));
+
   }
 }
 
@@ -162,16 +265,28 @@ function* getEmployeesTimeSheets(action) {
 function* getEmployeeCheckInLogs(action) {
 
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeCheckInLogs, action.payload.params);
 
-    console.log(JSON.stringify(response)+'=========getEmployeeCheckInLogs');
+  
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeesCheckInLogsSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeesCheckInLogsFailure(response.error_message));
+
     }
   } catch (error) { 
+
+    yield put(hideLoader());
     yield put(getEmployeesCheckInLogsFailure("Invalid Request"));
+
   }
 }
 
@@ -183,147 +298,293 @@ function* getEmployeeCheckInLogs(action) {
 
 function* getCheckInDetailedLogPerDay(action) {
 
-  console.log('2');
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchCheckInDetailedLogPerDay, action.payload);
-    console.log('3');
+
     if (response.success) {
-      console.log('4');
+      
+      yield put(hideLoader());
       yield put(getCheckInDetailedLogPerDaySuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getCheckInDetailedLogPerDayFailure(response.error_message));
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getCheckInDetailedLogPerDayFailure("Invalid Request"));
+
   }
 }
 
 
 function* getEmployeeEachUserTimeSheets(action) { 
-  console.log(JSON.stringify(action.payload));
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeEachUserTimeSheets, action.payload);
-    console.log(JSON.stringify(response)+"======getEmployeeEachUserTimeSheets");
+    
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeeEachUserTimeSheetsSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeeEachUserTimeSheetsFailure(response.error_message));
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getEmployeeEachUserTimeSheetsFailure("Invalid Request"));
+
   }
 }
 
 function* addDepartment(action) { 
+
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(postAddDepartment, action.payload.params);
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(addDepartmentSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(addDepartmentFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(addDepartmentFailure("Invalid Request"));
     yield call(action.payload.onError);
+
   }
 }
 
 function* addDesignation(action) { 
   try {
-    console.log(JSON.stringify(action.payload.params)+"======addDesignation");
+    
+
+    yield put(showLoader());
+
     const response = yield call(postAddDesignation, action.payload.params);
-    console.log(JSON.stringify(response));
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(addDesignationSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(addDesignationFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(addDesignationFailure("Invalid Request"));
     yield call(action.payload.onError);
+
   }
 }
 
 function* addFenceAdmin(action) { 
+
+
   try {
+
+    yield put(showLoader());
+
     const response = yield call(postAddFenceAdmin, action.payload.params);
-    console.log(JSON.stringify(response)+"=====addFenceAdmin");
+    
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(addFenceAdminSuccess(response.details));
       yield call(action.payload.onSuccess);
+
     } else {
+
+      yield put(hideLoader());
       yield put(addFenceAdminFailure(response.error_message));
       yield call(action.payload.onError);
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(addFenceAdminFailure("Invalid Request"));
+
   }
 }
 
 function* getEmployeeAttendanceStats(action) {
+
+
   try{
+
+    yield put(showLoader());
+
     const response = yield call(fetchEmployeeAttendanceStats,action.payload);
+
     if(response.success) {
+
+      yield put(hideLoader());
       yield put(getEmployeeAttendanceStatsSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeeAttendanceStatsFailure(response.error_message));
+
     }
   }
   catch (error) {
+
+    yield put(hideLoader());
     yield put(getEmployeeAttendanceStatsFailure("Invalid Request"))
+
   }
 }
 
 function* getEmployeeTodayStatus(action) {
+
 try{
-  const response = yield call(fetchEmployeeTodayStatus,action.payload)
-  console.log("fffffff---------->",response);
-  if(response.success){
-    yield put(getEmployeeTodayStatusSuccess(response.details))
+
+   yield put(showLoader());
+
+    const response = yield call(fetchEmployeeTodayStatus, action.payload)
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(getEmployeeTodayStatusSuccess(response.details))
+
+    }
+    else {
+
+      yield put(hideLoader());
+      yield put(getEmployeeTodayStatusFailure(response.error_message))
+
+    }
   }
-  else{
-    yield put(getEmployeeTodayStatusFailure(response.error_message))
+  catch (error) {
+
+    yield put(hideLoader());
+    yield put(getEmployeeTodayStatusFailure("Invalid Request"))
+
   }
-}
-catch (error) {
-  yield put(getEmployeeTodayStatusFailure("Invalid Request"))
-}
 }
 
 function* getCheckInDetailedLog(action) {
  
   try{
+
+    yield put(showLoader());
+
     const response= yield call(fetchCheckInDetailedLog(action.payload))
+    
     if(response.success)
     {
+
+      yield put(hideLoader());
       yield put(getCheckInDetailedLogSuccess(response.details))
+
     }
     else{
+
+      yield put(hideLoader());
       yield put(getCheckInDetailedLogFailure(response.error_message))
+
     }
   }
   catch(error){
+
+    yield put(hideLoader());
     yield put(getCheckInDetailedLogFailure("Invalid Request"))
+
   }
 }
 
 function* getAttendanceConsolidatedCardsData(action) { 
   try {
+
+    yield put(showLoader());
+
     const response = yield call(fetchAttendanceConsolidatedCards, action.payload.params);
-    console.log(JSON.stringify(response)+"=====---------response");
+
     if (response.success) {
+
+      yield put(hideLoader());
       yield put(getAttendanceConsolidatedCardsSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response.details));
+
     } else {
+
+      yield put(hideLoader());
       yield put(getAttendanceConsolidatedCardsFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
+
+    yield put(hideLoader());
     yield put(getAttendanceConsolidatedCardsFailure("Invalid Request"));
+
+  }
+}
+
+function* getUpdateEmployeeStatus(action) { 
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(postUpdateEmployeeStatus, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(getUpdateEmployeeStatusSuccess(response.details));
+      yield call(action.payload.onSuccess);
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(getUpdateEmployeeStatusFailure(response.error_message));
+      yield call(action.payload.onError);
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(getUpdateEmployeeStatusFailure("Invalid Request"));
+    
   }
 }
 
@@ -345,6 +606,7 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS,getEmployeeTodayStatus)
   yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG,getCheckInDetailedLog)
   yield takeLatest(FETCH_ATTENDANCE_CONSOLIDATED_CARDS,getAttendanceConsolidatedCardsData)
+  yield takeLatest(UPDATE_EMPLOYEE_STATUS,getUpdateEmployeeStatus)
 }
 
 export default EmployeeSaga;

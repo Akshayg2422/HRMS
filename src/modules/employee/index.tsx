@@ -1,3 +1,3 @@
-import {ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio} from './screen';
+import {ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList} from './screen';
 
-export{ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio}
+export{ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList}

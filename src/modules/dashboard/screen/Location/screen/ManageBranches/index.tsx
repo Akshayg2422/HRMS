@@ -97,7 +97,6 @@ import {
         parent: branchDetails.parentbranch
       };
     
-      console.log("params---->", params);
   
       dispatch(
         branchAddition({

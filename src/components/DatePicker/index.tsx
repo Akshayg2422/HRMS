@@ -5,7 +5,7 @@ import {ImageView} from '@components'
 
  
 
-function DatePicker({icon, iconPosition,onChange,value, ...props}: DatePickerProps) {
+function DatePicker({icon, iconPosition,onChange,value,placeholder, ...props}: DatePickerProps) {
 
   const handleChange = (dates: Date[], currentDateString: string, self: any, data?: any) => {
     if (onChange) {
@@ -22,6 +22,7 @@ function DatePicker({icon, iconPosition,onChange,value, ...props}: DatePickerPro
           onChange={handleChange}
           className="form-control bg-white pl-2"
           value={value}
+          placeholder={placeholder}
         />
         {icon && iconPosition === 'append' && <div className="input-group-append">
           <span className="input-group-text"><ImageView icon={icon} /></span>

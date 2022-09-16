@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -37,8 +37,10 @@ function isExist(val: any) {
   return val ? val : ''
 }
 
-const goTo = (navigation: any, screen: string) => {
-  return navigation(screen)
+
+
+const goTo = (navigate: any, path: string, isReplace: boolean = false) => {
+  return navigate(path, { replace: isReplace })
 }
 
 const getMaxLengthForNumberInputs = (val: any, maxLength: number) => {
@@ -172,5 +174,6 @@ export {
   paginationHandler,
   getImageUri,
   getGenderByValue,
+  ENABLE_EMPLOYEE_DATA,
   displayStringExists
 }

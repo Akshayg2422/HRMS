@@ -9,7 +9,7 @@ import { Container } from '@components'
 function WelcomeBoard() {
   return (
 
-    <Container col={'col-xl-6'} display={'d-flex'} flexDirection={'flex-column'} justifyContent={'justify-content-center'} padding={'p-6'}  style={{
+    <Container additionClass={'container-fluid'} col={'col-xl-6'} flexDirection={'flex-column'} justifyContent={'justify-content-center'} padding={'p-6'}  style={{
       backgroundImage: `url(${Images.Welcome})`
     }}>
 

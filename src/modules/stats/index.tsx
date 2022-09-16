@@ -1,3 +1,3 @@
-import {DashboardStats,DashBoardAtttendance} from "./screen"
+import {DashboardStats,DashBoardAttendance} from "./screen"
 
-export {DashboardStats,DashBoardAtttendance}
+export {DashboardStats,DashBoardAttendance}

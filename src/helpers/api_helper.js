@@ -19,12 +19,13 @@ axios.interceptors.request.use(function (config) {
   return config;
 });
 
+
 const getHeaders = async () => {
+
   try {
     const value = await localStorage.getItem(ASYN_USER_AUTH);
-    const valueJ = value != null ? JSON.parse(value) : null;
-    if (valueJ && valueJ.userDetails.token) {
-      return { Authorization: "Token " + valueJ.userDetails.token };
+    if (value) {
+      return { Authorization: "Token " + value };
     } else {
       return {};
     }

@@ -17,16 +17,22 @@ import {
     EDIT_PROFILE_PICTURE,
     EDIT_PROFILE_PICTURE_SUCCESS,
     EDIT_PROFILE_PICTURE_FAIL,
+    SET_HIERARCHICAL_BRANCH_IDS,
+    SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD
+
   } from "./actionTypes";
   
 
   export const getDashboard = (params) => {
+    console.log("getDashboard=====action");
     return {
       type: FETCH_DASHBOARD,
       payload: params,
     
     };
   };
+
+  
   
   export const getDashboardSuccess = (response) => {
     return {
@@ -154,5 +160,25 @@ import {
     return {
       type: EDIT_PROFILE_PICTURE_FAIL,
       payload: error,
+    };
+  };
+
+
+  /**
+   * Hierarchical branch set
+   */
+
+   export const setBranchHierarchical = (params) => {
+    return {
+      type: SET_HIERARCHICAL_BRANCH_IDS,
+      payload: params,
+    };
+  };
+
+
+  export const setBranchHierarchicalIncludeChild = (params) => {
+    return {
+      type: SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
+      payload: params,
     };
   };

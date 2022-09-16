@@ -12,8 +12,15 @@ import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
 import { useDashboard } from "@contexts";
 import { goTo, ROUTE, useNav } from "@utils";
 import { useDispatch } from "react-redux";
-import { getDashboard } from "../../../../store/dashboard/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux";import { useTranslation } from "react-i18next";
+
+
+import {
+  getAllBranchesList,
+} from '../../../../store/location/actions';
+
+import { LocationProps } from '../../../../components/Interface';
 
 const data = [
   {
@@ -130,6 +137,9 @@ const dummyTable = [
   },
 ];
 
+
+
+
 function Dashboard() {
   const { t } = useTranslation();
   const navigation = useNav();
@@ -143,50 +153,57 @@ function Dashboard() {
   useEffect(() => {
     dispatch(getDashboard({}))
   }, []);
+  
+
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    let branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) => {
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
+    };
+    getChild(branchList, parent_id);
+
+    branchListFiltered = branchListFiltered.map((it: any) => {
+      return it.id;
+    });
+    return branchListFiltered;
+  };
+
+
+
+
+
+  useEffect(() => {
+
+    if (dashboardDetails) {
+      const params = {}
+      dispatch(getAllBranchesList({
+        params,
+        onSuccess: (response: Array<LocationProps>) => {
+          const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
+          dispatch(setBranchHierarchical({ids:{ branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name}))
+        },
+        onError: () => {
+        },
+      }))
+    }
+
+  }, [dashboardDetails]);
+
+
+
 
   return (
     <>
-      <Navbar />
-      <div className="main-content">
-        {dashboardDetails && dashboardDetails.user_details && <Header />}
-        <Container additionClass={"main-description"}>
-          <Container additionClass={"container-fluid"}>
-            <DashBoardCard />
-            <Container flexDirection={"row"}>
-              <Container col={"col-9"}>
-                <LineCharts
-                  title={"Overview"}
-                  datas={LineChartdata}
-                  height={280}
-                  themeColor={"#CBCBCB"}
-                  width={"95%"}
-                  linename1={"UV"}
-                  linename2={"PV"}
-                  lineDataKey1={"uv"}
-                  lineDataKey2={"pv"}
-                  StrokeLine2={"#82ca9d"}
-                  StrokeLine1={"#8884d8"}
-                  // yaxisLabel={"Amount"}
-                  // xaxisLabel={"Page"}
-                  dataKeyXaxis={"name"}
-                  children={ChartRadioData.map((Item) => {
-                    return (
-                      <>
-                        <label className={"mr-5"}>
-                          <input type="radio" name="options" />
-                          <span className="ml-2">{Item}</span>
-                        </label>
-                      </>
-                    );
-                  })}
-                />
-              </Container>
-            </Container>
-            <Container col={"col-7"}>
-              <CardTable displayDataSet={dummyTable} title={t("table")} />
-            </Container>
-          </Container>
-        </Container>
+      {dashboardDetails && dashboardDetails.user_details && <div className="mx--3 my--4"><Header /></div>}
+
+      <div className='my-5'>
+        <DashBoardCard />
       </div>
     </>
   );

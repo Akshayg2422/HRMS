@@ -60,13 +60,15 @@ import {
   SELECTED_EMPLOYEE_ID,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
-  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE
+  FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
+  UPDATE_EMPLOYEE_STATUS,
+  UPDATE_EMPLOYEE_STATUS_SUCCESS,
+  UPDATE_EMPLOYEE_STATUS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   error: '',
-  // dashboardDetails: {},
   designationDropdownData: [],
   departmentDropdownData: [],
   branchesDropdownData: [],
@@ -84,11 +86,13 @@ const initialState = {
   checkinDetailedLog: [],
   total: '',
   total_count: '',
-  cardType: -1,
+  routeParams: {},
   selectedDepartmentName:"",
   selectedDepartmentId:"",
   attendanceConsolidatedCardsData:[],
-  selectedEmployeeId:""
+  selectedEmployeeId:"",
+  employeeAttendanceStats:[]
+
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -443,13 +447,21 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_EMPLOYEE_TODAY_STATUS:
-      state = { ...state, loading: true }
-      break;
-    case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
       state = {
         ...state,
-        loading: false,
-        employeeStatusLog: action.payload
+        loading: true,
+        employeeAttendanceStats: [],
+        numOfPages: 0,
+        currentPage: 1
+      }
+      break;
+    case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
+      const attendanceStats = action.payload
+      state = {
+        ...state,
+        employeeAttendanceStats: attendanceStats.employees.data,
+        numOfPages: attendanceStats.employees.num_pages,
+        currentPage: attendanceStats.employees.next_page === -1 ? attendanceStats.employees.num_pages : attendanceStats.employees.next_page - 1,
       };
       break;
 
@@ -481,9 +493,10 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
    // Stats card type //
     case SELECTED_CARD_TYPE:
+      console.log(JSON.stringify(action.payload)+"+======SELECTED_CARD_TYPE");
       state = {
         ...state,
-        cardType: action.payload
+        routeParams: action.payload
       };
       break;
       // Stats selected department name //
@@ -510,7 +523,7 @@ const EmployeeReducer = (state = initialState, action) => {
       //attendance consolidated cards
       
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS:
-      state = { ...state, loading: true }
+      state = { ...state, loading: true, attendanceConsolidatedCardsData: [] }
       break;
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS:
       state = {
@@ -527,9 +540,30 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+      //delete employee
+      
+    case UPDATE_EMPLOYEE_STATUS:
+      state = { 
+        ...state, 
+        loading: true }
+      break;
+    case UPDATE_EMPLOYEE_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case UPDATE_EMPLOYEE_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     default:
-      state = { ...state };
+      state = state;
       break;
   }
   return state;

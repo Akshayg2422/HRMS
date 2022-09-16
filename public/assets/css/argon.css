@@ -63,6 +63,10 @@
      display: block;
  }
 
+ .modal.fade.show  {
+    backdrop-filter: blur(5px);
+}
+
  body {
      font-family: Montserrat, sans-serif;
      font-size: 1rem;
@@ -2346,7 +2350,7 @@
  .form-control:disabled,
  .form-control[readonly] {
      opacity: 1;
-     background-color: #e9ecef;
+     background-color: #fff;
  }
 
  select.form-control:focus::-ms-value {
@@ -4463,23 +4467,23 @@
 
  .custom-control-input:checked~.custom-control-label::before {
      color: #fff;
-     border-color: #5e72e4;
-     background-color: #5e72e4;
+     border-color: #52307c;
+     background-color: #52307c;
      box-shadow: 0 3px 2px rgba(233, 236, 239, .05);
  }
 
  .custom-control-input:focus~.custom-control-label::before {
-     box-shadow: 0 3px 2px rgba(233, 236, 239, .05), 0 3px 9px rgba(50, 50, 9, 0), 3px 4px 8px rgba(94, 114, 228, .1);
+     box-shadow: 0 3px 2px rgba(233, 236, 239, .05), 0 3px 9px rgba(50, 50, 9, 0), 3px 4px 8px rgba(82,48,124, .1);
  }
 
  .custom-control-input:focus:not(:checked)~.custom-control-label::before {
-     border-color: #5e72e4;
+     border-color: #52307c;
  }
 
  .custom-control-input:not(:disabled):active~.custom-control-label::before {
      color: #fff;
-     border-color: #5e72e4;
-     background-color: #5e72e4;
+     border-color: #52307c;
+     background-color: #52307c;
      box-shadow: 0 3px 2px rgba(233, 236, 239, .05);
  }
 
@@ -4533,8 +4537,8 @@
  }
 
  .custom-checkbox .custom-control-input:indeterminate~.custom-control-label::before {
-     border-color: #5e72e4;
-     background-color: #5e72e4;
+     border-color: #52307c;
+     background-color: #52307c;
      box-shadow: none;
  }
 
@@ -4543,11 +4547,11 @@
  }
 
  .custom-checkbox .custom-control-input:disabled:checked~.custom-control-label::before {
-     background-color: rgba(94, 114, 228, .5);
+     background-color: rgba(82,48,124, .5);
  }
 
  .custom-checkbox .custom-control-input:disabled:indeterminate~.custom-control-label::before {
-     background-color: rgba(94, 114, 228, .5);
+     background-color: rgba(82,48,124, .5);
  }
 
  .custom-radio .custom-control-label::before {
@@ -16105,7 +16109,7 @@ Zenylog
 
  .btn-icon-only {
      width: 4.375rem;
-     height: 3.000rem;
+     height: calc(1.5em + 1.25rem + 2px);
      padding: 0;
  }
 
@@ -16495,7 +16499,7 @@ Zenylog
  }
 
  .custom-checkbox .custom-control-input:disabled~.custom-control-label::before {
-     border-color: #e9ecef;
+     border-color: #52307c;
  }
 
  .custom-checkbox .custom-control-input:disabled:checked::before {
@@ -16566,12 +16570,12 @@ Zenylog
  }
 
  .custom-checkbox-primary .custom-control-input:checked~.custom-control-label::before {
-     border-color: #5e72e4;
-     background-color: #5e72e4;
+     border-color: #52307c;
+     background-color: #52307c;
  }
 
  .custom-checkbox-primary .custom-control-input:checked~.custom-control-label::after {
-     background-image: #5e72e4;
+     background-image: #52307c;
  }
 
  .custom-checkbox-secondary .custom-control-input:checked~.custom-control-label::before {

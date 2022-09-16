@@ -9,15 +9,13 @@ const sampleData = [{id: 1, name: 'Maria Rebert', CompanyName: 'Company Pvt Ltd'
 function index() {
   return (
     <>
-      <Navbar />
-      <div className='main-content' >
       <Card margin={'m-5'}>
         <Container flexDirection={'row'} alignItems={'align-items-center'}>
           <Container flexDirection={'row'} col={'col-9'} alignItems={'align-items-center'}>
-            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Report'} label={'Report'} data={[{id: '1', name: 'Leave Report', value: 'Leave'}]} />
-            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Report'} label={'Branch'} data={[{id: '1', name: 'Leave Report', value: 'Leave'}]} />
-            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Department'} label={'Department'} data={[{id: '1', name: 'Department', value: 'Leave'}]} />
-            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Employee'} label={'Employee'} data={[{id: '1', name: 'Department', value: 'Leave'}]} />
+            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Report'} label={'Report'} data={[{ id: '1', name: 'Leave Report', value: 'Leave' }]} />
+            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Report'} label={'Branch'} data={[{ id: '1', name: 'Leave Report', value: 'Leave' }]} />
+            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Department'} label={'Department'} data={[{ id: '1', name: 'Department', value: 'Leave' }]} />
+            <DropDown additionClass={'col-lg-3 col-md-12'} placeholder={'Select Employee'} label={'Employee'} data={[{ id: '1', name: 'Department', value: 'Leave' }]} />
           </Container>
 
           <Container additionClass={'col-lg-3'} flexDirection={'row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'}>
@@ -42,9 +40,7 @@ function index() {
 
         <Table displayDataSet={sampleData} tableContentType={TABLE_CONTENT_TYPE_REPORT} />
       </Card>
-      </div>
     </>
-
   )
 }
 

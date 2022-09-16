@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from 'react';
 import {
   Dashboard,
   Employee,
@@ -12,80 +12,60 @@ import {
   Welcome,
   ManageEmployee,
   DashboardStats,
-  DashBoardAtttendance,
+  DashBoardAttendance,
   EmployeeLog,
   ManageBranches,
   EmployeeWorkBook,
   Profile,
-} from "@modules";
+  InActiveEmployeeList,
+  RequireAuth,
+  RequireAuthExist
+} from '@modules';
 
-import { ROUTE } from "@utils";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider, AppProvider, DashboardProvider } from "@contexts";
-import { ToastContainer } from "react-toastify";
-import { AppLoader } from "@components";
-import FenceAdmin from "./modules/fenceAdmin";
-import { ManageAssignLocation } from "./modules/dashboard/screen";
-import { ZenylogSite, PolicyScr, TermsOfUse } from "@screens";
-import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
+import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from '@utils';
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+import { ToastContainer } from 'react-toastify';
+import { AppLoader, PageNotFound } from '@components';
+import FenceAdmin from './modules/fenceAdmin';
+import { ManageAssignLocation } from './modules/dashboard/screen';
+import { PolicyScr, TermsOfUse, ZenylogSite } from '@screens';
+import ViewEmployeeDetails from './modules/employee/screen/ViewEmployeeDetails';
 
 function App() {
+
   return (
-    <AppProvider>
+    <>
       <AppLoader />
-      <BrowserRouter>
-        <AuthProvider>
-          <Routes>
-            <Route path={"/"} element={<ZenylogSite />} />
-            <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
-            <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
-            <Route path={ROUTE.ROUTE_LOGIN} element={<Login />} />
-            <Route path={ROUTE.ROUTE_WELCOME} element={<Welcome />} />
-            <Route path={ROUTE.ROUTE_OTP} element={<Otp />} />
-            <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} />
-          </Routes>
-        </AuthProvider>
-        <DashboardProvider>
-          <Routes>
-            <Route path={ROUTE.ROUTE_DASHBOARD} element={<Dashboard />} />
-            <Route path={ROUTE.ROUTE_EMPLOYEE} element={<Employee />} />
-            <Route path={ROUTE.ROUTE_CALENDAR} element={<Calendar />} />
-            <Route path={ROUTE.ROUTE_LOCATION} element={<Location />} />
-            <Route path={ROUTE.ROUTE_REPORT} element={<Report />} />
-            <Route
-              path={ROUTE.ROUTE_MANAGE_EMPLOYEE}
-              element={<ManageEmployee />}
-            />
-            <Route
-              path={ROUTE.ROUTE_MANAGE_BRANCHES}
-              element={<ManageBranches />}
-            />
-            <Route
-              path={ROUTE.ROUTE_DASHBOARD_STATS}
-              element={<DashboardStats />}
-            />
-            <Route
-              path={ROUTE.ROUTE_DASHBOARD_ATTENDANCE}
-              element={<DashBoardAtttendance />}
-            />
-            <Route path={ROUTE.ROUTE_EMPLOYEE_LOG} element={<EmployeeLog />} />
-            <Route
-              path={ROUTE.ROUTE_EMPLOYEE_WORK_BOOK}
-              element={<EmployeeWorkBook />}
-            />
-            <Route path={ROUTE.ROUTE_FENCE_ADMIN} element={<FenceAdmin />} />
-            <Route
-              path={ROUTE.ROUTE_ASSIGN_LOCATION}
-              element={<ManageAssignLocation />}
-            />
-            <Route path={ROUTE.ROUTE_PROFILE} element={<Profile />} />
-            <Route path={ROUTE.ROUTE_PORTFOLIO} element={<Portfolio />} />
-            <Route path={ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS} element={<ViewEmployeeDetails />} />
-          </Routes>
-        </DashboardProvider>
-      </BrowserRouter>
+      <Routes>
+        <Route path={'/'} element={<ZenylogSite />} />
+        <Route path={'/PrivacyPolicy'} element={<PolicyScr />} />
+        <Route path={'/TermsOfUse'} element={<TermsOfUse />} />
+        <Route path={ROUTE.ROUTE_LOGIN} element={<RequireAuthExist>{<Login />}</RequireAuthExist>} />
+        <Route path={ROUTE.ROUTE_OTP} element={<RequireAuthExist>{<Otp />}</RequireAuthExist>} />
+        {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
+        <Route path={ROUTE.ROUTE_DASHBOARD} element={<RequireAuth>{<Dashboard />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_EMPLOYEE} element={<RequireAuth>{<Employee />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_CALENDAR} element={<RequireAuth>{<Calendar />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_LOCATION} element={<RequireAuth>{<Location />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_REPORT} element={<RequireAuth>{<Report />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_MANAGE_EMPLOYEE} element={<RequireAuth>{<ManageEmployee />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_MANAGE_BRANCHES} element={<RequireAuth>{<ManageBranches />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_DASHBOARD_STATS} element={<RequireAuth>{<DashboardStats />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_DASHBOARD_ATTENDANCE} element={<RequireAuth>{<DashBoardAttendance />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_EMPLOYEE_LOG} element={<RequireAuth>{<EmployeeLog />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_EMPLOYEE_WORK_BOOK} element={<RequireAuth>{<EmployeeWorkBook />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_FENCE_ADMIN} element={<RequireAuth>{<FenceAdmin />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_ASSIGN_LOCATION} element={<RequireAuth>{<ManageAssignLocation />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_PROFILE} element={<RequireAuth>{<Profile />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_PORTFOLIO} element={<RequireAuth>{<Portfolio />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS} element={<RequireAuth>{<ViewEmployeeDetails />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST} element={<RequireAuth>{<InActiveEmployeeList />}</RequireAuth>} />
+        
+        <Route path={'*'} element={<PageNotFound />} />
+      </Routes>
       <ToastContainer />
-    </AppProvider>
+    </>
   );
 }
 

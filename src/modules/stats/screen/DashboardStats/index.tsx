@@ -1,21 +1,35 @@
-import { Card, Container, Primary, Secondary, CommonTable,Modal } from "@components";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { getEmployeeAttendanceStats, getSelectedCardType,getSelectedDepartmentName,getSelectedDepartmentId, getAttendanceConsolidatedCards } from "../../../../store/employee/actions";
-import React, { useEffect, useState} from "react";
-import { goTo, ROUTE, useNav } from "@utils";
-import { Navbar } from "@modules";
+import { Card, Container, Primary, ChooseBranchFromHierarchical, CommonTable, Modal, DatePicker } from '@components';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { getEmployeeAttendanceStats, getSelectedCardType, getSelectedDepartmentName, getSelectedDepartmentId, getAttendanceConsolidatedCards } from '../../../../store/employee/actions';
+import React, { useEffect, useState } from 'react';
+import { goTo, ROUTE, useNav , getServerDateFromMoment, getMomentObjFromServer} from '@utils';
+import { Navbar } from '@modules';
+import {Icons} from '@assets'
 
 const DashboardStats = () => {
+
   const { t } = useTranslation();
   const navigation = useNav()
   let dispatch = useDispatch();
 
-  const { employeeattendancedatalog, selectedDepartmentName,selectedDepartmentId,attendanceConsolidatedCardsData } = useSelector(
-    (state: any) => state.EmployeeReducer
+  const { employeeattendancedatalog } = useSelector(
+    (state: any) => state.EmployeeReducer 
   );
 
-  const [model, setModel] = useState(false)
+  const { hierarchicalBranchName, hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
+
+  const [model, setModel] = useState(false);
+  const [selectedDepartmentId, setSelectedDepartmentId] = useState('');
+  const [selectedDepartmentName, setSelectedDepartmentName] = useState('');
+  const [attendanceConsolidatedCardsData, setAttendanceConsolidatedCardsData] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(getServerDateFromMoment(getMomentObjFromServer(new Date())));
+
+
+
 
   const normalizedEmployeeAttendanceLog = (data: any) => {
 
@@ -26,175 +40,178 @@ const DashboardStats = () => {
         Present: el.present,
         Late: el.late,
         Absent: el.absent,
-        "To Start": el.to_start
+        'To Start': el.to_start
       };
     });
   };
-console.log("response data",employeeattendancedatalog);
 
-  const params = {
-    branch_id: "dd036ce7-53b4-4e5b-b36f-7c31344bef0d",
-    child_ids: [
-      "7fd94e6e-b72f-4854-a25b-69fdd49c709b",
-      "ec4cb6a6-7540-46d5-be49-075ae1cdcb4c",
-      "1e26f5ee-be2b-4a0f-a027-85b4c4802394",
-      "d446a2cf-27a5-477b-b443-ee48da132433",
-      "b28f3909-fc00-44fc-95af-5ce02657ed78",
-      "1f0bd344-5a7b-40fe-bd8f-0fb671f479b4",
-      "594abbdd-1f83-454c-856e-151ee1a089f8",
-      "6367ef96-2b58-49ba-933f-590b084ce388",
-      "0837bde6-71b6-41e2-a447-c781671084cf",
-      "32834f8d-8aa1-4590-95fc-eaad8fb9743f",
-      "373b4c06-b2e8-497d-9563-fee5d42feb55",
-    ],
-    include_child: true,
-    selected_date: "2022-09-12",
-  };
+
+
 
   useEffect(() => {
-    dispatch(getEmployeeAttendanceStats(params));
-  }, []);
+    const params = {
+      ...hierarchicalBranchIds,
+      selected_date: selectedDate,
+    };
 
-  const onSelected = (type: string | number) => {
-    console.log("type-------->", type);
-    dispatch(getSelectedCardType(type))
+    console.log(JSON.stringify(params)+"======useEffect");
+    
+
+    dispatch(getEmployeeAttendanceStats(params));
+   
+  }, [selectedDate,hierarchicalBranchIds]);
+
+  const proceedNext = (attendanceType: number, departmentId: number | string) => {
+
+    const params = {
+      attendanceType: attendanceType,
+      departmentId: departmentId,
+      selectedDate: selectedDate
+    }
+
+
+    
+    dispatch(getSelectedCardType(params))
     goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE)
   }
 
 
-  const getAttendanceConsolidatedData = (selectedDepartment:string) => {
-    
-  const params={
-     branch_id: "dd036ce7-53b4-4e5b-b36f-7c31344bef0d",
-     child_ids: ["e7358196-f4f4-4764-aae1-dbf60b10160b",
-      "7fd94e6e-b72f-4854-a25b-69fdd49c709b", 
-      "ec4cb6a6-7540-46d5-be49-075ae1cdcb4c", 
-      "1e26f5ee-be2b-4a0f-a027-85b4c4802394", 
-      "d446a2cf-27a5-477b-b443-ee48da132433", 
-      "b28f3909-fc00-44fc-95af-5ce02657ed78", 
-      "1f0bd344-5a7b-40fe-bd8f-0fb671f479b4", 
-      "594abbdd-1f83-454c-856e-151ee1a089f8", 
-      "6367ef96-2b58-49ba-933f-590b084ce388", 
-      "0837bde6-71b6-41e2-a447-c781671084cf", 
-      "32834f8d-8aa1-4590-95fc-eaad8fb9743f", 
-      "373b4c06-b2e8-497d-9563-fee5d42feb55"], 
-      department_id: "c23a2ce4-ec64-4bc7-8eba-2a662dba6640",
-      include_child: false, 
-      selected_date: "2022-09-13"
- }
-  console.log("params--->",params);
-  
+  const getAttendanceConsolidatedData = (departmentId: string) => {
+    const params = {
+      ...hierarchicalBranchIds,
+      selected_date: selectedDate,
+      department_id: departmentId,
+    };
 
-  dispatch(getAttendanceConsolidatedCards({
-    params,
-     onSuccess: () => {
-    setModel(!model)
-   },
-    onError: (error: string) => {
+    dispatch(getAttendanceConsolidatedCards({
+      params,
+      onSuccess: (response: any) => {
+        console.log(JSON.stringify(response) + "====");
+        if (response && response.cards?.length > 0) {
+          setAttendanceConsolidatedCardsData(response.cards)
+          setModel(!model)
+        }
+      },
+      onError: (error: string) => {
 
-   },
-}));
+      },
+    }));
   }
 
 
   return (
     <>
-      <Navbar />
-      <Container additionClass={" main-content "}>
-        <Container
-          additionClass={"row"}
-          justifyContent={"justify-content-around"}
-          margin={"m-4"}
-        >
-          <Container >
-            <h1>{t("dashboardDetails")}</h1>
-          </Container>
+      <Container additionClass={'col'}>
+        <div className='row mt-3'>
+          <div className='col'>
+          </div>
+          <div className='row col-lg-7 col-md-10'>
+            <div className='col-lg-6 col-md-6 mt-2'>
+              <DatePicker
+                placeholder={'Select Date'}
+                icon={Icons.Calendar}
+                iconPosition={'prepend'}
+                value={selectedDate}
+                onChange={(date: string) =>
+                  setSelectedDate(date)
+                } />
+            </div>
+            <div className='col-lg-6 col-md-6'>
+              <ChooseBranchFromHierarchical />
+            </div>
+          </div>
+        </div>
+      </Container>
+      <Container
+        additionClass={'row'}
+        justifyContent={'justify-content-around'}>
+        <div className="row align-items-center mb-3">
+          <div className="col" >
+            <h3 className="mb-0" >{t('dashboardDetails')}</h3>
+          </div>
+        </div>
+        <Container additionClass={'row'} >
           {employeeattendancedatalog?.cards?.map((el: any) => {
             return (
-              <Card
-                additionClass="col-xl-3 col-md-3 "
-                margin={"m-2"}
-                children={
+              <Container additionClass={'col-xl-4 col-md-6'}>
+                <Card>
                   <Container
-                    justifyContent={"justify-content-between"}
-                    alignItems={"align-content-center"}
-                    flexDirection={"column"}
+                    justifyContent={'justify-content-between'}
+                    alignItems={'align-content-center'}
+                    flexDirection={'column'}
                   >
                     <Container>
-                      <div className="text-center h1 font-weight-300">
+                      <div className='text-center h1 font-weight-300'>
                         {el.count}
                       </div>
-                      <div className="text-center h2">{el.title}</div>
+                      <div className='text-center h2'>{el.title}</div>
                     </Container>
 
-                <Primary
-                  additionClass={"btn-block"}
-                  text={t("Tap to View")}
-                  size={"btn-sm"}
-                  // onClick={() => onSelected(el.type)}
-                />
+                    <Primary
+                      additionClass={'btn-block'}
+                      text={t('Tap to View')}
+                      size={'btn-sm'}
+                      onClick={() => proceedNext(el.type, -1)}
+                    />
+                  </Container>
+                </Card>
               </Container>
-            }
-          ></Card>
-        );
-      })}
-      <Container margin={"mt-5"}>
-        <Container>
-          <h1>{t("departments")}</h1>
+            );
+          })}
+        </Container>
+        <Container margin={'m-6'}>
           {employeeattendancedatalog && employeeattendancedatalog.departments_types && (
             <CommonTable
-              tableTitle={t("employeeLog")}
+              tableTitle={t(t('departments'))}
               displayDataSet={normalizedEmployeeAttendanceLog(employeeattendancedatalog)}
-              tableOnClick={(e, index, item) =>{
+              tableOnClick={(e, index, item) => {
+                console.log(employeeattendancedatalog.departments_stats[index].department_id + "=====");
 
-                dispatch(getSelectedDepartmentName(employeeattendancedatalog.departments_stats[index].name))
-                dispatch(getSelectedDepartmentId(employeeattendancedatalog.departments_stats[index].department_id))
-                getAttendanceConsolidatedData(employeeattendancedatalog.departments_stats[index].department_id)
+                setSelectedDepartmentName(employeeattendancedatalog.departments_stats[index].name)
+                setSelectedDepartmentId(employeeattendancedatalog.departments_stats[index].department_id)
+                getAttendanceConsolidatedData(employeeattendancedatalog.departments_stats[index].department_id);
               }}
             />
           )}
         </Container>
+        <Modal title={selectedDepartmentName} showModel={model} toggle={() => setModel(!model)}  >
+          <Container additionClass={'row'} >
+            {
+              attendanceConsolidatedCardsData.map((el: any, index: number) => {
+                return (
+                  <Container additionClass={'col-xl-4 col-md-6'}>
+                    <Card>
+                      <Container
+                        justifyContent={'justify-content-between'}
+                        alignItems={'align-content-center'}
+                        flexDirection={'column'}>
+                        <Container>
+                          <div className='text-center h1 font-weight-300'>
+                            {el.count}
+                          </div>
+                          <div className='text-center h2'>{el.title}</div>
+                        </Container>
+
+                        <Primary
+                          additionClass={'btn-block'}
+                          text={t('Tap to View')}
+                          size={'btn-sm'}
+                          onClick={() => {
+                            setModel(!model);
+                            proceedNext(el.type, selectedDepartmentId)
+                          }
+                          }
+                        />
+                      </Container>
+                    </Card>
+                  </Container>
+                );
+              })
+            }
+          </Container>
+        </Modal>
       </Container>
-      <Modal title={'All Registered Branches'} showModel={model} toggle={() => setModel(!model)}  >
-                    {/* <div className='my-4'> */}
-                    <Container additionClass={"row"}>
-                        {
-                            attendanceConsolidatedCardsData?.cards?.map((el:any, index: number) => {
-                                return (
-                                  <Card
-                                  additionClass="col-xl-3 col-md-3 "
-                                  margin={"m-2"}
-                                  children={
-                                    <Container
-                                      justifyContent={"justify-content-between"}
-                                      alignItems={"align-content-center"}
-                                      flexDirection={"column"}
-                                    >
-                                      <Container>
-                                        <div className="text-center h1 font-weight-300">
-                                          {el.count}
-                                        </div>
-                                        <div className="text-center h2">{el.title}</div>
-                                      </Container>
-                      
-                                      <Primary
-                                        additionClass={"btn-block"}
-                                        text={t("Tap to View")}
-                                        size={"btn-sm"}
-                                        // onClick={() => onSelected(el.type)}
-                                      />
-                                    </Container>
-                                  }
-                                ></Card>
-                                );
-                            })
-                        }
-                    {/* </div> */}
-                    </Container>
-                </Modal>
-    </Container>
-  </Container>
-  </>
+    </>
   );
 };
 

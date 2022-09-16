@@ -102,7 +102,25 @@ const ManageEmployee = () => {
   const [department, setDepartment] = useState('');
   const [designation, setDesignation] = useState('');
   const [isRefresh, setIsRefresh] = useState(false);
+  const [companyBranchDropdownData, setCompanyBranchDropdownData] = useState<any>()
 
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    const branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) =>
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
+    getChild(branchList, parent_id);
+    return branchListFiltered;
+  };
 
   useEffect(() => {
 
@@ -110,7 +128,27 @@ const ManageEmployee = () => {
 
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    dispatch(getAllBranchesList({}));
+    
+    const params = {}
+    dispatch(getAllBranchesList({
+      params,
+      onSuccess: (success: object) => {
+        const parentBranch = branchesDropdownData.find(
+          (it: any) => it.id === dashboardDetails.company_branch.id,
+        );
+        setCompanyBranchDropdownData([
+          ...getAllSubBranches(
+            branchesDropdownData,
+            dashboardDetails.company_branch.id,
+          ),
+          parentBranch,])
+      },
+
+      onError: (error: string) => {
+      },
+    }));
+
+
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
     }
@@ -465,7 +503,7 @@ const ManageEmployee = () => {
         <DropDown
           label={t('branch')}
           placeholder={t('branch')}
-          data={branchesDropdownData}
+          data={companyBranchDropdownData}
           name={'branch'}
           value={employeeDetails.branch}
           onChange={(event) => onChangeHandler(event)}
