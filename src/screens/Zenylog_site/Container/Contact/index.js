@@ -46,10 +46,10 @@ const Contact = (props) => {
     <>
       <div id="Contact" className="container-fluid mt-2">
         <div className="card container-fluid">
-          <h1 class="card-header">Contact us</h1>  
+          <h1 class="card-header text-website-primary">Contact{' '}<u>us</u></h1>  
           <div className="row card-body">
             <div className="col-sm-6">
-              <h1 className="mt-5">Get a quote</h1>
+              <h1 className="mt-5 text-primary">Get a quote</h1>
               <p className="mb-5">
                 Fill up the form and our Team will get back <br />
                 to you within 24 hours
@@ -60,7 +60,7 @@ const Contact = (props) => {
                   className="ml-3"
                   src={Icons.Mobile}
                   height={"30px"}
-                  width={"30px"}
+                  width={"25px"}
                 />
                 <p className="ml-3 ">+91 93424 99299</p>
               </div>
@@ -68,17 +68,17 @@ const Contact = (props) => {
                 <img
                   className="ml-3"
                   src={Icons.Mail}
-                  height={"30px"}
+                  height={"25px"}
                   width={"30px"}
                 ></img>
                 <p className="ml-3">maplebell.official@gmail.com</p>
               </div>
               <div className="flex-row mt-4">
                 <img
-                  className="ml-4 mt-2"
+                  className="ml-3 mt-2"
                   src={Icons.Location}
-                  height={"30px"}
-                  width={"20px"}
+                  height={"35px"}
+                  width={"30px"}
                 ></img>
                 <p className="ml-3">
                   #363, 19th Main Road, 1st Block,
@@ -113,7 +113,7 @@ const Contact = (props) => {
                 <div className="col-lg-6 col-8 text-right mb-3">
                   <button
                     type="button"
-                    class="btn btn-primary btn-lg btn-block col-sm-6"
+                    class="btn btn-web-primary btn-lg btn-block col-sm-6"
                   >
                     SEND
                   </button>
