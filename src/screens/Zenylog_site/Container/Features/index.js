@@ -1,15 +1,16 @@
-import React from 'react'
-import {Icons} from '@assets'
+import React from "react";
+import { Icons } from "@assets";
 
-import { Card} from '../../components';
+import { Card } from "../../components";
 
-const Features=(props)=>{
-  
-    return (
-        <>
-        <div id='OurFeatures' className='container-fluid' >
+const Features = (props) => {
+  return (
+    <>
+      <div id="OurFeatures" className="container-fluid">
         <div className="card container-fluid">
-          <h1 class="card-header mt-4 mr-4 ml-5 mb-5">Our Features</h1>
+          <h1 class="card-header mt-4 text-website-primary  mr-4 ml-5 mb-5">
+            Our <u>Features</u>
+          </h1>
           <div className="row justify-content-around">
             <div className="col-sm-3">
               <Card
@@ -22,7 +23,7 @@ const Features=(props)=>{
             </div>
             <div className="col-sm-3">
               <Card
-                image={Icons.Attendance}
+                image={Icons.ShiftManagement}
                 title={"Shift Management"}
                 text1={"Change Shift"}
                 text2={"Allocate Multiple Shift"}
@@ -129,8 +130,8 @@ const Features=(props)=>{
             </div>
           </div>
         </div>
-        </div>
-        </>
-    )
-}
+      </div>
+    </>
+  );
+};
 export default Features;

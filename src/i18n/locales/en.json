@@ -334,7 +334,10 @@
   "details":"Details",
   "pleaseSelect":"Please Select",
   "departments":"Departments",
-  "employeeDetailsUpdatedSuccessfully":"Employee Details Updated Successfully"
+  "employeeDetailsUpdatedSuccessfully":"Employee Details Updated Successfully",
+  "logoutUser":"Logout User",
+  "logoutMessage":"Please click on Proceed to Logout user"
+
 
  
 }

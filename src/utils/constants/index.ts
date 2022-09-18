@@ -71,8 +71,9 @@ export const NAV_ITEM = [
 
 
 export const HEADER_MENU = [
-  {id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02'},
-  {id: '2', name: 'ChangeLanguage', value: 'CL', icon: 'ni ni-active-40'},
+  { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'ChangeLanguage', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '3', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 
@@ -117,3 +118,9 @@ export const ENABLE_EMPLOYEE_DATA = [
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 
 
+export const LANGUAGE_LIST = [
+  { language: 'English', subtitle: '', key: 'en' },
+  { language: 'हिंदी', subtitle: 'Hindi', key: 'hi' },
+  { language: 'ಕನ್ನಡ', subtitle: 'kannada', key: 'ka' },
+  { language: 'தமிழ்', subtitle: 'Tamil', key: 'ta' },
+];

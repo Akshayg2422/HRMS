@@ -26,7 +26,8 @@ import {
   TYPE_OF_BUSINESS_FAILURE,
   ADMIN_VERIFICATION_OTP,
   ADMIN_VERIFICATION_OTP_SUCCESS,
-  ADMIN_VERIFICATION_OTP_FAILURE
+  ADMIN_VERIFICATION_OTP_FAILURE,
+  RESET_REDUCER
 } from "./actionTypes";
 
 
@@ -234,5 +235,17 @@ export const getTypeOfBusinessFailure = (error) => {
   return {
     type: TYPE_OF_BUSINESS_FAILURE,
     payload: error,
+  };
+};
+
+
+/**
+ *  set logout 
+ */
+
+
+ export const resetAuth = () => {
+  return {
+    type: RESET_REDUCER,
   };
 };

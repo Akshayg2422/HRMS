@@ -1,7 +1,8 @@
 import {
   SHOW_LOADER,
   HIDE_LOADER,
-  SET_USER_LOGIN_DETAILS
+  SET_USER_LOGIN_DETAILS,
+  RESET_REDUCER
 } from "./actionsType";
 
 const initialState = {
@@ -16,7 +17,6 @@ const AppReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case SHOW_LOADER:
-      console.log(SHOW_LOADER + "=========");
       state = {
         ...state,
         loading: true,
@@ -41,11 +41,15 @@ const AppReducer = (state = initialState, action) => {
       };
       break;
 
+    case RESET_REDUCER:
+      state = initialState
+      break;
 
     default:
       state = state;
       break;
   }
+
   return state;
 }
 

@@ -1,6 +1,7 @@
 export const Images = {
   Welcome: require('./images/Welcome/Welcome.png'),
-  WelcomePattern: require('./images/WelcomePattern/WelcomePattern.png')
+  WelcomePattern: require('./images/WelcomePattern/WelcomePattern.png'),
+  FlowChart: require('./images/Flowchart/FlowChart.png')
 }
 export const Icons = {
   Logo: require('./icons/Logo/Logo.png'),
@@ -49,10 +50,13 @@ export const Icons = {
   Mobile: require('./icons/Mobile/Mobile.png'),
   Linkedin: require('./icons/Linkedin/Linkedin.png'),
   Zenylog: require('./icons/Zenylog/Zenylog.png'),
+  NewLogo:require('./icons/NewLogo/newlogo.png'),
   ProfilePlaceHolder: require('./icons/ProfilePlaceHolder/ProfilePlaceHolder.png'),
   TickActive: require('./icons/TickActive/TickActive.png'),
   TickDefault: require('./icons/TickDefault/TickDefault.png'),
   LocationGray: require('./icons/LocationGray/LocationGray.png'),
+  ShiftManagement:require('./icons/ShiftManagement/shiftManagement.png')
+ 
 
 }
 

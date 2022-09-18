@@ -1,5 +1,10 @@
 
-import { SHOW_LOADER, HIDE_LOADER , SET_USER_LOGIN_DETAILS} from "./actionsType"
+import {
+  SHOW_LOADER,
+  HIDE_LOADER,
+  SET_USER_LOGIN_DETAILS,
+  RESET_REDUCER
+} from "./actionsType"
 
 
 export const showLoader = () => {
@@ -21,5 +26,16 @@ export const setUserLoginDetails = (params) => {
   return {
     type: SET_USER_LOGIN_DETAILS,
     payload: params
+  };
+};
+
+
+/**
+ * 
+ */
+
+export const resetApp = () => {
+  return {
+    type: RESET_REDUCER,
   };
 };

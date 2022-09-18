@@ -12,7 +12,9 @@ GET_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_SUCCESS,
 UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_FAILURE,
-UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER } from "./actionsType"
+UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER ,
+RESET_REDUCER
+} from "./actionsType"
 
 
 export const getAllBranchesList = (params) => {
@@ -162,3 +164,16 @@ export const getAllBranchesList = (params) => {
       payload: error,
     };
   };
+
+
+
+  /**
+   * set logout
+   * 
+   */
+
+export const resetLocation = () => {
+  return {
+    type: RESET_REDUCER,
+  };
+};

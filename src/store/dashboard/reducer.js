@@ -18,7 +18,8 @@ import {
   EDIT_PROFILE_PICTURE_SUCCESS,
   EDIT_PROFILE_PICTURE_FAIL,
   SET_HIERARCHICAL_BRANCH_IDS,
-  SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD
+  SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
+  RESET_REDUCER
 } from "./actionTypes";
 
 const initialState = {
@@ -156,10 +157,16 @@ const DashboardReducer = (state = initialState, action) => {
         hierarchicalBranchIds: { ...state.hierarchicalBranchIds, include_child: action.payload.checkBoxStatus }
       };
         break;
+    
+    case RESET_REDUCER:
+      state = initialState;
+      break;
+
     default:
-      state = state
+      state = state;
       break;
   }
+  
   return state;
 };
 
