@@ -7,7 +7,7 @@ const Navbar = (props) => {
       <nav class="navbar navbar-horizontal navbar-light navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
-            <img src={Icons.Zenylog} alt="" width="150" height="25" class="d-inline-block align-text-top"></img>
+            <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-primary" aria-controls="navbar-primary" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
