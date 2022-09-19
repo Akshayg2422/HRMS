@@ -29,7 +29,14 @@ function AppLoader() {
   return (
     <div>
       <DarkBackground disappear={loading}>
-        <LoadingOverlay active={true} spinner={true}></LoadingOverlay>
+        <LoadingOverlay styles={{
+          spinner: (base) => ({
+            ...base,
+            '& svg circle': {
+              stroke: 'rgba(82,48,124, 0.5)'
+            }
+          })
+        }} className='bg-primary' active={true} spinner={true}></LoadingOverlay>
       </DarkBackground>
     </div>
   );
