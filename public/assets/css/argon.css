@@ -4631,7 +4631,7 @@
  }
 
  @media (prefers-reduced-motion:reduce) {
-     .custom-switch .custom-control-label: :after {
+     .custom-switch .custom-control-label::after {
          transition: none;
      }
  }
@@ -4952,7 +4952,7 @@
 
  @media (prefers-reduced-motion:reduce) {
 
-     .custom-control-label: :before,
+     .custom-control-label::before,
      .custom-file-label,
      .custom-select {
          transition: none;
@@ -18653,7 +18653,7 @@ Zenylog
  }
 
  @media (prefers-reduced-motion:reduce) {
-     .navbar-vertical .navbar-nav .nav-link[data-toggle=collapse]: after {
+     .navbar-vertical .navbar-nav .nav-link[data-toggle=collapse]:after {
          transition: none;
      }
  }
@@ -18729,12 +18729,12 @@ Zenylog
      margin-left: -1.5rem;
      padding-right: 1.5rem;
      padding-left: 1.5rem;
-     flex: 1 1;
+     flex: 1  1;
      align-items: stretch;
  }
 
  .navbar-vertical.navbar-expand-xs .navbar-collapse>* {
-     min-width: 100%
+     min-width: 100%;
  }
 
  .navbar-vertical.navbar-expand-xs .navbar-nav {
@@ -18768,7 +18768,7 @@ Zenylog
      padding-left: 1rem;
      color: #fff;
      border-radius: .375rem;
-     background: #5e72e4;
+     background: #060607;
  }
 
  .navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link {
@@ -18776,6 +18776,10 @@ Zenylog
      padding-bottom: .45rem;
      padding-left: 15px;
  }
+
+ /* #sidenav-collapse-main .nav-link:hover{
+    background-color:  !important;
+} */
 
  .navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link span.sidenav-normal {
      padding-left: 8px;
@@ -19343,10 +19347,12 @@ Zenylog
  .sidenav {
      z-index: 1050;
      transition: all .4s ease;
+     
  }
 
  @media (min-width:1200px) {
-     .sidenav: hover {
+
+     .sidenav :hover  {
          max-width: 250px;
      }
 
@@ -19388,6 +19394,7 @@ Zenylog
  .g-sidenav-show .sidenav .nav-item .collapse {
      height: auto;
      transition: all .15s ease;
+     
  }
 
  @media (prefers-reduced-motion:reduce) {
@@ -19415,7 +19422,7 @@ Zenylog
  }
 
  .g-sidenav-hidden:not(.g-sidenav-show) .sidenav .navbar-nav>.nav-item>.nav-link:after {
-     content: ''
+     content: '';
  }
 
  .g-sidenav-hidden:not(.g-sidenav-show) .sidenav .nav-item .collapse .sidenav-normal {
@@ -19424,6 +19431,7 @@ Zenylog
 
  .g-sidenav-hidden:not(.g-sidenav-show) .sidenav .nav-link-text {
      opacity: 0;
+     
  }
 
  .g-sidenav-hide .sidenav .navbar-nav>.nav-item>.nav-link:after {
@@ -19448,7 +19456,7 @@ Zenylog
      }
 
      .g-sidenav-pinned .sidenav {
-         transform: translateX(0);
+         transform: translateX(0);  
      }
  }
 
@@ -19483,8 +19491,9 @@ Zenylog
  }
 
  @media (prefers-reduced-motion:reduce) {
-     .sidenav-toggler-inner: before {
+     .sidenav-toggler-inner:before {
          transition: none;
+         
      }
  }
 

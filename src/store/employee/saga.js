@@ -4,7 +4,7 @@ import { FETCH_DESIGNATION, FETCH_DEPARTMENT, FETCH_ALL_BRANCHES_LIST, FETCH_EMP
 ADD_DEPARTMENT,
 ADD_DESIGNATION,
 ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
-UPDATE_EMPLOYEE_STATUS } from "./actionTypes";
+UPDATE_EMPLOYEE_STATUS,FETCH_DOWNLOAD_TODAY_STATUS } from "./actionTypes";
 
 import {
   getDepartmentDataSuccess,
@@ -42,12 +42,14 @@ import {
   getAttendanceConsolidatedCardsSuccess,
   getAttendanceConsolidatedCardsFailure,
   getUpdateEmployeeStatusSuccess,
-  getUpdateEmployeeStatusFailure
+  getUpdateEmployeeStatusFailure,
+  getDownloadTodayStatusSuccess,
+  getDownloadTodayStatusFailure
 } from "./actions";
 
 import {fetchDesignationData, fetchDepartmentData, fetchAllBranchesList, fetchEmployeeDetails, fetchEmployeeList, postEmployeeAddition , fetchEmployeeTimeSheets, fetchEmployeeCheckInLogs, fetchCheckInDetailedLogPerDay, fetchEmployeeEachUserTimeSheets,
 postAddDepartment,
-postAddDesignation,
+postAddDesignation,fetchDownloadTodayStatus,
 postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards,postUpdateEmployeeStatus} from "../../helpers/backend_helper";
 
 import {
@@ -480,17 +482,19 @@ try{
    yield put(showLoader());
 
     const response = yield call(fetchEmployeeTodayStatus, action.payload)
-
+    console.log("response data--->",response);
     if (response.success) {
 
       yield put(hideLoader());
       yield put(getEmployeeTodayStatusSuccess(response.details))
-
+      yield call(action.payload.onSuccess(response));
     }
     else {
-
+      console.log("error");
       yield put(hideLoader());
       yield put(getEmployeeTodayStatusFailure(response.error_message))
+      yield call(action.payload.onError);
+
 
     }
   }
@@ -501,6 +505,37 @@ try{
 
   }
 }
+
+//download
+
+function* getDownloadTodayStatus(action) {
+
+  try{
+  
+     yield put(showLoader());
+      const response = yield call(fetchDownloadTodayStatus, action.payload)
+      if (response) {
+        yield put(hideLoader());
+        yield put(getDownloadTodayStatusSuccess(response.data))
+        yield call(action.payload.onSuccess(response));
+      }
+      else {
+        console.log("error");
+        yield put(hideLoader());
+        yield put(getDownloadTodayStatusFailure(response.error_message))
+        yield call(action.payload.onError);
+  
+  
+      }
+    }
+    catch (error) {
+  
+      yield put(hideLoader());
+      yield put(getEmployeeTodayStatusFailure("Invalid Request"))
+  
+    }
+  }
+  
 
 function* getCheckInDetailedLog(action) {
  
@@ -607,6 +642,7 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG,getCheckInDetailedLog)
   yield takeLatest(FETCH_ATTENDANCE_CONSOLIDATED_CARDS,getAttendanceConsolidatedCardsData)
   yield takeLatest(UPDATE_EMPLOYEE_STATUS,getUpdateEmployeeStatus)
+  yield takeLatest(FETCH_DOWNLOAD_TODAY_STATUS,getDownloadTodayStatus)
 }
 
 export default EmployeeSaga;

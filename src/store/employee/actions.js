@@ -64,7 +64,10 @@ import {
   UPDATE_EMPLOYEE_STATUS,
   UPDATE_EMPLOYEE_STATUS_SUCCESS,
   UPDATE_EMPLOYEE_STATUS_FAILURE,
-  RESET_REDUCER
+  RESET_REDUCER,
+  FETCH_DOWNLOAD_TODAY_STATUS,
+  FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS,
+  FETCH_DOWNLOAD_TODAY_STATUS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -494,6 +497,28 @@ export const getEmployeeTodayStatusSuccess = (response) => {
 export const getEmployeeTodayStatusFailure = (error) => {
   return {
     type: FETCH_EMPLOYEE_TODAY_STATUS_FAILURE,
+    payload: error,
+  };
+};
+ //download
+export const getDownloadTodayStatus =(params)=>{
+  return{
+    type: FETCH_DOWNLOAD_TODAY_STATUS,
+    payload: params
+  }
+}
+
+
+export const getDownloadTodayStatusSuccess = (response) => {
+  return {
+    type: FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getDownloadTodayStatusFailure = (error) => {
+  return {
+    type: FETCH_DOWNLOAD_TODAY_STATUS_FAILURE,
     payload: error,
   };
 };

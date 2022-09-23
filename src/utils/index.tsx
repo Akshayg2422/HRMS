@@ -141,6 +141,19 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
 
 
+const downloadFile=((response:any)=>{
+  let filename = response.headers['content-disposition'].split('filename=')[1];
+  const blob = new Blob([response.data]);
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+})
+
+
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
   validateEmail,
@@ -176,5 +189,6 @@ export {
   getGenderByValue,
   ENABLE_EMPLOYEE_DATA,
   displayStringExists,
-  LANGUAGE_LIST
+  LANGUAGE_LIST,
+  downloadFile
 }

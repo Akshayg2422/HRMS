@@ -1,4 +1,4 @@
-import {ChangeEventHandler, MouseEvent, KeyboardEventHandler, KeyboardEvent} from 'react'
+import {ChangeEventHandler, MouseEvent, KeyboardEventHandler, KeyboardEvent, ImgHTMLAttributes} from 'react'
 export interface ContainerProps {
   justifyContent?: 'justify-content-start' | 'justify-content-end' | 'justify-content-center' | 'justify-content-between' | 'justify-content-around';
   alignItems?: 'align-items-start' | 'align-items-end' | 'align-items-center' | 'align-items-baseline' | 'align-items-stretch' | 'align-content-start' | 'align-content-end' | 'align-content-center' | 'align-content-between' | 'align-content-around' | 'align-content-stretch';
@@ -13,7 +13,7 @@ export interface ContainerProps {
   fontWeight?: 'font-weight-light' | 'font-weight-lighter' | 'font-weight-normal' | 'font-weight-bold' | 'font-weight-bolder' | 'font-weight-300' | 'font-weight-400' | 'font-weight-500' | 'font-weight-600' | 'font-weight-700' | 'font-weight-800' | 'font-weight-900';
   textColor?: 'text-muted' | 'text-primary' | 'text-light' | 'text-dark' | 'text-default' | 'text-white' | 'text-neutral' | 'text-darker';
   position?: 'position-static' | 'position-relative' | 'position-absolute' | 'position-fixed' | 'position-sticky'
-  onClick?: () => void
+  onClick?: () => void | undefined 
   additionClass?: string
 
 }

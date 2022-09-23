@@ -64,7 +64,10 @@ import {
   UPDATE_EMPLOYEE_STATUS,
   UPDATE_EMPLOYEE_STATUS_SUCCESS,
   UPDATE_EMPLOYEE_STATUS_FAILURE,
-  RESET_REDUCER
+  RESET_REDUCER,
+  FETCH_DOWNLOAD_TODAY_STATUS,
+  FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS,
+  FETCH_DOWNLOAD_TODAY_STATUS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -92,7 +95,8 @@ const initialState = {
   selectedDepartmentId: "",
   attendanceConsolidatedCardsData: [],
   selectedEmployeeId: "",
-  employeeAttendanceStats: []
+  employeeAttendanceStats: [],
+  downloadContent:''
 
 };
 
@@ -457,7 +461,9 @@ const EmployeeReducer = (state = initialState, action) => {
       }
       break;
     case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
+     
       const attendanceStats = action.payload
+      console.log("reducer------> ",attendanceStats);
       state = {
         ...state,
         employeeAttendanceStats: attendanceStats.employees.data,
@@ -473,6 +479,30 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+      //download
+      case FETCH_DOWNLOAD_TODAY_STATUS:
+      state = {
+        ...state,
+        loading: true,
+      }
+      break;
+    case FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        downloadContent:action.payload
+      };
+      break;
+
+    case FETCH_DOWNLOAD_TODAY_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
 
     case FETCH_CHECK_IN_DETAILED_LOG:
       state = { ...state, loading: true }
