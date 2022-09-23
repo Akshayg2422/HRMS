@@ -5,7 +5,7 @@ export const Images = {
 }
 export const Icons = {
   Logo: require('./icons/Logo/Logo.png'),
-  LogoSmall: require('./icons/LogoSmall/LogoSmall.png'),
+  LogoSmall: require('./icons/LogoSmall/LogoSmall.jpeg'),
 
   Admin: require('./icons/Admin/Admin.png'),
   Employee: require('./icons/Employee/Employee.png'),
@@ -25,6 +25,7 @@ export const Icons = {
   Search: require('./icons/Search/Search.png'),
   Calendar: require('./icons/Calendar/Calendar.png'),
   Download: require('./icons/DownLoad/Download.png'),
+  DownloadSecondary: require('./icons/DownLoadSecondary/Download.png'),
   Edit: require('./icons/Edit/Edit.png'),
   Gallery: require('./icons/Gallery/Gallery.png'),
   Delete: require('./icons/Delete/Delete.png'),

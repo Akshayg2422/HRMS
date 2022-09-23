@@ -29,7 +29,7 @@ function AppLoader() {
   return (
     <div>
       <DarkBackground disappear={loading}>
-        <LoadingOverlay styles={{
+      <LoadingOverlay styles={{
           spinner: (base) => ({
             ...base,
             '& svg circle': {
