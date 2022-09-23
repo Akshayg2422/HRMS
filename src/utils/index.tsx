@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -139,6 +139,7 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
 };
 
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
+const inputNumberMaxLength = (value: string, length: number) => value && value.slice(0, length);
 
 
 const downloadFile=((response:any)=>{
@@ -190,5 +191,7 @@ export {
   ENABLE_EMPLOYEE_DATA,
   displayStringExists,
   LANGUAGE_LIST,
-  downloadFile
+  downloadFile,
+  MAX_LENGTH_MOBILE_NUMBER,
+  inputNumberMaxLength
 }
