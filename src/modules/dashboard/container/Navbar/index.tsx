@@ -30,9 +30,9 @@ const Navbar = ({ }) => {
     <nav className="sidenav navbar navbar-vertical  fixed-left  navbar-expand-xs bg-primary" id="sidenav-main">
       <div className="scrollbar-inner">
         <div className="sidenav-header  align-items-center">
-          <a className="navbar-brand" href="#">
-            <ImageView additionClass={'navbar-brand-img'}
-              icon={Icons.LogoSmall} 
+          <a className="navbar-brand">
+            <ImageView
+              icon={Icons.LogoSmall}
             />
           </a>
           <div className=" ml-auto  ">
