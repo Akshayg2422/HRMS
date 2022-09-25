@@ -5,7 +5,7 @@ export const Images = {
 }
 export const Icons = {
   Logo: require('./icons/Logo/Logo.png'),
-  LogoSmall: require('./icons/LogoSmall/LogoSmall.jpeg'),
+  LogoSmall: require('./icons/LogoSmall/LogoSmall.png'),
 
   Admin: require('./icons/Admin/Admin.png'),
   Employee: require('./icons/Employee/Employee.png'),
