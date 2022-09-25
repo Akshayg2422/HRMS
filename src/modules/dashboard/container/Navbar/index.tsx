@@ -58,6 +58,9 @@ const Navbar = ({ }) => {
           </div>
         </div>
       </div>
+
+      <small className={'position-absolute bottom-0 p-2 text-white text-version text-right'}>Version: 0.3</small>
+
     </nav>
 
 
