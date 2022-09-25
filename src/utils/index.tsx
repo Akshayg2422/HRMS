@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -22,7 +22,7 @@ const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 const useNav = () => useNavigate()
 
 const getImageUri =(imageUri:string)=>{
-  return IMAGE_BASE_URL_DEV + imageUri
+  return '' + imageUri
 }
 const getGenderByValue=(value:string)=>{
   return GENDER_LIST.find(item=>{
@@ -139,6 +139,20 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
 };
 
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
+const inputNumberMaxLength = (value: string, length: number) => value && value.slice(0, length);
+
+
+const downloadFile=((response:any)=>{
+  let filename = response.headers['content-disposition'].split('filename=')[1];
+  const blob = new Blob([response.data]);
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = JSON.parse(filename)
+  document.body.appendChild(a);
+  a.click();
+  window.URL.revokeObjectURL(url);
+})
 
 
 export {
@@ -176,5 +190,8 @@ export {
   getGenderByValue,
   ENABLE_EMPLOYEE_DATA,
   displayStringExists,
-  LANGUAGE_LIST
+  LANGUAGE_LIST,
+  downloadFile,
+  MAX_LENGTH_MOBILE_NUMBER,
+  inputNumberMaxLength
 }

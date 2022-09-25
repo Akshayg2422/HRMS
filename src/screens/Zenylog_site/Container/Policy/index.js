@@ -9,7 +9,7 @@ function Policy() {
                 <div class="row align-items-center justify-content-lg-between">
                     <div class="col-lg-6">
                         <div class="copyright text-center  text-lg-left  text-muted">
-                            © 2020 <a class="font-weight-bold ml-1">Zenylog</a>
+                            © 2020 <a class="font-weight-bold ml-1">{'MAPLEBELL PRIVATE LIMITED'}</a>
                         </div>
                     </div>
                     <div class="col-lg-6">

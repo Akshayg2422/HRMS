@@ -15,6 +15,8 @@ import {
   goTo,
   useNav,
   ASYN_USER_AUTH,
+  inputNumberMaxLength,
+  MAX_LENGTH_MOBILE_NUMBER
 } from '@utils';
 
 import { useTranslation } from 'react-i18next';
@@ -92,7 +94,7 @@ function Login() {
 
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
         <InputNumber label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
-          setMobile(e.target.value);
+          setMobile(inputNumberMaxLength(e.target.value, MAX_LENGTH_MOBILE_NUMBER));
         }} />
         <Container padding={'pt-3'} />
         <Primary additionClass={'btn-block'} text={t('continue')} onClick={() => proceedValidateUserApi()} />

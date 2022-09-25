@@ -124,3 +124,5 @@ export const LANGUAGE_LIST = [
   { language: 'ಕನ್ನಡ', subtitle: 'kannada', key: 'ka' },
   { language: 'தமிழ்', subtitle: 'Tamil', key: 'ta' },
 ];
+
+export const MAX_LENGTH_MOBILE_NUMBER = 10;

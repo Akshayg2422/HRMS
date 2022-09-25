@@ -1,8 +1,14 @@
 
 
 const validateMobileNumber = (value: string | undefined) => {
+
+  let val = value;
+
+  if (value)
+    val = value.slice(0, 10);
+
     let output={status:false,error:''}
-    if(value && value.length===10){
+    if(val && val.length===10){
         output={status:true,error:''}
     }else{
         output={status:false,error:'Number Should be 10 digit'}
