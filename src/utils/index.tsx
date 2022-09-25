@@ -22,7 +22,7 @@ const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 const useNav = () => useNavigate()
 
 const getImageUri =(imageUri:string)=>{
-  return IMAGE_BASE_URL_DEV + imageUri
+  return '' + imageUri
 }
 const getGenderByValue=(value:string)=>{
   return GENDER_LIST.find(item=>{
