@@ -37,6 +37,8 @@
      --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
  }
 
+
+
  *,
  ::after,
  ::before {
@@ -48,6 +50,10 @@
      line-height: 1.15;
      -webkit-text-size-adjust: 100%;
      -webkit-tap-highlight-color: transparent;
+ }
+
+ .text-version {
+     font-size: .45rem !important;
  }
 
  article,
@@ -22391,6 +22397,9 @@ Zenylog
          .text-through {
              text-decoration: line-through;
          }
+         .text-xxs {
+            font-size: .15rem !important;
+        }
 
          .text-xs {
              font-size: .75rem !important;
