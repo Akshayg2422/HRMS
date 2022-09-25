@@ -5,7 +5,7 @@ import {ASYN_USER_AUTH} from '@utils'
 const STAGING = 'http://43.204.233.45/';
 const LOCAL_DEV = 'http://192.168.6.204:8002';
 const PROD = 'https://api.zenyq.com';
-export const REACT_APP_APP_URL = LOCAL_DEV; 
+export const REACT_APP_APP_URL = PROD; 
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
