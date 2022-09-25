@@ -31,9 +31,10 @@ const Navbar = ({ }) => {
       <div className="scrollbar-inner">
         <div className="sidenav-header  align-items-center">
           <a className="navbar-brand">
-            <ImageView
+            <img src={ require('../../../../assets/icons/LogoSmall/LogoSmall.jpeg')} alt='logo'/>
+            {/* <ImageView
               icon={Icons.LogoSmall}
-            />
+            /> */}
           </a>
           <div className=" ml-auto  ">
             <div className="sidenav-toggler  d-none d-sm-block" data-action="sidenav-unpin" data-target="#sidenav-main">
