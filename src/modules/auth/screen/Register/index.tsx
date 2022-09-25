@@ -247,7 +247,7 @@ function SignUp() {
                 userLoggedIn: true,
               });
               await localStorage.setItem(ASYN_USER_AUTH, value);
-              goTo(navigation, ROUTE.ROUTE_DASHBOARD);
+              goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
             }
           },
           onError: (error: string) => {},
@@ -274,7 +274,7 @@ function SignUp() {
         uploadCompanyDocuments({
           params,
           onSuccess: async (response: object) => {
-            goTo(navigation, ROUTE.ROUTE_DASHBOARD);
+            goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
           },
           onError: (error: string) => {},
         })
