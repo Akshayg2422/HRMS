@@ -8,6 +8,6 @@ interface LogoProps  {
 
 export default function Logo({additionClass}: LogoProps) {
   return (
-    <img src={Icons.Logo} alt={'Logo'} className={additionClass} />
+    <img src={Icons.NewLogo} alt={'Logo'} height={45} width={90} className={additionClass} />
   )
 }
