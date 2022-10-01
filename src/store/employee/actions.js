@@ -1,3 +1,4 @@
+
 import {
   URL_DELETE_USER,
   URL_DELETE_USER_SUCCESS,
@@ -67,7 +68,13 @@ import {
   RESET_REDUCER,
   FETCH_DOWNLOAD_TODAY_STATUS,
   FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS,
-  FETCH_DOWNLOAD_TODAY_STATUS_FAILURE
+  FETCH_DOWNLOAD_TODAY_STATUS_FAILURE,
+  FETCH_LEAVE_TYPES,
+  FETCH_LEAVE_TYPES_SUCCESS,
+  FETCH_LEAVE_TYPES_FAILURE,
+  APPLY_LEAVE,
+  APPLY_LEAVE_SUCCESS,
+  APPLY_LEAVE_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -637,5 +644,57 @@ export const getUpdateEmployeeStatusFailure = (error) => {
 export const resetEmployee = () => {
   return {
     type: RESET_REDUCER,
+  };
+};
+
+/**
+ *  get leave types
+ */
+
+ export const getLeaveTypes=(params)=>{
+  return{
+    type: FETCH_LEAVE_TYPES,
+    payload: params
+  }
+}
+
+
+export const getLeaveTypesSuccess = (response) => {
+  return {
+    type: FETCH_LEAVE_TYPES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getLeaveTypesFailure = (error) => {
+  return {
+    type: FETCH_LEAVE_TYPES_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * apply leave
+ */
+
+ export const applyLeave=(params)=>{
+  return{
+    type: APPLY_LEAVE,
+    payload: params
+  }
+}
+
+
+export const applyLeaveSuccess = (response) => {
+  return {
+    type: APPLY_LEAVE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const applyLeaveFailure = (error) => {
+  return {
+    type: APPLY_LEAVE_FAILURE,
+    payload: error,
   };
 };

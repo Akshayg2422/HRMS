@@ -24,8 +24,7 @@ export const ROUTE = {
   ROUTE_PORTFOLIO:'/portfolio',
   ROUTE_VIEW_EMPLOYEE_DETAILS:'/view-employee',
   ROUTE_INACTIVE_EMPLOYEE_LIST:'/inactive-employee-list',
-
-
+  ROUTE_APPLY_LEAVE:'/apply-leave',
 
 }
 export const WELCOME_NOTE = [{key: '1', title: 'Geo tagging'}, {key: '2', title: 'Real-time statistics'}, {key: '3', title: 'Salary calculations'}, {key: '4', title: 'Payments and payslips'}, {key: '5', title: 'And much more!!!'}]
@@ -58,7 +57,6 @@ export const NAV_ITEM = [
   // {id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', route: ROUTE.ROUTE_DASHBOARD},
   {id: '2', name: 'Employee Portfolio', value: 'EP', icon: 'ni ni-ungroup', route: ROUTE.ROUTE_EMPLOYEE},
   {id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', route: ROUTE.ROUTE_LOCATION},
-  // {id: '3', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
   // {id: '4', name: 'Reports', value: 'RE', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_REPORT},
   {id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', route: ROUTE.ROUTE_ASSIGN_LOCATION},
   {id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', route: ROUTE.ROUTE_FENCE_ADMIN},
@@ -66,6 +64,8 @@ export const NAV_ITEM = [
   {id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK},
   {id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', route: ROUTE.ROUTE_DASHBOARD_STATS},
   {id: '9', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
+  {id: '10', name: 'Calendar', value: 'CA', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
+
 
 ];
 

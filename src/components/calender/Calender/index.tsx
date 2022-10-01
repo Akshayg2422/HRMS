@@ -1,17 +1,31 @@
 import React from 'react'
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
-function index() {
+import interactionPlugin from "@fullcalendar/interaction"
+
+
+interface CalenderProps{
+  dateClick?:any;
+  events?:{title:string,date:string}[]
+}
+
+
+function index({dateClick,events}:CalenderProps) {
+
+
+
+
   return (
     <FullCalendar
-      plugins={[dayGridPlugin]}
+      plugins={[dayGridPlugin,interactionPlugin]}
       initialView="dayGridMonth"
       headerToolbar={{
         left: 'title',
         center: '',
         right: 'today,prev,next'
       }}
-
+      events={events}
+      dateClick={dateClick}
     />
   )
 }

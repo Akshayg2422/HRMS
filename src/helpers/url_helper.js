@@ -49,6 +49,8 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   '/attendance/attendanceConsolidatedCards';
 
   export const UPDATE_EMPLOYEE_STATUS = 'employee/updateEmployeeStatus';
+  export const FETCH_LEAVE_TYPES = '/attendance/getLeaveTypes';
+  export const POST_APPLY_LEAVE = '/attendance/applyLeave';
 
 
 

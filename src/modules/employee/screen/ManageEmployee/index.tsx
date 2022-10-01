@@ -203,7 +203,11 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.dob) {
       showToast('error', t('invalidDOB'));
       return false;
-    } else {
+    }else if (!employeeDetails.employeeType) {
+      showToast('error', t('invalidCategory'));
+      return false;
+    }
+     else {
       return true;
     }
   };
@@ -252,7 +256,7 @@ const ManageEmployee = () => {
             goBack(navigation)
           },
           onError: (error: string) => {
-
+            showToast('error', t('somethingWrong'));
           },
         })
       );
