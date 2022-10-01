@@ -8,7 +8,7 @@ import { getLeaveTypes } from "../../../../../src/store/employee/actions";
 const ApplyLeave = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
-  const [leaveTypes,setLeaveTypes]=useState([{}])
+  const [leaveTypes,setLeaveTypes]=useState([])
 
   useEffect(() => {
     const params = {};
