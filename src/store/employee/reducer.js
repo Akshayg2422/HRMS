@@ -67,7 +67,13 @@ import {
   RESET_REDUCER,
   FETCH_DOWNLOAD_TODAY_STATUS,
   FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS,
-  FETCH_DOWNLOAD_TODAY_STATUS_FAILURE
+  FETCH_DOWNLOAD_TODAY_STATUS_FAILURE,
+  FETCH_LEAVE_TYPES,
+  FETCH_LEAVE_TYPES_SUCCESS,
+  FETCH_LEAVE_TYPES_FAILURE,
+  APPLY_LEAVE,
+  APPLY_LEAVE_SUCCESS,
+  APPLY_LEAVE_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -97,6 +103,7 @@ const initialState = {
   selectedEmployeeId: "",
   employeeAttendanceStats: [],
   downloadContent:''
+  
 
 };
 
@@ -597,6 +604,52 @@ const EmployeeReducer = (state = initialState, action) => {
     case RESET_REDUCER:
       state = initialState;
       break;
+
+      //get leave types
+
+      case FETCH_LEAVE_TYPES:
+      state = {
+        ...state,
+        loading: true
+      }
+      break;
+    case FETCH_LEAVE_TYPES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case FETCH_LEAVE_TYPES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+       //Apply leave
+
+       case APPLY_LEAVE:
+        state = {
+          ...state,
+          loading: true
+        }
+        break;
+      case APPLY_LEAVE_SUCCESS:
+        state = {
+          ...state,
+          loading: false,
+        };
+        break;
+  
+      case APPLY_LEAVE_FAILURE:
+        state = {
+          ...state,
+          error: action.payload,
+          loading: false,
+        };
+        break;
 
     default:
       state = state;

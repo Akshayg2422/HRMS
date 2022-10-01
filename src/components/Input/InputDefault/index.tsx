@@ -35,6 +35,7 @@ const  Input = React.forwardRef(({
         ref={ref}
         disabled={disabled}
         maxLength={maxLength}
+        autoComplete={'off'}
         
       
         onChange={(it) => {

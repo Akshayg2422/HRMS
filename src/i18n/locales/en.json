@@ -131,6 +131,13 @@
 
 
 
+
+"applyLeave":"Apply Leave",
+"leaveType":"Leave Type",
+"dataFrom":"Date From",
+"dataTo":"Date To",
+"reason":"Reason",
+
   
   "noOfEmployee": "No.of Employees",
   "currentBank": "Current Bank Service Provider",
