@@ -4,7 +4,7 @@ import { FETCH_DESIGNATION, FETCH_DEPARTMENT, FETCH_ALL_BRANCHES_LIST, FETCH_EMP
 ADD_DEPARTMENT,
 ADD_DESIGNATION,
 ADD_FENCE_ADMIN,FETCH_EMPLOYEE_ATTENDANCE_STATS, FETCH_EMPLOYEE_TODAY_STATUS, FETCH_CHECK_IN_DETAILED_LOG,FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
-UPDATE_EMPLOYEE_STATUS,FETCH_DOWNLOAD_TODAY_STATUS,FETCH_LEAVE_TYPES,APPLY_LEAVE } from "./actionTypes";
+UPDATE_EMPLOYEE_STATUS,FETCH_DOWNLOAD_TODAY_STATUS,FETCH_LEAVE_TYPES,APPLY_LEAVE,FETCH_CALENDAR_DETAILS} from "./actionTypes";
 
 import {
   getDepartmentDataSuccess,
@@ -48,13 +48,15 @@ import {
   getLeaveTypesSuccess,
   getLeaveTypesFailure,
   applyLeaveSuccess,
-  applyLeaveFailure
+  applyLeaveFailure,
+  fetchCalendardetailsSuccess,
+  fetchCalendardetailsFailure
 } from "./actions";
 
 import {fetchDesignationData, fetchDepartmentData, fetchAllBranchesList, fetchEmployeeDetails, fetchEmployeeList, postEmployeeAddition , fetchEmployeeTimeSheets, fetchEmployeeCheckInLogs, fetchCheckInDetailedLogPerDay, fetchEmployeeEachUserTimeSheets,
 postAddDepartment,
 postAddDesignation,fetchDownloadTodayStatus,
-postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards,postUpdateEmployeeStatus,fetchLeaveTypes,postApplyLeave} from "../../helpers/backend_helper";
+postAddFenceAdmin,fetchEmployeeAttendanceStats,fetchEmployeeTodayStatus,fetchCheckInDetailedLog,fetchAttendanceConsolidatedCards,postUpdateEmployeeStatus,fetchLeaveTypes,postApplyLeave,fetchCalendarDetails} from "../../helpers/backend_helper";
 
 import {
   showLoader,
@@ -686,6 +688,34 @@ function* applyLeave(action) {
   }
 }
 
+function* FetchCalendardetails(action){
+
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(fetchCalendarDetails, action.payload.params);
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(fetchCalendardetailsSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(fetchCalendardetailsFailure(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(fetchCalendardetailsFailure("Invalid Request"));
+    
+  }
+}
+
+
+
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
   yield takeLatest(FETCH_DEPARTMENT, getDepartments);
@@ -708,6 +738,8 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_DOWNLOAD_TODAY_STATUS,getDownloadTodayStatus)
   yield takeLatest(FETCH_LEAVE_TYPES,getLeaveTypes)
   yield takeLatest(APPLY_LEAVE,applyLeave)
+  yield takeLatest(FETCH_CALENDAR_DETAILS,FetchCalendardetails)
+
 }
 
 export default EmployeeSaga;

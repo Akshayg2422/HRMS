@@ -49,6 +49,7 @@ export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS,
  export const postUpdateEmployeeStatus = (payload) => post(url.UPDATE_EMPLOYEE_STATUS,payload,{})
  export const fetchLeaveTypes = (payload) => post(url.FETCH_LEAVE_TYPES,payload,{})
  export const postApplyLeave = (payload) => post(url.POST_APPLY_LEAVE,payload,{})
+ export const fetchCalendarDetails =(payload)=>post(url.FETCH_CALENDAR_DETAILS,payload,{})
 
 
 

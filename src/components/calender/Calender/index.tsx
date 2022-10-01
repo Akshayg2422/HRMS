@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction"
 
 interface CalenderProps{
   dateClick?:any;
-  events?:{title:string,date:string}[]
+  events?:any ;
 }
 
 
@@ -18,6 +18,7 @@ function index({dateClick,events}:CalenderProps) {
   return (
     <FullCalendar
       plugins={[dayGridPlugin,interactionPlugin]}
+      
       initialView="dayGridMonth"
       headerToolbar={{
         left: 'title',
@@ -26,6 +27,7 @@ function index({dateClick,events}:CalenderProps) {
       }}
       events={events}
       dateClick={dateClick}
+
     />
   )
 }

@@ -3,12 +3,13 @@ import { Icons } from "@assets";
 import { showToast, useNav, validateDefault } from "@utils";
 import React, { useEffect,useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "react-redux";
 import { getLeaveTypes } from "../../../../../src/store/employee/actions";
 const ApplyLeave = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [leaveTypes,setLeaveTypes]=useState([])
+  const { leaveFromDate} = useSelector((state: any) => state.EmployeeReducer);
 
   useEffect(() => {
     const params = {};
@@ -31,6 +32,8 @@ const ApplyLeave = () => {
     // setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
+
+
   return (
     <>
       <FormWrapper title={t("applyLeave")}>
@@ -46,7 +49,7 @@ const ApplyLeave = () => {
           icon={Icons.Calendar}
           iconPosition={"append"}
           onChange={(date: string) => dateTimePickerHandler(date, "dob")}
-          //   value={employeeDetails.dob}
+            value={leaveFromDate}
         />
         <h5>{t("dataTo")}</h5>
         <DatePicker

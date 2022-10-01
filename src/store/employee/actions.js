@@ -74,7 +74,11 @@ import {
   FETCH_LEAVE_TYPES_FAILURE,
   APPLY_LEAVE,
   APPLY_LEAVE_SUCCESS,
-  APPLY_LEAVE_FAILURE
+  APPLY_LEAVE_FAILURE,
+  ADD_LEAVE_FROM_DATE,
+  FETCH_CALENDAR_DETAILS,
+  FETCH_CALENDAR_DETAILS_SUCCESS,
+  FETCH_CALENDAR_DETAILS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -695,6 +699,39 @@ export const applyLeaveSuccess = (response) => {
 export const applyLeaveFailure = (error) => {
   return {
     type: APPLY_LEAVE_FAILURE,
+    payload: error,
+  };
+};
+
+
+///Apply Leave From Date
+
+export const getLeaveFromDate=(params)=>{
+  return{
+    type: ADD_LEAVE_FROM_DATE,
+    payload:params
+  }
+}
+
+//fetch calendar events
+
+export const fetchCalendardetails=(params)=>{
+  return{
+    type: FETCH_CALENDAR_DETAILS,
+    payload:params
+  }
+}
+
+export const fetchCalendardetailsSuccess = (response) => {
+  return {
+    type: FETCH_CALENDAR_DETAILS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const fetchCalendardetailsFailure = (error) => {
+  return {
+    type: FETCH_CALENDAR_DETAILS_FAILURE,
     payload: error,
   };
 };

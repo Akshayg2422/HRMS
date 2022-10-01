@@ -51,6 +51,7 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   export const UPDATE_EMPLOYEE_STATUS = 'employee/updateEmployeeStatus';
   export const FETCH_LEAVE_TYPES = '/attendance/getLeaveTypes';
   export const POST_APPLY_LEAVE = '/attendance/applyLeave';
+  export const FETCH_CALENDAR_DETAILS="/attendance/getCalenderDetails"
 
 
 
