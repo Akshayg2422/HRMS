@@ -559,6 +559,7 @@ function* applyLeave(action) {
       yield call(action.payload.onError);
     }
   } catch (error) {
+    console.log("error-->",error);
     yield put(hideLoader());
     yield put(applyLeaveFailure("Invalid Request"));
   }

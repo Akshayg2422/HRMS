@@ -9,7 +9,6 @@ const LeaveRequest = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
-
   const array = [1, 2, 3, 4, 5];
 
   const { hierarchicalBranchIds } = useSelector(
@@ -17,11 +16,11 @@ const LeaveRequest = () => {
   );
 
   useEffect(() => {
-    fetchPendingDetail()
+    fetchPendingDetail();
   }, [hierarchicalBranchIds]);
 
   const fetchPendingDetail = () => {
-    const params: object = {
+    const params = {
       ...hierarchicalBranchIds,
     };
     dispatch(getPendingLeaveDetails({ params }));

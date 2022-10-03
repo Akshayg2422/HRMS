@@ -5,3 +5,4 @@ export const SET_USER_LOGIN_DETAILS = 'SET_USER_LOGIN_DETAILS';
 export const RESET_REDUCER = 'RESET_REDUCER';
 
 
+export const NAV_INDEX = 'NAV_INDEX'

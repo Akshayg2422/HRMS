@@ -20,7 +20,7 @@ function Calendar() {
 
   useEffect(() => {
     let params = {};
-    dispatch(fetchCalendardetails({}));
+    dispatch(fetchCalendardetails({params}));
   }, []);
 
   const handleDateClick = (arg: any) => {
@@ -29,21 +29,13 @@ function Calendar() {
   };
 
   const handleApplyLeave = () => {
+    dispatch(getLeaveFromDate(''));
     goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
   };
 
   const handleLeaveRequest = () => {
     goTo(navigation, ROUTE.ROUTE_LEAVE_REQUEST);
   };
-
-  useEffect(() => {
-    calendarEvents?.days_holiday?.map((item: any) => {
-      setDaysHoliday([
-        ...daysHoliday,
-        { title: item.title, date: item.day, color: "green" },
-      ]);
-    });
-  }, []);
 
   console.log(calendarEvents);
   return (

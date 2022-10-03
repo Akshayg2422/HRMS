@@ -352,7 +352,6 @@ const ManageEmployee = () => {
   function submitDesignation() {
     if (validateDesignationPostParams()) {
       const params = { name: designation, is_admin: isAdminRights };
-      console.log(JSON.stringify(params));
       dispatch(
         addDesignation({
           params,
