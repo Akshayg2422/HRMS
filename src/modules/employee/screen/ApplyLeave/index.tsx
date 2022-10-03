@@ -1,14 +1,14 @@
 import { DatePicker, DropDown, FormWrapper, InputText } from "@components";
 import { Icons } from "@assets";
 import { showToast, useNav, validateDefault } from "@utils";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { getLeaveTypes } from "../../../../../src/store/employee/actions";
 const ApplyLeave = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
-  const [leaveTypes,setLeaveTypes]=useState([])
+  const [leaveTypes, setLeaveTypes] = useState([]);
 
   useEffect(() => {
     const params = {};
@@ -17,7 +17,7 @@ const ApplyLeave = () => {
         params,
         onSuccess: (success: any) => {
           console.log("datatatata---->", success);
-          setLeaveTypes(success?.leave_types)
+          setLeaveTypes(success?.leave_types);
         },
 
         onError: (error: string) => {
@@ -36,7 +36,7 @@ const ApplyLeave = () => {
       <FormWrapper title={t("applyLeave")}>
         <DropDown
           placeholder={t("leaveType")}
-            data={leaveTypes}
+          data={leaveTypes}
           name={"designation"}
           //   value={employeeDetails.designation}
           //   onChange={(event) => onChangeHandler(event)}

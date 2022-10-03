@@ -25,6 +25,8 @@ export const ROUTE = {
   ROUTE_VIEW_EMPLOYEE_DETAILS:'/view-employee',
   ROUTE_INACTIVE_EMPLOYEE_LIST:'/inactive-employee-list',
   ROUTE_APPLY_LEAVE:'/apply-leave',
+  ROUTE_LEAVE_REQUEST:'/leave-request',
+
 
 }
 export const WELCOME_NOTE = [{key: '1', title: 'Geo tagging'}, {key: '2', title: 'Real-time statistics'}, {key: '3', title: 'Salary calculations'}, {key: '4', title: 'Payments and payslips'}, {key: '5', title: 'And much more!!!'}]

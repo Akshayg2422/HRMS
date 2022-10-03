@@ -74,7 +74,16 @@ import {
   FETCH_LEAVE_TYPES_FAILURE,
   APPLY_LEAVE,
   APPLY_LEAVE_SUCCESS,
-  APPLY_LEAVE_FAILURE
+  APPLY_LEAVE_FAILURE,
+  PENDING_LEAVE,
+  PENDING_LEAVE_SUCCESS,
+  PENDING_LEAVE_FAILURE,
+  FETCH_MARK_AS_PRESENT,
+  FETCH_MARK_AS_PRESENT_SUCCESS,
+  FETCH_MARK_AS_PRESENT_FAILURE,
+  FETCH_APPROVED_DETAILS,
+  FETCH_APPROVED_DETAILS_SUCCESS,
+  FETCH_APPROVED_DETAILS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -695,6 +704,79 @@ export const applyLeaveSuccess = (response) => {
 export const applyLeaveFailure = (error) => {
   return {
     type: APPLY_LEAVE_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * leave request -- Pending
+ */
+
+ export const getPendingLeaveDetails = (params) => {
+  return {
+    type: PENDING_LEAVE,
+    payload: params,
+  };
+};
+
+export const getPendingLeaveDetailsSuccess = (response) => {
+  return {
+    type: PENDING_LEAVE_SUCCESS,
+    payload: response,
+  };
+};
+export const getPendingLeaveDetailsFailure = (error) => {
+  return {
+    type: PENDING_LEAVE_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * leave request --Mark-As-Present
+ */
+
+ export const getMarkAsPresentDetails = (error) => {
+  return {
+    type: FETCH_MARK_AS_PRESENT,
+    payload: error,
+  };
+};
+
+export const getMarkAsPresentDetailsSuccess = (response) => {
+  return {
+    type: FETCH_MARK_AS_PRESENT_SUCCESS,
+    payload: response,
+  };
+};
+export const getMarkAsPresentDetailsFailure = (error) => {
+  return {
+    type: FETCH_MARK_AS_PRESENT_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * approved leaves
+ */
+
+
+ export const getApprovedLeaves = (error) => {
+  return {
+    type: FETCH_APPROVED_DETAILS,
+    payload: error,
+  };
+};
+
+export const getApprovedLeavesSuccess = (response) => {
+  return {
+    type: FETCH_APPROVED_DETAILS_SUCCESS,
+    payload: response,
+  };
+};
+export const getApprovedLeavesFailure = (error) => {
+  return {
+    type: FETCH_APPROVED_DETAILS_FAILURE,
     payload: error,
   };
 };

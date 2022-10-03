@@ -54,9 +54,6 @@ const DashboardStats = () => {
       selected_date: selectedDate,
     };
 
-    console.log(JSON.stringify(params)+"======useEffect");
-    
-
     dispatch(getEmployeeAttendanceStats(params));
    
   }, [selectedDate,hierarchicalBranchIds]);

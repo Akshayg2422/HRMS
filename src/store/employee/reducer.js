@@ -73,7 +73,13 @@ import {
   FETCH_LEAVE_TYPES_FAILURE,
   APPLY_LEAVE,
   APPLY_LEAVE_SUCCESS,
-  APPLY_LEAVE_FAILURE
+  APPLY_LEAVE_FAILURE,
+  PENDING_LEAVE,
+  PENDING_LEAVE_SUCCESS,
+  PENDING_LEAVE_FAILURE,
+  FETCH_APPROVED_DETAILS,
+  FETCH_APPROVED_DETAILS_SUCCESS,
+  FETCH_APPROVED_DETAILS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -102,9 +108,9 @@ const initialState = {
   attendanceConsolidatedCardsData: [],
   selectedEmployeeId: "",
   employeeAttendanceStats: [],
-  downloadContent:''
-  
-
+  downloadContent:'',
+  leaveRequestPending:'',
+  leaveRequestMarkAsPresent:''
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -650,6 +656,53 @@ const EmployeeReducer = (state = initialState, action) => {
           loading: false,
         };
         break;
+
+        //pending leaves
+
+        case PENDING_LEAVE:
+          state = {
+            ...state,
+            loading: true
+          }
+          break;
+        case PENDING_LEAVE_SUCCESS:
+          state = {
+            ...state,
+            loading: false,
+            leaveRequestPending: action.payload
+          };
+          break;
+    
+        case PENDING_LEAVE_FAILURE:
+          state = {
+            ...state,
+            error: action.payload,
+            loading: false,
+          };
+          break;
+
+          //approved leaves
+
+          case FETCH_APPROVED_DETAILS:
+            state = {
+              ...state,
+              loading: true
+            }
+            break;
+          case FETCH_APPROVED_DETAILS_SUCCESS:
+            state = {
+              ...state,
+              loading: false,
+            };
+            break;
+      
+          case FETCH_APPROVED_DETAILS_FAILURE:
+            state = {
+              ...state,
+              error: action.payload,
+              loading: false,
+            };
+            break;
 
     default:
       state = state;

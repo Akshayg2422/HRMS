@@ -8,6 +8,11 @@ export const Icons = {
   LogoSmall: require('./icons/LogoSmall/LogoSmall.png'),
 
   Admin: require('./icons/Admin/Admin.png'),
+  AssignLocation:require('./icons/AssignLocation/asignLocation.png'),
+  LocationSecondary:require('./icons/LocationSecondary/locationSecondary.png'),
+  EmployeeSecondary:require('./icons/EmployeeSecondary/employee.png'),
+  Statistics:require('./icons/Statistics/statistics.png'),
+  CalendarSecondary:require('./icons/CalendarSecondary/calendar.png'),
   Employee: require('./icons/Employee/Employee.png'),
   RegisterCompany: require('./icons/RegisterCompany/RegisterCompany.png'),
   Google: require('./icons/Google/Google.png'),

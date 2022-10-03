@@ -20,7 +20,8 @@ import {
   InActiveEmployeeList,
   RequireAuth,
   RequireAuthExist,
-  ApplyLeave
+  ApplyLeave,
+  LeaveRequest
 } from '@modules';
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from '@utils';
@@ -63,6 +64,8 @@ function App() {
         <Route path={ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS} element={<RequireAuth>{<ViewEmployeeDetails />}</RequireAuth>} />
         <Route path={ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST} element={<RequireAuth>{<InActiveEmployeeList />}</RequireAuth>} />
         <Route path={ROUTE.ROUTE_APPLY_LEAVE} element={<RequireAuth>{<ApplyLeave />}</RequireAuth>} />
+        <Route path={ROUTE.ROUTE_LEAVE_REQUEST} element={<RequireAuth>{<LeaveRequest />}</RequireAuth>} />
+
 
         
         <Route path={'*'} element={<PageNotFound />} />

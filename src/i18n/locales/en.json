@@ -137,6 +137,13 @@
 "dataFrom":"Date From",
 "dataTo":"Date To",
 "reason":"Reason",
+"leaveRequest":"Leave Request",
+"pending":"Pending",
+"approved":"Approved",
+"rejected":"Rejected",
+"markAsPresent":"Mark As Present",
+
+
 
   
   "noOfEmployee": "No.of Employees",
@@ -228,7 +235,7 @@
  "deleteUser":"Delete User",
  "deleteWarningMessage":"Please click on Proceed to deactivate user",
  "proceed":"Proceed",
- "deletedUser":"Deleted Employee",
+ "deletedUser":"Deleted Employees",
  "deleteSuccessfully":"Deleted SuccessFully",
  "enableMessage":"Please click on Proceed to Activate user",
 
