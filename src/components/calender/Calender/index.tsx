@@ -5,7 +5,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 
 interface CalenderProps {
   dateClick?: any;
-  events?: { title: string; date: string }[];
+  events?: any;
   customButtons?:
     | {
         [name: string]: CustomButtonInput;
@@ -20,13 +20,12 @@ function index({ dateClick, events, customButtons }: CalenderProps) {
       initialView="dayGridMonth"
       headerToolbar={{
         left: "title",
-        center: "", 
+        center: "",
         right: "today,prev,next",
       }}
       events={events}
       customButtons={customButtons}
       dateClick={dateClick}
-      
     />
   );
 }

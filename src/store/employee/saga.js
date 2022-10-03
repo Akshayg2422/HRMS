@@ -22,8 +22,9 @@ import {
   FETCH_DOWNLOAD_TODAY_STATUS,
   FETCH_LEAVE_TYPES,
   APPLY_LEAVE,
+  FETCH_CALENDAR_DETAILS,
   PENDING_LEAVE,
-  FETCH_APPROVED_DETAILS,
+  FETCH_APPROVED_DETAILS
 } from "./actionTypes";
 
 import {
@@ -73,6 +74,8 @@ import {
   getPendingLeaveDetailsFailure,
   getApprovedLeavesSuccess,
   getApprovedLeavesFailure,
+  fetchCalendardetailsSuccess,
+  fetchCalendardetailsFailure,
 } from "./actions";
 
 import {
@@ -101,6 +104,7 @@ import {
   postChangeEmployeeLeaveStatus,
   fetchEmployeeApprovedLeaves,
   fetchEmployeeRejectedLeaves,
+  fetchCalendarDetails,
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -609,6 +613,24 @@ function* getEmployeeApprovedLeaves(action) {
   }
 }
 
+function* FetchCalendardetails(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchCalendarDetails, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(fetchCalendardetailsSuccess(response.details));
+    } else {
+      yield put(hideLoader());
+      yield put(fetchCalendardetailsFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(fetchCalendardetailsFailure("Invalid Request"));
+  }
+}
+
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
   yield takeLatest(FETCH_DEPARTMENT, getDepartments);
@@ -642,6 +664,18 @@ function* EmployeeSaga() {
   yield takeLatest(APPLY_LEAVE, applyLeave);
   yield takeLatest(PENDING_LEAVE, getEmployeePendingLeaves);
   yield takeLatest(FETCH_APPROVED_DETAILS, getEmployeeApprovedLeaves);
+  yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_STATS, getEmployeeAttendanceStats);
+  yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS, getEmployeeTodayStatus);
+  yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG, getCheckInDetailedLog);
+  yield takeLatest(
+    FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
+    getAttendanceConsolidatedCardsData
+  );
+  yield takeLatest(UPDATE_EMPLOYEE_STATUS, getUpdateEmployeeStatus);
+  yield takeLatest(FETCH_DOWNLOAD_TODAY_STATUS, getDownloadTodayStatus);
+  yield takeLatest(FETCH_LEAVE_TYPES, getLeaveTypes);
+  yield takeLatest(APPLY_LEAVE, applyLeave);
+  yield takeLatest(FETCH_CALENDAR_DETAILS, FetchCalendardetails);
 }
 
 export default EmployeeSaga;

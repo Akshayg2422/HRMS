@@ -79,7 +79,12 @@ import {
   PENDING_LEAVE_FAILURE,
   FETCH_APPROVED_DETAILS,
   FETCH_APPROVED_DETAILS_SUCCESS,
-  FETCH_APPROVED_DETAILS_FAILURE
+  FETCH_APPROVED_DETAILS_FAILURE,
+  ADD_LEAVE_FROM_DATE,
+  FETCH_CALENDAR_DETAILS,
+  FETCH_CALENDAR_DETAILS_SUCCESS,
+  FETCH_CALENDAR_DETAILS_FAILURE
+
 } from "./actionTypes";
 
 const initialState = {
@@ -110,7 +115,11 @@ const initialState = {
   employeeAttendanceStats: [],
   downloadContent:'',
   leaveRequestPending:'',
-  leaveRequestMarkAsPresent:''
+  leaveRequestMarkAsPresent:'',
+  leaveFromDate:"",
+  calendarEvents:""
+  
+
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -650,6 +659,38 @@ const EmployeeReducer = (state = initialState, action) => {
         break;
   
       case APPLY_LEAVE_FAILURE:
+        state = {
+          ...state,
+          error: action.payload,
+          loading: false,
+        };
+        break;
+       
+        //Apply leave from date
+        case ADD_LEAVE_FROM_DATE:
+          state = {
+            ...state,
+            leaveFromDate:action.payload
+          };
+          break;
+
+        //Calendar Events
+
+        case FETCH_CALENDAR_DETAILS:
+        state = {
+          ...state,
+          loading: true
+        }
+        break;
+      case FETCH_CALENDAR_DETAILS_SUCCESS:
+        state = {
+          ...state,
+          loading: false,
+          calendarEvents:action.payload
+        };
+        break;
+  
+      case FETCH_CALENDAR_DETAILS_FAILURE:
         state = {
           ...state,
           error: action.payload,
