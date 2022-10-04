@@ -117,6 +117,20 @@ export const ENABLE_EMPLOYEE_DATA = [
   }
 ]
 
+export const LEAVE_STATUS_UPDATE = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Approve',
+    elh: 'Approve',
+  },
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Reject',
+    elh: 'Reject',
+  }
+
+]
+
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 
 

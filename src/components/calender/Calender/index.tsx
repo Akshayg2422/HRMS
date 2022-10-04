@@ -11,9 +11,10 @@ interface CalenderProps {
         [name: string]: CustomButtonInput;
       }
     | undefined;
+    eventClick?:()=>void | undefined
 }
 
-function index({ dateClick, events, customButtons }: CalenderProps) {
+function index({ dateClick, events, customButtons,eventClick }: CalenderProps) {
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
@@ -26,6 +27,7 @@ function index({ dateClick, events, customButtons }: CalenderProps) {
       events={events}
       customButtons={customButtons}
       dateClick={dateClick}
+      eventClick={eventClick}
     />
   );
 }

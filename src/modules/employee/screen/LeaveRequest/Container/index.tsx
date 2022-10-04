@@ -1,2 +1,4 @@
 import Pending from "./Pending";
-export{Pending}
+import Approved from './Approved';
+import Rejected from './Rejected'
+export{Pending,Approved,Rejected}

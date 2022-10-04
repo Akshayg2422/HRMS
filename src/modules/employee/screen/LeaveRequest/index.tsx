@@ -1,29 +1,50 @@
-import { Card, ChooseBranchFromHierarchical, Container } from "@components";
-import { getPendingLeaveDetails } from "../../../../store/employee/actions";
+import {
+  Card,
+  ChooseBranchFromHierarchical,
+  CommonTable,
+  Container,
+  NoRecordFound,
+} from "@components";
+import {
+  getApprovedLeaves,
+  getPendingLeaveDetails,
+} from "../../../../store/employee/actions";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Pending } from "./Container";
+import { Pending, Approved, Rejected } from "./Container";
+import { LEAVE_STATUS_UPDATE } from "@utils";
 
 const LeaveRequest = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
-  const array = [1, 2, 3, 4, 5];
-
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
+  const { leaveRequestPending, numOfPages, currentPage } = useSelector(
+    (state: any) => state.EmployeeReducer
+  );
+
   useEffect(() => {
-    fetchPendingDetail();
+    fetchPendingDetail(currentPage);
   }, [hierarchicalBranchIds]);
 
-  const fetchPendingDetail = () => {
+  const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
+      page_number: pageNumber,
     };
     dispatch(getPendingLeaveDetails({ params }));
+  };
+
+  const fetchApprovedLeaves = (pageNumber: number) => {
+    const params = {
+      ...hierarchicalBranchIds,
+      page_number: pageNumber,
+    };
+    dispatch(getApprovedLeaves({ params }));
   };
 
   return (
@@ -47,7 +68,7 @@ const LeaveRequest = () => {
                 role="tab"
                 aria-controls="tabs-icons-text-1"
                 aria-selected="true"
-                onClick={fetchPendingDetail}
+                onClick={() => fetchPendingDetail(currentPage)}
               >
                 {t("pending")}
               </a>
@@ -74,6 +95,7 @@ const LeaveRequest = () => {
                 role="tab"
                 aria-controls="tabs-icons-text-3"
                 aria-selected="false"
+                onClick={() => fetchApprovedLeaves(currentPage)}
               >
                 {t("approved")}
               </a>
@@ -111,37 +133,7 @@ const LeaveRequest = () => {
           aria-labelledby="tabs-icons-text-2-tab"
         >
           <div className="row">
-            {array.map((el) => {
-              return (
-                <div className="col-xl-3 col-md-6">
-                  <div className="card card-stats">
-                    <div className="card-body">
-                      <div className="row">
-                        <div className="col">
-                          <h5 className="card-title text-uppercase text-muted mb-0">
-                            hello
-                          </h5>
-                          <span className="h2 font-weight-bold mb-0">
-                            350,897
-                          </span>
-                        </div>
-                        <div className="col-auto">
-                          <div className="icon icon-shape bg-gradient-red text-white rounded-circle shadow">
-                            <i className="ni ni-active-40"></i>
-                          </div>
-                        </div>
-                      </div>
-                      <p className="mt-3 mb-0 text-sm">
-                        <span className="text-success mr-2">
-                          <i className="fa fa-arrow-up"></i> 3.48%
-                        </span>
-                        <span className="text-nowrap">Since last month</span>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            <NoRecordFound />
           </div>
         </div>
         <div
@@ -150,12 +142,15 @@ const LeaveRequest = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-3-tab"
         >
-          <p className="description">
-            Raw denim you probably haven't heard of them jean shorts Austin.
-            Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache
-            cliche tempor, williamsburg carles vegan helvetica. Reprehenderit
-            butcher retro keffiyeh dreamcatcher synth.
-          </p>
+          <Approved />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-icons-text-4"
+          role="tabpanel"
+          aria-labelledby="tabs-icons-text-4-tab"
+        >
+          <Rejected />
         </div>
       </div>
       {/* </Card> */}
@@ -164,6 +159,3 @@ const LeaveRequest = () => {
 };
 
 export default LeaveRequest;
-function dispatch(arg0: { type: string; payload: any }) {
-  throw new Error("Function not implemented.");
-}

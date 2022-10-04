@@ -70,6 +70,9 @@ const ApplyLeave = () => {
     setFormDetails({ ...fromDetails, [event.target.name]: event.target.value });
   };
 
+
+
+  
   const onSubmitHandler = () => {
     const params = {
       leave_type_id: fromDetails.leaveType,

@@ -578,7 +578,6 @@ function* getEmployeePendingLeaves(action) {
       yield put(hideLoader());
       yield put(getPendingLeaveDetailsSuccess(response.details));
       yield call(action.payload.onSuccess(response));
-      console.log("pending-->", response);
     } else {
       yield put(hideLoader());
       yield put(getPendingLeaveDetailsFailure(response.error_message));

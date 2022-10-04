@@ -97,6 +97,7 @@ function Calendar() {
           <Calender
             dateClick={handleDateClick}
             events={daysHoliday?.length > 1 ? daysHoliday : []}
+            eventClick={()=>console.log('sdsd')}
           />
         </Card>
 

@@ -83,13 +83,12 @@ import {
   ADD_LEAVE_FROM_DATE,
   FETCH_CALENDAR_DETAILS,
   FETCH_CALENDAR_DETAILS_SUCCESS,
-  FETCH_CALENDAR_DETAILS_FAILURE
-
+  FETCH_CALENDAR_DETAILS_FAILURE,
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
-  error: '',
+  error: "",
   designationDropdownData: [],
   departmentDropdownData: [],
   branchesDropdownData: [],
@@ -105,26 +104,25 @@ const initialState = {
   employeeattendancedatalog: [],
   employeeStatusLog: [],
   checkinDetailedLog: [],
-  total: '',
-  total_count: '',
+  total: "",
+  total_count: "",
   routeParams: {},
   selectedDepartmentName: "",
   selectedDepartmentId: "",
   attendanceConsolidatedCardsData: [],
   selectedEmployeeId: "",
   employeeAttendanceStats: [],
-  downloadContent:'',
-  leaveRequestPending:'',
-  leaveRequestMarkAsPresent:'',
-  leaveFromDate:"",
-  calendarEvents:""
-  
-
+  downloadContent: "",
+  leaveRequestPending: "",
+  leaveRequestMarkAsPresent: "",
+  approvedLeaves: "",
+  rejectedLeaves: "",
+  leaveFromDate: "",
+  calendarEvents: "",
 };
 
 const EmployeeReducer = (state = initialState, action) => {
   switch (action.type) {
-
     // Delete Account
     case URL_DELETE_USER:
       state = { ...state, loading: true };
@@ -133,7 +131,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        dashboardDetails: action.payload
+        dashboardDetails: action.payload,
       };
       break;
     case URL_DELETE_USER_FAIL:
@@ -151,7 +149,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        dashboardDetails: action.payload
+        dashboardDetails: action.payload,
       };
       break;
     case EDIT_PROFILE_PICTURE_FAIL:
@@ -169,7 +167,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        departmentDropdownData: action.payload
+        departmentDropdownData: action.payload,
       };
       break;
     case FETCH_DEPARTMENT_FAILURE:
@@ -187,7 +185,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        designationDropdownData: action.payload
+        designationDropdownData: action.payload,
       };
       break;
     case FETCH_DESIGNATION_FAILURE:
@@ -205,7 +203,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        branchesDropdownData: action.payload
+        branchesDropdownData: action.payload,
       };
       break;
     case FETCH_ALL_BRANCHES_LIST_FAILURE:
@@ -215,7 +213,7 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
-    //get employee details 
+    //get employee details
     case FETCH_EMPLOYEE_DETAILS:
       state = { ...state, loading: true };
       break;
@@ -223,7 +221,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        editEmployeeDetails: action.payload
+        editEmployeeDetails: action.payload,
       };
       break;
     case FETCH_EMPLOYEE_DETAILS_FAILURE:
@@ -237,20 +235,24 @@ const EmployeeReducer = (state = initialState, action) => {
 
     case FETCH_EMPLOYEE_LIST:
       state = {
-        ...state, loading: true,
+        ...state,
+        loading: true,
         registeredEmployeesList: [],
         numOfPages: 0,
         currentPage: 1,
       };
       break;
     case FETCH_EMPLOYEE_LIST_SUCCESS:
-      const employeeRes = action.payload
+      const employeeRes = action.payload;
       state = {
         ...state,
         loading: false,
         registeredEmployeesList: employeeRes.data,
         numOfPages: employeeRes.num_pages,
-        currentPage: employeeRes.next_page === -1 ? employeeRes.num_pages : employeeRes.next_page - 1,
+        currentPage:
+          employeeRes.next_page === -1
+            ? employeeRes.num_pages
+            : employeeRes.next_page - 1,
       };
       break;
     case FETCH_EMPLOYEE_LIST_FAILURE:
@@ -260,7 +262,7 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
-    //employee addition 
+    //employee addition
     case POST_EMPLOYEE_ADDITION:
       state = { ...state, loading: true };
       break;
@@ -290,7 +292,6 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_EMPLOYEE_TIME_SHEETS_SUCCESS:
-
       const timeSheetsRes = action.payload;
 
       state = {
@@ -298,7 +299,10 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
         employeeTimeSheets: timeSheetsRes.employees_timesheet.data,
         numOfPages: timeSheetsRes.employees_timesheet.num_pages,
-        currentPage: timeSheetsRes.employees_timesheet.next_page === -1 ? timeSheetsRes.employees_timesheet.num_pages : timeSheetsRes.employees_timesheet.next_page - 1,
+        currentPage:
+          timeSheetsRes.employees_timesheet.next_page === -1
+            ? timeSheetsRes.employees_timesheet.num_pages
+            : timeSheetsRes.employees_timesheet.next_page - 1,
       };
       break;
 
@@ -310,11 +314,9 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-
-
     /**
-   * GET EMPLOYEE CHECK IN LOGS
-   */
+     * GET EMPLOYEE CHECK IN LOGS
+     */
 
     case FETCH_EMPLOYEE_CHECK_IN_LOGS:
       state = { ...state, loading: true, employeeCheckInLogs: [] };
@@ -325,7 +327,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        employeeCheckInLogs: checkInLogsRes.days
+        employeeCheckInLogs: checkInLogsRes.days,
       };
       break;
 
@@ -337,9 +339,6 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-
-
-
     /**
      * FETCH_CHECK_IN_DETAILED_LOG_PER_DAY
      */
@@ -349,11 +348,10 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_CHECK_IN_DETAILED_LOG_PER_DAY_SUCCESS:
-
       state = {
         ...state,
         loading: false,
-        employeeCheckInDetailedLogPerDay: action.payload.logs
+        employeeCheckInDetailedLogPerDay: action.payload.logs,
       };
       break;
 
@@ -366,8 +364,8 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     /**
-    * Each User Employee Time Sheets
-    */
+     * Each User Employee Time Sheets
+     */
 
     case FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS:
       state = { ...state, loading: true, employeeEachUserSheets: [] };
@@ -378,7 +376,7 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        employeeEachUserSheets: action.payload
+        employeeEachUserSheets: action.payload,
       };
       break;
 
@@ -453,15 +451,14 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-
     case FETCH_EMPLOYEE_ATTENDANCE_STATS:
-      state = { ...state, loading: true }
+      state = { ...state, loading: true };
       break;
     case FETCH_EMPLOYEE_ATTENDANCE_STATS_SUCCESS:
       state = {
         ...state,
         loading: false,
-        employeeattendancedatalog: action.payload
+        employeeattendancedatalog: action.payload,
       };
       break;
 
@@ -479,18 +476,20 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: true,
         employeeAttendanceStats: [],
         numOfPages: 0,
-        currentPage: 1
-      }
+        currentPage: 1,
+      };
       break;
     case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
-     
-      const attendanceStats = action.payload
-      console.log("reducer------> ",attendanceStats);
+      const attendanceStats = action.payload;
+      console.log("reducer------> ", attendanceStats);
       state = {
         ...state,
         employeeAttendanceStats: attendanceStats.employees.data,
         numOfPages: attendanceStats.employees.num_pages,
-        currentPage: attendanceStats.employees.next_page === -1 ? attendanceStats.employees.num_pages : attendanceStats.employees.next_page - 1,
+        currentPage:
+          attendanceStats.employees.next_page === -1
+            ? attendanceStats.employees.num_pages
+            : attendanceStats.employees.next_page - 1,
       };
       break;
 
@@ -502,18 +501,18 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-      //download
-      case FETCH_DOWNLOAD_TODAY_STATUS:
+    //download
+    case FETCH_DOWNLOAD_TODAY_STATUS:
       state = {
         ...state,
         loading: true,
-      }
+      };
       break;
     case FETCH_DOWNLOAD_TODAY_STATUS_SUCCESS:
       state = {
         ...state,
         loading: false,
-        downloadContent:action.payload
+        downloadContent: action.payload,
       };
       break;
 
@@ -525,15 +524,14 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-
     case FETCH_CHECK_IN_DETAILED_LOG:
-      state = { ...state, loading: true }
+      state = { ...state, loading: true };
       break;
     case FETCH_CHECK_IN_DETAILED_LOG_SUCCESS:
       state = {
         ...state,
         loading: false,
-        checkinDetailedLog: action.payload
+        checkinDetailedLog: action.payload,
       };
       break;
 
@@ -549,40 +547,40 @@ const EmployeeReducer = (state = initialState, action) => {
       console.log(JSON.stringify(action.payload) + "+======SELECTED_CARD_TYPE");
       state = {
         ...state,
-        routeParams: action.payload
+        routeParams: action.payload,
       };
       break;
     // Stats selected department name //
     case SELECTED_DEPARTMENT_NAME:
       state = {
         ...state,
-        selectedDepartmentName: action.payload
+        selectedDepartmentName: action.payload,
       };
       break;
     // Stats selected department id //
     case SELECTED_DEPARTMENT_ID:
       state = {
         ...state,
-        selectedDepartmentId: action.payload
+        selectedDepartmentId: action.payload,
       };
       break;
     // Stats selected employee id for view employee details//
     case SELECTED_EMPLOYEE_ID:
       state = {
         ...state,
-        selectedEmployeeId: action.payload
+        selectedEmployeeId: action.payload,
       };
       break;
     //attendance consolidated cards
 
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS:
-      state = { ...state, loading: true, attendanceConsolidatedCardsData: [] }
+      state = { ...state, loading: true, attendanceConsolidatedCardsData: [] };
       break;
     case FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS:
       state = {
         ...state,
         loading: false,
-        attendanceConsolidatedCardsData: action.payload
+        attendanceConsolidatedCardsData: action.payload,
       };
       break;
 
@@ -598,8 +596,8 @@ const EmployeeReducer = (state = initialState, action) => {
     case UPDATE_EMPLOYEE_STATUS:
       state = {
         ...state,
-        loading: true
-      }
+        loading: true,
+      };
       break;
     case UPDATE_EMPLOYEE_STATUS_SUCCESS:
       state = {
@@ -620,13 +618,13 @@ const EmployeeReducer = (state = initialState, action) => {
       state = initialState;
       break;
 
-      //get leave types
+    //get leave types
 
-      case FETCH_LEAVE_TYPES:
+    case FETCH_LEAVE_TYPES:
       state = {
         ...state,
-        loading: true
-      }
+        loading: true,
+      };
       break;
     case FETCH_LEAVE_TYPES_SUCCESS:
       state = {
@@ -643,107 +641,108 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-       //Apply leave
+    //Apply leave
 
-       case APPLY_LEAVE:
-        state = {
-          ...state,
-          loading: true
-        }
-        break;
-      case APPLY_LEAVE_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-        };
-        break;
-  
-      case APPLY_LEAVE_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
-       
-        //Apply leave from date
-        case ADD_LEAVE_FROM_DATE:
-          state = {
-            ...state,
-            leaveFromDate:action.payload
-          };
-          break;
+    case APPLY_LEAVE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case APPLY_LEAVE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
 
-        //Calendar Events
+    case APPLY_LEAVE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
-        case FETCH_CALENDAR_DETAILS:
-        state = {
-          ...state,
-          loading: true
-        }
-        break;
-      case FETCH_CALENDAR_DETAILS_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-          calendarEvents:action.payload
-        };
-        break;
-  
-      case FETCH_CALENDAR_DETAILS_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
+    //Apply leave from date
+    case ADD_LEAVE_FROM_DATE:
+      state = {
+        ...state,
+        leaveFromDate: action.payload,
+      };
+      break;
 
-        //pending leaves
+    //Calendar Events
 
-        case PENDING_LEAVE:
-          state = {
-            ...state,
-            loading: true
-          }
-          break;
-        case PENDING_LEAVE_SUCCESS:
-          state = {
-            ...state,
-            loading: false,
-            leaveRequestPending: action.payload
-          };
-          break;
-    
-        case PENDING_LEAVE_FAILURE:
-          state = {
-            ...state,
-            error: action.payload,
-            loading: false,
-          };
-          break;
+    case FETCH_CALENDAR_DETAILS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case FETCH_CALENDAR_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        calendarEvents: action.payload,
+      };
+      break;
 
-          //approved leaves
+    case FETCH_CALENDAR_DETAILS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
-          case FETCH_APPROVED_DETAILS:
-            state = {
-              ...state,
-              loading: true
-            }
-            break;
-          case FETCH_APPROVED_DETAILS_SUCCESS:
-            state = {
-              ...state,
-              loading: false,
-            };
-            break;
-      
-          case FETCH_APPROVED_DETAILS_FAILURE:
-            state = {
-              ...state,
-              error: action.payload,
-              loading: false,
-            };
-            break;
+    //pending leaves
+
+    case PENDING_LEAVE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case PENDING_LEAVE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        leaveRequestPending: action.payload,
+      };
+      break;
+
+    case PENDING_LEAVE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //approved leaves
+
+    case FETCH_APPROVED_DETAILS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case FETCH_APPROVED_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        approvedLeaves: action.payload,
+      };
+      break;
+
+    case FETCH_APPROVED_DETAILS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     default:
       state = state;

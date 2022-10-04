@@ -1,14 +1,14 @@
-import { CommonTable } from "@components";
-import { getPendingLeaveDetails } from "../../../../../../store/employee/actions";
+import { CommonTable, NoRecordFound } from "@components";
+import { getApprovedLeaves } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_UPDATE } from "@utils";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Pending = () => {
+const Approved = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
-  const { leaveRequestPending, numOfPages, currentPage } = useSelector(
+  const { approvedLeaves, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
   );
   const { hierarchicalBranchIds } = useSelector(
@@ -16,15 +16,15 @@ const Pending = () => {
   );
 
   useEffect(() => {
-    fetchPendingDetail(currentPage);
+    getApprovedLeaves(currentPage);
   }, [hierarchicalBranchIds]);
 
-  const fetchPendingDetail = (pageNumber: number) => {
+  const fetchApprovedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
     };
-    dispatch(getPendingLeaveDetails({ params }));
+    dispatch(getApprovedLeaves({ params }));
   };
 
   function paginationHandler(
@@ -37,32 +37,24 @@ const Pending = () => {
         : type === "prev"
         ? currentPage - 1
         : position;
-    fetchPendingDetail(page);
+    fetchApprovedLeaves(page);
   }
+
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
         name: el.name,
-        "Date From":el.date_from,
-        "Date To": el.date_to,
+        "Date From": "",
+        "Date To": "",
         "Leave Types": el.leave_type,
       };
     });
   };
 
-
-const manageApproveStatus=(id:string)=>{
-
-}
-
-const manageRejectStatus=(id:string)=>{
-console.log()
-}
-
   return (
     <div>
       <div className="row">
-        {leaveRequestPending && leaveRequestPending.data.length > 0 && (
+        {approvedLeaves && approvedLeaves.data.length > 0 ? (
           <CommonTable
             noHeader
             isPagination
@@ -73,25 +65,27 @@ console.log()
             }}
             previousClick={() => paginationHandler("prev")}
             nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(leaveRequestPending.data)}
-            additionalDataSet={LEAVE_STATUS_UPDATE}
+            displayDataSet={normalizedEmployeeLog(approvedLeaves.data)}
+            // additionalDataSet={LEAVE_STATUS_UPDATE}
             // tableOnClick={(e, index, item) => {
-            //   const selectedId = leaveRequestPending.data[index].id;
+            //   const selectedId = registeredEmployeesList[index].id;
+            //   dispatch(getSelectedEmployeeId(selectedId));
+            //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
             // }}
-            tableValueOnClick={(e, index, item, elv) => {
-              const current = leaveRequestPending.data[index];
-              if (elv === "Approve") {
-                manageApproveStatus(current.id);
-              }
-              if (elv === "Reject") {
-                manageRejectStatus(current.id);
-              }
-            }}
+            // tableValueOnClick={(e, index, item, elv) => {
+            //   const current = registeredEmployeesList[index];
+            //   if (elv === "Edit") {
+            //     manageEmployeeHandler(current.id);
+            //   }
+            //   if (elv === "Delete") {
+            //     manageDeleteHandler(current.id);
+            //   }
+            // }}
           />
-        )}
+        ):<NoRecordFound/>}
       </div>
     </div>
   );
 };
 
-export default Pending;
+export default Approved;
