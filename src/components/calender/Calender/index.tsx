@@ -15,6 +15,7 @@ interface CalenderProps {
 }
 
 function index({ dateClick, events, customButtons,eventClick }: CalenderProps) {
+
   return (
     <FullCalendar
       plugins={[dayGridPlugin, interactionPlugin]}
@@ -28,6 +29,7 @@ function index({ dateClick, events, customButtons,eventClick }: CalenderProps) {
       customButtons={customButtons}
       dateClick={dateClick}
       eventClick={eventClick}
+      displayEventTime={false}
     />
   );
 }

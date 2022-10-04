@@ -1,4 +1,3 @@
-import { Navbar } from "@modules";
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { Container, Calender, Card, Sort, Modal, Primary } from "@components";
@@ -11,93 +10,81 @@ import {
 import { goTo, ROUTE, useNav } from "@utils";
 
 function Calendar() {
-  const { t } = useTranslation();
-
   const navigation = useNav();
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
   const [daysHoliday] = useState<any[]>([]);
+  const { t, i18n } = useTranslation();
   const { calendarEvents } = useSelector((state: any) => state.EmployeeReducer);
 
   useEffect(() => {
     let params = {};
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({}));
     calendarEvents?.days_holiday?.map((item: any) => {
-      daysHoliday.push({ title: item.title, date: item.day, color: "green" });
+      daysHoliday.push({
+        title: item.title,
+        start: item.day,
+        end: item.day,
+        color: "green",
+      });
     });
 
     calendarEvents?.days_leave?.map((item: any) => {
-      if (item.date_from) {
-        daysHoliday.push({
-          title: item.reason,
-          start: item.date_from,
-          end: item.date_to,
-          color: "red",
-        });
-      } else {
-        daysHoliday.push({ title: item.reason, date: item.day, color: "red" });
-      }
+      daysHoliday.push({
+        title: item.reason,
+        start: item.date_from,
+        end: item.date_to+"T23:59:00",
+        color: "red",
+      });
     });
 
     calendarEvents?.days_absent?.map((item: any) => {
-      if (item.date_from) {
-        daysHoliday.push({
-          title: item.reason,
-          start: item.date_from,
-          end: item.date_to,
-          color: "red",
-        });
-      } else {
-        daysHoliday.push({ title: item.reason, date: item.day, color: "red" });
-      }
+      daysHoliday.push({
+        title: item.reason,
+        start: item.date_from,
+        end: item.date_to+"T23:59:00",
+        color: "red",
+      });
     });
   }, []);
 
-  const handleApplyLeave = () => {
-    dispatch(getLeaveFromDate(""));
-    goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
-  };
+  const getDatesListBetweenStartEndDates = (startDate: any, stopDate: any) => {
+    const dateObj = [];
+    let currentDate = moment(startDate);
+    stopDate = moment(stopDate);
+    while (currentDate <= stopDate) {
+      dateObj.push(moment(currentDate).format("YYYY-MM-DD"));
+      currentDate = moment(currentDate).add(1, "days");
+    }
 
-  const handleLeaveRequest = () => {
-    goTo(navigation, ROUTE.ROUTE_LEAVE_REQUEST);
+    return dateObj;
   };
 
   const handleDateClick = (arg: any) => {
-    let data = daysHoliday.filter(
-      (item) => (item.date || item.start) === arg.dateStr
-    );
+    let Range = daysHoliday.map((item: any) => {
+      if (item.end)
+        return getDatesListBetweenStartEndDates(item.start, item.end);
+    });
+    var merged = Range.flat(1);
 
-    if (data?.length >= 1) {
-      console.log("data", data);
-      data = [];
+    let match = merged.some((date: any) => date === arg.dateStr);
+    console.log("match", match);
+
+    if (match) {
     } else {
       setModel(!model);
       dispatch(getLeaveFromDate(arg.dateStr));
     }
   };
 
+  console.log(daysHoliday)
   return (
     <>
       <Container additionClass={"col-9 mt-5"}>
         <Card>
-          <Container additionClass={"text-right my-4"}>
-            <Primary
-              text={t("applyLeave")}
-              onClick={handleApplyLeave}
-              col={"col-xl-2"}
-              size={"btn-sm"}
-            />
-            <Primary
-              text={t("leaveRequest")}
-              onClick={handleLeaveRequest}
-              col={"col-xl-2"}
-              size={"btn-sm"}
-            />
-          </Container>
           <Calender
             dateClick={handleDateClick}
             events={daysHoliday?.length > 1 ? daysHoliday : []}
-            eventClick={()=>console.log('sdsd')}
           />
         </Card>
 
