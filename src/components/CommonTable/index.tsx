@@ -24,6 +24,8 @@ interface CommonTableProps {
   buttonText?: string;
   buttonOnClock?: () => void;
   tableChildren?: React.ReactNode;
+  custombutton?:string
+
   
 }
 
@@ -45,7 +47,7 @@ interface GetPaginatorSetProps {
 
 
 
-function index({tableTitle, displayDataSet,tableDataSet, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren}: CommonTableProps) {
+  function index({tableTitle, displayDataSet,tableDataSet, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren,custombutton}: CommonTableProps) {
 
   const CommonHeader = ({children}: CommonHeaderProps) => {
     return (
@@ -156,7 +158,7 @@ function index({tableTitle, displayDataSet,tableDataSet, additionalDataSet, noRe
 
     return (
       <CommonHeader>
-        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} comparisonDataSet={comparisonDataSet} />}
+        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />}
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
       </CommonHeader>
     );

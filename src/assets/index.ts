@@ -61,9 +61,10 @@ export const Icons = {
   TickActive: require('./icons/TickActive/TickActive.png'),
   TickDefault: require('./icons/TickDefault/TickDefault.png'),
   LocationGray: require('./icons/LocationGray/LocationGray.png'),
-  ShiftManagement:require('./icons/ShiftManagement/shiftManagement.png')
- 
-
+  ShiftManagement:require('./icons/ShiftManagement/shiftManagement.png'),
+  MyLog:require('./icons/MyLog/mylog.png'),
+  myLogBook:require('./icons/MyLogBook/mylogbook.png'),
+  myLeaves:require('./icons/MyLeaves/holidays.png')
 }
 
 

@@ -51,11 +51,15 @@ export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS,
  export const postApplyLeave = (payload) => post(url.POST_APPLY_LEAVE,payload,{})
  export const fetchCalendarDetails =(payload)=>post(url.FETCH_CALENDAR_DETAILS,payload,{})
 
- export const fetchEmployeePendingLeaves = (payload) => post(url.FETCH_EMPLOYEE_PENDING_LEAVES,payload,{})
  export const postChangeEmployeeLeaveStatus = (payload) => post(url.POST_CHANGE_EMPLOYEE_LEAVE_STATUS,payload,{})
- export const fetchEmployeeApprovedLeaves = (payload) => post(url.FETCH_EMPLOYEE_APPROVED_LEAVES,payload,{})
- export const fetchEmployeeRejectedLeaves = (payload) => post(url.FETCH_EMPLOYEE_REJECTED_LEAVES,payload,{})
+ export const postAddHolidays = (payload) => post(url.POST_EMPLOYEES_HOLIDAYS,payload,{})
+ export const postDeleteHolidays = (payload) => post(url.POST_DELETE_HOLIDAYS,payload,{})
 
+
+
+export const fetchMyleaves= (payload) => post(url.FETCH_MY_LEAVES,payload,{})
+
+export const fetchEmployeesleaves= (payload) => post(url.FETCH_EMPLOYEES_LEAVES,payload,{})
 
 
 

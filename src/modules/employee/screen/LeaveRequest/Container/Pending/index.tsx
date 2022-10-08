@@ -1,19 +1,28 @@
-import { CommonTable } from "@components";
-import { getPendingLeaveDetails } from "../../../../../../store/employee/actions";
+import { Card, CommonTable, Container, Modal, Primary, Secondary } from "@components";
+import {
+  changeEmployeeLeaveStatus,
+  getEmployeeLeaves,
+  getEmployeeLeavesSuccess,
+  getSelectedEventId,
+} from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_UPDATE } from "@utils";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 const Pending = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
-  const { leaveRequestPending, numOfPages, currentPage } = useSelector(
-    (state: any) => state.EmployeeReducer
-  );
+
+  const [approveModel, setApproveModel] = useState(false);
+  const [rejectModel, setRejectModel] = useState(false);
+
+  const { employeesLeaves, numOfPages, currentPage, selectedEventId } =
+    useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  
 
   useEffect(() => {
     fetchPendingDetail(currentPage);
@@ -23,8 +32,15 @@ const Pending = () => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
+      status:-1
     };
-    dispatch(getPendingLeaveDetails({ params }));
+    dispatch(getEmployeeLeaves({  params,
+      onSuccess: (success: object) => {
+      },
+      onError: (error: string) => {
+        dispatch(getEmployeeLeavesSuccess(''))  
+      },
+    }));
   };
 
   function paginationHandler(
@@ -43,26 +59,48 @@ const Pending = () => {
     return data.map((el: any) => {
       return {
         name: el.name,
-        "Date From":el.date_from,
+        "Date From": el.date_from,
         "Date To": el.date_to,
         "Leave Types": el.leave_type,
+        "Status":el.status_text
       };
     });
   };
 
+  const manageApproveStatus = (id: string) => {
+    dispatch(getSelectedEventId(id));
+    setApproveModel(!approveModel);
+  };
 
-const manageApproveStatus=(id:string)=>{
+  const manageRejectStatus = (id: string) => {
+    dispatch(getSelectedEventId(id));
+    manageStatusHandler(0);
+  };
 
-}
-
-const manageRejectStatus=(id:string)=>{
-console.log()
-}
+  const manageStatusHandler = (el: number) => {
+    const params = {
+      id: selectedEventId,
+      status: el,
+    };
+    dispatch(
+      changeEmployeeLeaveStatus({
+        params,
+        onSuccess: (success: object) => {
+          if (el ===1) {
+            setApproveModel(!approveModel);
+          }
+          fetchPendingDetail(currentPage);
+        },
+        onError: (error: string) => {
+        },
+      })
+    );
+  };
 
   return (
     <div>
       <div className="row">
-        {leaveRequestPending && leaveRequestPending.data.length > 0 && (
+        {employeesLeaves && employeesLeaves.length > 0 && (
           <CommonTable
             noHeader
             isPagination
@@ -73,13 +111,10 @@ console.log()
             }}
             previousClick={() => paginationHandler("prev")}
             nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(leaveRequestPending.data)}
+            displayDataSet={normalizedEmployeeLog(employeesLeaves)}
             additionalDataSet={LEAVE_STATUS_UPDATE}
-            // tableOnClick={(e, index, item) => {
-            //   const selectedId = leaveRequestPending.data[index].id;
-            // }}
             tableValueOnClick={(e, index, item, elv) => {
-              const current = leaveRequestPending.data[index];
+              const current = employeesLeaves[index];
               if (elv === "Approve") {
                 manageApproveStatus(current.id);
               }
@@ -87,8 +122,32 @@ console.log()
                 manageRejectStatus(current.id);
               }
             }}
+            custombutton={'h5'}
           />
         )}
+        <Modal
+          title={t("deleteUser")}
+          showModel={approveModel}
+          toggle={() => setApproveModel(!approveModel)}
+        >
+          <Container>
+            <span className="ml-3">{t("approveWarningMessage")}</span>
+            <Container
+              margin={"m-5"}
+              justifyContent={"justify-content-end"}
+              display={"d-flex"}
+            >
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setApproveModel(!approveModel)}
+              />
+              <Primary
+                text={t("proceed")}
+                onClick={() => manageStatusHandler(1)}
+              />
+            </Container>
+          </Container>
+        </Modal>
       </div>
     </div>
   );

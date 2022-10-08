@@ -6,12 +6,14 @@ interface FormWrapperProps {
   children?: React.ReactNode;
   onClick?: () => void;
   hideFooter?: boolean;
+  buttonTittle?:string
 }
 
 function index({
   title,
   children,
   onClick,
+  buttonTittle,
   hideFooter = false,
 }: FormWrapperProps) {
   return (
@@ -30,7 +32,7 @@ function index({
             </form>
             {!hideFooter && (
               <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
-                <Primary text={"Submit"} onClick={onClick} />
+                <Primary text={buttonTittle?buttonTittle: "Submit"} onClick={onClick} />
               </div>
             )}
           </div>

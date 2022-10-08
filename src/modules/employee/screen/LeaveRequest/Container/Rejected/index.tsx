@@ -1,6 +1,8 @@
 import { CommonTable, NoRecordFound } from "@components";
-import { getApprovedLeaves } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import {
+  changeEmployeeLeaveStatus, getEmployeeLeaves, getEmployeeLeavesSuccess,
+} from "../../../../../../store/employee/actions";
+import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE } from "@utils";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Rejected = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
-  const { approvedLeaves, numOfPages, currentPage } = useSelector(
+  const { employeesLeaves, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
   );
   const { hierarchicalBranchIds } = useSelector(
@@ -16,15 +18,22 @@ const Rejected = () => {
   );
 
   useEffect(() => {
-    getApprovedLeaves(currentPage);
+    fetchRejectedLeaves(currentPage);
   }, [hierarchicalBranchIds]);
 
   const fetchRejectedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
+      status:0
     };
-    dispatch(getApprovedLeaves({ params }));
+    dispatch(getEmployeeLeaves({  params,
+      onSuccess: (success: object) => {
+      },
+      onError: (error: string) => {
+        dispatch(getEmployeeLeavesSuccess(''))  
+      },
+    }));
   };
 
   function paginationHandler(
@@ -44,17 +53,35 @@ const Rejected = () => {
     return data.map((el: any) => {
       return {
         name: el.name,
-        "Date From": "",
-        "Date To": "",
+        "Date From": el.date_from,
+        "Date To": el.date_to,
         "Leave Types": el.leave_type,
+        "Status":el.status_text
       };
     });
+  };
+
+  const manageRevertHandler = (el: string) => {
+    const params = {
+      id: el,
+      status: -1,
+    };
+    dispatch(
+      changeEmployeeLeaveStatus({
+        params,
+        onSuccess: (success: object) => {
+          fetchRejectedLeaves(currentPage);
+        },
+        onError: (error: string) => {
+        },
+      })
+    );
   };
 
   return (
     <div>
       <div className="row">
-        {approvedLeaves && approvedLeaves.data.length > 0 ? (
+        {employeesLeaves && employeesLeaves.length > 0 ? (
           <CommonTable
             noHeader
             isPagination
@@ -65,22 +92,15 @@ const Rejected = () => {
             }}
             previousClick={() => paginationHandler("prev")}
             nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(approvedLeaves.data)}
-            // additionalDataSet={LEAVE_STATUS_UPDATE}
-            // tableOnClick={(e, index, item) => {
-            //   const selectedId = registeredEmployeesList[index].id;
-            //   dispatch(getSelectedEmployeeId(selectedId));
-            //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-            // }}
-            // tableValueOnClick={(e, index, item, elv) => {
-            //   const current = registeredEmployeesList[index];
-            //   if (elv === "Edit") {
-            //     manageEmployeeHandler(current.id);
-            //   }
-            //   if (elv === "Delete") {
-            //     manageDeleteHandler(current.id);
-            //   }
-            // }}
+            displayDataSet={normalizedEmployeeLog(employeesLeaves)}
+            additionalDataSet={LEAVE_STATUS_REVERT}
+            tableValueOnClick={(e, index, item, elv) => {
+              const current = employeesLeaves[index];
+              if (elv === "Revert") {
+                manageRevertHandler(current.id);
+              }
+            }}
+            custombutton={"h5"}
           />
         ) : (
           <NoRecordFound />

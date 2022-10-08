@@ -11,7 +11,7 @@ import {
 } from './auth';
 import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header,Profile} from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import {DashboardStats,DashBoardAttendance} from './stats'
@@ -51,5 +51,9 @@ export {
   RequireAuth,
   RequireAuthExist,
   ApplyLeave,
-  LeaveRequest
+  LeaveRequest,
+  ManageHolidays,
+  ManageLeaves,
+  MyLog,MyWorkLog,
+  MyLeaves
 }

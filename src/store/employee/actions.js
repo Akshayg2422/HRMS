@@ -1,4 +1,3 @@
-
 import {
   URL_DELETE_USER,
   URL_DELETE_USER_SUCCESS,
@@ -59,6 +58,7 @@ import {
   SELECTED_DEPARTMENT_NAME,
   SELECTED_DEPARTMENT_ID,
   SELECTED_EMPLOYEE_ID,
+  SELECTED_EVENT_ID,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_SUCCESS,
   FETCH_ATTENDANCE_CONSOLIDATED_CARDS_FAILURE,
@@ -75,19 +75,25 @@ import {
   APPLY_LEAVE,
   APPLY_LEAVE_SUCCESS,
   APPLY_LEAVE_FAILURE,
-  PENDING_LEAVE,
-  PENDING_LEAVE_SUCCESS,
-  PENDING_LEAVE_FAILURE,
-  FETCH_MARK_AS_PRESENT,
-  FETCH_MARK_AS_PRESENT_SUCCESS,
-  FETCH_MARK_AS_PRESENT_FAILURE,
-  FETCH_APPROVED_DETAILS,
-  FETCH_APPROVED_DETAILS_SUCCESS,
-  FETCH_APPROVED_DETAILS_FAILURE,
   ADD_LEAVE_FROM_DATE,
   FETCH_CALENDAR_DETAILS,
   FETCH_CALENDAR_DETAILS_SUCCESS,
-  FETCH_CALENDAR_DETAILS_FAILURE
+  FETCH_CALENDAR_DETAILS_FAILURE,
+  CHANGE_EMPLOYEE_LEAVE_STATUS,
+  CHANGE_EMPLOYEE_LEAVE_STATUS_SUCCESS,
+  CHANGE_EMPLOYEE_LEAVE_STATUS_FAILURE,
+  ADD_HOLIDAY,
+  ADD_HOLIDAY_SUCCESS,
+  ADD_HOLIDAY_FAILURE,
+  DELETE_HOLIDAY,
+  DELETE_HOLIDAY_SUCCESS,
+  DELETE_HOLIDAY_FAILURE,
+  GET_LEAVES_BY_TYPES,
+  GET_LEAVES_BY_TYPES_SUCCESS,
+  GET_LEAVES_BY_TYPES_FAILURE,
+  GET_EMPLOYEES_LEAVES,
+  GET_EMPLOYEES_LEAVE_SUCCESS,
+  GET_EMPLOYEES_LEAVES_FAILURE,
 } from "./actionTypes";
 
 // Delete Account
@@ -95,7 +101,6 @@ export const deleteAccountUser = (params) => {
   return {
     type: URL_DELETE_USER,
     payload: params,
-
   };
 };
 
@@ -118,7 +123,6 @@ export const editProfilePicture = (params) => {
   return {
     type: EDIT_PROFILE_PICTURE,
     payload: params,
-
   };
 };
 
@@ -142,7 +146,6 @@ export const getDesignationData = (params) => {
   return {
     type: FETCH_DESIGNATION,
     payload: params,
-
   };
 };
 
@@ -166,7 +169,6 @@ export const getDepartmentData = (params) => {
   return {
     type: FETCH_DEPARTMENT,
     payload: params,
-
   };
 };
 
@@ -190,7 +192,6 @@ export const getAllBranchesList = (params) => {
   return {
     type: FETCH_ALL_BRANCHES_LIST,
     payload: params,
-
   };
 };
 
@@ -214,7 +215,6 @@ export const getEmployeeDetails = (params) => {
   return {
     type: FETCH_EMPLOYEE_DETAILS,
     payload: params,
-
   };
 };
 
@@ -232,14 +232,12 @@ export const getEmployeeDetailsFailure = (error) => {
   };
 };
 
-
 //GET_EMPLOYEE_LIST
 
 export const getEmployeesList = (params) => {
   return {
     type: FETCH_EMPLOYEE_LIST,
     payload: params,
-
   };
 };
 
@@ -263,7 +261,6 @@ export const employeeAddition = (params) => {
   return {
     type: POST_EMPLOYEE_ADDITION,
     payload: params,
-
   };
 };
 
@@ -281,7 +278,6 @@ export const employeeAdditionFailure = (error) => {
   };
 };
 
-
 export const employeeEdit = (id) => {
   return {
     type: EDIT_EMPLOYEE,
@@ -297,7 +293,6 @@ export const getEmployeesTimeSheets = (params) => {
   return {
     type: FETCH_EMPLOYEE_TIME_SHEETS,
     payload: params,
-
   };
 };
 
@@ -317,15 +312,14 @@ export const getEmployeesTimeSheetsFailure = (error) => {
 
 /**
  * get Employee Check in logs
- * @param {*} params 
- * @returns 
+ * @param {*} params
+ * @returns
  */
- export const getEmployeesCheckInLogs = (params) => {
-  console.log('getEmployeesCheckInLogs======action');
+export const getEmployeesCheckInLogs = (params) => {
+  console.log("getEmployeesCheckInLogs======action");
   return {
     type: FETCH_EMPLOYEE_CHECK_IN_LOGS,
     payload: params,
-
   };
 };
 
@@ -347,11 +341,10 @@ export const getEmployeesCheckInLogsFailure = (error) => {
  *  Fetch Check In Detailed Logs Per Day
  */
 
- export const getCheckInDetailedLogPerDay = (params) => {
+export const getCheckInDetailedLogPerDay = (params) => {
   return {
     type: FETCH_CHECK_IN_DETAILED_LOG_PER_DAY,
     payload: params,
-  
   };
 };
 
@@ -369,16 +362,14 @@ export const getCheckInDetailedLogPerDayFailure = (error) => {
   };
 };
 
-
 /**
  *  Fetch Check In Detailed Logs Per Day
  */
 
- export const getEmployeeEachUserTimeSheets = (params) => {
+export const getEmployeeEachUserTimeSheets = (params) => {
   return {
     type: FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS,
     payload: params,
-  
   };
 };
 
@@ -400,11 +391,10 @@ export const getEmployeeEachUserTimeSheetsFailure = (error) => {
  * Add department
  */
 
- export const addDepartment = (params) => {
+export const addDepartment = (params) => {
   return {
     type: ADD_DEPARTMENT,
     payload: params,
-  
   };
 };
 
@@ -426,11 +416,10 @@ export const addDepartmentFailure = (error) => {
  * Add designation
  */
 
- export const addDesignation = (params) => {
+export const addDesignation = (params) => {
   return {
     type: ADD_DESIGNATION,
     payload: params,
-  
   };
 };
 
@@ -452,11 +441,10 @@ export const addDesignationFailure = (error) => {
  * Add FENCE ADMIN
  */
 
- export const addFenceAdmin = (params) => {
+export const addFenceAdmin = (params) => {
   return {
     type: ADD_FENCE_ADMIN,
     payload: params,
-  
   };
 };
 
@@ -474,15 +462,12 @@ export const addFenceAdminFailure = (error) => {
   };
 };
 
-
-
-export const getEmployeeAttendanceStats =(params)=>{
-  return{
+export const getEmployeeAttendanceStats = (params) => {
+  return {
     type: FETCH_EMPLOYEE_ATTENDANCE_STATS,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getEmployeeAttendanceStatsSuccess = (response) => {
   return {
@@ -498,14 +483,12 @@ export const getEmployeeAttendanceStatsFailure = (error) => {
   };
 };
 
-
-export const getEmployeeTodayStatus =(params)=>{
-  return{
+export const getEmployeeTodayStatus = (params) => {
+  return {
     type: FETCH_EMPLOYEE_TODAY_STATUS,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getEmployeeTodayStatusSuccess = (response) => {
   return {
@@ -520,14 +503,13 @@ export const getEmployeeTodayStatusFailure = (error) => {
     payload: error,
   };
 };
- //download
-export const getDownloadTodayStatus =(params)=>{
-  return{
+//download
+export const getDownloadTodayStatus = (params) => {
+  return {
     type: FETCH_DOWNLOAD_TODAY_STATUS,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getDownloadTodayStatusSuccess = (response) => {
   return {
@@ -543,13 +525,12 @@ export const getDownloadTodayStatusFailure = (error) => {
   };
 };
 
-export const getCheckInDetailedLog=(params)=>{
-  return{
+export const getCheckInDetailedLog = (params) => {
+  return {
     type: FETCH_CHECK_IN_DETAILED_LOG,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getCheckInDetailedLogSuccess = (response) => {
   return {
@@ -601,15 +582,21 @@ export const getSelectedEmployeeId = (id) => {
   };
 };
 
+//seleceted event id
+export const getSelectedEventId = (id) => {
+  return {
+    type: SELECTED_EVENT_ID,
+    payload: id,
+  };
+};
 //attendance consolidated cards
 
-export const getAttendanceConsolidatedCards=(params)=>{
-  return{
+export const getAttendanceConsolidatedCards = (params) => {
+  return {
     type: FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getAttendanceConsolidatedCardsSuccess = (response) => {
   return {
@@ -627,13 +614,12 @@ export const getAttendanceConsolidatedCardsFailure = (error) => {
 
 //delete employee
 
-export const getUpdateEmployeeStatus=(params)=>{
-  return{
+export const getUpdateEmployeeStatus = (params) => {
+  return {
     type: UPDATE_EMPLOYEE_STATUS,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getUpdateEmployeeStatusSuccess = (response) => {
   return {
@@ -649,7 +635,6 @@ export const getUpdateEmployeeStatusFailure = (error) => {
   };
 };
 
-
 /**
  * set Logout
  */
@@ -664,13 +649,12 @@ export const resetEmployee = () => {
  *  get leave types
  */
 
- export const getLeaveTypes=(params)=>{
-  return{
+export const getLeaveTypes = (params) => {
+  return {
     type: FETCH_LEAVE_TYPES,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const getLeaveTypesSuccess = (response) => {
   return {
@@ -690,13 +674,12 @@ export const getLeaveTypesFailure = (error) => {
  * apply leave
  */
 
- export const applyLeave=(params)=>{
-  return{
+export const applyLeave = (params) => {
+  return {
     type: APPLY_LEAVE,
-    payload: params
-  }
-}
-
+    payload: params,
+  };
+};
 
 export const applyLeaveSuccess = (response) => {
   return {
@@ -712,95 +695,23 @@ export const applyLeaveFailure = (error) => {
   };
 };
 
-/**
- * leave request -- Pending
- */
+///Apply Leave From Date
 
- export const getPendingLeaveDetails = (params) => {
+export const getLeaveFromDate = (params) => {
   return {
-    type: PENDING_LEAVE,
+    type: ADD_LEAVE_FROM_DATE,
     payload: params,
   };
 };
 
-export const getPendingLeaveDetailsSuccess = (response) => {
-  return {
-    type: PENDING_LEAVE_SUCCESS,
-    payload: response,
-  };
-};
-export const getPendingLeaveDetailsFailure = (error) => {
-  return {
-    type: PENDING_LEAVE_FAILURE,
-    payload: error,
-  };
-};
-
-/**
- * leave request --Mark-As-Present
- */
-
- export const getMarkAsPresentDetails = (error) => {
-  return {
-    type: FETCH_MARK_AS_PRESENT,
-    payload: error,
-  };
-};
-
-export const getMarkAsPresentDetailsSuccess = (response) => {
-  return {
-    type: FETCH_MARK_AS_PRESENT_SUCCESS,
-    payload: response,
-  };
-};
-export const getMarkAsPresentDetailsFailure = (error) => {
-  return {
-    type: FETCH_MARK_AS_PRESENT_FAILURE,
-    payload: error,
-  };
-};
-
-/**
- * approved leaves
- */
-
-
- export const getApprovedLeaves = (error) => {
-  return {
-    type: FETCH_APPROVED_DETAILS,
-    payload: error,
-  };
-};
-
-export const getApprovedLeavesSuccess = (response) => {
-  return {
-    type: FETCH_APPROVED_DETAILS_SUCCESS,
-    payload: response,
-  };
-};
-export const getApprovedLeavesFailure = (error) => {
-  return {
-    type: FETCH_APPROVED_DETAILS_FAILURE,
-    payload: error,
-  };
-};
-///Apply Leave From Date
-
-export const getLeaveFromDate=(params)=>{
-  return{
-    type: ADD_LEAVE_FROM_DATE,
-    payload:params
-  }
-}
-
 //fetch calendar events
 
-export const fetchCalendardetails=(params)=>{
-  return{
+export const fetchCalendardetails = (params) => {
+  return {
     type: FETCH_CALENDAR_DETAILS,
-    payload:params
-  }
-}
+    payload: params,
+  };
+};
 
 export const fetchCalendardetailsSuccess = (response) => {
   return {
@@ -812,6 +723,129 @@ export const fetchCalendardetailsSuccess = (response) => {
 export const fetchCalendardetailsFailure = (error) => {
   return {
     type: FETCH_CALENDAR_DETAILS_FAILURE,
+    payload: error,
+  };
+};
+
+//change leave status
+
+export const changeEmployeeLeaveStatus = (params) => {
+  return {
+    type: CHANGE_EMPLOYEE_LEAVE_STATUS,
+    payload: params,
+  };
+};
+
+export const changeEmployeeLeaveStatusSuccess = (response) => {
+  return {
+    type: CHANGE_EMPLOYEE_LEAVE_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const changeEmployeeLeaveStatusFailure = (error) => {
+  return {
+    type: CHANGE_EMPLOYEE_LEAVE_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ *
+ * ADD holidays
+ */
+export const addHoliday = (params) => {
+  return {
+    type: ADD_HOLIDAY,
+    payload: params,
+  };
+};
+
+export const addHolidaySuccess = (response) => {
+  return {
+    type: ADD_HOLIDAY_SUCCESS,
+    payload: response,
+  };
+};
+
+export const addHolidayFailure = (error) => {
+  return {
+    type: ADD_HOLIDAY_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * Delete Holidays
+ */
+
+export const deleteHoliday = (params) => {
+  return {
+    type: DELETE_HOLIDAY,
+    payload: params,
+  };
+};
+
+export const deleteHolidaySuccess = (response) => {
+  return {
+    type: DELETE_HOLIDAY_SUCCESS,
+    payload: response,
+  };
+};
+
+export const deleteHolidayFailure = (error) => {
+  return {
+    type: DELETE_HOLIDAY_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * my-portfolio leaves
+ */
+
+export const getLeavesByTypes = (params) => {
+  return {
+    type: GET_LEAVES_BY_TYPES,
+    payload: params,
+  };
+};
+
+export const getLeavesByTypesSuccess = (response) => {
+  return {
+    type: GET_LEAVES_BY_TYPES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getLeavesByTypesFailure = (error) => {
+  return {
+    type: GET_LEAVES_BY_TYPES_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * get employees leaves
+ */
+
+export const getEmployeeLeaves = (params) => {
+  return {
+    type: GET_EMPLOYEES_LEAVES,
+    payload: params,
+  };
+};
+
+export const getEmployeeLeavesSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEES_LEAVE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeLeavesFailure = (error) => {
+  return {
+    type: GET_EMPLOYEES_LEAVES_FAILURE,
     payload: error,
   };
 };

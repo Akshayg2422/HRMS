@@ -74,16 +74,26 @@ import {
   APPLY_LEAVE,
   APPLY_LEAVE_SUCCESS,
   APPLY_LEAVE_FAILURE,
-  PENDING_LEAVE,
-  PENDING_LEAVE_SUCCESS,
-  PENDING_LEAVE_FAILURE,
-  FETCH_APPROVED_DETAILS,
-  FETCH_APPROVED_DETAILS_SUCCESS,
-  FETCH_APPROVED_DETAILS_FAILURE,
   ADD_LEAVE_FROM_DATE,
   FETCH_CALENDAR_DETAILS,
   FETCH_CALENDAR_DETAILS_SUCCESS,
   FETCH_CALENDAR_DETAILS_FAILURE,
+  CHANGE_EMPLOYEE_LEAVE_STATUS,
+  CHANGE_EMPLOYEE_LEAVE_STATUS_SUCCESS,
+  CHANGE_EMPLOYEE_LEAVE_STATUS_FAILURE,
+  ADD_HOLIDAY,
+  ADD_HOLIDAY_SUCCESS,
+  ADD_HOLIDAY_FAILURE,
+  SELECTED_EVENT_ID,
+  DELETE_HOLIDAY,
+  DELETE_HOLIDAY_SUCCESS,
+  DELETE_HOLIDAY_FAILURE,
+  GET_LEAVES_BY_TYPES,
+  GET_LEAVES_BY_TYPES_SUCCESS,
+  GET_LEAVES_BY_TYPES_FAILURE,
+  GET_EMPLOYEES_LEAVES,
+  GET_EMPLOYEES_LEAVE_SUCCESS,
+  GET_EMPLOYEES_LEAVES_FAILURE,
 } from "./actionTypes";
 
 const initialState = {
@@ -113,12 +123,11 @@ const initialState = {
   selectedEmployeeId: "",
   employeeAttendanceStats: [],
   downloadContent: "",
-  leaveRequestPending: "",
-  leaveRequestMarkAsPresent: "",
-  approvedLeaves: "",
-  rejectedLeaves: "",
   leaveFromDate: "",
   calendarEvents: "",
+  selectedEventId: undefined,
+  myLeaves: "",
+  employeesLeaves: "",
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -696,23 +705,22 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-    //pending leaves
+    //change employee status
 
-    case PENDING_LEAVE:
+    case CHANGE_EMPLOYEE_LEAVE_STATUS:
       state = {
         ...state,
         loading: true,
       };
       break;
-    case PENDING_LEAVE_SUCCESS:
+    case CHANGE_EMPLOYEE_LEAVE_STATUS_SUCCESS:
       state = {
         ...state,
         loading: false,
-        leaveRequestPending: action.payload,
       };
       break;
 
-    case PENDING_LEAVE_FAILURE:
+    case CHANGE_EMPLOYEE_LEAVE_STATUS_FAILURE:
       state = {
         ...state,
         error: action.payload,
@@ -720,23 +728,23 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-    //approved leaves
-
-    case FETCH_APPROVED_DETAILS:
+    /**
+     * Add holiday events
+     */
+    case ADD_HOLIDAY:
       state = {
         ...state,
         loading: true,
       };
       break;
-    case FETCH_APPROVED_DETAILS_SUCCESS:
+    case ADD_HOLIDAY_SUCCESS:
       state = {
         ...state,
         loading: false,
-        approvedLeaves: action.payload,
       };
       break;
 
-    case FETCH_APPROVED_DETAILS_FAILURE:
+    case ADD_HOLIDAY_FAILURE:
       state = {
         ...state,
         error: action.payload,
@@ -744,6 +752,98 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
+    /**
+     * selected Event data
+     */
+    case SELECTED_EVENT_ID:
+      state = {
+        ...state,
+        selectedEventId: action.payload,
+      };
+      break;
+
+    /**
+     * Delete holiday
+     */
+
+    case DELETE_HOLIDAY:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case DELETE_HOLIDAY_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case DELETE_HOLIDAY_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * my-Portfolio leaves
+     */
+
+    case GET_LEAVES_BY_TYPES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_LEAVES_BY_TYPES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        myLeaves: action.payload,
+      };
+      break;
+
+    case GET_LEAVES_BY_TYPES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+        myLeaves:""
+      };
+      break;
+
+    /**
+     * Employee Leaves
+     */
+
+    case GET_EMPLOYEES_LEAVES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_EMPLOYEES_LEAVE_SUCCESS:
+
+      state = {
+        ...state,
+        loading: false,
+        employeesLeaves: action.payload,
+      };
+      break;
+
+    case GET_EMPLOYEES_LEAVES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * Default
+     */
     default:
       state = state;
       break;

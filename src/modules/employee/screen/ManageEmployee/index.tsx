@@ -332,7 +332,6 @@ const ManageEmployee = () => {
           editEmployeeDetails.attendance_settings?.end_time;
     }
 
-    console.log(JSON.stringify(employeeInitData));
 
     setEmployeeDetails(employeeInitData);
   };

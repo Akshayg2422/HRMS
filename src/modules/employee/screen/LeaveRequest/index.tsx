@@ -5,15 +5,12 @@ import {
   Container,
   NoRecordFound,
 } from "@components";
-import {
-  getApprovedLeaves,
-  getPendingLeaveDetails,
-} from "../../../../store/employee/actions";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Pending, Approved, Rejected } from "./Container";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import { Pending, Approved, Rejected, AllLeaves } from "./Container";
+import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { getEmployeeLeaves, getEmployeeLeavesSuccess } from "../../../../store/employee/actions";
 
 const LeaveRequest = () => {
   const { t } = useTranslation();
@@ -23,28 +20,24 @@ const LeaveRequest = () => {
     (state: any) => state.DashboardReducer
   );
 
-  const { leaveRequestPending, numOfPages, currentPage } = useSelector(
-    (state: any) => state.EmployeeReducer
-  );
+  const { currentPage } = useSelector((state: any) => state.EmployeeReducer);
 
   useEffect(() => {
-    fetchPendingDetail(currentPage);
+    fetchPendingDetail(currentPage, -2);
   }, [hierarchicalBranchIds]);
 
-  const fetchPendingDetail = (pageNumber: number) => {
+  const fetchPendingDetail = (pageNumber: number, statusId: number) => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
+      status: statusId,
     };
-    dispatch(getPendingLeaveDetails({ params }));
-  };
-
-  const fetchApprovedLeaves = (pageNumber: number) => {
-    const params = {
-      ...hierarchicalBranchIds,
-      page_number: pageNumber,
-    };
-    dispatch(getApprovedLeaves({ params }));
+    dispatch(getEmployeeLeaves({  params,
+      onSuccess: (success: object) => {
+      },
+      onError: (error: string) => {
+      },
+    }));
   };
 
   return (
@@ -68,9 +61,9 @@ const LeaveRequest = () => {
                 role="tab"
                 aria-controls="tabs-icons-text-1"
                 aria-selected="true"
-                onClick={() => fetchPendingDetail(currentPage)}
+                onClick={() => fetchPendingDetail(currentPage, -2)}
               >
-                {t("pending")}
+                {t("all")}
               </a>
             </li>
             <li className="nav-item">
@@ -82,8 +75,9 @@ const LeaveRequest = () => {
                 role="tab"
                 aria-controls="tabs-icons-text-2"
                 aria-selected="true"
+                onClick={() => fetchPendingDetail(currentPage, -1)}
               >
-                {t("markAsPresent")}
+                {t("pending")}
               </a>
             </li>
             <li className="nav-item">
@@ -94,10 +88,9 @@ const LeaveRequest = () => {
                 href="#tabs-icons-text-3"
                 role="tab"
                 aria-controls="tabs-icons-text-3"
-                aria-selected="false"
-                onClick={() => fetchApprovedLeaves(currentPage)}
+                aria-selected="true"
               >
-                {t("approved")}
+                {t("markAsPresent")}
               </a>
             </li>
             <li className="nav-item">
@@ -109,6 +102,21 @@ const LeaveRequest = () => {
                 role="tab"
                 aria-controls="tabs-icons-text-4"
                 aria-selected="false"
+                onClick={() => fetchPendingDetail(currentPage, 1)}
+              >
+                {t("approved")}
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link mb-sm-3 mb-md-0"
+                id="tabs-icons-text-5-tab"
+                data-toggle="tab"
+                href="#tabs-icons-text-5"
+                role="tab"
+                aria-controls="tabs-icons-text-5"
+                aria-selected="false"
+                onClick={() => fetchPendingDetail(currentPage, 0)}
               >
                 {t("rejected")}
               </a>
@@ -116,6 +124,7 @@ const LeaveRequest = () => {
           </ul>
         </div>
       </Card>
+
       {/* <Card> */}
       <div className="tab-content" id="myTabContent">
         <div
@@ -124,17 +133,15 @@ const LeaveRequest = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-1-tab"
         >
-          <Pending />
+          <AllLeaves/>
         </div>
-        <div
-          className="tab-pane fade"
+          <div
+          className="tab-pane fade show"
           id="tabs-icons-text-2"
           role="tabpanel"
           aria-labelledby="tabs-icons-text-2-tab"
         >
-          <div className="row">
-            <NoRecordFound />
-          </div>
+          <Pending />
         </div>
         <div
           className="tab-pane fade"
@@ -142,13 +149,23 @@ const LeaveRequest = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-3-tab"
         >
-          <Approved />
+          <div className="row">
+            <NoRecordFound />
+          </div>
         </div>
         <div
           className="tab-pane fade"
           id="tabs-icons-text-4"
           role="tabpanel"
           aria-labelledby="tabs-icons-text-4-tab"
+        >
+          <Approved />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-icons-text-5"
+          role="tabpanel"
+          aria-labelledby="tabs-icons-text-5-tab"
         >
           <Rejected />
         </div>

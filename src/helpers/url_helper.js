@@ -57,7 +57,13 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
 
 
 
-  export const FETCH_EMPLOYEE_PENDING_LEAVES = '/attendance/getEmployeesPendingLeaves';
   export const POST_CHANGE_EMPLOYEE_LEAVE_STATUS = '/attendance/changeEmployeeLeaveStatus';
-  export const FETCH_EMPLOYEE_APPROVED_LEAVES = '/attendance/getEmployeesApprovedLeaves';
-  export const FETCH_EMPLOYEE_REJECTED_LEAVES = '/attendance/getEmployeesRejectedLeaves';
+
+  export const FETCH_EMPLOYEES_LEAVES='/attendance/getEmployeesLeaves'
+
+  export const FETCH_MY_LEAVES="/attendance/getEmployeeLeaves"
+
+  export const POST_EMPLOYEES_HOLIDAYS='/attendance/addHoliday'
+
+  export const POST_DELETE_HOLIDAYS='/attendance/deleteHoliday'
+  

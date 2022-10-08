@@ -12,18 +12,6 @@ type NavItemProps = {
   icon: any;
 };
 
-// const NavItem = ({ item,index }: any) => {
-
-//   return (
-//     <li className="nav-item" onClick={() => navigate(item.route)}>
-//       <a className={`nav-link ${index}`}>
-//         <i className={`${item.icon} text-white`}></i>
-//         <span className="nav-link-text text-white mt-2 ml-2">{item.name}</span>
-//       </a>
-//     </li>
-//   );
-// };
-
 const Navbar = ({}) => {
   const navigate = useNav();
   const dispatch = useDispatch();
@@ -101,7 +89,7 @@ const Navbar = ({}) => {
 
       <small
         className={
-          "position-absolute bottom-0 p-2 text-white text-version text-right"
+          "position-absolute  bottom-0 p-2 text-white text-version text-right"
         }
       >
         Version: 0.3.2

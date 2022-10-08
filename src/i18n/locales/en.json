@@ -4,6 +4,7 @@
   "registerCompany": "Register a new company",
   "admin": "Admin",
   "employee":"Employee",
+  "all":"All",
 
 
   "mobileNumber": "Mobile Number",
@@ -72,7 +73,7 @@
   "invalidBranch": "Invalid Branch",
   "invalidEmail": "Invalid Email",
   "invalidUser":"Invalid User",
-  "somethingWrong":"Something wrong",
+  "somethingWrong":"Something went wrong",
 
   
 
@@ -136,12 +137,32 @@
 "leaveType":"Leave Type",
 "dataFrom":"Date From",
 "dataTo":"Date To",
+"date":"Date",
 "reason":"Reason",
 "leaveRequest":"Leave Request",
 "pending":"Pending",
 "approved":"Approved",
 "rejected":"Rejected",
 "markAsPresent":"Mark As Present",
+"addHoildays":"Add Holidays",
+"editHoliday":"Edit Holiday",
+"deleteHoliday":"Delete Holiday",
+"description":"Description",
+"descriptionrequired":"Description Required",
+"eventTitle":"Event Title",
+"titlerequired":"Title Required",
+"approveWarningMessage":"Please click on Proceed to Approve Leave",
+"eventDeleteWarningMessage":"Please click on Proceed to Delete Holiday",
+"holidayList":"Holiday List",
+"update":"Update",
+"Calendar":"Calendar",
+"leaveList":"Leave List",
+
+
+
+
+
+
 
 
 
@@ -338,7 +359,6 @@
   "done": "Done",
   "success": "Success",
   "getLocationAgain": "Get location again",
-  "description": "description",
   "office": "Office",
   "myCurrentLocation": "My Current Location",
   "welcomeToZenylog":"Welcome to zenylog",

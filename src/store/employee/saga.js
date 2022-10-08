@@ -23,8 +23,11 @@ import {
   FETCH_LEAVE_TYPES,
   APPLY_LEAVE,
   FETCH_CALENDAR_DETAILS,
-  PENDING_LEAVE,
-  FETCH_APPROVED_DETAILS
+  CHANGE_EMPLOYEE_LEAVE_STATUS,
+  ADD_HOLIDAY,
+  DELETE_HOLIDAY,
+  GET_EMPLOYEES_LEAVES,
+  GET_LEAVES_BY_TYPES,
 } from "./actionTypes";
 
 import {
@@ -70,12 +73,21 @@ import {
   getLeaveTypesFailure,
   applyLeaveSuccess,
   applyLeaveFailure,
-  getPendingLeaveDetailsSuccess,
-  getPendingLeaveDetailsFailure,
-  getApprovedLeavesSuccess,
-  getApprovedLeavesFailure,
   fetchCalendardetailsSuccess,
   fetchCalendardetailsFailure,
+  changeEmployeeLeaveStatusSuccess,
+  changeEmployeeLeaveStatusFailure,
+  addHolidaySuccess,
+  addHolidayFailure,
+  deleteHoliday,
+  deleteHolidaySuccess,
+  deleteHolidayFailure,
+  getLeavesByTypes,
+  getLeavesByTypesSuccess,
+  getLeavesByTypesFailure,
+  getEmployeeLeaves,
+  getEmployeeLeavesSuccess,
+  getEmployeeLeavesFailure,
 } from "./actions";
 
 import {
@@ -100,11 +112,12 @@ import {
   postUpdateEmployeeStatus,
   fetchLeaveTypes,
   postApplyLeave,
-  fetchEmployeePendingLeaves,
   postChangeEmployeeLeaveStatus,
-  fetchEmployeeApprovedLeaves,
-  fetchEmployeeRejectedLeaves,
   fetchCalendarDetails,
+  postAddHolidays,
+  postDeleteHolidays,
+  fetchEmployeesleaves,
+  fetchMyleaves,
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -559,57 +572,9 @@ function* applyLeave(action) {
       yield call(action.payload.onError);
     }
   } catch (error) {
-    console.log("error-->",error);
+    console.log("error-->", error);
     yield put(hideLoader());
     yield put(applyLeaveFailure("Invalid Request"));
-  }
-}
-
-function* getEmployeePendingLeaves(action) {
-  try {
-    yield put(showLoader());
-
-    const response = yield call(
-      fetchEmployeePendingLeaves,
-      action.payload.params
-    );
-
-    if (response.success) {
-      yield put(hideLoader());
-      yield put(getPendingLeaveDetailsSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(hideLoader());
-      yield put(getPendingLeaveDetailsFailure(response.error_message));
-      yield call(action.payload.onError);
-    }
-  } catch (error) {
-    yield put(hideLoader());
-    yield put(getPendingLeaveDetailsFailure("Invalid Request"));
-  }
-}
-
-function* getEmployeeApprovedLeaves(action) {
-  try {
-    yield put(showLoader());
-
-    const response = yield call(
-      fetchEmployeeApprovedLeaves,
-      action.payload.params
-    );
-
-    if (response.success) {
-      yield put(hideLoader());
-      yield put(getApprovedLeavesSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
-      yield put(hideLoader());
-      yield put(getApprovedLeavesFailure(response.error_message));
-      yield call(action.payload.onError);
-    }
-  } catch (error) {
-    yield put(hideLoader());
-    yield put(getApprovedLeavesFailure("Invalid Request"));
   }
 }
 
@@ -630,6 +595,124 @@ function* FetchCalendardetails(action) {
     yield put(fetchCalendardetailsFailure("Invalid Request"));
   }
 }
+
+function* changeSelectedEmployeeLeaveStatus(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(
+      postChangeEmployeeLeaveStatus,
+      action.payload.params
+    );
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(changeEmployeeLeaveStatusSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(changeEmployeeLeaveStatusFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(changeEmployeeLeaveStatusFailure("Invalid Request"));
+    yield call(action.payload.onError);
+  }
+}
+
+/**
+ *
+ *Add Holidays
+ */
+function* addHolidayEvents(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(postAddHolidays, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(addHolidaySuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(addHolidayFailure(response.error_message));
+      yield call(action.payload.onError);
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(addHolidayFailure("Invalid Request"));
+  }
+}
+
+/**
+ * Delete Holidays
+ */
+function* deleteHolidayEvents(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(postDeleteHolidays, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(deleteHolidaySuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(deleteHolidayFailure(response.error_message));
+      yield call(action.payload.onError);
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(deleteHolidayFailure("Invalid Request"));
+  }
+}
+
+/**
+ * myPortfolio leaves
+ */
+
+function* FetchLeaveByTypes(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchMyleaves, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getLeavesByTypesSuccess(response.details));
+    } else {
+      yield put(hideLoader());
+      yield put(getLeavesByTypesFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getLeavesByTypesFailure("Invalid Request"));
+  }
+}
+
+/**
+ * employees Leaves
+ */
+
+function* FetchEmployeesLeaves(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchEmployeesleaves, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getEmployeeLeavesSuccess(response.details.data));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError);
+      yield put(getEmployeeLeavesFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeLeavesFailure("Invalid Request"));
+  }
+}
+
+// ****** //
 
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
@@ -662,8 +745,6 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_DOWNLOAD_TODAY_STATUS, getDownloadTodayStatus);
   yield takeLatest(FETCH_LEAVE_TYPES, getLeaveTypes);
   yield takeLatest(APPLY_LEAVE, applyLeave);
-  yield takeLatest(PENDING_LEAVE, getEmployeePendingLeaves);
-  yield takeLatest(FETCH_APPROVED_DETAILS, getEmployeeApprovedLeaves);
   yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_STATS, getEmployeeAttendanceStats);
   yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS, getEmployeeTodayStatus);
   yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG, getCheckInDetailedLog);
@@ -676,6 +757,14 @@ function* EmployeeSaga() {
   yield takeLatest(FETCH_LEAVE_TYPES, getLeaveTypes);
   yield takeLatest(APPLY_LEAVE, applyLeave);
   yield takeLatest(FETCH_CALENDAR_DETAILS, FetchCalendardetails);
+  yield takeLatest(
+    CHANGE_EMPLOYEE_LEAVE_STATUS,
+    changeSelectedEmployeeLeaveStatus
+  );
+  yield takeLatest(ADD_HOLIDAY, addHolidayEvents);
+  yield takeLatest(DELETE_HOLIDAY, deleteHolidayEvents);
+  yield takeLatest(GET_EMPLOYEES_LEAVES, FetchEmployeesLeaves);
+  yield takeLatest(GET_LEAVES_BY_TYPES, FetchLeaveByTypes);
 }
 
 export default EmployeeSaga;

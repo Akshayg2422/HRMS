@@ -26,6 +26,11 @@ export const ROUTE = {
   ROUTE_INACTIVE_EMPLOYEE_LIST:'/inactive-employee-list',
   ROUTE_APPLY_LEAVE:'/apply-leave',
   ROUTE_LEAVE_REQUEST:'/leave-request',
+  ROUTE_MANAGE_HOLIDAYS:'/manage-holidays',
+  ROUTE_MANAGE_LEAVES:'/manage-leaves',
+  ROUTE_MY_WORK_BOOK:'/my-work-book',
+  ROUTE_MY_LOG:'/my-log',
+  ROUTE_MY_LEAVES:'/my-leaves',
 
 
 }
@@ -42,6 +47,17 @@ export const EMPLOYEE_TYPE = [
   {id: 'OutSourced', name: 'OutSourced', value: 'OutSourced'},
   {id: 'Guest', name: 'Guest', value: 'Guest'},
 ];
+
+export const LEAVES_TYPE = [
+  {id: 'All', name: 'All', value: 'All'},
+  {id: 'Pending Leave', name: 'Pending Leave', value: 'Pending Leave'},
+  {id: 'Approved Leave', name: 'Approved Leave', value: 'Approved Leave'},
+  {id: 'Rejected Leave', name: 'Rejected Leave', value: 'Rejected Leave'},
+
+
+];
+
+
 
 export const BLOOD_GROUP_LIST = [
   {id: 'A+ve', name: 'A+ve', value: 'A+ve'},
@@ -65,12 +81,20 @@ export const NAV_ITEM = [
   {id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_EMPLOYEE_LOG},
   {id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK},
   {id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', route: ROUTE.ROUTE_DASHBOARD_STATS},
-  {id: '9', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
-  {id: '10', name: 'Calendar', value: 'CA', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
+  {id: '9', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
+  {id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', route: ROUTE.ROUTE_LEAVE_REQUEST},
+  {id: '11', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
+
 
 
 ];
 
+
+export const MY_PORTFOLIO_ITEM=[
+  {id: '1', name: 'MY Work Book', value: 'MB', route: ROUTE.ROUTE_MY_WORK_BOOK},
+  {id: '2', name: 'MY Log', value: 'ML', route: ROUTE.ROUTE_MY_LOG},
+  {id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES}
+]
 
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
@@ -129,6 +153,15 @@ export const LEAVE_STATUS_UPDATE = [
     elh: 'Reject',
   }
 
+]
+
+
+export const LEAVE_STATUS_REVERT=[
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Revert',
+    elh: 'Revert',
+  }
 ]
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
