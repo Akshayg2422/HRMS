@@ -4,6 +4,7 @@ import {
   CommonTable,
   Container,
   NoRecordFound,
+  WorkInProgress,
 } from "@components";
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -150,7 +151,7 @@ const LeaveRequest = () => {
           aria-labelledby="tabs-icons-text-3-tab"
         >
           <div className="row">
-            <NoRecordFound />
+           <WorkInProgress/>
           </div>
         </div>
         <div

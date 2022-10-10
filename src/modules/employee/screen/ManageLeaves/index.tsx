@@ -10,6 +10,7 @@ import {
   ChooseBranchFromHierarchical,
   CommonTable,
   Secondary,
+  NoRecordFound,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -78,7 +79,7 @@ function ManageLeaves() {
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
-        color: "red",
+        color: item.status_code === 1 ? "green" : item.status_code=== 0 ? "red":"gray"
       });
     });
 
@@ -100,6 +101,8 @@ function ManageLeaves() {
     });
   };
 
+console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave)
+
   return (
     <>
       <Container additionClass={"mt-5 main-contain"}>
@@ -108,7 +111,7 @@ function ManageLeaves() {
         </Card>
         <h1>{t("holidayList")}</h1>
         <Card>
-          {daysHoliday && daysHoliday.length > 0 && (
+          {daysHoliday && daysHoliday.length > 0 ? (
             <CommonTable
               noHeader
               isPagination
@@ -123,7 +126,7 @@ function ManageLeaves() {
                 calendarEvents?.days_holiday
               )}
             />
-          )}
+          ):<NoRecordFound/>}
         </Card>
       </Container>
     </>

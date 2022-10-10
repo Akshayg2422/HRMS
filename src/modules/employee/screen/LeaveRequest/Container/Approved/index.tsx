@@ -1,16 +1,19 @@
-import { CommonTable, NoRecordFound } from "@components";
+import { CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from "@components";
 import {
-  changeEmployeeLeaveStatus, getEmployeeLeaves, getEmployeeLeavesSuccess,
+  changeEmployeeLeaveStatus, getEmployeeLeaves, getEmployeeLeavesSuccess, getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE } from "@utils";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
 const Approved = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
-  const {  numOfPages, currentPage,employeesLeaves } = useSelector(
+  const [revertModel, setRevertModel] = useState(false);
+
+
+  const {  numOfPages, currentPage,employeesLeaves,selectedEventId } = useSelector(
     (state: any) => state.EmployeeReducer
   );
   const { hierarchicalBranchIds } = useSelector(
@@ -31,7 +34,6 @@ const Approved = () => {
         onSuccess: (success: object) => {
         },
         onError: (error: string) => {
-          dispatch(getEmployeeLeavesSuccess(''))  
         },
       }));
   };
@@ -50,7 +52,7 @@ const Approved = () => {
   }
 
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any) => {
+    return data && data.length>0 && data.map((el: any) => {
       return {
         name: el.name,
         "Date From": el.date_from,
@@ -61,19 +63,24 @@ const Approved = () => {
     });
   };
 
-  const manageRevertHandler = (el: string) => {
+  const RevertStatusHandler=(item:object)=>{
+    dispatch(getSelectedEventId(item));
+    setRevertModel(!revertModel)
+  }
+
+  const manageRevertHandler = () => {
     const params = {
-      id: el,
+      id: selectedEventId.id,
       status: -1,
     };
     dispatch(
       changeEmployeeLeaveStatus({
         params,
         onSuccess: (success: object) => {
+          setRevertModel(!revertModel)
           fetchApprovedLeaves(currentPage);
         },
         onError: (error: string) => {
-          // dispatch(getEmployeeLeavesSuccess(''))  
         },
       })
     );
@@ -97,7 +104,7 @@ const Approved = () => {
             tableValueOnClick={(e, index, item, elv) => {
               const current = employeesLeaves[index];
               if (elv === "Revert") {
-                manageRevertHandler(current.id);
+                RevertStatusHandler(current);
               }
             }}
             custombutton={'h5'}
@@ -105,6 +112,37 @@ const Approved = () => {
         ) : (
           <NoRecordFound />
         )}
+         <Modal
+          title={t("revertStatus")}
+          showModel={revertModel}
+          toggle={() => setRevertModel(!revertModel)}
+        >
+          <Container>
+            <span className="h4 ml-xl-4">{t("revertWarningMessage")}</span>
+            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
+              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
+              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
+              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
+              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
+              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
+
+            </Container>
+            <Container
+              margin={"mt-5"}
+              additionClass={'text-right'}
+            >
+              <Secondary
+                text={t("cancel")}
+                onClick={() =>setRevertModel(!revertModel)}
+              />
+              <Primary
+                text={t("confirm")}
+                onClick={() =>  manageRevertHandler()
+                }
+              />
+            </Container>
+          </Container>
+        </Modal>
       </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Card, CommonTable, Container, Modal, Primary, Secondary } from "@components";
+import { Card, CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from "@components";
 import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
@@ -56,7 +56,7 @@ const Pending = () => {
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any) => {
+    return data && data.length>0 && data.map((el: any) => {
       return {
         name: el.name,
         "Date From": el.date_from,
@@ -67,19 +67,19 @@ const Pending = () => {
     });
   };
 
-  const manageApproveStatus = (id: string) => {
-    dispatch(getSelectedEventId(id));
+  const manageApproveStatus = (item: object) => {
+    dispatch(getSelectedEventId(item));
     setApproveModel(!approveModel);
   };
 
-  const manageRejectStatus = (id: string) => {
-    dispatch(getSelectedEventId(id));
-    manageStatusHandler(0);
+  const manageRejectStatus = (item: object) => {
+    dispatch(getSelectedEventId(item));
+    setRejectModel(!rejectModel)
   };
 
   const manageStatusHandler = (el: number) => {
     const params = {
-      id: selectedEventId,
+      id: selectedEventId.id,
       status: el,
     };
     dispatch(
@@ -88,6 +88,9 @@ const Pending = () => {
         onSuccess: (success: object) => {
           if (el ===1) {
             setApproveModel(!approveModel);
+          }
+          if (el ===0) {
+            setRejectModel(!rejectModel)
           }
           fetchPendingDetail(currentPage);
         },
@@ -100,7 +103,7 @@ const Pending = () => {
   return (
     <div>
       <div className="row">
-        {employeesLeaves && employeesLeaves.length > 0 && (
+        {employeesLeaves && employeesLeaves.length > 0 ? (
           <CommonTable
             noHeader
             isPagination
@@ -116,34 +119,72 @@ const Pending = () => {
             tableValueOnClick={(e, index, item, elv) => {
               const current = employeesLeaves[index];
               if (elv === "Approve") {
-                manageApproveStatus(current.id);
+                manageApproveStatus(current);
               }
               if (elv === "Reject") {
-                manageRejectStatus(current.id);
+                manageRejectStatus(current);
               }
             }}
             custombutton={'h5'}
           />
-        )}
+        ):<NoRecordFound/>}
         <Modal
-          title={t("deleteUser")}
+          title={t("approveLeave")}
           showModel={approveModel}
           toggle={() => setApproveModel(!approveModel)}
         >
           <Container>
-            <span className="ml-3">{t("approveWarningMessage")}</span>
+            <span className="h4 ml-xl-4">{t("approveWarningMessage")}</span>
+            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
+              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
+              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
+              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
+              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
+              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
+
+            </Container>
             <Container
-              margin={"m-5"}
-              justifyContent={"justify-content-end"}
-              display={"d-flex"}
+              margin={"mt-5"}
+              additionClass={'text-right'}
             >
               <Secondary
                 text={t("cancel")}
                 onClick={() => setApproveModel(!approveModel)}
               />
               <Primary
-                text={t("proceed")}
+                text={t("approve")}
                 onClick={() => manageStatusHandler(1)}
+              />
+            </Container>
+          </Container>
+        </Modal>
+        <Modal
+          title={t("rejectLeave")}
+          showModel={rejectModel}
+          toggle={() => setRejectModel(!rejectModel)}
+        >
+          <Container>
+            <span className="h4 ml-xl-4">{t("rejectWarningMessage")}</span>
+            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
+              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
+              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
+              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
+              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
+              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
+
+            </Container>
+            <Container
+              margin={"mt-5"}
+              additionClass={'text-right'}
+            >
+              <Secondary
+                text={t("cancel")}
+                onClick={() =>setRejectModel(!rejectModel)}
+              />
+              <Primary
+                text={t("reject")}
+                onClick={() =>  manageStatusHandler(0)
+                }
               />
             </Container>
           </Container>

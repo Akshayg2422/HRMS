@@ -5,6 +5,7 @@
   "admin": "Admin",
   "employee":"Employee",
   "all":"All",
+  "confirm":"Confirm",
 
 
   "mobileNumber": "Mobile Number",
@@ -144,19 +145,27 @@
 "approved":"Approved",
 "rejected":"Rejected",
 "markAsPresent":"Mark As Present",
-"addHoildays":"Add Holidays",
+"addHoildays":"Add Holiday",
 "editHoliday":"Edit Holiday",
 "deleteHoliday":"Delete Holiday",
 "description":"Description",
 "descriptionrequired":"Description Required",
 "eventTitle":"Event Title",
 "titlerequired":"Title Required",
-"approveWarningMessage":"Please click on Proceed to Approve Leave",
+"approveWarningMessage":"Please click on Approve to Approve Leave",
+"rejectWarningMessage":"Please click on Reject to Reject Leave",
+"revertWarningMessage":"Are You Sure . Do You Want To Revert The Leave Status",
 "eventDeleteWarningMessage":"Please click on Proceed to Delete Holiday",
 "holidayList":"Holiday List",
 "update":"Update",
 "Calendar":"Calendar",
 "leaveList":"Leave List",
+"apply":"Apply",
+"approveLeave":"Approve Leave",
+"rejectLeave":"Reject Leave",
+"approve":"Approve",
+"reject":"Reject",
+"revertStatus":"Revert Status",
 
 
 

@@ -11,6 +11,7 @@ import {
   CommonTable,
   Secondary,
   DropDown,
+  NoRecordFound,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -121,7 +122,7 @@ function MyLeaves() {
         </Card>
         <h1>{t("leaveList")}</h1>
         <Card>
-          {myLeaves && myLeaves?.data.length > 0 && (
+          {myLeaves && myLeaves?.data.length > 0 ? (
             <CommonTable
               noHeader
               isPagination
@@ -134,7 +135,7 @@ function MyLeaves() {
               nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployeeLog(myLeaves?.data)}
             />
-          )}
+          ):<NoRecordFound/>}
         </Card>
       </Container>
     </>

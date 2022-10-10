@@ -36,6 +36,18 @@ const ApplyLeave = () => {
     fetchLeaveTypes();
   }, []);
 
+  useEffect(() => {
+    const toSeverDate = new Date(
+      getServerDateFromMoment(getMomentObjFromServer(fromDetails.dataTo))
+    ).getTime();
+    const fromServerDate = new Date(
+      getServerDateFromMoment(getMomentObjFromServer(fromDetails.dateFrom))
+    ).getTime();
+    if (toSeverDate < fromServerDate) {
+      setFormDetails({...fromDetails,dataTo:''});
+    }
+  }, [fromDetails.dateFrom, fromDetails.dataTo]);
+
   const FilterDropdown = (data: any) => {
     let arr: { id: string; name: string }[] = [];
     data.forEach((el: any) => {
@@ -70,9 +82,6 @@ const ApplyLeave = () => {
     setFormDetails({ ...fromDetails, [event.target.name]: event.target.value });
   };
 
-
-
-  
   const onSubmitHandler = () => {
     const params = {
       leave_type_id: fromDetails.leaveType,
@@ -100,7 +109,11 @@ const ApplyLeave = () => {
 
   return (
     <>
-      <FormWrapper title={t("applyLeave")} onClick={() => onSubmitHandler()}>
+      <FormWrapper
+        title={t("applyLeave")}
+        onClick={() => onSubmitHandler()}
+        buttonTittle={t("apply")}
+      >
         <DropDown
           placeholder={t("leaveType")}
           data={FilterDropdown(leaveTypes)}

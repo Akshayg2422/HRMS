@@ -10,6 +10,7 @@ import {
   ChooseBranchFromHierarchical,
   CommonTable,
   Secondary,
+  NoRecordFound,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -76,7 +77,7 @@ function Calendar() {
   };
 
   const geteventsdetails = (data: any) => {
-    return data.map((item: any) => {
+    return  data && data.length >0 && data.map((item: any) => {
       let filteredlist = {};
       filteredlist = {
         title: item.title,
@@ -192,7 +193,7 @@ function Calendar() {
         </Card>
         <h1>{t("holidayList")}</h1>
         <Card>
-          {calendarEvents && calendarEvents.days_holiday.length > 0 && (
+          {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
             <CommonTable
               noHeader
               isPagination
@@ -204,7 +205,7 @@ function Calendar() {
               previousClick={() => paginationHandler("prev")}
               nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployeeLog(
-                calendarEvents.days_holiday
+                calendarEvents?.days_holiday
               )}
               additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
               tableValueOnClick={(e, index, item, elv) => {
@@ -218,7 +219,7 @@ function Calendar() {
               }}
               custombutton={"h5"}
             />
-          )}
+          ) : <NoRecordFound/>}
         </Card>
         <Modal
           title={t("deleteHoliday")}

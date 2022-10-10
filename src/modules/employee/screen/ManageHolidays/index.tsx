@@ -103,7 +103,7 @@ const ManageHolidays = () => {
       <FormWrapper
         title={selectedEventId ? t("editHoliday") : t("addHoildays")}
         onClick={onSubmit}
-        buttonTittle={selectedEventId ? t("update") : t("submit")}
+        buttonTittle={selectedEventId ? t("update") : t("addHoildays")}
       >
         <ChooseBranchFromHierarchical showCheckBox={false} />
         <InputText
