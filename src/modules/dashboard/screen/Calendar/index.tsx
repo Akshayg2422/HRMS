@@ -43,7 +43,7 @@ function Calendar() {
 
   useEffect(() => {
     getCalendarDetails(currentPage);
-  }, []);
+  }, [hierarchicalBranchIds]);
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {

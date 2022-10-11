@@ -44,7 +44,7 @@ const ApplyLeave = () => {
       getServerDateFromMoment(getMomentObjFromServer(fromDetails.dateFrom))
     ).getTime();
     if (toSeverDate < fromServerDate) {
-      setFormDetails({...fromDetails,dataTo:''});
+      setFormDetails({ ...fromDetails, dataTo: "" });
     }
   }, [fromDetails.dateFrom, fromDetails.dataTo]);
 
@@ -68,7 +68,7 @@ const ApplyLeave = () => {
           setLeaveTypes(success.leave_types);
         },
         onError: (error: string) => {
-          showToast("error", t("somethingWrong"));
+          // showToast("error", t("somethingWrong"));
         },
       })
     );
@@ -82,36 +82,58 @@ const ApplyLeave = () => {
     setFormDetails({ ...fromDetails, [event.target.name]: event.target.value });
   };
 
-  const onSubmitHandler = () => {
-    const params = {
-      leave_type_id: fromDetails.leaveType,
-      date_from: getServerDateFromMoment(
-        getMomentObjFromServer(fromDetails.dateFrom)
-      ),
-      date_to: getServerDateFromMoment(
-        getMomentObjFromServer(fromDetails.dataTo)
-      ),
-      reason: fromDetails.reason,
-    };
+  const validateOnSubmit = () => {
+    if (!validateDefault(fromDetails.reason).status) {
+      showToast("error", t("invalidReason"));
+      return false;
+    }
+    if (fromDetails.dateFrom === "") {
+      showToast("error", t("invalidDate"));
+      return false;
+    }
+    if (fromDetails.dataTo === "") {
+      showToast("error", t("invalidDate"));
+      return false;
+    }
+    return true;
+  };
 
-    dispatch(
-      applyLeave({
-        params,
-        onSuccess: (response: object) => {
-          goTo(navigation, ROUTE.ROUTE_CALENDAR);
-        },
-        onError: (error: string) => {
-          showToast("error", t("somethingWrong"));
-        },
-      })
-    );
+ 
+  const onSubmitHandler = () => {
+    if (validateOnSubmit()) {
+      const params = {
+        leave_type_id: fromDetails.leaveType,
+        date_from: getServerDateFromMoment(
+          getMomentObjFromServer(fromDetails.dateFrom)
+        ),
+        date_to: getServerDateFromMoment(
+          getMomentObjFromServer(fromDetails.dataTo)
+        ),
+        reason: fromDetails.reason,
+      };
+
+      console.log(JSON.stringify(params));
+      
+      dispatch(
+        applyLeave({
+          params,
+          onSuccess: (response: object) => {
+            goTo(navigation, ROUTE.ROUTE_MY_LEAVES);
+          },
+          onError: (error: string) => {
+            // ClearStateData();
+            showToast("error", t("somethingWrong"));
+          },
+        })
+      );
+    } 
   };
 
   return (
     <>
       <FormWrapper
         title={t("applyLeave")}
-        onClick={() => onSubmitHandler()}
+        onClick={()=>{onSubmitHandler()}}
         buttonTittle={t("apply")}
       >
         <DropDown

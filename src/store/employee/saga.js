@@ -734,16 +734,6 @@ function* EmployeeSaga() {
   yield takeLatest(ADD_DEPARTMENT, addDepartment);
   yield takeLatest(ADD_DESIGNATION, addDesignation);
   yield takeLatest(ADD_FENCE_ADMIN, addFenceAdmin);
-  yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_STATS, getEmployeeAttendanceStats);
-  yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS, getEmployeeTodayStatus);
-  yield takeLatest(FETCH_CHECK_IN_DETAILED_LOG, getCheckInDetailedLog);
-  yield takeLatest(
-    FETCH_ATTENDANCE_CONSOLIDATED_CARDS,
-    getAttendanceConsolidatedCardsData
-  );
-  yield takeLatest(UPDATE_EMPLOYEE_STATUS, getUpdateEmployeeStatus);
-  yield takeLatest(FETCH_DOWNLOAD_TODAY_STATUS, getDownloadTodayStatus);
-  yield takeLatest(FETCH_LEAVE_TYPES, getLeaveTypes);
   yield takeLatest(APPLY_LEAVE, applyLeave);
   yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_STATS, getEmployeeAttendanceStats);
   yield takeLatest(FETCH_EMPLOYEE_TODAY_STATUS, getEmployeeTodayStatus);
@@ -755,7 +745,6 @@ function* EmployeeSaga() {
   yield takeLatest(UPDATE_EMPLOYEE_STATUS, getUpdateEmployeeStatus);
   yield takeLatest(FETCH_DOWNLOAD_TODAY_STATUS, getDownloadTodayStatus);
   yield takeLatest(FETCH_LEAVE_TYPES, getLeaveTypes);
-  yield takeLatest(APPLY_LEAVE, applyLeave);
   yield takeLatest(FETCH_CALENDAR_DETAILS, FetchCalendardetails);
   yield takeLatest(
     CHANGE_EMPLOYEE_LEAVE_STATUS,

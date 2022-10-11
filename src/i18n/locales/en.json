@@ -75,6 +75,8 @@
   "invalidEmail": "Invalid Email",
   "invalidUser":"Invalid User",
   "somethingWrong":"Something went wrong",
+  "invalidReason":"Invalid Reason",
+  "invalidDate":"Invalid Date",
 
   
 
@@ -166,6 +168,7 @@
 "approve":"Approve",
 "reject":"Reject",
 "revertStatus":"Revert Status",
+"selectBranch":"Select Branch",
 
 
 

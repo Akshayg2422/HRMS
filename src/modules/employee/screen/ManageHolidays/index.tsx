@@ -105,6 +105,9 @@ const ManageHolidays = () => {
         onClick={onSubmit}
         buttonTittle={selectedEventId ? t("update") : t("addHoildays")}
       >
+        <small className="form-control-label ml-3 text-black">
+          {t("selectBranch")}
+        </small>
         <ChooseBranchFromHierarchical showCheckBox={false} />
         <InputText
           col="col-xl-12"

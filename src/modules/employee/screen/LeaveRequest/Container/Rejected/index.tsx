@@ -52,7 +52,7 @@ const Rejected = () => {
   }
 
   const normalizedEmployeeLog = (data: any) => {
-    return data && data.lenght>0 && data.map((el: any) => {
+    return data && data.length >0 && data.map((el: any) => {
       return {
         name: el.name,
         "Date From": el.date_from,
@@ -86,7 +86,7 @@ const Rejected = () => {
       })
     );
   };
-
+console.log("")
   return (
     <div>
       <div className="row">
