@@ -49,7 +49,17 @@ export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS,
  export const postUpdateEmployeeStatus = (payload) => post(url.UPDATE_EMPLOYEE_STATUS,payload,{})
  export const fetchLeaveTypes = (payload) => post(url.FETCH_LEAVE_TYPES,payload,{})
  export const postApplyLeave = (payload) => post(url.POST_APPLY_LEAVE,payload,{})
+ export const fetchCalendarDetails =(payload)=>post(url.FETCH_CALENDAR_DETAILS,payload,{})
 
+ export const postChangeEmployeeLeaveStatus = (payload) => post(url.POST_CHANGE_EMPLOYEE_LEAVE_STATUS,payload,{})
+ export const postAddHolidays = (payload) => post(url.POST_EMPLOYEES_HOLIDAYS,payload,{})
+ export const postDeleteHolidays = (payload) => post(url.POST_DELETE_HOLIDAYS,payload,{})
+
+
+
+export const fetchMyleaves= (payload) => post(url.FETCH_MY_LEAVES,payload,{})
+
+export const fetchEmployeesleaves= (payload) => post(url.FETCH_EMPLOYEES_LEAVES,payload,{})
 
 
 

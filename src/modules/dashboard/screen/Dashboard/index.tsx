@@ -21,6 +21,7 @@ import {
 } from '../../../../store/location/actions';
 
 import { LocationProps } from '../../../../components/Interface';
+import { currentNavIndex } from "../../../../store/app/actions";
 
 const data = [
   {
@@ -151,6 +152,7 @@ function Dashboard() {
   );
 
   useEffect(() => {
+    dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
   }, []);
   

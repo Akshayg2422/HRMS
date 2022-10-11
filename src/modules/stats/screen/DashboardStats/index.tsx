@@ -54,9 +54,6 @@ const DashboardStats = () => {
       selected_date: selectedDate,
     };
 
-    console.log(JSON.stringify(params)+"======useEffect");
-    
-
     dispatch(getEmployeeAttendanceStats(params));
    
   }, [selectedDate,hierarchicalBranchIds]);
@@ -125,7 +122,7 @@ const DashboardStats = () => {
       <Container
         additionClass={'row'}
         justifyContent={'justify-content-around'}>
-        <div className="row align-items-center mb-3">
+        <div className="row align-items-center mb-4">
           <div className="col" >
             <h3 className="mb-0" >{t('dashboardDetails')}</h3>
           </div>
@@ -159,7 +156,7 @@ const DashboardStats = () => {
             );
           })}
         </Container>
-        <Container margin={'m-6'}>
+        <Container margin={'mx-6'}>
           {employeeattendancedatalog && employeeattendancedatalog.departments_types && (
             <CommonTable
               tableTitle={t(t('departments'))}

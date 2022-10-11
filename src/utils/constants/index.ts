@@ -25,6 +25,13 @@ export const ROUTE = {
   ROUTE_VIEW_EMPLOYEE_DETAILS:'/view-employee',
   ROUTE_INACTIVE_EMPLOYEE_LIST:'/inactive-employee-list',
   ROUTE_APPLY_LEAVE:'/apply-leave',
+  ROUTE_LEAVE_REQUEST:'/leave-request',
+  ROUTE_MANAGE_HOLIDAYS:'/manage-holidays',
+  ROUTE_MANAGE_LEAVES:'/manage-leaves',
+  ROUTE_MY_WORK_BOOK:'/my-work-book',
+  ROUTE_MY_LOG:'/my-log',
+  ROUTE_MY_LEAVES:'/my-leaves',
+
 
 }
 export const WELCOME_NOTE = [{key: '1', title: 'Geo tagging'}, {key: '2', title: 'Real-time statistics'}, {key: '3', title: 'Salary calculations'}, {key: '4', title: 'Payments and payslips'}, {key: '5', title: 'And much more!!!'}]
@@ -41,6 +48,17 @@ export const EMPLOYEE_TYPE = [
   {id: 'Guest', name: 'Guest', value: 'Guest'},
 ];
 
+export const LEAVES_TYPE = [
+  {id: 'All', name: 'All', value: 'All'},
+  {id: 'Pending Leave', name: 'Pending Leave', value: 'Pending Leave'},
+  {id: 'Approved Leave', name: 'Approved Leave', value: 'Approved Leave'},
+  {id: 'Rejected Leave', name: 'Rejected Leave', value: 'Rejected Leave'},
+
+
+];
+
+
+
 export const BLOOD_GROUP_LIST = [
   {id: 'A+ve', name: 'A+ve', value: 'A+ve'},
   {id: 'B+ve', name: 'B+ve', value: 'B+ve'},
@@ -54,7 +72,7 @@ export const BLOOD_GROUP_LIST = [
 
 
 export const NAV_ITEM = [
-  // {id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', route: ROUTE.ROUTE_DASHBOARD},
+  {id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', route: ROUTE.ROUTE_DASHBOARD},
   {id: '2', name: 'Employee Portfolio', value: 'EP', icon: 'ni ni-ungroup', route: ROUTE.ROUTE_EMPLOYEE},
   {id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', route: ROUTE.ROUTE_LOCATION},
   // {id: '4', name: 'Reports', value: 'RE', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_REPORT},
@@ -63,12 +81,20 @@ export const NAV_ITEM = [
   {id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_EMPLOYEE_LOG},
   {id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK},
   {id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', route: ROUTE.ROUTE_DASHBOARD_STATS},
-  {id: '9', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
-  {id: '10', name: 'Calendar', value: 'CA', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
+  {id: '9', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
+  {id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', route: ROUTE.ROUTE_LEAVE_REQUEST},
+  {id: '11', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
+
 
 
 ];
 
+
+export const MY_PORTFOLIO_ITEM=[
+  {id: '1', name: 'MY Work Book', value: 'MB', route: ROUTE.ROUTE_MY_WORK_BOOK},
+  {id: '2', name: 'MY Log', value: 'ML', route: ROUTE.ROUTE_MY_LOG},
+  {id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES}
+]
 
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
@@ -112,6 +138,29 @@ export const ENABLE_EMPLOYEE_DATA = [
     elt: TABLE_ELEMENT_TEXT_BUTTON,
     elv: 'Enable',
     elh: 'Enable',
+  }
+]
+
+export const LEAVE_STATUS_UPDATE = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Approve',
+    elh: 'Approve',
+  },
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Reject',
+    elh: 'Reject',
+  }
+
+]
+
+
+export const LEAVE_STATUS_REVERT=[
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Revert',
+    elh: 'Revert',
   }
 ]
 

@@ -1,33 +1,41 @@
-import React from 'react'
-import FullCalendar from '@fullcalendar/react'
-import dayGridPlugin from '@fullcalendar/daygrid'
-import interactionPlugin from "@fullcalendar/interaction"
+import React from "react";
+import FullCalendar, { CustomButtonInput } from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 
-
-interface CalenderProps{
-  dateClick?:any;
-  events?:{title:string,date:string}[]
+interface CalenderProps {
+  dateClick?: any;
+  events?: any;
+  customButtons?:
+    | {
+        [name: string]: CustomButtonInput;
+      }
+    | undefined;
+  eventClick?: any;
 }
 
-
-function index({dateClick,events}:CalenderProps) {
-
-
-
-
+function index({
+  dateClick,
+  events,
+  customButtons,
+  eventClick,
+}: CalenderProps) {
   return (
     <FullCalendar
-      plugins={[dayGridPlugin,interactionPlugin]}
+      plugins={[dayGridPlugin, interactionPlugin]}
       initialView="dayGridMonth"
       headerToolbar={{
-        left: 'title',
-        center: '',
-        right: 'today,prev,next'
+        left: "title",
+        center: "",
+        right: "today,prev,next",
       }}
       events={events}
+      customButtons={customButtons}
       dateClick={dateClick}
+      eventClick={eventClick}
+      displayEventTime={false}
     />
-  )
+  );
 }
 
-export default index
+export default index;
