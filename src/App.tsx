@@ -27,6 +27,7 @@ import {
   MyLog,
   MyWorkLog,
   MyLeaves,
+  AutoLogout,
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -42,6 +43,7 @@ import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 function App() {
   return (
     <>
+      <AutoLogout />
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
@@ -140,15 +142,15 @@ function App() {
           path={ROUTE.ROUTE_MANAGE_LEAVES}
           element={<RequireAuth>{<ManageLeaves />}</RequireAuth>}
         />
-         <Route
+        <Route
           path={ROUTE.ROUTE_MY_LOG}
-          element={<RequireAuth>{<MyLog/>}</RequireAuth>}
+          element={<RequireAuth>{<MyLog />}</RequireAuth>}
         />
-         <Route
+        <Route
           path={ROUTE.ROUTE_MY_WORK_BOOK}
           element={<RequireAuth>{<MyWorkLog />}</RequireAuth>}
         />
-         <Route
+        <Route
           path={ROUTE.ROUTE_MY_LEAVES}
           element={<RequireAuth>{<MyLeaves />}</RequireAuth>}
         />

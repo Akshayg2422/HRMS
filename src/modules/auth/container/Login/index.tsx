@@ -82,7 +82,7 @@ function Login() {
         additionClass={'container-fluid'}
         margin={'mt-4'}
       >
-        <Logo additionClass={'col-sm-4'} />
+        <Logo additionClass={'col-sm-3'} />
         <Secondary
           text={t('register')}
           onClick={() => goTo(navigate, ROUTE.ROUTE_REGISTER)}
