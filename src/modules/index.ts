@@ -17,7 +17,7 @@ import { ManageBranches } from './dashboard/screen/Location/screen';
 import {DashboardStats,DashBoardAttendance} from './stats'
 import RequireAuth from './RequireAuth'
 import RequireAuthExist from './RequireAuthExist'
-
+import { Requestpermission } from './Firebase';
 
 
 
@@ -55,5 +55,6 @@ export {
   ManageHolidays,
   ManageLeaves,
   MyLog,MyWorkLog,
-  MyLeaves
+  MyLeaves,
+  Requestpermission
 }

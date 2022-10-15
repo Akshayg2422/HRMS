@@ -16,6 +16,7 @@
     "base-64": "^1.0.0",
     "bootstrap": "^5.2.1",
     "dropzone": "^6.0.0-beta.2",
+    "firebase": "^9.10.0",
     "i18next": "^21.9.1",
     "i18next-browser-languagedetector": "^6.1.5",
     "moment": "^2.29.4",
