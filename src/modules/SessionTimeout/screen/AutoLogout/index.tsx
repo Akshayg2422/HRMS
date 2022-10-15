@@ -14,7 +14,7 @@ import { resetLocation } from "../../../../store/location/actions";
 import { goTo, ROUTE, useNav } from "@utils";
 
 const AutoLogout = () => {
-  const [signoutTime, setSignoutTime] = useState(300000);
+  const [signoutTime, setSignoutTime] = useState(3000000);
   let logoutTimeout: string | number | NodeJS.Timeout | undefined;
   let dispatch = useDispatch();
   const navigate = useNav();
@@ -30,14 +30,13 @@ const AutoLogout = () => {
     "keypress",
   ];
   const logout = () => {
-    console.log("You have been loged out");
+    // console.log("You have been loged out");
     localStorage.clear();
     dispatch(resetApp());
     dispatch(resetAuth());
     dispatch(resetDashboard());
     dispatch(resetEmployee());
     dispatch(resetLocation());
-
     goTo(navigate, ROUTE.ROUTE_LOGIN, true);
   };
 

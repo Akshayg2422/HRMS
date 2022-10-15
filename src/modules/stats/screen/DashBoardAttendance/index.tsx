@@ -23,6 +23,7 @@ import {
   getDisplayTimeFromMoment,
   showToast,
   downloadFile,
+  DOWNLOAD_RANGE,
 } from "@utils";
 import { Navbar } from "@modules";
 import { Icons } from "@assets";
@@ -55,6 +56,8 @@ const DashBoardAttendance = ({}) => {
   const [selectedAttendance, setSelectedAttendance] = useState(
     routeParams.attendanceType
   );
+
+  const [selectedDateRange, setSelectedDateRange] = useState();
 
   useEffect(() => {
     getTodayStats(currentPage);
@@ -137,7 +140,6 @@ const DashBoardAttendance = ({}) => {
   };
 
   const downloadSampleCsvFile = () => {
-    // const AppUrl = url.FETCH_EMPLOYEE_TODAY_STATUS;
     const params = {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
@@ -148,19 +150,25 @@ const DashBoardAttendance = ({}) => {
       page_number: currentPage,
       download: true,
     };
-
-    
     dispatch(
       getDownloadTodayStatus({
         params,
         onSuccess: (response: any) => {
-          downloadFile(response)
+          downloadFile(response);
         },
         onError: (error: string) => {
           showToast("error", t("invalidUser"));
         },
       })
     );
+  };
+
+  const selectedRange = (type: string) => {
+    if(type==='All'){
+
+    }else if(type===''){
+
+    }
   };
 
   return (
@@ -195,9 +203,20 @@ const DashBoardAttendance = ({}) => {
                   }}
                 />
               </div>
+              <div className="col-lg-3 col-md-12">
+                <DropDown
+                  label={"Select Range"}
+                  placeholder={"Select Range"}
+                  data={DOWNLOAD_RANGE}
+                  value={selectedDateRange}
+                  onChange={(event) => {
+                    selectedRange(event.target.value);
+                  }}
+                />
+              </div>
               <Container additionClass={"col my-4 text-right"}>
                 <a download onClick={(e) => downloadSampleCsvFile()}>
-                  <Icon  icon={Icons.DownloadSecondary}  />
+                  <Icon icon={Icons.DownloadSecondary} />
                 </a>
               </Container>
             </Container>
@@ -241,4 +260,3 @@ const DashBoardAttendance = ({}) => {
 };
 
 export default DashBoardAttendance;
-
