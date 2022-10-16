@@ -9,9 +9,9 @@ import {
   TimePicker,
   Icon,
   Modal,
-  CheckBox
-} from '@components';
-import { Icons } from '@assets';
+  CheckBox,
+} from "@components";
+import { Icons } from "@assets";
 import {
   GENDER_LIST,
   EMPLOYEE_TYPE,
@@ -28,11 +28,11 @@ import {
   getServerDateFromMoment,
   useNav,
   goBack,
-  getDropDownValueByID
-} from '@utils';
-import { useTranslation } from 'react-i18next';
-import { useState, useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+  getDropDownValueByID,
+} from "@utils";
+import { useTranslation } from "react-i18next";
+import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import {
   getDepartmentData,
   getDesignationData,
@@ -41,8 +41,7 @@ import {
   addDepartment,
   addDesignation,
   employeeAddition,
-} from '../../../../store/employee/actions';
-
+} from "../../../../store/employee/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -58,11 +57,15 @@ type EmployeeDetail = {
   gender?: string;
   blood_group?: string;
   employment_type?: string;
-  attendance_settings?: { start_time: string, end_time: string, is_excempt_allowed: boolean };
+  attendance_settings?: {
+    start_time: string;
+    end_time: string;
+    is_excempt_allowed: boolean;
+  };
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
-}
+};
 
 const ManageEmployee = () => {
   const navigation = useNav();
@@ -77,32 +80,33 @@ const ManageEmployee = () => {
   } = useSelector((state: any) => state.EmployeeReducer);
 
   const [employeeDetails, setEmployeeDetails] = useState({
-    firstName: '',
-    lastName: '',
-    mobileNumber: '',
-    e_Mail: '',
-    gender: '',
-    bloodGroup: '',
-    panNo: '',
-    aadharrNo: '',
-    designation: '',
-    department: '',
-    branch: '',
+    firstName: "",
+    lastName: "",
+    mobileNumber: "",
+    e_Mail: "",
+    gender: "",
+    bloodGroup: "",
+    panNo: "",
+    aadharrNo: "",
+    designation: "",
+    department: "",
+    branch: "",
     dateOfJoining: new Date(),
-    dob: '',
-    kgid_No: '',
-    employeeType: '',
-    attendanceStartTime: '10:00',
-    attendanceEndTime: '06:00',
+    dob: "",
+    kgid_No: "",
+    employeeType: "",
+    attendanceStartTime: "10:00",
+    attendanceEndTime: "06:00",
   });
 
   const [departmentModel, setDepartmentModel] = useState(false);
   const [designationModel, setDesignationModel] = useState(false);
   const [isAdminRights, setIsAdminRights] = useState(false);
-  const [department, setDepartment] = useState('');
-  const [designation, setDesignation] = useState('');
+  const [department, setDepartment] = useState("");
+  const [designation, setDesignation] = useState("");
   const [isRefresh, setIsRefresh] = useState(false);
-  const [companyBranchDropdownData, setCompanyBranchDropdownData] = useState<any>()
+  const [companyBranchDropdownData, setCompanyBranchDropdownData] =
+    useState<any>();
 
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
@@ -123,31 +127,29 @@ const ManageEmployee = () => {
   };
 
   useEffect(() => {
-
-    console.log(JSON.stringify(isEdit + "++====="));
-
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    
-    const params = {}
-    dispatch(getAllBranchesList({
-      params,
-      onSuccess: (success: object) => {
-        const parentBranch = branchesDropdownData.find(
-          (it: any) => it.id === dashboardDetails.company_branch.id,
-        );
-        setCompanyBranchDropdownData([
-          ...getAllSubBranches(
-            branchesDropdownData,
-            dashboardDetails.company_branch.id,
-          ),
-          parentBranch,])
-      },
 
-      onError: (error: string) => {
-      },
-    }));
+    const params = {};
+    dispatch(
+      getAllBranchesList({
+        params,
+        onSuccess: (success: object) => {
+          const parentBranch = branchesDropdownData.find(
+            (it: any) => it.id === dashboardDetails.company_branch.id
+          );
+          setCompanyBranchDropdownData([
+            ...getAllSubBranches(
+              branchesDropdownData,
+              dashboardDetails.company_branch.id
+            ),
+            parentBranch,
+          ]);
+        },
 
+        onError: (error: string) => {},
+      })
+    );
 
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
@@ -159,49 +161,48 @@ const ManageEmployee = () => {
       user_id: id,
     };
 
-
     dispatch(
       getEmployeeDetails({
         params,
         onSuccess: (response: EmployeeDetail) => {
           console.log(JSON.stringify(response));
-          
+
           preFillEmployeeDetails(response);
         },
         onError: (error: string) => {
-          console.log('fail');
+          console.log("fail");
           // showToast('error', t('invalidUser'));
         },
       })
     );
-
   };
-
-
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
-      showToast('error', t('invalidName'));
+      showToast("error", t("invalidName"));
       return false;
     } else if (
       validateMobileNumber(employeeDetails.mobileNumber).status === false
     ) {
-      showToast('error', t('invalidNumber'));
+      showToast("error", t("invalidNumber"));
       return false;
     } else if (validateEmail(employeeDetails.e_Mail).status === false) {
-      showToast('error', t('invalidEmail'));
+      showToast("error", t("invalidEmail"));
       return false;
     } else if (Object.keys(employeeDetails.designation).length === 0) {
-      showToast('error', t('invalidDesignation'));
+      showToast("error", t("invalidDesignation"));
       return false;
     } else if (Object.keys(employeeDetails.department).length === 0) {
-      showToast('error', t('invalidDepartment'));
+      showToast("error", t("invalidDepartment"));
       return false;
     } else if (Object.keys(employeeDetails.branch).length === 0) {
-      showToast('error', t('invalidBranch'));
+      showToast("error", t("invalidBranch"));
       return false;
     } else if (!employeeDetails.dob) {
-      showToast('error', t('invalidDOB'));
+      showToast("error", t("invalidDOB"));
+      return false;
+    } else if (!employeeDetails.employeeType) {
+      showToast("error", t("invalidCategory"));
       return false;
     } else {
       return true;
@@ -213,7 +214,9 @@ const ManageEmployee = () => {
       const params = {
         ...(isEdit && { id: isEdit }),
         first_name: employeeDetails.firstName,
-        ...(employeeDetails.lastName && { last_name: employeeDetails.lastName }),
+        ...(employeeDetails.lastName && {
+          last_name: employeeDetails.lastName,
+        }),
         mobile_number: employeeDetails.mobileNumber,
         email: employeeDetails.e_Mail,
         ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
@@ -239,20 +242,23 @@ const ManageEmployee = () => {
             getMomentObjFromServer(employeeDetails.dateOfJoining)
           ),
         }),
-        dob: getServerDateFromMoment(getMomentObjFromServer(employeeDetails.dob)),
-        ...(employeeDetails.kgid_No && { kgid_number: employeeDetails.kgid_No }),
+        dob: getServerDateFromMoment(
+          getMomentObjFromServer(employeeDetails.dob)
+        ),
+        ...(employeeDetails.kgid_No && {
+          kgid_number: employeeDetails.kgid_No,
+        }),
       };
 
-    
       dispatch(
         employeeAddition({
           params,
           onSuccess: (success: object) => {
-            showToast('success', t('employeeAddedSuccessfully'));
-            goBack(navigation)
+            showToast("success", t("employeeAddedSuccessfully"));
+            goBack(navigation);
           },
           onError: (error: string) => {
-
+            showToast("error", t("somethingWrong"));
           },
         })
       );
@@ -262,7 +268,6 @@ const ManageEmployee = () => {
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
-
       if (editEmployeeDetails.first_name)
         employeeInitData.firstName = editEmployeeDetails.first_name;
 
@@ -284,26 +289,23 @@ const ManageEmployee = () => {
       if (editEmployeeDetails.kgid_number)
         employeeInitData.kgid_No = editEmployeeDetails.kgid_number;
 
-
       if (editEmployeeDetails.gender)
-        employeeInitData.gender = editEmployeeDetails.gender
+        employeeInitData.gender = editEmployeeDetails.gender;
 
       if (editEmployeeDetails.blood_group)
-        employeeInitData.bloodGroup = editEmployeeDetails.blood_group
-      
+        employeeInitData.bloodGroup = editEmployeeDetails.blood_group;
 
       if (editEmployeeDetails.designation_id)
-        employeeInitData.designation = editEmployeeDetails.designation_id
+        employeeInitData.designation = editEmployeeDetails.designation_id;
 
       if (editEmployeeDetails.department_id)
-        employeeInitData.department = editEmployeeDetails.department_id
+        employeeInitData.department = editEmployeeDetails.department_id;
 
       if (editEmployeeDetails.branch_id)
-        employeeInitData.branch = editEmployeeDetails.branch_id
-      
-      if (editEmployeeDetails.employment_type)
-        employeeInitData.employeeType = editEmployeeDetails.employment_type
+        employeeInitData.branch = editEmployeeDetails.branch_id;
 
+      if (editEmployeeDetails.employment_type)
+        employeeInitData.employeeType = editEmployeeDetails.employment_type;
 
       if (editEmployeeDetails.dob)
         employeeInitData.dob = getServerDateFromMoment(
@@ -315,15 +317,22 @@ const ManageEmployee = () => {
           getMomentObjFromServer(editEmployeeDetails.date_of_joining)
         );
 
-      if (editEmployeeDetails && editEmployeeDetails.attendance_settings?.start_time)
-        employeeInitData.attendanceStartTime = editEmployeeDetails.attendance_settings?.start_time
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.start_time
+      )
+        employeeInitData.attendanceStartTime =
+          editEmployeeDetails.attendance_settings?.start_time;
 
-      if (editEmployeeDetails && editEmployeeDetails.attendance_settings?.end_time)
-        employeeInitData.attendanceEndTime = editEmployeeDetails.attendance_settings?.end_time
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.end_time
+      )
+        employeeInitData.attendanceEndTime =
+          editEmployeeDetails.attendance_settings?.end_time;
     }
 
-    console.log(JSON.stringify(employeeInitData));
-    
+
     setEmployeeDetails(employeeInitData);
   };
 
@@ -342,110 +351,105 @@ const ManageEmployee = () => {
   function submitDesignation() {
     if (validateDesignationPostParams()) {
       const params = { name: designation, is_admin: isAdminRights };
-      console.log(JSON.stringify(params));
-      dispatch(addDesignation({
-        params, onSuccess: () => {
-          setDesignationModel(!designationModel)
-          setIsRefresh(!isRefresh)
-          setDesignation('');
-          setIsAdminRights(false)
-        },
-        onError: () => {
-        },
-      }))
+      dispatch(
+        addDesignation({
+          params,
+          onSuccess: () => {
+            setDesignationModel(!designationModel);
+            setIsRefresh(!isRefresh);
+            setDesignation("");
+            setIsAdminRights(false);
+          },
+          onError: () => {},
+        })
+      );
     }
   }
-
 
   const validateDepartmentPostParams = () => {
     return validateDefault(department).status;
   };
 
-
   function submitDepartment() {
-
-
     if (validateDepartmentPostParams()) {
-
       const params = { name: department };
 
       console.log(JSON.stringify(params));
-      dispatch(addDepartment({
-        params, onSuccess: () => {
-          setDepartmentModel(!departmentModel)
-          setIsRefresh(!isRefresh)
-          setDepartment('');
-        },
-        onError: () => {
-        },
-      }))
+      dispatch(
+        addDepartment({
+          params,
+          onSuccess: () => {
+            setDepartmentModel(!departmentModel);
+            setIsRefresh(!isRefresh);
+            setDepartment("");
+          },
+          onError: () => {},
+        })
+      );
     }
-
   }
-
-
-
 
   return (
     <>
       <FormWrapper
-        title={isEdit ? t('editEmployee') : t('newEmployee')}
-        onClick={onSubmit}>
+        title={isEdit ? t("editEmployee") : t("newEmployee")}
+        onClick={onSubmit}
+      >
         <InputText
-          label={t('fullName')}
-          placeholder={t('typeYourName')}
+          label={t("fullName")}
+          placeholder={t("typeYourName")}
           validator={validateName}
           value={employeeDetails.firstName}
-          name={'firstName'}
+          name={"firstName"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
         <InputText
-          label={t('lastName')}
-          placeholder={t('typeLastName')}
+          label={t("lastName")}
+          placeholder={t("typeLastName")}
           validator={validateDefault}
           value={employeeDetails.lastName}
-          name={'lastName'}
+          name={"lastName"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
         <InputNumber
-          label={t('mobileNumber')}
-          placeholder={t('enterYourMobileNumber')}
+          label={t("mobileNumber")}
+          placeholder={t("enterYourMobileNumber")}
           validator={validateMobileNumber}
           value={employeeDetails.mobileNumber}
-          name={'mobileNumber'}
+          name={"mobileNumber"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
         <InputMail
-          label={t('email')}
-          placeholder={t('enterYourEmail')}
+          label={t("email")}
+          placeholder={t("enterYourEmail")}
           validator={validateEmail}
           value={employeeDetails.e_Mail}
-          name={'e_Mail'}
+          name={"e_Mail"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
         <DropDown
-          label={t('gender')}
-          placeholder={t('selectYourGender')}
+          label={t("gender")}
+          placeholder={t("selectYourGender")}
           data={GENDER_LIST}
-          name={'gender'}
+          name={"gender"}
           value={employeeDetails.gender}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
         <DropDown
-          label={t('bloodGroup')}
-          placeholder={t('enterBloodGroup')}
+          label={t("bloodGroup")}
+          placeholder={t("enterBloodGroup")}
           data={BLOOD_GROUP_LIST}
-          name={'bloodGroup'}
+          name={"bloodGroup"}
           value={employeeDetails.bloodGroup}
           onChange={(event) => {
             onChangeHandler(event);
@@ -453,135 +457,166 @@ const ManageEmployee = () => {
         />
 
         <InputDefault
-          label={t('pan')}
-          placeholder={t('enterPanNUmber')}
+          label={t("pan")}
+          placeholder={t("enterPanNUmber")}
           maxLength={10}
           validator={validatePAN}
           value={employeeDetails.panNo}
-          name={'panNo'}
+          name={"panNo"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
         <InputDefault
-          label={t('aadhar')}
-          placeholder={t('typeypurAadharNo')}
+          label={t("aadhar")}
+          placeholder={t("typeypurAadharNo")}
           // maxLength={10}
           validator={validateAadhar}
           value={employeeDetails.aadharrNo}
-          name={'aadharrNo'}
+          name={"aadharrNo"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
-        <div className='row align-items-center'>
-          <div className='col mt--2'>
+        <div className="row align-items-center">
+          <div className="col mt--2">
             <DropDown
-              label={t('designation')}
-              placeholder={t('enterDesignation')}
+              label={t("designation")}
+              placeholder={t("enterDesignation")}
               data={designationDropdownData}
-              name={'designation'}
+              name={"designation"}
               value={employeeDetails.designation}
               onChange={(event) => onChangeHandler(event)}
             />
           </div>
-          <Icon text={'+'} onClick={() => setDesignationModel(!designationModel)} />
+          <Icon
+            text={"+"}
+            onClick={() => setDesignationModel(!designationModel)}
+          />
         </div>
-        <div className='row align-items-center'>
-          <div className='col mt--2'>
+        <div className="row align-items-center">
+          <div className="col mt--2">
             <DropDown
-              label={t('department')}
-              placeholder={t('enterDepartment')}
+              label={t("department")}
+              placeholder={t("enterDepartment")}
               data={departmentDropdownData}
               value={employeeDetails.department}
-              name={'department'}
+              name={"department"}
               onChange={(event) => onChangeHandler(event)}
             />
           </div>
-          <Icon text={'+'} onClick={() => setDepartmentModel(!departmentModel)} />
+          <Icon
+            text={"+"}
+            onClick={() => setDepartmentModel(!departmentModel)}
+          />
         </div>
         <DropDown
-          label={t('branch')}
-          placeholder={t('branch')}
+          label={t("branch")}
+          placeholder={t("branch")}
           data={companyBranchDropdownData}
-          name={'branch'}
+          name={"branch"}
           value={employeeDetails.branch}
           onChange={(event) => onChangeHandler(event)}
         />
         <DropDown
-          label={t('category')}
-          placeholder={t('category')}
-          name={'employeeType'}
+          label={t("category")}
+          placeholder={t("category")}
+          name={"employeeType"}
           data={EMPLOYEE_TYPE}
           value={employeeDetails.employeeType}
           onChange={(event) => onChangeHandler(event)}
         />
-        <h5>{t('dataOfJoining')}</h5>
+        <h5>{t("dataOfJoining")}</h5>
         <DatePicker
-          title={t('pleaseSelect')}
+          title={t("pleaseSelect")}
           icon={Icons.Calendar}
-          iconPosition={'append'}
+          iconPosition={"append"}
           value={employeeDetails.dateOfJoining}
           onChange={(date: string) =>
-            dateTimePickerHandler(date, 'dateOfJoining')
+            dateTimePickerHandler(date, "dateOfJoining")
           }
         />
-        <h5>{t('dateofBirth')}</h5>
+        <h5>{t("dateofBirth")}</h5>
         <DatePicker
           icon={Icons.Calendar}
-          iconPosition={'append'}
-          onChange={(date: string) => dateTimePickerHandler(date, 'dob')}
+          iconPosition={"append"}
+          onChange={(date: string) => dateTimePickerHandler(date, "dob")}
           value={employeeDetails.dob}
         />
         <InputDefault
-          label={t('kgid')}
-          placeholder={t('kgid')}
+          label={t("kgid")}
+          placeholder={t("kgid")}
           maxLength={10}
           validator={validateDefault}
           value={employeeDetails.kgid_No}
-          name={'kgid_No'}
+          name={"kgid_No"}
           onChange={(event) => {
             onChangeHandler(event);
           }}
         />
-        <h4 className='mb-4'>{t('attendanceDetails')}</h4>
-        <h5 className='mb-2'>{t('startTime')}</h5>
+        <h4 className="mb-4">{t("attendanceDetails")}</h4>
+        <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
-          title={t('pleaseSelect')}
+          title={t("pleaseSelect")}
           icon={Icons.Calendar}
-          iconPosition={'append'}
+          iconPosition={"append"}
           value={employeeDetails.attendanceStartTime}
           onChange={(time: any) =>
-            dateTimePickerHandler(time, 'attendanceStartTime')
+            dateTimePickerHandler(time, "attendanceStartTime")
           }
-
         />
-        <h5 className='mb-2'>{t('endTime')}</h5>
+        <h5 className="mb-2">{t("endTime")}</h5>
         <TimePicker
-          title={t('pleaseSelect')}
+          title={t("pleaseSelect")}
           icon={Icons.Calendar}
-          iconPosition={'append'}
+          iconPosition={"append"}
           value={employeeDetails.attendanceEndTime}
           onChange={(time: any) => {
-            dateTimePickerHandler(time, 'attendanceEndTime')
-          }
-          }
+            dateTimePickerHandler(time, "attendanceEndTime");
+          }}
         />
       </FormWrapper>
-      <Modal title={t('department')} showModel={departmentModel} toggle={() => setDepartmentModel(!departmentModel)} footer saveChange={submitDepartment} >
+      <Modal
+        title={t("department")}
+        showModel={departmentModel}
+        toggle={() => setDepartmentModel(!departmentModel)}
+        footer
+        saveChange={submitDepartment}
+      >
         {
-          <div className='col-xl-7 col-md-10'>
-            <InputText placeholder={t('department')} validator={validateDefault} onChange={(e) => { setDepartment(e.target.value) }} />
+          <div className="col-xl-7 col-md-10">
+            <InputText
+              placeholder={t("department")}
+              validator={validateDefault}
+              onChange={(e) => {
+                setDepartment(e.target.value);
+              }}
+            />
           </div>
         }
       </Modal>
 
-      <Modal title={t('designation')} showModel={designationModel} toggle={() => setDesignationModel(!designationModel)} footer saveChange={submitDesignation} >
+      <Modal
+        title={t("designation")}
+        showModel={designationModel}
+        toggle={() => setDesignationModel(!designationModel)}
+        footer
+        saveChange={submitDesignation}
+      >
         {
-          <div className='col-xl-7 col-md-10'>
-            <InputText placeholder={t('designation')} validator={validateDefault} onChange={(e) => { setDesignation(e.target.value) }} />
-            <div className='col text-right'>
-              <CheckBox text={'As Admin rights'} onChange={(e) => setIsAdminRights(e.target.checked)} />
+          <div className="col-xl-7 col-md-10">
+            <InputText
+              placeholder={t("designation")}
+              validator={validateDefault}
+              onChange={(e) => {
+                setDesignation(e.target.value);
+              }}
+            />
+            <div className="col text-right">
+              <CheckBox
+                text={"As Admin rights"}
+                onChange={(e) => setIsAdminRights(e.target.checked)}
+              />
             </div>
           </div>
         }

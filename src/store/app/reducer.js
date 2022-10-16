@@ -2,19 +2,20 @@ import {
   SHOW_LOADER,
   HIDE_LOADER,
   SET_USER_LOGIN_DETAILS,
-  RESET_REDUCER
+  RESET_REDUCER,
+  NAV_INDEX
 } from "./actionsType";
 
 const initialState = {
   loading: false,
   userLoggedIn: false,
-  token: '',
-  userDetails:'',
-  mobileNumber:''
-}
+  token: "",
+  userDetails: "",
+  mobileNumber: "",
+  navIndex: 0,
+};
 
 const AppReducer = (state = initialState, action) => {
-
   switch (action.type) {
     case SHOW_LOADER:
       state = {
@@ -30,19 +31,22 @@ const AppReducer = (state = initialState, action) => {
       break;
 
     case SET_USER_LOGIN_DETAILS:
-
-    const loginDetails = action.payload
+      const loginDetails = action.payload;
       state = {
         ...state,
         userLoggedIn: loginDetails.userLoggedIn,
         token: loginDetails.token,
         userDetails: loginDetails.userDetails,
-        mobileNumber: loginDetails.mobileNumber
+        mobileNumber: loginDetails.mobileNumber,
       };
       break;
 
+    case NAV_INDEX:
+      state = { ...state, navIndex: action.payload };
+      break;
+
     case RESET_REDUCER:
-      state = initialState
+      state = initialState;
       break;
 
     default:
@@ -51,7 +55,6 @@ const AppReducer = (state = initialState, action) => {
   }
 
   return state;
-}
-
+};
 
 export default AppReducer;

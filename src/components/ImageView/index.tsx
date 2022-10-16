@@ -2,7 +2,7 @@
 import React, {CSSProperties} from 'react'
 
 type ImageViewProps = {
-  icon: any,
+  icon?: any,
   alt?: string | undefined;
   crossOrigin?: "anonymous" | "use-credentials" | "" | undefined;
   decoding?: "async" | "auto" | "sync" | undefined;

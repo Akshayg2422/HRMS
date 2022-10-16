@@ -90,6 +90,7 @@ export interface DatePickerProps {
   value?:any
   defaultValue?: string;
   placeholder?: string;
+  minDate?:any;
 }
 
 export interface TableProps {

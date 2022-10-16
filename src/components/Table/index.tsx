@@ -14,7 +14,8 @@ interface TableProps {
   tableOnClick?: (event: any, index: number, item: object) => void;
   tableValueOnClick?: (event: any, index: number, item: object, elv: string) => void;
   tableContentType?: number;
-  comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>
+  comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>;
+  custombutton?:string
 
 }
 
@@ -24,7 +25,7 @@ interface Element {
   elh: string
 }
 
-function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
+function index({displayDataSet,tableDataSet,custombutton,additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
 
   const renderTableHeader = () => {
     if (displayDataSet) {
@@ -75,7 +76,7 @@ function index({displayDataSet,tableDataSet, additionalDataSet, tableOnClick, ta
     let element = null;
     switch (item.elt) {
       case TABLE_ELEMENT_TEXT_BUTTON:
-        element = <span className='text-primary'>{item.elv}</span>
+        element = <span className={`text-primary ${custombutton}`}>{item.elv}</span>
         break;
       case TABLE_ELEMENT_TEXT_IMAGE:
         element = <span className='text-primary'>{item.elv}</span>

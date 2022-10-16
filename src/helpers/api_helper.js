@@ -2,8 +2,10 @@ import axios from "axios";
 import {ASYN_USER_AUTH} from '@utils'
 
 //apply base url for axios
-const STAGING = 'http://43.204.233.45/';
-const LOCAL_DEV = 'http://192.168.6.204:8002';
+const STAGING = 'http://43.204.233.45/';  
+// const LOCAL_DEV = 'http://172.20.10.3:8000';
+const LOCAL_DEV = 'http://192.168.52.204:8000';
+
 const PROD = 'https://api.zenyq.com';
 export const REACT_APP_APP_URL = PROD; 
 // 'http://localhost:8000' 

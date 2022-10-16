@@ -24,7 +24,7 @@ const  Input = React.forwardRef(({
 
   return (
     <div className={`form-group w-100  ${col}`}>
-      {label && <small className="form-control-label">{label}</small>}
+      {label && <small className="form-control-label text-black">{label}</small>}
       <input
         className={`form-control mt-2  ${formCustomClass}`}
         type={type}
@@ -35,6 +35,7 @@ const  Input = React.forwardRef(({
         ref={ref}
         disabled={disabled}
         maxLength={maxLength}
+        autoComplete={'off'}
         
       
         onChange={(it) => {
