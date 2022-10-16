@@ -27,6 +27,7 @@ function ManageLeaves() {
   const navigation = useNav();
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
+  const[recall,setRecall]=useState(false)
   const [deleteModel, setDeleteModel] = useState(false);
   const [daysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
@@ -79,7 +80,12 @@ function ManageLeaves() {
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
-        color: item.status_code === 1 ? "green" : item.status_code=== 0 ? "red":"gray"
+        color:
+          item.status_code === 1
+            ? "green"
+            : item.status_code === 0
+            ? "red"
+            : "gray",
       });
     });
 
@@ -99,15 +105,16 @@ function ManageLeaves() {
         color: "green",
       });
     });
+    setRecall(!recall)
   };
 
-console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave)
+  console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave);
 
   return (
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
-          <Calender events={daysHoliday?.length > 1 ? daysHoliday : []} />
+          <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>
         <Card>
@@ -126,7 +133,9 @@ console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave)
                 calendarEvents?.days_holiday
               )}
             />
-          ):<NoRecordFound/>}
+          ) : (
+            <NoRecordFound />
+          )}
         </Card>
       </Container>
     </>
