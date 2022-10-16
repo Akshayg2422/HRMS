@@ -7,6 +7,8 @@ import {
   Modal,
   Table,
   Icon,
+  CardCalendar,
+  DatePicker,
 } from "@components";
 import * as url from "../../../../helpers/url_helper";
 import React, { useEffect, useState } from "react";
@@ -29,6 +31,7 @@ import { Navbar } from "@modules";
 import { Icons } from "@assets";
 import { CSVLink, CSVDownload } from "react-csv";
 import axios from "axios";
+import moment from "moment";
 
 const DashBoardAttendance = ({}) => {
   const dispatch = useDispatch();
@@ -49,6 +52,8 @@ const DashBoardAttendance = ({}) => {
   );
 
   const [model, setModel] = useState(false);
+  const [downloadmodel, setDownloadModel] = useState(false);
+  const [showCustomCalendar, setShowCustomCalender] = useState(false);
 
   const [selectedDepartment, setSelectedDepartment] = useState(
     routeParams.departmentId
@@ -57,7 +62,12 @@ const DashBoardAttendance = ({}) => {
     routeParams.attendanceType
   );
 
-  const [selectedDateRange, setSelectedDateRange] = useState();
+  const [selectedDateRange, setSelectedDateRange] = useState("");
+
+  const [customRange, setCustomRange] = useState({
+    dateFrom: "",
+    dataTo: "",
+  });
 
   useEffect(() => {
     getTodayStats(currentPage);
@@ -164,12 +174,35 @@ const DashBoardAttendance = ({}) => {
   };
 
   const selectedRange = (type: string) => {
-    if(type==='All'){
+    let today = moment().format("YYYY-MM-DD");
+    let thisWeek = moment()
+      .startOf("isoWeek")
+      .add(0, "week")
+      .format("YYYY-MM-DD");
+    let thisMonth = `01-${moment().format("M")}-${moment().format("Y")}`;
+    let lastMonth = `01-${moment().add(-1,'month').format("M")}-${moment().format("Y")}`;
 
-    }else if(type===''){
-
+    let lastWeek = moment()
+      .startOf("isoWeek")
+      .add(-1, "week")
+      .format("YYYY-MM-DD");
+    console.log("type", lastMonth);
+    if (type === "Today") {
+      setShowCustomCalender(false);
+    } else if (type === "This Week") {
+      setShowCustomCalender(false);
+    } else if (type === "Last Week") {
+      setShowCustomCalender(false);
+    } else if (type === "This Month") {
+      setShowCustomCalender(false);
+    } else if (type === "Last Month") {
+      setShowCustomCalender(false);
+    } else if (type === "Custom Range") {
+      setShowCustomCalender(false);
+      setShowCustomCalender(true);
     }
   };
+  const dateTimePickerHandler = (value: string, key: string) => {};
 
   return (
     <div className="mx-3">
@@ -203,19 +236,11 @@ const DashBoardAttendance = ({}) => {
                   }}
                 />
               </div>
-              <div className="col-lg-3 col-md-12">
-                <DropDown
-                  label={"Select Range"}
-                  placeholder={"Select Range"}
-                  data={DOWNLOAD_RANGE}
-                  value={selectedDateRange}
-                  onChange={(event) => {
-                    selectedRange(event.target.value);
-                  }}
-                />
-              </div>
+
               <Container additionClass={"col my-4 text-right"}>
+                {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}> */}
                 <a download onClick={(e) => downloadSampleCsvFile()}>
+
                   <Icon icon={Icons.DownloadSecondary} />
                 </a>
               </Container>
@@ -254,6 +279,42 @@ const DashBoardAttendance = ({}) => {
         ) : (
           <NoRecordFound />
         )}
+      </Modal>
+      <Modal
+        showModel={downloadmodel}
+        toggle={() => setDownloadModel(!downloadmodel)}
+      >
+        <div className="col-lg-6 col-md-12">
+          <DropDown
+            label={"Select Range"}
+            placeholder={"Select Range"}
+            data={DOWNLOAD_RANGE}
+            value={selectedDateRange}
+            onChange={(event) => {
+              selectedRange(event.target.value);
+            }}
+          />
+        </div>
+        {showCustomCalendar ? (
+          <div className="col-lg-6 col-md-12">
+            <h5>{t("dataFrom")}</h5>
+            <DatePicker
+              icon={Icons.Calendar}
+              iconPosition={"append"}
+              onChange={(date: string) =>
+                dateTimePickerHandler(date, "dateFrom")
+              }
+              value={customRange.dateFrom}
+            />
+            <h5>{t("dataTo")}</h5>
+            <DatePicker
+              icon={Icons.Calendar}
+              iconPosition={"append"}
+              onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
+              value={customRange.dataTo}
+            />
+          </div>
+        ) : null}
       </Modal>
     </div>
   );
