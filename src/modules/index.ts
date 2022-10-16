@@ -18,7 +18,7 @@ import {DashboardStats,DashBoardAttendance} from './stats'
 import RequireAuth from './RequireAuth'
 import RequireAuthExist from './RequireAuthExist'
 
-
+import {AutoLogout} from './SessionTimeout'
 
 
 import fenceAdmin from './fenceAdmin'
@@ -55,5 +55,6 @@ export {
   ManageHolidays,
   ManageLeaves,
   MyLog,MyWorkLog,
-  MyLeaves
+  MyLeaves,
+  AutoLogout
 }

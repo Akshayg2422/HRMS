@@ -57,6 +57,15 @@ export const LEAVES_TYPE = [
 
 ];
 
+export const DOWNLOAD_RANGE = [
+  {id: 'Today', name: 'Today', value: 'Today'},
+  {id: 'This Week', name: 'This Week', value: 'This Week'},
+  {id: 'Last Week', name: 'Last Week', value: 'Last Week'},
+  {id: 'This Month', name: 'This Month', value: 'This Month'},
+  {id: 'Last Month', name: 'Last Month', value: 'Last Month'},
+  {id: 'Custom Range', name: 'Custom Range', value: 'Custom Range'},
+];
+
 
 
 export const BLOOD_GROUP_LIST = [
