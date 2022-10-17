@@ -20,6 +20,8 @@ import RequireAuthExist from './RequireAuthExist'
 import { Requestpermission } from './Firebase';
 
 
+import {AutoLogout} from './SessionTimeout'
+
 
 import fenceAdmin from './fenceAdmin'
 export {
@@ -56,5 +58,6 @@ export {
   ManageLeaves,
   MyLog,MyWorkLog,
   MyLeaves,
-  Requestpermission
+  Requestpermission,
+  AutoLogout
 }
