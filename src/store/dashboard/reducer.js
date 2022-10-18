@@ -19,7 +19,8 @@ import {
   EDIT_PROFILE_PICTURE_FAIL,
   SET_HIERARCHICAL_BRANCH_IDS,
   SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
-  RESET_REDUCER
+  RESET_REDUCER,
+  MATCH_ROUTE_NAME
 } from "./actionTypes";
 
 const initialState = {
@@ -27,7 +28,8 @@ const initialState = {
   error: '',
   dashboardDetails: {},
   hierarchicalBranchIds:{},
-  hierarchicalBranchName:''
+  hierarchicalBranchName:'',
+  routeName:""
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -157,10 +159,17 @@ const DashboardReducer = (state = initialState, action) => {
         hierarchicalBranchIds: { ...state.hierarchicalBranchIds, include_child: action.payload.checkBoxStatus }
       };
         break;
+    case MATCH_ROUTE_NAME:
+          state = {
+            ...state,
+            routeName:action.payload
+          };
+            break;
     
     case RESET_REDUCER:
       state = initialState;
       break;
+    
 
     default:
       state = state;

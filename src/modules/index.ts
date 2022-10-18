@@ -9,7 +9,7 @@ import {
   resendOtp,
   validateUser,
 } from './auth';
-import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header,Profile} from './dashboard';
+import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header,Profile,DashBoardOtp} from './dashboard';
 
 import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves } from './employee';
 
@@ -59,5 +59,6 @@ export {
   MyLog,MyWorkLog,
   MyLeaves,
   Requestpermission,
-  AutoLogout
+  AutoLogout,
+  DashBoardOtp
 }

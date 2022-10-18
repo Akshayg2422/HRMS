@@ -28,7 +28,8 @@ import {
   MyWorkLog,
   MyLeaves,
   Requestpermission,
-  AutoLogout
+  AutoLogout,
+  DashBoardOtp
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -64,6 +65,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_DASHBOARD}
           element={<RequireAuth>{<Dashboard />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_DASHBOARD_OTP}
+          element={<RequireAuth>{<DashBoardOtp />}</RequireAuth>}
         />
         <Route
           path={ROUTE.ROUTE_EMPLOYEE}

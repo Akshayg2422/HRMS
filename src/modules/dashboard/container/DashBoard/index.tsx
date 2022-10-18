@@ -1,10 +1,13 @@
 import React from "react";
 import { Icons } from "@assets";
+import { matchRouteName } from "../../../../store/dashboard/actions";
 import { Card, Container, ImageView } from "@components";
 import { ROUTE, useNav } from "@utils";
+import { useDispatch } from "react-redux";
 
 function DashBoardCard() {
   const navigate = useNav();
+  const dispatch = useDispatch()
   const NAV_ITEM = [
     // {id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', route: ROUTE.ROUTE_DASHBOARD},
     {
@@ -12,7 +15,7 @@ function DashBoardCard() {
       name: "Employee Portfolio",
       value: "EP",
       icon: Icons.EmployeeSecondary,
-      route: ROUTE.ROUTE_EMPLOYEE,
+      route: ROUTE.ROUTE_DASHBOARD_OTP,
     },
     {
       id: "3",
@@ -42,7 +45,7 @@ function DashBoardCard() {
       name: "Employee Log",
       value: "EL",
       icon: Icons.Employee,
-      route: ROUTE.ROUTE_EMPLOYEE_LOG,
+      route: ROUTE.ROUTE_DASHBOARD_OTP,
     },
     {
       id: "7",
@@ -82,7 +85,9 @@ function DashBoardCard() {
             <Card
               additionClass={"border"}
               style={{ border: "1px bg-gray" }}
-              onClick={() => navigate(it.route)}
+              onClick={() => {navigate(it.route)
+                dispatch(matchRouteName(it.id))
+              }}
             >
               <Container
                 additionClass={"row py-3"}

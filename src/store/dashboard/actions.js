@@ -19,7 +19,8 @@ import {
     EDIT_PROFILE_PICTURE_FAIL,
     SET_HIERARCHICAL_BRANCH_IDS,
     SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
-    RESET_REDUCER
+    RESET_REDUCER,
+    MATCH_ROUTE_NAME
 
   } from "./actionTypes";
   
@@ -195,3 +196,10 @@ export const resetDashboard = () => {
     type: RESET_REDUCER,
   };
 };
+
+export const matchRouteName=(params)=>{
+  return{
+    type: MATCH_ROUTE_NAME,
+    payload:params
+  }
+}
