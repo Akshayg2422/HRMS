@@ -88,7 +88,6 @@ function ManageLeaves() {
             : "gray",
       });
     });
-
     calendarEvents?.days_absent?.map((item: any) => {
       daysHoliday.push({
         title: item.reason,
@@ -105,8 +104,10 @@ function ManageLeaves() {
         color: "green",
       });
     });
-    setRecall(!recall)
+    setRecall(true)
+
   };
+
 
   console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave);
 
