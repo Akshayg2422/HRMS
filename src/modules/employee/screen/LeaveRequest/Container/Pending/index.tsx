@@ -62,7 +62,8 @@ const Pending = () => {
         "Date From": el.date_from,
         "Date To": el.date_to,
         "Leave Types": el.leave_type,
-        "Status":el.status_text
+        "Reason":el.reason,
+        "Branch":el.branch_name
       };
     });
   };
