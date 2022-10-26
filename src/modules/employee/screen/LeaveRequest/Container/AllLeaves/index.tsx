@@ -26,7 +26,6 @@ const AllLeaves = () => {
   const [rejectModel, setRejectModel] = useState(false);
   const [revertModel, setRevertModel] = useState(false);
 
-
   const { employeesLeaves, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
@@ -67,15 +66,21 @@ const AllLeaves = () => {
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
-    return data && data.length >0 && data.map((el: any) => {
-      return {
-        name: el.name,
-        "Date From": el.date_from,
-        "Date To": el.date_to,
-        "Leave Types": el.leave_type,
-        Status: el.status_text,
-      };
-    });
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((el: any) => {
+        return {
+          name: el.name,
+          "Date From": el.date_from,
+          "Date To": el.date_to,
+          "Leave Types": el.leave_type,
+          Reason: el.reason,
+          Status: el.status_text,
+          Branch: el.branch_name,
+        };
+      })
+    );
   };
 
   const manageApproveStatus = (item: object) => {
@@ -85,12 +90,12 @@ const AllLeaves = () => {
 
   const manageRevertStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
-   setRevertModel(!revertModel)
+    setRevertModel(!revertModel);
   };
 
-  const manageRejectStatus =  (item: object) => {
+  const manageRejectStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
-    setRejectModel(!rejectModel)
+    setRejectModel(!rejectModel);
   };
 
   const manageStatusHandler = (el: number) => {
@@ -106,22 +111,17 @@ const AllLeaves = () => {
             setApproveModel(!approveModel);
           }
           if (el === 0) {
-           setRejectModel(!rejectModel)
+            setRejectModel(!rejectModel);
           }
           if (el === -1) {
-           setRevertModel(!revertModel)
-           }
+            setRevertModel(!revertModel);
+          }
           fetchPendingDetail(currentPage);
         },
         onError: (error: string) => {},
       })
     );
   };
-
-
-
-
- 
 
   return (
     <div>
@@ -152,7 +152,9 @@ const AllLeaves = () => {
             }
             custombutton={"h5"}
           />
-        ):<NoRecordFound/>}
+        ) : (
+          <NoRecordFound />
+        )}
         <Modal
           title={t("approveLeave")}
           showModel={approveModel}
@@ -160,18 +162,40 @@ const AllLeaves = () => {
         >
           <Container>
             <span className="h4 ml-xl-4">{t("approveWarningMessage")}</span>
-            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
-              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
-              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
-              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
-              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
-              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
-
+            <Container additionClass={"ml-xl-4"} textAlign={"text-left"}>
+              <span>
+                {t("employeeName")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.name}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataFrom")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_from}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataTo")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_to}</span>
+              </span>
+              <br />
+              <span>
+                {t("leaveType")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">
+                  {selectedEventId?.leave_type}
+                </span>
+              </span>
+              <br />
+              <span>
+                {t("reason")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.reason}</span>
+              </span>
             </Container>
-            <Container
-              margin={"mt-5"}
-              additionClass={'text-right'}
-            >
+            <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
                 onClick={() => setApproveModel(!approveModel)}
@@ -190,26 +214,47 @@ const AllLeaves = () => {
         >
           <Container>
             <span className="h4 ml-xl-4">{t("rejectWarningMessage")}</span>
-            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
-              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
-              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
-              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
-              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
-              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
-
+            <Container additionClass={"ml-xl-4"} textAlign={"text-left"}>
+              <span>
+                {t("employeeName")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.name}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataFrom")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_from}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataTo")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_to}</span>
+              </span>
+              <br />
+              <span>
+                {t("leaveType")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">
+                  {selectedEventId?.leave_type}
+                </span>
+              </span>
+              <br />
+              <span>
+                {t("reason")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.reason}</span>
+              </span>
             </Container>
-            <Container
-              margin={"mt-5"}
-              additionClass={'text-right'}
-            >
+            <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() =>setRejectModel(!rejectModel)}
+                onClick={() => setRejectModel(!rejectModel)}
               />
               <Primary
                 text={t("reject")}
-                onClick={() =>  manageStatusHandler(0)
-                }
+                onClick={() => manageStatusHandler(0)}
               />
             </Container>
           </Container>
@@ -221,26 +266,47 @@ const AllLeaves = () => {
         >
           <Container>
             <span className="h4 ml-xl-4">{t("revertWarningMessage")}</span>
-            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
-              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
-              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
-              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
-              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
-              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
-
+            <Container additionClass={"ml-xl-4"} textAlign={"text-left"}>
+              <span>
+                {t("employeeName")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.name}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataFrom")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_from}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataTo")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_to}</span>
+              </span>
+              <br />
+              <span>
+                {t("leaveType")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">
+                  {selectedEventId?.leave_type}
+                </span>
+              </span>
+              <br />
+              <span>
+                {t("reason")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.reason}</span>
+              </span>
             </Container>
-            <Container
-              margin={"mt-5"}
-              additionClass={'text-right'}
-            >
+            <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() =>setRevertModel(!revertModel)}
+                onClick={() => setRevertModel(!revertModel)}
               />
               <Primary
                 text={t("confirm")}
-                onClick={() =>  manageStatusHandler(-1)
-                }
+                onClick={() => manageStatusHandler(-1)}
               />
             </Container>
           </Container>

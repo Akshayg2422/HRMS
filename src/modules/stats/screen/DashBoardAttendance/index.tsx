@@ -62,7 +62,7 @@ const DashBoardAttendance = ({}) => {
     routeParams.attendanceType
   );
 
-  const [selectedDateRange, setSelectedDateRange] = useState("");
+  const [selectedDateRange, setSelectedDateRange] = useState();
 
   const [customRange, setCustomRange] = useState({
     dateFrom: "",
@@ -173,6 +173,10 @@ const DashBoardAttendance = ({}) => {
     );
   };
 
+  const resetCustom = () => {
+    setCustomRange({ ...customRange, dataTo: "", dateFrom: "" });
+  };
+
   const selectedRange = (type: string) => {
     let today = moment().format("YYYY-MM-DD");
     let thisWeek = moment()
@@ -180,29 +184,49 @@ const DashBoardAttendance = ({}) => {
       .add(0, "week")
       .format("YYYY-MM-DD");
     let thisMonth = `01-${moment().format("M")}-${moment().format("Y")}`;
-    let lastMonth = `01-${moment().add(-1,'month').format("M")}-${moment().format("Y")}`;
-
+    let lastMonth = `01-${moment()
+      .add(-1, "month")
+      .format("M")}-${moment().format("Y")}`;
     let lastWeek = moment()
       .startOf("isoWeek")
       .add(-1, "week")
       .format("YYYY-MM-DD");
-    console.log("type", lastMonth);
+    console.log(
+      "lastMonth",
+      lastMonth,
+      "today",
+      today,
+      "thisWeek",
+      thisWeek,
+      "thisMonth",
+      thisMonth,
+      "lastWeek",
+      lastWeek
+    );
     if (type === "Today") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "This Week") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "Last Week") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "This Month") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "Last Month") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "Custom Range") {
-      setShowCustomCalender(false);
       setShowCustomCalender(true);
     }
   };
-  const dateTimePickerHandler = (value: string, key: string) => {};
+  const dateTimePickerHandler = (value: string, key: string) => {
+    setCustomRange({ ...customRange, [key]: value });
+  };
+
+  console.log("custom", customRange);
 
   return (
     <div className="mx-3">
@@ -238,8 +262,8 @@ const DashBoardAttendance = ({}) => {
               </div>
 
               <Container additionClass={"col my-4 text-right"}>
-                {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}> */}
-                <a download onClick={(e) => downloadSampleCsvFile()}>
+                <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
+                  {/* <a download onClick={(e) => downloadSampleCsvFile()}> */}
 
                   <Icon icon={Icons.DownloadSecondary} />
                 </a>
@@ -264,7 +288,7 @@ const DashBoardAttendance = ({}) => {
             displayDataSet={normalizedEmployee(employeeAttendanceStats)}
           />
         ) : (
-          <NoRecordFound />
+          <NoRecordFound /> 
         )}
       </Card>
 

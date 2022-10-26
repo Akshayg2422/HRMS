@@ -89,9 +89,10 @@ const LeaveRequest = () => {
                 href="#tabs-icons-text-3"
                 role="tab"
                 aria-controls="tabs-icons-text-3"
-                aria-selected="true"
+                aria-selected="false"
+                onClick={() => fetchPendingDetail(currentPage, 1)}
               >
-                {t("markAsPresent")}
+                {t("approved")}
               </a>
             </li>
             <li className="nav-item">
@@ -102,20 +103,6 @@ const LeaveRequest = () => {
                 href="#tabs-icons-text-4"
                 role="tab"
                 aria-controls="tabs-icons-text-4"
-                aria-selected="false"
-                onClick={() => fetchPendingDetail(currentPage, 1)}
-              >
-                {t("approved")}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link mb-sm-3 mb-md-0"
-                id="tabs-icons-text-5-tab"
-                data-toggle="tab"
-                href="#tabs-icons-text-5"
-                role="tab"
-                aria-controls="tabs-icons-text-5"
                 aria-selected="false"
                 onClick={() => fetchPendingDetail(currentPage, 0)}
               >
@@ -150,23 +137,13 @@ const LeaveRequest = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-3-tab"
         >
-          <div className="row">
-           <WorkInProgress/>
-          </div>
+          <Approved />
         </div>
         <div
           className="tab-pane fade"
           id="tabs-icons-text-4"
           role="tabpanel"
           aria-labelledby="tabs-icons-text-4-tab"
-        >
-          <Approved />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-icons-text-5"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-5-tab"
         >
           <Rejected />
         </div>
