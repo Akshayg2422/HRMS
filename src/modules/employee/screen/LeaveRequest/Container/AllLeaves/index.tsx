@@ -70,14 +70,15 @@ const AllLeaves = () => {
       data &&
       data.length > 0 &&
       data.map((el: any) => {
+        
         return {
           name: el.name,
           "Date From": el.date_from,
           "Date To": el.date_to,
           "Leave Types": el.leave_type,
           Reason: el.reason,
-          Status: el.status_text,
-          Branch: el.branch_name,
+          // Status: el.status_text,
+          // Branch: el.branch_name,
         };
       })
     );

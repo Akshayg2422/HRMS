@@ -188,7 +188,7 @@ function Calendar() {
           </Container>
           <Calender
             dateClick={handleDateClick}
-            events={geteventsdetails(calendarEvents.days_holiday)}
+            events={geteventsdetails(calendarEvents?.days_holiday)}
           />
         </Card>
         <h1>{t("holidayList")}</h1>
