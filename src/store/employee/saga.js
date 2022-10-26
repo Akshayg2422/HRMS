@@ -28,6 +28,7 @@ import {
   DELETE_HOLIDAY,
   GET_EMPLOYEES_LEAVES,
   GET_LEAVES_BY_TYPES,
+  GET_MODIFY_LOGS
 } from "./actionTypes";
 
 import {
@@ -88,6 +89,8 @@ import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
   getEmployeeLeavesFailure,
+  getModifyLogsSuccess,
+  getModifyLogsFailure
 } from "./actions";
 
 import {
@@ -712,6 +715,30 @@ function* FetchEmployeesLeaves(action) {
   }
 }
 
+/**
+ * get modify logs
+ */
+
+ function* getModifyLogsSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchEmployeesleaves, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getModifyLogsSuccess(response.details.data));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError);
+      yield put(getModifyLogsFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getModifyLogsFailure("Invalid Request"));
+  }
+}
+
 // ****** //
 
 function* EmployeeSaga() {
@@ -754,6 +781,7 @@ function* EmployeeSaga() {
   yield takeLatest(DELETE_HOLIDAY, deleteHolidayEvents);
   yield takeLatest(GET_EMPLOYEES_LEAVES, FetchEmployeesLeaves);
   yield takeLatest(GET_LEAVES_BY_TYPES, FetchLeaveByTypes);
+  yield takeLatest(GET_MODIFY_LOGS, getModifyLogsSaga);
 }
 
 export default EmployeeSaga;

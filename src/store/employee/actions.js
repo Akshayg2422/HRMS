@@ -94,6 +94,9 @@ import {
   GET_EMPLOYEES_LEAVES,
   GET_EMPLOYEES_LEAVE_SUCCESS,
   GET_EMPLOYEES_LEAVES_FAILURE,
+  GET_MODIFY_LOGS,
+  GET_MODIFY_LOGS_SUCCESS,
+  GET_MODIFY_LOGS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -846,6 +849,31 @@ export const getEmployeeLeavesSuccess = (response) => {
 export const getEmployeeLeavesFailure = (error) => {
   return {
     type: GET_EMPLOYEES_LEAVES_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * get modify logs
+ */
+
+ export const getModifyLogs = (params) => {
+  return {
+    type: GET_MODIFY_LOGS,
+    payload: params,
+  };
+};
+
+export const getModifyLogsSuccess = (response) => {
+  return {
+    type: GET_MODIFY_LOGS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getModifyLogsFailure = (error) => {
+  return {
+    type: GET_MODIFY_LOGS_FAILURE,
     payload: error,
   };
 };
