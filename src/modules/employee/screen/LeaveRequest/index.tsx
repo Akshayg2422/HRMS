@@ -1,17 +1,18 @@
 import {
+
   Card,
   ChooseBranchFromHierarchical,
-  CommonTable,
   Container,
-  NoRecordFound,
-  WorkInProgress,
+  Icon,
+  InputText,
 } from "@components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Pending, Approved, Rejected, AllLeaves } from "./Container";
 import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import { getEmployeeLeaves, getEmployeeLeavesSuccess } from "../../../../store/employee/actions";
+import { Icons } from "@assets";
 
 const LeaveRequest = () => {
   const { t } = useTranslation();
@@ -23,17 +24,25 @@ const LeaveRequest = () => {
 
   const { currentPage } = useSelector((state: any) => state.EmployeeReducer);
 
+  const [searchEmployee, setSearchEmployee] = useState("")
+  const [currentStatusId, setCurrentStatusId] = useState<number>(-2)
+
   useEffect(() => {
     fetchPendingDetail(currentPage, -2);
   }, [hierarchicalBranchIds]);
 
   const fetchPendingDetail = (pageNumber: number, statusId: number) => {
+    console.log("status id-->", statusId);
+
+    setCurrentStatusId(statusId)
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: statusId,
+      q: searchEmployee
     };
-    dispatch(getEmployeeLeaves({  params,
+    dispatch(getEmployeeLeaves({
+      params,
       onSuccess: (success: object) => {
       },
       onError: (error: string) => {
@@ -41,12 +50,34 @@ const LeaveRequest = () => {
     }));
   };
 
+  function proceedSearchApi() {
+    fetchPendingDetail(currentPage, currentStatusId);
+  }
+
   return (
     <div>
       <Card additionClass="my-3">
         <div className="col-lg-6">
           <ChooseBranchFromHierarchical />
         </div>
+        <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+          <InputText
+            placeholder={t("enterEmployeeName")}
+            label={t("searchEmployee")}
+            onChange={(e) => {
+              setSearchEmployee(e.target.value);
+            }}
+          />
+          <Container
+            col={'col'}
+            additionClass={'mt-sm-3'}
+            justifyContent={"justify-content-center"}
+            alignItems={"align-items-center"}
+            onClick={proceedSearchApi}
+          >
+            <Icon type={"btn-primary"} icon={Icons.Search} />
+          </Container>
+        </Container>
         <div className="nav-wrapper mx-xl-4">
           <ul
             className="nav nav-pills nav-fill flex-column flex-md-row"
@@ -121,9 +152,9 @@ const LeaveRequest = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-1-tab"
         >
-          <AllLeaves/>
+          <AllLeaves />
         </div>
-          <div
+        <div
           className="tab-pane fade show"
           id="tabs-icons-text-2"
           role="tabpanel"

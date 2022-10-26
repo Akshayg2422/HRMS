@@ -139,7 +139,7 @@ function EmployeeScreen() {
                 }}
               />
             </Container>
-            <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+            {/* <Container col={"col-xl-3 col-md-6 col-sm-12"}>
               <InputText
                 placeholder={t("enterEmployeeId")}
                 label={t("employeeId")}
@@ -147,7 +147,7 @@ function EmployeeScreen() {
                   setSearchEmployeeById(e.target.value);
                 }}
               />
-            </Container>
+            </Container> */}
             <Container col={"col-xl-3 col-md-6 col-sm-12"} additionClass={'mt-xl-4'} >
               <ChooseBranchFromHierarchical />
             </Container>
