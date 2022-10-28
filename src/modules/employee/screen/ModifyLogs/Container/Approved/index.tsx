@@ -13,7 +13,6 @@ import {
   getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -68,36 +67,13 @@ const Approved = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${' '}(${el.employee_id})`,
+          name: `${el.name}${" "}(${el.employee_id})`,
           "Date From": el.date_from,
           "Date To": el.date_to,
           "Leave Types": el.leave_type,
           Reason: el.reason,
           Branch: el.branch_name,
         };
-      })
-    );
-  };
-
-  const RevertStatusHandler = (item: object) => {
-    dispatch(getSelectedEventId(item));
-    setRevertModel(!revertModel);
-  };
-
-  const manageRevertHandler = () => {
-    const params = {
-      id: selectedEventId.id,
-      status: -1,
-    };
-    dispatch(
-      changeEmployeeLeaveStatus({
-        params,
-        onSuccess: (success: any) => {
-          setRevertModel(!revertModel);
-          fetchApprovedLeaves(currentPage);
-          showToast("info", success.status);
-        },
-        onError: (error: string) => {},
       })
     );
   };
@@ -116,62 +92,11 @@ const Approved = () => {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
-          additionalDataSet={LEAVE_STATUS_REVERT}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesModifyLeaves[index];
-            if (elv === "Revert") {
-              RevertStatusHandler(current);
-            }
-          }}
           custombutton={"h5"}
         />
       ) : (
         <NoRecordFound />
       )}
-      <Modal
-        title={t("revertStatus")}
-        showModel={revertModel}
-        toggle={() => setRevertModel(!revertModel)}
-      >
-        <Container>
-          <span className="h4 ml-xl-4">{t("revertWarningMessage")}</span>
-          <Container additionClass={"ml-xl-4"} textAlign={"text-left"}>
-            <span>
-              {t("employeeName")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.name}</span>
-            </span>
-            <br />
-            <span>
-              {t("date")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.date_from}</span>
-            </span>
-            <br />
-            <span>
-              {t("leaveType")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.leave_type}</span>
-            </span>
-            <br />
-            <span>
-              {t("reason")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.reason}</span>
-            </span>
-          </Container>
-          <Container margin={"mt-5"} additionClass={"text-right"}>
-            <Secondary
-              text={t("cancel")}
-              onClick={() => setRevertModel(!revertModel)}
-            />
-            <Primary
-              text={t("confirm")}
-              onClick={() => manageRevertHandler()}
-            />
-          </Container>
-        </Container>
-      </Modal>
     </div>
   );
 };

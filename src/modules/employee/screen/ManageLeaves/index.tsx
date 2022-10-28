@@ -42,7 +42,7 @@ function ManageLeaves() {
   useEffect(() => {
     getCalendarDetails(currentPage);
     geteventsdetails();
-  }, []);
+  }, [recall]);
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
@@ -51,19 +51,6 @@ function ManageLeaves() {
     };
     dispatch(fetchCalendardetails({ params }));
   };
-
-  function paginationHandler(
-    type: "next" | "prev" | "current",
-    position?: number
-  ) {
-    let page =
-      type === "next"
-        ? currentPage + 1
-        : type === "prev"
-        ? currentPage - 1
-        : position;
-    getCalendarDetails(page);
-  }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {

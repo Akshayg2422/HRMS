@@ -494,7 +494,6 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
     case FETCH_EMPLOYEE_TODAY_STATUS_SUCCESS:
       const attendanceStats = action.payload;
-      console.log("reducer------> ", attendanceStats);
       state = {
         ...state,
         employeeAttendanceStats: attendanceStats.employees.data,
@@ -792,20 +791,30 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     /**
-     * my-Portfolio leaves
+     * get Employee leaves
      */
 
     case GET_LEAVES_BY_TYPES:
       state = {
         ...state,
         loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+        myLeaves: [],
       };
       break;
     case GET_LEAVES_BY_TYPES_SUCCESS:
+      const getLeaves = action.payload;
+
       state = {
         ...state,
         loading: false,
-        myLeaves: action.payload,
+        myLeaves: getLeaves.details.data,
+        numOfPages: getLeaves.details.num_pages,
+        currentPage:
+          getLeaves.details.next_page === -1
+            ? getLeaves.details.num_pages
+            : getLeaves.details.next_page - 1,
       };
       break;
 
@@ -814,25 +823,33 @@ const EmployeeReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
-        myLeaves: "",
       };
       break;
 
     /**
-     * Employee Leaves
+     * Employees Leaves
      */
 
     case GET_EMPLOYEES_LEAVES:
       state = {
         ...state,
         loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+        employeesLeaves: [],
       };
       break;
     case GET_EMPLOYEES_LEAVE_SUCCESS:
+      const employeeLeaves = action.payload;
       state = {
         ...state,
         loading: false,
-        employeesLeaves: action.payload,
+        employeesLeaves: employeeLeaves.details.data,
+        numOfPages: employeeLeaves.details.num_pages,
+        currentPage:
+          employeeLeaves.details.next_page === -1
+            ? employeeLeaves.details.num_pages
+            : employeeLeaves.details.next_page - 1,
       };
       break;
 
@@ -852,13 +869,22 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+        employeesModifyLeaves: [],
       };
       break;
     case GET_MODIFY_LOGS_SUCCESS:
+      const modifyLogs = action.payload;
       state = {
         ...state,
         loading: false,
-        employeesModifyLeaves:action.payload
+        employeesModifyLeaves: modifyLogs.details.data,
+        numOfPages: modifyLogs.details.num_pages,
+        currentPage:
+          modifyLogs.details.next_page === -1
+            ? modifyLogs.details.num_pages
+            : modifyLogs.details.next_page - 1,
       };
       break;
 
