@@ -369,12 +369,11 @@ const LocationTable = ({
                       </span>
                     ) : item.status_code === 1 ? (
                       <span
-                        className="h5 text-primary"
-                        onClick={() => {
-                          if (onRevertClick) onRevertClick(item);
-                        }}
+                        // onClick={() => {
+                        //   if (onRevertClick) onRevertClick(item);
+                        // }}
                       >
-                        {"Revert"}
+                        {"-"}
                       </span>
                     ) : item.status_code === 0 ? (
                       <span
