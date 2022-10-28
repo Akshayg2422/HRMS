@@ -9,6 +9,7 @@ import {
   Icon,
   CardCalendar,
   DatePicker,
+  BackArrow,
 } from "@components";
 import * as url from "../../../../helpers/url_helper";
 import React, { useEffect, useState } from "react";
@@ -29,8 +30,6 @@ import {
 } from "@utils";
 import { Navbar } from "@modules";
 import { Icons } from "@assets";
-import { CSVLink, CSVDownload } from "react-csv";
-import axios from "axios";
 import moment from "moment";
 
 const DashBoardAttendance = ({}) => {
@@ -62,8 +61,10 @@ const DashBoardAttendance = ({}) => {
     routeParams.attendanceType
   );
 
-  const [selectedDateRange, setSelectedDateRange] = useState("");
-
+  const [selectedDateRange, setSelectedDateRange] = useState();
+  const [customselectedDate, setCustomSelectedDateRange] = useState(
+    getServerDateFromMoment(getMomentObjFromServer(routeParams.selectedDate))
+  );
   const [customRange, setCustomRange] = useState({
     dateFrom: "",
     dataTo: "",
@@ -71,16 +72,14 @@ const DashBoardAttendance = ({}) => {
 
   useEffect(() => {
     getTodayStats(currentPage);
-  }, [selectedAttendance, selectedDepartment]);
+  }, [selectedAttendance, selectedDepartment,customselectedDate]);
 
   const getTodayStats = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
       attendance_type: selectedAttendance + "",
-      selected_date: getServerDateFromMoment(
-        getMomentObjFromServer(routeParams.selectedDate)
-      ),
+      selected_date: customselectedDate,
       page_number: pageNumber,
       download: false,
     };
@@ -149,14 +148,15 @@ const DashBoardAttendance = ({}) => {
     });
   };
 
+  // getServerDateFromMoment(
+  //   getMomentObjFromServer(routeParams.selectedDate)
+  // ),
   const downloadSampleCsvFile = () => {
     const params = {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
       attendance_type: selectedAttendance + "",
-      selected_date: getServerDateFromMoment(
-        getMomentObjFromServer(routeParams.selectedDate)
-      ),
+      selected_date: customselectedDate,
       page_number: currentPage,
       download: true,
     };
@@ -173,6 +173,10 @@ const DashBoardAttendance = ({}) => {
     );
   };
 
+  const resetCustom = () => {
+    setCustomRange({ ...customRange, dataTo: "", dateFrom: "" });
+  };
+
   const selectedRange = (type: string) => {
     let today = moment().format("YYYY-MM-DD");
     let thisWeek = moment()
@@ -180,33 +184,52 @@ const DashBoardAttendance = ({}) => {
       .add(0, "week")
       .format("YYYY-MM-DD");
     let thisMonth = `01-${moment().format("M")}-${moment().format("Y")}`;
-    let lastMonth = `01-${moment().add(-1,'month').format("M")}-${moment().format("Y")}`;
-
+    let lastMonth = `01-${moment()
+      .add(-1, "month")
+      .format("M")}-${moment().format("Y")}`;
     let lastWeek = moment()
       .startOf("isoWeek")
       .add(-1, "week")
       .format("YYYY-MM-DD");
-    console.log("type", lastMonth);
+    console.log(
+      "lastMonth",
+      lastMonth,
+      "today",
+      today,
+      "thisWeek",
+      thisWeek,
+      "thisMonth",
+      thisMonth,
+      "lastWeek",
+      lastWeek
+    );
     if (type === "Today") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "This Week") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "Last Week") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "This Month") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "Last Month") {
       setShowCustomCalender(false);
+      resetCustom();
     } else if (type === "Custom Range") {
-      setShowCustomCalender(false);
       setShowCustomCalender(true);
     }
   };
-  const dateTimePickerHandler = (value: string, key: string) => {};
+  const dateTimePickerHandler = (value: string, key: string) => {
+    setCustomRange({ ...customRange, [key]: value });
+  };
 
   return (
     <div className="mx-3">
       <Card>
+        <BackArrow additionClass={"my-3"} />
         <Container additionClass={"col"}>
           <div className="row">
             <Container additionClass={"row"}>
@@ -236,11 +259,24 @@ const DashBoardAttendance = ({}) => {
                   }}
                 />
               </div>
+              <div className="col-lg-3 col-md-12 mt-1">
+                <h5>{t("selectedDate")}</h5>
+                <DatePicker
+                  placeholder={"Select Date"}
+                  icon={Icons.Calendar}
+                  iconPosition={"prepend"}
+                  value={customselectedDate}
+                  onChange={(date: string) =>
+                    setCustomSelectedDateRange(
+                      getServerDateFromMoment(getMomentObjFromServer(date))
+                    )
+                  }
+                />
+              </div>
 
               <Container additionClass={"col my-4 text-right"}>
                 {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}> */}
                 <a download onClick={(e) => downloadSampleCsvFile()}>
-
                   <Icon icon={Icons.DownloadSecondary} />
                 </a>
               </Container>

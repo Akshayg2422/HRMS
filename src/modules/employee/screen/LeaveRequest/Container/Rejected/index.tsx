@@ -54,11 +54,12 @@ const Rejected = () => {
   const normalizedEmployeeLog = (data: any) => {
     return data && data.length >0 && data.map((el: any) => {
       return {
-        name: el.name,
+        name: `${el.name}${' '}(${el.employee_id})`,
         "Date From": el.date_from,
         "Date To": el.date_to,
         "Leave Types": el.leave_type,
-        "Status":el.status_text
+        "Reason":el.reason,
+        "Branch":el.branch_name
       };
     });
   };
@@ -86,7 +87,7 @@ const Rejected = () => {
       })
     );
   };
-console.log("")
+console.log("employeesLeaves",employeesLeaves)
   return (
     <div>
       <div className="row">

@@ -6,31 +6,29 @@ import {
   Carousel,
   Table,
   NoRecordFound,
-  Card,
+  Container,
+  Secondary,
+  Primary,
+  InputText,
+  BackArrow,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import {
-  getEmployeesList,
   getEmployeesCheckInLogs,
   getCheckInDetailedLogPerDay,
   getEmployeeEachUserTimeSheets,
+  applyLeave,
 } from "../../../../store/employee/actions";
 import {
-  paginationHandler,
-  displayStringExists,
   getDisplayTimeFromMoment,
   getMomentObjFromServer,
   showToast,
   getDisplayDateTimeFromMoment,
   useNav,
-  goTo,
-  ROUTE,
+  validateDefault,
 } from "@utils";
-import index from "@src/components/Table";
-import { Item } from "@src/screens/Zenylog_site/components/Input";
-import { ManageLeaves, Navbar } from "@modules";
 
 type CheckInLog = {
   date?: string;
@@ -61,8 +59,8 @@ function MyLog() {
   const navigation = useNav();
 
   const employeeLogSort = [
-    { id: 1, title: t("last3Months") },
-    { id: 2, title: moment().format("MMMM") },
+    { id: 2, title: t("last3Months") },
+    { id: 1, title: moment().format("MMMM") },
   ];
 
   const sortData = [
@@ -72,7 +70,6 @@ function MyLog() {
   ];
 
   const [activeSort, setActiveSort] = useState<number>(1);
-  const [activeSortWorkBook, setActiveSortWorkBook] = useState<number>(0);
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("yyyy-MM-DD")
   );
@@ -83,7 +80,12 @@ function MyLog() {
 
   const [attachmentModel, setAttachmentModel] = useState<boolean>(false);
   const [logPerDayModel, setLogPerDayModel] = useState<boolean>(false);
-
+  const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+  const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
+    date: "",
+    reason: "",
+    id: "",
+  });
   const [attachment, setAttachment] = useState<Array<string>>([]);
 
   const {
@@ -160,48 +162,74 @@ function MyLog() {
     }
   };
 
-  const onTabChangeWorkBook = (index: number) => {
-    setType(sortData[index].title.toLocaleLowerCase());
-  };
-
   function getEmployeeCheckInDetailedLogPerDay(index: number) {
     const selectedDate = employeeCheckInLogs[index].date;
-    dispatch(
-      getCheckInDetailedLogPerDay({
+    const dayStatus = employeeCheckInLogs[index].day_status;
+    const id = employeeCheckInLogs[index].id;
+    if (dayStatus === "Absent") {
+      setMarkAsPresentDetails({
+        ...markAsPresentDetails,
         date: selectedDate,
-      })
-    );
-    setLogPerDayModel(!logPerDayModel);
+        id: id,
+      });
+      setMarkAsPresentModel(!markAsPresentModel);
+    } else {
+      dispatch(
+        getCheckInDetailedLogPerDay({
+          date: selectedDate,
+        })
+      );
+      setLogPerDayModel(!logPerDayModel);
+    }
   }
+
+  const dateTimePickerHandler = (value: string, key: string) => {
+    setMarkAsPresentDetails({ ...markAsPresentDetails, [key]: value });
+  };
+  const onChangeHandler = (event: any) => {
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const validateOnSubmit = () => {
+    if (!validateDefault(markAsPresentDetails.reason).status) {
+      showToast("error", t("invalidReason"));
+      return false;
+    }
+    return true;
+  };
+
+  const onRequestHandler = () => {
+    if (validateOnSubmit()) {
+      const params = {
+        day_status_id: markAsPresentDetails.id,
+        date_from: markAsPresentDetails.date,
+        date_to: markAsPresentDetails.date,
+        reason: markAsPresentDetails.reason,
+      };
+      dispatch(
+        applyLeave({
+          params,
+          onSuccess: (response: object) => {
+            setMarkAsPresentModel(!markAsPresentModel);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+        })
+      );
+    }
+  };
 
   return (
     <>
       <div className="row">
-        {/* <div className="col">
-          <></>
-          <div className="col text-right mb-3">
-            <Sort
-              sortData={sortData}
-              activeIndex={activeSortWorkBook}
-              onClick={(index) => {
-                setActiveSortWorkBook(index);
-                onTabChangeWorkBook(index);
-              }}
-            />
-          </div>
-          <div className="mr--3">
-            <CommonTable
-              tableTitle={"My Work Book"}
-              displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
-              tableOnClick={(e, index, item) => {
-                const attachment = employeeEachUserSheets[index].attachments;
-                setAttachment(attachment);
-                setAttachmentModel(!attachmentModel);
-              }}
-            />
-          </div>
-        </div> */}
         <div className="col">
+          <BackArrow additionClass={"m-3"} />
           <div className="col text-right mb-3">
             <Sort
               sortData={employeeLogSort}
@@ -250,7 +278,42 @@ function MyLog() {
           <NoRecordFound />
         )}
       </Modal>
-      </>
+      <Modal
+        showModel={markAsPresentModel}
+        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+      >
+        <Container>
+          <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
+          <Container additionClass="col-6 my-4">
+            <InputText
+              disabled
+              label={t("today")}
+              value={markAsPresentDetails.date}
+              name={"date"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+            <InputText
+              label={t("reason")}
+              validator={validateDefault}
+              value={markAsPresentDetails.reason}
+              name={"reason"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </Container>
+          <Container margin={"mt-5"} additionClass={"text-right"}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+            />
+            <Primary text={t("request")} onClick={() => onRequestHandler()} />
+          </Container>
+        </Container>
+      </Modal>
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import {Icons} from '@assets'
+import { Route } from 'react-router-dom';
 
 
 
@@ -31,6 +32,7 @@ export const ROUTE = {
   ROUTE_MY_WORK_BOOK:'/my-work-book',
   ROUTE_MY_LOG:'/my-log',
   ROUTE_MY_LEAVES:'/my-leaves',
+  ROUTE_MODIFY_LOGS:'/modify-logs',
 
 
 }
@@ -92,7 +94,8 @@ export const NAV_ITEM = [
   {id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', route: ROUTE.ROUTE_DASHBOARD_STATS},
   {id: '9', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR},
   {id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', route: ROUTE.ROUTE_LEAVE_REQUEST},
-  {id: '11', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
+  {id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', route:ROUTE.ROUTE_MODIFY_LOGS},
+  {id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO},
 
 
 

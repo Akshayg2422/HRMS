@@ -94,6 +94,9 @@ import {
   GET_EMPLOYEES_LEAVES,
   GET_EMPLOYEES_LEAVE_SUCCESS,
   GET_EMPLOYEES_LEAVES_FAILURE,
+  GET_MODIFY_LOGS,
+  GET_MODIFY_LOGS_SUCCESS,
+  GET_MODIFY_LOGS_FAILURE,
 } from "./actionTypes";
 
 const initialState = {
@@ -128,6 +131,7 @@ const initialState = {
   selectedEventId: undefined,
   myLeaves: "",
   employeesLeaves: "",
+  employeesModifyLeaves: "",
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -810,7 +814,7 @@ const EmployeeReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
-        myLeaves:""
+        myLeaves: "",
       };
       break;
 
@@ -825,7 +829,6 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
     case GET_EMPLOYEES_LEAVE_SUCCESS:
-
       state = {
         ...state,
         loading: false,
@@ -834,6 +837,32 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case GET_EMPLOYEES_LEAVES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * modify logs
+     */
+
+    case GET_MODIFY_LOGS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_MODIFY_LOGS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        employeesModifyLeaves:action.payload
+      };
+      break;
+
+    case GET_MODIFY_LOGS_FAILURE:
       state = {
         ...state,
         error: action.payload,

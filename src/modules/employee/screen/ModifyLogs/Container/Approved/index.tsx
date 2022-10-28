@@ -10,9 +10,10 @@ import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +23,7 @@ const Approved = () => {
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
 
-  const { numOfPages, currentPage, employeesLeaves, selectedEventId } =
+  const { numOfPages, currentPage, employeesModifyLeaves, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -37,11 +38,12 @@ const Approved = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: 1,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
+        onSuccess: (success: any) => {},
         onError: (error: string) => {},
       })
     );
@@ -90,9 +92,10 @@ const Approved = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           setRevertModel(!revertModel);
           fetchApprovedLeaves(currentPage);
+          showToast("info", success.status);
         },
         onError: (error: string) => {},
       })
@@ -101,7 +104,7 @@ const Approved = () => {
 
   return (
     <div>
-      {employeesLeaves && employeesLeaves.length > 0 ? (
+      {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
         <CommonTable
           noHeader
           isPagination
@@ -112,10 +115,10 @@ const Approved = () => {
           }}
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
-          displayDataSet={normalizedEmployeeLog(employeesLeaves)}
+          displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
           additionalDataSet={LEAVE_STATUS_REVERT}
           tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesLeaves[index];
+            const current = employeesModifyLeaves[index];
             if (elv === "Revert") {
               RevertStatusHandler(current);
             }
@@ -140,15 +143,9 @@ const Approved = () => {
             </span>
             <br />
             <span>
-              {t("dataFrom")}
+              {t("date")}
               {":"}&nbsp;&nbsp;
               <span className="text-black">{selectedEventId?.date_from}</span>
-            </span>
-            <br />
-            <span>
-              {t("dataTo")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.date_to}</span>
             </span>
             <br />
             <span>

@@ -7,7 +7,7 @@ import {
   Modal,
   Primary,
   Secondary,
-  ChooseBranchFromHierarchical
+  ChooseBranchFromHierarchical,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -82,8 +82,8 @@ function EmployeeScreen() {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-          ? currentPage - 1
-          : position;
+        ? currentPage - 1
+        : position;
     getEmployeesApi(page);
   }
 
@@ -127,7 +127,7 @@ function EmployeeScreen() {
         <Container flexDirection={"row"} alignItems={"align-items-center"}>
           <Container
             flexDirection={"row"}
-            additionClass={'col'}
+            additionClass={"col"}
             alignItems={"align-items-center"}
           >
             <Container col={"col-xl-3 col-md-6 col-sm-12"}>
@@ -139,7 +139,7 @@ function EmployeeScreen() {
                 }}
               />
             </Container>
-            <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+            {/* <Container col={"col-xl-3 col-md-6 col-sm-12"}>
               <InputText
                 placeholder={t("enterEmployeeId")}
                 label={t("employeeId")}
@@ -147,13 +147,16 @@ function EmployeeScreen() {
                   setSearchEmployeeById(e.target.value);
                 }}
               />
-            </Container>
-            <Container col={"col-xl-3 col-md-6 col-sm-12"} additionClass={'mt-xl-4'} >
+            </Container> */}
+            <Container
+              col={"col-xl-3 col-md-6 col-sm-12"}
+              additionClass={"mt-xl-4"}
+            >
               <ChooseBranchFromHierarchical />
             </Container>
             <Container
-              col={'col'}
-              additionClass={'mt-sm-3'}
+              col={"col"}
+              additionClass={"mt-sm-3"}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
               onClick={proceedSearchApi}
@@ -162,18 +165,22 @@ function EmployeeScreen() {
             </Container>
           </Container>
 
-          <Container margin={"my-3"} display={'d-flex'} justifyContent={'justify-content-end'} >
+          <Container
+            margin={"my-3"}
+            display={"d-flex"}
+            justifyContent={"justify-content-end"}
+          >
             <Primary
               text={t("addEmployee")}
               onClick={() => manageEmployeeHandler(undefined)}
-              size={'btn-sm'}
+              size={"btn-sm"}
             />
             <Primary
               text={t("deletedUser")}
               onClick={() =>
                 goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
               }
-              size={'btn-sm'}
+              size={"btn-sm"}
             />
           </Container>
           {registeredEmployeesList && registeredEmployeesList.length > 0 && (

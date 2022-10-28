@@ -1,9 +1,12 @@
 import {
   Card,
   ChooseBranchFromHierarchical,
+  CommonTable,
   Container,
   Icon,
   InputText,
+  NoRecordFound,
+  WorkInProgress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,21 +16,21 @@ import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 
-const LeaveRequest = () => {
+const ModifyLogs = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
+  const [searchEmployee, setSearchEmployee] = useState("");
 
   const { currentPage } = useSelector((state: any) => state.EmployeeReducer);
-
-  const [searchEmployee, setSearchEmployee] = useState("");
-  const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
 
   useEffect(() => {
     fetchPendingDetail(currentPage, -2);
@@ -40,11 +43,13 @@ const LeaveRequest = () => {
       page_number: pageNumber,
       status: statusId,
       q: searchEmployee,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
+        onSuccess: (success: any) => {
+        },
         onError: (error: string) => {},
       })
     );
@@ -193,4 +198,4 @@ const LeaveRequest = () => {
   );
 };
 
-export default LeaveRequest;
+export default ModifyLogs;
