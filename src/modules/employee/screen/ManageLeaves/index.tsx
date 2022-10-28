@@ -122,14 +122,6 @@ function ManageLeaves() {
           {daysHoliday && daysHoliday.length > 0 ? (
             <CommonTable
               noHeader
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployeeLog(
                 calendarEvents?.days_holiday
               )}
