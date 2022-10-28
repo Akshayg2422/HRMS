@@ -143,15 +143,9 @@ const Approved = () => {
             </span>
             <br />
             <span>
-              {t("dataFrom")}
+              {t("date")}
               {":"}&nbsp;&nbsp;
               <span className="text-black">{selectedEventId?.date_from}</span>
-            </span>
-            <br />
-            <span>
-              {t("dataTo")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.date_to}</span>
             </span>
             <br />
             <span>

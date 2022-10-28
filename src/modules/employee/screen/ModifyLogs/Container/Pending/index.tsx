@@ -70,7 +70,7 @@ const Pending = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${' '}(${el.employee_id})`,
+          name: `${el.name}${" "}(${el.employee_id})`,
           "Date From": el.date_from,
           "Date To": el.date_to,
           "Leave Types": el.leave_type,
@@ -160,17 +160,12 @@ const Pending = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_from}</span>
               </span>
               <br />
-              <span>
-                {t("dataTo")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
-              </span>
-              <br />
+
               <span>
                 {t("leaveType")}
                 {":"}&nbsp;&nbsp;
@@ -212,15 +207,9 @@ const Pending = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_from}</span>
-              </span>
-              <br />
-              <span>
-                {t("dataTo")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
               </span>
               <br />
               <span>
