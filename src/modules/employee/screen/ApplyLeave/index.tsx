@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
   applyLeave,
+  fetchCalendardetails,
   getLeaveTypes,
 } from "../../../../../src/store/employee/actions";
 import { Route } from "react-router-dom";
@@ -23,7 +24,11 @@ const ApplyLeave = () => {
   const navigation = useNav();
   let dispatch = useDispatch();
   const [leaveTypes, setLeaveTypes] = useState([]);
-  const { leaveFromDate } = useSelector((state: any) => state.EmployeeReducer);
+  const { leaveFromDate, calendarEvents, numOfPages, currentPage } =
+    useSelector((state: any) => state.EmployeeReducer);
+  const { hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
 
   const [fromDetails, setFormDetails] = useState({
     leaveType: "",
@@ -34,7 +39,16 @@ const ApplyLeave = () => {
 
   useEffect(() => {
     fetchLeaveTypes();
+    getCalendarDetails(currentPage);
   }, []);
+
+  const getCalendarDetails = (pageNumber: number) => {
+    const params = {
+      ...hierarchicalBranchIds,
+      pageNumber: pageNumber,
+    };
+    dispatch(fetchCalendardetails({ params }));
+  };
 
   useEffect(() => {
     const toSeverDate = new Date(
@@ -68,7 +82,7 @@ const ApplyLeave = () => {
           setLeaveTypes(success.leave_types);
         },
         onError: (error: string) => {
-          // showToast("error", t("somethingWrong"));
+          showToast("error", t("somethingWrong"));
         },
       })
     );
@@ -76,6 +90,7 @@ const ApplyLeave = () => {
 
   const dateTimePickerHandler = (value: string, key: string) => {
     setFormDetails({ ...fromDetails, [key]: value });
+    console.log(JSON.stringify({ ...fromDetails, [key]: value }));
   };
 
   const onChangeHandler = (event: any) => {
@@ -83,10 +98,6 @@ const ApplyLeave = () => {
   };
 
   const validateOnSubmit = () => {
-    if (!validateDefault(fromDetails.reason).status) {
-      showToast("error", t("invalidReason"));
-      return false;
-    }
     if (fromDetails.dateFrom === "") {
       showToast("error", t("invalidDate"));
       return false;
@@ -95,10 +106,13 @@ const ApplyLeave = () => {
       showToast("error", t("invalidDate"));
       return false;
     }
+    if (!validateDefault(fromDetails.reason).status) {
+      showToast("error", t("invalidReason"));
+      return false;
+    }
     return true;
   };
 
- 
   const onSubmitHandler = () => {
     if (validateOnSubmit()) {
       const params = {
@@ -113,7 +127,7 @@ const ApplyLeave = () => {
       };
 
       console.log(JSON.stringify(params));
-      
+
       dispatch(
         applyLeave({
           params,
@@ -121,19 +135,35 @@ const ApplyLeave = () => {
             goTo(navigation, ROUTE.ROUTE_MY_LEAVES);
           },
           onError: (error: string) => {
-            // ClearStateData();
             showToast("error", t("somethingWrong"));
           },
         })
       );
-    } 
+    }
+  };
+
+  const disableDate = (data: any) => {
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((el: any) => {
+        let filteredlist = {};
+        filteredlist = {
+          from: el.day,
+          to: el.day,
+        };
+        return filteredlist;
+      })
+    );
   };
 
   return (
     <>
       <FormWrapper
         title={t("applyLeave")}
-        onClick={()=>{onSubmitHandler()}}
+        onClick={() => {
+          onSubmitHandler();
+        }}
         buttonTittle={t("apply")}
       >
         <DropDown
@@ -147,14 +177,20 @@ const ApplyLeave = () => {
         <DatePicker
           icon={Icons.Calendar}
           iconPosition={"append"}
-          onChange={(date: string) => dateTimePickerHandler(date, "dateFrom")}
+          disabledDate={disableDate(calendarEvents.days_holiday)}
+          onChange={(date: string) => {
+            dateTimePickerHandler(date, "dateFrom");
+          }}
           value={fromDetails.dateFrom}
         />
         <h5>{t("dataTo")}</h5>
         <DatePicker
           icon={Icons.Calendar}
           iconPosition={"append"}
-          onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
+          disabledDate={disableDate(calendarEvents.days_holiday)}
+          onChange={(date: string) => {
+            dateTimePickerHandler("", "dataTo");
+          }}
           value={fromDetails.dataTo}
         />
         <InputText

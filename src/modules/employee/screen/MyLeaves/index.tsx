@@ -124,7 +124,7 @@ function MyLeaves() {
         </Card>
         <h1>{t("leaveList")}</h1>
         <Card>
-          {myLeaves && myLeaves?.data.length > 0 ? (
+          {myLeaves && myLeaves?.length > 0 ? (
             <CommonTable
               noHeader
               isPagination
@@ -135,7 +135,7 @@ function MyLeaves() {
               }}
               previousClick={() => paginationHandler("prev")}
               nextClick={() => paginationHandler("next")}
-              displayDataSet={normalizedEmployeeLog(myLeaves?.data)}
+              displayDataSet={normalizedEmployeeLog(myLeaves)}
             />
           ) : (
             <NoRecordFound />

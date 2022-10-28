@@ -158,7 +158,7 @@ const ModifyLogs = () => {
         </div>
       </Card>
 
-      {/* <Card> */}
+      <Card>
       <div className="tab-content" id="myTabContent">
         <div
           className="tab-pane fade show active"
@@ -193,7 +193,7 @@ const ModifyLogs = () => {
           <Rejected />
         </div>
       </div>
-      {/* </Card> */}
+      </Card>
     </div>
   );
 };
