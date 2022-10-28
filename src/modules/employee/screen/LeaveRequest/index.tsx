@@ -153,42 +153,42 @@ const LeaveRequest = () => {
         </div>
       </Card>
 
-      {/* <Card> */}
-      <div className="tab-content" id="myTabContent">
-        <div
-          className="tab-pane fade show active"
-          id="tabs-icons-text-1"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-1-tab"
-        >
-          <AllLeaves />
+      <Card>
+        <div className="tab-content" id="myTabContent">
+          <div
+            className="tab-pane fade show active"
+            id="tabs-icons-text-1"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-1-tab"
+          >
+            <AllLeaves />
+          </div>
+          <div
+            className="tab-pane fade show"
+            id="tabs-icons-text-2"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-2-tab"
+          >
+            <Pending />
+          </div>
+          <div
+            className="tab-pane fade"
+            id="tabs-icons-text-3"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-3-tab"
+          >
+            <Approved />
+          </div>
+          <div
+            className="tab-pane fade"
+            id="tabs-icons-text-4"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-4-tab"
+          >
+            <Rejected />
+          </div>
         </div>
-        <div
-          className="tab-pane fade show"
-          id="tabs-icons-text-2"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-2-tab"
-        >
-          <Pending />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-icons-text-3"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-3-tab"
-        >
-          <Approved />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-icons-text-4"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-4-tab"
-        >
-          <Rejected />
-        </div>
-      </div>
-      {/* </Card> */}
+      </Card>
     </div>
   );
 };

@@ -671,7 +671,7 @@ function* deleteHolidayEvents(action) {
 }
 
 /**
- * myPortfolio leaves
+ * get Employee leaves
  */
 
 function* FetchLeaveByTypes(action) {
@@ -681,7 +681,7 @@ function* FetchLeaveByTypes(action) {
     const response = yield call(fetchMyleaves, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getLeavesByTypesSuccess(response.details));
+      yield put(getLeavesByTypesSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(getLeavesByTypesFailure(response.error_message));
@@ -703,7 +703,7 @@ function* FetchEmployeesLeaves(action) {
     const response = yield call(fetchEmployeesleaves, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getEmployeeLeavesSuccess(response.details.data));
+      yield put(getEmployeeLeavesSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
@@ -727,7 +727,7 @@ function* FetchEmployeesLeaves(action) {
     const response = yield call(fetchModifyEmployeesLeaves, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getModifyLogsSuccess(response.details.data));
+      yield put(getModifyLogsSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());

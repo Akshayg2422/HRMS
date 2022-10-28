@@ -10,8 +10,11 @@ function DatePicker({
   value,
   placeholder,
   minDate,
+  disabledDate,
   ...props
 }: DatePickerProps) {
+  console.log(value + "+=====");
+
   const handleChange = (
     dates: Date[],
     currentDateString: string,
@@ -22,6 +25,7 @@ function DatePicker({
       onChange(currentDateString);
     }
   };
+
   return (
     <div className="form-group">
       <div className="input-group">
@@ -34,6 +38,11 @@ function DatePicker({
         )}
         <Flatpickr
           onChange={handleChange}
+          options={
+            disabledDate && {
+              disable: disabledDate,
+            }
+          }
           className="form-control bg-white pl-2"
           value={value}
           placeholder={placeholder}

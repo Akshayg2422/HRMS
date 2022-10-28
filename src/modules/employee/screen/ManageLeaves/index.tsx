@@ -52,19 +52,6 @@ function ManageLeaves() {
     dispatch(fetchCalendardetails({ params }));
   };
 
-  function paginationHandler(
-    type: "next" | "prev" | "current",
-    position?: number
-  ) {
-    let page =
-      type === "next"
-        ? currentPage + 1
-        : type === "prev"
-        ? currentPage - 1
-        : position;
-    getCalendarDetails(page);
-  }
-
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
@@ -122,14 +109,6 @@ function ManageLeaves() {
           {daysHoliday && daysHoliday.length > 0 ? (
             <CommonTable
               noHeader
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployeeLog(
                 calendarEvents?.days_holiday
               )}
