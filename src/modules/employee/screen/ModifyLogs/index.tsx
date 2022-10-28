@@ -16,6 +16,7 @@ import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 
@@ -42,11 +43,13 @@ const ModifyLogs = () => {
       page_number: pageNumber,
       status: statusId,
       q: searchEmployee,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
+        onSuccess: (success: any) => {
+        },
         onError: (error: string) => {},
       })
     );
@@ -163,7 +166,7 @@ const ModifyLogs = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-1-tab"
         >
-          {/* <AllLeaves/> */}
+          <AllLeaves />
         </div>
         <div
           className="tab-pane fade show"
@@ -171,7 +174,7 @@ const ModifyLogs = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-2-tab"
         >
-          {/* <Pending /> */}
+          <Pending />
         </div>
         <div
           className="tab-pane fade"
@@ -179,7 +182,7 @@ const ModifyLogs = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-3-tab"
         >
-          {/* <Approved /> */}
+          <Approved />
         </div>
         <div
           className="tab-pane fade"
@@ -187,7 +190,7 @@ const ModifyLogs = () => {
           role="tabpanel"
           aria-labelledby="tabs-icons-text-4-tab"
         >
-          {/* <Rejected /> */}
+          <Rejected />
         </div>
       </div>
       {/* </Card> */}

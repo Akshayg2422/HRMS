@@ -55,7 +55,7 @@ function paginationHandler(type: 'next' | 'prev' | 'current', position: number) 
   return page;
 }
 
-const showToast = (type: 'success' | 'error' | 'default', message: string) => {
+const showToast = (type: 'success' | 'error' | 'default'|'info', message: string) => {
 
   const style: object = {
     position: "top-center",
@@ -75,6 +75,9 @@ const showToast = (type: 'success' | 'error' | 'default', message: string) => {
       break;
     case 'error':
       toastElement = toast.error(message, style)
+      break;
+      case 'info':
+      toastElement = toast.info(message, style)
       break;
     default:
       toastElement = toast(message, style)

@@ -61,6 +61,9 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
 
   export const FETCH_EMPLOYEES_LEAVES='/attendance/getEmployeesLeaves'
 
+  export const FETCH_MODIFY_EMPLOYEES_LEAVES='/attendance/getEmployeesLeaves'
+
+
   export const FETCH_MY_LEAVES="/attendance/getEmployeeLeaves"
 
   export const POST_EMPLOYEES_HOLIDAYS='/attendance/addHoliday'

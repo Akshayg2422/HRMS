@@ -65,24 +65,24 @@ const AllLeaves = () => {
         : position;
     fetchPendingDetail(page);
   }
-  const normalizedEmployeeLog = (data: any) => {
-    return (
-      data &&
-      data.length > 0 &&
-      data.map((el: any) => {
-        
-        return {
-          name: el.name,
-          "Date From": el.date_from,
-          "Date To": el.date_to,
-          "Leave Types": el.leave_type,
-          Reason: el.reason,
-          // Status: el.status_text,
-          // Branch: el.branch_name,
-        };
-      })
-    );
-  };
+  // const normalizedEmployeeLog = (data: any) => {
+  //   return (
+  //     data &&
+  //     data.length > 0 &&
+  //     data.map((el: any) => {
+
+  //       return {
+  //         name: el.name,
+  //         "Date From": el.date_from,
+  //         "Date To": el.date_to,
+  //         "Leave Types": el.leave_type,
+  //         Reason: el.reason,
+  //         // Status: el.status_text,
+  //         // Branch: el.branch_name,
+  //       };
+  //     })
+  //   );
+  // };
 
   const manageApproveStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
@@ -123,6 +123,7 @@ const AllLeaves = () => {
       })
     );
   };
+  console.log("employeesLeaves", employeesLeaves);
 
   return (
     <div>
@@ -326,6 +327,7 @@ type Location = {
   branch_name: string;
   reason: string;
   id: string;
+  employee_id: string;
 };
 
 type LocationTableProps = {
@@ -363,12 +365,12 @@ const LocationTable = ({
             tableDataSet.map((item: Location, index: number) => {
               return (
                 <tr className="align-items-center">
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.name}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${' '}(${item.employee_id})`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_to}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>  
+                  <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>
                     {item.status_code === -1 ? (

@@ -61,5 +61,9 @@ export const fetchMyleaves= (payload) => post(url.FETCH_MY_LEAVES,payload,{})
 
 export const fetchEmployeesleaves= (payload) => post(url.FETCH_EMPLOYEES_LEAVES,payload,{})
 
+export const fetchModifyEmployeesLeaves= (payload) => post(url.FETCH_MODIFY_EMPLOYEES_LEAVES,payload,{})
+
+
+
 
 

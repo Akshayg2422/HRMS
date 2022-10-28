@@ -1,29 +1,23 @@
-import React from 'react';
-import {ImageView,Container} from '@components';
+import React from "react";
+import { ImageView, Container } from "@components";
 import { Icons } from "@assets";
-import {goBack, useNav} from '@utils';
+import { goBack, isExist, useNav } from "@utils";
 
+interface BackArrowProps {
+  backgroundColor?: string;
+  col?: String;
+  additionClass?: string;
+}
 
-const BackArrow: React.FC = () => {
-    const navigation = useNav();
+const BackArrow= ({ additionClass, col }: BackArrowProps) => {
+  const navigation = useNav();
   return (
-    <Container  height={25} width={25}>
-       <Container
-              col={'col'}
-              additionClass={'mt-sm-3'}
-              justifyContent={"justify-content-center"}
-              alignItems={"align-items-center"}
-              onClick={()=>goBack(navigation)}
-            >
-        <ImageView
-          icon={Icons.Delete}
-          height={20}
-          width={20}
-        //   tintColor={colors.brand}
-        />
-      
-      </Container>
-    </Container>
+    <div
+      className={`${isExist(additionClass)} ${isExist(col)}`}
+      onClick={() => goBack(navigation)}
+    >
+      <ImageView icon={Icons.BackArrow} height={25} width={28} />
+    </div>
   );
 };
 export default BackArrow;

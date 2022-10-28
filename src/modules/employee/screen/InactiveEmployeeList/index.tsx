@@ -8,7 +8,8 @@ import {
   Primary,
   Secondary,
   NoRecordFound,
-  ChooseBranchFromHierarchical
+  ChooseBranchFromHierarchical,
+  BackArrow
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -129,6 +130,7 @@ function InActiveEmployeeList() {
   return (
     <>
       <Card margin={"m-4"}>
+      <BackArrow additionClass={'my-3'}/>
         <Container>
           <h2>{t("deletedUser")}</h2>
           <ChooseBranchFromHierarchical />

@@ -121,6 +121,7 @@ import {
   postDeleteHolidays,
   fetchEmployeesleaves,
   fetchMyleaves,
+  fetchModifyEmployeesLeaves
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -572,7 +573,7 @@ function* applyLeave(action) {
     } else {
       yield put(hideLoader());
       yield put(applyLeaveFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     console.log("error-->", error);
@@ -723,7 +724,7 @@ function* FetchEmployeesLeaves(action) {
   try {
     yield put(showLoader());
 
-    const response = yield call(fetchEmployeesleaves, action.payload.params);
+    const response = yield call(fetchModifyEmployeesLeaves, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
       yield put(getModifyLogsSuccess(response.details.data));

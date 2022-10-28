@@ -11,6 +11,7 @@ import {
   CommonTable,
   Secondary,
   NoRecordFound,
+  BackArrow,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +28,7 @@ function ManageLeaves() {
   const navigation = useNav();
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
-  const[recall,setRecall]=useState(false)
+  const [recall, setRecall] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [daysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
@@ -104,10 +105,8 @@ function ManageLeaves() {
         color: "green",
       });
     });
-    setRecall(true)
-
+    setRecall(true);
   };
-
 
   console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave);
 
@@ -115,6 +114,7 @@ function ManageLeaves() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
+          <BackArrow additionClass={"mb-3"} />
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>

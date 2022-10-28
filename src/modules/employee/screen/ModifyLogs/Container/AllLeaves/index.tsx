@@ -11,9 +11,10 @@ import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +27,7 @@ const AllLeaves = () => {
   const [rejectModel, setRejectModel] = useState(false);
   const [revertModel, setRevertModel] = useState(false);
 
-  const { employeesLeaves, numOfPages, currentPage, selectedEventId } =
+  const { employeesModifyLeaves, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -41,9 +42,10 @@ const AllLeaves = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -2,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
         onSuccess: (success: object) => {},
         onError: (error: string) => {
@@ -106,15 +108,18 @@ const AllLeaves = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           if (el === 1) {
             setApproveModel(!approveModel);
+            showToast("info", success.status);
           }
           if (el === 0) {
             setRejectModel(!rejectModel);
+            showToast("info", success.status);
           }
           if (el === -1) {
             setRevertModel(!revertModel);
+            showToast("info", success.status);
           }
           fetchPendingDetail(currentPage);
         },
@@ -126,7 +131,7 @@ const AllLeaves = () => {
   return (
     <div>
       <div className="row">
-        {employeesLeaves && employeesLeaves.length > 0 ? (
+        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
           <CommonTable
             noHeader
             isPagination
@@ -140,7 +145,7 @@ const AllLeaves = () => {
             // displayDataSet={normalizedEmployeeLog(employeesLeaves)}
             tableChildren={
               <LocationTable
-                tableDataSet={employeesLeaves}
+                tableDataSet={employeesModifyLeaves}
                 onRevertClick={(item) => manageRevertStatus(item)}
                 onApproveClick={(item) => {
                   manageApproveStatus(item);
@@ -325,6 +330,7 @@ type Location = {
   branch_name: string;
   reason: string;
   id: string;
+  employee_id: string;
 };
 
 type LocationTableProps = {
@@ -346,8 +352,7 @@ const LocationTable = ({
         <thead className="thead-light">
           <tr>
             <th scope="col">{"Name"}</th>
-            <th scope="col">{"Date From"}</th>
-            <th scope="col">{"Date To"}</th>
+            <th scope="col">{"Date"}</th>
             <th scope="col">{"Leave Type"}</th>
             <th scope="col">{"Reason"}</th>
             <th scope="col">{"Branch"}</th>
@@ -362,12 +367,13 @@ const LocationTable = ({
             tableDataSet.map((item: Location, index: number) => {
               return (
                 <tr className="align-items-center">
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.name}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${
+                    item.employee_id
+                  })`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.date_to}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>  
+                  <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>
                     {item.status_code === -1 ? (

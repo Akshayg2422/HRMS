@@ -1,4 +1,12 @@
-import { Card, CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from "@components";
+import {
+  Card,
+  CommonTable,
+  Container,
+  Modal,
+  NoRecordFound,
+  Primary,
+  Secondary,
+} from "@components";
 import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
@@ -22,7 +30,6 @@ const Pending = () => {
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  
 
   useEffect(() => {
     fetchPendingDetail(currentPage);
@@ -32,15 +39,17 @@ const Pending = () => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      status:-1
+      status: -1,
     };
-    dispatch(getEmployeeLeaves({  params,
-      onSuccess: (success: object) => {
-      },
-      onError: (error: string) => {
-        dispatch(getEmployeeLeavesSuccess(''))  
-      },
-    }));
+    dispatch(
+      getEmployeeLeaves({
+        params,
+        onSuccess: (success: object) => {},
+        onError: (error: string) => {
+          dispatch(getEmployeeLeavesSuccess(""));
+        },
+      })
+    );
   };
 
   function paginationHandler(
@@ -56,16 +65,20 @@ const Pending = () => {
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
-    return data && data.length>0 && data.map((el: any) => {
-      return {
-        name: el.name,
-        "Date From": el.date_from,
-        "Date To": el.date_to,
-        "Leave Types": el.leave_type,
-        "Reason":el.reason,
-        "Branch":el.branch_name
-      };
-    });
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((el: any) => {
+        return {
+          name: `${el.name}${' '}(${el.employee_id})`,
+          "Date From": el.date_from,
+          "Date To": el.date_to,
+          "Leave Types": el.leave_type,
+          Reason: el.reason,
+          Branch: el.branch_name,
+        };
+      })
+    );
   };
 
   const manageApproveStatus = (item: object) => {
@@ -75,7 +88,7 @@ const Pending = () => {
 
   const manageRejectStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
-    setRejectModel(!rejectModel)
+    setRejectModel(!rejectModel);
   };
 
   const manageStatusHandler = (el: number) => {
@@ -87,16 +100,15 @@ const Pending = () => {
       changeEmployeeLeaveStatus({
         params,
         onSuccess: (success: object) => {
-          if (el ===1) {
+          if (el === 1) {
             setApproveModel(!approveModel);
           }
-          if (el ===0) {
-            setRejectModel(!rejectModel)
+          if (el === 0) {
+            setRejectModel(!rejectModel);
           }
           fetchPendingDetail(currentPage);
         },
-        onError: (error: string) => {
-        },
+        onError: (error: string) => {},
       })
     );
   };
@@ -126,9 +138,11 @@ const Pending = () => {
                 manageRejectStatus(current);
               }
             }}
-            custombutton={'h5'}
+            custombutton={"h5"}
           />
-        ):<NoRecordFound/>}
+        ) : (
+          <NoRecordFound />
+        )}
         <Modal
           title={t("approveLeave")}
           showModel={approveModel}
@@ -136,18 +150,40 @@ const Pending = () => {
         >
           <Container>
             <span className="h4 ml-xl-4">{t("approveWarningMessage")}</span>
-            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
-              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
-              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
-              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
-              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
-              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
-
+            <Container additionClass={"ml-xl-4"} textAlign={"text-left"}>
+              <span>
+                {t("employeeName")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.name}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataFrom")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_from}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataTo")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_to}</span>
+              </span>
+              <br />
+              <span>
+                {t("leaveType")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">
+                  {selectedEventId?.leave_type}
+                </span>
+              </span>
+              <br />
+              <span>
+                {t("reason")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.reason}</span>
+              </span>
             </Container>
-            <Container
-              margin={"mt-5"}
-              additionClass={'text-right'}
-            >
+            <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
                 onClick={() => setApproveModel(!approveModel)}
@@ -166,26 +202,47 @@ const Pending = () => {
         >
           <Container>
             <span className="h4 ml-xl-4">{t("rejectWarningMessage")}</span>
-            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
-              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
-              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
-              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
-              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
-              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
-
+            <Container additionClass={"ml-xl-4"} textAlign={"text-left"}>
+              <span>
+                {t("employeeName")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.name}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataFrom")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_from}</span>
+              </span>
+              <br />
+              <span>
+                {t("dataTo")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.date_to}</span>
+              </span>
+              <br />
+              <span>
+                {t("leaveType")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">
+                  {selectedEventId?.leave_type}
+                </span>
+              </span>
+              <br />
+              <span>
+                {t("reason")}
+                {":"}&nbsp;&nbsp;
+                <span className="text-black">{selectedEventId?.reason}</span>
+              </span>
             </Container>
-            <Container
-              margin={"mt-5"}
-              additionClass={'text-right'}
-            >
+            <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() =>setRejectModel(!rejectModel)}
+                onClick={() => setRejectModel(!rejectModel)}
               />
               <Primary
                 text={t("reject")}
-                onClick={() =>  manageStatusHandler(0)
-                }
+                onClick={() => manageStatusHandler(0)}
               />
             </Container>
           </Container>
