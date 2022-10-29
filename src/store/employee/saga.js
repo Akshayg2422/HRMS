@@ -28,6 +28,7 @@ import {
   DELETE_HOLIDAY,
   GET_EMPLOYEES_LEAVES,
   GET_LEAVES_BY_TYPES,
+  GET_MODIFY_LOGS
 } from "./actionTypes";
 
 import {
@@ -88,6 +89,8 @@ import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
   getEmployeeLeavesFailure,
+  getModifyLogsSuccess,
+  getModifyLogsFailure
 } from "./actions";
 
 import {
@@ -118,6 +121,7 @@ import {
   postDeleteHolidays,
   fetchEmployeesleaves,
   fetchMyleaves,
+  fetchModifyEmployeesLeaves
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -569,7 +573,7 @@ function* applyLeave(action) {
     } else {
       yield put(hideLoader());
       yield put(applyLeaveFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     console.log("error-->", error);
@@ -667,7 +671,7 @@ function* deleteHolidayEvents(action) {
 }
 
 /**
- * myPortfolio leaves
+ * get Employee leaves
  */
 
 function* FetchLeaveByTypes(action) {
@@ -677,7 +681,7 @@ function* FetchLeaveByTypes(action) {
     const response = yield call(fetchMyleaves, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getLeavesByTypesSuccess(response.details));
+      yield put(getLeavesByTypesSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(getLeavesByTypesFailure(response.error_message));
@@ -699,7 +703,7 @@ function* FetchEmployeesLeaves(action) {
     const response = yield call(fetchEmployeesleaves, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getEmployeeLeavesSuccess(response.details.data));
+      yield put(getEmployeeLeavesSuccess(response));
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
@@ -709,6 +713,30 @@ function* FetchEmployeesLeaves(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeLeavesFailure("Invalid Request"));
+  }
+}
+
+/**
+ * get modify logs
+ */
+
+ function* getModifyLogsSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchModifyEmployeesLeaves, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getModifyLogsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError);
+      yield put(getModifyLogsFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getModifyLogsFailure("Invalid Request"));
   }
 }
 
@@ -754,6 +782,7 @@ function* EmployeeSaga() {
   yield takeLatest(DELETE_HOLIDAY, deleteHolidayEvents);
   yield takeLatest(GET_EMPLOYEES_LEAVES, FetchEmployeesLeaves);
   yield takeLatest(GET_LEAVES_BY_TYPES, FetchLeaveByTypes);
+  yield takeLatest(GET_MODIFY_LOGS, getModifyLogsSaga);
 }
 
 export default EmployeeSaga;

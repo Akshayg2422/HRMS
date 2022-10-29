@@ -28,6 +28,7 @@ import {
   MyWorkLog,
   MyLeaves,
   AutoLogout,
+  ModifyLogs,
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -153,6 +154,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_MY_LEAVES}
           element={<RequireAuth>{<MyLeaves />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_MODIFY_LOGS}
+          element={<RequireAuth>{<ModifyLogs />}</RequireAuth>}
         />
 
         <Route path={"*"} element={<PageNotFound />} />

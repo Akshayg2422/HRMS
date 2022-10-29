@@ -10,6 +10,7 @@ import ManageLeaves from  "./ManageLeaves"
 import MyLog from './MyLog'
 import MyWorkLog from './MyWorkLog'
 import MyLeaves from './MyLeaves'
+import ModifyLogs from './ModifyLogs'
 
 
-export{ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves}
+export{ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves,ModifyLogs}

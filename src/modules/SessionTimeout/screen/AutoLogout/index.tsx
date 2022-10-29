@@ -14,7 +14,7 @@ import { resetLocation } from "../../../../store/location/actions";
 import { goTo, ROUTE, useNav } from "@utils";
 
 const AutoLogout = () => {
-  const [signoutTime, setSignoutTime] = useState(3000000);
+  const [signoutTime, setSignoutTime] = useState(300000);
   let logoutTimeout: string | number | NodeJS.Timeout | undefined;
   let dispatch = useDispatch();
   const navigate = useNav();

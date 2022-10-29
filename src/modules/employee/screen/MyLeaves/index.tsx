@@ -12,6 +12,7 @@ import {
   Secondary,
   DropDown,
   NoRecordFound,
+  BackArrow,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -80,7 +81,7 @@ function MyLeaves() {
         datefrom: el.date_from,
         dateto: el.date_to,
         reason: el.reason,
-        "Status":el.status_text
+        Status: el.status_text,
       };
     });
   };
@@ -102,6 +103,7 @@ function MyLeaves() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
+          <BackArrow/>
           <Container additionClass={"text-right row my-4"}>
             <Container additionClass="col-xl-4">
               <DropDown
@@ -122,7 +124,7 @@ function MyLeaves() {
         </Card>
         <h1>{t("leaveList")}</h1>
         <Card>
-          {myLeaves && myLeaves?.data.length > 0 ? (
+          {myLeaves && myLeaves?.length > 0 ? (
             <CommonTable
               noHeader
               isPagination
@@ -133,9 +135,11 @@ function MyLeaves() {
               }}
               previousClick={() => paginationHandler("prev")}
               nextClick={() => paginationHandler("next")}
-              displayDataSet={normalizedEmployeeLog(myLeaves?.data)}
+              displayDataSet={normalizedEmployeeLog(myLeaves)}
             />
-          ):<NoRecordFound/>}
+          ) : (
+            <NoRecordFound />
+          )}
         </Card>
       </Container>
     </>

@@ -11,9 +11,10 @@ import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +27,7 @@ const AllLeaves = () => {
   const [rejectModel, setRejectModel] = useState(false);
   const [revertModel, setRevertModel] = useState(false);
 
-  const { employeesLeaves, numOfPages, currentPage, selectedEventId } =
+  const { employeesModifyLeaves, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -41,9 +42,10 @@ const AllLeaves = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -2,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
         onSuccess: (success: object) => {},
         onError: (error: string) => {
@@ -65,24 +67,23 @@ const AllLeaves = () => {
         : position;
     fetchPendingDetail(page);
   }
-  // const normalizedEmployeeLog = (data: any) => {
-  //   return (
-  //     data &&
-  //     data.length > 0 &&
-  //     data.map((el: any) => {
-
-  //       return {
-  //         name: el.name,
-  //         "Date From": el.date_from,
-  //         "Date To": el.date_to,
-  //         "Leave Types": el.leave_type,
-  //         Reason: el.reason,
-  //         // Status: el.status_text,
-  //         // Branch: el.branch_name,
-  //       };
-  //     })
-  //   );
-  // };
+  const normalizedEmployeeLog = (data: any) => {
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((el: any) => {
+        return {
+          name: el.name,
+          "Date From": el.date_from,
+          "Date To": el.date_to,
+          "Leave Types": el.leave_type,
+          Reason: el.reason,
+          Status: el.status_text,
+          Branch: el.branch_name,
+        };
+      })
+    );
+  };
 
   const manageApproveStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
@@ -107,15 +108,18 @@ const AllLeaves = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           if (el === 1) {
             setApproveModel(!approveModel);
+            showToast("info", success.status);
           }
           if (el === 0) {
             setRejectModel(!rejectModel);
+            showToast("info", success.status);
           }
           if (el === -1) {
             setRevertModel(!revertModel);
+            showToast("info", success.status);
           }
           fetchPendingDetail(currentPage);
         },
@@ -123,12 +127,11 @@ const AllLeaves = () => {
       })
     );
   };
-  console.log("employeesLeaves", employeesLeaves);
 
   return (
     <div>
       <div className="row">
-        {employeesLeaves && employeesLeaves.length > 0 ? (
+        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
           <CommonTable
             noHeader
             isPagination
@@ -142,7 +145,7 @@ const AllLeaves = () => {
             // displayDataSet={normalizedEmployeeLog(employeesLeaves)}
             tableChildren={
               <LocationTable
-                tableDataSet={employeesLeaves}
+                tableDataSet={employeesModifyLeaves}
                 onRevertClick={(item) => manageRevertStatus(item)}
                 onApproveClick={(item) => {
                   manageApproveStatus(item);
@@ -172,13 +175,7 @@ const AllLeaves = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
-              </span>
-              <br />
-              <span>
-                {t("dataTo")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_to}</span>
               </span>
@@ -224,15 +221,9 @@ const AllLeaves = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_from}</span>
-              </span>
-              <br />
-              <span>
-                {t("dataTo")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
               </span>
               <br />
               <span>
@@ -276,15 +267,9 @@ const AllLeaves = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_from}</span>
-              </span>
-              <br />
-              <span>
-                {t("dataTo")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
               </span>
               <br />
               <span>
@@ -349,8 +334,7 @@ const LocationTable = ({
         <thead className="thead-light">
           <tr>
             <th scope="col">{"Name"}</th>
-            <th scope="col">{"Date From"}</th>
-            <th scope="col">{"Date To"}</th>
+            <th scope="col">{"Date"}</th>
             <th scope="col">{"Leave Type"}</th>
             <th scope="col">{"Reason"}</th>
             <th scope="col">{"Branch"}</th>
@@ -365,9 +349,10 @@ const LocationTable = ({
             tableDataSet.map((item: Location, index: number) => {
               return (
                 <tr className="align-items-center">
-                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${' '}(${item.employee_id})`}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${
+                    item.employee_id
+                  })`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.date_to}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
@@ -384,12 +369,11 @@ const LocationTable = ({
                       </span>
                     ) : item.status_code === 1 ? (
                       <span
-                        className="h5 text-primary"
-                        onClick={() => {
-                          if (onRevertClick) onRevertClick(item);
-                        }}
+                        // onClick={() => {
+                        //   if (onRevertClick) onRevertClick(item);
+                        // }}
                       >
-                        {"Revert"}
+                        {"-"}
                       </span>
                     ) : item.status_code === 0 ? (
                       <span

@@ -11,9 +11,10 @@ import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,7 +26,7 @@ const Pending = () => {
   const [approveModel, setApproveModel] = useState(false);
   const [rejectModel, setRejectModel] = useState(false);
 
-  const { employeesLeaves, numOfPages, currentPage, selectedEventId } =
+  const { employeesModifyLeaves, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -40,14 +41,13 @@ const Pending = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -1,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
         onSuccess: (success: object) => {},
-        onError: (error: string) => {
-          dispatch(getEmployeeLeavesSuccess(""));
-        },
+        onError: (error: string) => {},
       })
     );
   };
@@ -70,7 +70,7 @@ const Pending = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${' '}(${el.employee_id})`,
+          name: `${el.name}${" "}(${el.employee_id})`,
           "Date From": el.date_from,
           "Date To": el.date_to,
           "Leave Types": el.leave_type,
@@ -99,12 +99,14 @@ const Pending = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           if (el === 1) {
             setApproveModel(!approveModel);
+            showToast("info", success.status);
           }
           if (el === 0) {
             setRejectModel(!rejectModel);
+            showToast("info", success.status);
           }
           fetchPendingDetail(currentPage);
         },
@@ -116,7 +118,7 @@ const Pending = () => {
   return (
     <div>
       <div className="row">
-        {employeesLeaves && employeesLeaves.length > 0 ? (
+        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
           <CommonTable
             noHeader
             isPagination
@@ -127,10 +129,10 @@ const Pending = () => {
             }}
             previousClick={() => paginationHandler("prev")}
             nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(employeesLeaves)}
+            displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
             additionalDataSet={LEAVE_STATUS_UPDATE}
             tableValueOnClick={(e, index, item, elv) => {
-              const current = employeesLeaves[index];
+              const current = employeesModifyLeaves[index];
               if (elv === "Approve") {
                 manageApproveStatus(current);
               }
@@ -158,17 +160,12 @@ const Pending = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_from}</span>
               </span>
               <br />
-              <span>
-                {t("dataTo")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
-              </span>
-              <br />
+
               <span>
                 {t("leaveType")}
                 {":"}&nbsp;&nbsp;
@@ -210,15 +207,9 @@ const Pending = () => {
               </span>
               <br />
               <span>
-                {t("dataFrom")}
+                {t("date")}
                 {":"}&nbsp;&nbsp;
                 <span className="text-black">{selectedEventId?.date_from}</span>
-              </span>
-              <br />
-              <span>
-                {t("dataTo")}
-                {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
               </span>
               <br />
               <span>

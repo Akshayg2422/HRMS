@@ -130,6 +130,7 @@
 "attendanceDetails":"Attendance Details",
 "startTime":"Start Time",
 "endTime":"End Time",
+"AlreadyselectedDate":"You selected a Holiday Date",
 
 
 
@@ -169,6 +170,9 @@
 "reject":"Reject",
 "revertStatus":"Revert Status",
 "selectBranch":"Select Branch",
+"requestForAsPresent":"Request For Mark As Present",
+"request":"Request",
+"selectedDate":"Selected Date",
 
 
 

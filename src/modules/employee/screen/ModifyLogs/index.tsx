@@ -1,9 +1,12 @@
 import {
   Card,
   ChooseBranchFromHierarchical,
+  CommonTable,
   Container,
   Icon,
   InputText,
+  NoRecordFound,
+  WorkInProgress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -13,21 +16,21 @@ import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 
-const LeaveRequest = () => {
+const ModifyLogs = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
+  const [searchEmployee, setSearchEmployee] = useState("");
 
   const { currentPage } = useSelector((state: any) => state.EmployeeReducer);
-
-  const [searchEmployee, setSearchEmployee] = useState("");
-  const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
 
   useEffect(() => {
     fetchPendingDetail(currentPage, -2);
@@ -40,11 +43,13 @@ const LeaveRequest = () => {
       page_number: pageNumber,
       status: statusId,
       q: searchEmployee,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
+        onSuccess: (success: any) => {
+        },
         onError: (error: string) => {},
       })
     );
@@ -154,43 +159,43 @@ const LeaveRequest = () => {
       </Card>
 
       <Card>
-        <div className="tab-content" id="myTabContent">
-          <div
-            className="tab-pane fade show active"
-            id="tabs-icons-text-1"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-1-tab"
-          >
-            <AllLeaves />
-          </div>
-          <div
-            className="tab-pane fade show"
-            id="tabs-icons-text-2"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-2-tab"
-          >
-            <Pending />
-          </div>
-          <div
-            className="tab-pane fade"
-            id="tabs-icons-text-3"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-3-tab"
-          >
-            <Approved />
-          </div>
-          <div
-            className="tab-pane fade"
-            id="tabs-icons-text-4"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-4-tab"
-          >
-            <Rejected />
-          </div>
+      <div className="tab-content" id="myTabContent">
+        <div
+          className="tab-pane fade show active"
+          id="tabs-icons-text-1"
+          role="tabpanel"
+          aria-labelledby="tabs-icons-text-1-tab"
+        >
+          <AllLeaves />
         </div>
+        <div
+          className="tab-pane fade show"
+          id="tabs-icons-text-2"
+          role="tabpanel"
+          aria-labelledby="tabs-icons-text-2-tab"
+        >
+          <Pending />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-icons-text-3"
+          role="tabpanel"
+          aria-labelledby="tabs-icons-text-3-tab"
+        >
+          <Approved />
+        </div>
+        <div
+          className="tab-pane fade"
+          id="tabs-icons-text-4"
+          role="tabpanel"
+          aria-labelledby="tabs-icons-text-4-tab"
+        >
+          <Rejected />
+        </div>
+      </div>
       </Card>
     </div>
   );
 };
 
-export default LeaveRequest;
+export default ModifyLogs;

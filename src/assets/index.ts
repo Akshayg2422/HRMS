@@ -64,7 +64,8 @@ export const Icons = {
   ShiftManagement:require('./icons/ShiftManagement/shiftManagement.png'),
   MyLog:require('./icons/MyLog/mylog.png'),
   myLogBook:require('./icons/MyLogBook/mylogbook.png'),
-  myLeaves:require('./icons/MyLeaves/holidays.png')
+  myLeaves:require('./icons/MyLeaves/holidays.png'),
+  BackArrow:require('./icons/BackArrow/BackArrow.png')
 }
 
 

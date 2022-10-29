@@ -11,6 +11,7 @@ import {
   CommonTable,
   Secondary,
   NoRecordFound,
+  BackArrow,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,7 +28,7 @@ function ManageLeaves() {
   const navigation = useNav();
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
-  const[recall,setRecall]=useState(false)
+  const [recall, setRecall] = useState(false);
   const [deleteModel, setDeleteModel] = useState(false);
   const [daysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
@@ -41,7 +42,7 @@ function ManageLeaves() {
   useEffect(() => {
     getCalendarDetails(currentPage);
     geteventsdetails();
-  }, []);
+  }, [recall]);
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
@@ -50,19 +51,6 @@ function ManageLeaves() {
     };
     dispatch(fetchCalendardetails({ params }));
   };
-
-  function paginationHandler(
-    type: "next" | "prev" | "current",
-    position?: number
-  ) {
-    let page =
-      type === "next"
-        ? currentPage + 1
-        : type === "prev"
-        ? currentPage - 1
-        : position;
-    getCalendarDetails(page);
-  }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
@@ -88,7 +76,6 @@ function ManageLeaves() {
             : "gray",
       });
     });
-
     calendarEvents?.days_absent?.map((item: any) => {
       daysHoliday.push({
         title: item.reason,
@@ -105,7 +92,7 @@ function ManageLeaves() {
         color: "green",
       });
     });
-    setRecall(!recall)
+    setRecall(true);
   };
 
   console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave);
@@ -114,6 +101,7 @@ function ManageLeaves() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
+          <BackArrow additionClass={"mb-3"} />
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>
@@ -121,14 +109,6 @@ function ManageLeaves() {
           {daysHoliday && daysHoliday.length > 0 ? (
             <CommonTable
               noHeader
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployeeLog(
                 calendarEvents?.days_holiday
               )}

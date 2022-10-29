@@ -7,6 +7,7 @@ import {
   Table,
   NoRecordFound,
   Card,
+  BackArrow,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -179,6 +180,7 @@ function MyWorkLog() {
       <div className="row">
         <div className="col">
           <></>
+          <BackArrow additionClass={'m-3'}/>
           <div className="col text-right mb-3">
             <Sort
               sortData={sortData}

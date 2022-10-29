@@ -10,39 +10,43 @@ import {
   changeEmployeeLeaveStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Approved = () => {
+const Rejected = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
 
-  const { numOfPages, currentPage, employeesLeaves, selectedEventId } =
+  const { employeesModifyLeaves, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
   useEffect(() => {
-    fetchApprovedLeaves(currentPage);
+    fetchRejectedLeaves(currentPage);
   }, [hierarchicalBranchIds]);
 
-  const fetchApprovedLeaves = (pageNumber: number) => {
+  const fetchRejectedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      status: 1,
+      status: 0,
+      leave_group: "MP",
     };
     dispatch(
-      getEmployeeLeaves({
+      getModifyLogs({
         params,
         onSuccess: (success: object) => {},
-        onError: (error: string) => {},
+        onError: (error: string) => {
+          dispatch(getEmployeeLeavesSuccess(""));
+        },
       })
     );
   };
@@ -57,7 +61,7 @@ const Approved = () => {
         : type === "prev"
         ? currentPage - 1
         : position;
-    fetchApprovedLeaves(page);
+    fetchRejectedLeaves(page);
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -66,7 +70,7 @@ const Approved = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${' '}(${el.employee_id})`,
+          name: `${el.name}${" "}(${el.employee_id})`,
           "Date From": el.date_from,
           "Date To": el.date_to,
           "Leave Types": el.leave_type,
@@ -90,41 +94,44 @@ const Approved = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           setRevertModel(!revertModel);
-          fetchApprovedLeaves(currentPage);
+          fetchRejectedLeaves(currentPage);
+          showToast("info", success.status);
         },
         onError: (error: string) => {},
       })
     );
   };
-
+  console.log("employeesLeaves", employeesModifyLeaves);
   return (
     <div>
-      {employeesLeaves && employeesLeaves.length > 0 ? (
-        <CommonTable
-          noHeader
-          isPagination
-          currentPage={currentPage}
-          noOfPage={numOfPages}
-          paginationNumberClick={(currentPage) => {
-            paginationHandler("current", currentPage);
-          }}
-          previousClick={() => paginationHandler("prev")}
-          nextClick={() => paginationHandler("next")}
-          displayDataSet={normalizedEmployeeLog(employeesLeaves)}
-          additionalDataSet={LEAVE_STATUS_REVERT}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesLeaves[index];
-            if (elv === "Revert") {
-              RevertStatusHandler(current);
-            }
-          }}
-          custombutton={"h5"}
-        />
-      ) : (
-        <NoRecordFound />
-      )}
+      <div className="row">
+        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
+          <CommonTable
+            noHeader
+            isPagination
+            currentPage={currentPage}
+            noOfPage={numOfPages}
+            paginationNumberClick={(currentPage) => {
+              paginationHandler("current", currentPage);
+            }}
+            previousClick={() => paginationHandler("prev")}
+            nextClick={() => paginationHandler("next")}
+            displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
+            additionalDataSet={LEAVE_STATUS_REVERT}
+            tableValueOnClick={(e, index, item, elv) => {
+              const current = employeesModifyLeaves[index];
+              if (elv === "Revert") {
+                RevertStatusHandler(current);
+              }
+            }}
+            custombutton={"h5"}
+          />
+        ) : (
+          <NoRecordFound />
+        )}
+      </div>
       <Modal
         title={t("revertStatus")}
         showModel={revertModel}
@@ -140,15 +147,9 @@ const Approved = () => {
             </span>
             <br />
             <span>
-              {t("dataFrom")}
+              {t("date")}
               {":"}&nbsp;&nbsp;
               <span className="text-black">{selectedEventId?.date_from}</span>
-            </span>
-            <br />
-            <span>
-              {t("dataTo")}
-              {":"}&nbsp;&nbsp;
-              <span className="text-black">{selectedEventId?.date_to}</span>
             </span>
             <br />
             <span>
@@ -179,4 +180,4 @@ const Approved = () => {
   );
 };
 
-export default Approved;
+export default Rejected;
