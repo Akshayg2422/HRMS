@@ -29,6 +29,9 @@ import {
   useNav,
   goBack,
   getDropDownValueByID,
+  inputNumberMaxLength,
+  MAX_LENGTH_MOBILE_NUMBER,
+  Today,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -258,7 +261,7 @@ const ManageEmployee = () => {
             goBack(navigation);
           },
           onError: (error: string) => {
-            showToast("error", t("somethingWrong"));
+            showToast("error",error);
           },
         })
       );
@@ -390,6 +393,7 @@ const ManageEmployee = () => {
   }
 
   return (
+
     <>
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}
@@ -421,9 +425,9 @@ const ManageEmployee = () => {
           validator={validateMobileNumber}
           value={employeeDetails.mobileNumber}
           name={"mobileNumber"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
+    
+          onChange={(event) => dateTimePickerHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
+
         />
         <InputMail
           label={t("email")}

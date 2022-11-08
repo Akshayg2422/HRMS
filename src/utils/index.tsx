@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER,LEAVE_STATUS_UPDATE,MY_PORTFOLIO_ITEM,LEAVES_TYPE,LEAVE_STATUS_REVERT,DOWNLOAD_RANGE } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER,LEAVE_STATUS_UPDATE,MY_PORTFOLIO_ITEM,LEAVES_TYPE,LEAVE_STATUS_REVERT,DOWNLOAD_RANGE,Today,ThisWeek,ThisMonth,LastMonth,LastWeek } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -16,6 +16,7 @@ import moment from 'moment';
 import {REACT_APP_APP_URL} from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
+import { hideLoader, showLoader } from '../store/app/actions';
 
 const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 
@@ -142,7 +143,7 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
 };
 
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
-const inputNumberMaxLength = (value: string, length: number) => value && value.slice(0, length);
+const inputNumberMaxLength = (value: any, length: number) => value && value.slice(0, length);
 
 
 const downloadFile=((response:any)=>{
@@ -201,5 +202,8 @@ export {
   MAX_LENGTH_MOBILE_NUMBER,
   inputNumberMaxLength,
   LEAVE_STATUS_REVERT,
-  DOWNLOAD_RANGE
+  DOWNLOAD_RANGE,
+  Today,
+  ThisWeek,ThisMonth,LastMonth,LastWeek
+
 }

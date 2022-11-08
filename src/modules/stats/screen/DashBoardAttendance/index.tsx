@@ -10,6 +10,8 @@ import {
   CardCalendar,
   DatePicker,
   BackArrow,
+  Secondary,
+  Primary,
 } from "@components";
 import * as url from "../../../../helpers/url_helper";
 import React, { useEffect, useState } from "react";
@@ -28,11 +30,11 @@ import {
   downloadFile,
   DOWNLOAD_RANGE,
 } from "@utils";
-import { Navbar } from "@modules";
+import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
 import moment from "moment";
 
-const DashBoardAttendance = ({}) => {
+const DashBoardAttendance = ({ }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -42,8 +44,7 @@ const DashBoardAttendance = ({}) => {
     numOfPages,
     currentPage,
     employeeattendancedatalog,
-    employeeCheckInDetailedLogPerDay,
-    downloadContent,
+    employeeCheckInDetailedLogPerDay, error
   } = useSelector((state: any) => state.EmployeeReducer);
 
   const { hierarchicalBranchIds } = useSelector(
@@ -53,6 +54,11 @@ const DashBoardAttendance = ({}) => {
   const [model, setModel] = useState(false);
   const [downloadmodel, setDownloadModel] = useState(false);
   const [showCustomCalendar, setShowCustomCalender] = useState(false);
+  const [paramsDetails, setParamsDetails] = useState({
+    selectedDate: routeParams.selectedDate,
+    selectedDateTo: routeParams.selectedDate,
+    range: false,
+  })
 
   const [selectedDepartment, setSelectedDepartment] = useState(
     routeParams.departmentId
@@ -61,7 +67,7 @@ const DashBoardAttendance = ({}) => {
     routeParams.attendanceType
   );
 
-  const [selectedDateRange, setSelectedDateRange] = useState();
+  const [selectedDateRange, setSelectedDateRange] = useState(DOWNLOAD_RANGE[0].value);
   const [customselectedDate, setCustomSelectedDateRange] = useState(
     getServerDateFromMoment(getMomentObjFromServer(routeParams.selectedDate))
   );
@@ -72,7 +78,7 @@ const DashBoardAttendance = ({}) => {
 
   useEffect(() => {
     getTodayStats(currentPage);
-  }, [selectedAttendance, selectedDepartment,customselectedDate]);
+  }, [selectedAttendance, selectedDepartment, customselectedDate]);
 
   const getTodayStats = (pageNumber: number) => {
     const params = {
@@ -95,15 +101,15 @@ const DashBoardAttendance = ({}) => {
         in: el.per_day_details
           ? el.per_day_details.start_time
             ? getDisplayTimeFromMoment(
-                getMomentObjFromServer(el.per_day_details.start_time)
-              )
+              getMomentObjFromServer(el.per_day_details.start_time)
+            )
             : "-"
           : "-",
         out: el.per_day_details
           ? el.per_day_details.end_time
             ? getDisplayTimeFromMoment(
-                getMomentObjFromServer(el.per_day_details.end_time)
-              )
+              getMomentObjFromServer(el.per_day_details.end_time)
+            )
             : "-"
           : "-",
 
@@ -120,8 +126,8 @@ const DashBoardAttendance = ({}) => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     getTodayStats(page);
   }
 
@@ -148,26 +154,32 @@ const DashBoardAttendance = ({}) => {
     });
   };
 
-  // getServerDateFromMoment(
-  //   getMomentObjFromServer(routeParams.selectedDate)
-  // ),
-  const downloadSampleCsvFile = () => {
+  const downloadSampleCsvFile = (
+    logs: boolean
+  ) => {
     const params = {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
       attendance_type: selectedAttendance + "",
-      selected_date: customselectedDate,
+      selected_date: paramsDetails.selectedDateTo,
+      selected_date_to: paramsDetails.selectedDate,
+      range: paramsDetails.range,
       page_number: currentPage,
       download: true,
+      logs: logs,
     };
+    setDownloadModel(!downloadmodel)
     dispatch(
       getDownloadTodayStatus({
         params,
         onSuccess: (response: any) => {
+          setDownloadModel(false)
           downloadFile(response);
+          setShowCustomCalender(false);
         },
-        onError: (error: string) => {
-          showToast("error", t("invalidUser"));
+        onError: (errorMessage: string) => {
+          showToast("error", errorMessage);
+          setDownloadModel(false)
         },
       })
     );
@@ -178,53 +190,49 @@ const DashBoardAttendance = ({}) => {
   };
 
   const selectedRange = (type: string) => {
-    let today = moment().format("YYYY-MM-DD");
-    let thisWeek = moment()
-      .startOf("isoWeek")
-      .add(0, "week")
-      .format("YYYY-MM-DD");
-    let thisMonth = `01-${moment().format("M")}-${moment().format("Y")}`;
-    let lastMonth = `01-${moment()
-      .add(-1, "month")
-      .format("M")}-${moment().format("Y")}`;
-    let lastWeek = moment()
-      .startOf("isoWeek")
-      .add(-1, "week")
-      .format("YYYY-MM-DD");
-    console.log(
-      "lastMonth",
-      lastMonth,
-      "today",
-      today,
-      "thisWeek",
-      thisWeek,
-      "thisMonth",
-      thisMonth,
-      "lastWeek",
-      lastWeek
-    );
-    if (type === "Today") {
+    setSelectedDateRange(type)
+    if (type === "SelectedDate") {
+      setSelectedDateRange(type)
+      setParamsDetails({ ...paramsDetails, selectedDate: customselectedDate, selectedDateTo: customselectedDate, range: false })
+      setShowCustomCalender(false);
+      resetCustom();
+    } else if (type === "Today") {
+      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: Today, range: false })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "This Week") {
+      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: ThisWeek, range: true })
+
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Last Week") {
+      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: LastWeek, range: true })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "This Month") {
+      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: ThisMonth, range: true })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Last Month") {
+      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: LastMonth, range: true })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Custom Range") {
+      setParamsDetails({ ...paramsDetails, selectedDate: customRange.dataTo, selectedDateTo: customRange.dateFrom, range: true })
       setShowCustomCalender(true);
     }
   };
   const dateTimePickerHandler = (value: string, key: string) => {
     setCustomRange({ ...customRange, [key]: value });
   };
+
+  const LogsDownload = (type: string) => {
+    if (type === 'Log') {
+      downloadSampleCsvFile(true)
+    } if (type === 'ConsolidatedLog') {
+      downloadSampleCsvFile(false)
+    }
+  }
 
   return (
     <div className="mx-3">
@@ -275,8 +283,8 @@ const DashBoardAttendance = ({}) => {
               </div>
 
               <Container additionClass={"col my-4 text-right"}>
-                {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}> */}
-                <a download onClick={(e) => downloadSampleCsvFile()}>
+                <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
+                  {/* <a download onClick={(e) => downloadSampleCsvFile()}> */}
                   <Icon icon={Icons.DownloadSecondary} />
                 </a>
               </Container>
@@ -306,7 +314,7 @@ const DashBoardAttendance = ({}) => {
 
       <Modal showModel={model} toggle={() => setModel(!model)}>
         {employeeCheckInDetailedLogPerDay &&
-        employeeCheckInDetailedLogPerDay.length > 0 ? (
+          employeeCheckInDetailedLogPerDay.length > 0 ? (
           <Table
             displayDataSet={normalizedPerDayData(
               employeeCheckInDetailedLogPerDay
@@ -320,8 +328,9 @@ const DashBoardAttendance = ({}) => {
         showModel={downloadmodel}
         toggle={() => setDownloadModel(!downloadmodel)}
       >
-        <div className="col-lg-6 col-md-12">
+        <div className="col-lg-12 col-md-12">
           <DropDown
+            additionClass="col-lg-6"
             label={"Select Range"}
             placeholder={"Select Range"}
             data={DOWNLOAD_RANGE}
@@ -330,6 +339,20 @@ const DashBoardAttendance = ({}) => {
               selectedRange(event.target.value);
             }}
           />
+          <Container margin={"mt-5"} additionClass={"text-right"}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setDownloadModel(!downloadmodel)}
+            />
+            <Primary
+              text={t("downloadLog")}
+              onClick={() => LogsDownload('Log')}
+            />
+            <Primary
+              text={t("downloadConsolidatedLog")}
+              onClick={() => LogsDownload('ConsolidatedLog')}
+            />
+          </Container>
         </div>
         {showCustomCalendar ? (
           <div className="col-lg-6 col-md-12">

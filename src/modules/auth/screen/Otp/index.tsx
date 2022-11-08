@@ -79,23 +79,16 @@ function Otp() {
       onSuccess: async(response: LoginResponse) => {
 
         if (response.is_admin || response.is_branch_admin) {
-
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
-         
           dispatch(setUserLoginDetails(params))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
-
           goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
-          
         }else{
-          showToast('default', 'User is not a valid user')
+          showToast('error', t('invalidAdmin'));
         }
-
-        
-
       },
       onError: (error: string) => {
-        showToast('error', t('invalidUser'));
+        showToast('error', error);
       },
     }));
   };
@@ -118,6 +111,8 @@ function Otp() {
         };
         signInOTP(params);
       }
+    }else{
+      showToast('error', t('invalidParams'));
     }
   };
 
