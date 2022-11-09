@@ -74,13 +74,11 @@ function Hierarchical({ showCheckBox=true }: HierarchicalProps) {
 
   useEffect(() => {
     const params = {};
-    console.log("=========paramsa");
 
     dispatch(
       getAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
-          console.log(JSON.stringify(response) + "=========LocationProps");
           setStructuredData(response);
           const parentBranch = response.find((it) => !it.parent_id);
           if (parentBranch) {

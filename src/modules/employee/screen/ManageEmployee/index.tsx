@@ -29,6 +29,9 @@ import {
   useNav,
   goBack,
   getDropDownValueByID,
+  inputNumberMaxLength,
+  MAX_LENGTH_MOBILE_NUMBER,
+  Today,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -147,7 +150,7 @@ const ManageEmployee = () => {
           ]);
         },
 
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
 
@@ -258,7 +261,7 @@ const ManageEmployee = () => {
             goBack(navigation);
           },
           onError: (error: string) => {
-            showToast("error", t("somethingWrong"));
+            showToast("error", error);
           },
         })
       );
@@ -344,6 +347,10 @@ const ManageEmployee = () => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
+  const mobileNumberHandler = (value: string, key: string) => {
+    setEmployeeDetails({ ...employeeDetails, [key]: value });
+  };
+
   const validateDesignationPostParams = () => {
     return validateDefault(designation).status;
   };
@@ -360,7 +367,7 @@ const ManageEmployee = () => {
             setDesignation("");
             setIsAdminRights(false);
           },
-          onError: () => {},
+          onError: () => { },
         })
       );
     }
@@ -383,13 +390,14 @@ const ManageEmployee = () => {
             setIsRefresh(!isRefresh);
             setDepartment("");
           },
-          onError: () => {},
+          onError: () => { },
         })
       );
     }
   }
 
   return (
+
     <>
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}
@@ -421,9 +429,7 @@ const ManageEmployee = () => {
           validator={validateMobileNumber}
           value={employeeDetails.mobileNumber}
           name={"mobileNumber"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
+          onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
         />
         <InputMail
           label={t("email")}
