@@ -150,7 +150,7 @@ const ManageEmployee = () => {
           ]);
         },
 
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
 
@@ -261,7 +261,7 @@ const ManageEmployee = () => {
             goBack(navigation);
           },
           onError: (error: string) => {
-            showToast("error",error);
+            showToast("error", error);
           },
         })
       );
@@ -347,6 +347,10 @@ const ManageEmployee = () => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
+  const mobileNumberHandler = (value: string, key: string) => {
+    setEmployeeDetails({ ...employeeDetails, [key]: value });
+  };
+
   const validateDesignationPostParams = () => {
     return validateDefault(designation).status;
   };
@@ -363,7 +367,7 @@ const ManageEmployee = () => {
             setDesignation("");
             setIsAdminRights(false);
           },
-          onError: () => {},
+          onError: () => { },
         })
       );
     }
@@ -386,7 +390,7 @@ const ManageEmployee = () => {
             setIsRefresh(!isRefresh);
             setDepartment("");
           },
-          onError: () => {},
+          onError: () => { },
         })
       );
     }
@@ -425,9 +429,7 @@ const ManageEmployee = () => {
           validator={validateMobileNumber}
           value={employeeDetails.mobileNumber}
           name={"mobileNumber"}
-    
-          onChange={(event) => dateTimePickerHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
-
+          onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
         />
         <InputMail
           label={t("email")}

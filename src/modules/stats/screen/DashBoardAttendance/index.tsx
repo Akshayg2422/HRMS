@@ -161,8 +161,8 @@ const DashBoardAttendance = ({ }) => {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
       attendance_type: selectedAttendance + "",
-      selected_date: paramsDetails.selectedDateTo,
-      selected_date_to: paramsDetails.selectedDate,
+      selected_date: paramsDetails.selectedDate,
+      selected_date_to: paramsDetails.selectedDateTo,
       range: paramsDetails.range,
       page_number: currentPage,
       download: true,
@@ -193,28 +193,28 @@ const DashBoardAttendance = ({ }) => {
     setSelectedDateRange(type)
     if (type === "SelectedDate") {
       setSelectedDateRange(type)
-      setParamsDetails({ ...paramsDetails, selectedDate: customselectedDate, selectedDateTo: customselectedDate, range: false })
+      setParamsDetails({ ...paramsDetails, selectedDateTo: customselectedDate, selectedDate: customselectedDate, range: false })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Today") {
-      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: Today, range: false })
+      setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: Today, range: false })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "This Week") {
-      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: ThisWeek, range: true })
+      setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: ThisWeek, range: true })
 
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Last Week") {
-      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: LastWeek, range: true })
+      setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: LastWeek, range: true })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "This Month") {
-      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: ThisMonth, range: true })
+      setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: ThisMonth, range: true })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Last Month") {
-      setParamsDetails({ ...paramsDetails, selectedDate: Today, selectedDateTo: LastMonth, range: true })
+      setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: LastMonth, range: true })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Custom Range") {
