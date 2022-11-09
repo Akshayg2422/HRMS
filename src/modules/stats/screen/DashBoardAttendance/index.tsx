@@ -176,10 +176,13 @@ const DashBoardAttendance = ({ }) => {
           setDownloadModel(false)
           downloadFile(response);
           setShowCustomCalender(false);
+          setSelectedDateRange(DOWNLOAD_RANGE[0].value)
         },
         onError: (errorMessage: string) => {
           showToast("error", errorMessage);
           setDownloadModel(false)
+          setSelectedDateRange(DOWNLOAD_RANGE[0].value)
+
         },
       })
     );
