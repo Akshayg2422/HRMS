@@ -2,7 +2,7 @@
   "name": "zenylog",
   "version": "0.1.0",
   "dependencies": {
-    "@craco/craco": "^6.4.5",
+    "@craco/craco": "^7.0.0-alpha.3",
     "@fullcalendar/daygrid": "^5.11.2",
     "@fullcalendar/interaction": "^5.11.3",
     "@fullcalendar/react": "^5.11.2",
