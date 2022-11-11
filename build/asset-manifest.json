@@ -1,0 +1,29 @@
+{
+  "files": {
+    "main.css": "/static/css/main.04846741.css",
+    "main.js": "/static/js/main.a5ca1c20.js",
+    "static/js/787.22c91e0a.chunk.js": "/static/js/787.22c91e0a.chunk.js",
+    "static/media/Group1.png": "/static/media/Group1.d2fe531328ef4ceb6549.png",
+    "static/media/FlowChart.png": "/static/media/FlowChart.ccd8b4563c377f5a5d82.png",
+    "static/media/asignLocation.png": "/static/media/asignLocation.2865c180ac26b0c99548.png",
+    "static/media/Group2.png": "/static/media/Group2.b09e44fe6192c54d9b27.png",
+    "static/media/mylog.png": "/static/media/mylog.06056fd8045929175aa9.png",
+    "static/media/holidays.png": "/static/media/holidays.038451908098b80e69cb.png",
+    "static/media/locationSecondary.png": "/static/media/locationSecondary.71a9f42bbec314df7a27.png",
+    "static/media/employee.png": "/static/media/employee.4198c4c2d7eb39344e37.png",
+    "static/media/WelcomePattern.png": "/static/media/WelcomePattern.277dc3390cb8286dcc08.png",
+    "static/media/mylogbook.png": "/static/media/mylogbook.c204d67b9fb4aa73ba4a.png",
+    "static/media/statistics.png": "/static/media/statistics.b6b3aaa111bebe660983.png",
+    "static/media/LocationGray.png": "/static/media/LocationGray.83388c841b7a033e3360.png",
+    "static/media/calendar.png": "/static/media/calendar.346539e5949b15addaf7.png",
+    "static/media/LogoSmall.png": "/static/media/LogoSmall.c5ec487d19faf5e40638.png",
+    "index.html": "/index.html",
+    "main.04846741.css.map": "/static/css/main.04846741.css.map",
+    "main.a5ca1c20.js.map": "/static/js/main.a5ca1c20.js.map",
+    "787.22c91e0a.chunk.js.map": "/static/js/787.22c91e0a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.04846741.css",
+    "static/js/main.a5ca1c20.js"
+  ]
+}
