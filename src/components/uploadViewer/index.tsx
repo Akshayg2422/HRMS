@@ -3,6 +3,7 @@ import Dropzone from "dropzone";
 import { Card, Container, ImageView } from '@components'
 import { Icons } from '@assets';
 
+
 Dropzone.autoDiscover = false;
 interface DropZoneProps {
   id: string;

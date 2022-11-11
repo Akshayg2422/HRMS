@@ -13,7 +13,6 @@ function DatePicker({
   disabledDate,
   ...props
 }: DatePickerProps) {
-  console.log(value + "+=====");
 
   const handleChange = (
     dates: Date[],
@@ -46,6 +45,7 @@ function DatePicker({
           className="form-control bg-white pl-2"
           value={value}
           placeholder={placeholder}
+          
         />
         {icon && iconPosition === "append" && (
           <div className="input-group-append">

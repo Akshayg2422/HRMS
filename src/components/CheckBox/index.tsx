@@ -9,12 +9,7 @@ interface CheckBoxProps extends ContainerProps {
   checked?: boolean
 }
 
-
-
 const CheckBox = ({ text, onChange, checked }: CheckBoxProps) => {
-
-
-
   return (
     <div className="custom-control custom-checkbox custom-checkbox-primary">
       <input checked={checked} type="checkbox" className="custom-control-input" id="customCheck1"  onChange={onChange} />

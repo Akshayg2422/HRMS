@@ -1,13 +1,16 @@
 import axios from "axios";
-import {ASYN_USER_AUTH} from '@utils'
+import { ASYN_USER_AUTH } from '@utils'
 
 //apply base url for axios
-const STAGING = 'http://43.204.233.45/';  
+const STAGING = 'http://43.204.233.45/';
 // const LOCAL_DEV = 'http://172.20.10.3:8000';
-const LOCAL_DEV = 'http://192.168.60.204:8000';
+const LOCAL_DEV = 'http://192.168.25.204:8000';
+///////////
+const LOCAL_PROD = 'http://192.168.43.89:8001';
+
 
 const PROD = 'https://api.zenyq.com';
-export const REACT_APP_APP_URL = PROD; 
+export const REACT_APP_APP_URL = LOCAL_PROD;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
@@ -27,7 +30,7 @@ const getHeaders = async () => {
   try {
     const value = await localStorage.getItem(ASYN_USER_AUTH);
     if (value) {
-      return {Authorization: "Token " + value  };
+      return { Authorization: "Token " + value };
     } else {
       return {};
     }
@@ -48,32 +51,32 @@ export async function get(url, config) {
     .get(url, {
       ...config,
       headers: await getHeaders(),
-      
+
     })
     .then((response) => response.data);
 }
 
 export async function post(url, data, config) {
-  let headers = {...await getHeaders()}
-    return await axiosApi
-      .post(url, data, {
-        ...config,
-        headers: headers,
-      })
-      .then((response) => {
-      return  response.data
-      });
-  }
+  let headers = { ...await getHeaders() }
+  return await axiosApi
+    .post(url, data, {
+      ...config,
+      headers: headers,
+    })
+    .then((response) => {
+      return response.data
+    });
+}
 
 
-  export async function postHeader(url, data, config) {
-    let headers = {...await getHeaders()}
-      return await axiosApi
-        .post(url, data, {
-          ...config,
-          headers: headers,
-        })
-        .then((response) => {
-        return  response
-        });
-    }
+export async function postHeader(url, data, config) {
+  let headers = { ...await getHeaders() }
+  return await axiosApi
+    .post(url, data, {
+      ...config,
+      headers: headers,
+    })
+    .then((response) => {
+      return response
+    });
+}

@@ -457,14 +457,15 @@ function* getDownloadTodayStatus(action) {
     yield put(showLoader());
     const response = yield call(fetchDownloadTodayStatus, action.payload);
     if (response) {
-      yield put(hideLoader());
       yield put(getDownloadTodayStatusSuccess(response.data));
       yield call(action.payload.onSuccess(response));
-    } else {
-      console.log("error");
       yield put(hideLoader());
+
+    } else {
       yield put(getDownloadTodayStatusFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+
     }
   } catch (error) {
     yield put(hideLoader());
@@ -720,7 +721,7 @@ function* FetchEmployeesLeaves(action) {
  * get modify logs
  */
 
- function* getModifyLogsSaga(action) {
+function* getModifyLogsSaga(action) {
   try {
     yield put(showLoader());
 
