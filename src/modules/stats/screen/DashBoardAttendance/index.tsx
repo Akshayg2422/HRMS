@@ -161,9 +161,9 @@ const DashBoardAttendance = ({ }) => {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
       attendance_type: selectedAttendance + "",
-      selected_date: paramsDetails.selectedDate,
-      selected_date_to: paramsDetails.selectedDateTo,
-      range: paramsDetails.range,
+      selected_date: selectedDateRange !== "SelectedDate" ? paramsDetails.selectedDate : customselectedDate,
+      selected_date_to: selectedDateRange !== "SelectedDate" ? paramsDetails.selectedDateTo : customselectedDate,
+      range: selectedDateRange !== "SelectedDate" ? paramsDetails.range : false,
       page_number: currentPage,
       download: true,
       logs: logs,
@@ -194,18 +194,12 @@ const DashBoardAttendance = ({ }) => {
 
   const selectedRange = (type: string) => {
     setSelectedDateRange(type)
-    if (type === "SelectedDate") {
-      setSelectedDateRange(type)
-      setParamsDetails({ ...paramsDetails, selectedDateTo: customselectedDate, selectedDate: customselectedDate, range: false })
-      setShowCustomCalender(false);
-      resetCustom();
-    } else if (type === "Today") {
+    if (type === "Today") {
       setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: Today, range: false })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "This Week") {
       setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: ThisWeek, range: true })
-
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Last Week") {
@@ -236,6 +230,8 @@ const DashBoardAttendance = ({ }) => {
       downloadSampleCsvFile(false)
     }
   }
+
+  console.log('customselectedDate', customselectedDate)
 
   return (
     <div className="mx-3">
