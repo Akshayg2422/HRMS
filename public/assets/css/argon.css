@@ -3677,17 +3677,17 @@
  }
 
  .btn-outline-default {
-     color: #000;
+     color: #52307c;
      border-color: #52307c;
      background-color: transparent;
      background-image: none;
-     padding: .425rem 2.00rem;
+     /* padding: .425rem 2.00rem; */
  }
 
  .btn-outline-default:hover {
-     color: #fff;
+     color: #52307c;
      border-color: #52307c;
-     background-color: #52307c;
+     /* background-color: #52307c; */
  }
 
  .btn-outline-default.focus,

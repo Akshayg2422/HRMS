@@ -7,7 +7,7 @@ interface SecondaryProps extends ContainerProps {
   text: string,
   onClick?: () => void
   variant?: 'btn-outline-default' | 'btn-outline-primary' | 'btn-outline-secondary' | 'btn-outline-info' | 'btn-outline-success' | 'btn-outline-danger' | 'btn-outline-warning'
-  size?: 'btn-lg' | 'btn-sm' | 'btn-md'
+  size?: 'btn-lg' | 'btn-sm' | 'btn-  md'
   additionClass?:string
 }
 

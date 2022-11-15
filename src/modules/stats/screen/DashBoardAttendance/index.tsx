@@ -7,13 +7,11 @@ import {
   Modal,
   Table,
   Icon,
-  CardCalendar,
   DatePicker,
   BackArrow,
   Secondary,
   Primary,
 } from "@components";
-import * as url from "../../../../helpers/url_helper";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -32,7 +30,6 @@ import {
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
-import moment from "moment";
 
 const DashBoardAttendance = ({ }) => {
   const dispatch = useDispatch();
@@ -44,7 +41,7 @@ const DashBoardAttendance = ({ }) => {
     numOfPages,
     currentPage,
     employeeattendancedatalog,
-    employeeCheckInDetailedLogPerDay, error
+    employeeCheckInDetailedLogPerDay,
   } = useSelector((state: any) => state.EmployeeReducer);
 
   const { hierarchicalBranchIds } = useSelector(
@@ -55,8 +52,8 @@ const DashBoardAttendance = ({ }) => {
   const [downloadmodel, setDownloadModel] = useState(false);
   const [showCustomCalendar, setShowCustomCalender] = useState(false);
   const [paramsDetails, setParamsDetails] = useState({
-    selectedDate: routeParams.selectedDate,
-    selectedDateTo: routeParams.selectedDate,
+    selectedDate: "",
+    selectedDateTo: "",
     range: false,
   })
 
@@ -79,6 +76,18 @@ const DashBoardAttendance = ({ }) => {
   useEffect(() => {
     getTodayStats(currentPage);
   }, [selectedAttendance, selectedDepartment, customselectedDate]);
+
+  useEffect(() => {
+    const toSeverDate = new Date(
+      getServerDateFromMoment(getMomentObjFromServer(customRange.dataTo))
+    ).getTime();
+    const fromServerDate = new Date(
+      getServerDateFromMoment(getMomentObjFromServer(customRange.dateFrom))
+    ).getTime();
+    if (toSeverDate < fromServerDate) {
+      setCustomRange({ ...customRange, dataTo: "" });
+    }
+  }, [customRange.dateFrom, customRange.dataTo]);
 
   const getTodayStats = (pageNumber: number) => {
     const params = {
@@ -157,13 +166,22 @@ const DashBoardAttendance = ({ }) => {
   const downloadSampleCsvFile = (
     logs: boolean
   ) => {
+    if (selectedDateRange == "Custom Range") {
+      if (customRange.dateFrom == '') {
+        showToast("error", t('formInvalidParams'));
+        return
+      } if (customRange.dataTo == '') {
+        showToast("error", t('formInvalidParams'));
+        return
+      }
+    }
     const params = {
       ...hierarchicalBranchIds,
       department_id: selectedDepartment + "",
       attendance_type: selectedAttendance + "",
-      selected_date: selectedDateRange !== "SelectedDate" ? paramsDetails.selectedDate : customselectedDate,
-      selected_date_to: selectedDateRange !== "SelectedDate" ? paramsDetails.selectedDateTo : customselectedDate,
-      range: selectedDateRange !== "SelectedDate" ? paramsDetails.range : false,
+      selected_date: selectedDateRange === 'Custom Range' ? customRange.dateFrom : selectedDateRange === 'SelectedDate' ? customselectedDate : paramsDetails.selectedDate,
+      selected_date_to: selectedDateRange === 'Custom Range' ? customRange.dataTo : selectedDateRange === 'SelectedDate' ? customselectedDate : paramsDetails.selectedDateTo,
+      range: selectedDateRange === 'Custom Range' ? true : selectedDateRange === 'SelectedDate' ? false : paramsDetails.range,
       page_number: currentPage,
       download: true,
       logs: logs,
@@ -177,12 +195,13 @@ const DashBoardAttendance = ({ }) => {
           downloadFile(response);
           setShowCustomCalender(false);
           setSelectedDateRange(DOWNLOAD_RANGE[0].value)
+          resetCustom();
         },
         onError: (errorMessage: string) => {
           showToast("error", errorMessage);
           setDownloadModel(false)
           setSelectedDateRange(DOWNLOAD_RANGE[0].value)
-
+          resetCustom();
         },
       })
     );
@@ -196,6 +215,11 @@ const DashBoardAttendance = ({ }) => {
     setSelectedDateRange(type)
     if (type === "Today") {
       setParamsDetails({ ...paramsDetails, selectedDateTo: Today, selectedDate: Today, range: false })
+      setShowCustomCalender(false);
+      resetCustom();
+    }
+    else if (type === "SelectedDate") {
+      setParamsDetails({ ...paramsDetails, selectedDateTo: customselectedDate, selectedDate: customselectedDate, range: false })
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "This Week") {
@@ -215,7 +239,6 @@ const DashBoardAttendance = ({ }) => {
       setShowCustomCalender(false);
       resetCustom();
     } else if (type === "Custom Range") {
-      setParamsDetails({ ...paramsDetails, selectedDate: customRange.dataTo, selectedDateTo: customRange.dateFrom, range: true })
       setShowCustomCalender(true);
     }
   };
@@ -226,12 +249,15 @@ const DashBoardAttendance = ({ }) => {
   const LogsDownload = (type: string) => {
     if (type === 'Log') {
       downloadSampleCsvFile(true)
+      setShowCustomCalender(false);
+      resetCustom();
     } if (type === 'ConsolidatedLog') {
       downloadSampleCsvFile(false)
+      setShowCustomCalender(false);
+      resetCustom();
     }
   }
 
-  console.log('customselectedDate', customselectedDate)
 
   return (
     <div className="mx-3">
@@ -327,7 +353,7 @@ const DashBoardAttendance = ({ }) => {
         showModel={downloadmodel}
         toggle={() => setDownloadModel(!downloadmodel)}
       >
-        <div className="col-lg-12 col-md-12">
+        <div className="col-lg-12 col-md-12 ">
           <DropDown
             additionClass="col-lg-6"
             label={"Select Range"}
@@ -338,41 +364,48 @@ const DashBoardAttendance = ({ }) => {
               selectedRange(event.target.value);
             }}
           />
-          <Container margin={"mt-5"} additionClass={"text-right"}>
-            <Secondary
-              text={t("cancel")}
-              onClick={() => setDownloadModel(!downloadmodel)}
-            />
-            <Primary
-              text={t("downloadLog")}
-              onClick={() => LogsDownload('Log')}
-            />
-            <Primary
-              text={t("downloadConsolidatedLog")}
-              onClick={() => LogsDownload('ConsolidatedLog')}
-            />
-          </Container>
-        </div>
         {showCustomCalendar ? (
-          <div className="col-lg-6 col-md-12">
-            <h5>{t("dataFrom")}</h5>
-            <DatePicker
-              icon={Icons.Calendar}
-              iconPosition={"append"}
-              onChange={(date: string) =>
-                dateTimePickerHandler(date, "dateFrom")
-              }
-              value={customRange.dateFrom}
-            />
-            <h5>{t("dataTo")}</h5>
-            <DatePicker
-              icon={Icons.Calendar}
-              iconPosition={"append"}
-              onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
-              value={customRange.dataTo}
-            />
+          <div className="row">
+            <div className="col-lg-6">
+              <h5 className="ml-3">{t("dataFrom")}</h5>
+              <DatePicker
+                additionalClass="col"
+                icon={Icons.Calendar}
+                iconPosition={"append"}
+                onChange={(date: string) =>
+                  dateTimePickerHandler(date, "dateFrom")
+                }
+                value={customRange.dateFrom}
+              />
+            </div>
+            <div className="col-lg-6">
+              <h5 className="ml-3">{t("dataTo")}</h5>
+              <DatePicker
+                additionalClass="col"
+                icon={Icons.Calendar}
+                iconPosition={"append"}
+                onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
+                value={customRange.dataTo}
+              />
+            </div>
           </div>
         ) : null}
+        <Container margin={"mt-5"} additionClass={'text-right'}>
+          <Secondary
+            text={t("cancel")}
+            onClick={() => setDownloadModel(!downloadmodel)}
+          />
+          <Primary
+            text={t("downloadLog")}
+            onClick={() => LogsDownload('Log')}
+          />
+          <Primary
+            additionClass={'mt-3 mt-sm-0'}
+            text={t("downloadConsolidatedLog")}
+            onClick={() => LogsDownload('ConsolidatedLog')}
+          />
+        </Container>
+        </div>
       </Modal>
     </div>
   );
