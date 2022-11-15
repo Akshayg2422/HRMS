@@ -377,6 +377,7 @@ export interface DatePickerProps {
   placeholder?: string;
   minDate?: any;
   disabledDate?:  any
+  additionalClass?:string
 }
 
 export interface TableProps {

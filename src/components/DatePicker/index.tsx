@@ -11,6 +11,7 @@ function DatePicker({
   placeholder,
   minDate,
   disabledDate,
+  additionalClass,
   ...props
 }: DatePickerProps) {
 
@@ -26,7 +27,7 @@ function DatePicker({
   };
 
   return (
-    <div className="form-group">
+    <div className={`form-group ${additionalClass}`}>
       <div className="input-group">
         {icon && iconPosition === "prepend" && (
           <div className="input-group-prepend">

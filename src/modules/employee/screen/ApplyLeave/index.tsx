@@ -189,7 +189,7 @@ const ApplyLeave = () => {
           iconPosition={"append"}
           disabledDate={disableDate(calendarEvents.days_holiday)}
           onChange={(date: string) => {
-            dateTimePickerHandler("", "dataTo");
+            dateTimePickerHandler(date, "dataTo");
           }}
           value={fromDetails.dataTo}
         />
