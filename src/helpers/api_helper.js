@@ -6,11 +6,11 @@ const STAGING = 'http://43.204.233.45/';
 // const LOCAL_DEV = 'http://172.20.10.3:8000';
 const LOCAL_DEV = 'http://192.168.25.204:8000';
 ///////////
-const LOCAL_PROD = 'http://192.168.43.89:8001';
+const LOCAL_PROD = 'http://192.168.183.204:8001';
 
 
 const PROD = 'https://api.zenyq.com';
-export const REACT_APP_APP_URL = PROD;
+export const REACT_APP_APP_URL =PROD;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
