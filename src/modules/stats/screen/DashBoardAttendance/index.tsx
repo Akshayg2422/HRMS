@@ -168,10 +168,10 @@ const DashBoardAttendance = ({ }) => {
   ) => {
     if (selectedDateRange == "Custom Range") {
       if (customRange.dateFrom == '') {
-        showToast("error", t('formInvalidParams'));
+        showToast("error", t('dateCantbeempty'));
         return
       } if (customRange.dataTo == '') {
-        showToast("error", t('formInvalidParams'));
+        showToast("error", t('dateCantbeempty'));
         return
       }
     }
@@ -202,6 +202,7 @@ const DashBoardAttendance = ({ }) => {
         },
       })
     );
+    customRangeReset()
   };
 
   const resetCustom = () => {
@@ -253,10 +254,8 @@ const DashBoardAttendance = ({ }) => {
   const LogsDownload = (type: string) => {
     if (type === 'Log') {
       downloadSampleCsvFile(true)
-      customRangeReset()
     } if (type === 'ConsolidatedLog') {
       downloadSampleCsvFile(false)
-      customRangeReset()
     }
   }
 
@@ -359,7 +358,7 @@ const DashBoardAttendance = ({ }) => {
           <DropDown
             additionClass="col-lg-6"
             label={"Select Range"}
-            placeholder={"Select Range"}
+            // placeholder={"Select Range"}
             data={DOWNLOAD_RANGE}
             value={selectedDateRange}
             onChange={(event) => {
