@@ -9,19 +9,21 @@ import {
   resendOtp,
   validateUser,
 } from './auth';
-import {Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header,Profile} from './dashboard';
+import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile } from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves,ModifyLogs } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
-import {DashboardStats,DashBoardAttendance} from './stats'
+import { DashboardStats, DashBoardAttendance } from './stats'
 import RequireAuth from './RequireAuth'
 import RequireAuthExist from './RequireAuthExist'
 
-import {AutoLogout} from './SessionTimeout'
+import { AutoLogout } from './SessionTimeout'
 
 
 import fenceAdmin from './fenceAdmin'
+import { WeeklyShiftSelection } from './shiftManagement';
+
 export {
   getDashboardDetails,
   getNatureOfBusiness,
@@ -37,7 +39,7 @@ export {
   getEmployeeDetails,
   fetchDashboardDetails,
   Navbar,
-  Header, 
+  Header,
   DashBoardCard,
   ManageEmployee,
   DashboardStats,
@@ -54,8 +56,9 @@ export {
   LeaveRequest,
   ManageHolidays,
   ManageLeaves,
-  MyLog,MyWorkLog,
+  MyLog, MyWorkLog,
   MyLeaves,
   AutoLogout,
-  ModifyLogs
+  ModifyLogs,
+  WeeklyShiftSelection
 }

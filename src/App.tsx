@@ -29,6 +29,7 @@ import {
   MyLeaves,
   AutoLogout,
   ModifyLogs,
+  WeeklyShiftSelection
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -158,6 +159,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_MODIFY_LOGS}
           element={<RequireAuth>{<ModifyLogs />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_MANAGEMENT}
+          element={<RequireAuth>{<WeeklyShiftSelection />}</RequireAuth>}
         />
 
         <Route path={"*"} element={<PageNotFound />} />
