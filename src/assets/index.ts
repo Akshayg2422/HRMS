@@ -65,7 +65,9 @@ export const Icons = {
   MyLog:require('./icons/MyLog/mylog.png'),
   myLogBook:require('./icons/MyLogBook/mylogbook.png'),
   myLeaves:require('./icons/MyLeaves/holidays.png'),
-  BackArrow:require('./icons/BackArrow/BackArrow.png')
+  BackArrow:require('./icons/BackArrow/BackArrow.png'),
+  E_Locker:require('./icons/ELocker/E-locker.png')
+
 }
 
 

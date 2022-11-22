@@ -6,6 +6,7 @@
   "employee":"Employee",
   "all":"All",
   "confirm":"Confirm",
+  "add":"Add",
 
 
   "mobileNumber": "Mobile Number",
@@ -178,7 +179,8 @@
 "downloadLog":"Download Log",
 "downloadConsolidatedLog":"Download ConsolidatedLog",
 "dateCantbeempty":"Date Can't Be Empty",
-
+"E_Locker":"E-Locker",
+"search":"Search",
 
 
 

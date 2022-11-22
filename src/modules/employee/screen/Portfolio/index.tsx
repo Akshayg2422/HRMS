@@ -35,6 +35,13 @@ function PortFolio() {
       value: "ML",
       route: ROUTE.ROUTE_MY_LEAVES,
       icon: Icons.myLeaves  ,
+    },
+    {
+      id: "5",
+      name: "E-Locker",
+      value: "EL",
+      route: ROUTE.ROUTE_E_LOCKER,
+      icon: Icons.E_Locker  ,
     }
   ];
 
