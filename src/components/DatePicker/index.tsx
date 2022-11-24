@@ -28,7 +28,7 @@ function DatePicker({
 
   return (
     <div className={`form-group ${additionalClass}`}>
-      <div className="input-group">
+      <div className="input-group" onClick={()=>handleChange}>
         {icon && iconPosition === "prepend" && (
           <div className="input-group-prepend">
             <span className="input-group-text">

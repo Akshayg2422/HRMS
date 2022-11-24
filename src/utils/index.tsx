@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER,LEAVE_STATUS_UPDATE,MY_PORTFOLIO_ITEM,LEAVES_TYPE,LEAVE_STATUS_REVERT,DOWNLOAD_RANGE,Today,ThisWeek,ThisMonth,LastMonth,LastWeek } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, REPORTS_TYPE } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -13,7 +13,7 @@ import {
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import moment from 'moment';
-import {REACT_APP_APP_URL} from '../helpers/api_helper'
+import { REACT_APP_APP_URL } from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
 import { hideLoader, showLoader } from '../store/app/actions';
@@ -22,11 +22,11 @@ const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 
 const useNav = () => useNavigate()
 
-const getImageUri =(imageUri:string)=>{
+const getImageUri = (imageUri: string) => {
   return '' + imageUri
 }
-const getGenderByValue=(value:string)=>{
-  return GENDER_LIST.find(item=>{
+const getGenderByValue = (value: string) => {
+  return GENDER_LIST.find(item => {
     return item.value === value
   })?.name
 }
@@ -56,7 +56,7 @@ function paginationHandler(type: 'next' | 'prev' | 'current', position: number) 
   return page;
 }
 
-const showToast = (type: 'success' | 'error' | 'default'|'info', message: string) => {
+const showToast = (type: 'success' | 'error' | 'default' | 'info', message: string) => {
 
   const style: object = {
     position: "top-center",
@@ -77,7 +77,7 @@ const showToast = (type: 'success' | 'error' | 'default'|'info', message: string
     case 'error':
       toastElement = toast.error(message, style)
       break;
-      case 'info':
+    case 'info':
       toastElement = toast.info(message, style)
       break;
     default:
@@ -89,44 +89,44 @@ const showToast = (type: 'success' | 'error' | 'default'|'info', message: string
 }
 
 const getObjectFromArrayByKey = (array: any, key: string, value: string) => {
-  return array.find((item:any) => {
+  return array.find((item: any) => {
     return item[key] === value;
   });
 };
 
 const getDropDownValueByID = (dropDownArray: any, id: string) => {
-  return dropDownArray.find((item:any) => {
+  return dropDownArray.find((item: any) => {
     return item.id === id;
   });
 };
 
 //moment
 
- const getMomentObjFromServer = (date:any) => {
+const getMomentObjFromServer = (date: any) => {
   return moment(date);
 };
 
- const getDisplayDateFromMoment = (momentObj:any) => {
+const getDisplayDateFromMoment = (momentObj: any) => {
   return momentObj.format('DD MMMM YYYY');
 };
 
- const getDisplayTimeFromMoment = (momentObj:any) => {
+const getDisplayTimeFromMoment = (momentObj: any) => {
   return momentObj.format('hh:mm A');
 };
 
- const getDisplayTimeWithoutSuffixFromMoment = (momentObj:any) => {
+const getDisplayTimeWithoutSuffixFromMoment = (momentObj: any) => {
   return momentObj.format('HH:mm');
 };
 
- const getDisplayDateTimeFromMoment = (momentObj:any) => {
+const getDisplayDateTimeFromMoment = (momentObj: any) => {
   return momentObj.format('hh:mm A, DD MMMM YYYY');
 };
 
- const getServerDateFromMoment = (momentObj:any) => {
+const getServerDateFromMoment = (momentObj: any) => {
   return momentObj.format('YYYY-MM-DD');
 };
 
- const getStartTime = (startTime?:string | number) => {
+const getStartTime = (startTime?: string | number) => {
   if (!startTime) {
     startTime = '10:00:00';
   }
@@ -134,7 +134,7 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
   return new Date('Wed Jul 20 2022 ' + startTime + ' GMT+0530 (IST)');
 };
 
- const getEndTime = (endTime?:string | number) => {
+const getEndTime = (endTime?: string | number) => {
   if (!endTime) {
     endTime = '18:00:00';
   }
@@ -146,7 +146,7 @@ const displayStringExists = (value: any) => value && value === 'Invalid date' ? 
 const inputNumberMaxLength = (value: any, length: number) => value && value.slice(0, length);
 
 
-const downloadFile=((response:any)=>{
+const downloadFile = ((response: any) => {
   let filename = response.headers['content-disposition'].split('filename=')[1];
   const blob = new Blob([response.data]);
   const url = window.URL.createObjectURL(blob);
@@ -204,6 +204,6 @@ export {
   LEAVE_STATUS_REVERT,
   DOWNLOAD_RANGE,
   Today,
-  ThisWeek,ThisMonth,LastMonth,LastWeek
-
+  ThisWeek, ThisMonth, LastMonth, LastWeek
+  , REPORTS_TYPE
 }

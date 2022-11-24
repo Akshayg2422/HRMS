@@ -7,7 +7,7 @@ import { Route } from 'react-router-dom';
 export const ROUTE = {
   ROUTE_DASHBOARD: '/dashboard',
   ROUTE_EMPLOYEE: '/employee',
-  ROUTE_REPORT: '/report',
+  // ROUTE_REPORT: '/report',
   ROUTE_REGISTER: '/register',
   ROUTE_LOGIN: '/login',
   ROUTE_OTP: '/otp',
@@ -34,6 +34,8 @@ export const ROUTE = {
   ROUTE_MY_LOG: '/my-log',
   ROUTE_MY_LEAVES: '/my-leaves',
   ROUTE_MODIFY_LOGS: '/modify-logs',
+  ROUTE_REPORTS: '/reports',
+
 
 
 }
@@ -49,6 +51,12 @@ export const EMPLOYEE_TYPE = [
   { id: 'Regular', name: 'Regular', value: 'Regular' },
   { id: 'OutSourced', name: 'OutSourced', value: 'OutSourced' },
   { id: 'Guest', name: 'Guest', value: 'Guest' },
+];
+
+export const REPORTS_TYPE = [
+  { id: 'LeaveReport', name: 'LeaveReport', value: 'LeaveReport' },
+  { id: 'LogReport', name: 'LogReport', value: 'LogReport' },
+  { id: 'AttendanceReport', name: 'AttendanceReport', value: 'AttendanceReport' },
 ];
 
 export const LEAVES_TYPE = [
@@ -98,8 +106,7 @@ export const NAV_ITEM = [
   { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', route: ROUTE.ROUTE_LEAVE_REQUEST },
   { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', route: ROUTE.ROUTE_MODIFY_LOGS },
   { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO },
-
-
+  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-single-02', route: ROUTE.ROUTE_REPORTS },
 
 ];
 

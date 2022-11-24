@@ -3373,16 +3373,17 @@
  }
 
  .btn-outline-primary {
-     color: #5e72e4;
-     border-color: #5e72e4;
+     color: #52307c;
+     border-color:#52307c;
      background-color: transparent;
      background-image: none;
  }
 
  .btn-outline-primary:hover {
      color: #fff;
-     border-color: #5e72e4;
-     background-color: #5e72e4;
+     border-color: #52307c;
+     background-color: transparent;
+
  }
 
  .btn-outline-primary.focus,
@@ -3392,7 +3393,7 @@
 
  .btn-outline-primary.disabled,
  .btn-outline-primary:disabled {
-     color: #5e72e4;
+     color: #52307c;
      background-color: transparent;
  }
 
