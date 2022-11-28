@@ -1,94 +1,145 @@
 import React, { useState } from 'react'
-import { Card, Container, TimePicker } from '@components'
+import { Card, CheckBox, Container, Icon, Input, Primary, TimePicker } from '@components'
 import { Icons } from "@assets";
+import { WEEK_DAY_LIST, getWeekAndWeekDaysById } from '@utils';
+
+
 
 interface props {
-  datesList: any;
-  onChangeTimeFrom?: () => void;
-  onChangeTimeTo?: () => void;
-  onClick?: () => void;
+  datesList?: any;
+  onCheckBoxClick?: (secondArrayIndex: number) => void;
+  onDeleteClick?: (index:number) => void;
+  onAddClick?: (firstArrayIndex: number) => void;
+  onSubmit?: () => void;
+
 }
 
-const DatesList = ({ datesList, onChangeTimeFrom, onClick, onChangeTimeTo }: props) => {
-  return (
-    <>
-      {datesList.map((it: any) => {
-        return (
-          <Container
-            margin={"my-3"}
-            display={"d-flex"}
-          >
-            <div className='col-2'>
-              <h4>{it.day}</h4>
-            </div>
-            <Container>
-              <label className="custom-toggle">
-                <input type="checkbox" onClick={onClick} checked={it.isWorking} />
-                <span className="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes">
-                </span>
-              </label>
-            </Container>
-            {it.isWorking === true ? (
-              <Container display={"d-flex"} margin={'ml-5'}>
-                <TimePicker
-                  title={"Shift start time"}
-                  icon={Icons.Calendar}
-                  iconPosition={"append"}
-                  onChange={onChangeTimeFrom}
-                />
-                <Container margin={'ml-5'}>
-                  <TimePicker
-                    title={"Shift end time"}
-                    icon={Icons.Calendar}
-                    iconPosition={"append"}
-                    onChange={onChangeTimeTo}
-                  />
-                </Container>
-              </Container>) :
-              <Container margin={'ml-5'}>
-                <h4>{'Not Working'}</h4>
-              </Container>}
-          </Container>
-        );
-      })}
-    </>
-  )
-}
+const DatesList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit }: props) => {
 
-const WeeksList = ({ weeksList, onClick }: any) => {
   return (
     <>
-      {weeksList.map((it: any, index: number) => {
-        return (
+      <Card>
+        <h1>{datesList.week}</h1>
+        {datesList && datesList.isActiveWeek && (
           <>
-            <Container display={"d-flex"} >
-              <ul
-                className="nav nav-pills nav-fill flex-column flex-md-row"
-                id="tabs-icons-text"
-                role="tablist"
-              >
-                <li className="nav-item flex-md-row">
-                  <a
-                    className={`nav-link mb-sm-3 mb-md-0 ${it.id === 1 ? 'active' : ''}`}
-                    id={`tabs-icons-text-${it.id}-tab`}
-                    data-toggle="tab"
-                    href={`#tabs-icons-text-${it.id}`}
-                    role="tab"
-                    aria-controls={`tabs-icons-text-${it.id}`}
-                    aria-selected="true"
-                    onClick={onClick}
-                  >
-                    {it.week}
-                  </a>
-                </li>
-              </ul>
-            </Container>
-          </>
-        );
-      })}
+            <Container additionClass='col-lg-12  px-3'>
+              {datesList.data && datesList.data.length > 0 && datesList.data.map((it: any, firstArrayIndex: number) => {
+                //  return it.data.map((element:any, secondArrayIndex: number)=>{
+                return (
+                  <Container additionClass='row my-5'>
+                    <Container additionClass={'col-lg-2 mt-2'}>
+                      <h4>{getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.day + '').name}</h4>
+                    </Container>
+                    <Container additionClass={'col-lg-2  mt-2'}> <label className="custom-toggle">
+                      <input type="checkbox"
+                        onChange={() => { if (onCheckBoxClick) { onCheckBoxClick(it.day) } }}
+                        checked={it.isWorking}
+                        value={getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.day + '').name}
+                      />
+                      <span
+                        className="custom-toggle-slider rounded-circle"
+                        data-label-off="No"
+                        data-label-on="Yes">
+                      </span>
+                    </label>
+                    </Container>
+                    <Container additionClass={'col mt-2'}>
+                      {it.isWorking === true ?
+                        <Container>
+                          <Primary text={'+'} onClick={() => { if (onAddClick) { onAddClick(firstArrayIndex) } }}
+                          ></Primary>
+                        </Container> : <Container>
+                          <h4>{'Not Working'}</h4>
+                        </Container>}
+                    </Container >
+                    {it.isWorking && <Container additionClass={'col-lg-6 row '}>
+                      {it?.shift && it.shift.length > 0 && it.shift.map((el: any, index: number) => {
+                        return (
+                          <>
+                            <Input disabled={true} label={'IN'} value={el.inTime} col={'col-4'} />
+                            <Input disabled={true} label={'Out'} value={el.outTime} col={'col-4'} />
+                            <Container col={'col-4'} style={{ marginTop: "34px" }}>
+                              <Icon
+                                icon={Icons.Delete}
+                                onClick={() => { if (onDeleteClick) { onDeleteClick(index) } }}
 
+                              />
+                            </Container>
+                          </>
+                        )
+                      })}
+
+                    </Container>}
+                  </Container>
+                )
+                // })
+              })}
+            </Container>
+            <Container>
+              <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
+                <Primary
+                  text={"Submit"}
+                  onClick={onSubmit}
+                />
+              </div>
+            </Container>
+          </>)}
+      </Card>
     </>
   )
 }
 
-export { DatesList, WeeksList }
+// const WeeksList = ({ weeksList, onClick }: any) => {
+//   const [isActive, setIsActive] = useState(1)
+//   return (
+//     <Container>
+//       <ul
+//         className="nav nav-pills nav-fill flex-row flex-md-row"
+//         id="tabs-icons-text"
+//         role="tablist"
+//       >
+//         {weeksList.map((it: any, index: number) => {
+//           return (
+//             <>
+//               <li className="nav-item flex-md-row">
+//                 <a
+//                   className={`nav-link mb-sm-3 mb-md-0 ${it.id === isActive ? 'active' : ''}`}
+//                   id={`tabs-icons-text-${it.id}-tab`}
+//                   data-toggle="tab"
+//                   href={`#tabs-icons-text-${it.id}`}
+//                   role="tab"
+//                   aria-controls={`tabs-icons-text-${it.id}`}
+//                   aria-selected="true"
+//                   onClick={() => {
+//                     // setIsActive(it.id)
+//                   }}
+//                 >
+//                   {it.week}
+//                 </a>
+//                 <Container additionClass={'float-right'} margin={'mt-2'}>
+//                   <CheckBox
+//                     id={'Week_' + index}
+//                     text={'Default Check'}
+//                     checked={it.isWorking}
+//                     onChange={() => {
+//                       // let temp = weeksList.map((element) => {
+//                       //   if (it.id === element.id) {
+//                       //     return { ...element, isWorking: !element.isWorking };
+//                       //   }
+//                       //   return element;
+//                       // });
+//                       // setWeeksList(temp);
+
+//                     }} />
+//                 </Container>
+//               </li>
+//             </>
+//           );
+//         })}
+//       </ul>
+//     </Container>
+
+//   )
+// }
+
+export { DatesList }

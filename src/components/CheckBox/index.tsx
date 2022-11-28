@@ -7,13 +7,14 @@ interface CheckBoxProps extends ContainerProps {
   error?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void 
   checked?: boolean
+  id?:string;
 }
 
-const CheckBox = ({ text, onChange, checked }: CheckBoxProps) => {
+const CheckBox = ({ text, onChange, checked,id }: CheckBoxProps) => {
   return (
     <div className="custom-control custom-checkbox custom-checkbox-primary">
-      <input checked={checked} type="checkbox" className="custom-control-input" id="customCheck1"  onChange={onChange} />
-      <label className="custom-control-label" htmlFor="customCheck1">{text}</label>
+      <input checked={checked} type="checkbox" className="custom-control-input" id={id}  onChange={onChange} />
+      <label className="custom-control-label" htmlFor={id}>{text}</label>
     </div>
   )
 }

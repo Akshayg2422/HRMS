@@ -121,9 +121,27 @@ export const HEADER_MENU = [
 
 
 
-export const SORT_BUTTON = [{ id: '1', name: 'Month', value: 'MH' },
-{ id: '2', name: 'Week', value: 'WK' },
-{ id: '3', name: 'Day', value: 'DY' }]
+export const SORT_BUTTON = [
+  { id: '1', name: 'Month', value: 'MH' },
+  { id: '2', name: 'Week', value: 'WK' },
+  { id: '3', name: 'Day', value: 'DY' }]
+
+export const WEEK_LIST = [
+  { id: '1', name: 'Week 1' },
+  { id: '2', name: 'Week 2' },
+  { id: '3', name: 'Week 3'},
+  { id: '4', name: 'Week 4'},
+  { id: '5', name: 'Week 5'}]
+
+
+export const WEEK_DAY_LIST = [
+  { id: '1', name: 'Monday' },
+  { id: '2', name: 'Tuesday'},
+  { id: '3', name: 'Wednesday'},
+  { id: '4', name: 'Thursday'},
+  { id: '5', name: 'Friday'},
+  { id: '6', name: 'Saturday'},
+  { id: '7', name: 'Sunday'}]
 
 export const TABLE_ELEMENT_TEXT_BUTTON = 1
 export const TABLE_ELEMENT_TEXT_STATUS = 2

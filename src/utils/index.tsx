@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER,LEAVE_STATUS_UPDATE,MY_PORTFOLIO_ITEM,LEAVES_TYPE,LEAVE_STATUS_REVERT,DOWNLOAD_RANGE,Today,ThisWeek,ThisMonth,LastMonth,LastWeek } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST,EMPLOYEE_TYPE,BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH,TABLE_ELEMENT_TEXT_IMAGE,ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER,LEAVE_STATUS_UPDATE,MY_PORTFOLIO_ITEM,LEAVES_TYPE,LEAVE_STATUS_REVERT,DOWNLOAD_RANGE,Today,ThisWeek,ThisMonth,LastMonth,LastWeek,WEEK_LIST,WEEK_DAY_LIST } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -37,6 +37,12 @@ const goBack = (navigation: any) => {
 function isExist(val: any) {
   return val ? val : ''
 }
+
+const getWeekAndWeekDaysById = (array: any, key: string, value: string) => {
+  return array.find((item:any) => {
+    return item[key] === value;
+  });
+};
 
 
 
@@ -204,6 +210,9 @@ export {
   LEAVE_STATUS_REVERT,
   DOWNLOAD_RANGE,
   Today,
-  ThisWeek,ThisMonth,LastMonth,LastWeek
+  ThisWeek,ThisMonth,LastMonth,LastWeek,
+  WEEK_LIST,
+  WEEK_DAY_LIST,
+  getWeekAndWeekDaysById
 
 }
