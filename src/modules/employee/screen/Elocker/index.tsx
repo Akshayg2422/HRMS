@@ -1,21 +1,25 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary } from '@components'
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Document, Page } from 'react-pdf';
 import { useTranslation } from 'react-i18next';
-import { showToast, useNav } from '@utils';
+import { showToast, useNav, validateName } from '@utils';
 import { attachUserDocument, getEmployeeDocument } from '../../../../store/employee/actions';
-import { saveAs } from 'file-saver';
 import axios from 'axios';
+import fileDownload from 'js-file-download';
 function ELocker() {
     let dispatch = useDispatch();
     const { t } = useTranslation();
-    const navigation = useNav();
 
     const [search, setSearch] = useState("");
     const [model, setModel] = useState(false);
+    const [uploadModel, setUploadModel] = useState(false)
     const [viewDocument, setViewDocument] = useState<any>([])
+    const [preview, setPreview] = useState('')
+    const [previewModel, setPreviewModel] = useState(false)
+    const [title, setTitle] = useState('')
+    const [documents, setDocuments] = useState<any>([])
+
 
 
     const { employeeDocuments } =
@@ -24,20 +28,6 @@ function ELocker() {
     useEffect(() => {
         fetchEmployeeDocuments()
     }, [])
-
-
-    const handleDownload = async (dataUrl: string, name: string) => {
-        let extension = dataUrl.split('.').pop()
-        let filename = `${name}.${extension}`
-        const blob = new Blob([dataUrl]);
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = filename
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-    }
 
 
     const Upload = () => {
@@ -57,23 +47,13 @@ function ELocker() {
             reader.readAsDataURL(file);
             reader.onload = () => {
                 let encoded = reader && reader.result && reader.result.toString().replace(/^data:(.*,)?/, '');
-                console.log('encoded', encoded);
-                AttachDocuments(name[0], encoded)
+                setDocuments([...documents, { id: Math.floor(new Date().valueOf() * Math.random()), name: check, attachment: encoded }])
             }
         }
         else if (check != null) {
-            showToast("info", 'Please upload Pdf/jpeg files only.')
+            showToast("error", 'Please upload Pdf/jpeg files only.')
         }
     }
-
-    // const fileDelete = (e: any, index: number) => {
-    //     e.stopPropagation();
-    //     const deleted = fileUpload.filter(function (ele: any, i: number) {
-    //         return i != index;
-    //     });
-    //     setFileUpload(deleted)
-    // }
-
 
     const fetchEmployeeDocuments = () => {
         const params = {
@@ -85,23 +65,53 @@ function ELocker() {
     };
 
 
-    const AttachDocuments = (name: string, file: any) => {
-        const params = {
-            tag: name,
-            attachments: [file]
-        };
-        dispatch(attachUserDocument({
-            params,
-            onSuccess: (success: any) => {
-                showToast("success", "uploaded");
-                fetchEmployeeDocuments()
-            },
-            onError: (error: string) => {
-                showToast("error", error);
-                fetchEmployeeDocuments()
-            },
-        }));
+    const resetAttachment = () => {
+        setDocuments([])
+        setTitle('')
+    }
+
+    const AttachDocuments = () => {
+        let attachments = documents.map((el: any) => el.attachment)
+        if (validateName(title).status) {
+            if (attachments.length > 0) {
+                const params = {
+                    tag: title,
+                    attachments: attachments
+                };
+                setUploadModel(!uploadModel)
+                dispatch(attachUserDocument({
+                    params,
+                    onSuccess: (success: any) => {
+                        showToast("success", "uploaded");
+                        fetchEmployeeDocuments()
+                        resetAttachment()
+                    },
+                    onError: (error: string) => {
+                        showToast("error", error);
+                        fetchEmployeeDocuments()
+                        resetAttachment()
+                    },
+                }));
+            } else {
+                showToast("error", t("attachmentCannotBeEmpty"));
+            }
+        } else {
+            showToast("error", t("fileNameCannotBeEmpty"));
+        }
+
     };
+
+
+
+    const documentsList = (data: any) => {
+        return data && data.length > 0 && data.map((el: any) => {
+            return {
+                name: el.name,
+                "Attachments": el.attachments.length
+            };
+        });
+    };
+
 
     const viewUserDocument = (item: any) => {
         setModel(!model)
@@ -109,34 +119,33 @@ function ELocker() {
     }
 
 
-    const download = (e: any, item: any) => {
-        e.stopPropagation();
 
-        console.log(JSON.stringify(item));
-        if (item?.attachments.length > 0) {
-
-            item.attachments.map((each: any) => {
-                handleDownload(each, item.name)
+    const handleDownload = (url: any) => {
+        axios.get(url, {
+            responseType: 'blob',
+        })
+            .then((res) => {
+                fileDownload(res.data, viewDocument.name)
             })
-        }
+    }
 
 
-        // item.attachments.map((el: any) => {
-        //     let extension = el.split('.').pop()
-        //     let filename = `${item.name}.${extension}`
-        //     const blob = new Blob([el]);
-        //     const url = window.URL.createObjectURL(blob);
-        //     const a = document.createElement("a");
-        //     a.href = url;
-        //     a.download = filename
-        //     document.body.appendChild(a);
-        //     a.click();
-        //     window.URL.revokeObjectURL(url);
-        //     // var FileSaver = require('file-saver');
-        //     // saveAs(el, filename);
-        // })
+    const handlePreview = (item: string) => {
+        setPreview(item)
+        setPreviewModel(!previewModel)
+    }
 
-    };
+    const onDelete = ((id: number) => {
+        let filteredData = documents.filter((el: any) => el.id !== id)
+        setDocuments(filteredData)
+    })
+
+
+    const handleUploadModelCancel = () => {
+        setUploadModel(!uploadModel)
+        resetAttachment()
+    }
+
     return (
         <div>
             <Card>
@@ -161,13 +170,12 @@ function ELocker() {
                             additionClass={"mb-3"}
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
-                            onClick={() => Upload()}
+                            onClick={() => setUploadModel(!uploadModel)}
 
                         >
                             <Icon
                                 text={t('add') + " " + "+"}
                             />
-                            <input id='selectImage' hidden type="file" multiple={true} accept="image/jpeg,image/gif,image/png,application/pdf,.pdf," onChange={(e) => changeHandler(e)} />
                         </Container>
                     </Container>
 
@@ -175,58 +183,105 @@ function ELocker() {
             </Card>
             <Container>
                 <Card>
-                    {employeeDocuments && employeeDocuments?.details?.length > 0 ? employeeDocuments?.details.map((item: any, index: number) => {
-                        return (
-                            <Card onClick={() => { viewUserDocument(item) }}>
-                                <Container additionClass='row'>
-                                    <Container additionClass='col' >
-                                        <h3>{item.name}</h3>
-                                    </Container>
-                                    {/* <Container additionClass='col' display={'d-flex'} justifyContent={'justify-content-end'}>
-                                        <Icon
-                                            icon={Icons.Delete}
-                                            onClick={(e) => fileDelete(e, index)
-                                            }
-                                        />
-                                    </Container> */}
-                                    <Container additionClass='col' display={'d-flex'} justifyContent={'justify-content-end'}>
-                                        <Icon
-                                            icon={Icons.DownloadSecondary}
-                                            onClick={(e) => download(e, item)
-                                            }
-                                        />
-                                    </Container>
-                                </Container>
-                            </Card>
-                        )
-                    }) :
+                    {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
+                        tableTitle={"Documents List"}
+                        displayDataSet={documentsList(employeeDocuments.details)}
+                        tableOnClick={(e, index, item) => {
+                            let current = employeeDocuments.details[index]
+                            viewUserDocument(current)
+                        }}
+                    /> :
                         <NoRecordFound />
                     }
                 </Card>
             </Container>
+
+            <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
+                {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {
+                    return (
+                        <>
+                            <Card backgroundColor={'bg-primary'}>
+                                <Container additionClass='row'>
+                                    <Container additionClass='col' >
+                                        <ImageView icon={el.endsWith('.pdf') ? Icons.PDF_DUMMY : Icons.IMAGE_DUMMY} height={'50px'} additionClass={"d-block"} />
+                                    </Container>
+                                    <Container additionClass='col' display={'d-flex'} justifyContent={'justify-content-end'}>
+                                        <ImageView icon={Icons.Eye} height={'20px'} additionClass={'m-3 mr-4'} onClick={() => { handlePreview(el) }} />
+                                        <ImageView icon={Icons.DownloadSecondary} height={'30px'} additionClass={'mt-2'} onClick={() => { handleDownload(el) }} />
+                                    </Container>
+                                </Container>
+                            </Card>
+                        </>
+                    )
+                }) : <NoRecordFound />}
+            </Modal>
             <Modal
-                showModel={model}
+                showModel={previewModel}
                 size={'modal-xl'}
                 title={"Documents"}
-                toggle={() => setModel(!model)} >
+                toggle={() => setPreviewModel(!previewModel)} >
                 <Container additionClass='vh-100'>
-                    {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? (
-                        <>
-                            {viewDocument.attachments.length > 0 && viewDocument.attachments.map((el: any) => {
-                                return (
-                                    <>
-                                        {el != null && el.endsWith('.pdf') && <iframe src={`${el}#view=fitH`} height='60%' style={{ margin: "10px" }} width="90%" />}
-                                        {el != null && (el.endsWith('.jpeg') || el.endsWith('.jpg') || el.endsWith('.png')) && <Carousel images={[el]} height={700} />}
-                                    </>
-                                )
-                            })}
-
-                        </>
-                    ) : (
-                        <NoRecordFound />
-                    )}
+                    {preview != null && (preview.endsWith('.jpeg') || preview.endsWith('.jpg') || preview.endsWith('.png')) && <Carousel images={[preview]} height={700} />}
+                    {preview != "" && preview.endsWith('.pdf') && <iframe src={`${preview}#toolbar=0`} height="70%" width="100%" />}
                 </Container>
 
+            </Modal>
+            <Modal showModel={uploadModel} toggle={() => handleUploadModelCancel()} size={'modal-sm'} title={"Upload Documents"}>
+                <Container>
+                    <InputText
+                        label={t("title")}
+                        placeholder={t("enterfilename")}
+                        validator={validateName}
+                        value={title}
+                        name={"title"}
+                        onChange={(event) => {
+                            setTitle(event.target.value);
+                        }}
+                    />
+                    <Container>
+                        <h4>Add Files</h4>
+                        <Container flexDirection={"row"} margin={"mt-3"}>
+                            {documents.length > 0 && documents.map((el: any, i: number) => {
+                                return (
+                                    <Container additionClass={"col-xl-4 col-md-6"}>
+                                        <Card
+                                            additionClass={"border text-center"}
+                                            style={{ border: "1px bg-gray" }}
+                                        >
+                                            <ImageView additionClass='text-center top-0 end-0 m-1' icon={Icons.Delete} style={{ position: 'absolute', height: '15px' }} onClick={() => {
+                                                onDelete(el.id)
+                                            }} />
+                                            <ImageView additionClass='text-center' icon={el.name.endsWith('.pdf') ? Icons.PDF_DUMMY_SECONDARY : Icons.IMAGE_DUMMY_SECONDARY} height={'40px'} />
+                                        </Card>
+                                    </Container>
+                                )
+                            })}
+                            <Container additionClass={"col-xl-4 col-sm-3 col-md-6 "}>
+                                {documents.length < 3 && <>
+                                    <Card
+                                        onClick={() => { Upload() }}
+                                        additionClass={"border text-center"}
+                                        style={{ border: "1px bg-gray" }}
+                                    >
+                                        <ImageView additionClass='text-center ml-1' icon={Icons.AddFiles} height={'40px'} />
+                                        <input id='selectImage' hidden type="file" accept="image/jpeg,image/gif,image/png,application/pdf,.pdf," onChange={(e) => changeHandler(e)} />
+                                    </Card>
+                                </>
+                                }
+                            </Container>
+                            <Container margin={"mt-5"} additionClass={'text-right'}>
+                                <Secondary
+                                    text={t("cancel")}
+                                    onClick={() => handleUploadModelCancel()}
+                                />
+                                <Primary
+                                    text={t("upload")}
+                                    onClick={() => AttachDocuments()}
+                                />
+                            </Container>
+                        </Container>
+                    </Container>
+                </Container>
             </Modal>
         </div>
     )
