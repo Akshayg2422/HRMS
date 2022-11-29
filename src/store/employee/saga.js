@@ -28,7 +28,9 @@ import {
   DELETE_HOLIDAY,
   GET_EMPLOYEES_LEAVES,
   GET_LEAVES_BY_TYPES,
-  GET_MODIFY_LOGS
+  GET_MODIFY_LOGS,
+  GET_EMPLOYEE_DOCUMENT,
+  ATTACH_USER_DOCUMENT
 } from "./actionTypes";
 
 import {
@@ -90,7 +92,13 @@ import {
   getEmployeeLeavesSuccess,
   getEmployeeLeavesFailure,
   getModifyLogsSuccess,
-  getModifyLogsFailure
+  getModifyLogsFailure,
+  getEmployeeDocument,
+  getEmployeeDocumentSuccess,
+  getEmployeeDocumentFailure,
+  attachUserDocument,
+  attachUserDocumentSuccess,
+  attachUserDocumentFailure
 } from "./actions";
 
 import {
@@ -121,7 +129,9 @@ import {
   postDeleteHolidays,
   fetchEmployeesleaves,
   fetchMyleaves,
-  fetchModifyEmployeesLeaves
+  fetchModifyEmployeesLeaves,
+  fetchEmployeeDocuments,
+  attachUserDocuments
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -741,6 +751,55 @@ function* getModifyLogsSaga(action) {
   }
 }
 
+/**
+ * get Employee Document
+ */
+
+function* FetchUserDocument(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchEmployeeDocuments, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getEmployeeDocumentSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError);
+      yield put(getEmployeeDocumentSuccess(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeDocumentFailure("Invalid Request"));
+  }
+}
+
+
+/**
+ * Attach user Documents
+ */
+
+function* AttachUserDocument(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(attachUserDocuments, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(attachUserDocumentSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError(response.error_message));
+      yield put(attachUserDocumentSuccess(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(attachUserDocumentFailure("Invalid Request"));
+  }
+}
+
 // ****** //
 
 function* EmployeeSaga() {
@@ -784,6 +843,10 @@ function* EmployeeSaga() {
   yield takeLatest(GET_EMPLOYEES_LEAVES, FetchEmployeesLeaves);
   yield takeLatest(GET_LEAVES_BY_TYPES, FetchLeaveByTypes);
   yield takeLatest(GET_MODIFY_LOGS, getModifyLogsSaga);
+  yield takeLatest(GET_EMPLOYEE_DOCUMENT, FetchUserDocument);
+  yield takeLatest(ATTACH_USER_DOCUMENT, AttachUserDocument);
+
+
 }
 
 export default EmployeeSaga;

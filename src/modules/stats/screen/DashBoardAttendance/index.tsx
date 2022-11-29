@@ -168,10 +168,10 @@ const DashBoardAttendance = ({ }) => {
   ) => {
     if (selectedDateRange == "Custom Range") {
       if (customRange.dateFrom == '') {
-        showToast("error", t('formInvalidParams'));
+        showToast("error", t('dateCantbeempty'));
         return
       } if (customRange.dataTo == '') {
-        showToast("error", t('formInvalidParams'));
+        showToast("error", t('dateCantbeempty'));
         return
       }
     }
@@ -193,23 +193,28 @@ const DashBoardAttendance = ({ }) => {
         onSuccess: (response: any) => {
           setDownloadModel(false)
           downloadFile(response);
-          setShowCustomCalender(false);
-          setSelectedDateRange(DOWNLOAD_RANGE[0].value)
-          resetCustom();
+          customRangeReset()
         },
         onError: (errorMessage: string) => {
           showToast("error", errorMessage);
           setDownloadModel(false)
-          setSelectedDateRange(DOWNLOAD_RANGE[0].value)
-          resetCustom();
+          customRangeReset()
         },
       })
     );
+    customRangeReset()
   };
 
   const resetCustom = () => {
     setCustomRange({ ...customRange, dataTo: "", dateFrom: "" });
   };
+
+
+  const customRangeReset = () => {
+    setShowCustomCalender(false);
+    setSelectedDateRange(DOWNLOAD_RANGE[0].value)
+    resetCustom();
+  }
 
   const selectedRange = (type: string) => {
     setSelectedDateRange(type)
@@ -249,12 +254,8 @@ const DashBoardAttendance = ({ }) => {
   const LogsDownload = (type: string) => {
     if (type === 'Log') {
       downloadSampleCsvFile(true)
-      setShowCustomCalender(false);
-      resetCustom();
     } if (type === 'ConsolidatedLog') {
       downloadSampleCsvFile(false)
-      setShowCustomCalender(false);
-      resetCustom();
     }
   }
 
@@ -357,54 +358,54 @@ const DashBoardAttendance = ({ }) => {
           <DropDown
             additionClass="col-lg-6"
             label={"Select Range"}
-            placeholder={"Select Range"}
+            // placeholder={"Select Range"}
             data={DOWNLOAD_RANGE}
             value={selectedDateRange}
             onChange={(event) => {
               selectedRange(event.target.value);
             }}
           />
-        {showCustomCalendar ? (
-          <div className="row">
-            <div className="col-lg-6">
-              <h5 className="ml-3">{t("dataFrom")}</h5>
-              <DatePicker
-                additionalClass="col"
-                icon={Icons.Calendar}
-                iconPosition={"append"}
-                onChange={(date: string) =>
-                  dateTimePickerHandler(date, "dateFrom")
-                }
-                value={customRange.dateFrom}
-              />
+          {showCustomCalendar ? (
+            <div className="row">
+              <div className="col-lg-6">
+                <h5 className="ml-3">{t("dataFrom")}</h5>
+                <DatePicker
+                  additionalClass="col"
+                  icon={Icons.Calendar}
+                  iconPosition={"append"}
+                  onChange={(date: string) =>
+                    dateTimePickerHandler(date, "dateFrom")
+                  }
+                  value={customRange.dateFrom}
+                />
+              </div>
+              <div className="col-lg-6">
+                <h5 className="ml-3">{t("dataTo")}</h5>
+                <DatePicker
+                  additionalClass="col"
+                  icon={Icons.Calendar}
+                  iconPosition={"append"}
+                  onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
+                  value={customRange.dataTo}
+                />
+              </div>
             </div>
-            <div className="col-lg-6">
-              <h5 className="ml-3">{t("dataTo")}</h5>
-              <DatePicker
-                additionalClass="col"
-                icon={Icons.Calendar}
-                iconPosition={"append"}
-                onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
-                value={customRange.dataTo}
-              />
-            </div>
-          </div>
-        ) : null}
-        <Container margin={"mt-5"} additionClass={'text-right'}>
-          <Secondary
-            text={t("cancel")}
-            onClick={() => setDownloadModel(!downloadmodel)}
-          />
-          <Primary
-            text={t("downloadLog")}
-            onClick={() => LogsDownload('Log')}
-          />
-          <Primary
-            additionClass={'mt-3 mt-sm-0'}
-            text={t("downloadConsolidatedLog")}
-            onClick={() => LogsDownload('ConsolidatedLog')}
-          />
-        </Container>
+          ) : null}
+          <Container margin={"mt-5"} additionClass={'text-right'}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setDownloadModel(!downloadmodel)}
+            />
+            <Primary
+              text={t("downloadLog")}
+              onClick={() => LogsDownload('Log')}
+            />
+            <Primary
+              additionClass={'mt-3 mt-sm-0'}
+              text={t("downloadConsolidatedLog")}
+              onClick={() => LogsDownload('ConsolidatedLog')}
+            />
+          </Container>
         </div>
       </Modal>
     </div>

@@ -6,6 +6,8 @@
   "employee":"Employee",
   "all":"All",
   "confirm":"Confirm",
+  "add":"Add",
+  "title":"Title",
 
 
   "mobileNumber": "Mobile Number",
@@ -177,12 +179,19 @@
 "selectedDate":"Selected Date",
 "downloadLog":"Download Log",
 "downloadConsolidatedLog":"Download ConsolidatedLog",
+"dateCantbeempty":"Date Can't Be Empty",
+"E_Locker":"E-Locker",
+"search":"Search",
+"attachmentCannotBeEmpty": "Attachment cannot be empty",
+"fileNameCannotBeEmpty": "Filename cannot be empty",
 
 
 
 
 
 
+
+"enterfilename":"Enter Your FileName",
 
 
   
