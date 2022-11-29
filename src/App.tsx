@@ -46,7 +46,7 @@ import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 function App() {
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
