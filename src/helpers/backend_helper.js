@@ -63,6 +63,8 @@ export const fetchEmployeesleaves= (payload) => post(url.FETCH_EMPLOYEES_LEAVES,
 
 export const fetchModifyEmployeesLeaves= (payload) => post(url.FETCH_MODIFY_EMPLOYEES_LEAVES,payload,{})
 
+export const postAddWeeklyShift= (payload) => post(url.POST_ADD_WEEKLY_SHIFT,payload,{})
+
 
 
 

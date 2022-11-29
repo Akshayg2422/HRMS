@@ -1,17 +1,34 @@
-import { SELECTED_DAY_OBJECT } from "./actionTypes";
+import { 
+    POST_ADD_WEEKLY_SHIFT,
+    POST_ADD_WEEKLY_SHIFT_SUCCESS,
+    POST_ADD_WEEKLY_SHIFT_FAILURE
+ } from "./actionTypes";
 
 const initialState = {
     loading: false,
     error: '',
-    selectedDayObject: {}
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
     switch (action.type) {
-        case SELECTED_DAY_OBJECT:
+        case POST_ADD_WEEKLY_SHIFT:
             state = {
-                ...state,
-                selectedDayObject: action.payload
+              ...state,
+              loading: true,
+            };
+            break;
+          case POST_ADD_WEEKLY_SHIFT_SUCCESS:
+            state = {
+              ...state,
+              loading: false,
+            };
+            break;
+      
+          case POST_ADD_WEEKLY_SHIFT_FAILURE:
+            state = {
+              ...state,
+              error: action.payload,
+              loading: false,
             };
             break;
 

@@ -4,37 +4,42 @@ import { Icons } from "@assets";
 import { showToast, WEEK_LIST, getWeekAndWeekDaysById } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { DatesList } from '../../container';
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addWeeklyShift
+} from "../../../../store/shiftManagement/actions";
 // import { WEEK_DAY_LIST, WEEK_LIST} from '@src/utils/constants';
 
 const WEEK_DAYS_LIST = [
-  { day: 1, isWorking: true, shift: [] },
-  { day: 2, isWorking: true, shift: [] },
-  { day: 3, isWorking: true, shift: [] },
-  { day: 4, isWorking: true, shift: [] },
-  { day: 5, isWorking: true, shift: [] },
-  { day: 6, isWorking: true, shift: [] },
-  { day: 7, isWorking: true, shift: [] }]
+  { week_day: 1, is_working: false, time_breakdown: [] },
+  { week_day: 2, is_working: false, time_breakdown: [] },
+  { week_day: 3, is_working: false, time_breakdown: [] },
+  { week_day: 4, is_working: false, time_breakdown: [] },
+  { week_day: 5, is_working: false, time_breakdown: [] },
+  { week_day: 6, is_working: false, time_breakdown: [] },
+  { week_day: 7, is_working: false, time_breakdown: [] }]
 
 const WEEK_DAYS_LIST1 = [
-  { day: 1, isWorking: true, shift: [] },
-  { day: 2, isWorking: true, shift: [] },
-  { day: 3, isWorking: true, shift: [] },
-  { day: 4, isWorking: true, shift: [] },
-  { day: 5, isWorking: true, shift: [] },
-  { day: 6, isWorking: true, shift: [] },
-  { day: 7, isWorking: true, shift: [] }]
+  { week_day: 1, is_working: false, time_breakdown: [] },
+  { week_day: 2, is_working: false, time_breakdown: [] },
+  { week_day: 3, is_working: false, time_breakdown: [] },
+  { week_day: 4, is_working: false, time_breakdown: [] },
+  { week_day: 5, is_working: false, time_breakdown: [] },
+  { week_day: 6, is_working: false, time_breakdown: [] },
+  { week_day: 7, is_working: false, time_breakdown: [] }]
 
 const WeeklyShiftSelection = () => {
 
   const [weeklyData, setWeeklyData] = useState<any>([
-    { week: 1, isActiveWeek: true, data: WEEK_DAYS_LIST },
-    { week: 2, isActiveWeek: true, data: WEEK_DAYS_LIST1 },
-    { week: 3, isActiveWeek: true, data: WEEK_DAYS_LIST },
-    { week: 4, isActiveWeek: true, data: WEEK_DAYS_LIST },
-    { week: 5, isActiveWeek: true, data: WEEK_DAYS_LIST }  //
+    { week: 1, is_working: true, week_calendar: WEEK_DAYS_LIST },
+    { week: 2, is_working: true, week_calendar: WEEK_DAYS_LIST1 },
+    { week: 3, is_working: true, week_calendar: WEEK_DAYS_LIST },
+    { week: 4, is_working: true, week_calendar: WEEK_DAYS_LIST },
+    { week: 5, is_working: true, week_calendar: WEEK_DAYS_LIST }  
   ])
 
   const { t } = useTranslation();
+  let dispatch = useDispatch();
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [openModel, setOpenModel] = useState(false)
   const [selectedObject, setSelectedObject] = useState<any>({})
@@ -48,33 +53,54 @@ const WeeklyShiftSelection = () => {
     setShiftsTime({ ...shiftsTime, inTime: '', outTime: '' });
   }
 
-
   const onSubmit = () => {
+
+    const params={
+      group_name:"G003",
+      weekly_group_details:weeklyData
+    }
+
+    console.log("structered data----->",params)
+
+    dispatch(
+      addWeeklyShift({
+        params,
+        onSuccess: (success: any) => {
+          console.log("000000000")
+        },
+        onError: (error: string) => { },
+      })
+    );
+
+  }
+
+
+  const onShiftAdd = () => {
 
     if (dateValidation()) {
       let temp = [...weeklyData]
       temp.map((element: any) => {
         if (temp[isActiveWeek - 1].week === element.week) {
-          element.data.forEach((it: any) => {
-            if (it.day === selectedObject.day && it.shift.length === 0) {
-              let shiftObject = { inTime: shiftsTime.inTime, outTime: shiftsTime.outTime }
-              it.shift.length < 3 && it.shift.push(shiftObject as never)
+          element.week_calendar.forEach((it: any) => {
+            if (it.week_day === selectedObject.week_day && it.time_breakdown.length === 0) {
+              let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
+              it.time_breakdown.length < 3 && it.time_breakdown.push(shiftObject as never)
             }
 
-            else if (it.day === selectedObject.day && it.shift.length > 0) {
+            else if (it.week_day === selectedObject.week_day && it.time_breakdown.length > 0) {
               let isInRange = false
-              it.shift.map((it: any) => {
+              it.time_breakdown.map((it: any) => {
 
-                if ((shiftsTime.inTime >= it.inTime && shiftsTime.inTime < it.outTime) ||
-                  (shiftsTime.outTime >= it.inTime && shiftsTime.outTime < it.outTime)) {
+                if ((shiftsTime.inTime >= it.start_time && shiftsTime.inTime < it.end_time) ||
+                  (shiftsTime.outTime >= it.start_time && shiftsTime.outTime < it.end_time)) {
                   showToast("error", "Already shift allocated for the selected time")
                   isInRange = true
                 }
               })
 
               if (!isInRange) {
-                let shiftObject = { inTime: shiftsTime.inTime, outTime: shiftsTime.outTime }
-                it.shift.length < 3 && it.shift.push(shiftObject as never)
+                let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
+                it.time_breakdown.length < 3 && it.time_breakdown.push(shiftObject as never)
               }
             }
           })
@@ -95,9 +121,9 @@ const WeeklyShiftSelection = () => {
     let temp = [...weeklyData]
     temp.map((element: any) => {
       if (temp[isActiveWeek - 1].week === element.week) {
-        element.data.forEach((it: any) => {
-          if (it.day === selectedObject.day) {
-            it.shift.splice(index, 1)
+        element.week_calendar.forEach((it: any) => {
+          if (it.week_day === selectedObject.week_day) {
+            it.time_breakdown.splice(index, 1)
           }
 
         })
@@ -123,9 +149,9 @@ const WeeklyShiftSelection = () => {
     temp.map((element: any) => {
       if (temp[isActiveWeek - 1].week === element.week) {
         console.log("week", element.week);
-        element && element.data.length > 0 && element.data.map((el: any, i: number) => {
-          if (el.day === day) {
-            el.isWorking = !el.isWorking
+        element && element.week_calendar.length > 0 && element.week_calendar.map((el: any, i: number) => {
+          if (el.week_day === day) {
+            el.is_working = !el.is_working
             console.log(element.week, el);
 
           }
@@ -183,11 +209,11 @@ const WeeklyShiftSelection = () => {
                         <CheckBox
                           id={'Week_' + index}
                           text={'Default Check'}
-                          checked={it.isActiveWeek}
+                          checked={it.is_working}
                           onChange={() => {
                             let temp = weeklyData.map((element: any) => {
                               if (it.week === element.week) {
-                                return { ...element, isActiveWeek: !element.isActiveWeek };  //over
+                                return { ...element, is_working: !element.is_working };  //over
                               }
                               return element;
                             });
@@ -209,7 +235,7 @@ const WeeklyShiftSelection = () => {
         datesList={weeklyData[isActiveWeek - 1]}
         onAddClick={(index) => {
           setOpenModel(!openModel)
-          setSelectedObject(weeklyData[isActiveWeek - 1].data[index])       
+          setSelectedObject(weeklyData[isActiveWeek - 1].week_calendar[index])
         }}
 
         onCheckBoxClick={(index) => {
@@ -220,7 +246,7 @@ const WeeklyShiftSelection = () => {
           onDelete(index)
         }}
 
-        onSubmit={()=>{}}
+        onSubmit={() => { onSubmit()}}
       />
 
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={'Select Shift Timing'}>
@@ -253,7 +279,7 @@ const WeeklyShiftSelection = () => {
 
         <div className="float-right">
           <button type="button" className="btn btn-secondary ml-auto" onClick={() => { setOpenModel(!openModel) }}>Cancel</button>
-          <button type="button" className="btn btn-primary ml-auto" onClick={() => { onSubmit() }}>Submit</button>
+          <button type="button" className="btn btn-primary ml-auto" onClick={() => { onShiftAdd() }}>Submit</button>
         </div>
       </Modal>
     </>

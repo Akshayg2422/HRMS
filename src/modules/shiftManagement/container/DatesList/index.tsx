@@ -19,22 +19,22 @@ const DatesList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSu
   return (
     <>
       <Card>
-        <h1>{datesList.week}</h1>
-        {datesList && datesList.isActiveWeek && (
+        {/* <h1>{datesList.week}</h1> */}
+        {datesList && datesList.is_working && (
           <>
             <Container additionClass='col-lg-12  px-3'>
-              {datesList.data && datesList.data.length > 0 && datesList.data.map((it: any, firstArrayIndex: number) => {
+              {datesList.week_calendar && datesList.week_calendar.length > 0 && datesList.week_calendar.map((it: any, firstArrayIndex: number) => {
                 //  return it.data.map((element:any, secondArrayIndex: number)=>{
                 return (
                   <Container additionClass='row my-5'>
                     <Container additionClass={'col-lg-2 mt-2'}>
-                      <h4>{getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.day + '').name}</h4>
+                      <h4>{getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.week_day + '').name}</h4>
                     </Container>
                     <Container additionClass={'col-lg-2  mt-2'}> <label className="custom-toggle">
                       <input type="checkbox"
-                        onChange={() => { if (onCheckBoxClick) { onCheckBoxClick(it.day) } }}
-                        checked={it.isWorking}
-                        value={getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.day + '').name}
+                        onChange={() => { if (onCheckBoxClick) { onCheckBoxClick(it.week_day) } }}
+                        checked={it.is_working}
+                        value={getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.week_day + '').name}
                       />
                       <span
                         className="custom-toggle-slider rounded-circle"
@@ -44,7 +44,7 @@ const DatesList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSu
                     </label>
                     </Container>
                     <Container additionClass={'col mt-2'}>
-                      {it.isWorking === true ?
+                      {it.is_working === true ?
                         <Container>
                           <Primary text={'+'} onClick={() => { if (onAddClick) { onAddClick(firstArrayIndex) } }}
                           ></Primary>
@@ -52,12 +52,12 @@ const DatesList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSu
                           <h4>{'Not Working'}</h4>
                         </Container>}
                     </Container >
-                    {it.isWorking && <Container additionClass={'col-lg-6 row '}>
-                      {it?.shift && it.shift.length > 0 && it.shift.map((el: any, index: number) => {
+                    {it.is_working && <Container additionClass={'col-lg-6 row '}>
+                      {it?.time_breakdown && it.time_breakdown.length > 0 && it.time_breakdown.map((el: any, index: number) => {
                         return (
                           <>
-                            <Input disabled={true} label={'IN'} value={el.inTime} col={'col-4'} />
-                            <Input disabled={true} label={'Out'} value={el.outTime} col={'col-4'} />
+                            <Input disabled={true} label={'IN'} value={el.start_time} col={'col-4'} />
+                            <Input disabled={true} label={'Out'} value={el.end_time} col={'col-4'} />
                             <Container col={'col-4'} style={{ marginTop: "34px" }}>
                               <Icon
                                 icon={Icons.Delete}
