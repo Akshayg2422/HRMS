@@ -1,7 +1,6 @@
 {
   "name": "zenylog",
   "version": "0.1.0",
-  "proxy":"https://api.zenyq.com",
   "dependencies": {
     "@craco/craco": "^7.0.0-alpha.3",
     "@fullcalendar/daygrid": "^5.11.2",
