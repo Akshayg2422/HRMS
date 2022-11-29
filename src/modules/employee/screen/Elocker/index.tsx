@@ -27,7 +27,7 @@ function ELocker() {
 
     useEffect(() => {
         fetchEmployeeDocuments()
-    }, [])
+    }, [search])
 
 
     const Upload = () => {
@@ -121,11 +121,14 @@ function ELocker() {
 
 
     const handleDownload = (url: any) => {
-        axios.get(url, {
+        axios.post(url, {
             responseType: 'blob',
         })
             .then((res) => {
                 fileDownload(res.data, viewDocument.name)
+            })
+            .catch((error) => {
+                console.log(error);
             })
     }
 
@@ -181,19 +184,17 @@ function ELocker() {
 
                 </Container>
             </Card>
-            <Container>
-                <Card>
-                    {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
-                        tableTitle={"Documents List"}
-                        displayDataSet={documentsList(employeeDocuments.details)}
-                        tableOnClick={(e, index, item) => {
-                            let current = employeeDocuments.details[index]
-                            viewUserDocument(current)
-                        }}
-                    /> :
-                        <NoRecordFound />
-                    }
-                </Card>
+            <Container additionClass='mx--3'>
+                {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
+                    tableTitle={"Documents List"}
+                    displayDataSet={documentsList(employeeDocuments.details)}
+                    tableOnClick={(e, index, item) => {
+                        let current = employeeDocuments.details[index]
+                        viewUserDocument(current)
+                    }}
+                /> :
+                    <NoRecordFound />
+                }
             </Container>
 
             <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
@@ -221,8 +222,11 @@ function ELocker() {
                 title={"Documents"}
                 toggle={() => setPreviewModel(!previewModel)} >
                 <Container additionClass='vh-100'>
-                    {preview != null && (preview.endsWith('.jpeg') || preview.endsWith('.jpg') || preview.endsWith('.png')) && <Carousel images={[preview]} height={700} />}
-                    {preview != "" && preview.endsWith('.pdf') && <iframe src={`${preview}#toolbar=0`} height="70%" width="100%" />}
+                    {preview != null && (preview.endsWith('.jpeg') || preview.endsWith('.jpg') || preview.endsWith('.png')) && <img src={preview} style={{ height: '100%', objectFit: 'cover', width: '100%' }} />}
+                    {preview != "" && preview.endsWith('.pdf') &&
+                        <iframe src={`${preview}#toolbar=0`} style={{ width: "100%", height: "100%", overflow: 'hidden', position: 'static' }}
+                        />
+                    }
                 </Container>
 
             </Modal>
