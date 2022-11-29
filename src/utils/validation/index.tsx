@@ -20,7 +20,7 @@ const validateMobileNumber = (value: string | undefined) => {
 
   const validateName = (value: string | undefined) => {
     let output = {status: false, error: ''} ;
-    if (value && value.length > 3) {
+    if (value && value.length >= 3) {
       output = {status: true, error: ''};
     } else {
       output = {status: false, error: 'Name should be minimum of 3 characters'};

@@ -82,8 +82,8 @@ function EmployeeScreen() {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     getEmployeesApi(page);
   }
 
@@ -120,6 +120,8 @@ function EmployeeScreen() {
   function proceedSearchApi() {
     getEmployeesApi(currentPage);
   }
+
+  console.log('registeredEmployeesList', registeredEmployeesList);
 
   return (
     <>

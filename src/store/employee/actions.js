@@ -96,7 +96,13 @@ import {
   GET_EMPLOYEES_LEAVES_FAILURE,
   GET_MODIFY_LOGS,
   GET_MODIFY_LOGS_SUCCESS,
-  GET_MODIFY_LOGS_FAILURE
+  GET_MODIFY_LOGS_FAILURE,
+  GET_EMPLOYEE_DOCUMENT,
+  GET_EMPLOYEE_DOCUMENT_SUCCESS,
+  GET_EMPLOYEE_DOCUMENT_FAILURE,
+  ATTACH_USER_DOCUMENT,
+  ATTACH_USER_DOCUMENT_SUCCESS,
+  ATTACH_USER_DOCUMENT_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -857,7 +863,7 @@ export const getEmployeeLeavesFailure = (error) => {
  * get modify logs
  */
 
- export const getModifyLogs = (params) => {
+export const getModifyLogs = (params) => {
   return {
     type: GET_MODIFY_LOGS,
     payload: params,
@@ -874,6 +880,56 @@ export const getModifyLogsSuccess = (response) => {
 export const getModifyLogsFailure = (error) => {
   return {
     type: GET_MODIFY_LOGS_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * get E-locker Document
+ */
+
+export const getEmployeeDocument = (params) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT,
+    payload: params,
+  };
+};
+
+export const getEmployeeDocumentSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeDocumentFailure = (error) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * Attach user Document e-Locker
+ */
+
+export const attachUserDocument = (params) => {
+  return {
+    type: ATTACH_USER_DOCUMENT,
+    payload: params,
+  };
+};
+
+export const attachUserDocumentSuccess = (response) => {
+  return {
+    type: ATTACH_USER_DOCUMENT_SUCCESS,
+    payload: response,
+  };
+};
+
+export const attachUserDocumentFailure = (error) => {
+  return {
+    type: ATTACH_USER_DOCUMENT_FAILURE,
     payload: error,
   };
 };
