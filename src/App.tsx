@@ -29,7 +29,10 @@ import {
   MyLeaves,
   AutoLogout,
   ModifyLogs,
-  WeeklyShiftSelection
+  WeeklyShiftSelection,
+  ShiftGroup,
+  ShiftListing,
+  EditEmployeesNewGroup
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -163,6 +166,18 @@ function App() {
         <Route
           path={ROUTE.ROUTE_SHIFT_MANAGEMENT}
           element={<RequireAuth>{<WeeklyShiftSelection />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_GROUP}
+          element={<RequireAuth>{<ShiftGroup />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_LISTING}
+          element={<RequireAuth>{<ShiftListing />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_EDIT_EMPLOYEES_NEW_GROUP}
+          element={<RequireAuth>{<EditEmployeesNewGroup />}</RequireAuth>}
         />
 
         <Route path={"*"} element={<PageNotFound />} />

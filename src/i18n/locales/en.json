@@ -391,7 +391,14 @@
   "departments":"Departments",
   "employeeDetailsUpdatedSuccessfully":"Employee Details Updated Successfully",
   "logoutUser":"Logout User",
-  "logoutMessage":"Please click on Proceed to Logout user"
+  "logoutMessage":"Please click on Proceed to Logout user",
+  "weeksShiftDefinition":"Week's Shift Definition",
+  "shiftName":"Shift Name",
+  "defaultCheck":"Default Check",
+  "shiftStarttime":"Shift start time",
+  "shiftEndTime":"Shift end time",
+  "timeFrom":"Time from :",
+  "timeTo":"Time to :"
 
 
  

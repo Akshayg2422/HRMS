@@ -1,3 +1,4 @@
-import {DatesList} from "./DatesList"
+import {WeekDaysList} from "./DatesList"
+import ListingWeekDays from "./ListingWeekDays"
 
-export {DatesList}
+export {WeekDaysList,ListingWeekDays}

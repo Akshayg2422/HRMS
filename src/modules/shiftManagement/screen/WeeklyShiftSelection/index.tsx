@@ -1,32 +1,31 @@
-import React, { useState } from 'react'
-import { Card, CheckBox, Container, Icon, Input, InputText, Modal, Primary, TimePicker } from '@components'
+import { useState } from 'react'
+import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } from '@components'
 import { Icons } from "@assets";
 import { showToast, WEEK_LIST, getWeekAndWeekDaysById } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { DatesList } from '../../container';
+import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
 import {
   addWeeklyShift
 } from "../../../../store/shiftManagement/actions";
-// import { WEEK_DAY_LIST, WEEK_LIST} from '@src/utils/constants';
 
 const WEEK_DAYS_LIST = [
-  { week_day: 1, is_working: false, time_breakdown: [] },
-  { week_day: 2, is_working: false, time_breakdown: [] },
-  { week_day: 3, is_working: false, time_breakdown: [] },
-  { week_day: 4, is_working: false, time_breakdown: [] },
-  { week_day: 5, is_working: false, time_breakdown: [] },
-  { week_day: 6, is_working: false, time_breakdown: [] },
-  { week_day: 7, is_working: false, time_breakdown: [] }]
+  { week_day: 1, is_working: true, time_breakdown: [] },
+  { week_day: 2, is_working: true, time_breakdown: [] },
+  { week_day: 3, is_working: true, time_breakdown: [] },
+  { week_day: 4, is_working: true, time_breakdown: [] },
+  { week_day: 5, is_working: true, time_breakdown: [] },
+  { week_day: 6, is_working: true, time_breakdown: [] },
+  { week_day: 7, is_working: true, time_breakdown: [] }]
 
 const WEEK_DAYS_LIST1 = [
-  { week_day: 1, is_working: false, time_breakdown: [] },
-  { week_day: 2, is_working: false, time_breakdown: [] },
-  { week_day: 3, is_working: false, time_breakdown: [] },
-  { week_day: 4, is_working: false, time_breakdown: [] },
-  { week_day: 5, is_working: false, time_breakdown: [] },
-  { week_day: 6, is_working: false, time_breakdown: [] },
-  { week_day: 7, is_working: false, time_breakdown: [] }]
+  { week_day: 1, is_working: true, time_breakdown: [] },
+  { week_day: 2, is_working: true, time_breakdown: [] },
+  { week_day: 3, is_working: true, time_breakdown: [] },
+  { week_day: 4, is_working: true, time_breakdown: [] },
+  { week_day: 5, is_working: true, time_breakdown: [] },
+  { week_day: 6, is_working: true, time_breakdown: [] },
+  { week_day: 7, is_working: true, time_breakdown: [] }]
 
 const WeeklyShiftSelection = () => {
 
@@ -44,6 +43,7 @@ const WeeklyShiftSelection = () => {
   const [openModel, setOpenModel] = useState(false)
   const [selectedObject, setSelectedObject] = useState<any>({})
   const [shiftsTime, setShiftsTime] = useState<any>({ inTime: '', outTime: '' })
+  const [shiftName, setShiftName] = useState('')
 
   const dateTimePickerHandler = (value: string, key: string) => {
     setShiftsTime({ ...shiftsTime, [key]: value });
@@ -56,7 +56,7 @@ const WeeklyShiftSelection = () => {
   const onSubmit = () => {
 
     const params={
-      group_name:"G003",
+      group_name:shiftName,
       weekly_group_details:weeklyData
     }
 
@@ -66,7 +66,6 @@ const WeeklyShiftSelection = () => {
       addWeeklyShift({
         params,
         onSuccess: (success: any) => {
-          console.log("000000000")
         },
         onError: (error: string) => { },
       })
@@ -148,12 +147,9 @@ const WeeklyShiftSelection = () => {
     let temp = [...weeklyData]
     temp.map((element: any) => {
       if (temp[isActiveWeek - 1].week === element.week) {
-        console.log("week", element.week);
         element && element.week_calendar.length > 0 && element.week_calendar.map((el: any, i: number) => {
           if (el.week_day === day) {
             el.is_working = !el.is_working
-            console.log(element.week, el);
-
           }
 
         })
@@ -166,16 +162,19 @@ const WeeklyShiftSelection = () => {
   return (
     <>
       <Card>
+      <BackArrow additionClass={"my-3"} />
         <Container>
-          <h3 className="mb-0  p-2">Week's Shift Definition </h3>
+          <h3 className="mb-0  p-2">{t('weeksShiftDefinition')}</h3>
         </Container>
         <Container col={"col-xl-5 col-md-6 col-sm-12"}>
           <InputText
-            label={"Shift Name"}
+            label={t("shiftName")}
             placeholder={"Shift Name"}
             name={"shiftName"}
             onChange={(event) => {
-
+              console.log("event-->",event);
+              
+              setShiftName(event.target.value)
             }}
           />
         </Container>
@@ -208,7 +207,7 @@ const WeeklyShiftSelection = () => {
                       <Container additionClass={'float-right'} margin={'mt-2'}>
                         <CheckBox
                           id={'Week_' + index}
-                          text={'Default Check'}
+                          text={t('defaultCheck')}
                           checked={it.is_working}
                           onChange={() => {
                             let temp = weeklyData.map((element: any) => {
@@ -231,7 +230,7 @@ const WeeklyShiftSelection = () => {
 
       </Card>
 
-      <DatesList
+      <WeekDaysList
         datesList={weeklyData[isActiveWeek - 1]}
         onAddClick={(index) => {
           setOpenModel(!openModel)
@@ -252,9 +251,9 @@ const WeeklyShiftSelection = () => {
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={'Select Shift Timing'}>
         <Container display={'d-flex'} additionClass={'ml-lg-2'}>
           <Container additionClass={'ml-lg-2 col-lg-4 '}>
-            <h5 className="mb-2">{'Time from :'}</h5>
+            <h5 className="mb-2">{t('timeFrom')}</h5>
             <TimePicker
-              title={"Shift start time"}
+              title={t("shiftStarttime")}
               icon={Icons.Calendar}
               iconPosition={"append"}
               value={shiftsTime.inTime}
@@ -264,9 +263,9 @@ const WeeklyShiftSelection = () => {
             />
           </Container>
           <Container additionClass={'ml-lg-5 col-lg-4'}>
-            <h5 className="mb-2">{'Time To :'}</h5>
+            <h5 className="mb-2">{t('timeTo')}</h5>
             <TimePicker
-              title={"Shift end time"}
+              title={t("shiftStarttime")}
               icon={Icons.Calendar}
               value={shiftsTime.outTime}
               iconPosition={"append"}
@@ -278,8 +277,8 @@ const WeeklyShiftSelection = () => {
         </Container>
 
         <div className="float-right">
-          <button type="button" className="btn btn-secondary ml-auto" onClick={() => { setOpenModel(!openModel) }}>Cancel</button>
-          <button type="button" className="btn btn-primary ml-auto" onClick={() => { onShiftAdd() }}>Submit</button>
+          <button type="button" className="btn btn-secondary ml-auto" onClick={() => { setOpenModel(!openModel) }}>{t('cancel')}</button>
+          <button type="button" className="btn btn-primary ml-auto" onClick={() => { onShiftAdd() }}>{t('submit')}</button>
         </div>
       </Modal>
     </>

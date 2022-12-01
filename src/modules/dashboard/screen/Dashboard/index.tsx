@@ -151,6 +151,9 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
+  // console.log("dashboardDetails-->",JSON.stringify(dashboardDetails));
+  
+
   useEffect(() => {
     dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))

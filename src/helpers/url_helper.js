@@ -71,4 +71,10 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   export const POST_DELETE_HOLIDAYS='/attendance/deleteHoliday'
 
   export const POST_ADD_WEEKLY_SHIFT = 'attendance/addWeeklyShift'
+
+  export const FETCH_BRANCH_SHIFTS = 'attendance/getBranchShifts'
+
+  export const FETCH_BRANCH_WEEKLY_SHIFTS = 'attendance/getBranchWeeklyShifts'
+
+  export const POST_ADD_SHIFTS = 'attendance/addShift'
   

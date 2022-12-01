@@ -23,6 +23,9 @@ import { AutoLogout } from './SessionTimeout'
 
 import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection } from './shiftManagement';
+import { ShiftGroup } from './shiftManagement';
+import { ShiftListing } from './shiftManagement';
+import { EditEmployeesNewGroup } from './shiftManagement';
 
 export {
   getDashboardDetails,
@@ -60,5 +63,8 @@ export {
   MyLeaves,
   AutoLogout,
   ModifyLogs,
-  WeeklyShiftSelection
+  WeeklyShiftSelection,
+  ShiftGroup,
+  ShiftListing,
+  EditEmployeesNewGroup
 }
