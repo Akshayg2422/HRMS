@@ -6,6 +6,8 @@ import {
     useNav,
     ROUTE,
     EMPLOYEE_ADDITIONAL_DATA,
+    showToast,
+    goBack,
 
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +42,9 @@ const EditEmployeesNewGroup = () => {
     const [groupName, setGroupName] = useState('')
     const [selectedShift, setSelectedShift] = useState('')
     const [searchEmployee, setSearchEmployee] = useState('')
+    const [employeesList, setEmployeesList] = useState<any>()
+    const [selectedEmployeesList, setSelectedEmployeesList] = useState<any>([])
+    const [selectedEmployeesIds, setSelectedEmployeesIds] = useState([])
 
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
@@ -62,36 +67,21 @@ const EditEmployeesNewGroup = () => {
             branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
             name: groupName,
             weekly_shift_id: selectedShift,
-            employee_ids: ["cb624abe-062a-40b5-afa0-e5086646be76"]
+            employee_ids: selectedEmployeesIds
         }
+        
         dispatch(postAddShift({
             params,
             onSuccess: (success: any) => {
-                console.log("success------------>", success)
+                setSelectedEmployeesIds([])
+                goBack(navigation);
             },
-            onError: (error: string) => { },
+            onError: (error: string) => { 
+                setSelectedEmployeesIds([])
+                showToast("error", error)
+            },
         }));
     }
-
-    const normalizedEmployeeList = (data: any) => {
-        return data.map((el: any) => {
-            return {
-                id: el.employee_id,
-                name: el.name,
-                "mobile number": el.mobile_number,
-                branch: el.branch,
-            };
-        });
-    };
-
-
-    // const normalizedSelectedEmployeeList = (data: any) => {
-    //     return data.map((el: any) => {
-    //         return {
-    //             Name: el.name
-    //         };
-    //     });
-    // };
 
     function paginationHandler(
         type: "next" | "prev" | "current",
@@ -114,16 +104,53 @@ const EditEmployeesNewGroup = () => {
     useEffect(() => {
         getBranchesWeeklyShiftsList()
         setGroupName(selectedShiftGroupName)
-        getEmployeesApi(currentPage)
+
+        setEmployeesList(registeredEmployeesList.map((el: any) => ({ ...el, isStatus: false })))
     }, []);
+
+    useEffect(() => {
+        getEmployeesApi(currentPage)
+    }, [])
+
+    const onChangeEmployeeStatus = (item: any) => {
+
+        selectedEmployeesIds.push(item.id as never)
+
+        if (selectedEmployeesList && selectedEmployeesList.length === 0) {
+            selectedEmployeesList.push(item as never)
+        }
+        else if (selectedEmployeesList && selectedEmployeesList.length > 0) {
+            let isNotSameEmployee = false
+            selectedEmployeesList.map((it: any, index: number) => {
+                if (it.id === item.id) {
+                    isNotSameEmployee = true
+                }
+
+            })
+            if (!isNotSameEmployee) {
+                selectedEmployeesList.push(item as never)
+            }
+        }
+
+        let temp = employeesList.map((element: any) => {
+            if (item.id === element.id) {
+                return { ...element, isStatus: true };
+            }
+            return element;
+        })
+        setEmployeesList(temp)
+
+    }
+
+    const onRevertSelectedEmployees = (item:any) =>{}
 
     //cb624abe-062a-40b5-afa0-e5086646be76
 
     return (
         <>
-            <Card>
-                <Container additionClass={"row mx-2 my-4"}>
-                    <BackArrow additionClass={"my-3"} />
+            <Card additionClass='mx--2'>
+                <Container additionClass={"row mx-2 "}>
+                    <BackArrow additionClass={"my-2"} />
                     <h2>{selectedShiftGroupName ? "Edit Employee's to New group" : "Add Employees to group"}</h2>
                     <Container
                         flexDirection={"row"}
@@ -155,7 +182,25 @@ const EditEmployeesNewGroup = () => {
                                 }}
                             />
                         </Container>
-                        <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+
+                        <Container additionClass={'float-right'}>
+                            <Primary text={selectedShiftGroupName ? 'Update' : 'Submit'} onClick={() => { onSubmitAddShift() }}
+                            ></Primary>
+                        </Container>
+                    </Container>
+
+                </Container>
+            </Card>
+            <Container additionClass={'row '}>
+
+                {/**
+                 * Employee List Table and search input
+                 */}
+
+                <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
+                    <h3>Select Employees</h3>
+                    <Container additionClass={'row'}>
+                        <Container col={"col-xl-4"} >
                             <InputText
                                 placeholder={"Enter Employee Name"}
                                 label={"Search Employee Name"}
@@ -166,25 +211,19 @@ const EditEmployeesNewGroup = () => {
                         </Container>
                         <Container
                             col={"col"}
-                            additionClass={"mt-sm-3"}
+                            style={{ marginTop: '33px' }}
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
                             onClick={() => { proceedSearchApi() }}
                         >
                             <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
-                        <Container additionClass={'float-right'}>
-                            <Primary text={selectedShiftGroupName ? 'Update' : 'Submit'} onClick={() => { onSubmitAddShift() }}
-                            ></Primary>
-                        </Container>
                     </Container>
 
-                </Container>
-            </Card>
-            <Container additionClass={'row'}>
-                <Container margin={'mt-4'} additionClass={'mx--2 col-9'}>
-                    {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+
+                    {employeesList && employeesList.length > 0 && (
                         <CommonTable
+                            noHeader
                             isPagination
                             currentPage={currentPage}
                             noOfPage={numOfPages}
@@ -193,42 +232,76 @@ const EditEmployeesNewGroup = () => {
                             }}
                             previousClick={() => paginationHandler("prev")}
                             nextClick={() => paginationHandler("next")}
-                            tableTitle={"Select Employees"}
                             tableChildren={
                                 <EmployeeSetTable
-                                    tableDataSet={registeredEmployeesList}
-                                    onStatusClick={(item) =>
-                                        console.log("item", item)
-                                    }
+                                    tableDataSet={employeesList}
+                                    onStatusClick={(item) => {
+                                        onChangeEmployeeStatus(item)
+                                    }}
                                 />
                             }
 
                         />
                     )}
-                </Container>
-                <Container additionClass='col-3 mt-4 '>
+                </Card>
+
+                {/**
+                 * Selected Employee List Table and search input
+                 */}
+
+                <Card additionClass='col-xl col-sm-3 col-0 mt-4 mx-2 '>
+                    <h3>Selected Employees List</h3>
+
+                    <Container additionClass={'row'}>
+                        <Container col={"col col-md-6 col-sm-12"}>
+                            <InputText
+                                placeholder={"Enter Employee Name"}
+                                label={"Search Employee Name"}
+                                onChange={(e) => {
+
+                                }}
+                            />
+                        </Container>
+                        <Container
+                            col={"col"}
+                            style={{ marginTop: '33px' }}
+                            justifyContent={"justify-content-center"}
+                            alignItems={"align-items-center"}
+                            onClick={() => { }}
+                        >
+                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                        </Container>
+                    </Container>
+
                     <CommonTable
+                        noHeader
                         tableTitle={"Selected Employees List"}
                         tableChildren={
                             <LocationTable
-                                tableDataSet={list}
+                                tableDataSet={selectedEmployeesList}
                                 onRevertClick={(item) =>
-                                    console.log("item", item)
+                                    onRevertSelectedEmployees(item)
                                 }
                             />
                         }
                     />
-                </Container>
+                </Card>
             </Container>
 
         </>
     )
 }
 
+{/**
+         * Selected Employees 
+         */}
 
 type Location = {
     name: string;
-
+    employee_id: string;
+    mobile_number: string;
+    branch: string;
+    isStatus: boolean
 };
 
 type LocationTableProps = {
@@ -242,12 +315,14 @@ const LocationTable = ({
     onRevertClick,
 }: LocationTableProps) => {
     return (
-        <div className="table-responsive">
+        <div className="table-responsive mx--3">
             <table className="table align-items-center table-flush">
                 <thead className="thead-light">
                     <tr>
                         <th scope="col">{"Name"}</th>
-                        <th scope="col">{"Status"}</th>
+                        <th scope="col">{"MobileNumber"}</th>
+                        <th scope="col">{"Branch"}</th>
+                        <th scope="col">{"Revert"}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -256,8 +331,11 @@ const LocationTable = ({
                         tableDataSet.map((item: Location, index: number) => {
                             return (
                                 <tr className="align-items-center">
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.name}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.TickActive} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item.employee_id
+                                        })`}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.branch}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );
@@ -268,13 +346,16 @@ const LocationTable = ({
     );
 };
 
-
+{/**
+         * Employees list 
+         */}
 
 type EmployeeSet = {
     name: string;
     employee_id: string;
     mobile_number: string;
     branch: string;
+    isStatus: boolean
 };
 
 type EmployeeSetProps = {
@@ -288,11 +369,10 @@ const EmployeeSetTable = ({
     onStatusClick,
 }: EmployeeSetProps) => {
     return (
-        <div className="table-responsive">
+        <div className="table-responsive mx--3">
             <table className="table align-items-center table-flush">
                 <thead className="thead-light">
                     <tr>
-                        <th scope="col">{"ID"}</th>
                         <th scope="col">{"Name"}</th>
                         <th scope="col">{"MobileNumber"}</th>
                         <th scope="col">{"Branch"}</th>
@@ -306,11 +386,11 @@ const EmployeeSetTable = ({
                         tableDataSet.map((item: EmployeeSet, index: number) => {
                             return (
                                 <tr className="align-items-center">
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.employee_id}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.name}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item.employee_id
+                                        })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.branch}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.TickActive} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={item.isStatus ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
 
                                 </tr>
                             );
