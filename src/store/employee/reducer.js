@@ -97,6 +97,13 @@ import {
   GET_MODIFY_LOGS,
   GET_MODIFY_LOGS_SUCCESS,
   GET_MODIFY_LOGS_FAILURE,
+  GET_MIS_REPORT,
+  GET_MIS_REPORT_SUCCESS,
+  GET_MIS_REPORT_FAILURE,
+  GET_MIS_REPORT_DOWNLOAD,
+  GET_MIS_REPORT_DOWNLOAD_SUCCESS,
+  GET_MIS_REPORT_DOWNLOAD_FAILURE,
+  GET_MIS_REPORT_CLEAR,
   GET_EMPLOYEE_DOCUMENT,
   GET_EMPLOYEE_DOCUMENT_FAILURE,
   GET_EMPLOYEE_DOCUMENT_SUCCESS,
@@ -138,6 +145,7 @@ const initialState = {
   myLeaves: "",
   employeesLeaves: "",
   employeesModifyLeaves: "",
+  misReport: [],
   employeeDocuments: []
 };
 
@@ -954,6 +962,70 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
 
+
+    // ***Mis Report***//
+
+    case GET_MIS_REPORT:
+      state = {
+        ...state,
+        misReport: [],
+        loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case GET_MIS_REPORT_CLEAR:
+      state = {
+        ...state,
+        misReport: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case GET_MIS_REPORT_SUCCESS:
+      const reports = action.payload.employees;
+      state = {
+        ...state,
+        misReport: reports.data,
+        numOfPages: reports.data.num_pages,
+        currentPage:
+          reports.data.next_page === -1
+            ? reports.data.num_pages
+            : reports.data.next_page - 1,
+        loading: false,
+      };
+      break;
+
+    case GET_MIS_REPORT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    // ***MIS Report Download
+
+    case GET_MIS_REPORT_DOWNLOAD:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_MIS_REPORT_DOWNLOAD_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        downloadContent: action.payload,
+      };
+      break;
+
+    case GET_MIS_REPORT_DOWNLOAD_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     /**
      * Default

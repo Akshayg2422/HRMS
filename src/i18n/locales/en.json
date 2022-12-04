@@ -189,6 +189,13 @@
 
 
 
+"misReport":"MIS Report",
+"startDate":"Start Date",
+"endDate":"End Date",
+"dateFromToValidation":"End Date Can't Be greaterThan Start Date",
+
+
+
 
 
 "enterfilename":"Enter Your FileName",

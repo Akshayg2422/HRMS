@@ -72,6 +72,11 @@ export const attachUserDocuments = (payload) => post(url.ATTACH_USER_DOCUMENT, p
 
 
 
+export const fetchMisReportsLog= (payload) => post(url.FETCH_MIS_REPORT,payload,{})
+
+export const fetchDownloadMisReportsLog= (payload) => postHeader(url.FETCH_MIS_REPORT,payload,{})
+
+
 
 
 

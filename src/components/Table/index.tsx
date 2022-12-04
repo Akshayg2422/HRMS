@@ -1,7 +1,7 @@
 import React from 'react'
-import {TABLE_ELEMENT_TEXT_BUTTON, TABLE_CONTENT_TYPE_REPORT, TABLE_ELEMENT_TEXT_IMAGE} from '@utils'
-import {Container, Badge, ImageView, } from '@components';
-import {Icons} from '@assets'
+import { TABLE_ELEMENT_TEXT_BUTTON, TABLE_CONTENT_TYPE_REPORT, TABLE_ELEMENT_TEXT_IMAGE } from '@utils'
+import { Container, Badge, ImageView, Primary, Secondary, } from '@components';
+import { Icons } from '@assets'
 
 interface TableProps {
   displayDataSet?: Array<{}>;
@@ -15,7 +15,7 @@ interface TableProps {
   tableValueOnClick?: (event: any, index: number, item: object, elv: string) => void;
   tableContentType?: number;
   comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>;
-  custombutton?:string
+  custombutton?: string
 
 }
 
@@ -25,7 +25,7 @@ interface Element {
   elh: string
 }
 
-function index({displayDataSet,tableDataSet,custombutton,additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet}: TableProps) {
+function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet }: TableProps) {
 
   const renderTableHeader = () => {
     if (displayDataSet) {
@@ -38,7 +38,7 @@ function index({displayDataSet,tableDataSet,custombutton,additionalDataSet, tabl
 
   function renderTableValue(eachObject: object) {
     return Object.keys(eachObject).map((key: string) => {
-      return <td style={{whiteSpace: 'pre-wrap'}} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
+      return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
     })
   }
 
@@ -59,13 +59,14 @@ function index({displayDataSet,tableDataSet,custombutton,additionalDataSet, tabl
     switch (tableContentType) {
       case TABLE_CONTENT_TYPE_REPORT:
         element = <div className="d-flex">
-          <div className="d-flex flex-column justify-content-center mr-3">
-            <h6 className="mb-0 text-xs mb-2">1 logs</h6>
-            <Badge title={'Present'} badgeSize={'badge-lg'} />
+          <div className="d-flex flex-column justify-content-center ">
+            <h6 className="mb-0 text-xs mb-2 ml-2">1 logs</h6>
+            <div className='d-flex justify-content-center align-items-center mb-2'>
+              <ImageView icon={Icons.TickActive} height={16} width={16} />
+            </div>
+            <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} />
           </div>
-          <div className='d-flex justify-content-center align-items-center'>
-            <ImageView icon={Icons.Edit} height={16} width={16} />
-          </div>
+
         </div>
         break;
     }
@@ -101,7 +102,7 @@ function index({displayDataSet,tableDataSet,custombutton,additionalDataSet, tabl
                 })
               )
             }
-           
+
           </tr>
 
         </thead>
@@ -122,7 +123,7 @@ function index({displayDataSet,tableDataSet,custombutton,additionalDataSet, tabl
                       additionalDataSet.map(item => {
                         return item.elv && <td scope="row" onClick={(e) => {
                           if (tableValueOnClick) {
-                            tableValueOnClick(e, idx, each_table_obj,item.elv)
+                            tableValueOnClick(e, idx, each_table_obj, item.elv)
                             e.preventDefault();
                             e.stopPropagation();
                           }

@@ -29,6 +29,7 @@ import {
   MyLeaves,
   AutoLogout,
   ModifyLogs,
+  Reports,
   ELocker,
   ElockerUpload
 } from "@modules";
@@ -78,8 +79,8 @@ function App() {
           element={<RequireAuth>{<Location />}</RequireAuth>}
         />
         <Route
-          path={ROUTE.ROUTE_REPORT}
-          element={<RequireAuth>{<Report />}</RequireAuth>}
+          path={ROUTE.ROUTE_REPORTS}
+          element={<RequireAuth>{<Reports />}</RequireAuth>}
         />
         <Route
           path={ROUTE.ROUTE_MANAGE_EMPLOYEE}

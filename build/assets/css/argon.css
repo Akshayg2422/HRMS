@@ -18616,6 +18616,9 @@ Zenylog
      padding-left: 1rem;
  }
 
+ 
+
+
  .navbar-vertical .navbar-nav .nav-link.active {
      position: relative;
  }
@@ -18755,7 +18758,10 @@ Zenylog
 
  .navbar-vertical.navbar-expand-xs .navbar-nav>.nav-item {
      margin-top: 2px;
+     cursor: pointer;
  }
+
+ 
 
  .navbar-vertical.navbar-expand-xs .navbar-nav>.nav-item>.nav-link.active {
      margin-right: .5rem;
@@ -19228,6 +19234,7 @@ Zenylog
 
      .navbar-vertical.navbar-expand-xl .navbar-nav>.nav-item {
          margin-top: 2px;
+         cursor: pointer;
      }
 
      .navbar-vertical.navbar-expand-xl .navbar-nav>.nav-item>.nav-link.active {
