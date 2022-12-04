@@ -30,6 +30,8 @@ import {
   AutoLogout,
   ModifyLogs,
   Reports,
+  ELocker,
+  ElockerUpload
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -45,7 +47,7 @@ import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 function App() {
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
@@ -159,6 +161,14 @@ function App() {
         <Route
           path={ROUTE.ROUTE_MODIFY_LOGS}
           element={<RequireAuth>{<ModifyLogs />}</RequireAuth>}
+        />
+         <Route
+          path={ROUTE.ROUTE_E_LOCKER}
+          element={<RequireAuth>{<ELocker/>}</RequireAuth>}
+        />
+         <Route
+          path={ROUTE.ROUTE_E_LOCKER_UPLOAD}
+          element={<RequireAuth>{<ElockerUpload/>}</RequireAuth>}
         />
 
         <Route path={"*"} element={<PageNotFound />} />

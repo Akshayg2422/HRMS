@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { InputProps } from "../../Interface";
 import "./input.css";
 
-const  Input = React.forwardRef(({
+const Input = React.forwardRef(({
   label,
   size,
   value,
@@ -19,7 +19,7 @@ const  Input = React.forwardRef(({
   validator,
   name,
   disabled,
-}: InputProps, ref: any )=> {
+}: InputProps, ref: any) => {
   const [validStatus, setValidStatus] = useState({ status: true, error: "" });
 
   return (
@@ -36,8 +36,6 @@ const  Input = React.forwardRef(({
         disabled={disabled}
         maxLength={maxLength}
         autoComplete={'off'}
-        
-      
         onChange={(it) => {
           if (validator) {
             setValidStatus(validator(it.target.value));

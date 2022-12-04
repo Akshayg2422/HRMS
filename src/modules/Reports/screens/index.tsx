@@ -40,11 +40,8 @@ function Reports() {
 
   useEffect(() => {
     getReports()
-  }, [hierarchicalBranchIds, selectedDepartment, hierarchicalAllBranchIds, reportsType])
-
-  useEffect(() => {
     getDepartments()
-  }, [])
+  }, [hierarchicalBranchIds, selectedDepartment, hierarchicalAllBranchIds, reportsType])
 
   const getDepartments = (() => {
     const params = {}
@@ -70,7 +67,7 @@ function Reports() {
       getServerDateFromMoment(getMomentObjFromServer(customRange.dateFrom))
     ).getTime();
     if (toSeverDate < fromServerDate) {
-      showToast('info', 'dateFromToValidation')
+      showToast('info', t('dateFromToValidation'))
       setCustomRange({ ...customRange, dataTo: "" });
     }
   }, [customRange.dateFrom, customRange.dataTo]);

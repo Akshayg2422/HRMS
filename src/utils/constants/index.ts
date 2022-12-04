@@ -35,6 +35,9 @@ export const ROUTE = {
   ROUTE_MY_LEAVES: '/my-leaves',
   ROUTE_MODIFY_LOGS: '/modify-logs',
   ROUTE_REPORTS: '/reports',
+  ROUTE_E_LOCKER:'/E-Locker',
+  ROUTE_E_LOCKER_UPLOAD:'/E-Locker-Upload',
+
 
 
 

@@ -103,7 +103,13 @@ import {
   GET_MIS_REPORT_DOWNLOAD,
   GET_MIS_REPORT_DOWNLOAD_SUCCESS,
   GET_MIS_REPORT_DOWNLOAD_FAILURE,
-  GET_MIS_REPORT_CLEAR
+  GET_MIS_REPORT_CLEAR,
+  GET_EMPLOYEE_DOCUMENT,
+  GET_EMPLOYEE_DOCUMENT_FAILURE,
+  GET_EMPLOYEE_DOCUMENT_SUCCESS,
+  ATTACH_USER_DOCUMENT,
+  ATTACH_USER_DOCUMENT_FAILURE,
+  ATTACH_USER_DOCUMENT_SUCCESS
 } from "./actionTypes";
 
 const initialState = {
@@ -139,7 +145,8 @@ const initialState = {
   myLeaves: "",
   employeesLeaves: "",
   employeesModifyLeaves: "",
-  misReport: []
+  misReport: [],
+  employeeDocuments: []
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -903,6 +910,58 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+    /**
+        * get Employee Document E-locker
+        */
+    case GET_EMPLOYEE_DOCUMENT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_EMPLOYEE_DOCUMENT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        employeeDocuments: action.payload
+      };
+      break;
+
+    case GET_EMPLOYEE_DOCUMENT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
+    /**
+           * Attach User Documents
+           */
+    case ATTACH_USER_DOCUMENT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ATTACH_USER_DOCUMENT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        // employeeDocuments: action.payload
+      };
+      break;
+
+    case ATTACH_USER_DOCUMENT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
 
     // ***Mis Report***//
 

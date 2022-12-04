@@ -135,7 +135,7 @@ const LocationTable = ({
                     <div className="d-flex flex-column justify-content-center ">
                         {/* <h6 className="mb-0 text-xs mb-2 ml-2">1 logs</h6> */}
                         <div className='d-flex justify-content-center align-items-center mb-2'>
-                            <ImageView icon={key != 'string' && (eachObject[key as keyof object]?.is_present) ? Icons.TickActive: Icons.TickInActive } height={16} width={16} />
+                            <ImageView icon={key != 'string' && eachObject[key as keyof object]?.is_present ? Icons.TickActive: Icons.TickInActive } height={16} width={16} />
                         </div>
                         {/* <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> */}
                     </div>
