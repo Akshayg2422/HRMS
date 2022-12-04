@@ -72,5 +72,8 @@ export const POST_DELETE_HOLIDAYS = '/attendance/deleteHoliday'
 
 export const FETCH_EMPLOYEE_DOCUMENT = '/employee/getEmployeeDocuments'
 
-export const ATTACH_USER_DOCUMENT = '/employee/attachUserDocument';  
+export const ATTACH_USER_DOCUMENT = '/employee/attachUserDocument';
+
+export const FETCH_MIS_REPORT = 'reports/baseAttendanceReport'
+
 

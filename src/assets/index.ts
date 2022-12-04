@@ -66,6 +66,7 @@ export const Icons = {
   myLogBook: require('./icons/MyLogBook/mylogbook.png'),
   myLeaves: require('./icons/MyLeaves/holidays.png'),
   BackArrow: require('./icons/BackArrow/BackArrow.png'),
+  TickInActive: require('./icons/TickInActive/TickInActive.png'),
   E_Locker: require('./icons/ELocker/E-locker.png'),
   PDF_DUMMY: require('./icons/PdfDummy/PdfDummy.png'),
   IMAGE_DUMMY: require('./icons/ImageDummy/ImageDummy.png'),

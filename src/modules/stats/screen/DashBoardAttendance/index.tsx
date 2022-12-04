@@ -162,6 +162,7 @@ const DashBoardAttendance = ({ }) => {
       };
     });
   };
+  console.log("selectedAttendance", selectedAttendance);
 
   const downloadSampleCsvFile = (
     logs: boolean
@@ -259,7 +260,6 @@ const DashBoardAttendance = ({ }) => {
     }
   }
 
-
   return (
     <div className="mx-3">
       <Card>
@@ -308,12 +308,11 @@ const DashBoardAttendance = ({ }) => {
                 />
               </div>
 
-              <Container additionClass={"col my-4 text-right"}>
+              {/* <Container additionClass={"col my-4 text-right"}>
                 <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
-                  {/* <a download onClick={(e) => downloadSampleCsvFile()}> */}
                   <Icon icon={Icons.DownloadSecondary} />
                 </a>
-              </Container>
+              </Container> */}
             </Container>
           </div>
         </Container>

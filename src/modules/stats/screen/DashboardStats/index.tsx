@@ -107,7 +107,6 @@ const DashboardStats = () => {
     );
   };
 
-  console.log("employeeattendancedatalog", employeeattendancedatalog);
 
   return (
     <>
