@@ -54,9 +54,9 @@ export const EMPLOYEE_TYPE = [
 ];
 
 export const REPORTS_TYPE = [
-  { id: 'LeaveReport', name: 'LeaveReport', value: 'LeaveReport' },
-  { id: 'LogReport', name: 'LogReport', value: 'LogReport' },
-  { id: 'AttendanceReport', name: 'AttendanceReport', value: 'AttendanceReport' },
+  { id: 'attendance', name: 'AttendanceReport', value: 'attendance' },
+  { id: 'leave', name: 'LeaveReport', value: 'leave' },
+  { id: 'log', name: 'LogReport', value: 'log' },
 ];
 
 export const LEAVES_TYPE = [
@@ -203,10 +203,6 @@ export const ThisWeek = moment()
   .format("YYYY-MM-DD");
 export const ThisMonth = `${moment().format("Y")}-${moment().format("M")}-01`;
 
-
-// export const LastMonth = `01-${moment()
-// .add(-1, "month")
-// .format("M")}-${moment().format("Y")}`;
 
 export const LastMonth = `${moment().format("Y")}-${moment()
   .add(-1, "month")

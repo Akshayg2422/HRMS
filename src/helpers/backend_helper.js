@@ -63,6 +63,11 @@ export const fetchEmployeesleaves= (payload) => post(url.FETCH_EMPLOYEES_LEAVES,
 
 export const fetchModifyEmployeesLeaves= (payload) => post(url.FETCH_MODIFY_EMPLOYEES_LEAVES,payload,{})
 
+export const fetchMisReportsLog= (payload) => post(url.FETCH_MIS_REPORT,payload,{})
+
+export const fetchDownloadMisReportsLog= (payload) => postHeader(url.FETCH_MIS_REPORT,payload,{})
+
+
 
 
 

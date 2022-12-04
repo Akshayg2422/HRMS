@@ -96,7 +96,14 @@ import {
   GET_EMPLOYEES_LEAVES_FAILURE,
   GET_MODIFY_LOGS,
   GET_MODIFY_LOGS_SUCCESS,
-  GET_MODIFY_LOGS_FAILURE
+  GET_MODIFY_LOGS_FAILURE,
+  GET_MIS_REPORT,
+  GET_MIS_REPORT_SUCCESS,
+  GET_MIS_REPORT_FAILURE,
+  GET_MIS_REPORT_DOWNLOAD,
+  GET_MIS_REPORT_DOWNLOAD_SUCCESS,
+  GET_MIS_REPORT_DOWNLOAD_FAILURE,
+  GET_MIS_REPORT_CLEAR
 } from "./actionTypes";
 
 // Delete Account
@@ -506,6 +513,7 @@ export const getEmployeeTodayStatusFailure = (error) => {
     payload: error,
   };
 };
+
 //download
 export const getDownloadTodayStatus = (params) => {
   return {
@@ -857,7 +865,7 @@ export const getEmployeeLeavesFailure = (error) => {
  * get modify logs
  */
 
- export const getModifyLogs = (params) => {
+export const getModifyLogs = (params) => {
   return {
     type: GET_MODIFY_LOGS,
     payload: params,
@@ -875,5 +883,58 @@ export const getModifyLogsFailure = (error) => {
   return {
     type: GET_MODIFY_LOGS_FAILURE,
     payload: error,
+  };
+};
+
+
+
+export const getMisReport = (params) => {
+  return {
+    type: GET_MIS_REPORT,
+    payload: params,
+  };
+};
+
+export const getMisReportSuccess = (response) => {
+  return {
+    type: GET_MIS_REPORT_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getMisReportFailure = (error) => {
+  return {
+    type: GET_MIS_REPORT_FAILURE,
+    payload: error,
+  };
+};
+
+
+
+export const getDownloadMisReport = (params) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD,
+    payload: params,
+  };
+};
+
+export const getDownloadMisReportSuccess = (response) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getDownloadMisReportFailure = (error) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const getMisReportClear = () => {
+  return {
+    type: GET_MIS_REPORT_CLEAR,
   };
 };

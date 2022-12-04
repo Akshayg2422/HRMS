@@ -28,7 +28,9 @@ import {
   DELETE_HOLIDAY,
   GET_EMPLOYEES_LEAVES,
   GET_LEAVES_BY_TYPES,
-  GET_MODIFY_LOGS
+  GET_MODIFY_LOGS,
+  GET_MIS_REPORT,
+  GET_MIS_REPORT_DOWNLOAD
 } from "./actionTypes";
 
 import {
@@ -90,7 +92,11 @@ import {
   getEmployeeLeavesSuccess,
   getEmployeeLeavesFailure,
   getModifyLogsSuccess,
-  getModifyLogsFailure
+  getModifyLogsFailure,
+  getMisReportSuccess,
+  getMisReportFailure,
+  getDownloadMisReportSuccess,
+  getDownloadMisReportFailure
 } from "./actions";
 
 import {
@@ -121,7 +127,9 @@ import {
   postDeleteHolidays,
   fetchEmployeesleaves,
   fetchMyleaves,
-  fetchModifyEmployeesLeaves
+  fetchModifyEmployeesLeaves,
+  fetchMisReportsLog,
+  fetchDownloadMisReportsLog
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -156,7 +164,7 @@ function* getDepartments(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getDepartmentDataSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(getDepartmentDataFailure(response.error_message));
@@ -433,7 +441,6 @@ function* getEmployeeTodayStatus(action) {
     yield put(showLoader());
 
     const response = yield call(fetchEmployeeTodayStatus, action.payload);
-    console.log("response data--->", response);
     if (response.success) {
       yield put(hideLoader());
       yield put(getEmployeeTodayStatusSuccess(response.details));
@@ -741,6 +748,55 @@ function* getModifyLogsSaga(action) {
   }
 }
 
+
+/**
+ * get MisReport
+ */
+
+function* getReportsSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(fetchMisReportsLog, action.payload.params);
+    if (response.success) {
+      yield put(getMisReportSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError(response));
+      yield put(getMisReportFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getMisReportFailure("Invalid Request"));
+  }
+}
+
+// **MISreportsDownload***//
+
+function* getDownloadMisReport(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(fetchDownloadMisReportsLog, action.payload.params);
+    if (response) {
+      yield put(getDownloadMisReportSuccess(response.data));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+
+    } else {
+      yield put(getDownloadMisReportFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getDownloadMisReportFailure("Invalid Request"));
+  }
+}
+
+
+
 // ****** //
 
 function* EmployeeSaga() {
@@ -784,6 +840,11 @@ function* EmployeeSaga() {
   yield takeLatest(GET_EMPLOYEES_LEAVES, FetchEmployeesLeaves);
   yield takeLatest(GET_LEAVES_BY_TYPES, FetchLeaveByTypes);
   yield takeLatest(GET_MODIFY_LOGS, getModifyLogsSaga);
+  yield takeLatest(GET_MIS_REPORT, getReportsSaga);
+  yield takeLatest(GET_MIS_REPORT_DOWNLOAD, getDownloadMisReport);
+
+
+
 }
 
 export default EmployeeSaga;

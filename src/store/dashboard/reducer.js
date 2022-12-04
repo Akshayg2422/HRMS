@@ -19,15 +19,17 @@ import {
   EDIT_PROFILE_PICTURE_FAIL,
   SET_HIERARCHICAL_BRANCH_IDS,
   SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
-  RESET_REDUCER
+  RESET_REDUCER,
+  SET_HIERARCHICAL_ALL_BRANCH_IDS
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   error: '',
   dashboardDetails: {},
-  hierarchicalBranchIds:{},
-  hierarchicalBranchName:''
+  hierarchicalBranchIds: {},
+  hierarchicalAllBranchIds: 0,
+  hierarchicalBranchName: ''
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -156,8 +158,17 @@ const DashboardReducer = (state = initialState, action) => {
         ...state,
         hierarchicalBranchIds: { ...state.hierarchicalBranchIds, include_child: action.payload.checkBoxStatus }
       };
-        break;
-    
+      break;
+
+
+    case SET_HIERARCHICAL_ALL_BRANCH_IDS:
+      console.log(action.payload+"====");
+      state = {
+        ...state,
+        hierarchicalAllBranchIds: action.payload
+      };
+      break;
+
     case RESET_REDUCER:
       state = initialState;
       break;
@@ -166,7 +177,7 @@ const DashboardReducer = (state = initialState, action) => {
       state = state;
       break;
   }
-  
+
   return state;
 };
 

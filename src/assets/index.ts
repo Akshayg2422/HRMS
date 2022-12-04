@@ -8,11 +8,11 @@ export const Icons = {
   LogoSmall: require('./icons/LogoSmall/LogoSmall.png'),
 
   Admin: require('./icons/Admin/Admin.png'),
-  AssignLocation:require('./icons/AssignLocation/asignLocation.png'),
-  LocationSecondary:require('./icons/LocationSecondary/locationSecondary.png'),
-  EmployeeSecondary:require('./icons/EmployeeSecondary/employee.png'),
-  Statistics:require('./icons/Statistics/statistics.png'),
-  CalendarSecondary:require('./icons/CalendarSecondary/calendar.png'),
+  AssignLocation: require('./icons/AssignLocation/asignLocation.png'),
+  LocationSecondary: require('./icons/LocationSecondary/locationSecondary.png'),
+  EmployeeSecondary: require('./icons/EmployeeSecondary/employee.png'),
+  Statistics: require('./icons/Statistics/statistics.png'),
+  CalendarSecondary: require('./icons/CalendarSecondary/calendar.png'),
   Employee: require('./icons/Employee/Employee.png'),
   RegisterCompany: require('./icons/RegisterCompany/RegisterCompany.png'),
   Google: require('./icons/Google/Google.png'),
@@ -56,16 +56,17 @@ export const Icons = {
   Mobile: require('./icons/Mobile/Mobile.png'),
   Linkedin: require('./icons/Linkedin/Linkedin.png'),
   Zenylog: require('./icons/Zenylog/Zenylog.png'),
-  NewLogo:require('./icons/NewLogo/newlogo.png'),
+  NewLogo: require('./icons/NewLogo/newlogo.png'),
   ProfilePlaceHolder: require('./icons/ProfilePlaceHolder/ProfilePlaceHolder.png'),
   TickActive: require('./icons/TickActive/TickActive.png'),
   TickDefault: require('./icons/TickDefault/TickDefault.png'),
   LocationGray: require('./icons/LocationGray/LocationGray.png'),
-  ShiftManagement:require('./icons/ShiftManagement/shiftManagement.png'),
-  MyLog:require('./icons/MyLog/mylog.png'),
-  myLogBook:require('./icons/MyLogBook/mylogbook.png'),
-  myLeaves:require('./icons/MyLeaves/holidays.png'),
-  BackArrow:require('./icons/BackArrow/BackArrow.png')
+  ShiftManagement: require('./icons/ShiftManagement/shiftManagement.png'),
+  MyLog: require('./icons/MyLog/mylog.png'),
+  myLogBook: require('./icons/MyLogBook/mylogbook.png'),
+  myLeaves: require('./icons/MyLeaves/holidays.png'),
+  BackArrow: require('./icons/BackArrow/BackArrow.png'),
+  TickInActive: require('./icons/TickInActive/TickInActive.png')
 }
 
 

@@ -69,4 +69,8 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
   export const POST_EMPLOYEES_HOLIDAYS='/attendance/addHoliday'
 
   export const POST_DELETE_HOLIDAYS='/attendance/deleteHoliday'
+
+
+  export const FETCH_MIS_REPORT='reports/baseAttendanceReport'
+
   
