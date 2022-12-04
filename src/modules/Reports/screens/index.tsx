@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound } from '@components'
 import { Icons } from '@assets'
-import { downloadFile, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
+import { downloadFile, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDownloadMisReport, getMisReport, getMisReportClear } from '../../../store/employee/actions';
@@ -70,6 +70,7 @@ function Reports() {
       getServerDateFromMoment(getMomentObjFromServer(customRange.dateFrom))
     ).getTime();
     if (toSeverDate < fromServerDate) {
+      showToast('info', 'dateFromToValidation')
       setCustomRange({ ...customRange, dataTo: "" });
     }
   }, [customRange.dateFrom, customRange.dataTo]);
