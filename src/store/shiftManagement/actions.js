@@ -12,7 +12,10 @@ import {
     POST_ADD_SHIFT,
     POST_ADD_SHIFT_SUCCESS,
     POST_ADD_SHIFT_FAILURE,
-    SELECTED_WEEKLY_SHIFT_ID
+    SELECTED_WEEKLY_SHIFT_ID,
+    FETCH_WEEKLY_SHIFT_DETAILS,
+    FETCH_WEEKLY_SHIFT_DETAILS_SUCCESS,
+    FETCH_WEEKLY_SHIFT_DETAILS_FAILURE
 } from "./actionTypes";
 
 
@@ -121,5 +124,28 @@ export const addWeeklyShift = (type) => {
     return {
       type: SELECTED_WEEKLY_SHIFT_ID,
       payload: type,
+    };
+  };
+
+  //get weekly shift details
+
+  export const getWeeklyShiftDetails = (type) => {
+    return {
+        type: FETCH_WEEKLY_SHIFT_DETAILS,
+        payload: type,
+    };
+};
+  
+  export const getWeeklyShiftDetailsSuccess = (response) => {
+    return {
+      type: FETCH_WEEKLY_SHIFT_DETAILS_SUCCESS,
+      payload: response,
+    };
+  };
+  
+  export const getWeeklyShiftDetailsFailure = (error) => {
+    return {
+      type: FETCH_WEEKLY_SHIFT_DETAILS_FAILURE,
+      payload: error,
     };
   };

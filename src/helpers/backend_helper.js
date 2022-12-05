@@ -71,6 +71,8 @@ export const fetchBranchWeeklyShifts= (payload) => post(url.FETCH_BRANCH_WEEKLY_
 
 export const postAddShiftApi= (payload) => post(url.POST_ADD_SHIFTS,payload,{})
 
+export const fetchWeeklyShiftDetailsApi= (payload) => post(url.FETCH_WEEKLY_SHIFT_DETAILS,payload,{})
+
 
 
 
