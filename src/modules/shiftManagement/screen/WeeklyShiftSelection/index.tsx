@@ -9,6 +9,7 @@ import {
   addWeeklyShift,
   getWeeklyShiftDetails
 } from "../../../../store/shiftManagement/actions";
+import { LOADIPHLPAPI } from 'dns';
 
 const WEEK_DAYS_LIST = [
   { week_day: 1, is_working: true, time_breakdown: [] },
@@ -19,21 +20,21 @@ const WEEK_DAYS_LIST = [
   { week_day: 6, is_working: true, time_breakdown: [] },
   { week_day: 7, is_working: true, time_breakdown: [] }]
 
-const WEEK_DAYS_LIST1 = [
-  { week_day: 1, is_working: true, time_breakdown: [] },
-  { week_day: 2, is_working: true, time_breakdown: [] },
-  { week_day: 3, is_working: true, time_breakdown: [] },
-  { week_day: 4, is_working: true, time_breakdown: [] },
-  { week_day: 5, is_working: true, time_breakdown: [] },
-  { week_day: 6, is_working: true, time_breakdown: [] },
-  { week_day: 7, is_working: true, time_breakdown: [] }]
+// const WEEK_DAYS_LIST1 = [
+//   { week_day: 1, is_working: true, time_breakdown: [] },
+//   { week_day: 2, is_working: true, time_breakdown: [] },
+//   { week_day: 3, is_working: true, time_breakdown: [] },
+//   { week_day: 4, is_working: true, time_breakdown: [] },
+//   { week_day: 5, is_working: true, time_breakdown: [] },
+//   { week_day: 6, is_working: true, time_breakdown: [] },
+//   { week_day: 7, is_working: true, time_breakdown: [] }]
 
 
 const WeeklyShiftSelection = () => {
 
   const [weeklyData, setWeeklyData] = useState<any>([
     { week: 1, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
-    { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST1] },
+    { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 3, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 4, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 5, is_working: true, week_calendar: [...WEEK_DAYS_LIST] }
@@ -47,8 +48,8 @@ const WeeklyShiftSelection = () => {
     (state: any) => state.ShiftManagementReducer
   );
 
-  console.log("response----->",weeklyShiftDetails);
-  
+  console.log("response----->", weeklyShiftDetails);
+
 
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [openModel, setOpenModel] = useState(false)
@@ -87,35 +88,33 @@ const WeeklyShiftSelection = () => {
   const onShiftAdd = () => {
 
     if (dateValidation()) {
-      let temp = [...weeklyData]
-      temp.map((element: any) => {
-        if (temp[isActiveWeek - 1].week === element.week) {
-          element.week_calendar.forEach((it: any) => {
-            if (it.week_day === selectedObject.week_day && it.time_breakdown.length === 0) {
-              let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-              it.time_breakdown.length < 3 && it.time_breakdown.push(shiftObject as never)
-            }
+      let updatedWeek = [...weeklyData]
+      let selectedWeekPosition = isActiveWeek - 1
+      let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
+      const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedObject].time_breakdown
 
-            else if (it.week_day === selectedObject.week_day && it.time_breakdown.length > 0) {
-              let isInRange = false
-              it.time_breakdown.map((it: any) => {
+      if (timeBreakdown.length === 0) {
+        let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
+        changedWeek[selectedObject] = { ...changedWeek[selectedObject], time_breakdown: [...timeBreakdown, shiftObject] }
+      }
+      else if (timeBreakdown.length > 0) {
+        let isInRange = false
+        for (let i = 0; i < timeBreakdown.length; i++) {
 
-                if ((shiftsTime.inTime >= it.start_time && shiftsTime.inTime < it.end_time) ||
-                  (shiftsTime.outTime >= it.start_time && shiftsTime.outTime < it.end_time)) {
-                  showToast("error", "Already shift allocated for the selected time")
-                  isInRange = true
-                }
-              })
-
-              if (!isInRange) {
-                let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-                it.time_breakdown.length < 3 && it.time_breakdown.push(shiftObject as never)
-              }
-            }
-          })
-
+          if ((shiftsTime.inTime >= timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
+            (shiftsTime.outTime >= timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
+            showToast("error", "Already shift allocated for the selected time")
+            isInRange = true
+          }
         }
-      })
+        if (!isInRange) {
+          let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
+          changedWeek[selectedObject] = { ...changedWeek[selectedObject], time_breakdown: [...timeBreakdown, shiftObject] }
+        }
+
+      }
+
+      setWeeklyData(updatedWeek)
       setOpenModel(!openModel)
       shiftTimeReset()
     }
@@ -152,32 +151,24 @@ const WeeklyShiftSelection = () => {
   }
 
 
-  const workingDayStatus = (day: number) => {
+  const workingDayStatus = (index: number) => {
 
-    let temp = [...weeklyData]
-    temp.map((element: any) => {
-      if (temp[isActiveWeek - 1].week === element.week) {
-        element && element.week_calendar.length > 0 && element.week_calendar.map((el: any, i: number) => {
-          if (el.week_day === day) {
-            el.is_working = !el.is_working
-          }
-
-        })
-      }
-    }
-    );
-    setWeeklyData(temp)
+    let updatedWeek = [...weeklyData]
+    let selectedWeekPosition = isActiveWeek - 1
+    let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
+    changedWeek[index] = { ...changedWeek[index], is_working: !changedWeek[index].is_working }
+    setWeeklyData(updatedWeek)
   }
 
-  const fetchWeeklyShiftDetails = () =>{
+  const fetchWeeklyShiftDetails = () => {
 
-    const params = {id:selectedWeeklyShiftId}
-    dispatch(getWeeklyShiftDetails({params}))
+    const params = { id: selectedWeeklyShiftId }
+    dispatch(getWeeklyShiftDetails({ params }))
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchWeeklyShiftDetails()
-  },[])
+  }, [])
 
   return (
     <>
@@ -230,13 +221,14 @@ const WeeklyShiftSelection = () => {
                           text={t('defaultCheck')}
                           checked={it.is_working}
                           onChange={() => {
-                            let temp = weeklyData.map((element: any) => {
+
+                            let updatedData = weeklyData.map((element: any) => {
                               if (it.week === element.week) {
                                 return { ...element, is_working: !element.is_working };  //over
                               }
                               return element;
                             });
-                            setWeeklyData(temp);
+                            setWeeklyData(updatedData);
 
                           }} />
                       </Container>
@@ -254,7 +246,7 @@ const WeeklyShiftSelection = () => {
         datesList={weeklyData[isActiveWeek - 1]}
         onAddClick={(index) => {
           setOpenModel(!openModel)
-          setSelectedObject(weeklyData[isActiveWeek - 1].week_calendar[index])
+          setSelectedObject(index)
         }}
 
         onCheckBoxClick={(index) => {

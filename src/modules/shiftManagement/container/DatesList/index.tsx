@@ -24,7 +24,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
         </Container>
         <Container additionClass={'col-lg-2  mt-2'}> <label className="custom-toggle">
           <input type="checkbox"
-            onChange={() => { if (onCheckBoxClick) { onCheckBoxClick(it.week_day) } }}
+            onChange={() => { if (onCheckBoxClick) { onCheckBoxClick(index) } }}
             checked={it.is_working}
             value={getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.week_day + '').name}
           />
