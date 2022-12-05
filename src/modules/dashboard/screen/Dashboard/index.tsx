@@ -151,7 +151,7 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
-  // console.log("dashboardDetails-->",JSON.stringify(dashboardDetails));
+  console.log("dashboardDetails-->",JSON.stringify(dashboardDetails));
   
 
   useEffect(() => {

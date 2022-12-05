@@ -10,7 +10,8 @@ import {
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    getBranchWeeklyShifts
+    getBranchWeeklyShifts,
+    selectedWeeklyShiftId
 } from "../../../../store/shiftManagement/actions";
 
 const ShiftListing = () => {
@@ -22,11 +23,11 @@ const ShiftListing = () => {
         (state: any) => state.ShiftManagementReducer
     );
 
-    console.log("branchesWeeklyShifts-->",branchesWeeklyShifts);
-    
+    console.log("branchesWeeklyShifts-->", branchesWeeklyShifts);
+
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -42,9 +43,13 @@ const ShiftListing = () => {
         });
     };
 
-    const editBranchShift = () =>{}
+    const manageWeeklyShiftSelectionHandler = (id: string | undefined) => {
+        id ?  dispatch(selectedWeeklyShiftId( id )): dispatch(selectedWeeklyShiftId(undefined)) 
+        goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT)
 
-    const deleteBranchShift = () =>{}
+    }
+
+    const deleteBranchShift = () => { }
 
     return (
         <>
@@ -54,7 +59,9 @@ const ShiftListing = () => {
                 <div className="col text-right my-sm-2 mt-3 mt-sm-0">
                     <Primary
                         text={'Add New'}
-                        onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT) }}
+                        onClick={() => {
+                            manageWeeklyShiftSelectionHandler(undefined)
+                        }}
                     />
                 </div>
 
@@ -68,8 +75,10 @@ const ShiftListing = () => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
                                 const current = branchesWeeklyShifts[index];
+                                console.log("current-->",current);
+                                
                                 if (elv === "Edit") {
-                                    editBranchShift()
+                                    manageWeeklyShiftSelectionHandler(current.id)
                                 }
                                 if (elv === "Delete") {
                                     deleteBranchShift()

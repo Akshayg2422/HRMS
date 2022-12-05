@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } from '@components'
 import { Icons } from "@assets";
-import { showToast, WEEK_LIST, getWeekAndWeekDaysById } from '@utils';
+import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
@@ -27,18 +27,25 @@ const WEEK_DAYS_LIST1 = [
   { week_day: 6, is_working: true, time_breakdown: [] },
   { week_day: 7, is_working: true, time_breakdown: [] }]
 
+
 const WeeklyShiftSelection = () => {
 
   const [weeklyData, setWeeklyData] = useState<any>([
-    { week: 1, is_working: true, week_calendar: WEEK_DAYS_LIST },
-    { week: 2, is_working: true, week_calendar: WEEK_DAYS_LIST1 },
-    { week: 3, is_working: true, week_calendar: WEEK_DAYS_LIST },
-    { week: 4, is_working: true, week_calendar: WEEK_DAYS_LIST },
-    { week: 5, is_working: true, week_calendar: WEEK_DAYS_LIST }  
+    { week: 1, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
+    { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST1] },
+    { week: 3, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
+    { week: 4, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
+    { week: 5, is_working: true, week_calendar: [...WEEK_DAYS_LIST] }
   ])
 
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const navigation = useNav();
+
+  const { selectedWeeklyShiftId } = useSelector(
+    (state: any) => state.ShiftManagementReducer
+  );
+
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [openModel, setOpenModel] = useState(false)
   const [selectedObject, setSelectedObject] = useState<any>({})
@@ -55,17 +62,16 @@ const WeeklyShiftSelection = () => {
 
   const onSubmit = () => {
 
-    const params={
-      group_name:shiftName,
-      weekly_group_details:weeklyData
+    const params = {
+      group_name: shiftName,
+      weekly_group_details: weeklyData
     }
-
-    console.log("structered data----->",params)
 
     dispatch(
       addWeeklyShift({
         params,
         onSuccess: (success: any) => {
+          goBack(navigation);
         },
         onError: (error: string) => { },
       })
@@ -162,9 +168,9 @@ const WeeklyShiftSelection = () => {
   return (
     <>
       <Card>
-      <BackArrow additionClass={"my-3"} />
+        <BackArrow additionClass={"my-3"} />
         <Container>
-          <h3 className="mb-0  p-2">{t('weeksShiftDefinition')}</h3>
+          <h3 className="mb-0  p-2">{selectedWeeklyShiftId ? "Edit weekly shift details" : t('weeksShiftDefinition')}</h3>
         </Container>
         <Container col={"col-xl-5 col-md-6 col-sm-12"}>
           <InputText
@@ -172,8 +178,8 @@ const WeeklyShiftSelection = () => {
             placeholder={"Shift Name"}
             name={"shiftName"}
             onChange={(event) => {
-              console.log("event-->",event);
-              
+              console.log("event-->", event);
+
               setShiftName(event.target.value)
             }}
           />
@@ -245,7 +251,7 @@ const WeeklyShiftSelection = () => {
           onDelete(index)
         }}
 
-        onSubmit={() => { onSubmit()}}
+        onSubmit={() => { onSubmit() }}
       />
 
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={'Select Shift Timing'}>

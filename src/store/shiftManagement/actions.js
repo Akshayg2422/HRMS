@@ -11,7 +11,8 @@ import {
     SELECTED_BRANCH_SHIFT_GROUP_NAME,
     POST_ADD_SHIFT,
     POST_ADD_SHIFT_SUCCESS,
-    POST_ADD_SHIFT_FAILURE
+    POST_ADD_SHIFT_FAILURE,
+    SELECTED_WEEKLY_SHIFT_ID
 } from "./actionTypes";
 
 
@@ -111,5 +112,14 @@ export const addWeeklyShift = (type) => {
     return {
       type: POST_ADD_SHIFT_FAILURE,
       payload: error,
+    };
+  };
+
+  //set selected weekly shift id
+
+  export const selectedWeeklyShiftId = (type) => {
+    return {
+      type: SELECTED_WEEKLY_SHIFT_ID,
+      payload: type,
     };
   };
