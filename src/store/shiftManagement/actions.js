@@ -15,7 +15,8 @@ import {
     SELECTED_WEEKLY_SHIFT_ID,
     FETCH_WEEKLY_SHIFT_DETAILS,
     FETCH_WEEKLY_SHIFT_DETAILS_SUCCESS,
-    FETCH_WEEKLY_SHIFT_DETAILS_FAILURE
+    FETCH_WEEKLY_SHIFT_DETAILS_FAILURE,
+    SELECTED_WEEKLY_SHIFT_NAME
 } from "./actionTypes";
 
 
@@ -120,9 +121,18 @@ export const addWeeklyShift = (type) => {
 
   //set selected weekly shift id
 
-  export const selectedWeeklyShiftId = (type) => {
+  export const selectedWeeklyShiftIdAction = (type) => {
     return {
       type: SELECTED_WEEKLY_SHIFT_ID,
+      payload: type,
+    };
+  };
+
+  //set selected weekly shift name
+
+  export const selectedWeeklyShiftNameAction = (type) => {
+    return {
+      type: SELECTED_WEEKLY_SHIFT_NAME,
       payload: type,
     };
   };

@@ -11,7 +11,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchWeeklyShifts,
-    selectedWeeklyShiftId
+    selectedWeeklyShiftIdAction,
+    selectedWeeklyShiftNameAction
 } from "../../../../store/shiftManagement/actions";
 
 const ShiftListing = () => {
@@ -44,7 +45,7 @@ const ShiftListing = () => {
     };
 
     const manageWeeklyShiftSelectionHandler = (id: string | undefined) => {
-        id ?  dispatch(selectedWeeklyShiftId( id )): dispatch(selectedWeeklyShiftId(undefined)) 
+        id ?  dispatch(selectedWeeklyShiftIdAction(id )): dispatch(selectedWeeklyShiftIdAction(undefined)) 
         goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT)
 
     }
@@ -78,6 +79,7 @@ const ShiftListing = () => {
                                 console.log("current-->",current);
                                 
                                 if (elv === "Edit") {
+                                    dispatch(selectedWeeklyShiftNameAction(current.group_name))
                                     manageWeeklyShiftSelectionHandler(current.id)
                                 }
                                 if (elv === "Delete") {

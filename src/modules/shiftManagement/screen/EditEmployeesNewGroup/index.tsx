@@ -53,7 +53,7 @@ const EditEmployeesNewGroup = () => {
     const [selectedDesignationId, setSelectedDesignationId] = useState('')
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -90,14 +90,13 @@ const EditEmployeesNewGroup = () => {
 
     const onSubmitAddShift = () => {
         const params = {
-            branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
+            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
             name: groupName,
             weekly_shift_id: selectedShift,
             employee_ids: selectedEmployeesIds
         }
 
         console.log("emp idss---->", selectedEmployeesIds);
-
 
         dispatch(postAddShift({
             params,
@@ -180,7 +179,7 @@ const EditEmployeesNewGroup = () => {
             //pushing an selected employees to an selectedEmployeesList Array while the length is 0
             if (element.isStatus === true && selectedEmployeesList.length === 0) {
                 setSelectedEmployeesList([...selectedEmployeesList, element])
-                setSelectedEmployeesIds([...selectedEmployeesIds, element.id as never])
+                setSelectedEmployeesIds([element.id as never])
             }
             //checking the selected employees already in an selectedEmployeesList Array 
             else if (selectedEmployeesList.length > 0 && element.isStatus === true) {
@@ -307,7 +306,7 @@ const EditEmployeesNewGroup = () => {
                  */}
 
                 <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
-                    <h3>Select Employees</h3>
+                    <h3>Add Employees to group</h3>
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12"} >
                             <InputText
