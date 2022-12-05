@@ -96,21 +96,21 @@ const EditEmployeesNewGroup = () => {
             employee_ids: selectedEmployeesIds
         }
 
-        console.log("emp idss---->",selectedEmployeesIds);
-        
+        console.log("emp idss---->", selectedEmployeesIds);
 
-        // dispatch(postAddShift({
-        //     params,
-        //     onSuccess: (success: any) => {
-        //         setSelectedEmployeesIds([])
-        //         setEmployeesList([])
-        //         goBack(navigation);
-        //     },
-        //     onError: (error: string) => {
-        //         setSelectedEmployeesIds([])
-        //         showToast("error", error)
-        //     },
-        // }));
+
+        dispatch(postAddShift({
+            params,
+            onSuccess: (success: any) => {
+                setSelectedEmployeesIds([])
+                setEmployeesList([])
+                goBack(navigation);
+            },
+            onError: (error: string) => {
+                setSelectedEmployeesIds([])
+                showToast("error", error)
+            },
+        }));
     }
 
     function paginationHandler(
@@ -211,7 +211,7 @@ const EditEmployeesNewGroup = () => {
         const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== value.id)
         setSelectedEmployeesList(filteredPeople)
 
-        const filteredIds = selectedEmployeesIds.filter((item:any)=> item !== value.id)
+        const filteredIds = selectedEmployeesIds.filter((item: any) => item !== value.id)
         setSelectedEmployeesIds(filteredIds)
 
         //After deselect the selected employee the status changing to false
@@ -256,9 +256,11 @@ const EditEmployeesNewGroup = () => {
     return (
         <>
             <Card additionClass='mx--2'>
-                <Container additionClass={"row mx-2 "}>
-                    <BackArrow additionClass={"my-2"} />
-                    <h2>{selectedShiftGroupName ? "Edit Employee's to New group" : "Add Employees to group"}</h2>
+                <Container additionClass={"mx-2 "}>
+                    <Container additionClass='row'>
+                        <BackArrow additionClass={"my-2 col-1"} />
+                        <h2 className='col-4 my-2 mx--5'>{selectedShiftGroupName ? "Edit Employee's to New group" : "Add Employees to group"}</h2>
+                    </Container>
                     <Container
                         flexDirection={"row"}
                         additionClass={"col"}
@@ -377,7 +379,6 @@ const EditEmployeesNewGroup = () => {
                                     }}
                                 />
                             }
-
                         />
                     )}
                 </Card>

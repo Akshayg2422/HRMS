@@ -52,23 +52,16 @@ import {
 
 function* onValidateUser(action) {
   try {
-    
     yield put(showLoader());
-
     const response = yield call(postValidateUser, action.payload.params);
-
     if (response.success) {
-
       yield put(hideLoader());
       yield put(getValidateUserSuccess(response));
-      yield call(action.payload.onSuccess);
-
+      yield call(action.payload.onSuccess(response));
     } else {
-
       yield put(hideLoader());
       yield put(getValidateUserFail(response.error_message));
       yield call(action.payload.onError);
-
     }
   } catch (error) {
 

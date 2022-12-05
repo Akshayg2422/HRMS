@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { CommonTable, Container, Primary } from '@components'
+import { Card, CommonTable, Container, NoRecordFound, Primary } from '@components'
 import {
     goTo,
     useNav,
@@ -24,7 +24,7 @@ const ShiftGroup = () => {
     );
 
     const getBranchShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchShifts({ params }));
     }
 
@@ -41,12 +41,12 @@ const ShiftGroup = () => {
         });
     };
 
-    const manageShiftGroupHandler  = (value:any) =>{
-      value ?  dispatch(selectedShiftGroupName(value.name)):dispatch(selectedShiftGroupName(undefined));
-        goTo(navigation, ROUTE.ROUTE_EDIT_EMPLOYEES_NEW_GROUP) 
+    const manageShiftGroupHandler = (value: any) => {
+        value ? dispatch(selectedShiftGroupName(value.name)) : dispatch(selectedShiftGroupName(undefined));
+        goTo(navigation, ROUTE.ROUTE_EDIT_EMPLOYEES_NEW_GROUP)
     }
 
-    const deleteBranchShift = () =>{}
+    const deleteBranchShift = () => { }
 
     return (
         <>
@@ -62,7 +62,7 @@ const ShiftGroup = () => {
                         onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
                     />
                 </div>
-                {branchShifts && branchShifts.length > 0 && (
+                {branchShifts && branchShifts.length > 0 ? (
                     <Container margin={'mt-4'}>
                         <CommonTable
                             tableTitle={"Branch Shifts"}
@@ -81,7 +81,7 @@ const ShiftGroup = () => {
                             }}
                         />
                     </Container>
-                )}
+                ) : <Card additionClass='mt-3'> <NoRecordFound /></Card>}
             </Container>
         </>
     )
