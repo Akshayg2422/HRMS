@@ -7,7 +7,8 @@ import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
 import {
   addWeeklyShift,
-  getWeeklyShiftDetails
+  getWeeklyShiftDetails,
+  selectedWeeklyShiftIdAction
 } from "../../../../store/shiftManagement/actions";
 import { LOADIPHLPAPI } from 'dns';
 
@@ -17,8 +18,8 @@ const WEEK_DAYS_LIST = [
   { week_day: 3, is_working: true, time_breakdown: [] },
   { week_day: 4, is_working: true, time_breakdown: [] },
   { week_day: 5, is_working: true, time_breakdown: [] },
-  { week_day: 6, is_working: true, time_breakdown: [] },
-  { week_day: 7, is_working: true, time_breakdown: [] }]
+  { week_day: 6, is_working: false, time_breakdown: [] },
+  { week_day: 7, is_working: false, time_breakdown: [] }]
 
 // const WEEK_DAYS_LIST1 = [
 //   { week_day: 1, is_working: true, time_breakdown: [] },
@@ -44,7 +45,7 @@ const WeeklyShiftSelection = () => {
   let dispatch = useDispatch();
   const navigation = useNav();
 
-  const { selectedWeeklyShiftId, weeklyShiftDetails } = useSelector(
+  const { selectedWeeklyShiftId, weeklyShiftDetails, selectedWeeklyShiftName } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
 
@@ -66,22 +67,25 @@ const WeeklyShiftSelection = () => {
   }
 
   const onSubmit = () => {
-
     const params = {
+      ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
       group_name: shiftName,
       weekly_group_details: weeklyData
     }
 
+    console.log("paramsssss---->",params);
+    
     dispatch(
       addWeeklyShift({
         params,
         onSuccess: (success: any) => {
+          console.log("success");
           goBack(navigation);
+          selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
         },
         onError: (error: string) => { },
       })
     );
-
   }
 
 
@@ -163,12 +167,23 @@ const WeeklyShiftSelection = () => {
   const fetchWeeklyShiftDetails = () => {
 
     const params = { id: selectedWeeklyShiftId }
-    dispatch(getWeeklyShiftDetails({ params }))
+    dispatch(getWeeklyShiftDetails({
+      params,
+      onSuccess: (success: any) => {
+        setWeeklyData(success.weekly_group_details)
+      },
+      onError: (error: string) => { },
+    }))
   }
 
   useEffect(() => {
-    fetchWeeklyShiftDetails()
+    if (selectedWeeklyShiftId) {
+      fetchWeeklyShiftDetails()
+      setShiftName(selectedWeeklyShiftName)
+    }
   }, [])
+  console.log("setShiftName",selectedWeeklyShiftName);
+  
 
   return (
     <>
@@ -182,9 +197,8 @@ const WeeklyShiftSelection = () => {
             label={t("shiftName")}
             placeholder={"Shift Name"}
             name={"shiftName"}
+            value={shiftName}
             onChange={(event) => {
-              console.log("event-->", event);
-
               setShiftName(event.target.value)
             }}
           />
@@ -224,7 +238,7 @@ const WeeklyShiftSelection = () => {
 
                             let updatedData = weeklyData.map((element: any) => {
                               if (it.week === element.week) {
-                                return { ...element, is_working: !element.is_working };  //over
+                                return { ...element, is_working: !element.is_working };
                               }
                               return element;
                             });
