@@ -4,7 +4,8 @@ import {
     POST_ADD_WEEKLY_SHIFT,
     FETCH_BRANCH_SHIFTS,
     FETCH_BRANCH_WEEKLY_SHIFTS,
-    POST_ADD_SHIFT
+    POST_ADD_SHIFT,
+    FETCH_WEEKLY_SHIFT_DETAILS
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -16,10 +17,12 @@ import {
     getBranchWeeklyShiftsSuccess,
     getBranchWeeklyShiftsFailure,
     postAddShiftSuccess,
-    postAddShiftFailure
+    postAddShiftFailure,
+    getWeeklyShiftDetailsSuccess,
+    getWeeklyShiftDetailsFailure
 } from "./actions";
 
-import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi } from "../../helpers/backend_helper";
+import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../app/actions";
 
 
@@ -118,6 +121,30 @@ function* postAddShiftSaga(action) {
     }
 }
 
+//GET weekly shift details
+
+function* fetchWeeklyShiftDetailsSaga(action) {
+    console.log("saga function called-->", action.payload.params);
+    try {
+        yield put(showLoader());
+
+        const response = yield call(fetchWeeklyShiftDetailsApi, action.payload.params);
+        console.log("response---------->", JSON.stringify(response))
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getWeeklyShiftDetailsSuccess(response.details));
+            yield call(action.payload.onSuccess);
+        } else {
+            yield put(hideLoader());
+            yield put(getWeeklyShiftDetailsFailure(response.error_message));
+            yield call(action.payload.onError);
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getWeeklyShiftDetailsFailure("Invalid Request"));
+    }
+}
+
 
 //Watcher
 
@@ -127,6 +154,7 @@ function* ShiftManagementSaga() {
     yield takeLatest(FETCH_BRANCH_SHIFTS, fetchBranchShiftsSaga);
     yield takeLatest(FETCH_BRANCH_WEEKLY_SHIFTS, fetchBranchWeeklyShiftsSaga);
     yield takeLatest(POST_ADD_SHIFT, postAddShiftSaga);
+    yield takeLatest(FETCH_WEEKLY_SHIFT_DETAILS, fetchWeeklyShiftDetailsSaga);
 
 }
 

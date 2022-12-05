@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } from '@components'
 import { Icons } from "@assets";
 import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addWeeklyShift
+  addWeeklyShift,
+  getWeeklyShiftDetails
 } from "../../../../store/shiftManagement/actions";
 
 const WEEK_DAYS_LIST = [
@@ -42,9 +43,12 @@ const WeeklyShiftSelection = () => {
   let dispatch = useDispatch();
   const navigation = useNav();
 
-  const { selectedWeeklyShiftId } = useSelector(
+  const { selectedWeeklyShiftId, weeklyShiftDetails } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
+
+  console.log("response----->",weeklyShiftDetails);
+  
 
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [openModel, setOpenModel] = useState(false)
@@ -164,6 +168,16 @@ const WeeklyShiftSelection = () => {
     );
     setWeeklyData(temp)
   }
+
+  const fetchWeeklyShiftDetails = () =>{
+
+    const params = {id:selectedWeeklyShiftId}
+    dispatch(getWeeklyShiftDetails({params}))
+  }
+
+  useEffect(()=>{
+    fetchWeeklyShiftDetails()
+  },[])
 
   return (
     <>
