@@ -5,7 +5,7 @@ import { ContainerProps } from "../Interface";
 interface DropDownProps extends ContainerProps {
   label?: string;
   placeholder?: string;
-  data?: Array<{ id?: string; name?: string; value?: string, title?: string , type?: string}>;
+  data?: Array<{ id?: string; name?: string; value?: string, title?: string , type?: string, group_name?:string}>;
   error?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   name?:string
@@ -35,9 +35,9 @@ const DropDown = ({
     {label && <label className="form-control-label">{label}</label>}
     <select value={value}  className="form-control form-select" {...props} onChange={onChange} name={name} >
       <option >{placeholder}</option>
-      { data && data.map((item, index) => (
-        <option className="dropdown-item" key={index} value={item?.id || item?.type }>
-          {item?.name}  {item?.title}
+      { data && data.length >0 && data.map((item, index) => (
+        <option className="dropdown-item" key={index} value={item.id || item.type }>
+          {item.name? item.name : item.group_name}  {item.title}
         </option>
       ))}
     </select>

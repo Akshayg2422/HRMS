@@ -37,10 +37,10 @@ export const ROUTE = {
   ROUTE_REPORTS: '/reports',
   ROUTE_E_LOCKER:'/E-Locker',
   ROUTE_E_LOCKER_UPLOAD:'/E-Locker-Upload',
-
-
-
-
+  ROUTE_SHIFT_MANAGEMENT: '/shift-management',
+  ROUTE_SHIFT_GROUP: '/shift-group',
+  ROUTE_SHIFT_LISTING: '/shift-listing',
+  ROUTE_EDIT_EMPLOYEES_NEW_GROUP : '/edit-employees-shift-group'
 }
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
 export const WELCOME_CARD = [{ key: 'admin', icon: Icons.Admin, title: 'Admin', goTo: ROUTE.ROUTE_LOGIN }, { key: 'employee', icon: Icons.Employee, title: 'Employee', goTo: ROUTE.ROUTE_LOGIN }, { key: 'register-company', icon: Icons.RegisterCompany, title: 'Register a new company', goTo: ROUTE.ROUTE_REGISTER },]
@@ -110,6 +110,9 @@ export const NAV_ITEM = [
   { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', route: ROUTE.ROUTE_MODIFY_LOGS },
   { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO },
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-single-02', route: ROUTE.ROUTE_REPORTS },
+  { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', route: ROUTE.ROUTE_SHIFT_GROUP },
+
+
 
 ];
 
@@ -129,9 +132,27 @@ export const HEADER_MENU = [
 
 
 
-export const SORT_BUTTON = [{ id: '1', name: 'Month', value: 'MH' },
-{ id: '2', name: 'Week', value: 'WK' },
-{ id: '3', name: 'Day', value: 'DY' }]
+export const SORT_BUTTON = [
+  { id: '1', name: 'Month', value: 'MH' },
+  { id: '2', name: 'Week', value: 'WK' },
+  { id: '3', name: 'Day', value: 'DY' }]
+
+export const WEEK_LIST = [
+  { id: '1', name: 'Week 1' },
+  { id: '2', name: 'Week 2' },
+  { id: '3', name: 'Week 3'},
+  { id: '4', name: 'Week 4'},
+  { id: '5', name: 'Week 5'}]
+
+
+export const WEEK_DAY_LIST = [
+  { id: '1', name: 'Monday' },
+  { id: '2', name: 'Tuesday'},
+  { id: '3', name: 'Wednesday'},
+  { id: '4', name: 'Thursday'},
+  { id: '5', name: 'Friday'},
+  { id: '6', name: 'Saturday'},
+  { id: '7', name: 'Sunday'}]
 
 export const TABLE_ELEMENT_TEXT_BUTTON = 1
 export const TABLE_ELEMENT_TEXT_STATUS = 2
