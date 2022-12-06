@@ -10,7 +10,7 @@ import {
   getWeeklyShiftDetails,
   selectedWeeklyShiftIdAction
 } from "../../../../store/shiftManagement/actions";
-import { LOADIPHLPAPI } from 'dns';
+
 
 const WEEK_DAYS_LIST = [
   { week_day: 1, is_working: true, time_breakdown: [] },
@@ -20,15 +20,6 @@ const WEEK_DAYS_LIST = [
   { week_day: 5, is_working: true, time_breakdown: [] },
   { week_day: 6, is_working: false, time_breakdown: [] },
   { week_day: 7, is_working: false, time_breakdown: [] }]
-
-// const WEEK_DAYS_LIST1 = [
-//   { week_day: 1, is_working: true, time_breakdown: [] },
-//   { week_day: 2, is_working: true, time_breakdown: [] },
-//   { week_day: 3, is_working: true, time_breakdown: [] },
-//   { week_day: 4, is_working: true, time_breakdown: [] },
-//   { week_day: 5, is_working: true, time_breakdown: [] },
-//   { week_day: 6, is_working: true, time_breakdown: [] },
-//   { week_day: 7, is_working: true, time_breakdown: [] }]
 
 
 const WeeklyShiftSelection = () => {
@@ -67,7 +58,7 @@ const WeeklyShiftSelection = () => {
   const validatePostParams = () => {
 
     if (shiftName === "") {
-      showToast("error", "The Shift name can't be empty");
+      showToast("error", t('theShiftNameCantBeEmpty'));
       return false;
     } else {
       return true;
@@ -82,7 +73,7 @@ const WeeklyShiftSelection = () => {
         weekly_group_details: weeklyData
       }
 
-      console.log("paramsssss---->", params);
+      // console.log("paramsssss---->", params);
 
       dispatch(
         addWeeklyShift({
@@ -119,7 +110,7 @@ const WeeklyShiftSelection = () => {
 
           if ((shiftsTime.inTime >= timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
             (shiftsTime.outTime >= timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
-            showToast("error", "Already shift allocated for the selected time")
+            showToast("error", t('alreadyShiftAllocated'))
             isInRange = true
           }
         }
@@ -194,7 +185,6 @@ const WeeklyShiftSelection = () => {
       setShiftName(selectedWeeklyShiftName)
     }
   }, [])
-  console.log("setShiftName", selectedWeeklyShiftName);
 
 
   return (
@@ -202,12 +192,12 @@ const WeeklyShiftSelection = () => {
       <Card>
         <BackArrow additionClass={"my-3"} />
         <Container>
-          <h3 className="mb-0  p-2">{selectedWeeklyShiftId ? "Edit weekly shift details" : t('weeksShiftDefinition')}</h3>
+          <h3 className="mb-0  p-2">{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h3>
         </Container>
         <Container col={"col-xl-5 col-md-6 col-sm-12"}>
           <InputText
             label={t("shiftName")}
-            placeholder={"Shift Name"}
+            placeholder={t("shiftName")}
             name={"shiftName"}
             value={shiftName}
             onChange={(event) => {
@@ -286,7 +276,7 @@ const WeeklyShiftSelection = () => {
         onSubmit={() => { onSubmit() }}
       />
 
-      <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={'Select Shift Timing'}>
+      <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={t('selectShiftTiming')}>
         <Container display={'d-flex'} additionClass={'ml-lg-2'}>
           <Container additionClass={'ml-lg-2 col-lg-4 '}>
             <h5 className="mb-2">{t('timeFrom')}</h5>

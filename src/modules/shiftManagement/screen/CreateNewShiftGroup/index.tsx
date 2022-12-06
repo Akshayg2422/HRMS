@@ -22,12 +22,13 @@ import {
     getDesignationData
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
-import { Item } from '@src/screens/Zenylog_site/components/Input';
+import { useTranslation } from 'react-i18next';
 
-const EditEmployeesNewGroup = () => {
+const CreateShiftGroup = () => {
 
     const navigation = useNav();
     let dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { branchesWeeklyShifts, selectedShiftGroupName } = useSelector(
         (state: any) => state.ShiftManagementReducer
@@ -88,15 +89,15 @@ const EditEmployeesNewGroup = () => {
     const validatePostParams = () => {
 
         if (groupName === undefined) {
-            showToast("error", "The Group name can't be empty");
+            showToast("error", t('theGroupNameCantBeEmpty'));
             return false;
         }
         else if (selectedShift === '') {
-            showToast("error", "Invalid Shift");
+            showToast("error", t('theGroupNameCantBeEmpty'));
             return false;
         }
         else if (selectedEmployeesIds.length === 0) {
-            showToast("error", "Select Employees to add to the group");
+            showToast("error", t('selectEmployee'));
             return false;
         }
         else {
@@ -114,7 +115,7 @@ const EditEmployeesNewGroup = () => {
                 employee_ids: selectedEmployeesIds
             }
 
-            console.log("emp idss---->", params);
+            // console.log("emp idss---->", params);
 
 
             dispatch(postAddShift({
@@ -278,7 +279,7 @@ const EditEmployeesNewGroup = () => {
             <Card additionClass='mx--2'>
                 <Container additionClass={"row mx-2 "}>
                     <BackArrow additionClass={"my-2"} />
-                    <h2>{selectedShiftGroupName ? "Edit created shift group" : "Create shift group"}</h2>
+                    <h2>{selectedShiftGroupName ? t('editShiftGroup') : t('createShiftGroup')}</h2>
                     <Container
                         flexDirection={"row"}
                         additionClass={"col"}
@@ -287,8 +288,8 @@ const EditEmployeesNewGroup = () => {
                     >
                         <Container col={"col-xl-3 col-md-6 col-sm-12"}>
                             <InputText
-                                placeholder={'Enter the Group Name'}
-                                label={'Group Name'}
+                                placeholder={t('enterTheGroupName')}
+                                label={t('groupName')}
                                 value={groupName}
                                 onChange={(e) => {
                                     setGroupName(e.target.value)
@@ -300,8 +301,8 @@ const EditEmployeesNewGroup = () => {
                             additionClass={"xl-4"}
                         >
                             <DropDown
-                                label={'Select shift'}
-                                placeholder={'Select shift'}
+                                label={t('selectShift')}
+                                placeholder={t('selectShift')}
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
                                 onChange={(event) => {
@@ -311,7 +312,7 @@ const EditEmployeesNewGroup = () => {
                         </Container>
 
                         <Container additionClass={'float-right'}>
-                            <Primary text={selectedShiftGroupName ? 'Update' : 'Submit'} onClick={() => { onSubmitAddShift() }}
+                            <Primary text={selectedShiftGroupName ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </Container>
                     </Container>
@@ -325,11 +326,11 @@ const EditEmployeesNewGroup = () => {
                  */}
 
                 <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
-                    <h3>Add Employees to group</h3>
+                    <h3>{t('addEmployeesToGroup')}</h3>
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12"} >
                             <InputText
-                                placeholder={"Enter Employee Name"}
+                                placeholder={t('enterEmployeeName')}
                                 onChange={(e) => {
                                     setSearchEmployee(e.target.value);
                                 }}
@@ -352,8 +353,8 @@ const EditEmployeesNewGroup = () => {
                             additionClass={"xl-4"}
                         >
                             <DropDown
-                                label={'Department'}
-                                placeholder={'Select Department'}
+                                label={t('department')}
+                                placeholder={t('selectDepartment')}
                                 data={departmentDropdownData}
                                 value={selectedDepartmentId}
                                 onChange={(event) => {
@@ -367,8 +368,8 @@ const EditEmployeesNewGroup = () => {
                             additionClass={"xl-4"}
                         >
                             <DropDown
-                                label={'Designation'}
-                                placeholder={'Select Designation'}
+                                label={t('designation')}
+                                placeholder={t('selectDesignation')}
                                 data={designationDropdownData}
                                 value={selectedDesignationId}
                                 onChange={(event) => {
@@ -408,12 +409,12 @@ const EditEmployeesNewGroup = () => {
                  */}
 
                 <Card additionClass='col-xl col-sm-3 col-0 mt-4 mx-2 '>
-                    <h3>Selected Employees List</h3>
+                    <h3>{t('selectedEmployeesList')}</h3>
 
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12"}>
                             <InputText
-                                placeholder={"Enter Employee Name"}
+                                placeholder={t('enterEmployeeName')}
                                 value={searchSelectedEmployee}
                                 onChange={(e) => {
                                     setSearchSelectedEmployee(e.target.value)
@@ -433,7 +434,7 @@ const EditEmployeesNewGroup = () => {
 
                     <CommonTable
                         noHeader
-                        tableTitle={"Selected Employees List"}
+                        tableTitle={t('selectedEmployeesList')}
                         tableChildren={
                             <LocationTable
                                 tableDataSet={selectedEmployeesList}
@@ -558,4 +559,4 @@ const EmployeeSetTable = ({
         </div>
     );
 };
-export { EditEmployeesNewGroup }
+export { CreateShiftGroup }

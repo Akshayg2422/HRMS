@@ -1,9 +1,8 @@
-import React, { useState } from 'react'
-import { Card, CheckBox, Container, Icon, Input, Primary, TimePicker } from '@components'
+import { Card, Container, Icon, Input, Primary } from '@components'
 import { Icons } from "@assets";
 import { WEEK_DAY_LIST, getWeekAndWeekDaysById } from '@utils';
-import ListingWeekDays from '../ListingWeekDays';
 import { useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 
 interface props {
@@ -16,6 +15,8 @@ interface props {
 }
 
 const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit }: props) => {
+
+  const { t } = useTranslation();
 
   const { selectedWeeklyShiftId } = useSelector(
     (state: any) => state.ShiftManagementReducer
@@ -46,7 +47,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
               <Primary text={'+'} onClick={() => { if (onAddClick) { onAddClick(index) } }}
               ></Primary>
             </Container> : <Container>
-              <h4>{'Not Working'}</h4>
+              <h4>{t('notWorking')}</h4>
             </Container>}
         </Container >
         {it.is_working && <Container additionClass={'col-lg-6 row '}>
@@ -83,7 +84,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
           <Container>
             <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
               <Primary
-                text={selectedWeeklyShiftId ?"Update":"Submit"}
+                text={selectedWeeklyShiftId ? t('update') : t('submit')}
                 onClick={onSubmit}
               />
             </div>
