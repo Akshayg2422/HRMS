@@ -73,8 +73,8 @@ const WeeklyShiftSelection = () => {
       weekly_group_details: weeklyData
     }
 
-    console.log("paramsssss---->",params);
-    
+    console.log("paramsssss---->", params);
+
     dispatch(
       addWeeklyShift({
         params,
@@ -128,21 +128,17 @@ const WeeklyShiftSelection = () => {
   }
 
 
-  const onDelete = (index: number) => {
-
+  const onDelete = (e: any, index: number) => {
     let temp = [...weeklyData]
     temp.map((element: any) => {
       if (temp[isActiveWeek - 1].week === element.week) {
-        element.week_calendar.forEach((it: any) => {
-          if (it.week_day === selectedObject.week_day) {
-            it.time_breakdown.splice(index, 1)
+        element.week_calendar.map((el: any) => {
+          if (el.week_day === e.week_day) {
+            el.time_breakdown.splice(index, 1)
           }
-
         })
-
       }
     })
-
     setWeeklyData(temp)
   }
 
@@ -182,8 +178,8 @@ const WeeklyShiftSelection = () => {
       setShiftName(selectedWeeklyShiftName)
     }
   }, [])
-  console.log("setShiftName",selectedWeeklyShiftName);
-  
+  console.log("setShiftName", selectedWeeklyShiftName);
+
 
   return (
     <>
@@ -267,8 +263,8 @@ const WeeklyShiftSelection = () => {
           workingDayStatus(index)
         }}
 
-        onDeleteClick={(index) => {
-          onDelete(index)
+        onDeleteClick={(el, index) => {
+          onDelete(el, index)
         }}
 
         onSubmit={() => { onSubmit() }}

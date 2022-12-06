@@ -8,7 +8,7 @@ import ListingWeekDays from '../ListingWeekDays';
 interface props {
   datesList?: any;
   onCheckBoxClick?: (index: number) => void;
-  onDeleteClick?: (index: number) => void;
+  onDeleteClick?: (el: any, index: number) => void;
   onAddClick?: (index: number) => void;
   onSubmit?: () => void;
 
@@ -53,7 +53,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
                 <Container col={'col-4'} style={{ marginTop: "34px" }}>
                   <Icon
                     icon={Icons.Delete}
-                    onClick={() => { if (onDeleteClick) { onDeleteClick(index) } }}
+                    onClick={() => { if (onDeleteClick) { onDeleteClick(it, index) } }}
 
                   />
                 </Container>
