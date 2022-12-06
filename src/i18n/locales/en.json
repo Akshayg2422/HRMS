@@ -413,7 +413,31 @@
   "shiftStarttime":"Shift start time",
   "shiftEndTime":"Shift end time",
   "timeFrom":"Time from :",
-  "timeTo":"Time to :"
+  "timeTo":"Time to :",
+
+  "theGroupNameCantBeEmpty":"The Group name can't be empty",
+  "invalidShift":"Invalid Shift",
+  "selectEmployee":"Select Employees to add to the group",
+  "createShiftGroup":"Create shift group",
+  "editShiftGroup":"Edit shift group",
+  "enterTheGroupName":"Enter the Group Name",
+  "groupName":"Group Name",
+  "selectShift":"Select shift",
+  "addEmployeesToGroup":"Add Employees to group",
+  "selectDepartment":"Select Department",
+  "selectDesignation":"Select Designation",
+  "selectedEmployeesList":"Selected Employees List",
+  "shiftGroups":"Shift Groups",
+  "addNew":"Add New",
+  "manageWeeklyShifts":"Manage Weekly Shifts",
+  "branchShifts":"Branch Shifts",
+  "shiftListing":"Shift Listing",
+  "theShiftNameCantBeEmpty":"The Shift name can't be empty",
+  "alreadyShiftAllocated":"Already shift allocated for the selected time",
+  "editWeeklyShiftDetails":"Edit weekly shift details",
+  "selectShiftTiming":"Select Shift Timing",
+  "notWorking":"Not Working"
+
 
 
  

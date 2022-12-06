@@ -35,7 +35,7 @@ import {
   WeeklyShiftSelection,
   ShiftGroup,
   ShiftListing,
-  EditEmployeesNewGroup
+  CreateShiftGroup
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -187,8 +187,8 @@ function App() {
           element={<RequireAuth>{<ShiftListing />}</RequireAuth>}
         />
         <Route
-          path={ROUTE.ROUTE_EDIT_EMPLOYEES_NEW_GROUP}
-          element={<RequireAuth>{<EditEmployeesNewGroup />}</RequireAuth>}
+          path={ROUTE.ROUTE_CREATE_SHIFT_GROUP}
+          element={<RequireAuth>{<CreateShiftGroup />}</RequireAuth>}
         />
 
         <Route path={"*"} element={<PageNotFound />} />

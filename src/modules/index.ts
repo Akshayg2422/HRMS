@@ -26,7 +26,7 @@ import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection } from './shiftManagement';
 import { ShiftGroup } from './shiftManagement';
 import { ShiftListing } from './shiftManagement';
-import { EditEmployeesNewGroup } from './shiftManagement';
+import { CreateShiftGroup } from './shiftManagement';
 
 export {
   getDashboardDetails,
@@ -70,5 +70,5 @@ export {
   WeeklyShiftSelection,
   ShiftGroup,
   ShiftListing,
-  EditEmployeesNewGroup
+  CreateShiftGroup
 }

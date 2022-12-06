@@ -1,3 +1,3 @@
-import {WeeklyShiftSelection, ShiftGroup, ShiftListing, EditEmployeesNewGroup} from "./screen"
+import {WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup} from "./screen"
 
-export {WeeklyShiftSelection, ShiftGroup, ShiftListing, EditEmployeesNewGroup}
+export {WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup}

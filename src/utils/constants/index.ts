@@ -40,7 +40,7 @@ export const ROUTE = {
   ROUTE_SHIFT_MANAGEMENT: '/shift-management',
   ROUTE_SHIFT_GROUP: '/shift-group',
   ROUTE_SHIFT_LISTING: '/shift-listing',
-  ROUTE_EDIT_EMPLOYEES_NEW_GROUP : '/edit-employees-shift-group'
+  ROUTE_CREATE_SHIFT_GROUP : '/create-shift-group'
 }
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
 export const WELCOME_CARD = [{ key: 'admin', icon: Icons.Admin, title: 'Admin', goTo: ROUTE.ROUTE_LOGIN }, { key: 'employee', icon: Icons.Employee, title: 'Employee', goTo: ROUTE.ROUTE_LOGIN }, { key: 'register-company', icon: Icons.RegisterCompany, title: 'Register a new company', goTo: ROUTE.ROUTE_REGISTER },]

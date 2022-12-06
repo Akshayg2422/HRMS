@@ -28,12 +28,10 @@ import { showLoader, hideLoader } from "../app/actions";
 
 
 function* fetchAddWeeklyShiftSaga(action) {
-    console.log("saga function called-->", action.payload.params);
     try {
         yield put(showLoader());
 
         const response = yield call(postAddWeeklyShift, action.payload.params);
-        console.log("response---------->", response)
         if (response.success) {
             yield put(hideLoader());
             yield put(addWeeklyShiftSuccess(response.details));
@@ -52,12 +50,10 @@ function* fetchAddWeeklyShiftSaga(action) {
 //get branch shifts
 
 function* fetchBranchShiftsSaga(action) {
-    console.log("saga function called-->", action.payload.params);
     try {
         yield put(showLoader());
 
         const response = yield call(fetchBranchShifts, action.payload.params);
-        console.log("response---------->", JSON.stringify(response))
         if (response.success) {
             yield put(hideLoader());
             yield put(getBranchShiftsSuccess(response.details));
@@ -76,12 +72,10 @@ function* fetchBranchShiftsSaga(action) {
 //get branches weekly shifts
 
 function* fetchBranchWeeklyShiftsSaga(action) {
-    console.log("saga function called-->", action.payload.params);
     try {
         yield put(showLoader());
 
         const response = yield call(fetchBranchWeeklyShifts, action.payload.params);
-        console.log("response---------->", JSON.stringify(response))
         if (response.success) {
             yield put(hideLoader());
             yield put(getBranchWeeklyShiftsSuccess(response.details));
@@ -100,12 +94,10 @@ function* fetchBranchWeeklyShiftsSaga(action) {
 //add shift group
 
 function* postAddShiftSaga(action) {
-    console.log("saga function called-->", action.payload.params);
     try {
         yield put(showLoader());
 
         const response = yield call(postAddShiftApi, action.payload.params);
-        console.log("response---------->", JSON.stringify(response))
         if (response.success) {
             yield put(hideLoader());
             yield put(postAddShiftSuccess(response.details));
@@ -124,12 +116,10 @@ function* postAddShiftSaga(action) {
 //GET weekly shift details
 
 function* fetchWeeklyShiftDetailsSaga(action) {
-    console.log("saga function called-->", action.payload.params);
     try {
         yield put(showLoader());
 
         const response = yield call(fetchWeeklyShiftDetailsApi, action.payload.params);
-        console.log("response---------->", JSON.stringify(response))
         if (response.success) {
             yield put(hideLoader());
             yield put(getWeeklyShiftDetailsSuccess(response.details));

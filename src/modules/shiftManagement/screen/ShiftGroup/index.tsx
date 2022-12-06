@@ -41,9 +41,9 @@ const ShiftGroup = () => {
         });
     };
 
-    const manageShiftGroupHandler = (value: any) => {
-        value ? dispatch(selectedShiftGroupName(value.name)) : dispatch(selectedShiftGroupName(undefined));
-        goTo(navigation, ROUTE.ROUTE_EDIT_EMPLOYEES_NEW_GROUP)
+    const manageShiftGroupHandler  = (value:any) =>{
+      value ?  dispatch(selectedShiftGroupName(value.name)):dispatch(selectedShiftGroupName(undefined));
+        goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP) 
     }
 
     const deleteBranchShift = () => { }
@@ -51,21 +51,21 @@ const ShiftGroup = () => {
     return (
         <>
             <Container additionClass={"row mx-2 my-4"}>
-                <h2>Shifts</h2>
+                <h2>{t('shiftGroups')}</h2>
                 <div className="col text-right my-sm-2 mt-3 mt-sm-0">
                     <Primary
-                        text={'Add New'}
+                        text={t('addNew')}
                         onClick={() => { manageShiftGroupHandler(undefined) }}
                     />
                     <Primary
-                        text={'Manage Weekly Shifts'}
+                        text={t('manageWeeklyShifts')}
                         onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
                     />
                 </div>
                 {branchShifts && branchShifts.length > 0 ? (
                     <Container margin={'mt-4'}>
                         <CommonTable
-                            tableTitle={"Branch Shifts"}
+                            tableTitle={t('branchShifts')}
                             displayDataSet={normalizedBranchShifts(branchShifts)}
                             additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
                             tableOnClick={(e: any) => {
