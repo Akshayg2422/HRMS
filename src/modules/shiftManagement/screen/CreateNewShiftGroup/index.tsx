@@ -176,19 +176,18 @@ const CreateShiftGroup = () => {
     const onChangeEmployeeStatus = (item: any) => {
 
         //pushing an selected employees id to an selectedEmployeesIds array for Api params
-        // selectedEmployeesIds.push(item.id as never)
 
         //changing an selected employees status true
-        let temp = employeesList.map((element: any) => {
+        let updatedStatus = employeesList.map((element: any) => {
             if (item.id === element.id) {
                 return { ...element, isStatus: true };
             }
             return element;
         })
-        setEmployeesList(temp)
+        setEmployeesList(updatedStatus)
 
         //function called for adding an selected employees to selectedEmployeesList state
-        addAnSelectedEmployees(temp)
+        addAnSelectedEmployees(updatedStatus)
 
     }
 
@@ -236,40 +235,37 @@ const CreateShiftGroup = () => {
         setSelectedEmployeesIds(filteredIds)
 
         //After deselect the selected employee the status changing to false
-        let temp = employeesList.map((element: any) => {
+        let revertedEmployee = employeesList.map((element: any) => {
             if (value.id === element.id) {
                 return { ...element, isStatus: false };
             }
             return element;
         })
-        setEmployeesList(temp)
+        setEmployeesList(revertedEmployee)
     }
 
 
     //Function called for Searching an employee in selected employee card
 
     const SelectedEmployeeFilter = () => {
-
         //filter the selected employee while searching
         if (searchSelectedEmployee !== "") {
-            let filtered = employeesList.filter((element: any) => {
+            let filteredEmployee = employeesList.filter((element: any) => {
                 if (element.isStatus === true) {
                     return Object.values(element).join(" ").toLowerCase().includes(searchSelectedEmployee.toLowerCase())
                 }
             })
-            setSelectedEmployeesList(filtered)
+            setSelectedEmployeesList(filteredEmployee)
         }
         else {
-            let data = employeesList.filter((element: any) => {
+            let restoredEmployee = employeesList.filter((element: any) => {
 
                 if (element.isStatus) {
                     return element
                 }
             })
-            setSelectedEmployeesList(data)
+            setSelectedEmployeesList(restoredEmployee)
         }
-
-
     }
 
     //cb624abe-062a-40b5-afa0-e5086646be76

@@ -14,7 +14,6 @@ import {
 import { useTranslation } from 'react-i18next';
 
 const ShiftGroup = () => {
-
     //8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
     const navigation = useNav();
     const { t } = useTranslation();
@@ -27,13 +26,12 @@ const ShiftGroup = () => {
         const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchShifts({ params }));
     }
-
     useEffect(() => {
         getBranchShiftsList()
     }, []);
 
     const normalizedBranchShifts = (data: any) => {
-        return data.map((el: any) => {
+        return data && data.length > 0 && data.map((el: any) => {
             return {
                 name: el.name,
                 "Employees count": el.employee_count
@@ -41,13 +39,14 @@ const ShiftGroup = () => {
         });
     };
 
-    const manageShiftGroupHandler  = (value:any) =>{
-      value ?  dispatch(selectedShiftGroupName(value.name)):dispatch(selectedShiftGroupName(undefined));
-        goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP) 
+    const manageShiftGroupHandler = (value: any) => {
+        value ? dispatch(selectedShiftGroupName(value.name)) : dispatch(selectedShiftGroupName(undefined));
+        goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP)
     }
 
     const deleteBranchShift = () => { }
 
+    
     return (
         <>
             <Container additionClass={"row mx-2 my-4"}>

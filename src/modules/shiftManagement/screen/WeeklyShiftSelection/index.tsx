@@ -151,7 +151,6 @@ const WeeklyShiftSelection = () => {
 
 
   const workingDayStatus = (index: number) => {
-
     let updatedWeek = [...weeklyData]
     let selectedWeekPosition = isActiveWeek - 1
     let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
@@ -160,7 +159,6 @@ const WeeklyShiftSelection = () => {
   }
 
   const fetchWeeklyShiftDetails = () => {
-
     const params = { id: selectedWeeklyShiftId }
     dispatch(getWeeklyShiftDetails({
       params,

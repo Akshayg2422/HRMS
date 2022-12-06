@@ -36,7 +36,7 @@ const ShiftListing = () => {
     }, []);
 
     const normalizedBranchWeeklyShifts = (data: any) => {
-        return data.map((el: any) => {
+        return data && data.length > 0 && data.map((el: any) => {
             return {
                 name: el.group_name,
             };
@@ -75,7 +75,7 @@ const ShiftListing = () => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
                                 const current = branchesWeeklyShifts[index];
-                                
+
                                 if (elv === "Edit") {
                                     dispatch(selectedWeeklyShiftNameAction(current.group_name))
                                     manageWeeklyShiftSelectionHandler(current.id)
