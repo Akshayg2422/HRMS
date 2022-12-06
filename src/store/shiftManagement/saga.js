@@ -37,11 +37,11 @@ function* fetchAddWeeklyShiftSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(addWeeklyShiftSuccess(response.details));
-            yield call(action.payload.onSuccess);
+            yield call(action.payload.onSuccess(response));
         } else {
             yield put(hideLoader());
             yield put(addWeeklyShiftFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());
@@ -109,11 +109,11 @@ function* postAddShiftSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(postAddShiftSuccess(response.details));
-            yield call(action.payload.onSuccess);
+            yield call(action.payload.onSuccess(response));
         } else {
             yield put(hideLoader());
             yield put(postAddShiftFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());
