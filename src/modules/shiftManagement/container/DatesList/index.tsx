@@ -3,6 +3,7 @@ import { Card, CheckBox, Container, Icon, Input, Primary, TimePicker } from '@co
 import { Icons } from "@assets";
 import { WEEK_DAY_LIST, getWeekAndWeekDaysById } from '@utils';
 import ListingWeekDays from '../ListingWeekDays';
+import { useSelector } from 'react-redux';
 
 
 interface props {
@@ -15,6 +16,10 @@ interface props {
 }
 
 const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit }: props) => {
+
+  const { selectedWeeklyShiftId } = useSelector(
+    (state: any) => state.ShiftManagementReducer
+  );
 
   const listingWeekDays = (it: any, index: number) => {
     return (
@@ -78,7 +83,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
           <Container>
             <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
               <Primary
-                text={"Submit"}
+                text={selectedWeeklyShiftId ?"Update":"Submit"}
                 onClick={onSubmit}
               />
             </div>

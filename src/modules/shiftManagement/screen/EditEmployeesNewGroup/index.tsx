@@ -41,7 +41,7 @@ const EditEmployeesNewGroup = () => {
     //     (state: any) => state.DashboardReducer
     // );
 
-    const [groupName, setGroupName] = useState('')
+    const [groupName, setGroupName] = useState("")
     const [selectedShift, setSelectedShift] = useState('')
     const [searchEmployee, setSearchEmployee] = useState('')
     const [employeesList, setEmployeesList] = useState<any>()
@@ -85,31 +85,52 @@ const EditEmployeesNewGroup = () => {
         }));
     }
 
+    const validatePostParams = () => {
 
+        if (groupName === undefined) {
+            showToast("error", "The Group name can't be empty");
+            return false;
+        }
+        else if (selectedShift === '') {
+            showToast("error", "Invalid Shift");
+            return false;
+        }
+        else if (selectedEmployeesIds.length === 0) {
+            showToast("error", "Select Employees to add to the group");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
     // API for add shift 
 
     const onSubmitAddShift = () => {
-        const params = {
-            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
-            name: groupName,
-            weekly_shift_id: selectedShift,
-            employee_ids: selectedEmployeesIds
+        if (validatePostParams()) {
+            const params = {
+                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
+                name: groupName,
+                weekly_shift_id: selectedShift,
+                employee_ids: selectedEmployeesIds
+            }
+
+            console.log("emp idss---->", params);
+
+
+            dispatch(postAddShift({
+                params,
+                onSuccess: (success: any) => {
+                    setSelectedEmployeesIds([])
+                    setEmployeesList([])
+                    goBack(navigation);
+                    showToast("success", success.status)
+                },
+                onError: (error: string) => {
+                    // setSelectedEmployeesIds([])
+                    showToast("error", error)
+                },
+            }));
         }
-
-        console.log("emp idss---->", selectedEmployeesIds);
-
-        dispatch(postAddShift({
-            params,
-            onSuccess: (success: any) => {
-                setSelectedEmployeesIds([])
-                setEmployeesList([])
-                goBack(navigation);
-            },
-            onError: (error: string) => {
-                setSelectedEmployeesIds([])
-                showToast("error", error)
-            },
-        }));
     }
 
     function paginationHandler(
@@ -339,6 +360,7 @@ const EditEmployeesNewGroup = () => {
                                 value={selectedDepartmentId}
                                 onChange={(event) => {
                                     setSelectedDepartmentId(event.target.value)
+                                    getEmployeesApi(currentPage)
                                 }}
                             />
                         </Container>

@@ -49,12 +49,10 @@ const WeeklyShiftSelection = () => {
     (state: any) => state.ShiftManagementReducer
   );
 
-  console.log("response----->", weeklyShiftDetails);
-
 
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [openModel, setOpenModel] = useState(false)
-  const [selectedObject, setSelectedObject] = useState<any>({})
+  const [selectedDayIndex, setSelectedDayIndex] = useState<any>({})
   const [shiftsTime, setShiftsTime] = useState<any>({ inTime: '', outTime: '' })
   const [shiftName, setShiftName] = useState('')
 
@@ -66,26 +64,39 @@ const WeeklyShiftSelection = () => {
     setShiftsTime({ ...shiftsTime, inTime: '', outTime: '' });
   }
 
-  const onSubmit = () => {
-    const params = {
-      ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
-      group_name: shiftName,
-      weekly_group_details: weeklyData
+  const validatePostParams = () => {
+
+    if (shiftName === "") {
+      showToast("error", "The Shift name can't be empty");
+      return false;
+    } else {
+      return true;
     }
+  }
+  const onSubmit = () => {
+    if (validatePostParams()) {
+      const params = {
+        ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
+        group_name: shiftName,
+        weekly_group_details: weeklyData
+      }
 
-    console.log("paramsssss---->", params);
+      console.log("paramsssss---->", params);
 
-    dispatch(
-      addWeeklyShift({
-        params,
-        onSuccess: (success: any) => {
-          console.log("success");
-          goBack(navigation);
-          selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
-        },
-        onError: (error: string) => { },
-      })
-    );
+      dispatch(
+        addWeeklyShift({
+          params,
+          onSuccess: (success: any) => {
+            showToast("success", success.status);
+            goBack(navigation);
+            selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+          },
+        })
+      );
+    }
   }
 
 
@@ -95,11 +106,11 @@ const WeeklyShiftSelection = () => {
       let updatedWeek = [...weeklyData]
       let selectedWeekPosition = isActiveWeek - 1
       let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
-      const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedObject].time_breakdown
+      const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
 
       if (timeBreakdown.length === 0) {
         let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-        changedWeek[selectedObject] = { ...changedWeek[selectedObject], time_breakdown: [...timeBreakdown, shiftObject] }
+        changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
       }
       else if (timeBreakdown.length > 0) {
         let isInRange = false
@@ -113,7 +124,7 @@ const WeeklyShiftSelection = () => {
         }
         if (!isInRange) {
           let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-          changedWeek[selectedObject] = { ...changedWeek[selectedObject], time_breakdown: [...timeBreakdown, shiftObject] }
+          changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
         }
 
       }
@@ -256,7 +267,7 @@ const WeeklyShiftSelection = () => {
         datesList={weeklyData[isActiveWeek - 1]}
         onAddClick={(index) => {
           setOpenModel(!openModel)
-          setSelectedObject(index)
+          setSelectedDayIndex(index)
         }}
 
         onCheckBoxClick={(index) => {
