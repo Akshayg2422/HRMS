@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BackArrow, CommonTable, Container, Primary } from '@components'
+import { BackArrow, CommonTable, Container, NoRecordFound, Primary } from '@components'
 import {
 
     goTo,
@@ -45,7 +45,7 @@ const ShiftListing = () => {
     };
 
     const manageWeeklyShiftSelectionHandler = (id: string | undefined) => {
-        id ?  dispatch(selectedWeeklyShiftIdAction(id )): dispatch(selectedWeeklyShiftIdAction(undefined)) 
+        id ? dispatch(selectedWeeklyShiftIdAction(id)) : dispatch(selectedWeeklyShiftIdAction(undefined))
         goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT)
 
     }
@@ -66,7 +66,7 @@ const ShiftListing = () => {
                     />
                 </div>
 
-                {branchesWeeklyShifts && branchesWeeklyShifts.length > 0 && (
+                {branchesWeeklyShifts && branchesWeeklyShifts.length > 0 ? (
                     <Container margin={'mt-4'}>
                         <CommonTable
                             tableTitle={"Branch Shifts"}
@@ -76,8 +76,8 @@ const ShiftListing = () => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
                                 const current = branchesWeeklyShifts[index];
-                                console.log("current-->",current);
-                                
+                                console.log("current-->", current);
+
                                 if (elv === "Edit") {
                                     dispatch(selectedWeeklyShiftNameAction(current.group_name))
                                     manageWeeklyShiftSelectionHandler(current.id)
@@ -88,7 +88,7 @@ const ShiftListing = () => {
                             }}
                         />
                     </Container>
-                )}
+                ) : <NoRecordFound />}
             </Container>
         </>
     )

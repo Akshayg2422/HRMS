@@ -80,9 +80,6 @@ const WeeklyShiftSelection = () => {
         group_name: shiftName,
         weekly_group_details: weeklyData
       }
-
-      console.log("paramsssss---->", params);
-
       dispatch(
         addWeeklyShift({
           params,
@@ -189,15 +186,13 @@ const WeeklyShiftSelection = () => {
       setShiftName(selectedWeeklyShiftName)
     }
   }, [])
-  console.log("setShiftName", selectedWeeklyShiftName);
-
 
   return (
     <>
       <Card>
-        <BackArrow additionClass={"my-3"} />
-        <Container>
-          <h3 className="mb-0  p-2">{selectedWeeklyShiftId ? "Edit weekly shift details" : t('weeksShiftDefinition')}</h3>
+        <Container additionClass='row mb-3'>
+          <BackArrow additionClass={"my-2 col-1"} />
+          <h3 className="col-4 my-2 mx--5">{selectedWeeklyShiftId ? "Edit weekly shift details" : t('weeksShiftDefinition')}</h3>
         </Container>
         <Container col={"col-xl-5 col-md-6 col-sm-12"}>
           <InputText
