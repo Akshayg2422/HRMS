@@ -8,6 +8,7 @@ import {
   Primary,
   Secondary,
   ChooseBranchFromHierarchical,
+  NoRecordFound,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -187,7 +188,7 @@ function EmployeeScreen() {
               size={"btn-sm"}
             />
           </Container>
-          {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+          {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
             <CommonTable
               noHeader
               isPagination
@@ -215,7 +216,7 @@ function EmployeeScreen() {
                 }
               }}
             />
-          )}
+          ):<NoRecordFound/>}
           <Modal
             title={t("deleteUser")}
             showModel={deleteModel}

@@ -54,7 +54,7 @@ const CreateShiftGroup = () => {
     const [selectedDesignationId, setSelectedDesignationId] = useState('')
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -64,7 +64,7 @@ const CreateShiftGroup = () => {
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
             // ...hierarchicalBranchIds,
-            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
+            branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             designation_id: selectedDesignationId,
             department_id: selectedDepartmentId,
@@ -109,7 +109,7 @@ const CreateShiftGroup = () => {
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
-                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
+                branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds
@@ -275,8 +275,8 @@ const CreateShiftGroup = () => {
             <Card additionClass='mx--2'>
                 <Container additionClass={"mx-2 "}>
                     <Container additionClass='row'>
-                        <BackArrow additionClass={"my-2 col-1"} />
-                        <h2>{selectedShiftGroupName ? t('editShiftGroup') : t('createShiftGroup')}</h2>
+                        <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
+                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedShiftGroupName ? t('editShiftGroup') : t('createShiftGroup')}</h2>
                     </Container>
                     <Container
                         flexDirection={"row"}
@@ -407,7 +407,6 @@ const CreateShiftGroup = () => {
 
                 <Card additionClass='col-xl col-sm-3 col-0 mt-4 mx-2 '>
                     <h3>{t('selectedEmployeesList')}</h3>
-
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12"}>
                             <InputText

@@ -179,9 +179,9 @@ const WeeklyShiftSelection = () => {
   return (
     <>
       <Card>
-        <Container additionClass='row mb-3'>
-          <BackArrow additionClass={"my-2 col-1"} />
-          <h3 className="mb-0  p-2">{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h3>
+        <Container additionClass='row'>
+          <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
+          <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
         </Container>
         <Container col={"col-xl-5 col-md-6 col-sm-12"}>
           <InputText

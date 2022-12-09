@@ -109,7 +109,7 @@ export const NAV_ITEM = [
   { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', route: ROUTE.ROUTE_LEAVE_REQUEST },
   { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', route: ROUTE.ROUTE_MODIFY_LOGS },
   { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO },
-  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-single-02', route: ROUTE.ROUTE_REPORTS },
+  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', route: ROUTE.ROUTE_REPORTS },
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', route: ROUTE.ROUTE_SHIFT_GROUP },
 
 

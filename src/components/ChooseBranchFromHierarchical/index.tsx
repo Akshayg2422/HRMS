@@ -123,7 +123,6 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
         </div>
 
 
-        {/* {!showCheckBox ? */}
         {hierarchicalBranchIds && showCheckBox && (
           <div className="mt--3">
             <CheckBox

@@ -431,7 +431,7 @@
   "addNew":"Add New",
   "manageWeeklyShifts":"Manage Weekly Shifts",
   "branchShifts":"Branch Shifts",
-  "shiftListing":"Shift Listing",
+  "WeelelyshiftListing":"Weekly Shift Listing",
   "theShiftNameCantBeEmpty":"The Shift name can't be empty",
   "alreadyShiftAllocated":"Already shift allocated for the selected time",
   "editWeeklyShiftDetails":"Edit weekly shift details",

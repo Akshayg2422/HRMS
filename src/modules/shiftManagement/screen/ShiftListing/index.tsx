@@ -27,7 +27,7 @@ const ShiftListing = () => {
     );
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -54,8 +54,10 @@ const ShiftListing = () => {
     return (
         <>
             <Container additionClass={"row mx-2 my-4"}>
-                <BackArrow additionClass={"my-3"} />
-                <h2>{t('shiftListing')}</h2>
+                <Container additionClass='row'>
+                    <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
+                    <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
+                </Container>
                 <div className="col text-right my-sm-2 mt-3 mt-sm-0">
                     <Primary
                         text={t('addNew')}

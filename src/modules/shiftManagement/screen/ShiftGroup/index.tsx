@@ -23,7 +23,7 @@ const ShiftGroup = () => {
     );
 
     const getBranchShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
         dispatch(getBranchShifts({ params }));
     }
     useEffect(() => {
@@ -46,21 +46,24 @@ const ShiftGroup = () => {
 
     const deleteBranchShift = () => { }
 
-    
+
     return (
         <>
-            <Container additionClass={"row mx-2 my-4"}>
-                <h2>{t('shiftGroups')}</h2>
-                <div className="col text-right my-sm-2 mt-3 mt-sm-0">
-                    <Primary
-                        text={t('addNew')}
-                        onClick={() => { manageShiftGroupHandler(undefined) }}
-                    />
-                    <Primary
-                        text={t('manageWeeklyShifts')}
-                        onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
-                    />
-                </div>
+            <Container additionClass={" mx-2 my-4"}>
+                <Container additionClass='row'>
+                    <h2>{t('shiftGroups')}</h2>
+                    <div className="col text-right my-sm-2  mt-3 mt-sm-0">
+                        <Primary
+                            text={t('addNew')}
+                            onClick={() => { manageShiftGroupHandler(undefined) }}
+                        />
+                        <Primary
+                            additionClass='mt-2 mt-sm-0'
+                            text={t('manageWeeklyShifts')}
+                            onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
+                        />
+                    </div>
+                </Container>
                 {branchShifts && branchShifts.length > 0 ? (
                     <Container margin={'mt-4'}>
                         <CommonTable
