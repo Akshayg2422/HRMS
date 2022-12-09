@@ -74,10 +74,6 @@ interface GetPaginatorSetProps {
   }
 
   const GetPaginatorSet = ({currentPage, totalPages}: GetPaginatorSetProps) => {
-
-
-
-
     if (currentPage && totalPages) {
 
       const children = [];

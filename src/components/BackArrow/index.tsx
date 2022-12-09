@@ -9,14 +9,14 @@ interface BackArrowProps {
   additionClass?: string;
 }
 
-const BackArrow= ({ additionClass, col }: BackArrowProps) => {
+const BackArrow = ({ additionClass, col }: BackArrowProps) => {
   const navigation = useNav();
   return (
     <div
       className={`${isExist(additionClass)} ${isExist(col)}`}
-      onClick={() => goBack(navigation)}
+
     >
-      <ImageView icon={Icons.BackArrow} height={25} width={28} />
+      <ImageView icon={Icons.BackArrow} height={25} width={28} onClick={() => goBack(navigation)} />
     </div>
   );
 };

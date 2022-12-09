@@ -23,6 +23,11 @@ import { AutoLogout } from './SessionTimeout'
 import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
+import { WeeklyShiftSelection } from './shiftManagement';
+import { ShiftGroup } from './shiftManagement';
+import { ShiftListing } from './shiftManagement';
+import { CreateShiftGroup } from './shiftManagement';
+
 export {
   getDashboardDetails,
   getNatureOfBusiness,
@@ -61,5 +66,9 @@ export {
   ModifyLogs,
   Reports,
   ELocker,
-  ElockerUpload
+  ElockerUpload,
+  WeeklyShiftSelection,
+  ShiftGroup,
+  ShiftListing,
+  CreateShiftGroup
 }

@@ -31,7 +31,11 @@ import {
   ModifyLogs,
   Reports,
   ELocker,
-  ElockerUpload
+  ElockerUpload,
+  WeeklyShiftSelection,
+  ShiftGroup,
+  ShiftListing,
+  CreateShiftGroup
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -47,7 +51,7 @@ import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 function App() {
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
@@ -169,6 +173,22 @@ function App() {
          <Route
           path={ROUTE.ROUTE_E_LOCKER_UPLOAD}
           element={<RequireAuth>{<ElockerUpload/>}</RequireAuth>}
+          />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_MANAGEMENT}
+          element={<RequireAuth>{<WeeklyShiftSelection />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_GROUP}
+          element={<RequireAuth>{<ShiftGroup />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_LISTING}
+          element={<RequireAuth>{<ShiftListing />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_CREATE_SHIFT_GROUP}
+          element={<RequireAuth>{<CreateShiftGroup />}</RequireAuth>}
         />
 
         <Route path={"*"} element={<PageNotFound />} />

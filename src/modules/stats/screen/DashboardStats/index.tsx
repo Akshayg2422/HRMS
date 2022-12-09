@@ -7,6 +7,7 @@ import {
   Modal,
   DatePicker,
   BackArrow,
+  NoRecordFound,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -102,10 +103,11 @@ const DashboardStats = () => {
             setModel(!model);
           }
         },
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
   };
+
 
 
   return (
@@ -139,7 +141,7 @@ const DashboardStats = () => {
           </div>
         </div>
         <Container additionClass={"row"}>
-          {employeeattendancedatalog?.cards?.map((el: any) => {
+          {employeeattendancedatalog && employeeattendancedatalog.cards.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
             return (
               <Container additionClass={"col-xl-4 col-md-6"}>
                 <Card>
@@ -165,7 +167,7 @@ const DashboardStats = () => {
                 </Card>
               </Container>
             );
-          })}
+          }) : <NoRecordFound />}
         </Container>
         <Container margin={"mx-6"}>
           {employeeattendancedatalog &&
@@ -202,7 +204,7 @@ const DashboardStats = () => {
           toggle={() => setModel(!model)}
         >
           <Container additionClass={"row"}>
-            {attendanceConsolidatedCardsData.map((el: any, index: number) => {
+            {attendanceConsolidatedCardsData && attendanceConsolidatedCardsData.length > 0 ? attendanceConsolidatedCardsData.map((el: any, index: number) => {
               return (
                 <Container additionClass={"col-xl-4 col-md-6"}>
                   <Card>
@@ -231,7 +233,7 @@ const DashboardStats = () => {
                   </Card>
                 </Container>
               );
-            })}
+            }) : <NoRecordFound />}
           </Container>
         </Modal>
       </Container>
