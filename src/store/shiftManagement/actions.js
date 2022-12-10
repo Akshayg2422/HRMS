@@ -8,7 +8,7 @@ import {
     FETCH_BRANCH_WEEKLY_SHIFTS,
     FETCH_BRANCH_WEEKLY_SHIFTS_SUCCESS,
     FETCH_BRANCH_WEEKLY_SHIFTS_FAILURE,
-    SELECTED_BRANCH_SHIFT_GROUP_NAME,
+    SELECTED_BRANCH_SHIFT_GROUP_DETAILS,
     POST_ADD_SHIFT,
     POST_ADD_SHIFT_SUCCESS,
     POST_ADD_SHIFT_FAILURE,
@@ -16,7 +16,10 @@ import {
     FETCH_WEEKLY_SHIFT_DETAILS,
     FETCH_WEEKLY_SHIFT_DETAILS_SUCCESS,
     FETCH_WEEKLY_SHIFT_DETAILS_FAILURE,
-    SELECTED_WEEKLY_SHIFT_NAME
+    SELECTED_WEEKLY_SHIFT_NAME,
+    FETCH_SHIFT_EMPLOYEES,
+    FETCH_SHIFT_EMPLOYEES_SUCCESS,
+    FETCH_SHIFT_EMPLOYEES_FAILURE
 } from "./actionTypes";
 
 
@@ -89,9 +92,9 @@ export const addWeeklyShift = (type) => {
 
 //set selected group name
 
-  export const selectedShiftGroupName = (type) => {
+  export const selectedShiftGroupDetails = (type) => {
     return {
-      type: SELECTED_BRANCH_SHIFT_GROUP_NAME,
+      type: SELECTED_BRANCH_SHIFT_GROUP_DETAILS,
       payload: type,
     };
   };
@@ -156,6 +159,29 @@ export const addWeeklyShift = (type) => {
   export const getWeeklyShiftDetailsFailure = (error) => {
     return {
       type: FETCH_WEEKLY_SHIFT_DETAILS_FAILURE,
+      payload: error,
+    };
+  };
+
+  //get shift employees group details
+
+  export const getShiftEmployeesDetails = (type) => {
+    return {
+        type: FETCH_SHIFT_EMPLOYEES,
+        payload: type,
+    };
+};
+  
+  export const getShiftEmployeesDetailsSuccess = (response) => {
+    return {
+      type: FETCH_SHIFT_EMPLOYEES_SUCCESS,
+      payload: response,
+    };
+  };
+  
+  export const getShiftEmployeesDetailsFailure = (error) => {
+    return {
+      type: FETCH_SHIFT_EMPLOYEES_FAILURE,
       payload: error,
     };
   };

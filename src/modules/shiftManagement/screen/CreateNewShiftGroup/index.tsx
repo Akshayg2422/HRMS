@@ -13,13 +13,14 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchWeeklyShifts,
-    postAddShift
+    postAddShift,
+    getShiftEmployeesDetails
 } from "../../../../store/shiftManagement/actions";
 
 import {
     getEmployeesList,
     getDepartmentData,
-    getDesignationData
+    getDesignationData,
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 import { useTranslation } from 'react-i18next';
@@ -30,9 +31,12 @@ const CreateShiftGroup = () => {
     let dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { branchesWeeklyShifts, selectedShiftGroupName } = useSelector(
+    const { branchesWeeklyShifts, selectedShiftGroupDetails } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
+
+    // console.log("iddddd-----.", selectedShiftGroupDetails);
+
 
     const { registeredEmployeesList, numOfPages, currentPage, designationDropdownData, departmentDropdownData } = useSelector(
         (state: any) => state.EmployeeReducer
@@ -54,7 +58,7 @@ const CreateShiftGroup = () => {
     const [selectedDesignationId, setSelectedDesignationId] = useState('')
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -64,7 +68,7 @@ const CreateShiftGroup = () => {
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
             // ...hierarchicalBranchIds,
-            branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
+            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             designation_id: selectedDesignationId,
             department_id: selectedDepartmentId,
@@ -78,7 +82,7 @@ const CreateShiftGroup = () => {
                  * After response comes from get Employee api - take that copy of an array to an new array and adding an new
                  * key value pair for status active deActive
                  */
-                setEmployeesList(success.data.map((el: any) => ({ ...el, isStatus: false })))
+                setEmployeesList(registeredEmployeesList.map((el: any) => ({ ...el, isStatus: false })))
             },
             onError: (error: string) => {
 
@@ -109,7 +113,7 @@ const CreateShiftGroup = () => {
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
-                branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
+                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds
@@ -151,10 +155,38 @@ const CreateShiftGroup = () => {
         getEmployeesApi(currentPage);
     }
 
+    const getShiftEmployeesGroupDetails = () => {
+
+        const params = {
+            shift_id: selectedShiftGroupDetails.id
+        }
+
+        dispatch(getShiftEmployeesDetails({
+            params,
+            onSuccess: (success: any) => {
+                let updated = registeredEmployeesList.map((el: any) => {
+                    success.map((element: any) => {
+                        if (el.id === '1704ea4f-656c-4f35-bfb1-28d1737f72ef') {
+                            let prefillSelectedEmployees = ([...selectedEmployeesList, el])
+                            let addingNewKey = prefillSelectedEmployees.map((el: any) => ({ ...el, isStatus: true }))
+                            setSelectedEmployeesList(addingNewKey)
+
+                        }
+                    
+                    })
+
+
+                })
+            },
+            onError: (error: string) => {
+            },
+        }));
+
+    }
+
 
     useEffect(() => {
         getBranchesWeeklyShiftsList()
-        setGroupName(selectedShiftGroupName)
 
         return () => {
             setEmployeesList([])
@@ -163,6 +195,12 @@ const CreateShiftGroup = () => {
     }, []);
 
     useEffect(() => {
+        if (selectedShiftGroupDetails) {
+            getShiftEmployeesGroupDetails()
+            setGroupName(selectedShiftGroupDetails.name)
+            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
+        }
+
         getEmployeesApi(currentPage)
         dispatch(getDepartmentData({}));
         dispatch(getDesignationData({}));
@@ -268,7 +306,6 @@ const CreateShiftGroup = () => {
         }
     }
 
-    //cb624abe-062a-40b5-afa0-e5086646be76
 
     return (
         <>
@@ -276,7 +313,7 @@ const CreateShiftGroup = () => {
                 <Container additionClass={"mx-2 "}>
                     <Container additionClass='row'>
                         <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedShiftGroupName ? t('editShiftGroup') : t('createShiftGroup')}</h2>
+                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedShiftGroupDetails ? t('editShiftGroup') : t('createShiftGroup')}</h2>
                     </Container>
                     <Container
                         flexDirection={"row"}
@@ -299,8 +336,8 @@ const CreateShiftGroup = () => {
                             additionClass={"xl-4"}
                         >
                             <DropDown
-                                label={t('selectShift')}
-                                placeholder={t('selectShift')}
+                                label={t('selectWeeklyShift')}
+                                placeholder={t('selectWeeklyShift')}
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
                                 onChange={(event) => {
@@ -310,7 +347,7 @@ const CreateShiftGroup = () => {
                         </Container>
 
                         <Container additionClass={'float-right'}>
-                            <Primary text={selectedShiftGroupName ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
+                            <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </Container>
                     </Container>
@@ -425,6 +462,37 @@ const CreateShiftGroup = () => {
                             onClick={() => { SelectedEmployeeFilter() }}
                         >
                             <Icon type={"btn-primary"} icon={Icons.Search} />
+                        </Container>
+                    </Container>
+
+                    <Container additionClass={'row'}>
+                        <Container
+                            col={"col-md-6 col-sm-12"}
+                            additionClass={"xl-4"}
+                        >
+                            <DropDown
+                                label={t('department')}
+                                placeholder={t('selectDepartment')}
+                                data={departmentDropdownData}
+                                value={selectedDepartmentId}
+                                onChange={(event) => {
+
+                                }}
+                            />
+                        </Container>
+                        <Container
+                            col={"col-md-6 col-sm-12"}
+                            additionClass={"xl-4"}
+                        >
+                            <DropDown
+                                label={t('designation')}
+                                placeholder={t('selectDesignation')}
+                                data={designationDropdownData}
+                                value={selectedDesignationId}
+                                onChange={(event) => {
+
+                                }}
+                            />
                         </Container>
                     </Container>
 

@@ -9,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchShifts,
-    selectedShiftGroupName
+    selectedShiftGroupDetails
 } from "../../../../store/shiftManagement/actions";
 import { useTranslation } from 'react-i18next';
 
@@ -23,7 +23,7 @@ const ShiftGroup = () => {
     );
 
     const getBranchShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchShifts({ params }));
     }
     useEffect(() => {
@@ -40,7 +40,7 @@ const ShiftGroup = () => {
     };
 
     const manageShiftGroupHandler = (value: any) => {
-        value ? dispatch(selectedShiftGroupName(value.name)) : dispatch(selectedShiftGroupName(undefined));
+        value ? dispatch(selectedShiftGroupDetails(value)) : dispatch(selectedShiftGroupDetails(undefined));
         goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP)
     }
 
