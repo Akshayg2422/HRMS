@@ -87,3 +87,5 @@ export const POST_ADD_SHIFTS = 'attendance/addShift'
 
 export const FETCH_WEEKLY_SHIFT_DETAILS = 'attendance/getWeeklyShiftDetails'
 
+export const FETCH_SHIFT_EMPLOYEES = 'attendance/getShiftEmployees'
+

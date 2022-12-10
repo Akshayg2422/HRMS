@@ -10,6 +10,7 @@ const PROD = 'https://api.zenyq.com';
 
 
 
+
 export const REACT_APP_APP_URL = PROD;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 

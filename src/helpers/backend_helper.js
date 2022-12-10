@@ -87,6 +87,8 @@ export const postAddShiftApi= (payload) => post(url.POST_ADD_SHIFTS,payload,{})
 
 export const fetchWeeklyShiftDetailsApi= (payload) => post(url.FETCH_WEEKLY_SHIFT_DETAILS,payload,{})
 
+export const fetchShiftEmployeesApi= (payload) => post(url.FETCH_SHIFT_EMPLOYEES,payload,{})
+
 
 
 
