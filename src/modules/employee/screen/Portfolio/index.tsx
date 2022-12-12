@@ -41,7 +41,14 @@ function PortFolio() {
       name: "E-Locker",
       value: "EL",
       route: ROUTE.ROUTE_E_LOCKER,
-      icon: Icons.E_Locker  ,
+      icon: Icons.E_Locker,
+    },
+    {
+      id: "6",
+      name: "My Shifts",
+      value: "MS",
+      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
+      icon: Icons.MY_SHIFTS,
     }
   ];
 

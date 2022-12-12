@@ -73,6 +73,7 @@ export const Icons = {
   AddFiles: require('./icons/AddFiles/AddFiles.png'),
   PDF_DUMMY_SECONDARY: require('./icons/PdfDummySecondary/PdfDummySecondary.png'),
   IMAGE_DUMMY_SECONDARY: require('./icons/ImageDummySecondary/ImageDummySecondary.png'),
+  MY_SHIFTS:require('./icons/MyShifts/MyShifts.png')
 }
 
 

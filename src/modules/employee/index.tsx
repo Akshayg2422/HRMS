@@ -1,2 +1,2 @@
-import {ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves,ModifyLogs,ELocker,ElockerUpload} from './screen';
-export{MyLog,MyWorkLog,ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLeaves,ModifyLogs,ELocker,ElockerUpload}
+import {ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves,ModifyLogs,ELocker,ElockerUpload,MyShiftDetails} from './screen';
+export{MyLog,MyWorkLog,ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLeaves,ModifyLogs,ELocker,ElockerUpload,MyShiftDetails}

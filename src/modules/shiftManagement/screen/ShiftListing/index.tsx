@@ -27,7 +27,7 @@ const ShiftListing = () => {
     );
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 

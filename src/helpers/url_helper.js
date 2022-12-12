@@ -89,3 +89,6 @@ export const FETCH_WEEKLY_SHIFT_DETAILS = 'attendance/getWeeklyShiftDetails'
 
 export const FETCH_SHIFT_EMPLOYEES = 'attendance/getShiftEmployees'
 
+export const FETCH_MY_SHIFTS_DETAILS = 'attendance/getEmployeeShiftDetails'
+
+

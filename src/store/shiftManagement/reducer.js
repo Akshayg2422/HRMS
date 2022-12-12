@@ -19,7 +19,10 @@ import {
   SELECTED_WEEKLY_SHIFT_NAME,
   FETCH_SHIFT_EMPLOYEES,
   FETCH_SHIFT_EMPLOYEES_SUCCESS,
-  FETCH_SHIFT_EMPLOYEES_FAILURE
+  FETCH_SHIFT_EMPLOYEES_FAILURE,
+  FETCH_MY_SHIFTS,
+  FETCH_MY_SHIFTS_SUCCESS,
+  FETCH_MY_SHIFTS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -31,7 +34,8 @@ const initialState = {
   selectedWeeklyShiftId: '',
   weeklyShiftDetails: {},
   selectedWeeklyShiftName: '',
-  shiftEmployeesGroupDetails: {}
+  shiftEmployeesGroupDetails: {},
+  myShifts:[]
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
@@ -203,6 +207,31 @@ const ShiftManagementReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+      //////MY SHIFTS
+
+      case FETCH_MY_SHIFTS:
+        state = {
+          ...state,
+          loading: true,
+        };
+        break;
+      case FETCH_MY_SHIFTS_SUCCESS:
+        state = {
+          ...state,
+          loading: false,
+          myShifts: action.payload
+        };
+        break;
+  
+      case FETCH_MY_SHIFTS_FAILURE:
+        state = {
+          ...state,
+          error: action.payload,
+          loading: false,
+        };
+        break;
+  
 
     default:
       state = state;

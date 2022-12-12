@@ -6,7 +6,8 @@ import {
     FETCH_BRANCH_WEEKLY_SHIFTS,
     POST_ADD_SHIFT,
     FETCH_WEEKLY_SHIFT_DETAILS,
-    FETCH_SHIFT_EMPLOYEES
+    FETCH_SHIFT_EMPLOYEES,
+    FETCH_MY_SHIFTS
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -22,10 +23,12 @@ import {
     getWeeklyShiftDetailsSuccess,
     getWeeklyShiftDetailsFailure,
     getShiftEmployeesDetailsSuccess,
-    getShiftEmployeesDetailsFailure
+    getShiftEmployeesDetailsFailure,
+    getMyShiftsSuccess,
+    getMyShiftsFailure
 } from "./actions";
 
-import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi, fetchShiftEmployeesApi } from "../../helpers/backend_helper";
+import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi, fetchShiftEmployeesApi,fetchMyShiftsApi } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../app/actions";
 
 
@@ -161,6 +164,27 @@ function* fetchShiftEmployeesGroupDetailsSaga(action) {
 }
 
 
+///MY SHIFTS
+
+function* fetchMyShiftsSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(fetchMyShiftsApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getMyShiftsSuccess(response.details));
+            yield call(action.payload.onSuccess(response.details));
+        } else {
+            yield put(hideLoader());
+            yield put(getMyShiftsFailure(response.error_message));
+            yield call(action.payload.onError);
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getMyShiftsFailure("Invalid Request"));
+    }
+}
+
 //Watcher
 
 
@@ -171,6 +195,8 @@ function* ShiftManagementSaga() {
     yield takeLatest(POST_ADD_SHIFT, postAddShiftSaga);
     yield takeLatest(FETCH_WEEKLY_SHIFT_DETAILS, fetchWeeklyShiftDetailsSaga);
     yield takeLatest(FETCH_SHIFT_EMPLOYEES, fetchShiftEmployeesGroupDetailsSaga);
+    yield takeLatest(FETCH_MY_SHIFTS, fetchMyShiftsSaga);
+
 
 
 }

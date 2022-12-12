@@ -19,7 +19,10 @@ import {
     SELECTED_WEEKLY_SHIFT_NAME,
     FETCH_SHIFT_EMPLOYEES,
     FETCH_SHIFT_EMPLOYEES_SUCCESS,
-    FETCH_SHIFT_EMPLOYEES_FAILURE
+    FETCH_SHIFT_EMPLOYEES_FAILURE,
+    FETCH_MY_SHIFTS,
+    FETCH_MY_SHIFTS_SUCCESS,
+    FETCH_MY_SHIFTS_FAILURE
 } from "./actionTypes";
 
 
@@ -182,6 +185,29 @@ export const addWeeklyShift = (type) => {
   export const getShiftEmployeesDetailsFailure = (error) => {
     return {
       type: FETCH_SHIFT_EMPLOYEES_FAILURE,
+      payload: error,
+    };
+  };
+
+  ///get My Shifts
+
+  export const getMyShifts = (type) => {
+    return {
+        type: FETCH_MY_SHIFTS,
+        payload: type,
+    };
+};
+  
+  export const getMyShiftsSuccess = (response) => {
+    return {
+      type: FETCH_MY_SHIFTS_SUCCESS,
+      payload: response,
+    };
+  };
+  
+  export const getMyShiftsFailure = (error) => {
+    return {
+      type: FETCH_MY_SHIFTS_FAILURE,
       payload: error,
     };
   };

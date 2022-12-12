@@ -57,8 +57,47 @@ const CreateShiftGroup = () => {
     const [selectedDepartmentId, setSelectedDepartmentId] = useState('')
     const [selectedDesignationId, setSelectedDesignationId] = useState('')
 
+
+
+
+    useEffect(() => {
+        if (selectedShiftGroupDetails) {
+            getShiftEmployeesGroupDetails()
+            setGroupName(selectedShiftGroupDetails.name)
+            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
+        }
+        getBranchesWeeklyShiftsList()
+        getEmployeesApi(currentPage)
+        getEmployeesApi(currentPage)
+        dispatch(getDepartmentData({}));
+        dispatch(getDesignationData({}));
+        return () => {
+            setEmployeesList([])
+            setSelectedEmployeesList([])
+        };
+    }, []);
+
+    // useEffect(() => {
+
+
+    //     // setSelectedEmployeesList([])
+    // }, [])
+
+
+
+
+    // function getEmployeesApi(pageNumber: number) {
+    //     const params: object = {
+    //       ...hierarchicalBranchIds,
+    //       page_number: pageNumber,
+    //       ...(searchEmployee && { q: searchEmployee }),
+    //     };
+
+    //     dispatch(getEmployeesList({ params }));
+    //   }
+
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -68,7 +107,7 @@ const CreateShiftGroup = () => {
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
             // ...hierarchicalBranchIds,
-            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
+            branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             designation_id: selectedDesignationId,
             department_id: selectedDepartmentId,
@@ -78,11 +117,8 @@ const CreateShiftGroup = () => {
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => {
-                /**
-                 * After response comes from get Employee api - take that copy of an array to an new array and adding an new
-                 * key value pair for status active deActive
-                 */
-                setEmployeesList(registeredEmployeesList.map((el: any) => ({ ...el, isStatus: false })))
+                const list = registeredEmployeesList.map((el: any) => ({ ...el, isStatus: false }))
+                setEmployeesList(list)
             },
             onError: (error: string) => {
 
@@ -113,15 +149,12 @@ const CreateShiftGroup = () => {
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
-                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
+                branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
                 name: groupName,
                 weekly_shift_id: selectedShift,
-                employee_ids: selectedEmployeesIds
+                employee_ids: selectedEmployeesIds,
+                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id })
             }
-
-            // console.log("emp idss---->", params);
-
-
             dispatch(postAddShift({
                 params,
                 onSuccess: (success: any) => {
@@ -131,7 +164,6 @@ const CreateShiftGroup = () => {
                     showToast("success", success.status)
                 },
                 onError: (error: string) => {
-                    // setSelectedEmployeesIds([])
                     showToast("error", error)
                 },
             }));
@@ -156,26 +188,20 @@ const CreateShiftGroup = () => {
     }
 
     const getShiftEmployeesGroupDetails = () => {
-
         const params = {
             shift_id: selectedShiftGroupDetails.id
         }
-
         dispatch(getShiftEmployeesDetails({
             params,
             onSuccess: (success: any) => {
-                let updated = registeredEmployeesList.map((el: any) => {
+                registeredEmployeesList.map((el: any) => {
                     success.map((element: any) => {
-                        if (el.id === '1704ea4f-656c-4f35-bfb1-28d1737f72ef') {
-                            let prefillSelectedEmployees = ([...selectedEmployeesList, el])
-                            let addingNewKey = prefillSelectedEmployees.map((el: any) => ({ ...el, isStatus: true }))
+                        if (el.id === element.employee_id) {
+                            let addingNewKey = success.map((el: any) => ({ ...el, isStatus: true }))
                             setSelectedEmployeesList(addingNewKey)
-
+                            addingNewKey.map((e: any) => onChangeEmployeeStatus(e))
                         }
-                    
                     })
-
-
                 })
             },
             onError: (error: string) => {
@@ -183,38 +209,12 @@ const CreateShiftGroup = () => {
         }));
 
     }
-
-
-    useEffect(() => {
-        getBranchesWeeklyShiftsList()
-
-        return () => {
-            setEmployeesList([])
-            setSelectedEmployeesList([])
-        };
-    }, []);
-
-    useEffect(() => {
-        if (selectedShiftGroupDetails) {
-            getShiftEmployeesGroupDetails()
-            setGroupName(selectedShiftGroupDetails.name)
-            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
-        }
-
-        getEmployeesApi(currentPage)
-        dispatch(getDepartmentData({}));
-        dispatch(getDesignationData({}));
-        setSelectedEmployeesList([])
-    }, [])
-
     /**
      * Function for on change employee status
      */
 
     const onChangeEmployeeStatus = (item: any) => {
-
         //pushing an selected employees id to an selectedEmployeesIds array for Api params
-
         //changing an selected employees status true
         let updatedStatus = employeesList.map((element: any) => {
             if (item.id === element.id) {
@@ -222,19 +222,16 @@ const CreateShiftGroup = () => {
             }
             return element;
         })
-        setEmployeesList(updatedStatus)
+        console.log('elememt', updatedStatus);
 
+        setEmployeesList(updatedStatus)
         //function called for adding an selected employees to selectedEmployeesList state
         addAnSelectedEmployees(updatedStatus)
-
     }
 
     //function for adding an selected employees to selectedEmployeesList state while clicking
-
     const addAnSelectedEmployees = (value: any) => {
-
         value.map((element: any) => {
-
             //pushing an selected employees to an selectedEmployeesList Array while the length is 0
             if (element.isStatus === true && selectedEmployeesList.length === 0) {
                 setSelectedEmployeesList([...selectedEmployeesList, element])
@@ -242,13 +239,11 @@ const CreateShiftGroup = () => {
             }
             //checking the selected employees already in an selectedEmployeesList Array 
             else if (selectedEmployeesList.length > 0 && element.isStatus === true) {
-
                 let isNotSameEmployee = false
                 selectedEmployeesList.map((it: any, index: number) => {
                     if (it.id === element.id) {
                         isNotSameEmployee = true
                     }
-
                 })
                 if (!isNotSameEmployee) {
                     setSelectedEmployeesList([...selectedEmployeesList, element])
@@ -306,6 +301,7 @@ const CreateShiftGroup = () => {
         }
     }
 
+    console.log('selectedEmployeesList', selectedEmployeesList);
 
     return (
         <>
@@ -554,10 +550,10 @@ const LocationTable = ({
                         tableDataSet.map((item: Location, index: number) => {
                             return (
                                 <tr className="align-items-center">
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item.employee_id
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.branch}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{item?.branch}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
@@ -609,7 +605,7 @@ const EmployeeSetTable = ({
                         tableDataSet.map((item: EmployeeSet, index: number) => {
                             return (
                                 <tr className="align-items-center">
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item.employee_id
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item?.name}${" "}(${item.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.branch}</td>
