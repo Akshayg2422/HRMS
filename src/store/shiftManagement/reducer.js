@@ -22,7 +22,8 @@ import {
   FETCH_SHIFT_EMPLOYEES_FAILURE,
   FETCH_MY_SHIFTS,
   FETCH_MY_SHIFTS_SUCCESS,
-  FETCH_MY_SHIFTS_FAILURE
+  FETCH_MY_SHIFTS_FAILURE,
+  RESET_REDUCER
 } from "./actionTypes";
 
 const initialState = {
@@ -35,7 +36,7 @@ const initialState = {
   weeklyShiftDetails: {},
   selectedWeeklyShiftName: '',
   shiftEmployeesGroupDetails: {},
-  myShifts:[]
+  myShifts: {}
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
@@ -208,30 +209,35 @@ const ShiftManagementReducer = (state = initialState, action) => {
       };
       break;
 
-      //////MY SHIFTS
+    //////MY SHIFTS
 
-      case FETCH_MY_SHIFTS:
-        state = {
-          ...state,
-          loading: true,
-        };
-        break;
-      case FETCH_MY_SHIFTS_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-          myShifts: action.payload
-        };
-        break;
-  
-      case FETCH_MY_SHIFTS_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
-  
+    case FETCH_MY_SHIFTS:
+      state = {
+        ...state,
+        loading: true,
+        myShifts: {}
+      };
+      break;
+    case FETCH_MY_SHIFTS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        myShifts: action.payload
+      };
+      break;
+
+    case FETCH_MY_SHIFTS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    case RESET_REDUCER:
+      state = initialState;
+      break;
+
 
     default:
       state = state;

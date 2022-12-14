@@ -97,7 +97,7 @@ const CreateShiftGroup = () => {
     //   }
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -107,7 +107,7 @@ const CreateShiftGroup = () => {
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
             // ...hierarchicalBranchIds,
-            branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
+            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             designation_id: selectedDesignationId,
             department_id: selectedDepartmentId,
@@ -149,7 +149,7 @@ const CreateShiftGroup = () => {
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
-                branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
+                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds,
@@ -194,20 +194,20 @@ const CreateShiftGroup = () => {
         dispatch(getShiftEmployeesDetails({
             params,
             onSuccess: (success: any) => {
-                registeredEmployeesList.map((el: any) => {
-                    success.map((element: any) => {
-                        if (el.id === element.employee_id) {
-                            let addingNewKey = success.map((el: any) => ({ ...el, isStatus: true }))
-                            setSelectedEmployeesList(addingNewKey)
-                            addingNewKey.map((e: any) => onChangeEmployeeStatus(e))
-                        }
-                    })
-                })
+                // registeredEmployeesList.map((el: any) => {
+                //     success.map((element: any) => {
+                //         if (el.id === element.employee_id) {
+                let addingNewKey = success.map((el: any) => ({ ...el, isStatus: false }))
+                setSelectedEmployeesList(addingNewKey)
+                // editPrefilledStatus(success)
+
+                //         }
+                //     })
+                // })
             },
             onError: (error: string) => {
             },
         }));
-
     }
     /**
      * Function for on change employee status
@@ -222,8 +222,6 @@ const CreateShiftGroup = () => {
             }
             return element;
         })
-        console.log('elememt', updatedStatus);
-
         setEmployeesList(updatedStatus)
         //function called for adding an selected employees to selectedEmployeesList state
         addAnSelectedEmployees(updatedStatus)
@@ -540,7 +538,6 @@ const LocationTable = ({
                     <tr>
                         <th scope="col">{"Name"}</th>
                         <th scope="col">{"MobileNumber"}</th>
-                        <th scope="col">{"Branch"}</th>
                         <th scope="col">{"Revert"}</th>
                     </tr>
                 </thead>
@@ -553,8 +550,9 @@ const LocationTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item?.branch}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    {item?.isStatus ?
+                                        <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                        : <></>}
 
                                 </tr>
                             );
@@ -594,7 +592,6 @@ const EmployeeSetTable = ({
                     <tr>
                         <th scope="col">{"Name"}</th>
                         <th scope="col">{"MobileNumber"}</th>
-                        <th scope="col">{"Branch"}</th>
                         <th scope="col">{"Status"}</th>
 
                     </tr>
@@ -608,8 +605,7 @@ const EmployeeSetTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item?.name}${" "}(${item.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.branch}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={item.isStatus === true ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView  icon={item.isStatus === true ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
 
                                 </tr>
                             );

@@ -34,13 +34,14 @@ export const ROUTE = {
   ROUTE_MY_LEAVES: '/my-leaves',
   ROUTE_MODIFY_LOGS: '/modify-logs',
   ROUTE_REPORTS: '/reports',
-  ROUTE_E_LOCKER:'/E-Locker',
-  ROUTE_E_LOCKER_UPLOAD:'/E-Locker-Upload',
+  ROUTE_E_LOCKER: '/E-Locker',
+  ROUTE_E_LOCKER_UPLOAD: '/E-Locker-Upload',
   ROUTE_SHIFT_MANAGEMENT: '/shift-management',
   ROUTE_SHIFT_GROUP: '/shift-group',
   ROUTE_SHIFT_LISTING: '/shift-listing',
-  ROUTE_CREATE_SHIFT_GROUP : '/create-shift-group',
-  ROUTE_MY_SHIFTS_DETAILS:'/my-shifts-details'
+  ROUTE_CREATE_SHIFT_GROUP: '/create-shift-group',
+  ROUTE_MY_SHIFTS_DETAILS: '/my-shifts-details',
+  ROUTE_EMPLOYEES_SHIFTS: '/employees-shifts'
 }
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
 export const WELCOME_CARD = [{ key: 'admin', icon: Icons.Admin, title: 'Admin', goTo: ROUTE.ROUTE_LOGIN }, { key: 'employee', icon: Icons.Employee, title: 'Employee', goTo: ROUTE.ROUTE_LOGIN }, { key: 'register-company', icon: Icons.RegisterCompany, title: 'Register a new company', goTo: ROUTE.ROUTE_REGISTER },]
@@ -111,8 +112,7 @@ export const NAV_ITEM = [
   { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO },
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', route: ROUTE.ROUTE_REPORTS },
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', route: ROUTE.ROUTE_SHIFT_GROUP },
-
-
+  { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
 
 ];
 
@@ -142,19 +142,19 @@ export const SORT_BUTTON = [
 export const WEEK_LIST = [
   { id: '1', name: 'Week 1' },
   { id: '2', name: 'Week 2' },
-  { id: '3', name: 'Week 3'},
-  { id: '4', name: 'Week 4'},
-  { id: '5', name: 'Week 5'}]
+  { id: '3', name: 'Week 3' },
+  { id: '4', name: 'Week 4' },
+  { id: '5', name: 'Week 5' }]
 
 
 export const WEEK_DAY_LIST = [
   { id: '1', name: 'Monday' },
-  { id: '2', name: 'Tuesday'},
-  { id: '3', name: 'Wednesday'},
-  { id: '4', name: 'Thursday'},
-  { id: '5', name: 'Friday'},
-  { id: '6', name: 'Saturday'},
-  { id: '7', name: 'Sunday'}]
+  { id: '2', name: 'Tuesday' },
+  { id: '3', name: 'Wednesday' },
+  { id: '4', name: 'Thursday' },
+  { id: '5', name: 'Friday' },
+  { id: '6', name: 'Saturday' },
+  { id: '7', name: 'Sunday' }]
 
 export const TABLE_ELEMENT_TEXT_BUTTON = 1
 export const TABLE_ELEMENT_TEXT_STATUS = 2
@@ -210,6 +210,16 @@ export const LEAVE_STATUS_REVERT = [
     elh: 'Revert',
   }
 ]
+
+
+export const EMPLOYEE_CHANGE_SHIFT = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Change Shift',
+    elh: 'Change Shift',
+  }
+]
+
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 

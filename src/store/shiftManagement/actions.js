@@ -22,7 +22,8 @@ import {
     FETCH_SHIFT_EMPLOYEES_FAILURE,
     FETCH_MY_SHIFTS,
     FETCH_MY_SHIFTS_SUCCESS,
-    FETCH_MY_SHIFTS_FAILURE
+    FETCH_MY_SHIFTS_FAILURE,
+    RESET_REDUCER
 } from "./actionTypes";
 
 
@@ -211,3 +212,14 @@ export const addWeeklyShift = (type) => {
       payload: error,
     };
   };
+
+
+  /**
+ * set Logout
+ */
+
+export const resetShiftManagement = () => {
+  return {
+    type: RESET_REDUCER,
+  };
+};

@@ -202,6 +202,12 @@
 "enterfilename":"Enter Your FileName",
 
 
+
+"myShift":"My Shifts",
+"SelectShift":"Select Shift",
+
+
+
   
   "noOfEmployee": "No.of Employees",
   "currentBank": "Current Bank Service Provider",
@@ -428,6 +434,8 @@
   "selectDesignation":"Select Designation",
   "selectedEmployeesList":"Selected Employees List",
   "shiftGroups":"Shift Groups",
+  "shifts":"Shift",
+  "shiftss":"Shifts",
   "addNew":"Add New",
   "manageWeeklyShifts":"Manage Weekly Shifts",
   "branchShifts":"Branch Shifts",
@@ -437,6 +445,7 @@
   "editWeeklyShiftDetails":"Edit weekly shift details",
   "selectShiftTiming":"Select Shift Timing",
   "notWorking":"Not Working"
+
 
 
 

@@ -11,10 +11,10 @@ interface props {
   onDeleteClick?: (el: any, index: number) => void;
   onAddClick?: (index: number) => void;
   onSubmit?: () => void;
-
+  showButton?: boolean
 }
 
-const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit }: props) => {
+const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit,showButton=true }: props) => {
 
   const { t } = useTranslation();
 
@@ -81,14 +81,14 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
               return listingWeekDays(it, index)
             })}
           </Container>
-          <Container>
+         {showButton && <Container>
             <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
               <Primary
                 text={selectedWeeklyShiftId ? t('update') : t('submit')}
                 onClick={onSubmit}
               />
             </div>
-          </Container>
+          </Container>}
         </Card>
       )}
 

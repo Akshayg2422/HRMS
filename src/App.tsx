@@ -36,7 +36,8 @@ import {
   ShiftGroup,
   ShiftListing,
   CreateShiftGroup,
-  MyShiftDetails
+  MyShiftDetails,
+  EmployeeShifts
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -194,6 +195,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_MY_SHIFTS_DETAILS}
           element={<RequireAuth>{<MyShiftDetails />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_EMPLOYEES_SHIFTS}
+          element={<RequireAuth>{<EmployeeShifts/>}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

@@ -45,6 +45,7 @@ import {
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
+import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -100,6 +101,7 @@ const ManageEmployee = () => {
     employeeType: "",
     attendanceStartTime: "10:00",
     attendanceEndTime: "06:00",
+    shift: ''
   });
 
   const [departmentModel, setDepartmentModel] = useState(false);
@@ -110,8 +112,10 @@ const ManageEmployee = () => {
   const [isRefresh, setIsRefresh] = useState(false);
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
+  const [shiftsDropdownData, setShiftsDropdownData] =
+    useState<any>();
 
-  const { dashboardDetails } = useSelector(
+  const { dashboardDetails, hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -132,7 +136,6 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -153,7 +156,6 @@ const ManageEmployee = () => {
         onError: (error: string) => { },
       })
     );
-
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
     }
@@ -163,7 +165,6 @@ const ManageEmployee = () => {
     const params = {
       user_id: id,
     };
-
     dispatch(
       getEmployeeDetails({
         params,
@@ -179,6 +180,26 @@ const ManageEmployee = () => {
       })
     );
   };
+
+  const ShiftDetails = (id: any) => {
+    const params = { branch_id: id }
+    dispatch(getBranchShifts({
+      params,
+      onSuccess: (success: any) => {
+        setShiftsDropdownData(success)
+      },
+      onError: (error: string) => {
+        showToast("error", t("Somthingwentworng"));
+      },
+    }));
+  }
+
+
+  useEffect(() => {
+    if (employeeDetails.branch !== '') {
+      ShiftDetails(employeeDetails.branch)
+    }
+  }, [employeeDetails.branch])
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -396,6 +417,10 @@ const ManageEmployee = () => {
     }
   }
 
+
+  console.log('shiftsDropdownData', shiftsDropdownData);
+
+
   return (
 
     <>
@@ -559,6 +584,14 @@ const ManageEmployee = () => {
           onChange={(event) => {
             onChangeHandler(event);
           }}
+        />
+        <DropDown
+          label={t("shiftss")}
+          placeholder={t("SelectShift")}
+          data={shiftsDropdownData}
+          name={"shift"}
+          value={employeeDetails.shift}
+          onChange={(event) => onChangeHandler(event)}
         />
         <h4 className="mb-4">{t("attendanceDetails")}</h4>
         <h5 className="mb-2">{t("startTime")}</h5>
