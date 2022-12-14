@@ -24,6 +24,7 @@ import {
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 import { useTranslation } from 'react-i18next';
+import { updateBranchLocationRadius } from '@src/store/location/actions';
 
 const CreateShiftGroup = () => {
 
@@ -35,69 +36,56 @@ const CreateShiftGroup = () => {
         (state: any) => state.ShiftManagementReducer
     );
 
-    // console.log("iddddd-----.", selectedShiftGroupDetails);
-
 
     const { registeredEmployeesList, numOfPages, currentPage, designationDropdownData, departmentDropdownData } = useSelector(
         (state: any) => state.EmployeeReducer
     );
 
-    // const { hierarchicalBranchIds } = useSelector(
-    //     (state: any) => state.DashboardReducer
-    // );
-
     const [groupName, setGroupName] = useState("")
     const [selectedShift, setSelectedShift] = useState('')
     const [searchEmployee, setSearchEmployee] = useState('')
-    const [employeesList, setEmployeesList] = useState<any>()
+    // const [employeesList, setEmployeesList] = useState<any>()
     const [selectedEmployeesList, setSelectedEmployeesList] = useState<any>([])
     const [selectedEmployeesIds, setSelectedEmployeesIds] = useState([])
     const [searchSelectedEmployee, setSearchSelectedEmployee] = useState('')
-
-    const [selectedDepartmentId, setSelectedDepartmentId] = useState('')
-    const [selectedDesignationId, setSelectedDesignationId] = useState('')
+    const [filteredEmployees, setFilteredEmployees] = useState([])
 
 
+    const [departmentId, setDepartmentId] = useState('')
+    const [designationId, setDesignationId] = useState('')
+
+    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
+    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
 
 
     useEffect(() => {
         if (selectedShiftGroupDetails) {
-            getShiftEmployeesGroupDetails()
             setGroupName(selectedShiftGroupDetails.name)
             setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
         }
         getBranchesWeeklyShiftsList()
-        getEmployeesApi(currentPage)
-        getEmployeesApi(currentPage)
         dispatch(getDepartmentData({}));
         dispatch(getDesignationData({}));
         return () => {
-            setEmployeesList([])
+            // setEmployeesList([])
             setSelectedEmployeesList([])
+            setSelectedEmpListDepartmentId("")
+            setSelectedEmpListDesignationId("")
         };
     }, []);
 
-    // useEffect(() => {
+    useEffect(() => {
+        getEmployeesApi(currentPage)
 
+    }, [departmentId, designationId])
 
-    //     // setSelectedEmployeesList([])
-    // }, [])
+    useEffect(() => {
+        selectedEmployeesDepartmentFilter()
+    }, [selectedEmpListDepartmentId, selectedEmpListDesignationId])
 
-
-
-
-    // function getEmployeesApi(pageNumber: number) {
-    //     const params: object = {
-    //       ...hierarchicalBranchIds,
-    //       page_number: pageNumber,
-    //       ...(searchEmployee && { q: searchEmployee }),
-    //     };
-
-    //     dispatch(getEmployeesList({ params }));
-    //   }
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -107,18 +95,20 @@ const CreateShiftGroup = () => {
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
             // ...hierarchicalBranchIds,
-            branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
+            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
-            designation_id: selectedDesignationId,
-            department_id: selectedDepartmentId,
+            ...(designationId && { designation_id: designationId }),
+            ...(departmentId && { department_id: departmentId }),
             ...(searchEmployee && { q: searchEmployee }),
         };
 
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => {
-                const list = registeredEmployeesList.map((el: any) => ({ ...el, isStatus: false }))
-                setEmployeesList(list)
+
+                if (selectedShiftGroupDetails) {
+                    getShiftEmployeesGroupDetails()
+                }
             },
             onError: (error: string) => {
 
@@ -136,20 +126,17 @@ const CreateShiftGroup = () => {
             showToast("error", t('theGroupNameCantBeEmpty'));
             return false;
         }
-        else if (selectedEmployeesIds.length === 0) {
-            showToast("error", t('selectEmployee'));
-            return false;
-        }
         else {
             return true;
         }
     }
+
     // API for add shift 
 
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
-                branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5",
+                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds,
@@ -159,7 +146,7 @@ const CreateShiftGroup = () => {
                 params,
                 onSuccess: (success: any) => {
                     setSelectedEmployeesIds([])
-                    setEmployeesList([])
+                    // setEmployeesList([])
                     goBack(navigation);
                     showToast("success", success.status)
                 },
@@ -187,71 +174,41 @@ const CreateShiftGroup = () => {
         getEmployeesApi(currentPage);
     }
 
+    /**
+     * getting shift employees list while editing
+     */
+
     const getShiftEmployeesGroupDetails = () => {
+
         const params = {
             shift_id: selectedShiftGroupDetails.id
         }
         dispatch(getShiftEmployeesDetails({
             params,
             onSuccess: (success: any) => {
-                registeredEmployeesList.map((el: any) => {
-                    success.map((element: any) => {
-                        if (el.id === element.employee_id) {
-                            let addingNewKey = success.map((el: any) => ({ ...el, isStatus: true }))
-                            setSelectedEmployeesList(addingNewKey)
-                            addingNewKey.map((e: any) => onChangeEmployeeStatus(e))
-                        }
-                    })
-                })
+                setSelectedEmployeesList(success)
+                setFilteredEmployees(success)
             },
             onError: (error: string) => {
             },
         }));
 
     }
-    /**
-     * Function for on change employee status
-     */
-
-    const onChangeEmployeeStatus = (item: any) => {
-        //pushing an selected employees id to an selectedEmployeesIds array for Api params
-        //changing an selected employees status true
-        let updatedStatus = employeesList.map((element: any) => {
-            if (item.id === element.id) {
-                return { ...element, isStatus: true };
-            }
-            return element;
-        })
-        console.log('elememt', updatedStatus);
-
-        setEmployeesList(updatedStatus)
-        //function called for adding an selected employees to selectedEmployeesList state
-        addAnSelectedEmployees(updatedStatus)
-    }
 
     //function for adding an selected employees to selectedEmployeesList state while clicking
-    const addAnSelectedEmployees = (value: any) => {
-        value.map((element: any) => {
-            //pushing an selected employees to an selectedEmployeesList Array while the length is 0
-            if (element.isStatus === true && selectedEmployeesList.length === 0) {
-                setSelectedEmployeesList([...selectedEmployeesList, element])
-                setSelectedEmployeesIds([element.id as never])
-            }
-            //checking the selected employees already in an selectedEmployeesList Array 
-            else if (selectedEmployeesList.length > 0 && element.isStatus === true) {
-                let isNotSameEmployee = false
-                selectedEmployeesList.map((it: any, index: number) => {
-                    if (it.id === element.id) {
-                        isNotSameEmployee = true
-                    }
-                })
-                if (!isNotSameEmployee) {
-                    setSelectedEmployeesList([...selectedEmployeesList, element])
-                    setSelectedEmployeesIds([...selectedEmployeesIds, element.id as never])
-                }
-            }
-        })
 
+    const addAnSelectedEmployees = (value: any) => {
+
+        let updatedSelectedEmployee = [...selectedEmployeesList]
+        const isExist = selectedEmployeesList.some((item: any) => item.id === value.id)
+
+        if (!isExist) {
+            updatedSelectedEmployee = [...updatedSelectedEmployee, value]
+            setSelectedEmployeesList(updatedSelectedEmployee)
+            setSelectedEmployeesIds([...selectedEmployeesIds, value.id as never])
+            setFilteredEmployees(updatedSelectedEmployee as never)
+
+        }
     }
 
     /**
@@ -267,41 +224,89 @@ const CreateShiftGroup = () => {
         const filteredIds = selectedEmployeesIds.filter((item: any) => item !== value.id)
         setSelectedEmployeesIds(filteredIds)
 
-        //After deselect the selected employee the status changing to false
-        let revertedEmployee = employeesList.map((element: any) => {
-            if (value.id === element.id) {
-                return { ...element, isStatus: false };
-            }
-            return element;
-        })
-        setEmployeesList(revertedEmployee)
     }
 
 
-    //Function called for Searching an employee in selected employee card
+    //Function called for Searching an employee in selected employee list
 
     const SelectedEmployeeFilter = () => {
-        //filter the selected employee while searching
+        // filter the selected employee while searching
         if (searchSelectedEmployee !== "") {
-            let filteredEmployee = employeesList.filter((element: any) => {
-                if (element.isStatus === true) {
-                    return Object.values(element).join(" ").toLowerCase().includes(searchSelectedEmployee.toLowerCase())
-                }
+            let filteredEmployee = [...selectedEmployeesList]
+            filteredEmployee = filteredEmployee.filter((element: any) => {
+                return Object.values(element).join(" ").toLowerCase().includes(searchSelectedEmployee.toLowerCase())
             })
-            setSelectedEmployeesList(filteredEmployee)
+            setFilteredEmployees(filteredEmployee as never)
         }
         else {
-            let restoredEmployee = employeesList.filter((element: any) => {
-
-                if (element.isStatus) {
-                    return element
-                }
-            })
-            setSelectedEmployeesList(restoredEmployee)
+            setFilteredEmployees(selectedEmployeesList)
         }
     }
 
-    console.log('selectedEmployeesList', selectedEmployeesList);
+    /**
+     * filtering employee while dropdown change
+     */
+    const selectedEmployeesDepartmentFilter = () => {
+
+        let updateFilteredData: any = [...selectedEmployeesList]
+        updateFilteredData = updateFilteredData.filter((item: any) => {
+
+            if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
+                if (selectedEmpListDepartmentId === item.department_id) {
+                    // setSelectedEmpListDesignationId("")
+                    return item
+
+                }
+
+            }
+            else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
+                if (selectedEmpListDesignationId === item.designation_id) {
+                    return item
+
+                }
+            }
+            else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
+                if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
+                    return item
+
+                }
+
+            }
+
+        }
+        )
+
+        setFilteredEmployees(updateFilteredData as never)
+
+    }
+
+    // const selectedEmployeesDesignationFilter = () => {
+
+    //     let updateFilteredData = [...selectedEmployeesList]
+    //     updateFilteredData = updateFilteredData.filter((item: any) => {
+
+    //         if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
+    //             if (selectedEmpListDesignationId === item.designation_id) {
+    //                 return item
+
+    //             }
+
+    //         }
+    //         else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
+    //             if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
+    //                 return item
+
+    //             }
+
+    //         }
+    //     }
+
+    //         //  selectedEmpListDesignationId === item.designation_id 
+    //     )
+    //     setFilteredEmployees(updateFilteredData as never)
+
+    // }
+
 
     return (
         <>
@@ -387,10 +392,9 @@ const CreateShiftGroup = () => {
                                 label={t('department')}
                                 placeholder={t('selectDepartment')}
                                 data={departmentDropdownData}
-                                value={selectedDepartmentId}
+                                value={departmentId}
                                 onChange={(event) => {
-                                    setSelectedDepartmentId(event.target.value)
-                                    getEmployeesApi(currentPage)
+                                    setDepartmentId(event.target.value)
                                 }}
                             />
                         </Container>
@@ -402,16 +406,16 @@ const CreateShiftGroup = () => {
                                 label={t('designation')}
                                 placeholder={t('selectDesignation')}
                                 data={designationDropdownData}
-                                value={selectedDesignationId}
+                                value={designationId}
                                 onChange={(event) => {
-                                    setSelectedDesignationId(event.target.value)
+                                    setDesignationId(event.target.value)
                                 }}
                             />
                         </Container>
                     </Container>
 
 
-                    {employeesList && employeesList.length > 0 && (
+                    {registeredEmployeesList && registeredEmployeesList.length > 0 && (
                         <CommonTable
                             noHeader
                             isPagination
@@ -424,12 +428,14 @@ const CreateShiftGroup = () => {
                             nextClick={() => paginationHandler("next")}
                             tableChildren={
                                 <EmployeeSetTable
-                                    tableDataSet={employeesList}
+                                    tableDataSet={registeredEmployeesList}
                                     onStatusClick={(item) => {
-                                        onChangeEmployeeStatus(item)
+                                        addAnSelectedEmployees(item)
                                     }}
+                                    selectedEmployeeData={selectedEmployeesList}
                                 />
                             }
+
                         />
                     )}
                 </Card>
@@ -470,9 +476,9 @@ const CreateShiftGroup = () => {
                                 label={t('department')}
                                 placeholder={t('selectDepartment')}
                                 data={departmentDropdownData}
-                                value={selectedDepartmentId}
+                                value={selectedEmpListDepartmentId}
                                 onChange={(event) => {
-
+                                    setSelectedEmpListDepartmentId(event.target.value)
                                 }}
                             />
                         </Container>
@@ -484,9 +490,9 @@ const CreateShiftGroup = () => {
                                 label={t('designation')}
                                 placeholder={t('selectDesignation')}
                                 data={designationDropdownData}
-                                value={selectedDesignationId}
+                                value={selectedEmpListDesignationId}
                                 onChange={(event) => {
-
+                                    setSelectedEmpListDesignationId(event.target.value)
                                 }}
                             />
                         </Container>
@@ -496,8 +502,8 @@ const CreateShiftGroup = () => {
                         noHeader
                         tableTitle={t('selectedEmployeesList')}
                         tableChildren={
-                            <LocationTable
-                                tableDataSet={selectedEmployeesList}
+                            <SelectedEmployeeListTable
+                                tableDataSet={filteredEmployees}
                                 onRevertClick={(item) =>
                                     onRevertSelectedEmployees(item)
                                 }
@@ -511,28 +517,34 @@ const CreateShiftGroup = () => {
     )
 }
 
+
+
 {/**
-         * Selected Employees 
+         * Employees list 
          */}
 
-type Location = {
+type EmployeeSet = {
+    id: string
     name: string;
     employee_id: string;
+    employee_pk: string;
     mobile_number: string;
     branch: string;
     isStatus: boolean
 };
 
-type LocationTableProps = {
-    tableDataSet?: Array<Location>;
-    onRevertClick?: (item: Location) => void;
-
+type EmployeeSetProps = {
+    tableDataSet?: Array<EmployeeSet>;
+    onStatusClick?: (item: EmployeeSet) => void;
+    selectedEmployeeData?: Array<EmployeeSet>;
 };
 
-const LocationTable = ({
+const EmployeeSetTable = ({
     tableDataSet,
-    onRevertClick,
-}: LocationTableProps) => {
+    onStatusClick,
+    selectedEmployeeData
+}: EmployeeSetProps) => {
+
     return (
         <div className="table-responsive mx--3">
             <table className="table align-items-center table-flush">
@@ -540,20 +552,81 @@ const LocationTable = ({
                     <tr>
                         <th scope="col">{"Name"}</th>
                         <th scope="col">{"MobileNumber"}</th>
-                        <th scope="col">{"Branch"}</th>
+                        <th scope="col">{"Status"}</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {tableDataSet &&
+                        tableDataSet.length > 0 &&
+                        tableDataSet.map((item: EmployeeSet, index: number) => {
+
+                            let equal = selectedEmployeeData?.some((it) => it.employee_pk === item.id || it.id === item.id)
+
+                            return (
+                                <tr className="align-items-center">
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item?.name}${" "}(${item.employee_id
+                                        })`}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
+
+                                </tr>
+                            );
+                        })}
+                </tbody>
+            </table>
+        </div>
+    );
+};
+
+
+{/**
+         * Selected Employees 
+         */}
+
+type EmployeeDetailsProps = {
+    id: string;
+    name: string;
+    employee_id: string;
+    mobile_number: string;
+    branch: string;
+    isStatus: boolean
+};
+
+type TableProps = {
+    tableDataSet?: Array<EmployeeDetailsProps>;
+    onRevertClick?: (item: EmployeeDetailsProps) => void;
+    employeeListDataSet?: Array<EmployeeDetailsProps>;
+};
+
+const SelectedEmployeeListTable = ({
+    tableDataSet,
+    onRevertClick,
+    employeeListDataSet
+}: TableProps) => {
+
+
+    return (
+        <div className="table-responsive mx--3">
+            <table className="table align-items-center table-flush">
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col">{"Name"}</th>
+                        <th scope="col">{"MobileNumber"}</th>
                         <th scope="col">{"Revert"}</th>
                     </tr>
                 </thead>
                 <tbody>
                     {tableDataSet &&
                         tableDataSet.length > 0 &&
-                        tableDataSet.map((item: Location, index: number) => {
+                        tableDataSet.map((item: EmployeeDetailsProps, index: number) => {
+                            // let equal = employeeListDataSet?.some((it) => it.id === item.id)
+
                             return (
                                 <tr className="align-items-center">
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item?.branch}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
@@ -565,58 +638,4 @@ const LocationTable = ({
     );
 };
 
-{/**
-         * Employees list 
-         */}
-
-type EmployeeSet = {
-    name: string;
-    employee_id: string;
-    mobile_number: string;
-    branch: string;
-    isStatus: boolean
-};
-
-type EmployeeSetProps = {
-    tableDataSet?: Array<EmployeeSet>;
-    onStatusClick?: (item: EmployeeSet) => void;
-
-};
-
-const EmployeeSetTable = ({
-    tableDataSet,
-    onStatusClick,
-}: EmployeeSetProps) => {
-    return (
-        <div className="table-responsive mx--3">
-            <table className="table align-items-center table-flush">
-                <thead className="thead-light">
-                    <tr>
-                        <th scope="col">{"Name"}</th>
-                        <th scope="col">{"MobileNumber"}</th>
-                        <th scope="col">{"Branch"}</th>
-                        <th scope="col">{"Status"}</th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {tableDataSet &&
-                        tableDataSet.length > 0 &&
-                        tableDataSet.map((item: EmployeeSet, index: number) => {
-                            return (
-                                <tr className="align-items-center">
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{`${item?.name}${" "}(${item.employee_id
-                                        })`}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}>{item.branch}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={item.isStatus === true ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
-
-                                </tr>
-                            );
-                        })}
-                </tbody>
-            </table>
-        </div>
-    );
-};
 export { CreateShiftGroup }
