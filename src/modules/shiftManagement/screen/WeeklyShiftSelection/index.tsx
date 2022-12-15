@@ -110,7 +110,7 @@ const WeeklyShiftSelection = () => {
             isInRange = true
           }
         }
-        if (!isInRange) {
+        if (!isInRange && changedWeek[selectedDayIndex].time_breakdown.length < 3) {
           let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
           changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
         }

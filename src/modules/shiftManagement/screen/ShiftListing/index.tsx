@@ -5,7 +5,7 @@ import {
     goTo,
     useNav,
     ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA,
+    EMPLOYEE_ADDITIONAL_DATA_EDIT,
 
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,7 +72,7 @@ const ShiftListing = () => {
                         <CommonTable
                             tableTitle={t('branchShifts')}
                             displayDataSet={normalizedBranchWeeklyShifts(branchesWeeklyShifts)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {

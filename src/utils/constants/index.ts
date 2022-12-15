@@ -180,6 +180,20 @@ export const EMPLOYEE_ADDITIONAL_DATA = [
 
 ]
 
+export const EMPLOYEE_ADDITIONAL_DATA_EDIT = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Edit',
+    elh: 'Edit',
+  },
+  // {
+  //   elt: TABLE_ELEMENT_TEXT_BUTTON,
+  //   elv: 'Delete',
+  //   elh: 'Delete',
+  // },
+
+]
+
 export const ENABLE_EMPLOYEE_DATA = [
   {
     elt: TABLE_ELEMENT_TEXT_BUTTON,

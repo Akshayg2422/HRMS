@@ -228,7 +228,11 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
       return false;
-    } else {
+    }else if (Object.keys(employeeDetails.shift).length === 0) {
+      showToast("error", "choose Shift");
+      return false;
+    }  
+    else {
       return true;
     }
   };
@@ -260,6 +264,7 @@ const ManageEmployee = () => {
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: false,
           associated_branch: [employeeDetails.branch],
+          shift_settings: {shift_id: employeeDetails.shift}
         },
         ...(employeeDetails.dateOfJoining && {
           date_of_joining: getServerDateFromMoment(
@@ -273,6 +278,9 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
+
+      console.log("paaramssss---->",params);
+      
 
       dispatch(
         employeeAddition({
@@ -290,6 +298,10 @@ const ManageEmployee = () => {
   };
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
+
+console.log("editEmployeeDetails-------->",editEmployeeDetails);
+
+
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
