@@ -219,6 +219,7 @@ const CreateShiftGroup = () => {
         // deSelect the selected employees in an selectedEmployeesList array
         const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== value.id)
         setSelectedEmployeesList(filteredPeople)
+        setFilteredEmployees(filteredPeople)
 
         const filteredIds = selectedEmployeesIds.filter((item: any) => item !== value.id)
         setSelectedEmployeesIds(filteredIds)
@@ -233,7 +234,7 @@ const CreateShiftGroup = () => {
         if (searchSelectedEmployee !== "") {
             let filteredEmployee = [...selectedEmployeesList]
             filteredEmployee = filteredEmployee.filter((element: any) => {
-                return Object.values(element).join(" ").toLowerCase().includes(searchSelectedEmployee.toLowerCase())
+                return element.name.slice(0, searchSelectedEmployee.length).toLowerCase() === searchSelectedEmployee.toLowerCase()
             })
             setFilteredEmployees(filteredEmployee as never)
         }
@@ -252,7 +253,6 @@ const CreateShiftGroup = () => {
 
             if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
                 if (selectedEmpListDepartmentId === item.department_id) {
-                    // setSelectedEmpListDesignationId("")
                     return item
 
                 }
@@ -278,34 +278,6 @@ const CreateShiftGroup = () => {
         setFilteredEmployees(updateFilteredData as never)
 
     }
-
-    // const selectedEmployeesDesignationFilter = () => {
-
-    //     let updateFilteredData = [...selectedEmployeesList]
-    //     updateFilteredData = updateFilteredData.filter((item: any) => {
-
-    //         if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
-    //             if (selectedEmpListDesignationId === item.designation_id) {
-    //                 return item
-
-    //             }
-
-    //         }
-    //         else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
-    //             if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
-    //                 return item
-
-    //             }
-
-    //         }
-    //     }
-
-    //         //  selectedEmpListDesignationId === item.designation_id 
-    //     )
-    //     setFilteredEmployees(updateFilteredData as never)
-
-    // }
-
 
     return (
         <>
@@ -506,6 +478,7 @@ const CreateShiftGroup = () => {
                                 onRevertClick={(item) =>
                                     onRevertSelectedEmployees(item)
                                 }
+                                employeeListDataSet={registeredEmployeesList}
                             />
                         }
                     />
@@ -603,6 +576,7 @@ const SelectedEmployeeListTable = ({
     onRevertClick,
     employeeListDataSet
 }: TableProps) => {
+    // console.log("employeeListDataSet===.",employeeListDataSet);
 
 
     return (
@@ -619,14 +593,14 @@ const SelectedEmployeeListTable = ({
                     {tableDataSet &&
                         tableDataSet.length > 0 &&
                         tableDataSet.map((item: EmployeeDetailsProps, index: number) => {
-                            // let equal = employeeListDataSet?.some((it) => it.id === item.id)
+                            let equal = employeeListDataSet?.some((it) => it.id === item.id)
 
                             return (
                                 <tr className="align-items-center">
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.Delete : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );

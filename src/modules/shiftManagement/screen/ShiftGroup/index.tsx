@@ -4,7 +4,7 @@ import {
     goTo,
     useNav,
     ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA,
+    EMPLOYEE_ADDITIONAL_DATA_EDIT,
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -69,7 +69,7 @@ const ShiftGroup = () => {
                         <CommonTable
                             tableTitle={t('branchShifts')}
                             displayDataSet={normalizedBranchShifts(branchShifts)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
@@ -77,9 +77,9 @@ const ShiftGroup = () => {
                                 if (elv === "Edit") {
                                     manageShiftGroupHandler(current)
                                 }
-                                if (elv === "Delete") {
-                                    deleteBranchShift()
-                                }
+                                // if (elv === "Delete") {
+                                //     deleteBranchShift()
+                                // }
                             }}
                         />
                     </Container>
