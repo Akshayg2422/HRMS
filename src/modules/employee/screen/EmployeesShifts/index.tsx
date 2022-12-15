@@ -8,6 +8,8 @@ import {
   NoRecordFound,
   ImageView,
   ChooseBranchFromHierarchical,
+  Secondary,
+  Primary,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -22,7 +24,7 @@ import {
   showToast,
 } from "@utils";
 import { useTranslation } from "react-i18next";
-import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
+import { getBranchShifts, getEmployeeWithShift, getMyShifts, postEmployeeShiftChange } from "../../../../store/shiftManagement/actions";
 import { EmployeeShiftListing } from "../../container";
 import { Icons } from "@assets";
 
@@ -33,36 +35,32 @@ function EmployeeShifts() {
   const { myShifts } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
-
-
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [model, setModel] = useState(false);
   const [changeShiftModel, setChangeShiftModelModel] = useState(false);
   const [shiftsList, setShiftList] = useState<any>()
-
+  const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
+  const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
   const [employeeName, setEmployeeName] = useState()
-
-  const {
-    registeredEmployeesList,
-    numOfPages,
-    currentPage,
-  } = useSelector((state: any) => state.EmployeeReducer);
+  const { employeeWithShifts, numOfPages, currentPage } = useSelector(
+    (state: any) => state.ShiftManagementReducer
+  );
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
   useEffect(() => {
-    getEmployeeLogs(currentPage);
+    getEmployeeLogsWithShifts(currentPage);
   }, [hierarchicalBranchIds]);
 
-  function getEmployeeLogs(pageNumber: number) {
+  function getEmployeeLogsWithShifts(pageNumber: number) {
     const params: object = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       q: "",
     };
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeeWithShift({ params }));
   }
 
 
@@ -71,14 +69,15 @@ function EmployeeShifts() {
       return {
         id: el.employee_id,
         name: el.name,
-        "mobile number": el.mobile_number,
+        "Shift Name": el.shift?.name ? el.shift?.name :<div className="ml-4">{'-'}</div>  ,
+        "mobile number": el.mobile_number
       };
     });
   };
 
 
   function getUserShifts(index: number) {
-    const selectedEmployee = registeredEmployeesList[index];
+    const selectedEmployee = employeeWithShifts[index];
     setEmployeeName(selectedEmployee.name)
     const params = {
       employee_id: selectedEmployee.id
@@ -89,13 +88,15 @@ function EmployeeShifts() {
         setModel(!model);
       },
       onError: (error: string) => {
-        showToast("error", t("Somthingwentworng"));
+        showToast("info", error);
       },
     }));
   }
 
 
-  const handleChangeShift = () => {
+  const handleChangeShift = (item: any) => {
+    setEmployeeCurrentObject(item)
+    setCurrentEmployeeShiftId(item.shift.id)
     const params = { branch_id: hierarchicalBranchIds.branch_id }
     dispatch(getBranchShifts({
       params,
@@ -109,40 +110,57 @@ function EmployeeShifts() {
     }));
   }
 
-
+  const onChangeShift = () => {
+    const params = {
+      shift_id: currentEmployeeShiftId,
+      employee_id: employeeCurrentObject.id
+    }
+    dispatch(postEmployeeShiftChange({
+      params,
+      onSuccess: (success: any) => {
+        setChangeShiftModelModel(!changeShiftModel)
+        showToast("success", success);
+        getEmployeeLogsWithShifts(currentPage);
+      },
+      onError: (error: string) => {
+        setChangeShiftModelModel(!changeShiftModel)
+        showToast("error", error);
+      },
+    }));
+  }
 
   return (
     <>
       <Card additionClass="mx-2">
+        <h3 className="ml-3">{t("employeeShifts")}</h3>
         <Container col={"col-xl-4"}>
           <h5 className="ml-3">{t("branch")}</h5>
           <ChooseBranchFromHierarchical />
         </Container>
       </Card>
-      {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+      {employeeWithShifts && employeeWithShifts.length > 0 ? (
         <CommonTable
-          // tableTitle={"Employees shifts"}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
           additionalDataSet={EMPLOYEE_CHANGE_SHIFT}
-          displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+          displayDataSet={normalizedEmployeeLog(employeeWithShifts)}
           tableOnClick={(e, index, item) => {
             getUserShifts(index);
           }}
           paginationNumberClick={(currentPage) => {
-            getEmployeeLogs(paginationHandler("current", currentPage));
+            getEmployeeLogsWithShifts(paginationHandler("current", currentPage));
           }}
           previousClick={() =>
-            getEmployeeLogs(paginationHandler("prev", currentPage))
+            getEmployeeLogsWithShifts(paginationHandler("prev", currentPage))
           }
           nextClick={() =>
-            getEmployeeLogs(paginationHandler("next", currentPage))
+            getEmployeeLogsWithShifts(paginationHandler("next", currentPage))
           }
           tableValueOnClick={(e, index, item, elv) => {
-            // const current = registeredEmployeesList[index];
+            const current = employeeWithShifts[index];
             if (elv === "Change Shift") {
-              handleChangeShift()
+              handleChangeShift(current)
             }
           }}
           custombutton={'h5'}
@@ -208,13 +226,26 @@ function EmployeeShifts() {
               return (
                 <Container additionClass="mx-2 p-2 row">
                   <h4 className="col fw-normal">{el.name}</h4>
-                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.TickDefault} onClick={() => {
-                    console.log("");
+                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                    setCurrentEmployeeShiftId(el.id)
                   }} /></td>
 
                 </Container>
               )
             })}
+            <Container
+              margin={'m-3'}
+              justifyContent={'justify-content-end'}
+              display={'d-flex'}>
+              <Secondary
+                text={t('cancel')}
+                onClick={() => setChangeShiftModelModel(!changeShiftModel)}
+              />
+              <Primary
+                text={t('update')}
+                onClick={() => onChangeShift()}
+              />
+            </Container>
           </Container> : <NoRecordFound />}
         </Container>
       </Modal>

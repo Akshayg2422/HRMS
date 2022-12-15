@@ -23,12 +23,20 @@ import {
   FETCH_MY_SHIFTS,
   FETCH_MY_SHIFTS_SUCCESS,
   FETCH_MY_SHIFTS_FAILURE,
-  RESET_REDUCER
+  RESET_REDUCER,
+  GET_EMPLOYEE_WITH_SHIFTS,
+  GET_EMPLOYEE_WITH_SHIFTS_SUCCESS,
+  GET_EMPLOYEE_WITH_SHIFTS_FAILURE,
+  POST_EMPLOYEE_SHIFT_CHANGE,
+  POST_EMPLOYEE_SHIFT_CHANGE_SUCCESS,
+  POST_EMPLOYEE_SHIFT_CHANGE_FAILURE
 } from "./actionTypes";
 
 const initialState = {
   loading: false,
   error: '',
+  numOfPages: 0,
+  currentPage: 1,
   branchShifts: {},
   branchesWeeklyShifts: {},
   selectedShiftGroupDetails: '',
@@ -36,7 +44,8 @@ const initialState = {
   weeklyShiftDetails: {},
   selectedWeeklyShiftName: '',
   shiftEmployeesGroupDetails: {},
-  myShifts: {}
+  myShifts: {},
+  employeeWithShifts: []
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
@@ -233,6 +242,64 @@ const ShiftManagementReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+    // // get Employee with shifts
+
+    case GET_EMPLOYEE_WITH_SHIFTS:
+      state = {
+        ...state,
+        loading: true,
+        employeeWithShifts: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case GET_EMPLOYEE_WITH_SHIFTS_SUCCESS:
+      const employeeRes = action.payload;
+      state = {
+        ...state,
+        loading: false,
+        employeeWithShifts: employeeRes.data,
+        numOfPages: employeeRes.num_pages,
+        currentPage:
+          employeeRes.next_page === -1
+            ? employeeRes.num_pages
+            : employeeRes.next_page - 1,
+      };
+      break;
+
+    case GET_EMPLOYEE_WITH_SHIFTS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // Change Employee Shifts 
+
+    case POST_EMPLOYEE_SHIFT_CHANGE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case POST_EMPLOYEE_SHIFT_CHANGE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        // myShifts: action.payload
+      };
+      break;
+
+    case POST_EMPLOYEE_SHIFT_CHANGE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
 
     case RESET_REDUCER:
       state = initialState;

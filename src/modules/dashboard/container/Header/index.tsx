@@ -13,6 +13,7 @@ import { resetDashboard } from '../../../../store/dashboard/actions';
 import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
+import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
 
 
 
@@ -66,7 +67,7 @@ const Header = () => {
       dispatch(resetDashboard())
       dispatch(resetEmployee())
       dispatch(resetLocation())
-      dispatch(resetEmployee())
+      dispatch(resetShiftManagement())
 
       goTo(navigate, ROUTE.ROUTE_LOGIN, true)
 

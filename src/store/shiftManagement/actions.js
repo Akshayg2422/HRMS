@@ -23,7 +23,13 @@ import {
     FETCH_MY_SHIFTS,
     FETCH_MY_SHIFTS_SUCCESS,
     FETCH_MY_SHIFTS_FAILURE,
-    RESET_REDUCER
+    RESET_REDUCER,
+    GET_EMPLOYEE_WITH_SHIFTS,
+    GET_EMPLOYEE_WITH_SHIFTS_SUCCESS,
+    GET_EMPLOYEE_WITH_SHIFTS_FAILURE,
+    POST_EMPLOYEE_SHIFT_CHANGE,
+    POST_EMPLOYEE_SHIFT_CHANGE_SUCCESS,
+    POST_EMPLOYEE_SHIFT_CHANGE_FAILURE
 } from "./actionTypes";
 
 
@@ -223,3 +229,52 @@ export const resetShiftManagement = () => {
     type: RESET_REDUCER,
   };
 };
+
+// get Employee with shifts
+
+export const getEmployeeWithShift = (type) => {
+  return {
+      type: GET_EMPLOYEE_WITH_SHIFTS,
+      payload: type,
+  };
+};
+
+export const getEmployeeWithShiftSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_WITH_SHIFTS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeWithShiftFailure = (error) => {
+  return {
+    type: GET_EMPLOYEE_WITH_SHIFTS_FAILURE,
+    payload: error,
+  };
+};
+
+
+// Change Employee Shifts 
+
+export const postEmployeeShiftChange = (type) => {
+  return {
+      type: POST_EMPLOYEE_SHIFT_CHANGE,
+      payload: type,
+  };
+};
+
+export const postEmployeeShiftChangeSuccess = (response) => {
+  return {
+    type: POST_EMPLOYEE_SHIFT_CHANGE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postEmployeeShiftChangeFailure = (error) => {
+  return {
+    type: POST_EMPLOYEE_SHIFT_CHANGE_FAILURE,
+    payload: error,
+  };
+};
+
+
