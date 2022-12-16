@@ -285,8 +285,8 @@ const ManageEmployee = () => {
       dispatch(
         employeeAddition({
           params,
-          onSuccess: (success: object) => {
-            showToast("success", t("employeeAddedSuccessfully"));
+          onSuccess: (success: any) => {
+            showToast("success", success.message);
             goBack(navigation);
           },
           onError: (error: string) => {

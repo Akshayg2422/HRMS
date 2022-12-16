@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence } from '../../../../store/location/actions';
-import { goTo, useNav, ROUTE } from '@utils';
+import { goTo, useNav, ROUTE, showToast } from '@utils';
 import {Icons} from '@assets'
 
 function LocationScreen() {
@@ -45,7 +45,8 @@ function LocationScreen() {
 
     dispatch(updateBranchLocationRadius({
       params,
-      onSuccess: () => {
+      onSuccess: (success:any) => {
+        showToast("success", success.message);
         setIsRefresh(!isRefresh)
         setModel(!model)
       },
@@ -62,7 +63,8 @@ function LocationScreen() {
    
     dispatch(enableBranchRefence({
       params,
-      onSuccess: () => {
+      onSuccess: (success:any) => {
+        showToast("success", success.message);
         setIsRefresh(!isRefresh)
       },
       onError: () => {
