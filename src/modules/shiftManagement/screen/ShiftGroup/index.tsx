@@ -14,18 +14,24 @@ import {
 import { useTranslation } from 'react-i18next';
 
 const ShiftGroup = () => {
-    //8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
     const navigation = useNav();
     const { t } = useTranslation();
     let dispatch = useDispatch();
     const { branchShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
+    const { hierarchicalBranchIds, dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
+    // hierarchicalBranchIds.branch_id
+
 
     const getBranchShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchShifts({ params }));
     }
+
+    
     useEffect(() => {
         getBranchShiftsList()
     }, []);
@@ -45,6 +51,7 @@ const ShiftGroup = () => {
     }
 
     const deleteBranchShift = () => { }
+
 
 
     return (

@@ -12,7 +12,7 @@ type NavItemProps = {
   icon: any;
 };
 
-const Navbar = ({}) => {
+const Navbar = ({ }) => {
   const navigate = useNav();
   const dispatch = useDispatch();
 
@@ -58,6 +58,7 @@ const Navbar = ({}) => {
                   >
                     <a
                       key={index}
+                      style={{ cursor: 'pointer' }}
                       className={
                         navIndex === index ? "nav-link active" : "nav-link"
                       }

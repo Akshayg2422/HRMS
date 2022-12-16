@@ -35,7 +35,10 @@ const CreateShiftGroup = () => {
     const { branchesWeeklyShifts, selectedShiftGroupDetails } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
-
+    const { hierarchicalBranchIds, dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
+    // hierarchicalBranchIds.branch_id
 
     const { registeredEmployeesList, numOfPages, currentPage, designationDropdownData, departmentDropdownData } = useSelector(
         (state: any) => state.EmployeeReducer
@@ -44,7 +47,6 @@ const CreateShiftGroup = () => {
     const [groupName, setGroupName] = useState("")
     const [selectedShift, setSelectedShift] = useState('')
     const [searchEmployee, setSearchEmployee] = useState('')
-    // const [employeesList, setEmployeesList] = useState<any>()
     const [selectedEmployeesList, setSelectedEmployeesList] = useState<any>([])
     const [selectedEmployeesIds, setSelectedEmployeesIds] = useState([])
     const [searchSelectedEmployee, setSearchSelectedEmployee] = useState('')
@@ -67,7 +69,6 @@ const CreateShiftGroup = () => {
         dispatch(getDepartmentData({}));
         dispatch(getDesignationData({}));
         return () => {
-            // setEmployeesList([])
             setSelectedEmployeesList([])
             setSelectedEmpListDepartmentId("")
             setSelectedEmpListDesignationId("")
@@ -76,7 +77,6 @@ const CreateShiftGroup = () => {
 
     useEffect(() => {
         getEmployeesApi(currentPage)
-
     }, [departmentId, designationId])
 
     useEffect(() => {
@@ -85,7 +85,7 @@ const CreateShiftGroup = () => {
 
 
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -95,7 +95,7 @@ const CreateShiftGroup = () => {
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
             // ...hierarchicalBranchIds,
-            branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
+            branch_id: dashboardDetails?.company_branch?.id,      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             ...(designationId && { designation_id: designationId }),
             ...(departmentId && { department_id: departmentId }),
@@ -136,7 +136,7 @@ const CreateShiftGroup = () => {
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
-                branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34",
+                branch_id: dashboardDetails?.company_branch?.id,
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds,

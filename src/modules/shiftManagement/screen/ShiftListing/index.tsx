@@ -26,8 +26,13 @@ const ShiftListing = () => {
         (state: any) => state.ShiftManagementReducer
     );
 
+    const { hierarchicalBranchIds,dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
+    // hierarchicalBranchIds.branch_id
+
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "65599068-e89b-4ffa-881d-7172d12aaa34" }
+        const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 

@@ -1,4 +1,3 @@
-import React from "react";
 import Flatpickr from "react-flatpickr";
 import { DatePickerProps } from "../Interface";
 import { ImageView } from "@components";
@@ -32,7 +31,7 @@ function DatePicker({
         {icon && iconPosition === "prepend" && (
           <div className="input-group-prepend">
             <span className="input-group-text">
-              <ImageView icon={icon}  />
+              <ImageView icon={icon} />
             </span>
           </div>
         )}
@@ -46,7 +45,7 @@ function DatePicker({
           className="form-control bg-white pl-2"
           value={value}
           placeholder={placeholder}
-          
+
         />
         {icon && iconPosition === "append" && (
           <div className="input-group-append">

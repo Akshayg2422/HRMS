@@ -121,7 +121,7 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
                   {
                     additionalDataSet && (
                       additionalDataSet.map(item => {
-                        return item.elv && <td scope="row" onClick={(e) => {
+                        return item.elv && <td scope="row" style={{cursor:'pointer'}} onClick={(e) => {
                           if (tableValueOnClick) {
                             tableValueOnClick(e, idx, each_table_obj, item.elv)
                             e.preventDefault();
