@@ -244,22 +244,21 @@ const ShiftManagementReducer = (state = initialState, action) => {
     case GET_EMPLOYEE_WITH_SHIFTS:
       state = {
         ...state,
+        employeeWithShifts: [],
         numOfPages: 0,
         currentPage: 1,
-        employeeWithShifts: [],
       };
       break;
     case GET_EMPLOYEE_WITH_SHIFTS_SUCCESS:
-      const employeeRes = action.payload;
+      const employeeDetails = action.payload;
       state = {
         ...state,
-        loading: false,
-        employeeWithShifts: employeeRes.data,
-        numOfPages: employeeRes.num_pages,
+        employeeWithShifts: employeeDetails.data,
+        numOfPages: employeeDetails.num_pages,
         currentPage:
-          employeeRes.next_page === -1
-            ? employeeRes.num_pages
-            : employeeRes.next_page - 1,
+          employeeDetails.next_page === -1
+            ? employeeDetails.num_pages
+            : employeeDetails.next_page - 1,
       };
       break;
 

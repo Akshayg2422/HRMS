@@ -140,6 +140,7 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
+    ShiftDetails(employeeDetails.branch)
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -204,12 +205,12 @@ const ManageEmployee = () => {
   }
 
 
-  useEffect(() => {
-    if (employeeDetails.branch !== '') {
-      ShiftDetails(employeeDetails.branch)
-    }
-  }, [employeeDetails.branch])
-
+  // useEffect(() => {
+  //   if (employeeDetails.branch !== '') {
+  //     ShiftDetails(employeeDetails.branch)
+  //   }
+  // }, [employeeDetails.branch])
+  
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -288,6 +289,9 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
+
+
+
       dispatch(
         employeeAddition({
           params,
@@ -438,10 +442,6 @@ const ManageEmployee = () => {
     }
   }
 
-
-  console.log('shiftsDropdownData', shiftsDropdownData);
-
-
   return (
 
     <>
@@ -568,7 +568,10 @@ const ManageEmployee = () => {
           data={companyBranchDropdownData}
           name={"branch"}
           value={employeeDetails.branch}
-          onChange={(event) => onChangeHandler(event)}
+          onChange={(event) => {
+            ShiftDetails(event.target.value)
+            onChangeHandler(event)
+          }}
         />
         <DropDown
           label={t("category")}

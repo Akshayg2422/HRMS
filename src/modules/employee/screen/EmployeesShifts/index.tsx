@@ -90,6 +90,20 @@ function EmployeeShifts() {
     }));
   }
 
+  function paginationHandler(
+    type: "next" | "prev" | "current",
+    position?: number
+  ) {
+    let page =
+      type === "next"
+        ? currentPage + 1
+        : type === "prev"
+          ? currentPage - 1
+          : position;
+    getEmployeeLogsWithShifts(page);
+  }
+
+
 
   const handleChangeShift = (selectedEmployeeDetails: any) => {
     setEmployeeCurrentObject(selectedEmployeeDetails)
@@ -127,6 +141,8 @@ function EmployeeShifts() {
     }));
   }
 
+
+
   return (
     <>
       <Card additionClass="mx-2">
@@ -141,20 +157,16 @@ function EmployeeShifts() {
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
           additionalDataSet={EMPLOYEE_CHANGE_SHIFT}
           displayDataSet={normalizedEmployeeDetails(employeeWithShifts)}
           tableOnClick={(e, index, item) => {
             getUserShifts(index);
           }}
-          paginationNumberClick={(currentPage) => {
-            getEmployeeLogsWithShifts(paginationHandler("current", currentPage));
-          }}
-          previousClick={() =>
-            getEmployeeLogsWithShifts(paginationHandler("prev", currentPage))
-          }
-          nextClick={() =>
-            getEmployeeLogsWithShifts(paginationHandler("next", currentPage))
-          }
           tableValueOnClick={(e, index, item, elv) => {
             const current = employeeWithShifts[index];
             if (elv === "Change Shift") {
