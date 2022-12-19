@@ -1,5 +1,4 @@
 import { BackArrow, Card, CheckBox, Container, Input, InputText, NoRecordFound } from '@components';
-import { WeekDaysList } from '../../../shiftManagement/container';
 import { getWeekAndWeekDaysById, WEEK_LIST } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -26,9 +25,7 @@ function MyShiftDetails() {
     }, [])
 
     const getMyShiftsDetails = () => {
-        const params = {
-            // employee_id: 'cb624abe-062a-40b5-afa0-e5086646be76'
-        }
+        const params = {}
         dispatch(getMyShifts({ params }));
     }
 

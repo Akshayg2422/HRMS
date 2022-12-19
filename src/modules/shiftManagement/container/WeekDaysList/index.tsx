@@ -14,7 +14,7 @@ interface props {
   showButton?: boolean
 }
 
-const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit,showButton=true }: props) => {
+const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, onSubmit, showButton = true }: props) => {
 
   const { t } = useTranslation();
 
@@ -58,9 +58,10 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
                 <Input disabled={true} label={'Out'} value={el.end_time} col={'col-4'} />
                 <Container col={'col-4'} style={{ marginTop: "34px" }}>
                   <Icon
+                    height={20}
+                    width={20}
                     icon={Icons.Delete}
                     onClick={() => { if (onDeleteClick) { onDeleteClick(it, index) } }}
-
                   />
                 </Container>
               </>
@@ -81,7 +82,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
               return listingWeekDays(it, index)
             })}
           </Container>
-         {showButton && <Container>
+          {showButton && <Container>
             <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
               <Primary
                 text={selectedWeeklyShiftId ? t('update') : t('submit')}

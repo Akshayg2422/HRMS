@@ -196,15 +196,14 @@ const CreateShiftGroup = () => {
 
     //function for adding an selected employees to selectedEmployeesList state while clicking
 
-    const addAnSelectedEmployees = (value: any) => {
+    const addAnSelectedEmployees = (selectedEmployee: any) => {
 
         let updatedSelectedEmployee = [...selectedEmployeesList]
-        const isExist = selectedEmployeesList.some((item: any) => item.id === value.id)
-
+        const isExist = selectedEmployeesList.some((item: any) => item.id === selectedEmployee.id)
         if (!isExist) {
-            updatedSelectedEmployee = [...updatedSelectedEmployee, value]
+            updatedSelectedEmployee = [...updatedSelectedEmployee, selectedEmployee]
             setSelectedEmployeesList(updatedSelectedEmployee)
-            setSelectedEmployeesIds([...selectedEmployeesIds, value.id as never])
+            setSelectedEmployeesIds([...selectedEmployeesIds, selectedEmployee.id as never])
             setFilteredEmployees(updatedSelectedEmployee as never)
 
         }
@@ -214,14 +213,13 @@ const CreateShiftGroup = () => {
      * Function for on deSelect the selected employee
      */
 
-    const onRevertSelectedEmployees = (value: any) => {
-
+    const onRevertSelectedEmployees = (employeeDetails: any) => {
         // deSelect the selected employees in an selectedEmployeesList array
-        const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== value.id)
+        const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== employeeDetails.id)
         setSelectedEmployeesList(filteredPeople)
         setFilteredEmployees(filteredPeople)
 
-        const filteredIds = selectedEmployeesIds.filter((item: any) => item !== value.id)
+        const filteredIds = selectedEmployeesIds.filter((item: any) => item !== employeeDetails.id)
         setSelectedEmployeesIds(filteredIds)
 
     }

@@ -262,7 +262,7 @@ function* employeeAddition(action) {
     } else {
       yield put(hideLoader());
       yield put(employeeAdditionFailure(response.error_message));
-      yield call(action.payload.onError(response));
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());

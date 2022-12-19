@@ -17,36 +17,37 @@ const ShiftGroup = () => {
     const navigation = useNav();
     const { t } = useTranslation();
     let dispatch = useDispatch();
+
     const { branchShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
+
     const { hierarchicalBranchIds, dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
     // hierarchicalBranchIds.branch_id
 
-
+    useEffect(() => {
+        getBranchShiftsList()
+    }, []);
+    
     const getBranchShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchShifts({ params }));
     }
 
     
-    useEffect(() => {
-        getBranchShiftsList()
-    }, []);
-
-    const normalizedBranchShifts = (data: any) => {
-        return data && data.length > 0 && data.map((el: any) => {
+    const normalizedBranchShifts = (branchShift: any) => {
+        return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
             return {
-                name: el.name,
-                "Employees count": el.employee_count
+                name: element.name,
+                "Employees count": element.employee_count
             };
         });
     };
 
     const manageShiftGroupHandler = (value: any) => {
-        value ? dispatch(selectedShiftGroupDetails(value)) : dispatch(selectedShiftGroupDetails(undefined));
+        dispatch(selectedShiftGroupDetails(  value ? value : undefined)) 
         goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP)
     }
 

@@ -76,13 +76,11 @@ const ShiftManagementReducer = (state = initialState, action) => {
     case FETCH_BRANCH_SHIFTS:
       state = {
         ...state,
-        loading: true,
       };
       break;
     case FETCH_BRANCH_SHIFTS_SUCCESS:
       state = {
         ...state,
-        loading: false,
         branchShifts: action.payload
       };
       break;
@@ -91,7 +89,6 @@ const ShiftManagementReducer = (state = initialState, action) => {
       state = {
         ...state,
         error: action.payload,
-        loading: false,
       };
       break;
 
@@ -247,10 +244,9 @@ const ShiftManagementReducer = (state = initialState, action) => {
     case GET_EMPLOYEE_WITH_SHIFTS:
       state = {
         ...state,
-        loading: true,
-        employeeWithShifts: [],
         numOfPages: 0,
         currentPage: 1,
+        employeeWithShifts: [],
       };
       break;
     case GET_EMPLOYEE_WITH_SHIFTS_SUCCESS:

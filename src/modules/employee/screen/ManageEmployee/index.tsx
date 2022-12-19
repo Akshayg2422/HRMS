@@ -209,7 +209,7 @@ const ManageEmployee = () => {
       ShiftDetails(employeeDetails.branch)
     }
   }, [employeeDetails.branch])
-  
+
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -288,10 +288,6 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-
-      console.log("paaramssss---->", params);
-
-
       dispatch(
         employeeAddition({
           params,
@@ -308,10 +304,6 @@ const ManageEmployee = () => {
   };
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
-
-    console.log("editEmployeeDetails-------->", editEmployeeDetails);
-
-
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)

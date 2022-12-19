@@ -23,10 +23,10 @@ import { AutoLogout } from './SessionTimeout'
 import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
-import { WeeklyShiftSelection } from './shiftManagement';
-import { ShiftGroup } from './shiftManagement';
-import { ShiftListing } from './shiftManagement';
-import { CreateShiftGroup } from './shiftManagement';
+import { WeeklyShiftSelection,ShiftGroup,ShiftListing,CreateShiftGroup } from './ShiftManagement';
+// import { ShiftGroup } from './shiftManagement';
+// import { ShiftListing } from './shiftManagement';
+// import { CreateShiftGroup } from './shiftManagement';
 
 export {
   getDashboardDetails,
@@ -74,3 +74,5 @@ export {
   MyShiftDetails,
   EmployeeShifts
 }
+
+export * from './ShiftManagement'

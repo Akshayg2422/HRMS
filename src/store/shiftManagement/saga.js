@@ -72,7 +72,7 @@ function* fetchBranchShiftsSaga(action) {
         } else {
             yield put(hideLoader());
             yield put(getBranchShiftsFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());

@@ -26,7 +26,7 @@ const ShiftListing = () => {
         (state: any) => state.ShiftManagementReducer
     );
 
-    const { hierarchicalBranchIds,dashboardDetails } = useSelector(
+    const { hierarchicalBranchIds, dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
     // hierarchicalBranchIds.branch_id
@@ -40,16 +40,16 @@ const ShiftListing = () => {
         getBranchesWeeklyShiftsList()
     }, []);
 
-    const normalizedBranchWeeklyShifts = (data: any) => {
-        return data && data.length > 0 && data.map((el: any) => {
+    const normalizedBranchWeeklyShifts = (branchesWeeklyShift: any) => {
+        return branchesWeeklyShift && branchesWeeklyShift.length > 0 && branchesWeeklyShift.map((element: any) => {
             return {
-                name: el.group_name,
+                name: element.group_name,
             };
         });
     };
 
     const manageWeeklyShiftSelectionHandler = (id: string | undefined) => {
-        id ? dispatch(selectedWeeklyShiftIdAction(id)) : dispatch(selectedWeeklyShiftIdAction(undefined))
+        dispatch(selectedWeeklyShiftIdAction(id ? id : undefined))
         goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT)
 
     }
