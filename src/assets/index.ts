@@ -78,8 +78,8 @@ export const Icons = {
   Modify_Logs:require('./icons/ModifyLogs/modifyLogs.png'),
   MISREPORT:require('./icons/MISReport/report.png'),
   EMPLOYEESHIFTS:require('./icons/EmployeeShifts/employeeShifts.png'),
-  EMPLOYEELEAVES:require('./icons/EmployeeLeaves/employeeLeaves.png')
-
+  EMPLOYEELEAVES:require('./icons/EmployeeLeaves/employeeLeaves.png'),
+  ModifiedPresent:require('./icons/ModifiedPresent/ModifiedPresent.png')
 }
 
 

@@ -200,6 +200,7 @@ const ManageEmployee = () => {
       ShiftDetails(employeeDetails.branch)
     }
   }, [employeeDetails.branch])
+  
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
