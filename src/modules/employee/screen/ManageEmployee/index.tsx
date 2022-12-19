@@ -69,6 +69,10 @@ type EmployeeDetail = {
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
+  shift?: {
+    id: string;
+    name: string;
+  }
 };
 
 const ManageEmployee = () => {
@@ -83,6 +87,10 @@ const ManageEmployee = () => {
     isEdit,
   } = useSelector((state: any) => state.EmployeeReducer);
 
+  const { dashboardDetails, hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
     lastName: "",
@@ -94,7 +102,7 @@ const ManageEmployee = () => {
     aadharrNo: "",
     designation: "",
     department: "",
-    branch: "",
+    branch: dashboardDetails?.company_branch?.id,
     dateOfJoining: new Date(),
     dob: "",
     kgid_No: "",
@@ -114,10 +122,6 @@ const ManageEmployee = () => {
     useState<any>();
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>();
-
-  const { dashboardDetails, hierarchicalBranchIds } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -187,6 +191,11 @@ const ManageEmployee = () => {
       params,
       onSuccess: (success: any) => {
         setShiftsDropdownData(success)
+        success.map((el: any) => {
+          if (el.is_default) {
+            setEmployeeDetails({ ...employeeDetails, shift: el.id });
+          }
+        })
       },
       onError: (error: string) => {
         showToast("error", t("Somthingwentworng"));
@@ -228,10 +237,10 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
       return false;
-    }else if (Object.keys(employeeDetails.shift).length === 0) {
+    } else if (Object.keys(employeeDetails.shift).length === 0) {
       showToast("error", "choose Shift");
       return false;
-    }  
+    }
     else {
       return true;
     }
@@ -264,7 +273,7 @@ const ManageEmployee = () => {
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: false,
           associated_branch: [employeeDetails.branch],
-          shift_settings: {shift_id: employeeDetails.shift}
+          shift_settings: { shift_id: employeeDetails.shift }
         },
         ...(employeeDetails.dateOfJoining && {
           date_of_joining: getServerDateFromMoment(
@@ -279,8 +288,8 @@ const ManageEmployee = () => {
         }),
       };
 
-      console.log("paaramssss---->",params);
-      
+      console.log("paaramssss---->", params);
+
 
       dispatch(
         employeeAddition({
@@ -299,7 +308,7 @@ const ManageEmployee = () => {
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
 
-console.log("editEmployeeDetails-------->",editEmployeeDetails);
+    console.log("editEmployeeDetails-------->", editEmployeeDetails);
 
 
     let employeeInitData = { ...employeeDetails };
@@ -366,6 +375,13 @@ console.log("editEmployeeDetails-------->",editEmployeeDetails);
       )
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.shift?.id
+      )
+        employeeInitData.shift =
+          editEmployeeDetails.shift?.id;
     }
 
 
@@ -597,6 +613,9 @@ console.log("editEmployeeDetails-------->",editEmployeeDetails);
             onChangeHandler(event);
           }}
         />
+
+        <h4 className="mb-4">{t("attendanceDetails")}</h4>
+
         <DropDown
           label={t("shiftss")}
           placeholder={t("SelectShift")}
@@ -605,7 +624,6 @@ console.log("editEmployeeDetails-------->",editEmployeeDetails);
           value={employeeDetails.shift}
           onChange={(event) => onChangeHandler(event)}
         />
-        <h4 className="mb-4">{t("attendanceDetails")}</h4>
         <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
           title={t("pleaseSelect")}

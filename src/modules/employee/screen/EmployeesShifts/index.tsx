@@ -35,6 +35,9 @@ function EmployeeShifts() {
   const { myShifts } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
+
+
+
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [model, setModel] = useState(false);
   const [changeShiftModel, setChangeShiftModelModel] = useState(false);
@@ -49,6 +52,9 @@ function EmployeeShifts() {
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
+
+  // console.log("myShifts======",shiftsList);
+
 
   useEffect(() => {
     getEmployeeLogsWithShifts(currentPage);
@@ -69,7 +75,7 @@ function EmployeeShifts() {
       return {
         id: el.employee_id,
         name: el.name,
-        "Shift Name": el.shift?.name ? el.shift?.name :<div className="ml-4">{'-'}</div>  ,
+        "Shift Name": el.shift?.name ? el.shift?.name : <div className="ml-4">{'-'}</div>,
         "mobile number": el.mobile_number
       };
     });
@@ -94,9 +100,9 @@ function EmployeeShifts() {
   }
 
 
-  const handleChangeShift = (item: any) => {
+  const handleChangeShift = (e: any, item: any) => {
     setEmployeeCurrentObject(item)
-    setCurrentEmployeeShiftId(item.shift.id)
+    setCurrentEmployeeShiftId(item?.shift?.id)
     const params = { branch_id: hierarchicalBranchIds.branch_id }
     dispatch(getBranchShifts({
       params,
@@ -105,6 +111,7 @@ function EmployeeShifts() {
         setChangeShiftModelModel(!changeShiftModel)
       },
       onError: (error: string) => {
+        setChangeShiftModelModel(!changeShiftModel)
         showToast("error", t("Somthingwentworng"));
       },
     }));
@@ -160,7 +167,7 @@ function EmployeeShifts() {
           tableValueOnClick={(e, index, item, elv) => {
             const current = employeeWithShifts[index];
             if (elv === "Change Shift") {
-              handleChangeShift(current)
+              handleChangeShift(e, current)
             }
           }}
           custombutton={'h5'}
@@ -226,7 +233,7 @@ function EmployeeShifts() {
               return (
                 <Container additionClass="mx-2 p-2 row">
                   <h4 className="col fw-normal">{el.name}</h4>
-                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId || el.isDefault ? Icons.TickActive : Icons.TickDefault} onClick={() => {
                     setCurrentEmployeeShiftId(el.id)
                   }} /></td>
 
