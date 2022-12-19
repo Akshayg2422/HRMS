@@ -51,6 +51,7 @@ type EmployeeDetail = {
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
+  shift?: { name: string };
 };
 
 const ViewEmployeeDetails = () => {
@@ -89,6 +90,7 @@ const ViewEmployeeDetails = () => {
     employeeType: "",
     attendanceStartTime: "",
     attendanceEndTime: "",
+    shift: ""
   });
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -126,7 +128,7 @@ const ViewEmployeeDetails = () => {
           ]);
         },
 
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
   }, []);
@@ -217,6 +219,13 @@ const ViewEmployeeDetails = () => {
 
       if (editEmployeeDetails.date_of_joining)
         employeeInitData.dateOfJoining = editEmployeeDetails.date_of_joining;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.shift?.name
+      )
+        employeeInitData.shift =
+          editEmployeeDetails.shift?.name;
 
       if (
         editEmployeeDetails &&
@@ -336,6 +345,14 @@ const ViewEmployeeDetails = () => {
         disabled={true}
       />
       <h4 className="mb-4">{t("attendanceDetails")}</h4>
+
+      <InputDefault
+        label={"Shift"}
+        placeholder={"Shift"}
+        value={employeeDetails.shift ?
+          employeeDetails.shift : "-:-"}
+        disabled={true}
+      />
       <InputText
         label={t("startTime")}
         placeholder={t("startTime")}
@@ -345,7 +362,7 @@ const ViewEmployeeDetails = () => {
             : "-:-"
         }
         disabled={true}
-        // editable={false}
+      // editable={false}
       />
 
       <InputText
@@ -357,7 +374,7 @@ const ViewEmployeeDetails = () => {
             : "-:-"
         }
         disabled={true}
-        // editable={false}
+      // editable={false}
       />
     </FormWrapper>
   );
