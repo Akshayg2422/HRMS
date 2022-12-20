@@ -77,6 +77,27 @@ export const fetchMisReportsLog= (payload) => post(url.FETCH_MIS_REPORT,payload,
 export const fetchDownloadMisReportsLog= (payload) => postHeader(url.FETCH_MIS_REPORT,payload,{})
 
 
+export const postAddWeeklyShift= (payload) => post(url.POST_ADD_WEEKLY_SHIFT,payload,{})
+
+export const fetchBranchShifts= (payload) => post(url.FETCH_BRANCH_SHIFTS,payload,{})
+
+export const fetchBranchWeeklyShifts= (payload) => post(url.FETCH_BRANCH_WEEKLY_SHIFTS,payload,{})
+
+export const postAddShiftApi= (payload) => post(url.POST_ADD_SHIFTS,payload,{})
+
+export const fetchWeeklyShiftDetailsApi= (payload) => post(url.FETCH_WEEKLY_SHIFT_DETAILS,payload,{})
+
+export const fetchShiftEmployeesApi= (payload) => post(url.FETCH_SHIFT_EMPLOYEES,payload,{})
+
+export const fetchMyShiftsApi= (payload) => post(url.FETCH_MY_SHIFTS_DETAILS,payload,{})
+
+export const fetchEmployeeWithShiftsApi= (payload) => post(url.FETCH_EMPLOYEE_WITH_SHIFTS,payload,{})
+
+export const PostEmployeeWithChangeShiftApi= (payload) => post(url.POST_EMPLOYEE_SHIFT_CHANGE,payload,{})
+
+
+
+
 
 
 

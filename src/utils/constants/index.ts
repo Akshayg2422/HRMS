@@ -7,7 +7,6 @@ import { Route } from 'react-router-dom';
 export const ROUTE = {
   ROUTE_DASHBOARD: '/dashboard',
   ROUTE_EMPLOYEE: '/employee',
-  // ROUTE_REPORT: '/report',
   ROUTE_REGISTER: '/register',
   ROUTE_LOGIN: '/login',
   ROUTE_OTP: '/otp',
@@ -35,12 +34,17 @@ export const ROUTE = {
   ROUTE_MY_LEAVES: '/my-leaves',
   ROUTE_MODIFY_LOGS: '/modify-logs',
   ROUTE_REPORTS: '/reports',
-  ROUTE_E_LOCKER:'/E-Locker',
-  ROUTE_E_LOCKER_UPLOAD:'/E-Locker-Upload',
-
-
-
-
+  ROUTE_E_LOCKER: '/E-Locker',
+  ROUTE_E_LOCKER_UPLOAD: '/E-Locker-Upload',
+  ROUTE_SHIFT_MANAGEMENT: '/shift-management',
+  ROUTE_SHIFT_GROUP: '/shift-group',
+  ROUTE_SHIFT_LISTING: '/shift-listing',
+  ROUTE_CREATE_SHIFT_GROUP: '/create-shift-group',
+  ROUTE_MY_SHIFTS_DETAILS: '/my-shifts-details',
+  ROUTE_EMPLOYEES_SHIFTS: '/employees-shifts',
+  ROUTE_PAYROLL: '/payroll',
+  ROUTE_SALARY_BREAK_DOWN:'/salary-break-down',
+  ROUTE_ALLOWANCE_GROUP:'/allowance-group'
 }
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
 export const WELCOME_CARD = [{ key: 'admin', icon: Icons.Admin, title: 'Admin', goTo: ROUTE.ROUTE_LOGIN }, { key: 'employee', icon: Icons.Employee, title: 'Employee', goTo: ROUTE.ROUTE_LOGIN }, { key: 'register-company', icon: Icons.RegisterCompany, title: 'Register a new company', goTo: ROUTE.ROUTE_REGISTER },]
@@ -96,28 +100,32 @@ export const BLOOD_GROUP_LIST = [
 
 
 export const NAV_ITEM = [
-  { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', route: ROUTE.ROUTE_DASHBOARD },
-  { id: '2', name: 'Employee Portfolio', value: 'EP', icon: 'ni ni-ungroup', route: ROUTE.ROUTE_EMPLOYEE },
-  { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', route: ROUTE.ROUTE_LOCATION },
+  { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", route: ROUTE.ROUTE_DASHBOARD },
+  { id: '2', name: 'Employee Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, route: ROUTE.ROUTE_EMPLOYEE },
+  { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', image: Icons.LocationSecondary, route: ROUTE.ROUTE_LOCATION },
   // {id: '4', name: 'Reports', value: 'RE', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_REPORT},
-  { id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', route: ROUTE.ROUTE_ASSIGN_LOCATION },
-  { id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', route: ROUTE.ROUTE_FENCE_ADMIN },
-  { id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_EMPLOYEE_LOG },
-  { id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK },
-  { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', route: ROUTE.ROUTE_DASHBOARD_STATS },
-  { id: '9', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', route: ROUTE.ROUTE_CALENDAR },
-  { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', route: ROUTE.ROUTE_LEAVE_REQUEST },
-  { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', route: ROUTE.ROUTE_MODIFY_LOGS },
-  { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', route: ROUTE.ROUTE_PORTFOLIO },
-  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-single-02', route: ROUTE.ROUTE_REPORTS },
-
+  { id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', image: Icons.AssignLocation, route: ROUTE.ROUTE_ASSIGN_LOCATION },
+  { id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', image: Icons.Admin, route: ROUTE.ROUTE_FENCE_ADMIN },
+  { id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-single-copy-04', image: Icons.Employee, route: ROUTE.ROUTE_EMPLOYEE_LOG },
+  { id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', image: Icons.Department, route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK },
+  { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, route: ROUTE.ROUTE_DASHBOARD_STATS },
+  { id: '9', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, route: ROUTE.ROUTE_CALENDAR },
+  { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
+  { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
+  { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', image: Icons.Clients, route: ROUTE.ROUTE_PORTFOLIO },
+  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, route: ROUTE.ROUTE_REPORTS },
+  // { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
+  // { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
+  // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
 ];
 
 
 export const MY_PORTFOLIO_ITEM = [
   { id: '1', name: 'MY Work Book', value: 'MB', route: ROUTE.ROUTE_MY_WORK_BOOK },
   { id: '2', name: 'MY Log', value: 'ML', route: ROUTE.ROUTE_MY_LOG },
-  { id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES }
+  { id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES },
+  { id: '4', name: 'My Shifts', value: 'MS', route: ROUTE.ROUTE_MY_SHIFTS_DETAILS }
+
 ]
 
 export const HEADER_MENU = [
@@ -129,9 +137,27 @@ export const HEADER_MENU = [
 
 
 
-export const SORT_BUTTON = [{ id: '1', name: 'Month', value: 'MH' },
-{ id: '2', name: 'Week', value: 'WK' },
-{ id: '3', name: 'Day', value: 'DY' }]
+export const SORT_BUTTON = [
+  { id: '1', name: 'Month', value: 'MH' },
+  { id: '2', name: 'Week', value: 'WK' },
+  { id: '3', name: 'Day', value: 'DY' }]
+
+export const WEEK_LIST = [
+  { id: '1', name: 'Week 1' },
+  { id: '2', name: 'Week 2' },
+  { id: '3', name: 'Week 3' },
+  { id: '4', name: 'Week 4' },
+  { id: '5', name: 'Week 5' }]
+
+
+export const WEEK_DAY_LIST = [
+  { id: '1', name: 'Monday' },
+  { id: '2', name: 'Tuesday' },
+  { id: '3', name: 'Wednesday' },
+  { id: '4', name: 'Thursday' },
+  { id: '5', name: 'Friday' },
+  { id: '6', name: 'Saturday' },
+  { id: '7', name: 'Sunday' }]
 
 export const TABLE_ELEMENT_TEXT_BUTTON = 1
 export const TABLE_ELEMENT_TEXT_STATUS = 2
@@ -154,6 +180,20 @@ export const EMPLOYEE_ADDITIONAL_DATA = [
     elv: 'Delete',
     elh: 'Delete',
   },
+
+]
+
+export const EMPLOYEE_ADDITIONAL_DATA_EDIT = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Edit',
+    elh: 'Edit',
+  },
+  // {
+  //   elt: TABLE_ELEMENT_TEXT_BUTTON,
+  //   elv: 'Delete',
+  //   elh: 'Delete',
+  // },
 
 ]
 
@@ -187,6 +227,16 @@ export const LEAVE_STATUS_REVERT = [
     elh: 'Revert',
   }
 ]
+
+
+export const EMPLOYEE_CHANGE_SHIFT = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Change Shift',
+    elh: 'Change Shift',
+  }
+]
+
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 

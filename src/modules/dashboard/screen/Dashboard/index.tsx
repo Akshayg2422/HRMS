@@ -23,123 +23,6 @@ import {
 import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 
-const data = [
-  {
-    date: 12,
-    month: "Mar",
-    title: "Event Name",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-  },
-  {
-    date: 12,
-    month: "Mar",
-    title: "Event Name",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-  },
-  {
-    date: 12,
-    month: "Mar",
-    title: "Event Name",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-  },
-  {
-    date: 12,
-    month: "Mar",
-    title: "Event Name",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-  },
-  {
-    date: 12,
-    month: "Mar",
-    title: "Event Name",
-    description:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting.",
-  },
-];
-
-const ChartRadioData = ["All", "Present", "Absent", "Late"];
-const LineChartdata = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
-
-const dummyTable = [
-  {
-    department: "Marketing",
-    total: "20",
-    present: "10",
-    late: "99",
-    absent: "10",
-  },
-  {
-    department: "Software",
-    total: "12",
-    present: "08",
-    late: "20",
-    absent: "10",
-  },
-  {
-    department: "Graphic",
-    total: "12",
-    present: "08",
-    late: "20",
-    absent: "10",
-  },
-  {
-    department: "Customer Support",
-    total: "12",
-    present: "08",
-    late: "20",
-    absent: "10",
-  },
-];
-
-
-
 
 function Dashboard() {
   const { t } = useTranslation();
@@ -150,6 +33,9 @@ function Dashboard() {
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
+
+  console.log("dashboardDetails-->",JSON.stringify(dashboardDetails));
+  
 
   useEffect(() => {
     dispatch(currentNavIndex(0))
@@ -196,9 +82,6 @@ function Dashboard() {
     }
 
   }, [dashboardDetails]);
-
-
-
 
   return (
     <>

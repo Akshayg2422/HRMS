@@ -27,13 +27,10 @@ function LogReports({ data, department, reportType, customrange }: LogReportsPro
 
 
     const getConvertedTableData = (data: any) => {
-
         const updatedData = []
-
         for (let i = 0; i < data.length; i++) {
             let { days, name, designation } = data[i]
             let updateObject = { name, designation }
-
             if (days && days.length > 0) {
                 for (let j = 0; j < days.length; j++) {
                     updateObject = { ...updateObject, [days[j].date]: days[j] }
@@ -41,7 +38,6 @@ function LogReports({ data, department, reportType, customrange }: LogReportsPro
             }
             updatedData[i] = updateObject
         }
-
         return updatedData
     }
 
@@ -81,6 +77,8 @@ function LogReports({ data, department, reportType, customrange }: LogReportsPro
                     : position;
         getReports(page)
     }
+
+    console.log("getConvertedTableData(data)", getConvertedTableData(data));
 
     return (
         <>
@@ -132,14 +130,12 @@ const LocationTable = ({
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{eachObject[key as keyof object]}</td>
             else {
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
-                    <div className="d-flex flex-column justify-content-center ">
+                    <div className="column">
                         {/* <h6 className="mb-0 text-xs mb-2 ml-2">1 logs</h6> */}
-                        <div className='d-flex justify-content-center align-items-center mb-2'>
-                            <ImageView icon={key != 'string' && eachObject[key as keyof object]?.is_present ? Icons.TickActive : Icons.TickInActive} height={16} width={16} />
-
+                        <div className='mb-2'>
+                            <ImageView icon={key != 'string' && eachObject[key as keyof object]?.is_present ? Icons.TickActive : eachObject[key as keyof object]?.is_present_modified ? Icons.ModifiedPresent : Icons.TickInActive} height={16} width={16} />
                         </div>
-                        {/* <span>{eachObject[key as keyof object]?.day_status}</span> */}
-                        <h6 className="mb-0 text-xs mb-2 ml-2">{eachObject[key as keyof object]?.day_status}</h6>
+                        <h6 className="mb-0 ml--2 mb-2 ">{eachObject[key as keyof object]?.day_status}</h6>
                         {/* <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> */}
                     </div>
                 </div></td>

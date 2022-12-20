@@ -256,8 +256,9 @@ const ManageEmployee = () => {
       dispatch(
         employeeAddition({
           params,
-          onSuccess: (success: object) => {
-            showToast("success", t("employeeAddedSuccessfully"));
+          onSuccess: (success: any) => {
+      
+            showToast("success", success.message);
             goBack(navigation);
           },
           onError: (error: string) => {
@@ -402,6 +403,7 @@ const ManageEmployee = () => {
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}
         onClick={onSubmit}
+        buttonTittle={isEdit ? t('update') : t('submit')}
       >
         <InputText
           label={t("fullName")}

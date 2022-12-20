@@ -258,11 +258,11 @@ function* employeeAddition(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(employeeAdditionSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(employeeAdditionFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
@@ -415,7 +415,7 @@ function* addFenceAdmin(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(addFenceAdminSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(addFenceAdminFailure(response.error_message));

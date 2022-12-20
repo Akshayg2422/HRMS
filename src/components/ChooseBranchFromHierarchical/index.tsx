@@ -122,11 +122,10 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
           <InputDefault disabled={true} value={hierarchicalBranchName} />
         </div>
 
-
-        {/* {!showCheckBox ? */}
         {hierarchicalBranchIds && showCheckBox && (
           <div className="mt--3">
             <CheckBox
+              id={'1'}
               text={"Include Sub Branches"}
               checked={hierarchicalBranchIds.include_child}
               onChange={(e) => {
@@ -140,7 +139,6 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
             />
           </div>
         )}
-        {/* :null} */}
       </div>
 
       <Modal showModel={model} toggle={() => setModel(!model)}>

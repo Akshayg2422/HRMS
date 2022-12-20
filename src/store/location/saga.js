@@ -95,7 +95,7 @@ function* updateLocationRadius(action) {
 
       yield put(hideLoader());
       yield put(updateBranchLocationRadiusSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
 
     } else {
 
@@ -122,13 +122,13 @@ function* enableBranchRefence(action) {
 
       yield put(hideLoader());
       yield put(enableBranchRefenceSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
 
     } else {
 
       yield put(hideLoader());
       yield put(enableBranchRefenceFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response));
 
     }
   } catch (error) {
@@ -179,7 +179,7 @@ function* updateEmployeeCheckinAssociations(action) {
 
       yield put(hideLoader());
       yield put(updateEmployeeCheckinAssociationsSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
 
     } else {
 

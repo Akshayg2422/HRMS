@@ -76,4 +76,27 @@ export const ATTACH_USER_DOCUMENT = '/employee/attachUserDocument';
 
 export const FETCH_MIS_REPORT = 'reports/baseAttendanceReport'
 
+export const POST_ADD_WEEKLY_SHIFT = 'attendance/addWeeklyShift'
+
+export const FETCH_BRANCH_SHIFTS = 'attendance/getBranchShifts'
+
+export const FETCH_BRANCH_WEEKLY_SHIFTS = 'attendance/getBranchWeeklyShifts'
+
+
+export const POST_ADD_SHIFTS = 'attendance/addShift'
+
+export const FETCH_WEEKLY_SHIFT_DETAILS = 'attendance/getWeeklyShiftDetails'
+
+export const FETCH_SHIFT_EMPLOYEES = 'attendance/getShiftEmployees'
+
+export const FETCH_MY_SHIFTS_DETAILS = 'attendance/getEmployeeShiftDetails'
+
+export const FETCH_EMPLOYEE_WITH_SHIFTS = 'employee/v1/getEmployeesWithShift'
+
+export const POST_EMPLOYEE_SHIFT_CHANGE = 'attendance/setEmployeeShift'
+
+
+
+
+
 

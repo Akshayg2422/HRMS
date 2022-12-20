@@ -217,7 +217,11 @@
   "invalidDOB": "Invalid DOB",
   "invalidGender": "invalidGender",
   "invalidBranch": "Invalid Branch",
-  "invalidEmail": "Invalid Email"
+  "invalidEmail": "Invalid Email",
+
+  "theGroupNameCantBeEmpty":"The Group name can't be empty",
+  "invalidShift":"Invalid Shift",
+  "selectEmployee":"Select Employees to add to the group"
   
   }
 }

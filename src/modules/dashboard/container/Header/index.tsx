@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav , LANGUAGE_LIST} from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, Secondary, Primary, Divider, } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -13,6 +13,7 @@ import { resetDashboard } from '../../../../store/dashboard/actions';
 import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
+import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
 
 
 
@@ -29,7 +30,7 @@ const Header = () => {
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
 
 
-  
+
   let dispatch = useDispatch();
 
   const { dashboardDetails } = useSelector(
@@ -37,7 +38,7 @@ const Header = () => {
   );
 
   console.log(selectedLanguage);
-  
+
 
 
   const DropdownHandler = (item: any) => {
@@ -56,7 +57,7 @@ const Header = () => {
 
   function proceedLogout() {
 
-    
+
 
     try {
 
@@ -66,12 +67,13 @@ const Header = () => {
       dispatch(resetDashboard())
       dispatch(resetEmployee())
       dispatch(resetLocation())
+      dispatch(resetShiftManagement())
 
       goTo(navigate, ROUTE.ROUTE_LOGIN, true)
 
 
     } catch (error) {
-    
+
     }
 
 
@@ -80,11 +82,11 @@ const Header = () => {
   const changeLanguageHandler = (key: string) => {
     i18n.changeLanguage(key);
     setLanguageModel(!languageModel)
-    try{
+    try {
       window.location.reload();
 
-    }catch(e){
-      
+    } catch (e) {
+
     }
   };
 
@@ -155,7 +157,7 @@ const Header = () => {
           </div>
         </div>
       </nav>
-       
+
       <Modal
         title={'Choose Language'}
         toggle={() => setLanguageModel(!languageModel)}
@@ -177,7 +179,7 @@ const Header = () => {
           );
         })}
       </Modal>
-      
+
 
       {
         <Modal

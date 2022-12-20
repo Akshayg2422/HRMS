@@ -184,6 +184,7 @@
 "search":"Search",
 "attachmentCannotBeEmpty": "Attachment cannot be empty",
 "fileNameCannotBeEmpty": "Filename cannot be empty",
+"timeCantbeempty":"Time Can't Be Empty",
 
 
 
@@ -199,6 +200,29 @@
 
 
 "enterfilename":"Enter Your FileName",
+
+
+
+"myShift":"My Shifts",
+"SelectShift":"Select Shift",
+"employeeShifts":"Employee Shifts",
+
+
+
+
+
+"SalaryCalculation":"Salary Calculation",
+"CostOfTheCompany":"Cost Of The Company (CTC)",
+"BasicSalary" : "Basic Salary",
+ "MinimumCTC":"* Minimum 50% Of CTC", 
+ "AllowanceGroup":"Allowance Group",
+ "GroupName":"Group Name",
+ "SelectAllowance":"Select Allowance",
+ "AddNew":"Add New +",
+ "AddAllowance":"Add Allowance",
+ "AllowanceName":"Allowance Name",
+ "Hint":"Hint",
+
 
 
   
@@ -405,7 +429,41 @@
   "departments":"Departments",
   "employeeDetailsUpdatedSuccessfully":"Employee Details Updated Successfully",
   "logoutUser":"Logout User",
-  "logoutMessage":"Please click on Proceed to Logout user"
+  "logoutMessage":"Please click on Proceed to Logout user",
+  "weeksShiftDefinition":"Week's Shift Definition",
+  "shiftName":"Shift Name",
+  "defaultCheck":"Default Check",
+  "shiftStarttime":"Shift start time",
+  "shiftEndTime":"Shift end time",
+  "timeFrom":"Time from :",
+  "timeTo":"Time to :",
+
+  "theGroupNameCantBeEmpty":"The Group name can't be empty",
+  "invalidShift":"Invalid Shift",
+  "selectEmployee":"Select Employees to add to the group",
+  "createShiftGroup":"Create shift group",
+  "editShiftGroup":"Edit shift group",
+  "enterTheGroupName":"Enter the Group Name",
+  "groupName":"Group Name",
+  "selectWeeklyShift":"Select weekly shift",
+  "addEmployeesToGroup":"Add Employees to group",
+  "selectDepartment":"Select Department",
+  "selectDesignation":"Select Designation",
+  "selectedEmployeesList":"Selected Employees List",
+  "shiftGroups":"Shift Groups",
+  "shifts":"Shift",
+  "shiftss":"Shifts",
+  "addNew":"Add New",
+  "manageWeeklyShifts":"Manage Weekly Shifts",
+  "branchShifts":"Branch Shifts",
+  "WeelelyshiftListing":"Weekly Shift Listing",
+  "theShiftNameCantBeEmpty":"The Shift name can't be empty",
+  "alreadyShiftAllocated":"Already shift allocated for the selected time",
+  "editWeeklyShiftDetails":"Edit weekly shift details",
+  "selectShiftTiming":"Select Shift Timing",
+  "notWorking":"Not Working"
+
+
 
 
  

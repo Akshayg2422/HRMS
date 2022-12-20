@@ -73,6 +73,14 @@ export const Icons = {
   AddFiles: require('./icons/AddFiles/AddFiles.png'),
   PDF_DUMMY_SECONDARY: require('./icons/PdfDummySecondary/PdfDummySecondary.png'),
   IMAGE_DUMMY_SECONDARY: require('./icons/ImageDummySecondary/ImageDummySecondary.png'),
+  MY_SHIFTS: require('./icons/MyShifts/MyShifts.png'),
+  SHIFTMANAGEMENTPRIMARY: require('./icons/ShiftManagementprimary/shiftManagenent.png'),
+  Modify_Logs: require('./icons/ModifyLogs/modifyLogs.png'),
+  MISREPORT: require('./icons/MISReport/report.png'),
+  EMPLOYEESHIFTS: require('./icons/EmployeeShifts/employeeShifts.png'),
+  EMPLOYEELEAVES: require('./icons/EmployeeLeaves/employeeLeaves.png'),
+  ModifiedPresent: require('./icons/ModifiedPresent/ModifiedPresent.png'),
+  PAYROLL: require('./icons/Payroll/payroll.png')
 }
 
 

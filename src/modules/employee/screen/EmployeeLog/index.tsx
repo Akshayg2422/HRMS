@@ -142,7 +142,6 @@ function EmployeeLog() {
         <Container col={"col-xl-4"}>
           <ChooseBranchFromHierarchical />
         </Container>
-
         <div className="col text-right my-sm-2 mt-3 mt-sm-0">
           <Sort
             sortData={employeeLogSort}

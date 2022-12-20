@@ -12,6 +12,8 @@ import MyWorkLog from './MyWorkLog'
 import MyLeaves from './MyLeaves'
 import ModifyLogs from './ModifyLogs'
 import ELocker from './Elocker'
-import ElockerUpload from './ElockerUpload'
+import ElockerUpload from './ElockerUpload' 
+import MyShiftDetails from './MyShiftDetails'
+import EmployeeShifts from './EmployeesShifts'
 
-export { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload }
+export { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload,MyShiftDetails,EmployeeShifts }

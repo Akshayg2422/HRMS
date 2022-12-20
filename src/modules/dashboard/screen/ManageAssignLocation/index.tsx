@@ -23,6 +23,7 @@ import {
 
 import { Icons } from "@assets";
 import { useTranslation } from "react-i18next";
+import { showToast } from "@utils";
 
 type Branch = {
   id?: string;
@@ -133,7 +134,8 @@ function ManageAssignLocation() {
     dispatch(
       updateEmployeeCheckinAssociations({
         params,
-        onSuccess: () => {
+        onSuccess: (success:any) => {
+          showToast("success", success.status);
           setModel(!model);
         },
         onError: (error: string) => {},

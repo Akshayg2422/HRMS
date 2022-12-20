@@ -17,13 +17,12 @@ function Reports() {
   } = useSelector((state: any) => state.EmployeeReducer);
 
 
-
-
   const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
-  let dispatch = useDispatch();
+
+  const dispatch = useDispatch();
   const { t } = useTranslation();
   const [searchEmployee, setSearchEmployee] = useState('')
   const [reportsType, setReportsType] = useState(REPORTS_TYPE[0].value)
