@@ -4,47 +4,55 @@ import {
     goTo,
     useNav,
     ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA,
+    EMPLOYEE_ADDITIONAL_DATA_EDIT,
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchShifts,
-    selectedShiftGroupName
+    selectedShiftGroupDetails
 } from "../../../../store/shiftManagement/actions";
 import { useTranslation } from 'react-i18next';
 
 const ShiftGroup = () => {
-    //8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
     const navigation = useNav();
     const { t } = useTranslation();
     let dispatch = useDispatch();
+
     const { branchShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
 
-    const getBranchShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
-        dispatch(getBranchShifts({ params }));
-    }
+    const { hierarchicalBranchIds, dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
+    // hierarchicalBranchIds.branch_id
+
     useEffect(() => {
         getBranchShiftsList()
     }, []);
+    
+    const getBranchShiftsList = () => {
+        const params = { branch_id: dashboardDetails?.company_branch?.id }
+        dispatch(getBranchShifts({ params }));
+    }
 
-    const normalizedBranchShifts = (data: any) => {
-        return data && data.length > 0 && data.map((el: any) => {
+    
+    const normalizedBranchShifts = (branchShift: any) => {
+        return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
             return {
-                name: el.name,
-                "Employees count": el.employee_count
+                name: element.name,
+                "Employees count": element.employee_count
             };
         });
     };
 
     const manageShiftGroupHandler = (value: any) => {
-        value ? dispatch(selectedShiftGroupName(value.name)) : dispatch(selectedShiftGroupName(undefined));
+        dispatch(selectedShiftGroupDetails(  value ? value : undefined)) 
         goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP)
     }
 
     const deleteBranchShift = () => { }
+
 
 
     return (
@@ -69,7 +77,7 @@ const ShiftGroup = () => {
                         <CommonTable
                             tableTitle={t('branchShifts')}
                             displayDataSet={normalizedBranchShifts(branchShifts)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
@@ -77,9 +85,9 @@ const ShiftGroup = () => {
                                 if (elv === "Edit") {
                                     manageShiftGroupHandler(current)
                                 }
-                                if (elv === "Delete") {
-                                    deleteBranchShift()
-                                }
+                                // if (elv === "Delete") {
+                                //     deleteBranchShift()
+                                // }
                             }}
                         />
                     </Container>

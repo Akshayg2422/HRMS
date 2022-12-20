@@ -87,3 +87,16 @@ export const POST_ADD_SHIFTS = 'attendance/addShift'
 
 export const FETCH_WEEKLY_SHIFT_DETAILS = 'attendance/getWeeklyShiftDetails'
 
+export const FETCH_SHIFT_EMPLOYEES = 'attendance/getShiftEmployees'
+
+export const FETCH_MY_SHIFTS_DETAILS = 'attendance/getEmployeeShiftDetails'
+
+export const FETCH_EMPLOYEE_WITH_SHIFTS = 'employee/v1/getEmployeesWithShift'
+
+export const POST_EMPLOYEE_SHIFT_CHANGE = 'attendance/setEmployeeShift'
+
+
+
+
+
+

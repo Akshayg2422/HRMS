@@ -3,7 +3,7 @@ import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } fr
 import { Icons } from "@assets";
 import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { WeekDaysList } from '../../container';
+import { WeekDaysList } from '@modules';
 import { useDispatch, useSelector } from "react-redux";
 import {
   addWeeklyShift,
@@ -40,12 +40,18 @@ const WeeklyShiftSelection = () => {
     (state: any) => state.ShiftManagementReducer
   );
 
-
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [openModel, setOpenModel] = useState(false)
   const [selectedDayIndex, setSelectedDayIndex] = useState<any>({})
   const [shiftsTime, setShiftsTime] = useState<any>({ inTime: '', outTime: '' })
   const [shiftName, setShiftName] = useState('')
+
+  useEffect(() => {
+    if (selectedWeeklyShiftId) {
+      fetchWeeklyShiftDetails()
+      setShiftName(selectedWeeklyShiftName)
+    }
+  }, [])
 
   const dateTimePickerHandler = (value: string, key: string) => {
     setShiftsTime({ ...shiftsTime, [key]: value });
@@ -56,7 +62,6 @@ const WeeklyShiftSelection = () => {
   }
 
   const validatePostParams = () => {
-
     if (shiftName === "") {
       showToast("error", t('theShiftNameCantBeEmpty'));
       return false;
@@ -89,13 +94,11 @@ const WeeklyShiftSelection = () => {
 
 
   const onShiftAdd = () => {
-
     if (dateValidation()) {
       let updatedWeek = [...weeklyData]
       let selectedWeekPosition = isActiveWeek - 1
       let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
       const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
-
       if (timeBreakdown.length === 0) {
         let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
         changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
@@ -110,7 +113,7 @@ const WeeklyShiftSelection = () => {
             isInRange = true
           }
         }
-        if (!isInRange) {
+        if (!isInRange && changedWeek[selectedDayIndex].time_breakdown.length < 3) {
           let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
           changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
         }
@@ -127,18 +130,18 @@ const WeeklyShiftSelection = () => {
   }
 
 
-  const onDelete = (e: any, index: number) => {
-    let temp = [...weeklyData]
-    temp.map((element: any) => {
-      if (temp[isActiveWeek - 1].week === element.week) {
+  const onDelete = (selectedShift: any, index: number) => {
+    let deletedShift = [...weeklyData]
+    deletedShift.map((element: any) => {
+      if (deletedShift[isActiveWeek - 1].week === element.week) {
         element.week_calendar.map((el: any) => {
-          if (el.week_day === e.week_day) {
+          if (el.week_day === selectedShift.week_day) {
             el.time_breakdown.splice(index, 1)
           }
         })
       }
     })
-    setWeeklyData(temp)
+    setWeeklyData(deletedShift)
   }
 
   const dateValidation = () => {
@@ -169,12 +172,7 @@ const WeeklyShiftSelection = () => {
     }))
   }
 
-  useEffect(() => {
-    if (selectedWeeklyShiftId) {
-      fetchWeeklyShiftDetails()
-      setShiftName(selectedWeeklyShiftName)
-    }
-  }, [])
+  
 
   return (
     <>

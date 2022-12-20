@@ -5,7 +5,11 @@ import {
     FETCH_BRANCH_SHIFTS,
     FETCH_BRANCH_WEEKLY_SHIFTS,
     POST_ADD_SHIFT,
-    FETCH_WEEKLY_SHIFT_DETAILS
+    FETCH_WEEKLY_SHIFT_DETAILS,
+    FETCH_SHIFT_EMPLOYEES,
+    FETCH_MY_SHIFTS,
+    GET_EMPLOYEE_WITH_SHIFTS,
+    POST_EMPLOYEE_SHIFT_CHANGE
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -19,10 +23,18 @@ import {
     postAddShiftSuccess,
     postAddShiftFailure,
     getWeeklyShiftDetailsSuccess,
-    getWeeklyShiftDetailsFailure
+    getWeeklyShiftDetailsFailure,
+    getShiftEmployeesDetailsSuccess,
+    getShiftEmployeesDetailsFailure,
+    getMyShiftsSuccess,
+    getMyShiftsFailure,
+    getEmployeeWithShiftSuccess,
+    getEmployeeWithShiftFailure,
+    postEmployeeShiftChangeSuccess,
+    postEmployeeShiftChangeFailure,
 } from "./actions";
 
-import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi } from "../../helpers/backend_helper";
+import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi, fetchShiftEmployeesApi,fetchMyShiftsApi,fetchEmployeeWithShiftsApi,PostEmployeeWithChangeShiftApi } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../app/actions";
 
 
@@ -52,16 +64,15 @@ function* fetchAddWeeklyShiftSaga(action) {
 function* fetchBranchShiftsSaga(action) {
     try {
         yield put(showLoader());
-
         const response = yield call(fetchBranchShifts, action.payload.params);
         if (response.success) {
             yield put(hideLoader());
             yield put(getBranchShiftsSuccess(response.details));
-            yield call(action.payload.onSuccess);
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getBranchShiftsFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());
@@ -135,6 +146,94 @@ function* fetchWeeklyShiftDetailsSaga(action) {
     }
 }
 
+//Get shift employees group details
+
+function* fetchShiftEmployeesGroupDetailsSaga(action) {
+    try {
+        yield put(showLoader());
+
+        const response = yield call(fetchShiftEmployeesApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getShiftEmployeesDetailsSuccess(response.details));
+            yield call(action.payload.onSuccess(response.details));
+        } else {
+            yield put(hideLoader());
+            yield put(getShiftEmployeesDetailsFailure(response.error_message));
+            yield call(action.payload.onError);
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getShiftEmployeesDetailsFailure("Invalid Request"));
+    }
+}
+
+
+///MY SHIFTS
+
+function* fetchMyShiftsSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(fetchMyShiftsApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getMyShiftsSuccess(response.details));
+            yield call(action.payload.onSuccess(response.details));
+        } else {
+            yield put(hideLoader());
+            yield put(getMyShiftsFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getMyShiftsFailure("Invalid Request"));
+    }
+}
+
+// get Employee with shifts
+
+function* fetchEmployeeWithShiftsSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(fetchEmployeeWithShiftsApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getEmployeeWithShiftSuccess(response.details));
+            yield call(action.payload.onSuccess(response.details));
+        } else {
+            yield put(hideLoader());
+            yield put(getEmployeeWithShiftFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getEmployeeWithShiftFailure("Invalid Request"));
+    }
+}
+
+
+
+// Change Employee Shifts 
+
+function* postEmployeeShiftChangeSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(PostEmployeeWithChangeShiftApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(postEmployeeShiftChangeSuccess(response.details));
+            yield call(action.payload.onSuccess(response.status));
+        } else {
+            yield put(hideLoader());
+            yield put(postEmployeeShiftChangeFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(postEmployeeShiftChangeFailure("Invalid Request"));
+    }
+}
+
 
 //Watcher
 
@@ -145,7 +244,10 @@ function* ShiftManagementSaga() {
     yield takeLatest(FETCH_BRANCH_WEEKLY_SHIFTS, fetchBranchWeeklyShiftsSaga);
     yield takeLatest(POST_ADD_SHIFT, postAddShiftSaga);
     yield takeLatest(FETCH_WEEKLY_SHIFT_DETAILS, fetchWeeklyShiftDetailsSaga);
-
+    yield takeLatest(FETCH_SHIFT_EMPLOYEES, fetchShiftEmployeesGroupDetailsSaga);
+    yield takeLatest(FETCH_MY_SHIFTS, fetchMyShiftsSaga);
+    yield takeLatest(GET_EMPLOYEE_WITH_SHIFTS, fetchEmployeeWithShiftsSaga);
+    yield takeLatest(POST_EMPLOYEE_SHIFT_CHANGE, postEmployeeShiftChangeSaga);
 }
 
 export default ShiftManagementSaga;

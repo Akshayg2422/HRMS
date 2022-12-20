@@ -11,7 +11,7 @@ import {
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile } from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves,ModifyLogs,ELocker,ElockerUpload } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook,Portfolio,InActiveEmployeeList,ApplyLeave,LeaveRequest,ManageHolidays,ManageLeaves,MyLog,MyWorkLog,MyLeaves,ModifyLogs,ELocker,ElockerUpload,MyShiftDetails,EmployeeShifts } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import { DashboardStats, DashBoardAttendance } from './stats'
@@ -23,10 +23,10 @@ import { AutoLogout } from './SessionTimeout'
 import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
-import { WeeklyShiftSelection } from './shiftManagement';
-import { ShiftGroup } from './shiftManagement';
-import { ShiftListing } from './shiftManagement';
-import { CreateShiftGroup } from './shiftManagement';
+import { WeeklyShiftSelection,ShiftGroup,ShiftListing,CreateShiftGroup } from './ShiftManagement';
+// import { ShiftGroup } from './shiftManagement';
+// import { ShiftListing } from './shiftManagement';
+// import { CreateShiftGroup } from './shiftManagement';
 
 export {
   getDashboardDetails,
@@ -70,5 +70,9 @@ export {
   WeeklyShiftSelection,
   ShiftGroup,
   ShiftListing,
-  CreateShiftGroup
+  CreateShiftGroup,
+  MyShiftDetails,
+  EmployeeShifts
 }
+
+export * from './ShiftManagement'

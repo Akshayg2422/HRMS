@@ -5,7 +5,7 @@ import {
     goTo,
     useNav,
     ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA,
+    EMPLOYEE_ADDITIONAL_DATA_EDIT,
 
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +26,13 @@ const ShiftListing = () => {
         (state: any) => state.ShiftManagementReducer
     );
 
+    const { hierarchicalBranchIds, dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
+    // hierarchicalBranchIds.branch_id
+
     const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: "8a3f6247-dc2e-4594-9e68-ee3e807e4fc5" }
+        const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
@@ -35,16 +40,16 @@ const ShiftListing = () => {
         getBranchesWeeklyShiftsList()
     }, []);
 
-    const normalizedBranchWeeklyShifts = (data: any) => {
-        return data && data.length > 0 && data.map((el: any) => {
+    const normalizedBranchWeeklyShifts = (branchesWeeklyShift: any) => {
+        return branchesWeeklyShift && branchesWeeklyShift.length > 0 && branchesWeeklyShift.map((element: any) => {
             return {
-                name: el.group_name,
+                name: element.group_name,
             };
         });
     };
 
     const manageWeeklyShiftSelectionHandler = (id: string | undefined) => {
-        id ? dispatch(selectedWeeklyShiftIdAction(id)) : dispatch(selectedWeeklyShiftIdAction(undefined))
+        dispatch(selectedWeeklyShiftIdAction(id ? id : undefined))
         goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT)
 
     }
@@ -72,7 +77,7 @@ const ShiftListing = () => {
                         <CommonTable
                             tableTitle={t('branchShifts')}
                             displayDataSet={normalizedBranchWeeklyShifts(branchesWeeklyShifts)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {

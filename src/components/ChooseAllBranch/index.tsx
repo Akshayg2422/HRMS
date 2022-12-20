@@ -141,7 +141,11 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
               return (
                 <div>
                   <div className="row align-items-center my-4 mx-4">
-                    <div className="col-8" >
+                    <div className="col-8" onClick={(e) => {
+                      e.stopPropagation();
+                      setModel(!model);
+                      dispatch(setBranchAllHierarchical(-1))
+                    }} >
                       <h5 className="mb-0">{'All'}</h5>
                     </div>
                     <div className="col-4 text-right">
@@ -197,7 +201,12 @@ const SubLevelComponent = ({
   return (
     <>
 
-      <div className="row align-items-center my-4 mx-4">
+      <div className="row align-items-center my-4 mx-4" onClick={(e) => {
+        e.stopPropagation();
+        if (onChange) {
+          onChange(defaultData, item);
+        }
+      }}>
         <div className="col-8">
           <h5 className="mb-0">{item.name}</h5>
         </div>

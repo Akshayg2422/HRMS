@@ -1,6 +1,6 @@
 import React from 'react'
-import {ImageView} from '@components'
-import {Icons} from '@assets'
+import { ImageView } from '@components'
+import { Icons } from '@assets'
 
 interface ButtonIconProps {
   backgroundColor?: string
@@ -8,15 +8,18 @@ interface ButtonIconProps {
   text?: string;
   type?: 'btn-outline-primary' | 'btn-primary'
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
-  ImageClass?:string
+  ImageClass?: string
+  additionClass?: string
+  height?: number
+  width?: number
 }
 
-function  index({backgroundColor, icon, text,ImageClass, type = 'btn-primary', onClick}: ButtonIconProps) {
+function index({ backgroundColor, icon, text, ImageClass, type = 'btn-primary', onClick, additionClass, height = 30, width = 30 }: ButtonIconProps) {
   return (
-    <button  type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  align-items-center`} onClick={onClick}>
+    <button type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  align-items-center ${additionClass}`} onClick={onClick}>
       <span className='btn-inner--icon'>
         {
-          icon && <ImageView additionClass={ImageClass} icon={icon} height={30}  width={30} />
+          icon && <ImageView additionClass={ImageClass} icon={icon} height={height} width={width} />
         }
         {
           text &&

@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE, EMPLOYEE_CHANGE_SHIFT, EMPLOYEE_ADDITIONAL_DATA_EDIT } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -165,6 +165,17 @@ const downloadFile = ((response: any) => {
 })
 
 
+const formatAMPM = (time: any) => {
+  let [hours, minutes, seconds] = time.split(':');
+  var ampm = hours >= 12 ? 'pm' : 'am';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  let strTime = hours + ':' + minutes + ' ' + ampm;
+  return strTime;
+}
+
+
+
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
   validateEmail,
@@ -182,6 +193,7 @@ export {
   LEAVE_STATUS_UPDATE,
   MY_PORTFOLIO_ITEM,
   LEAVES_TYPE,
+  EMPLOYEE_CHANGE_SHIFT,
   showToast,
   goBack,
   ASYN_USER_AUTH,
@@ -214,6 +226,7 @@ export {
   ThisWeek, ThisMonth, LastMonth, LastWeek,
   WEEK_LIST,
   WEEK_DAY_LIST,
-  getWeekAndWeekDaysById
-
+  getWeekAndWeekDaysById,
+  formatAMPM,
+  EMPLOYEE_ADDITIONAL_DATA_EDIT
 }

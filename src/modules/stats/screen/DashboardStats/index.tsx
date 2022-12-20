@@ -141,7 +141,7 @@ const DashboardStats = () => {
           </div>
         </div>
         <Container additionClass={"row"}>
-          {employeeattendancedatalog && employeeattendancedatalog.cards.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
+          {employeeattendancedatalog && employeeattendancedatalog?.cards?.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
             return (
               <Container additionClass={"col-xl-4 col-md-6"}>
                 <Card>

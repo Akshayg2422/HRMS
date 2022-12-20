@@ -6,7 +6,7 @@ import { getAllBranchesList } from '../.././store/location/actions';
 import { getEmployeesList , addFenceAdmin} from '../.././store/employee/actions';
 import { Icons } from '@assets'
 
-import { goTo, useNav, ROUTE } from '@utils'
+import { goTo, useNav, ROUTE, showToast } from '@utils'
 import { useTranslation } from 'react-i18next';
 
 
@@ -88,7 +88,8 @@ function FenceAdmin() {
         console.log(JSON.stringify(item));
         dispatch(addFenceAdmin({
             params,
-            onSuccess: () => {
+            onSuccess: (success:any) => {
+                showToast("success", success.message);
                 dispatch(getAllBranchesList({}))
                 setModel(!model)
             },

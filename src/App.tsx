@@ -35,7 +35,9 @@ import {
   WeeklyShiftSelection,
   ShiftGroup,
   ShiftListing,
-  CreateShiftGroup
+  CreateShiftGroup,
+  MyShiftDetails,
+  EmployeeShifts
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -166,14 +168,14 @@ function App() {
           path={ROUTE.ROUTE_MODIFY_LOGS}
           element={<RequireAuth>{<ModifyLogs />}</RequireAuth>}
         />
-         <Route
+        <Route
           path={ROUTE.ROUTE_E_LOCKER}
-          element={<RequireAuth>{<ELocker/>}</RequireAuth>}
+          element={<RequireAuth>{<ELocker />}</RequireAuth>}
         />
-         <Route
+        <Route
           path={ROUTE.ROUTE_E_LOCKER_UPLOAD}
-          element={<RequireAuth>{<ElockerUpload/>}</RequireAuth>}
-          />
+          element={<RequireAuth>{<ElockerUpload />}</RequireAuth>}
+        />
         <Route
           path={ROUTE.ROUTE_SHIFT_MANAGEMENT}
           element={<RequireAuth>{<WeeklyShiftSelection />}</RequireAuth>}
@@ -190,7 +192,14 @@ function App() {
           path={ROUTE.ROUTE_CREATE_SHIFT_GROUP}
           element={<RequireAuth>{<CreateShiftGroup />}</RequireAuth>}
         />
-
+        <Route
+          path={ROUTE.ROUTE_MY_SHIFTS_DETAILS}
+          element={<RequireAuth>{<MyShiftDetails />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_EMPLOYEES_SHIFTS}
+          element={<RequireAuth>{<EmployeeShifts/>}</RequireAuth>}
+        />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
       <ToastContainer />
