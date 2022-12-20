@@ -11,6 +11,7 @@ import {
   BackArrow,
   Secondary,
   Primary,
+  InputText,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -56,7 +57,7 @@ const DashBoardAttendance = ({ }) => {
     selectedDateTo: "",
     range: false,
   })
-
+  const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState(
     routeParams.departmentId
   );
@@ -97,6 +98,7 @@ const DashBoardAttendance = ({ }) => {
       selected_date: customselectedDate,
       page_number: pageNumber,
       download: false,
+      ...(searchEmployee && { q: searchEmployee }),
     };
 
     dispatch(getEmployeeTodayStatus(params));
@@ -104,6 +106,8 @@ const DashBoardAttendance = ({ }) => {
 
   const normalizedEmployee = (data: any) => {
     return data.map((el: any) => {
+      console.log(el);
+
       return {
         name: el.name,
         "Mobile Number": el.mobile_number,
@@ -122,10 +126,36 @@ const DashBoardAttendance = ({ }) => {
             : "-"
           : "-",
 
-        remark: el.per_day_details ? el.per_day_details.day_status : "-",
+        remark: <div style={{
+          fontWeight: 'bold',
+          color: FontColor(el.per_day_details.day_status_type)
+          //  el.per_day_details.day_status_type === 6 || el.per_day_details.day_status_type === 9 ? '#ff0000' :
+          //   el.per_day_details.day_status_type === 2 || el.per_day_details.day_status_type === 10 ? "#FFD700" :
+          //     el.per_day_details.day_status_type === 1 ? "#32CD32" : "#000000"
+        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>
       };
     });
   };
+
+
+  function FontColor(statusType: any) {
+    let color = ''
+    switch (statusType) {
+      case 6: color = "#ff0000";
+        break;
+      case 2: color = "#FFD700";
+        break;
+      case 10: color = "#FFD700";
+        break;
+      case 1: color = "#32CD32";
+        break;
+      case 9: color = "#ff0000";
+        break;
+      default:
+        color = "#000000"
+    }
+    return color
+  }
 
   function paginationHandler(
     type: "next" | "prev" | "current",
@@ -162,7 +192,6 @@ const DashBoardAttendance = ({ }) => {
       };
     });
   };
-  console.log("selectedAttendance", selectedAttendance);
 
   const downloadSampleCsvFile = (
     logs: boolean
@@ -307,12 +336,22 @@ const DashBoardAttendance = ({ }) => {
                   }
                 />
               </div>
-
-              {/* <Container additionClass={"col my-4 text-right"}>
+              <Container additionClass={'col-lg-3 col-md-12'}>
+                <InputText
+                  placeholder={t("enterEmployeeName")}
+                  label={t("employeeName")}
+                  value={searchEmployee}
+                  onChange={(e) => {
+                    setSearchEmployee(e.target.value);
+                  }}
+                />
+              </Container>
+              <Container additionClass={"col mb-4"}>
+                <Primary text={'Search'} onClick={() => getTodayStats(currentPage)} />
                 <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
                   <Icon icon={Icons.DownloadSecondary} />
                 </a>
-              </Container> */}
+              </Container>
             </Container>
           </div>
         </Container>
