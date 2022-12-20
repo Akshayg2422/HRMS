@@ -37,7 +37,10 @@ import {
   ShiftListing,
   CreateShiftGroup,
   MyShiftDetails,
-  EmployeeShifts
+  EmployeeShifts,
+  PayRoll,
+  SalaryBreakDown,
+  AllowanceGroup
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -198,7 +201,19 @@ function App() {
         />
         <Route
           path={ROUTE.ROUTE_EMPLOYEES_SHIFTS}
-          element={<RequireAuth>{<EmployeeShifts/>}</RequireAuth>}
+          element={<RequireAuth>{<EmployeeShifts />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_PAYROLL}
+          element={<RequireAuth>{<PayRoll />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SALARY_BREAK_DOWN}
+          element={<RequireAuth>{<SalaryBreakDown />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_ALLOWANCE_GROUP}
+          element={<RequireAuth>{<AllowanceGroup />}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

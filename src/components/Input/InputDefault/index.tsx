@@ -4,7 +4,7 @@ import "./input.css";
 
 const Input = React.forwardRef(({
   label,
-  size,
+  size='md',
   value,
   onChange,
   placeholder,
