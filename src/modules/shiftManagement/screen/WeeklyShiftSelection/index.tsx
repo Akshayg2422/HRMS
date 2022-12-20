@@ -3,7 +3,7 @@ import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } fr
 import { Icons } from "@assets";
 import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { WeekDaysList } from '@modules';
+import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
 import {
   addWeeklyShift,
