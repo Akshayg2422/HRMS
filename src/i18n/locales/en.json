@@ -209,6 +209,22 @@
 
 
 
+
+
+"SalaryCalculation":"Salary Calculation",
+"CostOfTheCompany":"Cost Of The Company (CTC)",
+"BasicSalary" : "Basic Salary",
+ "MinimumCTC":"* Minimum 50% Of CTC", 
+ "AllowanceGroup":"Allowance Group",
+ "GroupName":"Group Name",
+ "SelectAllowance":"Select Allowance",
+ "AddNew":"Add New +",
+ "AddAllowance":"Add Allowance",
+ "AllowanceName":"Allowance Name",
+ "Hint":"Hint",
+
+
+
   
   "noOfEmployee": "No.of Employees",
   "currentBank": "Current Bank Service Provider",
