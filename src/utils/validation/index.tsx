@@ -121,6 +121,17 @@ const validateMobileNumber = (value: string | undefined) => {
     return output;
   };
 
+  const validateBasicSalary = (value: any | undefined) => {
+    let halfOfTheAnnual = 50 / 100 * value
+    let output = {status: false, error: ''};
+    if (value && value >= halfOfTheAnnual) {
+      output = {status: true, error: ''};
+    } else {
+      output = {status: false, error: 'Minimum 50% of CTC'};
+    }
+    return output;
+  };
+
  
 
   export {
@@ -134,4 +145,5 @@ const validateMobileNumber = (value: string | undefined) => {
     validateDOB,
     validateAddress,
     validateDefault,
+    validateBasicSalary
   };

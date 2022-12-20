@@ -9,6 +9,7 @@ import {
   validateDOB,
   validateAddress,
   validateDefault,
+  validateBasicSalary
 } from './validation'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -228,5 +229,6 @@ export {
   WEEK_DAY_LIST,
   getWeekAndWeekDaysById,
   formatAMPM,
-  EMPLOYEE_ADDITIONAL_DATA_EDIT
+  EMPLOYEE_ADDITIONAL_DATA_EDIT,
+  validateBasicSalary
 }

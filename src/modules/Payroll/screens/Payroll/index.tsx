@@ -4,16 +4,12 @@ import {
     Icon,
     InputText,
     CommonTable,
-    Modal,
-    Primary,
-    Secondary,
     ChooseBranchFromHierarchical,
     NoRecordFound,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Icons } from "@assets";
 import {
-    EMPLOYEE_ADDITIONAL_DATA,
     goTo,
     useNav,
     ROUTE,
@@ -21,7 +17,6 @@ import {
 } from "@utils";
 import {
     getEmployeesList,
-    getSelectedEmployeeId,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
@@ -118,7 +113,6 @@ function PayRoll() {
                         displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
                         tableOnClick={(e, index, item) => {
                             const selectedId = registeredEmployeesList[index].id;
-                            // dispatch(getSelectedEmployeeId(selectedId));
                             goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
                         }}
                     />
