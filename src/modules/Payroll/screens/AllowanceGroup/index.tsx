@@ -1,7 +1,7 @@
 import { Container, DropDown, FormWrapper, Icon, ImageView, InputText, Modal, Primary, Secondary } from '@components'
 import { Icons } from '@assets';
 import { goTo, ROUTE, useNav } from '@utils'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 
@@ -12,6 +12,24 @@ function AllowanceGroup() {
     let dispatch = useDispatch();
     const [addAllowanceModel, setAddAllowanceModel] = useState(false)
     const [selectAllowanceModel, setSelectAddAllowanceModel] = useState(false)
+    const [defaultState, setDefaultState] = useState([{ id: 1, name: "Muthu" }, { id: 2, name: "Iniyan" }, { id: 3, name: "Puma" }])
+    // const [selectedStatus, setSelectedStatus] = useState<any>()
+    const [selectedAllowences, setSelectedAllowences] = useState<any>([])
+
+    // const checkStatus = (item: any) => {
+    //     console.log("item", item);
+
+    //     return defaultState.some(it => it.id === item.id)
+    // }
+
+    const onDeleteAllowence = (item:any) =>{
+        const filteredPeople = selectedAllowences.filter((it: any) => it.id !== item.id)
+        setSelectedAllowences(filteredPeople)
+    }
+
+    useEffect(() => {
+        setSelectAddAllowanceModel(!selectAllowanceModel)
+    }, [])
 
 
     return (
@@ -33,6 +51,27 @@ function AllowanceGroup() {
                         size={"btn-md"}
                     />
                 </Container>
+                {selectedAllowences && selectedAllowences.length > 0 && selectedAllowences.map((el: any) => {
+                    return (
+                        <Container additionClass='row mx-3'>
+                            <Container additionClass="row">
+                                <Container additionClass='col-xl-7'>
+                                    <InputText
+                                        placeholder={el.name}
+                                        label={el.name}
+                                        onChange={(e) => {
+                                        }}
+                                    />
+                                </Container>
+
+                                <td className="col-2 mt-3" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Delete} onClick={() => {
+                                    onDeleteAllowence(el)
+
+                                }} /></td>
+                            </Container>
+                        </Container>
+                    )
+                })}
             </FormWrapper>
             <Modal
                 title={t("SelectAllowance")}
@@ -49,21 +88,21 @@ function AllowanceGroup() {
                         />
                     </Container>
                     <Container>
-                        {[0, 1, 2].map(() => {
+                        {defaultState.map((el) => {
                             return (
                                 <Container additionClass='row mx-3'>
                                     <Container additionClass="row">
-                                        <Container additionClass='col-xl-7'>
-                                            <InputText
-                                                size='sm'
-                                                label={t("GroupName")}
-                                                onChange={(event) => {
-                                                    // onChangeHandler(event);
-                                                }}
-                                            />
+                                        <Container additionClass='col-xl-7 mt-3'>
+                                            <h3>{el.name}</h3>
                                         </Container>
-                                        <td className="col-2 mt-5" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.TickDefault} onClick={() => {
-                                            // setCurrentEmployeeShiftId(el.id)
+
+                                        <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.TickDefault} onClick={() => {
+                                            let updatedSelectedEmployee = [...selectedAllowences]
+                                            const isExist = selectedAllowences.some((item: any) => item.id === el.id)
+                                            if (!isExist) {
+                                                updatedSelectedEmployee = [...updatedSelectedEmployee, el]
+                                                setSelectedAllowences(updatedSelectedEmployee)
+                                            }
                                         }} /></td>
                                     </Container>
                                 </Container>
@@ -77,7 +116,9 @@ function AllowanceGroup() {
                         />
                         <Primary
                             text={t("submit")}
-                            onClick={() => console.log('clicked')}
+                            onClick={() => {
+                                setSelectAddAllowanceModel(!selectAllowanceModel)
+                            }}
                         />
                     </Container>
                 </Container>
@@ -106,7 +147,10 @@ function AllowanceGroup() {
                     <Container margin={"mt-5"} additionClass={"text-right"}>
                         <Secondary
                             text={t("cancel")}
-                            onClick={() => setAddAllowanceModel(!addAllowanceModel)}
+                            onClick={() => {
+                                setAddAllowanceModel(!addAllowanceModel)
+
+                            }}
                         />
                         <Primary
                             text={t("add")}

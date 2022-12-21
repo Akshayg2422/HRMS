@@ -16,29 +16,32 @@ function SalaryBreakDown() {
   const [annualCTC, setAnnualCTC] = useState()
   const [basicSalary, setBasicSalary] = useState<any>()
   const [minimumAmount, setMinimumAmount] = useState<any>()
+  const [maximumAmount, setMaximumAmount] = useState<any>()
   const [color, setColor] = useState("")
 
 
-  const isValidBasicSalary = (value: any) => {
-    
-    if (!annualCTC) {
-      setColor("#000000")
-      setBasicSalary(value)
-    }
-    else if(annualCTC && value >= minimumAmount){
-      console.log("111",value,"222",minimumAmount);
-      
-      setColor("#000000")
-      setBasicSalary(value)
+  const isValidBasicSalary = () => {
 
+    if (annualCTC && !basicSalary) {
+      setColor("#000000")
     }
-    else if(annualCTC && value < minimumAmount){
-      console.log("333",value,"444",minimumAmount);
+    else if (basicSalary && !annualCTC) {
+      setColor("#000000")
+    }
+    else if (annualCTC && basicSalary) {
+      if (basicSalary >= minimumAmount && basicSalary <= maximumAmount) {
+        setColor("#000000")
+      }
+      else {
+        setColor("#FF0000")
+      }
 
-      setColor("#FF0000")
     }
   }
 
+  useEffect(() => {
+    isValidBasicSalary()
+  }, [annualCTC, basicSalary])
 
   return (
     <>
@@ -53,17 +56,11 @@ function SalaryBreakDown() {
 
             let annualCtc: any = event.target.value
             let halfOfTheAnnual: any = 50 / 100 * annualCtc
-            if(!basicSalary){
-              setMinimumAmount(halfOfTheAnnual)
-              setAnnualCTC(event.target.value)
-            }
-            else if(basicSalary && basicSalary >= halfOfTheAnnual){
-              setColor("#000000")
-            }
-            else if(basicSalary && basicSalary < halfOfTheAnnual){
-              setColor("#FF0000")
-            }
-           
+            let annualCtcPercentage = 1 * annualCtc
+            setMinimumAmount(halfOfTheAnnual)
+            setMaximumAmount(annualCtcPercentage)
+            setAnnualCTC(event.target.value)
+
           }}
         />
         <Container>
@@ -71,7 +68,7 @@ function SalaryBreakDown() {
             label={t("BasicSalary")}
             placeholder={t("BasicSalary")}
             onChange={(event: any) => {
-              isValidBasicSalary(event.target.value)
+              setBasicSalary(event.target.value)
             }}
           />
           <h5 className='mt--3 text-right' style={{ color: color }}>{t('MinimumCTC')}</h5>
