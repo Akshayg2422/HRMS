@@ -133,8 +133,9 @@ const LocationTable = ({
                     <div className="column">
                         {/* <h6 className="mb-0 text-xs mb-2 ml-2">1 logs</h6> */}
                         <div className='mb-2'>
-                            <ImageView icon={key != 'string' && eachObject[key as keyof object]?.is_present ? Icons.TickActive : eachObject[key as keyof object]?.is_present_modified ? Icons.ModifiedPresent : Icons.TickInActive} height={16} width={16} />
+                            <ImageView icon={key != 'string' && coloredIcons(eachObject[key as keyof object]?.attendance_status_code)} height={16} width={16} />
                         </div>
+                        {/* attendance_status_code */}
                         <h6 className="mb-0 ml--2 mb-2 ">{eachObject[key as keyof object]?.day_status}</h6>
                         {/* <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> */}
                     </div>
@@ -143,6 +144,38 @@ const LocationTable = ({
         })
     }
 
+
+
+
+    function coloredIcons(statusType: any) {
+        let icons = ''
+        switch (statusType) {
+            case 1:
+                icons = Icons.TickActive
+                break;
+            case 6:
+                icons = Icons.TickInActive;
+                break;
+            case 9:
+                icons = Icons.TickLeave;
+                break;
+            case 2:
+                icons = Icons.TickLate;
+                break;
+            case 4:
+                icons = Icons.TickExcempted;
+                break;
+            case 10:
+                icons = Icons.ModifiedPresent
+                break;
+            case 7:
+                icons = Icons.TickDefault
+                break;
+            default:
+                icons = Icons.TickDefault
+        }
+        return icons
+    }
 
 
     return (
