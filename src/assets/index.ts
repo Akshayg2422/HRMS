@@ -80,7 +80,12 @@ export const Icons = {
   EMPLOYEESHIFTS: require('./icons/EmployeeShifts/employeeShifts.png'),
   EMPLOYEELEAVES: require('./icons/EmployeeLeaves/employeeLeaves.png'),
   ModifiedPresent: require('./icons/ModifiedPresent/ModifiedPresent.png'),
-  PAYROLL: require('./icons/Payroll/payroll.png')
+  PAYROLL: require('./icons/Payroll/payroll.png'),
+  TickExcempted: require('./icons/TickExcempted/Excempted.png'),
+  TickLate: require('./icons/TickLate/Late.png'),
+  TickLeave: require('./icons/TickLeave/Leave.jpg'),
+
+
 }
 
 

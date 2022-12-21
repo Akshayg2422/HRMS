@@ -214,9 +214,9 @@ function* getEmployeeDetails(action) {
     const response = yield call(fetchEmployeeDetails, action.payload.params);
 
     if (response.success) {
-      yield put(hideLoader());
       yield put(getEmployeeDetailsSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getEmployeeDetailsFailure(response.error_message));
@@ -235,9 +235,9 @@ function* getEmployeesList(action) {
     const response = yield call(fetchEmployeeList, action.payload.params);
 
     if (response.success) {
-      yield put(hideLoader());
       yield put(getEmployeesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getEmployeesListFailure(response.error_message));
@@ -256,9 +256,9 @@ function* employeeAddition(action) {
     const response = yield call(postEmployeeAddition, action.payload.params);
 
     if (response.success) {
-      yield put(hideLoader());
       yield put(employeeAdditionSuccess(response.details));
       yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(employeeAdditionFailure(response.error_message));

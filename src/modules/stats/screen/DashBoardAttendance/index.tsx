@@ -128,28 +128,29 @@ const DashBoardAttendance = ({ }) => {
 
         remark: <div style={{
           fontWeight: 'bold',
-          color: FontColor(el.per_day_details.day_status_type)
-          //  el.per_day_details.day_status_type === 6 || el.per_day_details.day_status_type === 9 ? '#ff0000' :
-          //   el.per_day_details.day_status_type === 2 || el.per_day_details.day_status_type === 10 ? "#FFD700" :
-          //     el.per_day_details.day_status_type === 1 ? "#32CD32" : "#000000"
+          color: fontColor(el.per_day_details.day_status_type)
         }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>
       };
     });
   };
 
 
-  function FontColor(statusType: any) {
+  function fontColor(statusType: any) {
     let color = ''
     switch (statusType) {
-      case 6: color = "#ff0000";
+      case 1: color = "#2ECC71"
         break;
-      case 2: color = "#FFD700";
+      case 6: color = "#E74C3C";
         break;
-      case 10: color = "#FFD700";
+      case 9 : color = "#C39DE9";
         break;
-      case 1: color = "#32CD32";
+      case 2: color = "#BA4A00";
         break;
-      case 9: color = "#ff0000";
+      case 4: color = "#D4AC0D";
+        break;
+      case 10: color = "#FFFF00";
+        break;
+      case 7: color = "#000000";
         break;
       default:
         color = "#000000"
