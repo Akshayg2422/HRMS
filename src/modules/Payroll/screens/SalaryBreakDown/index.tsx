@@ -1,8 +1,11 @@
-import { Container, DropDown, FormWrapper, Icon, InputText } from '@components'
+import { Container, DropDown, FormWrapper, Icon, InputDefault, InputText } from '@components'
 import { goTo, ROUTE, useNav } from '@utils';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import {
+  validateBasicSalary
+} from "@utils";
 
 function SalaryBreakDown() {
 
@@ -10,6 +13,35 @@ function SalaryBreakDown() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
+  const [annualCTC, setAnnualCTC] = useState()
+  const [basicSalary, setBasicSalary] = useState<any>()
+  const [minimumAmount, setMinimumAmount] = useState<any>()
+  const [maximumAmount, setMaximumAmount] = useState<any>()
+  const [color, setColor] = useState("")
+
+
+  const isValidBasicSalary = () => {
+
+    if (annualCTC && !basicSalary) {
+      setColor("#000000")
+    }
+    else if (basicSalary && !annualCTC) {
+      setColor("#000000")
+    }
+    else if (annualCTC && basicSalary) {
+      if (basicSalary >= minimumAmount && basicSalary <= maximumAmount) {
+        setColor("#000000")
+      }
+      else {
+        setColor("#FF0000")
+      }
+
+    }
+  }
+
+  useEffect(() => {
+    isValidBasicSalary()
+  }, [annualCTC, basicSalary])
 
   return (
     <>
@@ -19,20 +51,27 @@ function SalaryBreakDown() {
 
         <InputText
           label={t("CostOfTheCompany")}
-          name={"firstName"}
-          onChange={(event) => {
-            // onChangeHandler(event);
+          placeholder={t("CostOfTheCompany")}
+          onChange={(event: any) => {
+
+            let annualCtc: any = event.target.value
+            let halfOfTheAnnual: any = 50 / 100 * annualCtc
+            let annualCtcPercentage = 1 * annualCtc
+            setMinimumAmount(halfOfTheAnnual)
+            setMaximumAmount(annualCtcPercentage)
+            setAnnualCTC(event.target.value)
+
           }}
         />
         <Container>
-          <InputText
+          <InputDefault
             label={t("BasicSalary")}
-            name={"lastName"}
-            onChange={(event) => {
-              // onChangeHandler(event);
+            placeholder={t("BasicSalary")}
+            onChange={(event: any) => {
+              setBasicSalary(event.target.value)
             }}
           />
-          <h5 className='mt--3 text-right'>{t('MinimumCTC')}</h5>
+          <h5 className='mt--3 text-right' style={{ color: color }}>{t('MinimumCTC')}</h5>
         </Container>
         <div className="row align-items-center">
           <div className="col mt--2">
@@ -40,7 +79,7 @@ function SalaryBreakDown() {
               label={t("AllowanceGroup")}
               // data={}
               name={"designation"}
-              // onChange={() => }
+            // onChange={() => }
 
             />
           </div>
