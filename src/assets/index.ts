@@ -84,6 +84,8 @@ export const Icons = {
   TickExcempted: require('./icons/TickExcempted/Excempted.png'),
   TickLate: require('./icons/TickLate/Late.png'),
   TickLeave: require('./icons/TickLeave/Leave.jpg'),
+  Remove: require('./icons/Remove/remove.png'),
+
 
 
 }

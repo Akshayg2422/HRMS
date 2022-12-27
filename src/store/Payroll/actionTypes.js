@@ -1,0 +1,3 @@
+export const RESET_REDUCER = "RESET_REDUCER";
+
+export const CREATE_GROUP = 'CREATE_GROUP';

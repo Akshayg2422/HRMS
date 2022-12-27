@@ -20,6 +20,11 @@ function SalaryBreakDown() {
   const [color, setColor] = useState("")
 
 
+
+  useEffect(() => {
+    isValidBasicSalary()
+  }, [annualCTC, basicSalary])
+
   const isValidBasicSalary = () => {
 
     if (annualCTC && !basicSalary) {
@@ -35,13 +40,10 @@ function SalaryBreakDown() {
       else {
         setColor("#FF0000")
       }
-
     }
   }
 
-  useEffect(() => {
-    isValidBasicSalary()
-  }, [annualCTC, basicSalary])
+
 
   return (
     <>
@@ -87,6 +89,23 @@ function SalaryBreakDown() {
             text={"+"}
             onClick={() => {
               goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)
+            }}
+          />
+        </div>
+        <div className="row align-items-center">
+          <div className="col mt--2">
+            <DropDown
+              label={t("DeductionGroup")}
+              // data={}
+              name={"designation"}
+            // onChange={() => }
+
+            />
+          </div>
+          <Icon
+            text={"+"}
+            onClick={() => {
+              goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)
             }}
           />
         </div>

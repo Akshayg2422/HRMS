@@ -1,3 +1,3 @@
-import { PayRoll, SalaryBreakDown ,AllowanceGroup} from './screens'
+import { PayRoll, SalaryBreakDown ,AllowanceGroup,DeductionGroupList,CreateGroup} from './screens'
 
-export { PayRoll, SalaryBreakDown ,AllowanceGroup}
+export { PayRoll, SalaryBreakDown ,AllowanceGroup,DeductionGroupList,CreateGroup}

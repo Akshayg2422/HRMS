@@ -8,6 +8,9 @@ import {
   ImageView,
   Carousel,
   ChooseBranchFromHierarchical,
+  InputText,
+  Icon,
+  Card,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -45,6 +48,7 @@ function EmployeeTimeSheets() {
   const [type, setType] = useState<string>("daily");
   const [model, setModel] = useState(false);
   const [accordion, setAccordion] = useState<number>();
+  const [searchEmployee, setSearchEmployee] = useState('')
 
   const {
     employeeTimeSheets,
@@ -71,7 +75,8 @@ function EmployeeTimeSheets() {
     const params: object = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      q: "",
+      ...(searchEmployee && { q: searchEmployee }),
+
     };
     dispatch(getEmployeesTimeSheets({ params }));
   }
@@ -106,24 +111,38 @@ function EmployeeTimeSheets() {
 
   return (
     <>
-      <Container additionClass={"row mx-2 my-4"}>
-        <Container col={'col-xl-4'}>
-          <ChooseBranchFromHierarchical />
-        </Container>
-
-        <div className="col text-right my-sm-2 mt-3 mt-sm-0">
-          <Sort
-            sortData={sortData}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
+      <Card>
+        <Container additionClass={"row mx-2 my-4"}>
+          <Container col={"col-xl-4"}>
+            <ChooseBranchFromHierarchical />
+          </Container>
+          <Container additionClass={"col-xl-4 col-md-6 col-sm-12"}>
+            <InputText
+              value={searchEmployee}
+              placeholder={t("enterEmployeeName")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+          </Container>
+          <Icon type={"btn-primary"} additionClass={'mt-2'} icon={Icons.Search}
+            onClick={() => {
+              getEmployeeTimeSheets(currentPage);
             }}
           />
-        </div>
-      </Container>
-
-      {employeeTimeSheets && employeeTimeSheets.length > 0 && (
+          <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+            <Sort
+              sortData={sortData}
+              activeIndex={activeSort}
+              onClick={(index) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
+        </Container>
+      </Card>
+      {employeeTimeSheets && employeeTimeSheets.length > 0 ? (
         <CommonTable
           isPagination
           currentPage={currentPage}
@@ -143,7 +162,7 @@ function EmployeeTimeSheets() {
             getEmployeeTimeSheets(paginationHandler("next", currentPage))
           }
         />
-      )}
+      ) : <Card><NoRecordFound /></Card>}
 
       <Modal
         showModel={model}

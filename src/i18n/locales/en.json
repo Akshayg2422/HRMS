@@ -216,12 +216,20 @@
 "BasicSalary" : "Basic Salary",
  "MinimumCTC":"* Minimum 50% Of CTC", 
  "AllowanceGroup":"Allowance Group",
- "GroupName":"Group Name",
+ "AllowanceGroupList":"Allowance Group List",
+ "GroupName":"GroupName",
+ "DefaultGroupName":" Default Group Name",
  "SelectAllowance":"Select Allowance",
+ "CreateAllowanceGroup":"Create Allowance Group",
+ "CreateDeductionGroup":"Create Deduction Group",
  "AddNew":"Add New +",
  "AddAllowance":"Add Allowance",
  "AllowanceName":"Allowance Name",
  "Hint":"Hint",
+ "DeductionGroup":"Deduction Group",
+ "DeductionGroupList":"Deduction Group List",
+ "AddAnother":"Add Another",
+
 
 
 

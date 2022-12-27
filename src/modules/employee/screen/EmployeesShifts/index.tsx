@@ -10,6 +10,7 @@ import {
   ChooseBranchFromHierarchical,
   Secondary,
   Primary,
+  Icon,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -39,6 +40,8 @@ function EmployeeShifts() {
   const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
   const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
   const [employeeName, setEmployeeName] = useState()
+  const [searchEmployee, setSearchEmployee] = useState('')
+
   const { employeeWithShifts, numOfPages, currentPage, myShifts } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
@@ -55,7 +58,7 @@ function EmployeeShifts() {
     const params: object = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      q: "",
+      ...(searchEmployee && { q: searchEmployee }),
     };
     dispatch(getEmployeeWithShift({ params }));
   }
@@ -145,11 +148,25 @@ function EmployeeShifts() {
 
   return (
     <>
-      <Card additionClass="mx-2">
-        <h3 className="ml-3">{t("employeeShifts")}</h3>
-        <Container col={"col-xl-4"}>
-          <h5 className="ml-3">{t("branch")}</h5>
-          <ChooseBranchFromHierarchical />
+      <Card>
+        <Container additionClass={"row mx-2 my-4"}>
+          <Container col={"col-xl-4"}>
+            <ChooseBranchFromHierarchical />
+          </Container>
+          <Container additionClass={"col-xl-4 col-md-6 col-sm-12"}>
+            <InputText
+              value={searchEmployee}
+              placeholder={t("enterEmployeeName")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+          </Container>
+          <Icon type={"btn-primary"} additionClass={'mt-2'} icon={Icons.Search}
+            onClick={() => {
+              getEmployeeLogsWithShifts(currentPage);
+            }}
+          />
         </Container>
       </Card>
       {employeeWithShifts && employeeWithShifts.length > 0 ? (

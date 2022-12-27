@@ -40,7 +40,9 @@ import {
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
-  AllowanceGroup
+  AllowanceGroup,
+  DeductionGroupList,
+  CreateGroup
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
@@ -214,6 +216,14 @@ function App() {
         <Route
           path={ROUTE.ROUTE_ALLOWANCE_GROUP}
           element={<RequireAuth>{<AllowanceGroup />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_DEDUCTION_GROUP}
+          element={<RequireAuth>{<DeductionGroupList />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_CREATE_GROUP}
+          element={<RequireAuth>{<CreateGroup/>}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

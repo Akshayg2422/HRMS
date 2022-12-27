@@ -24,7 +24,7 @@ import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup } from './ShiftManagement';
-import { PayRoll, SalaryBreakDown,AllowanceGroup } from './Payroll'
+import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList,CreateGroup } from './Payroll'
 
 export {
   getDashboardDetails,
@@ -73,7 +73,7 @@ export {
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
-  AllowanceGroup
+  AllowanceGroup,
+  DeductionGroupList,
+  CreateGroup
 }
-
-// export * from './ShiftManagement'

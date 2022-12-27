@@ -5,6 +5,7 @@ import EmployeeSaga from "./employee/saga";
 import LocationSaga from "./location/saga";
 import DashboardSaga from "./dashboard/saga";
 import ShiftManagementSaga from "./shiftManagement/saga";
+import PayrollSaga from './Payroll/saga'
 
 
 
@@ -14,4 +15,6 @@ export default function* rootSaga() {
   yield all([fork(LocationSaga)]);
   yield all([fork(DashboardSaga)]);
   yield all([fork(ShiftManagementSaga)]);
+  yield all([fork(PayrollSaga)]);
+
 }

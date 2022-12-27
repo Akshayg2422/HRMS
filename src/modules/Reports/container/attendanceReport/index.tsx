@@ -45,7 +45,7 @@ function AttendanceReport({ data, department, reportType, customrange }: Attenda
       attendance_type: '-1',
       department_id: department,
       download: false,
-      branch_ids: branchId(),
+      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
       selected_date: customrange?.dateFrom,
       selected_date_to: customrange?.dataTo,
       page_number: pageNumber,

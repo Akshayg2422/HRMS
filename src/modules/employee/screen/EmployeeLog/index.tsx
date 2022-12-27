@@ -6,6 +6,9 @@ import {
   Sort,
   NoRecordFound,
   ChooseBranchFromHierarchical,
+  Icon,
+  InputText,
+  Card,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -24,6 +27,7 @@ import {
 import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@modules";
+import { Icons } from "@assets";
 
 type CheckInLog = {
   date?: string;
@@ -44,6 +48,7 @@ function EmployeeLog() {
   const [accordion, setAccordion] = useState<number>();
   const [userId, setUserId] = useState<string>();
   const [activeSort, setActiveSort] = useState<number>(1);
+  const [searchEmployee, setSearchEmployee] = useState('')
 
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("yyyy-MM-DD")
@@ -77,7 +82,7 @@ function EmployeeLog() {
     const params: object = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      q: "",
+      ...(searchEmployee && { q: searchEmployee }),
     };
     dispatch(getEmployeesList({ params }));
   }
@@ -131,7 +136,7 @@ function EmployeeLog() {
     ) {
       console.log(
         JSON.stringify(employeeCheckInDetailedLogPerDay) +
-          "=======getEmployeeCheckInDetailedLogPerDay"
+        "=======getEmployeeCheckInDetailedLogPerDay"
       );
     }
   }
@@ -142,6 +147,20 @@ function EmployeeLog() {
         <Container col={"col-xl-4"}>
           <ChooseBranchFromHierarchical />
         </Container>
+        <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
+          <InputText
+            value={searchEmployee}
+            placeholder={t("enterEmployeeName")}
+            onChange={(e) => {
+              setSearchEmployee(e.target.value);
+            }}
+          />
+        </Container>
+        <Icon type={"btn-primary"} additionClass={'mt-2'} icon={Icons.Search}
+          onClick={() => {
+            getEmployeeLogs(currentPage);
+          }}
+        />
         <div className="col text-right my-sm-2 mt-3 mt-sm-0">
           <Sort
             sortData={employeeLogSort}
@@ -152,9 +171,10 @@ function EmployeeLog() {
             }}
           />
         </div>
+
       </Container>
 
-      {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+      {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
           tableTitle={t("employeeLog")}
           isPagination
@@ -174,7 +194,7 @@ function EmployeeLog() {
             getEmployeeLogs(paginationHandler("next", currentPage))
           }
         />
-      )}
+      ) : <Card><NoRecordFound /></Card>}
       <Modal
         showModel={model}
         title={"Logs"}
