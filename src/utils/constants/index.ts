@@ -47,6 +47,8 @@ export const ROUTE = {
   ROUTE_ALLOWANCE_GROUP: '/allowance-group-List',
   ROUTE_DEDUCTION_GROUP: '/deduction-group-List',
   ROUTE_CREATE_GROUP: '/create-group',
+  ROUTE_DASHBOARD_OTP:"/dashboard-otp",
+
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]

@@ -27,6 +27,7 @@ import {
   MyLog,
   MyWorkLog,
   MyLeaves,
+  Requestpermission,
   AutoLogout,
   ModifyLogs,
   Reports,
@@ -42,23 +43,26 @@ import {
   SalaryBreakDown,
   AllowanceGroup,
   DeductionGroupList,
-  CreateGroup
+  CreateGroup,
+  // DashBoardOtp
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
-
+// import {getToken} from "firebase/messaging"
 import { ToastContainer } from "react-toastify";
 import { AppLoader, PageNotFound } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
-import { ManageAssignLocation } from "./modules/dashboard/screen";
+import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
-
 function App() {
+
+
   return (
     <>
       {/* <AutoLogout /> */}
+      {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
@@ -77,6 +81,10 @@ function App() {
           path={ROUTE.ROUTE_DASHBOARD}
           element={<RequireAuth>{<Dashboard />}</RequireAuth>}
         />
+        {/* <Route
+          path={ROUTE.ROUTE_DASHBOARD_OTP}
+          element={<RequireAuth>{<DashBoardOtp />}</RequireAuth>}
+        /> */}
         <Route
           path={ROUTE.ROUTE_EMPLOYEE}
           element={<RequireAuth>{<Employee />}</RequireAuth>}

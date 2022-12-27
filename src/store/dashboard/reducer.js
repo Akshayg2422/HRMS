@@ -173,6 +173,7 @@ const DashboardReducer = (state = initialState, action) => {
     case RESET_REDUCER:
       state = initialState;
       break;
+    
 
     default:
       state = state;
