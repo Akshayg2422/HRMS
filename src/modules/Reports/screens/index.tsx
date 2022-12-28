@@ -77,11 +77,11 @@ function Reports() {
   const getReports = (() => {
     const params = {
       ...(searchEmployee && { q: searchEmployee }),
+      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
       attendance_type: '-1',
       report_type: reportsType,
       department_id: selectedDepartment,
       download: false,
-      branch_ids: branchId(),
       selected_date: customRange.dateFrom,
       selected_date_to: customRange.dataTo,
       page_number: currentPage,
@@ -114,7 +114,7 @@ function Reports() {
       report_type: reportsType,
       attendance_type: reportsType === "attendance" ? '-1' : '',
       department_id: selectedDepartment,
-      branch_ids: branchId(),
+      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
       selected_date: customRange.dateFrom,
       selected_date_to: customRange.dataTo,
       page_number: currentPage,
