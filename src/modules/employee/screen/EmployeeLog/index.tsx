@@ -115,9 +115,15 @@ function EmployeeLog() {
       user_id: selectedEmployee.id,
     };
 
-    dispatch(getEmployeesCheckInLogs({ params }));
-
-    setModel(!model);
+    dispatch(getEmployeesCheckInLogs({
+      params,
+      onSuccess: (success: object) => {
+        setModel(!model);
+      },
+      onError: (error: string) => {
+        showToast("info", error);
+      },
+    }));
   }
 
   function getEmployeeCheckInDetailedLogPerDay(index: number) {
@@ -245,7 +251,7 @@ function EmployeeLog() {
                             : "-"}
                         </small>
                         <small className="mb-0 col">
-                          {item.start_time
+                          {item.end_time
                             ? getDisplayTimeFromMoment(
                               getMomentObjFromServer(item.end_time)
                             )

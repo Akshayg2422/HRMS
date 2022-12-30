@@ -109,7 +109,13 @@ import {
   GET_EMPLOYEE_DOCUMENT_SUCCESS,
   ATTACH_USER_DOCUMENT,
   ATTACH_USER_DOCUMENT_FAILURE,
-  ATTACH_USER_DOCUMENT_SUCCESS
+  ATTACH_USER_DOCUMENT_SUCCESS,
+  GET_ADMIN_BRANCHES,
+  GET_ADMIN_BRANCHES_SUCCESS,
+  GET_ADMIN_BRANCHES_FAILURE,
+  POST_UPDATED_ADMIN_BRANCHES,
+  POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
+  POST_UPDATED_ADMIN_BRANCHES_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -146,7 +152,8 @@ const initialState = {
   employeesLeaves: "",
   employeesModifyLeaves: "",
   misReport: [],
-  employeeDocuments: []
+  employeeDocuments: [],
+  adminBranches: []
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1025,7 +1032,55 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+    /**
+     * getAdminBranches
+     */
+    case GET_ADMIN_BRANCHES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_ADMIN_BRANCHES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        adminBranches: action.payload,
+      };
+      break;
 
+    case GET_ADMIN_BRANCHES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * Update Admin Branch
+     */
+    case POST_UPDATED_ADMIN_BRANCHES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case POST_UPDATED_ADMIN_BRANCHES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        // adminBranches: action.payload,
+      };
+      break;
+
+    case POST_UPDATED_ADMIN_BRANCHES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
     /**
      * Default
      */

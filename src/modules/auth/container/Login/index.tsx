@@ -34,13 +34,13 @@ function Login() {
   );
 
   const [mobile, setMobile] = useState<string | undefined>(mobileNumber);
- 
+
 
   const { t } = useTranslation();
 
   let dispatch = useDispatch();
 
-  
+
 
   const proceedValidateUser = (params: object) => {
     dispatch(
@@ -50,7 +50,7 @@ function Login() {
           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => {
-          showToast('error',t('invalidUser'));
+          showToast('error', t('invalidUser'));
         },
       })
     );
@@ -74,10 +74,11 @@ function Login() {
   return (
     <Container
       col={'col'}
-      display={'d-inline-flex'}
-      flexDirection={'flex-column'}>
+      display={'d-flex'}
+      flexDirection={'flex-column'}
+      additionClass={'scrollable-register'}>
       <Container
-        display={'d-inline-flex'}
+        display={'d-flex'}
         justifyContent={'justify-content-between'}
         additionClass={'container-fluid'}
         margin={'mt-4'}
@@ -102,7 +103,7 @@ function Login() {
         <small className={'text-center'}>{t('loginwith')}</small>
         <Container flexDirection={'flex-row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} display={'d-flex'} margin={'mt-4'}>
           <Social icon={Icons.Facebook} text={t('facebook')} backgroundColor={'bg-facebook'} />
-          <Container padding={'pl-2'} />
+          <Container padding={'pl-2'}  />
           <Social icon={Icons.Google} text={t('google')} backgroundColor={'bg-google'} />
         </Container>
       </div>

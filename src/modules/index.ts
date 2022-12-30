@@ -11,7 +11,7 @@ import {
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile,DashBoardOtp } from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts,MyBranches } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import { DashboardStats, DashBoardAttendance } from './stats'
@@ -79,7 +79,8 @@ export {
   DeductionGroupList,
   CreateGroup,
   Requestpermission,
-  DashBoardOtp
+  DashBoardOtp,
+  MyBranches
 }
 
 

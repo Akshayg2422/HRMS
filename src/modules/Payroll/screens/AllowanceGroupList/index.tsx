@@ -33,7 +33,7 @@ function AllowanceGroupList() {
                 <Container additionClass="text-right">
                     <Primary
                         text={t("add")}
-                        // onClick={() => setSelectAddAllowanceModel(!selectAllowanceModel)}
+                        additionClass={'col-5 col-sm-0'}
                         onClick={() => {
                             dispatch(CreateGroup('Allowance'))
                             goTo(navigation, ROUTE.ROUTE_CREATE_GROUP)

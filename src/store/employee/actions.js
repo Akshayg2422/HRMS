@@ -109,7 +109,12 @@ import {
   GET_EMPLOYEE_DOCUMENT_FAILURE,
   ATTACH_USER_DOCUMENT,
   ATTACH_USER_DOCUMENT_SUCCESS,
-  ATTACH_USER_DOCUMENT_FAILURE
+  ATTACH_USER_DOCUMENT_FAILURE,
+  GET_ADMIN_BRANCHES,
+  GET_ADMIN_BRANCHES_SUCCESS,
+  POST_UPDATED_ADMIN_BRANCHES,
+  POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
+  POST_UPDATED_ADMIN_BRANCHES_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -332,7 +337,6 @@ export const getEmployeesTimeSheetsFailure = (error) => {
  * @returns
  */
 export const getEmployeesCheckInLogs = (params) => {
-  console.log("getEmployeesCheckInLogs======action");
   return {
     type: FETCH_EMPLOYEE_CHECK_IN_LOGS,
     payload: params,
@@ -992,6 +996,56 @@ export const getMisReportClear = () => {
 export const attachUserDocumentFailure = (error) => {
   return {
     type: ATTACH_USER_DOCUMENT_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * Admin My Branches
+ */
+
+export const getAdminBranches = (params) => {
+  return {
+    type: GET_ADMIN_BRANCHES,
+    payload: params,
+  };
+};
+
+export const getAdminBranchesSuccess = (response) => {
+  return {
+    type: GET_ADMIN_BRANCHES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getAdminBranchesFailure = (error) => {
+  return {
+    type: GET_ADMIN_BRANCHES_SUCCESS,
+    payload: error,
+  };
+};
+
+/**
+ * 
+ * Update Admin Branch
+ */
+export const postAdminUpdateBranches = (params) => {
+  return {
+    type: POST_UPDATED_ADMIN_BRANCHES,
+    payload: params,
+  };
+};
+
+export const postAdminUpdateBranchesSuccess = (response) => {
+  return {
+    type: POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postAdminUpdateBranchesFailure = (error) => {
+  return {
+    type: POST_UPDATED_ADMIN_BRANCHES_FAILURE,
     payload: error,
   };
 };

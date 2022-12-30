@@ -224,11 +224,18 @@
  "CreateDeductionGroup":"Create Deduction Group",
  "AddNew":"Add New +",
  "AddAllowance":"Add Allowance",
+ "AddDeduction":"Add Deduction",
  "AllowanceName":"Allowance Name",
+ "DeductionName":"Deduction Name",
  "Hint":"Hint",
+ "SelectDeduction":"Select Deduction",
  "DeductionGroup":"Deduction Group",
  "DeductionGroupList":"Deduction Group List",
  "AddAnother":"Add Another",
+
+
+
+ "MyBranches":"My Branches",
 
 
 

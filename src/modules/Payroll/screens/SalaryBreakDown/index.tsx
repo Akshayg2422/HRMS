@@ -99,7 +99,6 @@ function SalaryBreakDown() {
               // data={}
               name={"designation"}
             // onChange={() => }
-
             />
           </div>
           <Icon

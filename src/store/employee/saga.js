@@ -32,7 +32,9 @@ import {
   GET_MIS_REPORT,
   GET_MIS_REPORT_DOWNLOAD,
   GET_EMPLOYEE_DOCUMENT,
-  ATTACH_USER_DOCUMENT
+  ATTACH_USER_DOCUMENT,
+  GET_ADMIN_BRANCHES,
+  POST_UPDATED_ADMIN_BRANCHES
 } from "./actionTypes";
 
 import {
@@ -104,7 +106,12 @@ import {
   getEmployeeDocumentFailure,
   attachUserDocument,
   attachUserDocumentSuccess,
-  attachUserDocumentFailure
+  attachUserDocumentFailure,
+  getAdminBranchesSuccess,
+  getAdminBranchesFailure,
+  postAdminUpdateBranchesSuccess,
+  postAdminUpdateBranchesFailure,
+
 } from "./actions";
 
 import {
@@ -139,7 +146,9 @@ import {
   fetchMisReportsLog,
   fetchDownloadMisReportsLog,
   fetchEmployeeDocuments,
-  attachUserDocuments
+  attachUserDocuments,
+  fetchAdminBranches,
+  PostUpdatedAdminBranches
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -306,9 +315,12 @@ function* getEmployeeCheckInLogs(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getEmployeesCheckInLogsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(hideLoader());
       yield put(getEmployeesCheckInLogsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
@@ -855,8 +867,52 @@ function* AttachUserDocument(action) {
     yield put(attachUserDocumentFailure("Invalid Request"));
   }
 }
+/**
+ * GET ADMIN BRANCHES
+ */
+function* fetchAdminBranchSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(fetchAdminBranches, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getAdminBranchesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError(response.error_message));
+      yield put(getAdminBranchesFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getAdminBranchesFailure("Invalid Request"));
+  }
+}
 
-// ****** //
+/**
+ * Updated Admin Branch
+ */
+
+function* postUpdateAdminBranchesSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(PostUpdatedAdminBranches, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(postAdminUpdateBranchesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError(response.error_message));
+      yield put(postAdminUpdateBranchesFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(postAdminUpdateBranchesFailure("Invalid Request"));
+  }
+}
+
+// *** WATCHER*** //
 
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
@@ -903,7 +959,8 @@ function* EmployeeSaga() {
   yield takeLatest(GET_MIS_REPORT_DOWNLOAD, getDownloadMisReport);
   yield takeLatest(GET_EMPLOYEE_DOCUMENT, FetchUserDocument);
   yield takeLatest(ATTACH_USER_DOCUMENT, AttachUserDocument);
-
+  yield takeLatest(GET_ADMIN_BRANCHES, fetchAdminBranchSaga);
+  yield takeLatest(POST_UPDATED_ADMIN_BRANCHES, postUpdateAdminBranchesSaga);
 
 }
 

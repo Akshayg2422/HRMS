@@ -44,6 +44,7 @@ import {
   AllowanceGroup,
   DeductionGroupList,
   CreateGroup,
+  MyBranches,
   // DashBoardOtp
 } from "@modules";
 
@@ -232,6 +233,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_CREATE_GROUP}
           element={<RequireAuth>{<CreateGroup/>}</RequireAuth>}
+        />
+         <Route
+          path={ROUTE.ROUTE_MY_BRANCHES}
+          element={<RequireAuth>{<MyBranches/>}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

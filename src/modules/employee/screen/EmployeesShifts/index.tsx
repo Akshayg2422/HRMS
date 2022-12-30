@@ -119,7 +119,7 @@ function EmployeeShifts() {
         setChangeShiftModelModel(!changeShiftModel)
       },
       onError: (error: string) => {
-        setChangeShiftModelModel(!changeShiftModel)
+        // setChangeShiftModelModel(!changeShiftModel)
         showToast("error", error);
       },
     }));
@@ -144,14 +144,12 @@ function EmployeeShifts() {
     }));
   }
 
-
-
   return (
     <>
       <Card>
         <Container additionClass={"row mx-2 my-4"}>
           <Container col={"col-xl-4"}>
-            <ChooseBranchFromHierarchical />
+            <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>
           <Container additionClass={"col-xl-4 col-md-6 col-sm-12"}>
             <InputText
@@ -253,7 +251,7 @@ function EmployeeShifts() {
               return (
                 <Container additionClass="mx-2 p-2 row">
                   <h4 className="col fw-normal">{el.name}</h4>
-                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId || el.isDefault ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} onClick={() => {
                     setCurrentEmployeeShiftId(el.id)
                   }} /></td>
 

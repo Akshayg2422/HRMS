@@ -1,4 +1,4 @@
-import { Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputText, Modal, Primary, Secondary } from '@components'
+import { Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, Secondary } from '@components'
 import { Icons } from '@assets';
 import { goTo, ROUTE, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
@@ -9,94 +9,143 @@ import { useDispatch, useSelector } from 'react-redux';
 function CreateGroup() {
 
 
-    const [allowances, setAllowances] = useState([{ name: "HRA", percentage: '40%' }])
 
     const navigation = useNav();
     const { t } = useTranslation();
     let dispatch = useDispatch();
+    const [allowances, setAllowances] = useState<any>([])
     const [addAllowanceModel, setAddAllowanceModel] = useState(false)
     const [selectAllowanceModel, setSelectAddAllowanceModel] = useState(false)
     const [defaultState, setDefaultState] = useState([{ id: 1, name: "HRA" }, { id: 2, name: "TA" }, { id: 3, name: "DA" }])
-    const [selectedAllowences, setSelectedAllowences] = useState<any>([])
+    const [selectedAllowances, setSelectedAllowances] = useState<any>([])
+    const [groupName, setGroupName] = useState('')
+    const [total, setTotal] = useState<any>()
+    const [remaining, setRemaining] = useState(100)
 
     const { groupFor } = useSelector(
         (state: any) => state.PayrollReducer
     );
 
-    const onDeleteAllowence = (item: any) => {
-        const filteredPeople = selectedAllowences.filter((it: any) => it.id !== item.id)
-        setSelectedAllowences(filteredPeople)
-    }
-
-
     useEffect(() => {
-        if (selectedAllowences.length === 0) {
+        if (selectedAllowances.length === 0) {
             setSelectAddAllowanceModel(!selectAllowanceModel)
         }
-    }, [])
+        onTotalCalculator()
+    }, [selectedAllowances])
+
+    const addSelectedAllowance = (item: any) => {
+        let updateSelectedAllowance = [...allowances];
+        const branchExists = updateSelectedAllowance.some(
+            (eachBranch) => eachBranch.id === item.id
+        );
+        if (branchExists) {
+            updateSelectedAllowance = updateSelectedAllowance.filter(
+                (eachItem) => eachItem.id !== item.id
+            );
+        } else {
+            let addedKey = { ...item, percentage: '' }
+            updateSelectedAllowance = [...updateSelectedAllowance, addedKey];
+        }
+        setAllowances(updateSelectedAllowance)
+    };
+
+    const onDeleteAllowence = (item: any) => {
+        const filteredPeople = selectedAllowances.filter((it: any) => it.id !== item.id)
+        setSelectedAllowances(filteredPeople)
+        setAllowances(filteredPeople)
+
+    }
+
+    const onPercentageChangeHandler = ((index: number, event: any) => {
+        let updatePercentage = [...selectedAllowances]
+        updatePercentage[index].percentage = event.target.value
+        setSelectedAllowances(updatePercentage)
+    })
+
+    const onTotalCalculator = () => {
+        const AllowancePercentage = selectedAllowances.map((el: any) => +el.percentage).reduce(
+            (accumulator: any, currentValue: any) => accumulator + currentValue,
+            0
+        );
+        setTotal(AllowancePercentage)
+        let remainingPercentage = AllowancePercentage > 0 ? 100 - AllowancePercentage : 100
+        setRemaining(remainingPercentage)
+    }
+
+    const onAllowanceOnSubmit = () => {
+        setSelectedAllowances(allowances)
+        setSelectAddAllowanceModel(!selectAllowanceModel)
+    }
+
     return (
         <>
             <FormWrapper
                 title={groupFor === 'Allowance' ? t('CreateAllowanceGroup') : t('CreateDeductionGroup')}
+                buttonDisable={remaining !== 0 && true}
                 onClick={() => console.log('clicked')}>
                 <InputText
                     label={t("GroupName")}
+                    value={groupName}
                     onChange={(event) => {
-                        // onChangeHandler(event);
+                        setGroupName(event.target.value);
                     }}
                 />
                 <Container>
-                    {selectedAllowences && selectedAllowences.length > 0 && selectedAllowences.map((el: any) => {
+                    {selectedAllowances && selectedAllowances.length > 0 && selectedAllowances.map((el: any, i: number) => {
                         return (
                             <Container additionClass='row'>
-                                <Container additionClass='col-xl-2 mt-4'>
-                                    <h4>{el.name}</h4>
-                                </Container>
-                                <Container additionClass='col-xl-2'>
-                                    <InputText
-                                        additionClass='col-xl-1'
-                                        onChange={(event) => {
-                                            // onChangeHandler(event);
+                                <Container additionClass={'col-xl-5 col col-sm-0'}>
+                                    <InputNumber
+                                        label={el.name}
+                                        additionClass={'col-xl-2'}
+                                        onChange={(event: any) => {
+                                            onPercentageChangeHandler(i, event);
                                         }}
                                     />
                                 </Container>
-                                <h3 className='col ml--3 mt-3'>{"%"}</h3>
-                                <td className="col-xl-7 mt-3" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
-                                    onDeleteAllowence(el)
-                                }} /></td>
+                                <Container additionClass={'col-xl-3 col col-sm-0'}>
+                                    <Container additionClass='row mt-4'>
+                                        <h3 className='col-xl col col-sm-0 mt-3 ml--3'>{"%"}</h3>
+                                        <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
+                                            onDeleteAllowence(el)
+                                        }} /></td>
+                                    </Container>
+                                </Container>
                             </Container>
                         )
                     })}
-                    <Container additionClass='row'>
-                        <Container additionClass='col-xl-2 mt-4'>
-                            <h4>{"Total"}</h4>
-                        </Container>
-                        <Container additionClass='col-xl-2'>
-                            <InputText
-                                additionClass='col-xl-1'
-                                onChange={(event) => {
-                                    // onChangeHandler(event);
-                                }}
-                            />
-                        </Container>
-                        <h3 className='col ml--3 mt-3'>{"%"}</h3>
-                        <Container additionClass='col-5 row'>
-                            <h3 className='col  mt-3'>{"Remaining"}</h3>
-                            <h3 className='col mt-3'>{'100'}{"%"}</h3>
-                        </Container>
-                    </Container>
+                    {selectedAllowances.length > 0 &&
+                        <>
+                            <Container additionClass='row'>
+                                <Container additionClass={'col-xl-5 col col-sm-0'}>
+                                    <InputNumber
+                                        disabled
+                                        label='Total'
+                                        additionClass={'col-xl-2'}
+                                        value={total}
+                                    />
+                                </Container>
+                                <Container additionClass='col mt-4'>
+                                    <h3 className='col-xl col col-sm-0 mt-3 ml--4'>{"%"}</h3>
+                                </Container>
+                            </Container>
+                            <Container additionClass='my-xl-4 my-3 my-sm-0 row'>
+                                <h3 style={{ color: remaining === 0 ? "#000000" : "#FF5733" }}>{`Remaining ${" "} ${remaining} %`}</h3>
+                            </Container>
+                        </>
+                    }
                 </Container>
                 <Container additionClass="text-right">
                     <Primary
                         text={t("AddAnother")}
                         onClick={() => setSelectAddAllowanceModel(!selectAllowanceModel)}
-                        col={"col-xl-3"}
-                        size={"btn-md"}
+                        col={"col-xl-2 col-5 col-sm-0"}
+                        size={"btn-sm"}
                     />
                 </Container>
             </FormWrapper>
             <Modal
-                title={t("SelectAllowance")}
+                title={groupFor === 'Allowance' ? t("SelectAllowance") : t('SelectDeduction')}
                 showModel={selectAllowanceModel}
                 toggle={() => setSelectAddAllowanceModel(!selectAllowanceModel)}
             >
@@ -110,23 +159,16 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {defaultState.map((el) => {
-                            const isActive = selectedAllowences.some((item: any) => item.id === el.id)
+                        {defaultState.map((el: any) => {
+                            const isActive = allowances.some((item: any) => item.id === el.id)
                             return (
                                 <Container additionClass='row mx-3'>
-                                    <Container additionClass="row">
-                                        <Container additionClass='col-xl-7 mt-3'>
-                                            <h3>{el.name}</h3>
-                                        </Container>
-                                        <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={isActive ? Icons.TickActive : Icons.TickDefault} onClick={() => {
-                                            let updatedSelectedEmployee = [...selectedAllowences]
-                                            const isExist = selectedAllowences.some((item: any) => item.id === el.id)
-                                            if (!isExist) {
-                                                updatedSelectedEmployee = [...updatedSelectedEmployee, el]
-                                                setSelectedAllowences(updatedSelectedEmployee)
-                                            }
-                                        }} /></td>
+                                    <Container additionClass='col-xl-7 col-4 col-sm-0 mt-3'>
+                                        <h3>{el.name}</h3>
                                     </Container>
+                                    <td className="col-xl-2 col-3 col-sm-0 mt-3 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={isActive ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                                        addSelectedAllowance(el)
+                                    }} /></td>
                                 </Container>
                             )
                         })}
@@ -139,21 +181,21 @@ function CreateGroup() {
                         <Primary
                             text={t("submit")}
                             onClick={() => {
-                                setSelectAddAllowanceModel(!selectAllowanceModel)
+                                onAllowanceOnSubmit()
                             }}
                         />
                     </Container>
                 </Container>
             </Modal>
             <Modal
-                title={t("AddAllowance")}
+                title={groupFor === 'Allowance' ? t("AddAllowance") : t('AddDeduction')}
                 showModel={addAllowanceModel}
                 toggle={() => setAddAllowanceModel(!addAllowanceModel)}
             >
                 <Container>
                     <Container additionClass='col-xl-6'>
                         <InputText
-                            label={t("AllowanceName")}
+                            label={groupFor === 'Allowance' ? t("AllowanceName") : t('DeductionName')}
                             onChange={(event) => {
                                 // onChangeHandler(event);
                             }}

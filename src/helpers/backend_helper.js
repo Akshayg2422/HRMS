@@ -97,8 +97,12 @@ export const PostEmployeeWithChangeShiftApi= (payload) => post(url.POST_EMPLOYEE
 
 
 
+/**
+ * Admin My Branches
+ */
 
+export const fetchAdminBranches= (payload) => post(url.GET_BRANCH_ADMIN_BRANCHES,payload,{})
 
-
+export const PostUpdatedAdminBranches= (payload) => post(url.UPDATING_THE_ADMIN_BRANCHES,payload,{})
 
 

@@ -47,7 +47,8 @@ export const ROUTE = {
   ROUTE_ALLOWANCE_GROUP: '/allowance-group-List',
   ROUTE_DEDUCTION_GROUP: '/deduction-group-List',
   ROUTE_CREATE_GROUP: '/create-group',
-  ROUTE_DASHBOARD_OTP:"/dashboard-otp",
+  ROUTE_DASHBOARD_OTP: "/dashboard-otp",
+  ROUTE_MY_BRANCHES:'/my-branches'
 
 }
 
@@ -122,6 +123,7 @@ export const NAV_ITEM = [
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
+  { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route:ROUTE.ROUTE_MY_BRANCHES },
 ];
 
 
