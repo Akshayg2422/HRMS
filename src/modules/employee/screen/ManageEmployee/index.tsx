@@ -45,7 +45,6 @@ import {
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
-import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -69,10 +68,6 @@ type EmployeeDetail = {
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
-  shift?: {
-    id: string;
-    name: string;
-  }
 };
 
 const ManageEmployee = () => {
@@ -87,10 +82,6 @@ const ManageEmployee = () => {
     isEdit,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  const { dashboardDetails, hierarchicalBranchIds } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
-
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
     lastName: "",
@@ -102,14 +93,13 @@ const ManageEmployee = () => {
     aadharrNo: "",
     designation: "",
     department: "",
-    branch: dashboardDetails?.company_branch?.id,
+    branch: "",
     dateOfJoining: new Date(),
     dob: "",
     kgid_No: "",
     employeeType: "",
     attendanceStartTime: "10:00",
     attendanceEndTime: "06:00",
-    shift: ''
   });
 
   const [departmentModel, setDepartmentModel] = useState(false);
@@ -120,8 +110,10 @@ const ManageEmployee = () => {
   const [isRefresh, setIsRefresh] = useState(false);
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
-  const [shiftsDropdownData, setShiftsDropdownData] =
-    useState<any>();
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -140,7 +132,7 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    ShiftDetails(employeeDetails.branch)
+
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -161,6 +153,7 @@ const ManageEmployee = () => {
         onError: (error: string) => { },
       })
     );
+
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
     }
@@ -170,6 +163,7 @@ const ManageEmployee = () => {
     const params = {
       user_id: id,
     };
+
     dispatch(
       getEmployeeDetails({
         params,
@@ -185,32 +179,6 @@ const ManageEmployee = () => {
       })
     );
   };
-
-  const ShiftDetails = (id: any) => {
-    const params = { branch_id: id }
-    dispatch(getBranchShifts({
-      params,
-      onSuccess: (success: any) => {
-        setShiftsDropdownData(success)
-        success.map((el: any) => {
-          if (el.is_default) {
-            setEmployeeDetails({ ...employeeDetails, shift: el.id });
-          }
-        })
-      },
-      onError: (error: string) => {
-        showToast("error", t("Somthingwentworng"));
-      },
-    }));
-  }
-
-
-  // useEffect(() => {
-  //   if (employeeDetails.branch !== '') {
-  //     ShiftDetails(employeeDetails.branch)
-  //   }
-  // }, [employeeDetails.branch])
-  
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -239,11 +207,7 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
       return false;
-    } else if (Object.keys(employeeDetails.shift).length === 0) {
-      showToast("error", "choose Shift");
-      return false;
-    }
-    else {
+    } else {
       return true;
     }
   };
@@ -275,7 +239,6 @@ const ManageEmployee = () => {
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: false,
           associated_branch: [employeeDetails.branch],
-          shift_settings: { shift_id: employeeDetails.shift }
         },
         ...(employeeDetails.dateOfJoining && {
           date_of_joining: getServerDateFromMoment(
@@ -290,12 +253,11 @@ const ManageEmployee = () => {
         }),
       };
 
-
-
       dispatch(
         employeeAddition({
           params,
           onSuccess: (success: any) => {
+      
             showToast("success", success.message);
             goBack(navigation);
           },
@@ -372,13 +334,6 @@ const ManageEmployee = () => {
       )
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
-
-      if (
-        editEmployeeDetails &&
-        editEmployeeDetails.shift?.id
-      )
-        employeeInitData.shift =
-          editEmployeeDetails.shift?.id;
     }
 
 
@@ -448,6 +403,7 @@ const ManageEmployee = () => {
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}
         onClick={onSubmit}
+        buttonTittle={isEdit ? t('update') : t('submit')}
       >
         <InputText
           label={t("fullName")}
@@ -568,10 +524,7 @@ const ManageEmployee = () => {
           data={companyBranchDropdownData}
           name={"branch"}
           value={employeeDetails.branch}
-          onChange={(event) => {
-            ShiftDetails(event.target.value)
-            onChangeHandler(event)
-          }}
+          onChange={(event) => onChangeHandler(event)}
         />
         <DropDown
           label={t("category")}
@@ -609,17 +562,7 @@ const ManageEmployee = () => {
             onChangeHandler(event);
           }}
         />
-
         <h4 className="mb-4">{t("attendanceDetails")}</h4>
-
-        <DropDown
-          label={t("shiftss")}
-          placeholder={t("SelectShift")}
-          data={shiftsDropdownData}
-          name={"shift"}
-          value={employeeDetails.shift}
-          onChange={(event) => onChangeHandler(event)}
-        />
         <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
           title={t("pleaseSelect")}

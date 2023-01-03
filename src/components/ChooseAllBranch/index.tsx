@@ -94,7 +94,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
               child: getChild(response, parentBranch.id),
             };
             const filteredBranch = getCurrentBranchNode(
-              hierarchicalBranchIds.branch_id,
+              dashboardDetails.company_branch.id,
               [hierarchicalBranchArray]
             );
             setHierarchicalBranch({ child: [filteredBranch] });
@@ -105,7 +105,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
         },
       })
     );
-  }, [hierarchicalBranchName,hierarchicalBranchIds ]);
+  }, [hierarchicalBranchName, hierarchicalBranchIds]);
 
   function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
     const childIds = getAllSubBranches(allBranch, item.id);
@@ -132,7 +132,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
           <div className="form-group">
             <small className="form-control-label text-black">{t("MyBranches")}</small>
             <div onClick={() => setModel(!model)}>
-            <InputDefault disabled={true} value={hierarchicalAllBranchIds !== -1 ? hierarchicalBranchName : 'All'} />
+              <InputDefault disabled={true} value={hierarchicalAllBranchIds !== -1 ? hierarchicalBranchName : 'All'} />
             </div>
           </div>
         </div>
