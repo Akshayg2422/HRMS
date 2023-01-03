@@ -78,7 +78,6 @@ function LogReports({ data, department, reportType, customrange }: LogReportsPro
         getReports(page)
     }
 
-    console.log("getConvertedTableData(data)", getConvertedTableData(data));
 
     return (
         <>
