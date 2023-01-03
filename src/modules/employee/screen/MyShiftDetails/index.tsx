@@ -14,10 +14,6 @@ function MyShiftDetails() {
     const { myShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
-
-    const { dashboardDetails } = useSelector(
-        (state: any) => state.DashboardReducer
-    );
     const [isActiveWeek, setIsActiveWeek] = useState(1)
 
     useEffect(() => {

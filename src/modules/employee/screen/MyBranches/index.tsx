@@ -10,11 +10,12 @@ import {
     ChooseBranchFromHierarchical,
     NoRecordFound,
     Card,
-    DropDown
+    DropDown,
+    MyActiveBranches
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAdminBranches, getEmployeesList, postAdminUpdateBranches } from "../../../../store/employee/actions";
+import { getAdminBranches, getEmployeesList, isRenderAdminBranches, postAdminUpdateBranches } from "../../../../store/employee/actions";
 import {
     getEmployeeCheckinAssociations,
     getAllBranchesList,
@@ -40,48 +41,47 @@ type Branch = {
 function MyBranches() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { dashboardDetails } = useSelector(
-        (state: any) => state.DashboardReducer
-    );
-
-    const [branchDropDown, setBranchDropDown] = useState([dashboardDetails.company_branch])
-
-    const [associatedBranch, setAssociatedBranch] = useState([dashboardDetails.company_branch.id])
-
-    const [dropdownSelectedBranch, setDropdownSelectedBranch] = useState(branchDropDown[0].id)
-
+    const { adminBranches, RenderAdminBranch } = useSelector((state: any) => state.EmployeeReducer)
+    const [branchDropDownData, setBranchDropDownData] = useState([])
+    const [associatedBranch, setAssociatedBranch] = useState<any>([])
+    const [employeeId, setEmployeeId] = useState('')
+    const [removeAssociatedBranch, setRemoveAssociatedBranch] = useState<any>([])
     const { brancheslist } =
         useSelector((state: any) => state.LocationReducer);
 
 
     useEffect(() => {
         getEmployeeAssociationBranch()
-        getAdminBranchesData()
-    }, []);
+        preFilledBranches(adminBranches)
+    }, [adminBranches]);
 
-    // postAdminUpdateBranches
 
-    const getAdminBranchesData = () => {
-        const params = {}
-        dispatch(getAdminBranches({ params }));
+    const preFilledBranches = (branchesList: any) => {
+        const AdminBranches = branchesList && Object.keys(branchesList).length > 0 && branchesList?.admin_branches.length > 0 &&
+            branchesList.admin_branches.map((branches: any) => {
+                return branches.id
+            })
+        setAssociatedBranch(AdminBranches)
+        setEmployeeId(branchesList?.emp_id)
     }
 
-    const onSubmit = (type: string) => {
+    const onSubmit = (id: string) => {
         const params = {
-            id: "347ab148-c780-4914-bc2f-988d192b027c",
-            ...(type === "0" && { admin_branches_ids: { add: ["86ef8ade-58d8-4abd-8f52-cffa0f113ded", "4888372f-7ab1-4bdf-a47d-b92ef8503823"] } }),
-            ...(type === "1" && { admin_active_branch: "4888372f-7ab1-4bdf-a47d-b92ef8503823" })
+            id: employeeId,
+            ...(!id && { admin_branches_ids: { add: associatedBranch, remove: removeAssociatedBranch } }),
         }
         dispatch(postAdminUpdateBranches({
             params,
             onSuccess: (success: any) => {
-                // showToast("info", success);
+                showToast("success", success?.message);
+                dispatch(isRenderAdminBranches(!RenderAdminBranch))
             },
             onError: (error: string) => {
-                showToast("info", error);
+                showToast("error", error);
             },
         }));
     }
+
 
     const getEmployeeAssociationBranch = (() => {
         dispatch(getAllBranchesList({}));
@@ -90,36 +90,30 @@ function MyBranches() {
 
     const addSelectedBranch = (item: Branch) => {
         let updateSelectedBranch = [...associatedBranch];
+        let removeBranch = [...removeAssociatedBranch]
         const branchExists = updateSelectedBranch.some(
-            (eachBranch) => eachBranch.id === item.id
+            (eachBranch) => eachBranch === item.id
         );
         if (branchExists) {
             updateSelectedBranch = updateSelectedBranch.filter(
-                (eachItem) => eachItem.id !== item.id
+                (eachItem) => eachItem !== item.id
             );
+            removeBranch = [...removeBranch, item.id];
         } else {
             updateSelectedBranch = [...updateSelectedBranch, item.id];
+            removeBranch = removeBranch.filter(
+                (eachItem) => eachItem !== item.id
+            );
         }
         setAssociatedBranch(updateSelectedBranch)
+        setRemoveAssociatedBranch(removeBranch)
     };
-
-    console.log("associatedBranch", associatedBranch);
 
     return (
         <>
             <Card flexDirection={"row"} margin={"m-3"}>
                 <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
-                    <DropDown placeholder={t('selectBranch')}
-                        label={t("MyBranches")}
-                        data={branchDropDown}
-                        name={"dropdownSelectedBranch"}
-                        value={dropdownSelectedBranch}
-                        onChange={(event) => {
-                            // setDropdownSelectedBranch(event);
-                            console.log(event.target.id);
-
-                        }}
-                    />
+                    <MyActiveBranches />
                 </Container>
             </Card>
             {brancheslist && brancheslist.length > 0 && (
@@ -130,7 +124,7 @@ function MyBranches() {
                     <Divider />
                     <div className="my-4">
                         {brancheslist.map((item: Branch, index: number) => {
-                            const isActive = associatedBranch.some((el: any) => el === item.id)
+                            const isActive = associatedBranch && associatedBranch.length > 0 && associatedBranch.some((el: any) => el === item.id)
                             return (
                                 <div
                                     className="row align-items-center mx-4"
@@ -156,7 +150,7 @@ function MyBranches() {
                         <div className="row col-lg-2 ml-4 mt-5 mb-3 float-right">
                             <Primary
                                 text={"Submit"}
-                                onClick={() => onSubmit("0")}
+                                onClick={() => onSubmit('')}
                             />
                         </div>
                     </div>

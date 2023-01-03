@@ -198,13 +198,11 @@ function* getDepartments(action) {
 function* getAllBranches(action) {
   try {
     yield put(showLoader());
-
     const response = yield call(fetchAllBranchesList, action.payload.params);
-
     if (response.success) {
       yield put(hideLoader());
       yield put(getAllBranchesListSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess((response.details)));
     } else {
       yield put(hideLoader());
       yield put(getAllBranchesListFailure(response.error_message));
@@ -876,8 +874,9 @@ function* fetchAdminBranchSaga(action) {
     const response = yield call(fetchAdminBranches, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getAdminBranchesSuccess(response));
-      yield call(action.payload.onSuccess(response));
+      yield put(getAdminBranchesSuccess(response.details));
+
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(hideLoader());
       yield call(action.payload.onError(response.error_message));

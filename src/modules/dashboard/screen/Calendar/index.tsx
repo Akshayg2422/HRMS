@@ -52,7 +52,6 @@ function Calendar() {
     dispatch(fetchCalendardetails({ params }));
   };
 
-  console.log('calender-->',calendarEvents)
   function paginationHandler(
     type: "next" | "prev" | "current",
     position?: number
@@ -61,8 +60,8 @@ function Calendar() {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     getCalendarDetails(page);
   }
 
@@ -77,7 +76,7 @@ function Calendar() {
   };
 
   const geteventsdetails = (data: any) => {
-    return  data && data.length >0 && data.map((item: any) => {
+    return data && data.length > 0 && data.map((item: any) => {
       let filteredlist = {};
       filteredlist = {
         title: item.title,
@@ -173,11 +172,11 @@ function Calendar() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
-          <Container additionClass={"text-right row my-4"}>
-            <Container additionClass="col-xl-4">
+          <Container additionClass={"row"}>
+            <Container additionClass="col-xl-5">
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
-            <Container additionClass="col ">
+            <Container additionClass="text-right col mt-xl-4 ">
               <Primary
                 text={t("addHoildays")}
                 onClick={handleAddHolidays}
@@ -211,7 +210,7 @@ function Calendar() {
               }}
               custombutton={"h5"}
             />
-          ) : <NoRecordFound/>}
+          ) : <NoRecordFound />}
         </Card>
         <Modal
           title={t("deleteHoliday")}

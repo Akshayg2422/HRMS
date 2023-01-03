@@ -13,9 +13,6 @@ import {
   Icon,
 } from "@components";
 import React, { useEffect, useState } from "react";
-import {
-  getEmployeesList,
-} from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import {
   paginationHandler,
@@ -119,7 +116,6 @@ function EmployeeShifts() {
         setChangeShiftModelModel(!changeShiftModel)
       },
       onError: (error: string) => {
-        // setChangeShiftModelModel(!changeShiftModel)
         showToast("error", error);
       },
     }));
@@ -147,24 +143,26 @@ function EmployeeShifts() {
   return (
     <>
       <Card>
-        <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-4"}>
+        <Container additionClass={"row my-4"}>
+          <Container col={"col-xl-5"}>
             <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>
-          <Container additionClass={"col-xl-4 col-md-6 col-sm-12"}>
+          <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>
             <InputText
               value={searchEmployee}
+              col={'col'}
               placeholder={t("enterEmployeeName")}
               onChange={(e) => {
                 setSearchEmployee(e.target.value);
               }}
             />
+            <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
+              onClick={() => {
+                getEmployeeLogsWithShifts(currentPage);
+              }}
+            />
           </Container>
-          <Icon type={"btn-primary"} additionClass={'mt-2'} icon={Icons.Search}
-            onClick={() => {
-              getEmployeeLogsWithShifts(currentPage);
-            }}
-          />
+
         </Container>
       </Card>
       {employeeWithShifts && employeeWithShifts.length > 0 ? (

@@ -154,7 +154,6 @@ const DashboardReducer = (state = initialState, action) => {
       };
       break;
     case SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD:
-      console.log("action.payload.checkBoxStatus",action.payload.checkBoxStatus);
       state = {
         ...state,
         hierarchicalBranchIds: { ...state.hierarchicalBranchIds, include_child: action.payload.checkBoxStatus }
@@ -163,7 +162,6 @@ const DashboardReducer = (state = initialState, action) => {
 
 
     case SET_HIERARCHICAL_ALL_BRANCH_IDS:
-      console.log(action.payload+"====");
       state = {
         ...state,
         hierarchicalAllBranchIds: action.payload
@@ -173,7 +171,7 @@ const DashboardReducer = (state = initialState, action) => {
     case RESET_REDUCER:
       state = initialState;
       break;
-    
+
 
     default:
       state = state;

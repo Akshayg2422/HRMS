@@ -7,7 +7,7 @@ import { showLoader, hideLoader } from "../app/actions";
 //     try {
 //         yield put(showLoader());
 
-//         const response = yield call(postAddWeeklyShift, action.payload.params);
+//         const response = yield call(postAddWeeklyShift, action.payload.params); 
 //         if (response.success) {
 //             yield put(hideLoader());
 //             yield put(addWeeklyShiftSuccess(response.details));
@@ -22,8 +22,6 @@ import { showLoader, hideLoader } from "../app/actions";
 //         yield put(addWeeklyShiftFailure("Invalid Request"));
 //     }
 // }
-
-
 
 
 //Watcher

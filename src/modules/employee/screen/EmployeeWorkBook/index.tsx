@@ -113,24 +113,26 @@ function EmployeeTimeSheets() {
     <>
       <Card>
         <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-4"}>
+          <Container col={"col-xl-5"}>
             <ChooseBranchFromHierarchical />
           </Container>
-          <Container additionClass={"col-xl-4 col-md-6 col-sm-12"}>
+          <Container additionClass={"col-xl-3 col-md-6 col-sm-12 mt-xl-4 row"}>
             <InputText
               value={searchEmployee}
+              col={'col'}
               placeholder={t("enterEmployeeName")}
               onChange={(e) => {
                 setSearchEmployee(e.target.value);
               }}
             />
+            <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+              onClick={() => {
+                getEmployeeTimeSheets(currentPage);
+              }}
+            />
           </Container>
-          <Icon type={"btn-primary"} additionClass={'mt-2'} icon={Icons.Search}
-            onClick={() => {
-              getEmployeeTimeSheets(currentPage);
-            }}
-          />
-          <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+          
+          <div className="col text-right my-sm-2 mt-3 mt-sm-0 mt-xl-4">
             <Sort
               sortData={sortData}
               activeIndex={activeSort}

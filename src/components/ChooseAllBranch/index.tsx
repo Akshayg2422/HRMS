@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, InputDefault, CheckBox, ImageView } from "@components";
+import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches } from "@components";
 import { getAllBranchesList } from "../../store/location/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { LocationProps } from "../Interface";
@@ -9,6 +9,7 @@ import {
   setBranchHierarchical,
   setBranchHierarchicalIncludeChild,
 } from "../../store/dashboard/actions";
+import { useTranslation } from "react-i18next";
 
 interface HierarchicalProps {
   showCheckBox?: boolean;
@@ -17,6 +18,8 @@ interface HierarchicalProps {
 }
 
 function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProps) {
+  const { t } = useTranslation();
+
   const { hierarchicalBranchName, hierarchicalAllBranchIds, hierarchicalBranchIds, dashboardDetails } =
     useSelector((state: any) => state.DashboardReducer);
 
@@ -91,7 +94,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
               child: getChild(response, parentBranch.id),
             };
             const filteredBranch = getCurrentBranchNode(
-              dashboardDetails.company_branch.id,
+              hierarchicalBranchIds.branch_id,
               [hierarchicalBranchArray]
             );
             setHierarchicalBranch({ child: [filteredBranch] });
@@ -102,7 +105,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
         },
       })
     );
-  }, []);
+  }, [hierarchicalBranchName,hierarchicalBranchIds ]);
 
   function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
     const childIds = getAllSubBranches(allBranch, item.id);
@@ -122,13 +125,21 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
     setModel(!model);
   }
 
-
-
   return (
     <div>
-      <div className="col text-right">
-        <div onClick={() => setModel(!model)}>
-          <InputDefault disabled={true} value={hierarchicalAllBranchIds !== -1 ? hierarchicalBranchName : 'All'} />
+      <div className="row flex-row-reverse">
+        <div className="col-lg-6">
+          <div className="form-group">
+            <small className="form-control-label text-black">{t("MyBranches")}</small>
+            <div onClick={() => setModel(!model)}>
+            <InputDefault disabled={true} value={hierarchicalAllBranchIds !== -1 ? hierarchicalBranchName : 'All'} />
+            </div>
+          </div>
+        </div>
+        <div className="col-lg-6">
+          <div className="form-group">
+            <MyActiveBranches />
+          </div>
         </div>
       </div>
       <Modal showModel={model} toggle={() => setModel(!model)}>

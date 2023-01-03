@@ -65,25 +65,7 @@ const AllLeaves = () => {
           : position;
     fetchPendingDetail(page);
   }
-  // const normalizedEmployeeLog = (data: any) => {
-  //   return (
-  //     data &&
-  //     data.length > 0 &&
-  //     data.map((el: any) => {
-
-  //       return {
-  //         name: el.name,
-  //         "Date From": el.date_from,
-  //         "Date To": el.date_to,
-  //         "Leave Types": el.leave_type,
-  //         Reason: el.reason,
-  //         // Status: el.status_text,
-  //         // Branch: el.branch_name,
-  //       };
-  //     })
-  //   );
-  // };
-
+  
   const manageApproveStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
     setApproveModel(!approveModel);
@@ -123,7 +105,6 @@ const AllLeaves = () => {
       })
     );
   };
-  console.log("employeesLeaves", employeesLeaves);
 
   return (
     <div>
@@ -139,7 +120,6 @@ const AllLeaves = () => {
             }}
             previousClick={() => paginationHandler("prev")}
             nextClick={() => paginationHandler("next")}
-            // displayDataSet={normalizedEmployeeLog(employeesLeaves)}
             tableChildren={
               <LocationTable
                 tableDataSet={employeesLeaves}

@@ -115,7 +115,8 @@ import {
   GET_ADMIN_BRANCHES_FAILURE,
   POST_UPDATED_ADMIN_BRANCHES,
   POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
-  POST_UPDATED_ADMIN_BRANCHES_FAILURE
+  POST_UPDATED_ADMIN_BRANCHES_FAILURE,
+  IS_RENDER_ADMIN_BRANCHES
 } from "./actionTypes";
 
 const initialState = {
@@ -153,7 +154,8 @@ const initialState = {
   employeesModifyLeaves: "",
   misReport: [],
   employeeDocuments: [],
-  adminBranches: []
+  adminBranches: [],
+  RenderAdminBranch: false
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1079,6 +1081,14 @@ const EmployeeReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      };
+      break;
+
+    //is render admin branches
+    case IS_RENDER_ADMIN_BRANCHES:
+      state = {
+        ...state,
+        RenderAdminBranch: action.payload,
       };
       break;
     /**

@@ -163,12 +163,12 @@ function Reports() {
               }
             }}
           />
-          <Container additionClass={'col-lg-3  mt-xl-2'}>
-            <h5 className='ml-xl-3'>{t("branch")}</h5>
-
+          <Container additionClass={'col-lg-6  mt-xl-2'}>
             <AllHierarchical />
-
           </Container>
+
+        </Container>
+        <Container flexDirection={'row'} display={'d-flex'} additionClass={'mt-lg-4'}  >
           <Container additionClass={'col-lg-3 col-md-12'}>
             <InputText
               placeholder={t("enterEmployeeName")}
@@ -179,8 +179,6 @@ function Reports() {
               }}
             />
           </Container>
-        </Container>
-        <Container flexDirection={'row'} display={'d-flex'} additionClass={'mt-lg-4'}  >
           <Container additionClass={'col-lg-2'}>
             <h5>{t("startDate")}</h5>
             <DatePicker

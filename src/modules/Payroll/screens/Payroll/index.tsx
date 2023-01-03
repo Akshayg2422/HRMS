@@ -88,8 +88,7 @@ function PayRoll() {
                         />
                     </Container>
                     <Container
-                        col={"col-xl-3"}
-                        additionClass={"mt-xl-4"}
+                        col={"col-xl-5"}
                     >
                         <ChooseBranchFromHierarchical />
                     </Container>
