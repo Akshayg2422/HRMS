@@ -116,7 +116,8 @@ import {
   POST_UPDATED_ADMIN_BRANCHES,
   POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
   POST_UPDATED_ADMIN_BRANCHES_FAILURE,
-  IS_RENDER_ADMIN_BRANCHES
+  IS_RENDER_ADMIN_BRANCHES,
+  GET_BRANCHES_ADMIN
 } from "./actionTypes";
 
 const initialState = {
@@ -155,7 +156,8 @@ const initialState = {
   misReport: [],
   employeeDocuments: [],
   adminBranches: [],
-  RenderAdminBranch: false
+  RenderAdminBranch: false,
+  branchAdmins: []
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1072,7 +1074,6 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        // adminBranches: action.payload,
       };
       break;
 
@@ -1091,6 +1092,31 @@ const EmployeeReducer = (state = initialState, action) => {
         RenderAdminBranch: action.payload,
       };
       break;
+
+    /**
+     * branch Admins
+     */
+    case GET_BRANCHES_ADMIN:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_ADMIN_BRANCHES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        branchAdmins: action.payload
+      };
+      break;
+
+    case GET_ADMIN_BRANCHES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+      };
+      break;
+
     /**
      * Default
      */

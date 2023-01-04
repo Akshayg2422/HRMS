@@ -76,7 +76,8 @@ function Login() {
       col={'col'}
       display={'d-flex'}
       flexDirection={'flex-column'}
-      additionClass={'scrollable-register'}>
+      // additionClass={'scrollable-register'}
+      >
       <Container
         display={'d-flex'}
         justifyContent={'justify-content-between'}

@@ -34,7 +34,9 @@ import {
   GET_EMPLOYEE_DOCUMENT,
   ATTACH_USER_DOCUMENT,
   GET_ADMIN_BRANCHES,
-  POST_UPDATED_ADMIN_BRANCHES
+  POST_UPDATED_ADMIN_BRANCHES,
+  GET_BRANCHES_ADMIN,
+  
 } from "./actionTypes";
 
 import {
@@ -111,6 +113,8 @@ import {
   getAdminBranchesFailure,
   postAdminUpdateBranchesSuccess,
   postAdminUpdateBranchesFailure,
+  getBranchAdminsSuccess,
+  getBranchAdminsFailure,
 
 } from "./actions";
 
@@ -148,7 +152,8 @@ import {
   fetchEmployeeDocuments,
   attachUserDocuments,
   fetchAdminBranches,
-  PostUpdatedAdminBranches
+  PostUpdatedAdminBranches,
+  getBranchAdminsApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../app/actions";
@@ -911,6 +916,26 @@ function* postUpdateAdminBranchesSaga(action) {
   }
 }
 
+function* getBranchAdminsSaga(action) {
+  try {
+    yield put(showLoader());
+    console.log("paramsaction",action);
+    const response = yield call(getBranchAdminsApi, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(getBranchAdminsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield call(action.payload.onError(response.error_message));
+      yield put(getBranchAdminsFailure(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getBranchAdminsFailure("Invalid Request"));
+  }
+}
+
 // *** WATCHER*** //
 
 function* EmployeeSaga() {
@@ -960,6 +985,8 @@ function* EmployeeSaga() {
   yield takeLatest(ATTACH_USER_DOCUMENT, AttachUserDocument);
   yield takeLatest(GET_ADMIN_BRANCHES, fetchAdminBranchSaga);
   yield takeLatest(POST_UPDATED_ADMIN_BRANCHES, postUpdateAdminBranchesSaga);
+  yield takeLatest(GET_BRANCHES_ADMIN, getBranchAdminsSaga);
+
 
 }
 

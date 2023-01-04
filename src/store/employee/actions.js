@@ -116,7 +116,10 @@ import {
   POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
   POST_UPDATED_ADMIN_BRANCHES_FAILURE,
   GET_ADMIN_BRANCHES_FAILURE,
-  IS_RENDER_ADMIN_BRANCHES
+  IS_RENDER_ADMIN_BRANCHES,
+  GET_BRANCHES_ADMIN,
+  GET_BRANCHES_ADMIN_SUCCESS,
+  GET_BRANCHES_ADMIN_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1058,5 +1061,31 @@ export const isRenderAdminBranches = (params) => {
   return {
     type: IS_RENDER_ADMIN_BRANCHES,
     payload: params,
+  };
+};
+
+/**
+ * get Admin 
+ */
+
+export const getBranchAdmins = (params) => {
+  return {
+    type: GET_BRANCHES_ADMIN,
+    payload: params,
+  };
+};
+
+export const getBranchAdminsSuccess = (response) => {
+  return {
+    type: GET_BRANCHES_ADMIN_SUCCESS,
+    payload: response,
+  };
+};
+
+
+export const getBranchAdminsFailure = (error) => {
+  return {
+    type: GET_BRANCHES_ADMIN_FAILURE,
+    payload: error,
   };
 };

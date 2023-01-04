@@ -3,7 +3,7 @@ import {
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAdminBranches, getAllBranchesList, postAdminUpdateBranches } from "../../store/employee/actions";
+import { getAdminBranches, getAllBranchesList, getBranchAdmins, postAdminUpdateBranches } from "../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import { showToast } from "@utils";
 import { setBranchHierarchical } from "../../store/dashboard/actions";
@@ -25,9 +25,12 @@ function MyActiveBranches() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { RenderAdminBranch } = useSelector((state: any) => state.EmployeeReducer);
-    const [branchDropDownData, setBranchDropDownData] = useState([])
+    const [branchDropDownData, setBranchDropDownData] = useState<any>([])
     const [employeeId, setEmployeeId] = useState('')
     const [dropdownSelectedBranch, setDropdownSelectedBranch] = useState<any>()
+    const { dashboardDetails, hierarchicalBranchIds } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
 
     useEffect(() => {
         getAdminBranchesData()
@@ -39,7 +42,11 @@ function MyActiveBranches() {
         dispatch(getAdminBranches({
             params,
             onSuccess: (success: any) => {
-                preFilledBranches(success)
+                if (success?.admin_branches.length > 0) {
+                    preFilledBranches(success)
+                } else {
+                    initialData()
+                }
             },
             onError: (error: string) => {
                 showToast("info", error);
@@ -50,8 +57,14 @@ function MyActiveBranches() {
         setBranchDropDownData(branchesList?.admin_branches)
         const defaultBranch = branchesList && branchesList?.admin_branches.length > 0 && branchesList?.admin_branches.findIndex((branches: any) => branches.is_active_branch)
         setDropdownSelectedBranch(branchesList?.admin_branches[defaultBranch].id)
-        setEmployeeId(branchesList?.emp_id)
         setActiveBranch(branchesList?.admin_branches[defaultBranch].id, branchesList?.admin_branches[defaultBranch].name)
+    }
+
+    const initialData = () => {
+        let parentBranch = { name: dashboardDetails?.company_branch?.name, id: dashboardDetails?.company_branch?.id, is_active_branch: true }
+        setBranchDropDownData([parentBranch])
+        setDropdownSelectedBranch(branchDropDownData[0].id)
+        setActiveBranch(dashboardDetails?.company_branch?.id, dashboardDetails?.company_branch?.name)
     }
 
     const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -85,13 +98,14 @@ function MyActiveBranches() {
 
     const changeActiveStatus = (id: string) => {
         const params = {
-            id: employeeId,
+            id: dashboardDetails?.user_details?.employee_id,
             ...(id && { admin_active_branch: id })
         }
         dispatch(postAdminUpdateBranches({
             params,
             onSuccess: (success: any) => {
                 showToast("success", success?.message);
+                branchAdmins()
                 getAdminBranchesData()
             },
             onError: (error: string) => {
@@ -99,6 +113,22 @@ function MyActiveBranches() {
             },
         }));
     }
+
+    const branchAdmins = () => {
+        const params = {
+            child_ids: hierarchicalBranchIds.child_ids
+        }
+        dispatch(getBranchAdmins({
+            params,
+            onSuccess: (success: any) => {
+                showToast("success", success?.message);
+            },
+            onError: (error: string) => {
+                showToast("error", error);
+            },
+        }));
+    }
+    // getBranchAdmins
 
     return (
         <>

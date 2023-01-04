@@ -105,4 +105,7 @@ export const fetchAdminBranches= (payload) => post(url.GET_BRANCH_ADMIN_BRANCHES
 
 export const PostUpdatedAdminBranches= (payload) => post(url.UPDATING_THE_ADMIN_BRANCHES,payload,{})
 
+export const getBranchAdminsApi= (payload) => post(url.GET_ADMIN_BRANCHES,payload,{})
+
+
 

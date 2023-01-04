@@ -104,5 +104,8 @@ export const GET_BRANCH_ADMIN_BRANCHES = 'employee/getBranchAdminBranches'
 
 export const UPDATING_THE_ADMIN_BRANCHES = 'employee/updateBranchAdminBranches'
 
+export const GET_ADMIN_BRANCHES = 'employee/getBranchAdmins'
+
+
 
 

@@ -30,9 +30,6 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
     []
   );
 
-  
-
-  
   useEffect(() => {
     const params = {};
     dispatch(
@@ -79,6 +76,7 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
     });
     return branchListFiltered;
   };
+
 
   const getChild = (branchList: Array<LocationProps>, parentId: string) =>
     branchList
@@ -153,7 +151,6 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
         </div>
       </div>
       <Modal showModel={model} toggle={() => setModel(!model)}>
-        {console.log("brancheslist", brancheslist)}
         {brancheslist &&
           hierarchicalBranch &&
           hierarchicalBranch?.child &&
