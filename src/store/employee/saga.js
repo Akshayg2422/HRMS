@@ -879,9 +879,8 @@ function* fetchAdminBranchSaga(action) {
     const response = yield call(fetchAdminBranches, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getAdminBranchesSuccess(response.details));
-
       yield call(action.payload.onSuccess(response.details));
+      yield put(getAdminBranchesSuccess(response.details));
     } else {
       yield put(hideLoader());
       yield call(action.payload.onError(response.error_message));
@@ -919,12 +918,11 @@ function* postUpdateAdminBranchesSaga(action) {
 function* getBranchAdminsSaga(action) {
   try {
     yield put(showLoader());
-    console.log("paramsaction",action);
     const response = yield call(getBranchAdminsApi, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
-      yield put(getBranchAdminsSuccess(response));
-      yield call(action.payload.onSuccess(response));
+      yield put(getBranchAdminsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(hideLoader());
       yield call(action.payload.onError(response.error_message));

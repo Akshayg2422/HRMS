@@ -117,7 +117,9 @@ import {
   POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
   POST_UPDATED_ADMIN_BRANCHES_FAILURE,
   IS_RENDER_ADMIN_BRANCHES,
-  GET_BRANCHES_ADMIN
+  GET_BRANCHES_ADMIN,
+  GET_BRANCHES_ADMIN_SUCCESS,
+  GET_BRANCHES_ADMIN_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -1100,17 +1102,26 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+        branchAdmins:[]
       };
       break;
-    case GET_ADMIN_BRANCHES_SUCCESS:
+    case GET_BRANCHES_ADMIN_SUCCESS:
+      const admins = action.payload
       state = {
         ...state,
+        branchAdmins: admins.data,
+        numOfPages: admins.data.num_pages,
+        currentPage:
+          admins.data.next_page === -1
+            ? admins.data.num_pages
+            : admins.data.next_page - 1,
         loading: false,
-        branchAdmins: action.payload
       };
       break;
 
-    case GET_ADMIN_BRANCHES_FAILURE:
+    case GET_BRANCHES_ADMIN_FAILURE:
       state = {
         ...state,
         error: action.payload,

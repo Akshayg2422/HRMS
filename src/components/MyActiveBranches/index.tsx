@@ -24,9 +24,8 @@ type LocationProps = {
 function MyActiveBranches() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { RenderAdminBranch } = useSelector((state: any) => state.EmployeeReducer);
+    const { RenderAdminBranch, currentPage } = useSelector((state: any) => state.EmployeeReducer);
     const [branchDropDownData, setBranchDropDownData] = useState<any>([])
-    const [employeeId, setEmployeeId] = useState('')
     const [dropdownSelectedBranch, setDropdownSelectedBranch] = useState<any>()
     const { dashboardDetails, hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
@@ -36,6 +35,9 @@ function MyActiveBranches() {
         getAdminBranchesData()
     }, [RenderAdminBranch]);
 
+    useEffect(() => {
+        branchAdmins()
+    }, [hierarchicalBranchIds]);
 
     const getAdminBranchesData = () => {
         const params = {}
@@ -59,7 +61,6 @@ function MyActiveBranches() {
         setDropdownSelectedBranch(branchesList?.admin_branches[defaultBranch].id)
         setActiveBranch(branchesList?.admin_branches[defaultBranch].id, branchesList?.admin_branches[defaultBranch].name)
     }
-
     const initialData = () => {
         let parentBranch = { name: dashboardDetails?.company_branch?.name, id: dashboardDetails?.company_branch?.id, is_active_branch: true }
         setBranchDropDownData([parentBranch])
@@ -99,13 +100,13 @@ function MyActiveBranches() {
     const changeActiveStatus = (id: string) => {
         const params = {
             id: dashboardDetails?.user_details?.employee_id,
-            ...(id && { admin_active_branch: id })
+            ...(id && { admin_active_branch: id }),
+            admin_branches_ids: { add: [id] }
         }
         dispatch(postAdminUpdateBranches({
             params,
             onSuccess: (success: any) => {
                 showToast("success", success?.message);
-                branchAdmins()
                 getAdminBranchesData()
             },
             onError: (error: string) => {
@@ -116,19 +117,11 @@ function MyActiveBranches() {
 
     const branchAdmins = () => {
         const params = {
+            page_number: currentPage,
             child_ids: hierarchicalBranchIds.child_ids
         }
-        dispatch(getBranchAdmins({
-            params,
-            onSuccess: (success: any) => {
-                showToast("success", success?.message);
-            },
-            onError: (error: string) => {
-                showToast("error", error);
-            },
-        }));
+        dispatch(getBranchAdmins({ params }));
     }
-    // getBranchAdmins
 
     return (
         <>

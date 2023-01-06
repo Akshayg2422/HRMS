@@ -23,7 +23,6 @@ const WEEK_DAYS_LIST = [
 
 
 const WeeklyShiftSelection = () => {
-
   const [weeklyData,  setWeeklyData] = useState<any>([
     { week: 1, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
@@ -36,7 +35,7 @@ const WeeklyShiftSelection = () => {
   let dispatch = useDispatch();
   const navigation = useNav();
 
-  const { selectedWeeklyShiftId, weeklyShiftDetails, selectedWeeklyShiftName } = useSelector(
+  const { selectedWeeklyShiftId, selectedWeeklyShiftName } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
 
