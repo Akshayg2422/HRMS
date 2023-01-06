@@ -45,6 +45,7 @@ function MyBranches() {
         sortedBranchList()
     }, [associatedBranch])
 
+   
     const normalizedAdminDetails = (data: any) => {
         return data.map((el: any) => {
             return {
@@ -75,15 +76,26 @@ function MyBranches() {
         dispatch(getBranchAdmins({ params }));
     }
 
+    const AdminSubBranches = () => {
+        let subBranches: any[] = []
+        brancheslist.map((branch: any) => {
+            hierarchicalBranchIds.child_ids.map((ids: any) => {
+                if (branch.id === ids) {
+                    subBranches.push(branch)
+                }
+            })
+        })
+        return subBranches
+    }
+    // console.log(AdminSubBranches());
+
 
     const sortedBranchList = () => {
         if (associatedBranch.length <= 0) {
             setBranchesListSet(brancheslist)
         } else {
             let result = brancheslist.filter((o1: { id: any; }) => associatedBranch.some((o2: any) => o1?.id === o2));
-            let res = result
-                .concat(brancheslist.filter(({ id }: any) => !result.find((x: { id: any; }) => x.id === id)))
-                .sort((a: { id: number; }, b: { id: number; }) => a.id - b.id);
+            let res = result.concat(brancheslist.filter(({ id }: any) => !result.find((x: { id: any; }) => x.id === id)))
             setBranchesListSet(res)
         }
     }
