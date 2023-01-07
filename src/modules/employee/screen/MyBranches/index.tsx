@@ -45,12 +45,17 @@ function MyBranches() {
         sortedBranchList()
     }, [associatedBranch])
 
-   
+
+    useEffect(() => {
+        setAdminId('')
+    }, [hierarchicalBranchIds.child_ids])
+
+
     const normalizedAdminDetails = (data: any) => {
         return data.map((el: any) => {
             return {
                 "Name": el.name,
-                "MobileNumber": el.mobile_number
+                "MobileNumber": el.mobile_number,
             };
         });
     };
@@ -87,34 +92,38 @@ function MyBranches() {
         })
         return subBranches
     }
-    // console.log(AdminSubBranches());
-
 
     const sortedBranchList = () => {
         if (associatedBranch.length <= 0) {
-            setBranchesListSet(brancheslist)
+            setBranchesListSet(AdminSubBranches())
         } else {
-            let result = brancheslist.filter((o1: { id: any; }) => associatedBranch.some((o2: any) => o1?.id === o2));
-            let res = result.concat(brancheslist.filter(({ id }: any) => !result.find((x: { id: any; }) => x.id === id)))
+            let result = AdminSubBranches().filter((o1: { id: any; }) => associatedBranch.some((o2: any) => o1?.id === o2));
+            let res = result.concat(AdminSubBranches().filter(({ id }: any) => !result.find((x: { id: any; }) => x.id === id)))
             setBranchesListSet(res)
         }
     }
 
     const onSubmit = () => {
-        const params = {
-            id: adminId?.id,
-            admin_branches_ids: { add: associatedBranch, remove: removeAssociatedBranch }
+
+        if (associatedBranch.length > 0) {
+            const params = {
+                id: adminId?.id,
+                admin_branches_ids: { add: associatedBranch, remove: removeAssociatedBranch }
+            }
+            dispatch(postAdminUpdateBranches({
+                params,
+                onSuccess: (success: any) => {
+                    showToast("success", success?.message);
+                    dispatch(isRenderAdminBranches(!RenderAdminBranch))
+                },
+                onError: (error: string) => {
+                    showToast("error", error);
+                },
+            }));
+        } else {
+            showToast("error", "Atleast Admins Should have One Branch");
         }
-        dispatch(postAdminUpdateBranches({
-            params,
-            onSuccess: (success: any) => {
-                showToast("success", success?.message);
-                dispatch(isRenderAdminBranches(!RenderAdminBranch))
-            },
-            onError: (error: string) => {
-                showToast("error", error);
-            },
-        }));
+
     }
 
     const checkAdminBranches = (item: any) => {
@@ -149,6 +158,8 @@ function MyBranches() {
         setAssociatedBranch(updateSelectedBranch)
         setRemoveAssociatedBranch(removeBranch)
     };
+
+
     return (
         <>
             <Card additionClass="mx--1">
@@ -180,14 +191,14 @@ function MyBranches() {
                         />
                     ) : <NoRecordFound />}
                 </Card>
-                {branchesListSet && branchesListSet.length > 0 && (
+                {adminId && (
                     <Card
                         additionClass="col-xl col-sm-3 col-0 mx-2"
                     >
-                        <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('allRegisteredBranches')}</h3>
+                        <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
                         <Divider />
                         <div className="my-4">
-                            {branchesListSet.map((item: Branch, index: number) => {
+                            {branchesListSet && branchesListSet.map((item: Branch, index: number) => {
                                 const isActive = associatedBranch && associatedBranch.length > 0 && associatedBranch.some((el: any) => el === item.id)
                                 return (
                                     <div

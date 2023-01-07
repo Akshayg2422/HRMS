@@ -56,11 +56,7 @@ const Header = () => {
   };
 
   function proceedLogout() {
-
-
-
     try {
-
       localStorage.clear();
       dispatch(resetApp())
       dispatch(resetAuth())
@@ -68,7 +64,6 @@ const Header = () => {
       dispatch(resetEmployee())
       dispatch(resetLocation())
       dispatch(resetShiftManagement())
-
       goTo(navigate, ROUTE.ROUTE_LOGIN, true)
 
 

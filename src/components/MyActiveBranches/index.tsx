@@ -43,30 +43,20 @@ function MyActiveBranches() {
         const params = {}
         dispatch(getAdminBranches({
             params,
-            onSuccess: (success: any) => {
-                if (success?.admin_branches.length > 0) {
-                    preFilledBranches(success)
-                } else {
-                    initialData()
-                }
+            onSuccess: (response: any) => {
+                const { admin_branches } = response
+                const updatedData = admin_branches.length > 0 ? admin_branches : [{ name: dashboardDetails?.company_branch?.name, id: dashboardDetails?.company_branch?.id, is_active_branch: true }]
+                setBranchDropDownData(updatedData)
+                const defaultBranch = updatedData.findIndex((branches: any) => branches.is_active_branch)
+                setDropdownSelectedBranch(updatedData[defaultBranch].id)
+                setActiveBranch(updatedData[defaultBranch].id, updatedData[defaultBranch].name)
             },
             onError: (error: string) => {
                 showToast("info", error);
             },
         }));
     }
-    const preFilledBranches = (branchesList: any) => {
-        setBranchDropDownData(branchesList?.admin_branches)
-        const defaultBranch = branchesList && branchesList?.admin_branches.length > 0 && branchesList?.admin_branches.findIndex((branches: any) => branches.is_active_branch)
-        setDropdownSelectedBranch(branchesList?.admin_branches[defaultBranch].id)
-        setActiveBranch(branchesList?.admin_branches[defaultBranch].id, branchesList?.admin_branches[defaultBranch].name)
-    }
-    const initialData = () => {
-        let parentBranch = { name: dashboardDetails?.company_branch?.name, id: dashboardDetails?.company_branch?.id, is_active_branch: true }
-        setBranchDropDownData([parentBranch])
-        setDropdownSelectedBranch(branchDropDownData[0].id)
-        setActiveBranch(dashboardDetails?.company_branch?.id, dashboardDetails?.company_branch?.name)
-    }
+
 
     const getAllSubBranches = (branchList: any, parent_id: string) => {
         let branchListFiltered: any = [];
