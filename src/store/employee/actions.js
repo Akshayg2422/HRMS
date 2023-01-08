@@ -119,7 +119,8 @@ import {
   IS_RENDER_ADMIN_BRANCHES,
   GET_BRANCHES_ADMIN,
   GET_BRANCHES_ADMIN_SUCCESS,
-  GET_BRANCHES_ADMIN_FAILURE
+  GET_BRANCHES_ADMIN_FAILURE,
+  GET_FILTERED_BRANCHES
 } from "./actionTypes";
 
 // Delete Account
@@ -1087,5 +1088,13 @@ export const getBranchAdminsFailure = (error) => {
   return {
     type: GET_BRANCHES_ADMIN_FAILURE,
     payload: error,
+  };
+};
+
+
+export const getFIlteredBranch = (branches) => {
+  return {
+    type: GET_FILTERED_BRANCHES,
+    payload: branches,
   };
 };

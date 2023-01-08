@@ -54,6 +54,8 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
     return branchListFiltered;
   };
 
+
+
   const getChild = (branchList: Array<LocationProps>, parentId: string) =>
     branchList
       .filter((it) => it.parent_id === parentId)
@@ -107,10 +109,17 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
     );
   }, [hierarchicalBranchName, hierarchicalBranchIds]);
 
+
+
+  const getFilteredBranch = (item: any) => {
+    console.log('item', item);
+  }
+
+
   function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
     const childIds = getAllSubBranches(allBranch, item.id);
     dispatch(setBranchAllHierarchical(0))
-
+    getFilteredBranch(getAllSubBranches(allBranch, item.id))
     dispatch(
       setBranchHierarchical({
         ids: {
@@ -124,6 +133,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
     setModel(!model);
   }
+
 
   return (
     <div>

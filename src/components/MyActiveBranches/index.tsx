@@ -57,7 +57,6 @@ function MyActiveBranches() {
         }));
     }
 
-
     const getAllSubBranches = (branchList: any, parent_id: string) => {
         let branchListFiltered: any = [];
         const getChild = (branchList: any, parent_id: string) => {
@@ -107,8 +106,7 @@ function MyActiveBranches() {
 
     const branchAdmins = () => {
         const params = {
-            page_number: currentPage,
-            child_ids: hierarchicalBranchIds.child_ids
+            child_ids: hierarchicalBranchIds?.child_ids
         }
         dispatch(getBranchAdmins({ params }));
     }

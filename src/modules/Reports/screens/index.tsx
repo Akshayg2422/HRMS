@@ -25,6 +25,7 @@ function Reports() {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [searchEmployee, setSearchEmployee] = useState('')
+  const [filteredBranch, setFilteredBranch] = useState([])
   const [reportsType, setReportsType] = useState(REPORTS_TYPE[0].value)
   const [departmentsData, setDepartmentsData] = useState([{
     id: "-1",
@@ -71,13 +72,15 @@ function Reports() {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
+  console.log("currentpage",currentPage);
+  
 
   // const reset=()=>
 
   const getReports = (() => {
     const params = {
       ...(searchEmployee && { q: searchEmployee }),
-      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
+      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds?.branch_id] }),
       attendance_type: '-1',
       report_type: reportsType,
       department_id: selectedDepartment,
@@ -137,6 +140,7 @@ function Reports() {
     dispatch(getMisReportClear())
   }
 
+ 
 
   return (
     <>
