@@ -103,7 +103,6 @@ import {
   GET_MIS_REPORT_DOWNLOAD,
   GET_MIS_REPORT_DOWNLOAD_SUCCESS,
   GET_MIS_REPORT_DOWNLOAD_FAILURE,
-  GET_MIS_REPORT_CLEAR,
   GET_EMPLOYEE_DOCUMENT,
   GET_EMPLOYEE_DOCUMENT_FAILURE,
   GET_EMPLOYEE_DOCUMENT_SUCCESS,
@@ -973,25 +972,14 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-
-
     // ***Mis Report***//
 
     case GET_MIS_REPORT:
       state = {
         ...state,
-        misReport: [],
-        loading: true,
         numOfPages: 0,
         currentPage: 1,
-      };
-      break;
-    case GET_MIS_REPORT_CLEAR:
-      state = {
-        ...state,
         misReport: [],
-        numOfPages: 0,
-        currentPage: 1,
       };
       break;
     case GET_MIS_REPORT_SUCCESS:
@@ -1104,7 +1092,7 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: true,
         numOfPages: 0,
         currentPage: 1,
-        branchAdmins:[]
+        branchAdmins: []
       };
       break;
     case GET_BRANCHES_ADMIN_SUCCESS:

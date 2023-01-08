@@ -902,37 +902,22 @@ export const getModifyLogsFailure = (error) => {
   };
 };
 
-
+/**
+ * 
+ * Mis Report
+ * 
+ */
 
 export const getMisReport = (params) => {
   return {
     type: GET_MIS_REPORT,
     payload: params,
   };
-
-
-  /**
-   * get E-locker Document
-   */
-
-
 };
-export const getEmployeeDocument = (params) => {
-  return {
-    type: GET_EMPLOYEE_DOCUMENT,
-    payload: params,
-  };
-}
+
 export const getMisReportSuccess = (response) => {
   return {
     type: GET_MIS_REPORT_SUCCESS,
-    payload: response,
-  };
-};
-
-export const getEmployeeDocumentSuccess = (response) => {
-  return {
-    type: GET_EMPLOYEE_DOCUMENT_SUCCESS,
     payload: response,
   };
 };
@@ -943,6 +928,26 @@ export const getMisReportFailure = (error) => {
     payload: error,
   };
 };
+/**
+   * get E-locker Document
+   */
+
+export const getEmployeeDocument = (params) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT,
+    payload: params,
+  };
+}
+
+
+export const getEmployeeDocumentSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT_SUCCESS,
+    payload: response,
+  };
+};
+
+
 
 export const getEmployeeDocumentFailure = (error) => {
   return {
@@ -960,6 +965,18 @@ export const getDownloadMisReport = (params) => {
   };
 };
 
+export const getDownloadMisReportSuccess = (response) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD_SUCCESS,
+    payload: response,
+  };
+};
+export const getDownloadMisReportFailure = (error) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD_FAILURE,
+    payload: error,
+  };
+};
 /**
  * Attach user Document e-Locker
  */
@@ -971,13 +988,6 @@ export const attachUserDocument = (params) => {
   };
 };
 
-export const getDownloadMisReportSuccess = (response) => {
-  return {
-    type: GET_MIS_REPORT_DOWNLOAD_SUCCESS,
-    payload: response,
-  };
-};
-
 export const attachUserDocumentSuccess = (response) => {
   return {
     type: ATTACH_USER_DOCUMENT_SUCCESS,
@@ -985,19 +995,6 @@ export const attachUserDocumentSuccess = (response) => {
   };
 };
 
-export const getDownloadMisReportFailure = (error) => {
-  return {
-    type: GET_MIS_REPORT_DOWNLOAD_FAILURE,
-    payload: error,
-  };
-};
-
-
-export const getMisReportClear = () => {
-  return {
-    type: GET_MIS_REPORT_CLEAR,
-  };
-}
 
 export const attachUserDocumentFailure = (error) => {
   return {

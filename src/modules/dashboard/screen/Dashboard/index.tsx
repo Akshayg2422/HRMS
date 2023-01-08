@@ -41,7 +41,7 @@ function Dashboard() {
   useEffect(() => {
     dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
-    dispatch(getAdminBranches({  }));
+    dispatch(getAdminBranches({}));
   }, []);
   
 
@@ -72,7 +72,6 @@ function Dashboard() {
         params,
         onSuccess: (response: Array<LocationProps>) => {
           const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
-          
           dispatch(setBranchHierarchical({ids:{ branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name}))
         },
         onError: () => {
