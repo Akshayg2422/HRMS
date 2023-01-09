@@ -160,7 +160,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
     let filteredBranch = [...branch]
     if (searchBranches !== "") {
       filteredBranch = filteredBranch.filter((element: any) => {
-        return element.name.replace(/\s/g, '').slice(0, searchBranches.length).toLowerCase() === searchBranches.replace(/\s/g, '').toLowerCase()
+        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
       })
       setAllBranches(filteredBranch)
     }
