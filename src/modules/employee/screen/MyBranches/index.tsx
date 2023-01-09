@@ -29,7 +29,7 @@ type Branch = {
 function MyBranches() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { RenderAdminBranch, branchAdmins, numOfPages, currentPage, } = useSelector((state: any) => state.EmployeeReducer)
+    const { RenderAdminBranch, branchAdmins, adminNumOfPages, adminCurrentPage, } = useSelector((state: any) => state.EmployeeReducer)
     const [associatedBranch, setAssociatedBranch] = useState<any>([])
     const [adminId, setAdminId] = useState<any>()
     const [removeAssociatedBranch, setRemoveAssociatedBranch] = useState<any>([])
@@ -39,7 +39,6 @@ function MyBranches() {
     const { hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
-
 
     useEffect(() => {
         sortedBranchList()
@@ -66,9 +65,9 @@ function MyBranches() {
     ) {
         let page =
             type === "next"
-                ? currentPage + 1
+                ? adminCurrentPage + 1
                 : type === "prev"
-                    ? currentPage - 1
+                    ? adminCurrentPage - 1
                     : position;
         branchAdminsDetails(page);
     }
@@ -104,7 +103,6 @@ function MyBranches() {
     }
 
     const onSubmit = () => {
-
         if (associatedBranch.length > 0) {
             const params = {
                 id: adminId?.id,
@@ -173,8 +171,8 @@ function MyBranches() {
                         <CommonTable
                             noHeader
                             isPagination
-                            currentPage={currentPage}
-                            noOfPage={numOfPages}
+                            currentPage={adminCurrentPage}
+                            noOfPage={adminNumOfPages}
                             paginationNumberClick={(currentPage) => {
                                 paginationHandler("current", currentPage);
                             }}

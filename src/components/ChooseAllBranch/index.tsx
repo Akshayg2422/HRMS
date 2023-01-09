@@ -107,45 +107,34 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
   };
 
   useEffect(() => {
-    const params = {};
-    dispatch(
-      getAllBranchesList({
-        params,
-        onSuccess: async (response: Array<LocationProps>) => {
 
-          const currentBranch = getAllSubBranchesAlternative(response, dashboardDetails?.company_branch.id);
-          const parentBranch = response.find((it) => !it.parent_id);
+    const currentBranch = getAllSubBranchesAlternative(brancheslist, dashboardDetails?.company_branch.id);
+    const parentBranch = brancheslist.find((it: { parent_id: any; }) => !it.parent_id);
 
-          const currentEmployeeParent = response.find((it) => it.id === dashboardDetails.company_branch.id);
-          let searchArray = [currentEmployeeParent]
-          currentBranch.forEach((element: any) => {
-            const index = response.findIndex(item => item.id === element)
-            if (index) {
-              searchArray = [...searchArray, response[index]]
-            }
-          });
-          setBranch(searchArray)
-          setAllBranches(searchArray)
-          setStructuredData(response);
-          setDefaultBranch(searchArray)
-          if (parentBranch) {
-            const hierarchicalBranchArray = {
-              ...parentBranch,
-              child: getChild(response, parentBranch.id),
-            };
-            const filteredBranch = getCurrentBranchNode(
-              dashboardDetails.company_branch.id,
-              [hierarchicalBranchArray]
-            );
-            setHierarchicalBranch({ child: [filteredBranch] });
-          }
-        },
-        onError: () => {
-          console.log("=========error");
-        },
-      })
-    );
+    const currentEmployeeParent = brancheslist.find((it: { id: any; }) => it.id === dashboardDetails.company_branch.id);
+    let searchArray = [currentEmployeeParent]
+    currentBranch.forEach((element: any) => {
+      const index = brancheslist.findIndex((item: { id: any; }) => item.id === element)
+      if (index) {
+        searchArray = [...searchArray, brancheslist[index]]
+      }
+    });
+    setBranch(searchArray)
+    setAllBranches(searchArray)
+    setStructuredData(brancheslist);
+    setDefaultBranch(searchArray)
+    if (parentBranch) {
+      const hierarchicalBranchArray = {
+        ...parentBranch,
+        child: getChild(brancheslist, parentBranch.id),
+      };
+      const filteredBranch = getCurrentBranchNode(
+        dashboardDetails.company_branch.id,
+        [hierarchicalBranchArray]
+      );
 
+      setHierarchicalBranch({ child: [filteredBranch] })
+    }
   }, [hierarchicalBranchName, hierarchicalBranchIds]);
 
 

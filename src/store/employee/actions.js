@@ -1063,7 +1063,7 @@ export const isRenderAdminBranches = (params) => {
 };
 
 /**
- * get Admin 
+ * get Branch Admin 
  */
 
 export const getBranchAdmins = (params) => {

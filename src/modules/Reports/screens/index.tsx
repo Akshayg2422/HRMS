@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound } from '@components'
+import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches } from '@components'
 import { Icons } from '@assets'
 import { downloadFile, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { getDepartmentData, getDownloadMisReport, getMisReport} from '../../../store/employee/actions';
+import { getDepartmentData, getDownloadMisReport, getMisReport } from '../../../store/employee/actions';
 import { AttendanceReport, LeaveReports, LogReports } from '../container';
 import { getDashboard } from '../../../store/dashboard/actions';
 
@@ -36,8 +36,8 @@ function Reports() {
 
 
   useEffect(() => {
-    getReports(currentPage)
     getDepartments()
+    getReports(currentPage)
   }, [hierarchicalBranchIds, selectedDepartment, hierarchicalAllBranchIds, reportsType])
 
   const getDepartments = (() => {
@@ -82,9 +82,12 @@ function Reports() {
       selected_date_to: customRange.dataTo,
       page_number: pageNumber,
     };
+    console.log(JSON.stringify(params) + "=======");
     dispatch(getMisReport({
       params,
       onSuccess: (response: any) => {
+        console.log(JSON.stringify(response) + "========");
+
       },
       onError: (errorMessage: string) => {
       },

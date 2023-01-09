@@ -29,7 +29,7 @@ const initialState = {
   dashboardDetails: {},
   hierarchicalBranchIds: {},
   hierarchicalAllBranchIds: 0,
-  hierarchicalBranchName: ''
+  hierarchicalBranchName: '',
 };
 
 const DashboardReducer = (state = initialState, action) => {

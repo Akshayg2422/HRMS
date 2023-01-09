@@ -130,6 +130,8 @@ const initialState = {
   registeredEmployeesList: [],
   numOfPages: 0,
   currentPage: 1,
+  adminNumOfPages: 0,
+  adminCurrentPage: 1,
   isEdit: undefined,
   editEmployeeDetails: {},
   employeeTimeSheets: [],
@@ -977,9 +979,9 @@ const EmployeeReducer = (state = initialState, action) => {
     case GET_MIS_REPORT:
       state = {
         ...state,
+        misReport: [],
         numOfPages: 0,
         currentPage: 1,
-        misReport: [],
       };
       break;
     case GET_MIS_REPORT_SUCCESS:
@@ -1090,8 +1092,8 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
-        numOfPages: 0,
-        currentPage: 1,
+        adminNumOfPages: 0,
+        adminCurrentPage: 1,
         branchAdmins: []
       };
       break;
@@ -1100,11 +1102,11 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         branchAdmins: admins.data,
-        numOfPages: admins.data.num_pages,
-        currentPage:
-          admins.data.next_page === -1
-            ? admins.data.num_pages
-            : admins.data.next_page - 1,
+        adminNumOfPages: admins.num_pages,
+        adminCurrentPage:
+          admins  .next_page === -1
+            ? admins.num_pages
+            : admins.next_page - 1,
         loading: false,
       };
       break;

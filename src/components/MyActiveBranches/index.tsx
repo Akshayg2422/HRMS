@@ -24,19 +24,21 @@ type LocationProps = {
 function MyActiveBranches() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { RenderAdminBranch, currentPage } = useSelector((state: any) => state.EmployeeReducer);
+    const { RenderAdminBranch, adminCurrentPage } = useSelector((state: any) => state.EmployeeReducer);
     const [branchDropDownData, setBranchDropDownData] = useState<any>([])
     const [dropdownSelectedBranch, setDropdownSelectedBranch] = useState<any>()
     const { dashboardDetails, hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
+    const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+
 
     useEffect(() => {
         getAdminBranchesData()
     }, [RenderAdminBranch]);
 
     useEffect(() => {
-        branchAdmins()
+        branchAdmins(adminCurrentPage)
     }, [hierarchicalBranchIds]);
 
     const getAdminBranchesData = () => {
@@ -76,15 +78,10 @@ function MyActiveBranches() {
     };
 
     const setActiveBranch = (id: string, name: string) => {
-        const params = {}
-        dispatch(getAllBranchesList({
-            params,
-            onSuccess: (response: Array<LocationProps>) => {
-                const childIds = getAllSubBranches(response, id)
-                dispatch(setBranchHierarchical({ ids: { branch_id: id, child_ids: childIds, include_child: false }, name: name }))
-            },
-        }))
+        const childIds = getAllSubBranches(brancheslist, id)
+        dispatch(setBranchHierarchical({ ids: { branch_id: id, child_ids: childIds, include_child: false }, name: name }))
     }
+
 
     const changeActiveStatus = (id: string) => {
         const params = {
@@ -97,6 +94,7 @@ function MyActiveBranches() {
             onSuccess: (success: any) => {
                 showToast("success", success?.message);
                 getAdminBranchesData()
+
             },
             onError: (error: string) => {
                 showToast("error", error);
@@ -104,8 +102,9 @@ function MyActiveBranches() {
         }));
     }
 
-    const branchAdmins = () => {
+    const branchAdmins = (pageNumber:number) => {
         const params = {
+            page_number:pageNumber,
             child_ids: hierarchicalBranchIds?.child_ids
         }
         dispatch(getBranchAdmins({ params }));
