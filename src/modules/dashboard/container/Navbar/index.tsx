@@ -4,6 +4,7 @@ import { Icons } from "@assets";
 import { ImageView } from "@components";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
+// import { matchRouteName } from "../../../../store/dashboard/actions";
 
 type NavItemProps = {
   id: string;
@@ -21,6 +22,7 @@ const Navbar = ({ }) => {
   const currentNav = (it: any, index: any) => {
     dispatch(currentNavIndex(index));
     navigate(it.route);
+    // dispatch(matchRouteName(it.id))
   };
 
   return (
@@ -85,7 +87,7 @@ const Navbar = ({ }) => {
               })}
             </ul>
           </div>
-          <small className={"text-white text-version"}>Version: 1.07</small>
+          <small className={"text-white text-version"}>Version: 1.08</small>
         </div>
       </div>
 

@@ -15,5 +15,6 @@ import ELocker from './Elocker'
 import ElockerUpload from './ElockerUpload' 
 import MyShiftDetails from './MyShiftDetails'
 import EmployeeShifts from './EmployeesShifts'
+import MyBranches from './MyBranches'
 
-export { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload,MyShiftDetails,EmployeeShifts }
+export { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload,MyShiftDetails,EmployeeShifts,MyBranches }

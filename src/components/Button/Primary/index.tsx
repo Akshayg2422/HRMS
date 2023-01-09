@@ -8,13 +8,14 @@ interface PrimaryProps extends ContainerProps {
   onClick?: () => void
   variant?: 'btn-default' | 'btn-primary' | 'btn-secondary' | 'btn-info' | 'btn-success' | 'btn-danger' | 'btn-warning'
   size?: 'btn-lg' | 'btn-sm' | 'btn-md'
+  disabled?:boolean
 }
 
 
 
-function Primary({text, variant, size, col, onClick, additionClass}: PrimaryProps) {
+function Primary({text, variant, size, col, onClick, additionClass,disabled=false}: PrimaryProps) {
   return (
-    <button className={`btn ${variant || 'btn-primary'} ${size || 'btn-md'} ${isExist(col)} ${isExist(additionClass)}`} type="button" onClick={onClick}>{text}</button>
+    <button className={`btn ${variant || 'btn-primary'} ${size || 'btn-md'} ${isExist(col)} ${isExist(additionClass)} `} type="button" onClick={onClick} disabled={disabled}>{text}</button>
   )
 }
 

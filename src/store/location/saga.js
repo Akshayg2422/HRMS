@@ -27,33 +27,33 @@ import {
 } from '../app/actions'
 
 
-function* getAllBranches(action) {
-  try {
+// function* getAllBranches(action) {
+//   try {
 
-    yield put(showLoader());
+//     yield put(showLoader());
 
-    const response = yield call(fetchAllBranchesList, action.payload.params);
+//     const response = yield call(fetchAllBranchesList, action.payload.params);
    
-    if (response.success) {
+//     if (response.success) {
 
-    yield put(hideLoader());
+//     yield put(hideLoader());
      
-      yield put(getAllBranchesListSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
+//       yield put(getAllBranchesListSuccess(response.details));
+//       yield call(action.payload.onSuccess(response.details));
 
-    } else {
+//     } else {
 
-      yield put(hideLoader());
-      yield put(getAllBranchesListFailure(response.error_message));
-      yield call(action.payload.onError(response.error_message));
-    }
-  } catch (error) {
+//       yield put(hideLoader());
+//       yield put(getAllBranchesListFailure(response.error_message));
+//       yield call(action.payload.onError(response.error_message));
+//     }
+//   } catch (error) {
 
-    yield put(hideLoader());
-    yield put(getAllBranchesListFailure("Invalid Request"));
+//     yield put(hideLoader());
+//     yield put(getAllBranchesListFailure("Invalid Request"));
 
-  }
-}
+//   }
+// }
 
 function* branchAddition(action) {
 
@@ -199,7 +199,7 @@ function* updateEmployeeCheckinAssociations(action) {
 
 function* LocationSaga() {
 
-  yield takeLatest(FETCH_ALL_BRANCHES_LIST, getAllBranches)
+  // yield takeLatest(FETCH_ALL_BRANCHES_LIST, getAllBranches)
   yield takeLatest(POST_BRANCH_ADDITION, branchAddition);
   yield takeLatest(UPDATE_BRANCH_LOCATION_RADIUS, updateLocationRadius);
   yield takeLatest(ENABLE_BRANCH_REFENCE, enableBranchRefence);

@@ -18,7 +18,8 @@ import {
   fetchCalendardetails,
   getLeaveTypes,
 } from "../../../../../src/store/employee/actions";
-import { Route } from "react-router-dom";
+
+
 const ApplyLeave = () => {
   const { t } = useTranslation();
   const navigation = useNav();

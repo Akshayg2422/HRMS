@@ -1,7 +1,7 @@
 import { getMisReport } from '../../../../store/employee/actions';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, CommonTable, ImageView } from '@components';
+import { Card, CommonTable, ImageView, Secondary } from '@components';
 import { Icons } from '@assets';
 
 type LogReportsProps = {
@@ -130,22 +130,17 @@ const LocationTable = ({
             else {
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
                     <div className="column">
-                        {/* <h6 className="mb-0 text-xs mb-2 ml-2">1 logs</h6> */}
+                        {/* <h6 className="mb-0 text-xs mb-2 ml--4">{`${eachObject[key as keyof object]?.start_time}-${eachObject[key as keyof object]?.end_time}`}</h6> */}
                         <div className='mb-2'>
                             <ImageView icon={key != 'string' && coloredIcons(eachObject[key as keyof object]?.attendance_status_code)} height={16} width={16} />
                         </div>
-                        {/* attendance_status_code */}
                         <h6 className="mb-0 ml--2 mb-2 ">{eachObject[key as keyof object]?.day_status}</h6>
-                        {/* <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> */}
+                        {/* {eachObject[key as keyof object]?.attendance_status_code === 6 ? <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> : null} */}
                     </div>
                 </div></td>
             }
         })
     }
-
-
-
-
     function coloredIcons(statusType: any) {
         let icons = ''
         switch (statusType) {

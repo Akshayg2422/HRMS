@@ -45,7 +45,7 @@ const AllLeaves = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => {},
+        onSuccess: (success: object) => { },
         onError: (error: string) => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
@@ -61,29 +61,11 @@ const AllLeaves = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchPendingDetail(page);
   }
-  // const normalizedEmployeeLog = (data: any) => {
-  //   return (
-  //     data &&
-  //     data.length > 0 &&
-  //     data.map((el: any) => {
-
-  //       return {
-  //         name: el.name,
-  //         "Date From": el.date_from,
-  //         "Date To": el.date_to,
-  //         "Leave Types": el.leave_type,
-  //         Reason: el.reason,
-  //         // Status: el.status_text,
-  //         // Branch: el.branch_name,
-  //       };
-  //     })
-  //   );
-  // };
-
+  
   const manageApproveStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
     setApproveModel(!approveModel);
@@ -119,11 +101,10 @@ const AllLeaves = () => {
           }
           fetchPendingDetail(currentPage);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
   };
-  console.log("employeesLeaves", employeesLeaves);
 
   return (
     <div>
@@ -139,7 +120,6 @@ const AllLeaves = () => {
             }}
             previousClick={() => paginationHandler("prev")}
             nextClick={() => paginationHandler("next")}
-            // displayDataSet={normalizedEmployeeLog(employeesLeaves)}
             tableChildren={
               <LocationTable
                 tableDataSet={employeesLeaves}
@@ -372,10 +352,12 @@ const LocationTable = ({
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>
+                  <td style={{ whiteSpace: "pre-wrap" }} >
                     {item.status_code === -1 ? (
                       <span
                         className="h5 text-primary"
+                        style={{ cursor: 'pointer' }}
+
                         onClick={() => {
                           if (onApproveClick) onApproveClick(item);
                         }}
@@ -385,6 +367,7 @@ const LocationTable = ({
                     ) : item.status_code === 1 ? (
                       <span
                         className="h5 text-primary"
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (onRevertClick) onRevertClick(item);
                         }}
@@ -394,6 +377,7 @@ const LocationTable = ({
                     ) : item.status_code === 0 ? (
                       <span
                         className="h5 text-primary"
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (onRevertClick) onRevertClick(item);
                         }}
@@ -404,9 +388,10 @@ const LocationTable = ({
                       <></>
                     )}
                   </td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>
+                  <td style={{ whiteSpace: "pre-wrap", }}>
                     {item.status_code === -1 ? (
                       <span
+                        style={{ cursor: 'pointer' }}
                         className="h5 text-primary"
                         onClick={() => {
                           if (onRejectClick) onRejectClick(item);

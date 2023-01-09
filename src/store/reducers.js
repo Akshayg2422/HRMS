@@ -6,6 +6,7 @@ import LocationReducer from "./location/reducer";
 import DashboardReducer from "./dashboard/reducer";
 import AppReducer from "./app/reducer";
 import ShiftManagementReducer from "./shiftManagement/reducer";
+import PayrollReducer from './Payroll/reducer'
 
 
 const rootReducer = combineReducers({
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     LocationReducer,
     DashboardReducer,
     AppReducer,
-    ShiftManagementReducer
+    ShiftManagementReducer,
+    PayrollReducer
 });
 
 export default rootReducer;

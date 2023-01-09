@@ -103,13 +103,22 @@ import {
   GET_MIS_REPORT_DOWNLOAD,
   GET_MIS_REPORT_DOWNLOAD_SUCCESS,
   GET_MIS_REPORT_DOWNLOAD_FAILURE,
-  GET_MIS_REPORT_CLEAR,
   GET_EMPLOYEE_DOCUMENT,
   GET_EMPLOYEE_DOCUMENT_FAILURE,
   GET_EMPLOYEE_DOCUMENT_SUCCESS,
   ATTACH_USER_DOCUMENT,
   ATTACH_USER_DOCUMENT_FAILURE,
-  ATTACH_USER_DOCUMENT_SUCCESS
+  ATTACH_USER_DOCUMENT_SUCCESS,
+  GET_ADMIN_BRANCHES,
+  GET_ADMIN_BRANCHES_SUCCESS,
+  GET_ADMIN_BRANCHES_FAILURE,
+  POST_UPDATED_ADMIN_BRANCHES,
+  POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
+  POST_UPDATED_ADMIN_BRANCHES_FAILURE,
+  IS_RENDER_ADMIN_BRANCHES,
+  GET_BRANCHES_ADMIN,
+  GET_BRANCHES_ADMIN_SUCCESS,
+  GET_BRANCHES_ADMIN_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -121,6 +130,8 @@ const initialState = {
   registeredEmployeesList: [],
   numOfPages: 0,
   currentPage: 1,
+  adminNumOfPages: 0,
+  adminCurrentPage: 1,
   isEdit: undefined,
   editEmployeeDetails: {},
   employeeTimeSheets: [],
@@ -146,7 +157,10 @@ const initialState = {
   employeesLeaves: "",
   employeesModifyLeaves: "",
   misReport: [],
-  employeeDocuments: []
+  employeeDocuments: [],
+  adminBranches: [],
+  RenderAdminBranch: false,
+  branchAdmins: []
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -960,20 +974,9 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-
-
     // ***Mis Report***//
 
     case GET_MIS_REPORT:
-      state = {
-        ...state,
-        misReport: [],
-        loading: true,
-        numOfPages: 0,
-        currentPage: 1,
-      };
-      break;
-    case GET_MIS_REPORT_CLEAR:
       state = {
         ...state,
         misReport: [],
@@ -1023,6 +1026,95 @@ const EmployeeReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
         loading: false,
+      };
+      break;
+    /**
+     * getAdminBranches
+     */
+    case GET_ADMIN_BRANCHES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_ADMIN_BRANCHES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        adminBranches: action.payload,
+      };
+      break;
+
+    case GET_ADMIN_BRANCHES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * Update Admin Branch
+     */
+    case POST_UPDATED_ADMIN_BRANCHES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case POST_UPDATED_ADMIN_BRANCHES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case POST_UPDATED_ADMIN_BRANCHES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //is render admin branches
+    case IS_RENDER_ADMIN_BRANCHES:
+      state = {
+        ...state,
+        RenderAdminBranch: action.payload,
+      };
+      break;
+
+    /**
+     * branch Admins
+     */
+    case GET_BRANCHES_ADMIN:
+      state = {
+        ...state,
+        loading: true,
+        adminNumOfPages: 0,
+        adminCurrentPage: 1,
+        branchAdmins: []
+      };
+      break;
+    case GET_BRANCHES_ADMIN_SUCCESS:
+      const admins = action.payload
+      state = {
+        ...state,
+        branchAdmins: admins.data,
+        adminNumOfPages: admins.num_pages,
+        adminCurrentPage:
+          admins  .next_page === -1
+            ? admins.num_pages
+            : admins.next_page - 1,
+        loading: false,
+      };
+      break;
+
+    case GET_BRANCHES_ADMIN_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
       };
       break;
 

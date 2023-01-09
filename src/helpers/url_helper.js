@@ -12,7 +12,7 @@ export const UPLOAD_COMPANY_DOCUMENT = '/company/addCompanyAttachments';
 /***
  * Dashboard endpoints
  */
-export const FETCH_DASHBOARD = '/authentication/dashboard';
+export const FETCH_DASHBOARD = '/authentication/v1/dashboard';
 export const GET_CHECK_IN_DETAILED_LOG =
     '/attendance/getCheckinDetailedLogsPerDay';
 export const URL_CHECK_IN = '/attendance/checkin';
@@ -96,6 +96,15 @@ export const FETCH_EMPLOYEE_WITH_SHIFTS = 'employee/v1/getEmployeesWithShift'
 export const POST_EMPLOYEE_SHIFT_CHANGE = 'attendance/setEmployeeShift'
 
 
+/**
+ * Admin My Branches
+ */
+
+export const GET_BRANCH_ADMIN_BRANCHES = 'employee/getBranchAdminBranches'
+
+export const UPDATING_THE_ADMIN_BRANCHES = 'employee/updateBranchAdminBranches'
+
+export const GET_ADMIN_BRANCHES = 'employee/getBranchAdmins'
 
 
 

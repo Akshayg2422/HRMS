@@ -77,7 +77,7 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
     let element = null;
     switch (item.elt) {
       case TABLE_ELEMENT_TEXT_BUTTON:
-        element = <span className={`text-primary ${custombutton}`}>{item.elv}</span>
+        element = <span style={{ cursor: 'pointer' }} className={`text-primary ${custombutton}`}>{item.elv}</span>
         break;
       case TABLE_ELEMENT_TEXT_IMAGE:
         element = <span className='text-primary'>{item.elv}</span>
@@ -121,19 +121,16 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
                   {
                     additionalDataSet && (
                       additionalDataSet.map(item => {
-                        return item.elv && <td scope="row" style={{cursor:'pointer'}} onClick={(e) => {
+                        return item.elv && <td scope="row" onClick={(e) => {
                           if (tableValueOnClick) {
                             tableValueOnClick(e, idx, each_table_obj, item.elv)
                             e.preventDefault();
                             e.stopPropagation();
                           }
-                        }}>{getElement(item)}</td>
+                        }}><span>{getElement(item)}</span></td>
                       })
                     )
                   }
-
-
-
                 </tr>)
             })
           }

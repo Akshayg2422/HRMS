@@ -74,8 +74,8 @@ function ManageAssignLocation() {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     getConsolidatedEmployeeList(page);
   }
 
@@ -134,11 +134,11 @@ function ManageAssignLocation() {
     dispatch(
       updateEmployeeCheckinAssociations({
         params,
-        onSuccess: (success:any) => {
+        onSuccess: (success: any) => {
           showToast("success", success.status);
           setModel(!model);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
   };
@@ -149,22 +149,37 @@ function ManageAssignLocation() {
 
   return (
     <>
-      <Container flexDirection={"row"} margin={"m-3"}>
-        <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
+      <Container
+        flexDirection={"row"}
+        additionClass={"col"}
+        alignItems={"align-items-center"}
+      >
+        <Container col={"col-xl-3 col-md-6 col-sm-12 mt--2"}>
           <InputText
             placeholder={t("enterEmployeeName")}
+            label={t("employeeName")}
             onChange={(e) => {
               setSearchEmployee(e.target.value);
             }}
           />
         </Container>
-        <Container col={"col mt-xl-2"}>
-          <Icon type={"btn-primary"} icon={Icons.Search} onClick={proceedSearchApi} />
-        </Container>
-        <Container col={"col-xl-4 col-md-6"}>
+        <Container
+          col={"col-xl-5 col-md-6 col-sm-12"}
+          additionClass={"mt-xl-4"}
+        >
           <ChooseBranchFromHierarchical />
         </Container>
+        <Container
+          col={"col"}
+          additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
+          justifyContent={"justify-content-center"}
+          alignItems={"align-items-center"}
+          onClick={proceedSearchApi}
+        >
+          <Icon type={"btn-primary"} icon={Icons.Search} />
+        </Container>
       </Container>
+
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
           tableTitle={"Employee List"}
@@ -180,8 +195,8 @@ function ManageAssignLocation() {
           }}
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
-        /> 
-      ): <NoRecordFound/>}
+        />
+      ) : <NoRecordFound />}
       {brancheslist && brancheslist.length > 0 && (
         <Modal
           title={"All Registered Branches"}

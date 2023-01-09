@@ -109,7 +109,18 @@ import {
   GET_EMPLOYEE_DOCUMENT_FAILURE,
   ATTACH_USER_DOCUMENT,
   ATTACH_USER_DOCUMENT_SUCCESS,
-  ATTACH_USER_DOCUMENT_FAILURE
+  ATTACH_USER_DOCUMENT_FAILURE,
+  GET_ADMIN_BRANCHES,
+  GET_ADMIN_BRANCHES_SUCCESS,
+  POST_UPDATED_ADMIN_BRANCHES,
+  POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
+  POST_UPDATED_ADMIN_BRANCHES_FAILURE,
+  GET_ADMIN_BRANCHES_FAILURE,
+  IS_RENDER_ADMIN_BRANCHES,
+  GET_BRANCHES_ADMIN,
+  GET_BRANCHES_ADMIN_SUCCESS,
+  GET_BRANCHES_ADMIN_FAILURE,
+  GET_FILTERED_BRANCHES
 } from "./actionTypes";
 
 // Delete Account
@@ -332,7 +343,6 @@ export const getEmployeesTimeSheetsFailure = (error) => {
  * @returns
  */
 export const getEmployeesCheckInLogs = (params) => {
-  console.log("getEmployeesCheckInLogs======action");
   return {
     type: FETCH_EMPLOYEE_CHECK_IN_LOGS,
     payload: params,
@@ -892,37 +902,22 @@ export const getModifyLogsFailure = (error) => {
   };
 };
 
-
+/**
+ * 
+ * Mis Report
+ * 
+ */
 
 export const getMisReport = (params) => {
   return {
     type: GET_MIS_REPORT,
     payload: params,
   };
-
-
-  /**
-   * get E-locker Document
-   */
-
-
 };
-export const getEmployeeDocument = (params) => {
-  return {
-    type: GET_EMPLOYEE_DOCUMENT,
-    payload: params,
-  };
-}
+
 export const getMisReportSuccess = (response) => {
   return {
     type: GET_MIS_REPORT_SUCCESS,
-    payload: response,
-  };
-};
-
-export const getEmployeeDocumentSuccess = (response) => {
-  return {
-    type: GET_EMPLOYEE_DOCUMENT_SUCCESS,
     payload: response,
   };
 };
@@ -933,6 +928,26 @@ export const getMisReportFailure = (error) => {
     payload: error,
   };
 };
+/**
+   * get E-locker Document
+   */
+
+export const getEmployeeDocument = (params) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT,
+    payload: params,
+  };
+}
+
+
+export const getEmployeeDocumentSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_DOCUMENT_SUCCESS,
+    payload: response,
+  };
+};
+
+
 
 export const getEmployeeDocumentFailure = (error) => {
   return {
@@ -950,6 +965,18 @@ export const getDownloadMisReport = (params) => {
   };
 };
 
+export const getDownloadMisReportSuccess = (response) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD_SUCCESS,
+    payload: response,
+  };
+};
+export const getDownloadMisReportFailure = (error) => {
+  return {
+    type: GET_MIS_REPORT_DOWNLOAD_FAILURE,
+    payload: error,
+  };
+};
 /**
  * Attach user Document e-Locker
  */
@@ -961,13 +988,6 @@ export const attachUserDocument = (params) => {
   };
 };
 
-export const getDownloadMisReportSuccess = (response) => {
-  return {
-    type: GET_MIS_REPORT_DOWNLOAD_SUCCESS,
-    payload: response,
-  };
-};
-
 export const attachUserDocumentSuccess = (response) => {
   return {
     type: ATTACH_USER_DOCUMENT_SUCCESS,
@@ -975,23 +995,103 @@ export const attachUserDocumentSuccess = (response) => {
   };
 };
 
-export const getDownloadMisReportFailure = (error) => {
-  return {
-    type: GET_MIS_REPORT_DOWNLOAD_FAILURE,
-    payload: error,
-  };
-};
-
-
-export const getMisReportClear = () => {
-  return {
-    type: GET_MIS_REPORT_CLEAR,
-  };
-}
 
 export const attachUserDocumentFailure = (error) => {
   return {
     type: ATTACH_USER_DOCUMENT_FAILURE,
     payload: error,
+  };
+};
+
+/**
+ * Admin My Branches
+ */
+
+export const getAdminBranches = (params) => {
+  return {
+    type: GET_ADMIN_BRANCHES,
+    payload: params,
+  };
+};
+
+export const getAdminBranchesSuccess = (response) => {
+  return {
+    type: GET_ADMIN_BRANCHES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getAdminBranchesFailure = (error) => {
+  return {
+    type: GET_ADMIN_BRANCHES_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * 
+ * Update Admin Branch
+ */
+export const postAdminUpdateBranches = (params) => {
+  return {
+    type: POST_UPDATED_ADMIN_BRANCHES,
+    payload: params,
+  };
+};
+
+export const postAdminUpdateBranchesSuccess = (response) => {
+  return {
+    type: POST_UPDATED_ADMIN_BRANCHES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postAdminUpdateBranchesFailure = (error) => {
+  return {
+    type: POST_UPDATED_ADMIN_BRANCHES_FAILURE,
+    payload: error,
+  };
+};
+
+//for render the admin branches
+
+export const isRenderAdminBranches = (params) => {
+  return {
+    type: IS_RENDER_ADMIN_BRANCHES,
+    payload: params,
+  };
+};
+
+/**
+ * get Branch Admin 
+ */
+
+export const getBranchAdmins = (params) => {
+  return {
+    type: GET_BRANCHES_ADMIN,
+    payload: params,
+  };
+};
+
+export const getBranchAdminsSuccess = (response) => {
+  return {
+    type: GET_BRANCHES_ADMIN_SUCCESS,
+    payload: response,
+  };
+};
+
+
+export const getBranchAdminsFailure = (error) => {
+  return {
+    type: GET_BRANCHES_ADMIN_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const getFIlteredBranch = (branches) => {
+  return {
+    type: GET_FILTERED_BRANCHES,
+    payload: branches,
   };
 };

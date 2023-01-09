@@ -7,6 +7,7 @@ interface FormWrapperProps {
   onClick?: () => void;
   hideFooter?: boolean;
   buttonTittle?: string;
+  buttonDisable?: boolean
 }
 
 function index({
@@ -14,6 +15,7 @@ function index({
   children,
   onClick,
   buttonTittle,
+  buttonDisable = false,
   hideFooter = false,
 }: FormWrapperProps) {
   return (
@@ -34,6 +36,7 @@ function index({
             {!hideFooter && (
               <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
                 <Primary
+                  disabled={buttonDisable}
                   text={buttonTittle ? buttonTittle : "Submit"}
                   onClick={onClick}
                 />

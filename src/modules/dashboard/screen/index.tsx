@@ -6,6 +6,7 @@ import Calendar from './Calendar'
 import Location from './Location'
 import ManageAssignLocation from './ManageAssignLocation'
 import Profile from './Profile'
+import DashBoardOtp from './Otp'
 
 
-export {Dashboard, Employee, Report, SuccessScreen, Calendar, Location,ManageAssignLocation,Profile}
+export {Dashboard, Employee, Report, SuccessScreen, Calendar, Location,ManageAssignLocation,Profile,DashBoardOtp}

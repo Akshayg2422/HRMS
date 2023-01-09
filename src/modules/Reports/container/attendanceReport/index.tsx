@@ -28,18 +28,7 @@ function AttendanceReport({ data, department, reportType, customrange }: Attenda
   } = useSelector((state: any) => state.EmployeeReducer);
 
 
-
-  const branchId = (() => {
-    if (hierarchicalAllBranchIds === -1) {
-      return hierarchicalAllBranchIds
-    } else {
-      return [hierarchicalBranchIds.branch_id]
-    }
-  })
-
-
   const getReports = ((pageNumber: number) => {
-
     const params = {
       report_type: reportType,
       attendance_type: '-1',
@@ -91,8 +80,8 @@ function AttendanceReport({ data, department, reportType, customrange }: Attenda
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
-          paginationNumberClick={(currentPage) => {
-            paginationHandler("current", currentPage);
+          paginationNumberClick={(Page) => {
+            paginationHandler("current", Page);
           }}
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}

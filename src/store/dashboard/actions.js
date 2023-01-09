@@ -203,3 +203,10 @@ export const resetDashboard = () => {
     type: RESET_REDUCER,
   };
 };
+
+// export const matchRouteName=(params)=>{
+//   return{
+//     type: MATCH_ROUTE_NAME,
+//     payload:params
+//   }
+// }
