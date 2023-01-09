@@ -112,25 +112,24 @@ const DashboardStats = () => {
 
   return (
     <>
-      <Container additionClass={"col"}>
+
+      <Card additionClass={"row mx-2"}>
         <div className="row mt-3">
-          <div className="col"></div>
-          <div className="row col-lg-7 col-md-10">
-            <div className="col-lg-6 col-md-6 mt-2">
-              <DatePicker
-                placeholder={"Select Date"}
-                icon={Icons.Calendar}
-                iconPosition={"prepend"}
-                value={selectedDate}
-                onChange={(date: string) => setSelectedDate(date)}
-              />
-            </div>
-            <div className="col-lg-6 col-md-6">
-              <ChooseBranchFromHierarchical />
-            </div>
+          <div className="col-lg-6 col-md-6">
+            <ChooseBranchFromHierarchical />
+          </div>
+          <div className="col-lg-3 col-md-6 mt-xl-4">
+            <DatePicker
+              additionalClass="mt-xl-2"
+              placeholder={"Select Date"}
+              icon={Icons.Calendar}
+              iconPosition={"prepend"}
+              value={selectedDate}
+              onChange={(date: string) => setSelectedDate(date)}
+            />
           </div>
         </div>
-      </Container>
+      </Card>
       <Container
         additionClass={"row"}
         justifyContent={"justify-content-around"}

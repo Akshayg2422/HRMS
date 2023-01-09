@@ -46,7 +46,7 @@ function EmployeeScreen() {
     (state: any) => state.EmployeeReducer
   );
   // console.log("registeredEmployeesList",registeredEmployeesList);
-  
+
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -124,7 +124,6 @@ function EmployeeScreen() {
     getEmployeesApi(currentPage);
   }
 
-  console.log('registeredEmployeesList', registeredEmployeesList);
 
   return (
     <>
@@ -144,24 +143,15 @@ function EmployeeScreen() {
                 }}
               />
             </Container>
-            {/* <Container col={"col-xl-3 col-md-6 col-sm-12"}>
-              <InputText
-                placeholder={t("enterEmployeeId")}
-                label={t("employeeId")}
-                onChange={(e) => {
-                  setSearchEmployeeById(e.target.value);
-                }}
-              />
-            </Container> */}
             <Container
-              col={"col-xl-3 col-md-6 col-sm-12"}
+              col={"col-xl-5 col-md-6 col-sm-12"}
               additionClass={"mt-xl-4"}
             >
               <ChooseBranchFromHierarchical />
             </Container>
             <Container
               col={"col"}
-              additionClass={"mt-sm-3"}
+              additionClass={"mt-sm-3 mt-xl--2"}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
               onClick={proceedSearchApi}
@@ -216,7 +206,7 @@ function EmployeeScreen() {
                 }
               }}
             />
-          ):<NoRecordFound/>}
+          ) : <NoRecordFound />}
           <Modal
             title={t("deleteUser")}
             showModel={deleteModel}

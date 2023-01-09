@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound } from '@components'
+import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches } from '@components'
 import { Icons } from '@assets'
 import { downloadFile, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { getDepartmentData, getDownloadMisReport, getMisReport, getMisReportClear } from '../../../store/employee/actions';
+import { getDepartmentData, getDownloadMisReport, getMisReport } from '../../../store/employee/actions';
 import { AttendanceReport, LeaveReports, LogReports } from '../container';
 import { getDashboard } from '../../../store/dashboard/actions';
 
@@ -16,11 +16,9 @@ function Reports() {
     currentPage,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-
   const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
 
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -38,8 +36,8 @@ function Reports() {
 
 
   useEffect(() => {
-    getReports()
     getDepartments()
+    getReports(currentPage)
   }, [hierarchicalBranchIds, selectedDepartment, hierarchicalAllBranchIds, reportsType])
 
   const getDepartments = (() => {
@@ -71,24 +69,25 @@ function Reports() {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
-
   // const reset=()=>
-
-  const getReports = (() => {
+  const getReports = ((pageNumber: number) => {
     const params = {
       ...(searchEmployee && { q: searchEmployee }),
-      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
+      ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds?.branch_id] }),
       attendance_type: '-1',
       report_type: reportsType,
       department_id: selectedDepartment,
       download: false,
       selected_date: customRange.dateFrom,
       selected_date_to: customRange.dataTo,
-      page_number: currentPage,
+      page_number: pageNumber,
     };
+    console.log(JSON.stringify(params) + "=======");
     dispatch(getMisReport({
       params,
       onSuccess: (response: any) => {
+        console.log(JSON.stringify(response) + "========");
+
       },
       onError: (errorMessage: string) => {
       },
@@ -99,14 +98,6 @@ function Reports() {
   const dateTimePickerHandler = (value: string, key: string) => {
     setCustomRange({ ...customRange, [key]: value });
   };
-
-  const branchId = (() => {
-    if (hierarchicalAllBranchIds === -1) {
-      return hierarchicalAllBranchIds
-    } else {
-      return [hierarchicalBranchIds.branch_id]
-    }
-  })
 
 
   const downloadSampleFile = () => {
@@ -124,18 +115,14 @@ function Reports() {
       params,
       onSuccess: (response: any) => {
         downloadFile(response);
-        getReports()
+        getReports(currentPage)
         setCustomRange({ ...customRange, dataTo: Today, dateFrom: Today });
       },
       onError: (error: string) => {
-        getReports()
+        getReports(currentPage)
       },
     }));
   };
-
-  const reset = () => {
-    dispatch(getMisReportClear())
-  }
 
 
   return (
@@ -148,7 +135,6 @@ function Reports() {
             value={reportsType} label={t('misReport')}
             data={REPORTS_TYPE}
             onChange={(event) => {
-              reset()
               setReportsType(event.target.value)
             }} />
           <DropDown
@@ -163,12 +149,12 @@ function Reports() {
               }
             }}
           />
-          <Container additionClass={'col-lg-3  mt-xl-2'}>
-            <h5 className='ml-xl-3'>{t("branch")}</h5>
-
+          <Container additionClass={'col-lg-6  mt-xl-2'}>
             <AllHierarchical />
-
           </Container>
+
+        </Container>
+        <Container flexDirection={'row'} display={'d-flex'} additionClass={'mt-lg-4'}  >
           <Container additionClass={'col-lg-3 col-md-12'}>
             <InputText
               placeholder={t("enterEmployeeName")}
@@ -179,8 +165,6 @@ function Reports() {
               }}
             />
           </Container>
-        </Container>
-        <Container flexDirection={'row'} display={'d-flex'} additionClass={'mt-lg-4'}  >
           <Container additionClass={'col-lg-2'}>
             <h5>{t("startDate")}</h5>
             <DatePicker
@@ -205,7 +189,7 @@ function Reports() {
           </Container>
           <Container additionClass={'col-lg-4'} style={{ marginTop: "30px" }}>
             <Icon icon={Icons.DownloadSecondary} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} onClick={() => getReports()} />
+            <Primary text={'Search'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </Card>

@@ -3,7 +3,7 @@ import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } fr
 import { Icons } from "@assets";
 import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { WeekDaysList } from '@modules';
+import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
 import {
   addWeeklyShift,
@@ -23,8 +23,7 @@ const WEEK_DAYS_LIST = [
 
 
 const WeeklyShiftSelection = () => {
-
-  const [weeklyData, setWeeklyData] = useState<any>([
+  const [weeklyData,  setWeeklyData] = useState<any>([
     { week: 1, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 3, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
@@ -36,7 +35,7 @@ const WeeklyShiftSelection = () => {
   let dispatch = useDispatch();
   const navigation = useNav();
 
-  const { selectedWeeklyShiftId, weeklyShiftDetails, selectedWeeklyShiftName } = useSelector(
+  const { selectedWeeklyShiftId, selectedWeeklyShiftName } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
 
@@ -69,6 +68,7 @@ const WeeklyShiftSelection = () => {
       return true;
     }
   }
+  
   const onSubmit = () => {
     if (validatePostParams()) {
       const params = {

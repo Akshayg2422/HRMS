@@ -10,11 +10,9 @@ import {
   ChooseBranchFromHierarchical,
   Secondary,
   Primary,
+  Icon,
 } from "@components";
 import React, { useEffect, useState } from "react";
-import {
-  getEmployeesList,
-} from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import {
   paginationHandler,
@@ -39,6 +37,8 @@ function EmployeeShifts() {
   const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
   const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
   const [employeeName, setEmployeeName] = useState()
+  const [searchEmployee, setSearchEmployee] = useState('')
+
   const { employeeWithShifts, numOfPages, currentPage, myShifts } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
@@ -55,7 +55,7 @@ function EmployeeShifts() {
     const params: object = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      q: "",
+      ...(searchEmployee && { q: searchEmployee }),
     };
     dispatch(getEmployeeWithShift({ params }));
   }
@@ -116,7 +116,6 @@ function EmployeeShifts() {
         setChangeShiftModelModel(!changeShiftModel)
       },
       onError: (error: string) => {
-        setChangeShiftModelModel(!changeShiftModel)
         showToast("error", error);
       },
     }));
@@ -141,15 +140,29 @@ function EmployeeShifts() {
     }));
   }
 
-
-
   return (
     <>
-      <Card additionClass="mx-2">
-        <h3 className="ml-3">{t("employeeShifts")}</h3>
-        <Container col={"col-xl-4"}>
-          <h5 className="ml-3">{t("branch")}</h5>
-          <ChooseBranchFromHierarchical />
+      <Card>
+        <Container additionClass={"row my-4"}>
+          <Container col={"col-xl-5"}>
+            <ChooseBranchFromHierarchical showCheckBox={false} />
+          </Container>
+          <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>
+            <InputText
+              value={searchEmployee}
+              col={'col'}
+              placeholder={t("enterEmployeeName")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+            <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
+              onClick={() => {
+                getEmployeeLogsWithShifts(currentPage);
+              }}
+            />
+          </Container>
+
         </Container>
       </Card>
       {employeeWithShifts && employeeWithShifts.length > 0 ? (
@@ -236,7 +249,7 @@ function EmployeeShifts() {
               return (
                 <Container additionClass="mx-2 p-2 row">
                   <h4 className="col fw-normal">{el.name}</h4>
-                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId || el.isDefault ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} onClick={() => {
                     setCurrentEmployeeShiftId(el.id)
                   }} /></td>
 

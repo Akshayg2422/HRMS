@@ -159,13 +159,13 @@ function Otp() {
         <ScreenTitle title={t('verifyOTP')} />
         <Container
           flexDirection={'flex-row'}
-          textAlign={'text-center'}
+          additionClass={'text-center'}
           justifyContent={'justify-content-center'}
           alignItems={'align-items-center'}
           textColor={'text-muted'}
           margin={'mt-5'}
         >
-          <small className={'text-center'}>{t('verificationCode') + '+91-' + mobileNumber}</small>
+          <small>{t('verificationCode') + '+91-' + mobileNumber}</small>
           <small
             className='ml-2 text-primary text-center'
             role='button' onClick={() => goTo(navigate, ROUTE.ROUTE_LOGIN, true)}>

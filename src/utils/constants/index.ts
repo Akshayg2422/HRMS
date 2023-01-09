@@ -43,9 +43,15 @@ export const ROUTE = {
   ROUTE_MY_SHIFTS_DETAILS: '/my-shifts-details',
   ROUTE_EMPLOYEES_SHIFTS: '/employees-shifts',
   ROUTE_PAYROLL: '/payroll',
-  ROUTE_SALARY_BREAK_DOWN:'/salary-break-down',
-  ROUTE_ALLOWANCE_GROUP:'/allowance-group'
+  ROUTE_SALARY_BREAK_DOWN: '/salary-break-down',
+  ROUTE_ALLOWANCE_GROUP: '/allowance-group-List',
+  ROUTE_DEDUCTION_GROUP: '/deduction-group-List',
+  ROUTE_CREATE_GROUP: '/create-group',
+  ROUTE_DASHBOARD_OTP: "/dashboard-otp",
+  ROUTE_MY_BRANCHES:'/my-branches'
+
 }
+
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
 export const WELCOME_CARD = [{ key: 'admin', icon: Icons.Admin, title: 'Admin', goTo: ROUTE.ROUTE_LOGIN }, { key: 'employee', icon: Icons.Employee, title: 'Employee', goTo: ROUTE.ROUTE_LOGIN }, { key: 'register-company', icon: Icons.RegisterCompany, title: 'Register a new company', goTo: ROUTE.ROUTE_REGISTER },]
 export const GENDER_LIST = [
@@ -117,6 +123,7 @@ export const NAV_ITEM = [
   // { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
   // { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
+  { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route:ROUTE.ROUTE_MY_BRANCHES },
 ];
 
 

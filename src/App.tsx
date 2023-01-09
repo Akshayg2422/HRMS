@@ -27,6 +27,7 @@ import {
   MyLog,
   MyWorkLog,
   MyLeaves,
+  Requestpermission,
   AutoLogout,
   ModifyLogs,
   Reports,
@@ -40,23 +41,29 @@ import {
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
-  AllowanceGroup
+  AllowanceGroup,
+  DeductionGroupList,
+  CreateGroup,
+  MyBranches,
+  // DashBoardOtp
 } from "@modules";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
-
+// import {getToken} from "firebase/messaging"
 import { ToastContainer } from "react-toastify";
 import { AppLoader, PageNotFound } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
-import { ManageAssignLocation } from "./modules/dashboard/screen";
+import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
-
 function App() {
+
+
   return (
     <>
       {/* <AutoLogout /> */}
+      {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
@@ -75,6 +82,10 @@ function App() {
           path={ROUTE.ROUTE_DASHBOARD}
           element={<RequireAuth>{<Dashboard />}</RequireAuth>}
         />
+        {/* <Route
+          path={ROUTE.ROUTE_DASHBOARD_OTP}
+          element={<RequireAuth>{<DashBoardOtp />}</RequireAuth>}
+        /> */}
         <Route
           path={ROUTE.ROUTE_EMPLOYEE}
           element={<RequireAuth>{<Employee />}</RequireAuth>}
@@ -214,6 +225,18 @@ function App() {
         <Route
           path={ROUTE.ROUTE_ALLOWANCE_GROUP}
           element={<RequireAuth>{<AllowanceGroup />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_DEDUCTION_GROUP}
+          element={<RequireAuth>{<DeductionGroupList />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_CREATE_GROUP}
+          element={<RequireAuth>{<CreateGroup/>}</RequireAuth>}
+        />
+         <Route
+          path={ROUTE.ROUTE_MY_BRANCHES}
+          element={<RequireAuth>{<MyBranches/>}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

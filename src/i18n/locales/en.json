@@ -194,6 +194,8 @@
 "startDate":"Start Date",
 "endDate":"End Date",
 "dateFromToValidation":"End Date Can't Be greaterThan Start Date",
+"searchBranch":"Search Branch",
+
 
 
 
@@ -216,13 +218,27 @@
 "BasicSalary" : "Basic Salary",
  "MinimumCTC":"* Minimum 50% Of CTC", 
  "AllowanceGroup":"Allowance Group",
- "GroupName":"Group Name",
+ "AllowanceGroupList":"Allowance Group List",
+ "GroupName":"GroupName",
+ "DefaultGroupName":" Default Group Name",
  "SelectAllowance":"Select Allowance",
+ "CreateAllowanceGroup":"Create Allowance Group",
+ "CreateDeductionGroup":"Create Deduction Group",
  "AddNew":"Add New +",
  "AddAllowance":"Add Allowance",
+ "AddDeduction":"Add Deduction",
  "AllowanceName":"Allowance Name",
+ "DeductionName":"Deduction Name",
  "Hint":"Hint",
+ "SelectDeduction":"Select Deduction",
+ "DeductionGroup":"Deduction Group",
+ "DeductionGroupList":"Deduction Group List",
+ "AddAnother":"Add Another",
 
+
+
+ "MyBranches":"My Branch",
+ "MyActiveBranches": "My Active Branch",
 
 
   

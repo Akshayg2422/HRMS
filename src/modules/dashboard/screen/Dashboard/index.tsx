@@ -22,6 +22,7 @@ import {
 
 import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
+import { getAdminBranches } from "../../../../store/employee/actions";
 
 
 function Dashboard() {
@@ -40,6 +41,7 @@ function Dashboard() {
   useEffect(() => {
     dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
+    dispatch(getAdminBranches({}));
   }, []);
   
 
@@ -63,11 +65,7 @@ function Dashboard() {
   };
 
 
-
-
-
   useEffect(() => {
-
     if (dashboardDetails) {
       const params = {}
       dispatch(getAllBranchesList({
@@ -86,7 +84,6 @@ function Dashboard() {
   return (
     <>
       {dashboardDetails && dashboardDetails.user_details && <div className="mx--3 my--4"><Header /></div>}
-
       <div className='my-5'>
         <DashBoardCard />
       </div>

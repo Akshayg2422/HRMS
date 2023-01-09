@@ -9,14 +9,16 @@ import {
   resendOtp,
   validateUser,
 } from './auth';
-import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile } from './dashboard';
+import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile,DashBoardOtp } from './dashboard';
 
-import { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts } from './employee';
+import { ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs, ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts,MyBranches } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import { DashboardStats, DashBoardAttendance } from './stats'
 import RequireAuth from './RequireAuth'
 import RequireAuthExist from './RequireAuthExist'
+import { Requestpermission } from './Firebase';
+
 
 import { AutoLogout } from './SessionTimeout'
 
@@ -24,7 +26,7 @@ import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup } from './ShiftManagement';
-import { PayRoll, SalaryBreakDown,AllowanceGroup } from './Payroll'
+import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList,CreateGroup } from './Payroll'
 
 export {
   getDashboardDetails,
@@ -73,7 +75,12 @@ export {
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
-  AllowanceGroup
+  AllowanceGroup,
+  DeductionGroupList,
+  CreateGroup,
+  Requestpermission,
+  DashBoardOtp,
+  MyBranches
 }
 
-export * from './ShiftManagement'
+
