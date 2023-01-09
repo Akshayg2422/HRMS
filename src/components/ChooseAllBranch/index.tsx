@@ -164,7 +164,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
       })
       setAllBranches(filteredBranch)
     }
-    else {
+    else {  
       setAllBranches(defaultBranch)
     }
   }
