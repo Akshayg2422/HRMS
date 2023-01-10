@@ -135,7 +135,7 @@ const LocationTable = ({
                         {/* <div className='mb-2'>
                             <ImageView icon={key != 'string' && coloredIcons(eachObject[key as keyof object]?.attendance_status_code)} height={16} width={16} />
                         </div> */}
-                        <h6 className="mb-0  mb-2 ml-2" style={{
+                        <h6 className="mb-0  mb-2 ml-2 text-center" style={{
                             color: getTextColor(eachObject[key as keyof object]?.attendance_status_code)
                         }}>{eachObject[key as keyof object]?.day_status}</h6>
                         {/* {eachObject[key as keyof object]?.attendance_status_code === 6 ? <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> : null} */}
@@ -151,7 +151,7 @@ const LocationTable = ({
                     color = '#00b603'
                     break;
                 case 6:
-                    color = '#ff0000';
+                    color = '#DC4A1F';
                     break;
                 case 5:
                     color = '#ff351f';

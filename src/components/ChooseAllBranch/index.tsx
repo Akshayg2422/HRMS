@@ -55,7 +55,6 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
   useEffect(() => {
     getBranchesList()
-
     if(brancheslist){
     const currentBranch = getAllSubBranchesAlternative(brancheslist, dashboardDetails?.company_branch.id);
     const parentBranch = brancheslist.find((it: { parent_id: any; }) => !it.parent_id);
@@ -67,12 +66,10 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
         searchArray = [...searchArray, brancheslist[index]]
       }
     });
-
     setBranch(searchArray)
     setAllBranches(searchArray)
     setStructuredData(brancheslist);
     setDefaultBranch(searchArray)
-
     if (parentBranch) {
       const hierarchicalBranchArray = {
         ...parentBranch,

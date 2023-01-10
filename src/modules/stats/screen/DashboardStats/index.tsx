@@ -60,6 +60,7 @@ const DashboardStats = () => {
         Late: el.late,
         Absent: el.absent,
         "To Start": el.to_start,
+        "Alert":el.alert
       };
     });
   };
