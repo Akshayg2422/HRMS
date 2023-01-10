@@ -130,45 +130,53 @@ const LocationTable = ({
             else {
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
                     <div className="column">
-                        {/* <h6 className="mb-0 text-xs mb-2 ml--4">{`${eachObject[key as keyof object]?.start_time}-${eachObject[key as keyof object]?.end_time}`}</h6> */}
-                        <div className='mb-2'>
+                        <h6 className="mb-0 text-xs mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.start_time}`}</h6>
+                        <h6 className="mb-0 text-xs mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.end_time}`}</h6>
+                        {/* <div className='mb-2'>
                             <ImageView icon={key != 'string' && coloredIcons(eachObject[key as keyof object]?.attendance_status_code)} height={16} width={16} />
-                        </div>
-                        <h6 className="mb-0 ml--2 mb-2 ">{eachObject[key as keyof object]?.day_status}</h6>
+                        </div> */}
+                        <h6 className="mb-0  mb-2 ml-2" style={{
+                            color: getTextColor(eachObject[key as keyof object]?.attendance_status_code)
+                        }}>{eachObject[key as keyof object]?.day_status}</h6>
                         {/* {eachObject[key as keyof object]?.attendance_status_code === 6 ? <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> : null} */}
                     </div>
                 </div></td>
             }
         })
-    }
-    function coloredIcons(statusType: any) {
-        let icons = ''
-        switch (statusType) {
-            case 1:
-                icons = Icons.TickActive
-                break;
-            case 6:
-                icons = Icons.TickInActive;
-                break;
-            case 9:
-                icons = Icons.TickLeave;
-                break;
-            case 2:
-                icons = Icons.TickLate;
-                break;
-            case 4:
-                icons = Icons.TickExcempted;
-                break;
-            case 10:
-                icons = Icons.ModifiedPresent
-                break;
-            case 7:
-                icons = Icons.TickDefault
-                break;
-            default:
-                icons = Icons.TickDefault
+
+        function getTextColor(statusType: any) {
+            let color = ''
+            switch (statusType) {
+                case 1:
+                    color = '#00b603'
+                    break;
+                case 6:
+                    color = '#ff0000';
+                    break;
+                case 5:
+                    color = '#ff351f';
+                    break;
+                case 2:
+                    color = '#642209';
+                    break;
+                case 4:
+                    color = '#f0c434';
+                    break;
+                case 10:
+                    color = '#FF8c00'
+                    break;
+                case 9:
+                    color = '#de9b00'
+                    break;
+                case 8:
+                    color = '#5d00ff'
+                    break;
+                default:
+                    color = '#000000'
+            }
+            return color
         }
-        return icons
+
     }
 
 

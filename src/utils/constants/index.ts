@@ -276,3 +276,6 @@ export const LastWeek = moment()
 
 
 export const MAX_LENGTH_MOBILE_NUMBER = 10;
+export const MAX_LENGTH_AADHAR = 12;
+export const MAX_LENGTH_PAN_CARD = 12;
+

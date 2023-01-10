@@ -100,6 +100,7 @@ import {
   GET_MIS_REPORT,
   GET_MIS_REPORT_SUCCESS,
   GET_MIS_REPORT_FAILURE,
+  RESET_MIS_REPORT_DATA,
   GET_MIS_REPORT_DOWNLOAD,
   GET_MIS_REPORT_DOWNLOAD_SUCCESS,
   GET_MIS_REPORT_DOWNLOAD_FAILURE,
@@ -928,6 +929,18 @@ export const getMisReportFailure = (error) => {
     payload: error,
   };
 };
+
+/**
+ * Reset mis report 
+ */
+
+export const resetMisReportData = (params) => {
+  return {
+    type: RESET_MIS_REPORT_DATA,
+    payload: params,
+  };
+};
+
 /**
    * get E-locker Document
    */

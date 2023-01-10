@@ -29,7 +29,6 @@ const AutoLogout = () => {
     "click",
     "scroll",
     "keypress",
-    "beforeunload"
   ];
   const logout = () => {
     // console.log("You have been loged out");
@@ -73,9 +72,9 @@ const AutoLogout = () => {
 
   }, [userLoggedIn]);
 
-  window.onbeforeunload = () => {
-    logout()
-  }
+  // window.onbeforeunload = () => {
+  //   logout()
+  // }
 
   return <div></div>;
 };

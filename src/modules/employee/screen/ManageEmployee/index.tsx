@@ -32,6 +32,8 @@ import {
   inputNumberMaxLength,
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
+  MAX_LENGTH_AADHAR,
+  inputAadharLength
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -352,6 +354,10 @@ const ManageEmployee = () => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
+  const valiadtionHandler = (value: string, key: string) => {
+    setEmployeeDetails({ ...employeeDetails, [key]: value });
+  };
+
   const validateDesignationPostParams = () => {
     return validateDefault(designation).status;
   };
@@ -483,7 +489,7 @@ const ManageEmployee = () => {
           value={employeeDetails.aadharrNo}
           name={"aadharrNo"}
           onChange={(event) => {
-            onChangeHandler(event);
+            mobileNumberHandler(inputAadharLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
           }}
         />
         <div className="row align-items-center">
