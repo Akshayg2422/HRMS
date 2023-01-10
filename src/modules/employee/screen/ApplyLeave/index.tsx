@@ -9,6 +9,7 @@ import {
   showToast,
   useNav,
   validateDefault,
+  validateReason
 } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -91,7 +92,7 @@ const ApplyLeave = () => {
 
   const dateTimePickerHandler = (value: string, key: string) => {
     setFormDetails({ ...fromDetails, [key]: value });
-    console.log(JSON.stringify({ ...fromDetails, [key]: value }));
+    // console.log(JSON.stringify({ ...fromDetails, [key]: value }));
   };
 
   const onChangeHandler = (event: any) => {

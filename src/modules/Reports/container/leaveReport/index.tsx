@@ -97,6 +97,7 @@ function LeaveReports({ data, department, reportType, customrange }: LeaveReport
     return (
         <>
             <Card>
+                {data && data.length > 0 &&(
                 <CommonTable
                     noHeader
                     isPagination
@@ -110,6 +111,7 @@ function LeaveReports({ data, department, reportType, customrange }: LeaveReport
                     displayDataSet={normalizedEmployee(data)}
                     custombutton={"h5"}
                 />
+                )}
             </Card>
         </>
     )

@@ -4,7 +4,7 @@ import { Icons } from '@assets'
 import { downloadFile, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { getDepartmentData, getDownloadMisReport, getMisReport } from '../../../store/employee/actions';
+import { getDepartmentData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
 import { AttendanceReport, LeaveReports, LogReports } from '../container';
 import { getDashboard } from '../../../store/dashboard/actions';
 
@@ -86,7 +86,7 @@ function Reports() {
     dispatch(getMisReport({
       params,
       onSuccess: (response: any) => {
-        console.log(JSON.stringify(response) + "========");
+        // console.log(JSON.stringify(response) + "========misreport");
 
       },
       onError: (errorMessage: string) => {
@@ -124,6 +124,8 @@ function Reports() {
     }));
   };
 
+  console.log(JSON.stringify(misReport)+"======misReport");
+  
 
   return (
     <>
@@ -136,6 +138,7 @@ function Reports() {
             data={REPORTS_TYPE}
             onChange={(event) => {
               setReportsType(event.target.value)
+              dispatch(resetMisReportData([]))
             }} />
           <DropDown
             additionClass={'col-lg-3 col-md-12'}

@@ -100,6 +100,7 @@ import {
   GET_MIS_REPORT,
   GET_MIS_REPORT_SUCCESS,
   GET_MIS_REPORT_FAILURE,
+  RESET_MIS_REPORT_DATA,
   GET_MIS_REPORT_DOWNLOAD,
   GET_MIS_REPORT_DOWNLOAD_SUCCESS,
   GET_MIS_REPORT_DOWNLOAD_FAILURE,
@@ -1005,6 +1006,17 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+      /**
+       * mis report data reset
+       */
+      case RESET_MIS_REPORT_DATA:
+        state = {
+          ...state,
+          misReport: [],
+        };
+        break;
+
     // ***MIS Report Download
 
     case GET_MIS_REPORT_DOWNLOAD:

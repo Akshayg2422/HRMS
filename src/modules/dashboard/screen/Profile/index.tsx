@@ -12,11 +12,12 @@ import { useTranslation } from "react-i18next";
 import { Icons } from "@assets";
 
 const Profile = () => {
-  
+
   const { t } = useTranslation();
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  console.log('dashboardDetails', dashboardDetails);
 
   return (
     <Container additionClass="row justify-content-center my-4">
@@ -64,7 +65,7 @@ const Profile = () => {
           <InputDefault
             disabled={true}
             label={t("companyBranch")}
-            value={dashboardDetails.company.name}
+            value={dashboardDetails.company_branch.name}
           />
         </Container>
       </Card>
