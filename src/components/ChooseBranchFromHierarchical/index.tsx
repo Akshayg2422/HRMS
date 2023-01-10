@@ -30,7 +30,7 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
     []
   );
 
-  useEffect(() => {
+  useEffect(() => {   
     const params = {};
     dispatch(
       getAllBranchesList({

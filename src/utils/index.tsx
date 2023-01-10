@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE, EMPLOYEE_CHANGE_SHIFT, EMPLOYEE_ADDITIONAL_DATA_EDIT } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE, EMPLOYEE_CHANGE_SHIFT, EMPLOYEE_ADDITIONAL_DATA_EDIT } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -9,7 +9,8 @@ import {
   validateDOB,
   validateAddress,
   validateDefault,
-  validateBasicSalary
+  validateBasicSalary,
+  validateReason
 } from './validation'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -151,6 +152,10 @@ const getEndTime = (endTime?: string | number) => {
 
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
 const inputNumberMaxLength = (value: any, length: number) => value && value.slice(0, length);
+const inputAadharLength = (value: any, length: number) => value && value.slice(0, length);
+const inputTextMaxLength = (value: any, length: number) => value && value.slice(0, length);
+
+
 
 
 const downloadFile = ((response: any) => {
@@ -187,6 +192,7 @@ export {
   validateDOB,
   validateAddress,
   validateDefault,
+  validateReason,
   TABLE_ELEMENT_TEXT_BUTTON,
   EMPLOYEE_ADDITIONAL_DATA,
   TABLE_CONTENT_TYPE_REPORT,
@@ -219,7 +225,10 @@ export {
   LANGUAGE_LIST,
   downloadFile,
   MAX_LENGTH_MOBILE_NUMBER,
+  MAX_LENGTH_AADHAR,
   inputNumberMaxLength,
+  inputAadharLength,
+  inputTextMaxLength,
   LEAVE_STATUS_REVERT,
   DOWNLOAD_RANGE,
   Today,
