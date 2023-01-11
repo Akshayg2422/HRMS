@@ -232,11 +232,11 @@ function App() {
         />
         <Route
           path={ROUTE.ROUTE_CREATE_GROUP}
-          element={<RequireAuth>{<CreateGroup/>}</RequireAuth>}
+          element={<RequireAuth>{<CreateGroup />}</RequireAuth>}
         />
-         <Route
+        <Route
           path={ROUTE.ROUTE_MY_BRANCHES}
-          element={<RequireAuth>{<MyBranches/>}</RequireAuth>}
+          element={<RequireAuth>{<MyBranches />}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

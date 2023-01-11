@@ -10,6 +10,9 @@ import {
   Icon,
   Modal,
   CheckBox,
+  Container,
+  Secondary,
+  Primary,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -38,7 +41,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import{ getAllBranchesList} from '../../../../store/location/actions'
+import { getAllBranchesList } from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
@@ -259,7 +262,7 @@ const ManageEmployee = () => {
         employeeAddition({
           params,
           onSuccess: (success: any) => {
-      
+
             showToast("success", success.message);
             goBack(navigation);
           },
@@ -364,15 +367,21 @@ const ManageEmployee = () => {
       dispatch(
         addDesignation({
           params,
-          onSuccess: () => {
+          onSuccess: (response: any) => {
+            showToast('success', response?.message)
             setDesignationModel(!designationModel);
             setIsRefresh(!isRefresh);
             setDesignation("");
             setIsAdminRights(false);
           },
-          onError: () => { },
+          onError: (error: any) => {
+            showToast('error', error)
+
+          },
         })
       );
+    } else {
+      showToast('error', t('formInvalidParams'))
     }
   }
 
@@ -388,14 +397,19 @@ const ManageEmployee = () => {
       dispatch(
         addDepartment({
           params,
-          onSuccess: () => {
+          onSuccess: (response: any) => {
             setDepartmentModel(!departmentModel);
             setIsRefresh(!isRefresh);
             setDepartment("");
+            showToast('success', response?.message)
           },
-          onError: () => { },
+          onError: (error: any) => {
+            showToast('error', error)
+          },
         })
       );
+    } else {
+      showToast('error', t('formInvalidParams'))
     }
   }
 
@@ -590,19 +604,29 @@ const ManageEmployee = () => {
         title={t("department")}
         showModel={departmentModel}
         toggle={() => setDepartmentModel(!departmentModel)}
-        footer
-        saveChange={submitDepartment}
       >
         {
-          <div className="col-xl-7 col-md-10">
-            <InputText
-              placeholder={t("department")}
-              validator={validateDefault}
-              onChange={(e) => {
-                setDepartment(e.target.value);
-              }}
-            />
-          </div>
+          <Container>
+            <div className="col-xl-7 col-md-10">
+              <InputText
+                placeholder={t("department")}
+                validator={validateDefault}
+                onChange={(e) => {
+                  setDepartment(e.target.value);
+                }}
+              />
+            </div>
+            <Container margin={"mt-5"} additionClass={"text-right"}>
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setDepartmentModel(!departmentModel)}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={() => submitDepartment()}
+              />
+            </Container>
+          </Container>
         }
       </Modal>
 
@@ -610,25 +634,35 @@ const ManageEmployee = () => {
         title={t("designation")}
         showModel={designationModel}
         toggle={() => setDesignationModel(!designationModel)}
-        footer
-        saveChange={submitDesignation}
       >
         {
-          <div className="col-xl-7 col-md-10">
-            <InputText
-              placeholder={t("designation")}
-              validator={validateDefault}
-              onChange={(e) => {
-                setDesignation(e.target.value);
-              }}
-            />
-            <div className="col text-right">
-              <CheckBox
-                text={"As Admin rights"}
-                onChange={(e) => setIsAdminRights(e.target.checked)}
+          <Container>
+            <div className="col-xl-7 col-md-10">
+              <InputText
+                placeholder={t("designation")}
+                validator={validateDefault}
+                onChange={(e) => {
+                  setDesignation(e.target.value);
+                }}
               />
+              <div className="col text-right">
+                <CheckBox
+                  text={"As Admin rights"}
+                  onChange={(e) => setIsAdminRights(e.target.checked)}
+                />
+              </div>
             </div>
-          </div>
+            <Container margin={"mt-5"} additionClass={"text-right"}>
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setDesignationModel(!designationModel)}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={() => submitDesignation()}
+              />
+            </Container>
+          </Container>
         }
       </Modal>
     </>
