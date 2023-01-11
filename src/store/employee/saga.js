@@ -161,17 +161,15 @@ import { showLoader, hideLoader } from "../app/actions";
 function* getDesignation(action) {
   try {
     yield put(showLoader());
-
     const response = yield call(fetchDesignationData, action.payload.params);
-
     if (response.success) {
-      yield put(hideLoader());
       yield put(getDesignationDataSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
-    } else {
+      yield call(action.payload.onSuccess(response.details));
       yield put(hideLoader());
+    } else {
       yield put(getDesignationDataFailure(response.error_message));
       yield call(action.payload.onError);
+      yield put(hideLoader());
     }
   } catch (error) {
     yield put(hideLoader());
@@ -182,13 +180,11 @@ function* getDesignation(action) {
 function* getDepartments(action) {
   try {
     yield put(showLoader());
-
     const response = yield call(fetchDepartmentData, action.payload.params);
-
     if (response.success) {
       yield put(hideLoader());
       yield put(getDepartmentDataSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(hideLoader());
       yield put(getDepartmentDataFailure(response.error_message));
@@ -386,11 +382,11 @@ function* addDepartment(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(addDepartmentSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(addDepartmentFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
@@ -408,11 +404,11 @@ function* addDesignation(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(addDesignationSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(addDesignationFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
@@ -783,9 +779,9 @@ function* getReportsSaga(action) {
     yield put(showLoader());
     const response = yield call(fetchMisReportsLog, action.payload.params);
     if (response.success) {
+      yield put(hideLoader());
       yield put(getMisReportSuccess(response.details));
       yield call(action.payload.onSuccess(response));
-      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield call(action.payload.onError(response));

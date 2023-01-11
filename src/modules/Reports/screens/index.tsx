@@ -53,25 +53,21 @@ function Reports() {
     dispatch(getDepartmentData({
       params,
       onSuccess: (response: any) => {
-        if (departmentsData.length === 1) {
-          setDepartmentsData(departmentsData.concat(departmentDropdownData))
-        }
+        let mergedDepartments = [...departmentsData, ...response]
+        setDepartmentsData(mergedDepartments)
       },
       onError: (errorMessage: string) => {
       },
     }));
-
-
-  })
+  })  
 
   const getDesignation = (() => {
     const params = {}
     dispatch(getDesignationData({
       params,
       onSuccess: (response: any) => {
-        if (departmentsData.length === 1) {
-          setDesignationData(designationData.concat(designationDropdownData))
-        }
+        let mergeddesignation = [...designationData, ...response]
+        setDesignationData(mergeddesignation)
       },
       onError: (errorMessage: string) => {
       },
@@ -163,7 +159,8 @@ function Reports() {
               dispatch(resetMisReportData([]))
             }} />
           <Container additionClass={'col-lg-6  mt-xl-4'}>
-            <AllHierarchical />
+            {/* <AllHierarchical /> */}
+            <ChooseBranchFromHierarchical />
           </Container>
           <DropDown
             additionClass={'col-lg-3 col-md-12  mt-xl--2'}
@@ -230,16 +227,16 @@ function Reports() {
         </Container>
       </Card>
       {reportsType === "leave" &&
-        <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation}/>
+        <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
           : <NoRecordFound />}</>
       }
       {reportsType === "attendance" && <>
-        {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation}/>
+        {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
           : <NoRecordFound />}
       </>
       }
       {reportsType === "log" &&
-        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation}/>
+        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} />
           : <NoRecordFound />}</>
       }
     </>
