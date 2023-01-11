@@ -9,7 +9,7 @@ function PortFolio() {
   const MY_PORTFOLIO_ITEM = [
     {
       id: "1",
-      name: "MY Work Book",
+      name: "My Time Sheet",
       value: "MB",
       route: ROUTE.ROUTE_MY_WORK_BOOK,
       icon: Icons.myLogBook,

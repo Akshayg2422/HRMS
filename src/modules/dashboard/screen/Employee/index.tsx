@@ -62,7 +62,6 @@ function EmployeeScreen() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
-
     dispatch(getEmployeesList({ params }));
   }
 
@@ -109,12 +108,12 @@ function EmployeeScreen() {
     dispatch(
       getUpdateEmployeeStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (response: any) => {
           getEmployeesApi(currentPage);
-          showToast("success", t("deleteSuccessfully"));
+          showToast("success", response?.message);
         },
         onError: (error: string) => {
-          showToast("error", t("Somthingwentworng"));
+          showToast("error", error);
         },
       })
     );
@@ -128,6 +127,9 @@ function EmployeeScreen() {
   return (
     <>
       <Card margin={"m-4"}>
+        <Container>
+          <h2>{t('allRegisteredEmployee')}</h2>
+        </Container>
         <Container flexDirection={"row"} alignItems={"align-items-center"}>
           <Container
             flexDirection={"row"}
@@ -136,7 +138,7 @@ function EmployeeScreen() {
           >
             <Container col={"col-xl-3 col-md-6 col-sm-12"}>
               <InputText
-                placeholder={t("enterEmployeeName")}
+                placeholder={t("searchEmployee")}
                 label={t("employeeName")}
                 onChange={(e) => {
                   setSearchEmployee(e.target.value);

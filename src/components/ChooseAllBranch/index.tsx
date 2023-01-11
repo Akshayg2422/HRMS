@@ -28,6 +28,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
   const { brancheslist } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
+  const [showAll, setShowAll] = useState(false);
   let dispatch = useDispatch();
   const [branch, setBranch] = useState<any>([])
   const [allBranches, setAllBranches] = useState<any>([])
@@ -55,34 +56,34 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
   useEffect(() => {
     getBranchesList()
-    if(brancheslist){
-    const currentBranch = getAllSubBranchesAlternative(brancheslist, dashboardDetails?.company_branch.id);
-    const parentBranch = brancheslist.find((it: { parent_id: any; }) => !it.parent_id);
-    const currentEmployeeParent = brancheslist.find((it: { id: any; }) => it.id === dashboardDetails.company_branch.id);
-    let searchArray = [currentEmployeeParent]
-    currentBranch.forEach((element: any) => {
-      const index = brancheslist.findIndex((item: { id: any; }) => item.id === element)
-      if (index) {
-        searchArray = [...searchArray, brancheslist[index]]
-      }
-    });
-    setBranch(searchArray)
-    setAllBranches(searchArray)
-    setStructuredData(brancheslist);
-    setDefaultBranch(searchArray)
-    if (parentBranch) {
-      const hierarchicalBranchArray = {
-        ...parentBranch,
-        child: getChild(brancheslist, parentBranch.id),
-      };
-      const filteredBranch = getCurrentBranchNode(
-        dashboardDetails.company_branch.id,
-        [hierarchicalBranchArray]
-      );
+    if (brancheslist) {
+      const currentBranch = getAllSubBranchesAlternative(brancheslist, dashboardDetails?.company_branch.id);
+      const parentBranch = brancheslist.find((it: { parent_id: any; }) => !it.parent_id);
+      const currentEmployeeParent = brancheslist.find((it: { id: any; }) => it.id === dashboardDetails.company_branch.id);
+      let searchArray = [currentEmployeeParent]
+      currentBranch.forEach((element: any) => {
+        const index = brancheslist.findIndex((item: { id: any; }) => item.id === element)
+        if (index) {
+          searchArray = [...searchArray, brancheslist[index]]
+        }
+      });
+      setBranch(searchArray)
+      setAllBranches(searchArray)
+      setStructuredData(brancheslist);
+      setDefaultBranch(searchArray)
+      if (parentBranch) {
+        const hierarchicalBranchArray = {
+          ...parentBranch,
+          child: getChild(brancheslist, parentBranch.id),
+        };
+        const filteredBranch = getCurrentBranchNode(
+          dashboardDetails.company_branch.id,
+          [hierarchicalBranchArray]
+        );
 
-      setHierarchicalBranch({ child: [filteredBranch] })
+        setHierarchicalBranch({ child: [filteredBranch] })
+      }
     }
-  }
   }, [hierarchicalBranchName, hierarchicalBranchIds]);
 
 
@@ -155,7 +156,6 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
 
   function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
-    console.log('allBranch', allBranch);
     const childIds = getAllSubBranches(allBranch, item.id);
     dispatch(setBranchAllHierarchical(0))
     dispatch(
@@ -185,8 +185,6 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
     }
   }
 
-
-
   return (
     <div>
       <div className="row flex-row-reverse">
@@ -196,6 +194,22 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
             <div onClick={() => setModel(!model)}>
               <InputDefault disabled={true} value={hierarchicalAllBranchIds !== -1 ? hierarchicalBranchName : 'All'} />
             </div>
+            {hierarchicalBranchIds && (
+              <div className="ml-2 mt--3">
+                <CheckBox
+                  id={'2'}
+                  text={"Include Sub Branches"}
+                  checked={hierarchicalBranchIds.include_child}
+                  onChange={(e) => {
+                    dispatch(
+                      setBranchHierarchicalIncludeChild({
+                        checkBoxStatus: e.target.checked,
+                      })
+                    );
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
         <div className="col-lg-6">
@@ -221,7 +235,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
               }}
             />
           </Container>
-          <div className="row align-items-center my-4 mx-4">
+          {!searchBranches && <div className="row align-items-center my-4 mx-4">
             <div className="col-8" onClick={(e) => {
               e.stopPropagation();
               setModel(!model);
@@ -243,7 +257,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
                 }}
               />
             </div>
-          </div>
+          </div>}
           {brancheslist &&
             allBranches &&
             allBranches.length > 0 ?
