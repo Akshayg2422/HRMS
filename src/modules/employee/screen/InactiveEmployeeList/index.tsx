@@ -60,7 +60,7 @@ function InActiveEmployeeList() {
         params,
         onSuccess: (success: object) => { },
         onError: (error: string) => {
-          showToast("error", t("somethingwrong"));
+          showToast("error", error);
         },
       })
     );
@@ -111,12 +111,13 @@ function InActiveEmployeeList() {
     dispatch(
       getUpdateEmployeeStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
+          showToast("success", success?.message);
           setEnableUserModel(!enableUserModel);
           manageInactiveEmployeeList();
         },
         onError: (error: string) => {
-          showToast("error", t("Somthingwentworng"));
+          showToast("error", error);
         },
       })
     );
@@ -130,7 +131,7 @@ function InActiveEmployeeList() {
   return (
     <>
       <Card margin={"m-4"}>
-        <Container additionClass="col-xl-4 my-3">
+        <Container additionClass="col-xl-6 my-3">
           <BackArrow additionClass={'my-3'} />
           <h2>{t("deletedUser")}</h2>
           <ChooseBranchFromHierarchical />

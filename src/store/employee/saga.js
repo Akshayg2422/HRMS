@@ -167,7 +167,7 @@ function* getDesignation(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getDesignationDataSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(getDesignationDataFailure(response.error_message));
@@ -200,24 +200,24 @@ function* getDepartments(action) {
   }
 }
 
-function* getAllBranches(action) {
-  try {
-    yield put(showLoader());
-    const response = yield call(fetchAllBranchesList, action.payload.params);
-    if (response.success) {
-      yield put(hideLoader());
-      yield put(getAllBranchesListSuccess(response.details));
-      yield call(action.payload.onSuccess((response.details)));
-    } else {
-      yield put(hideLoader());
-      yield put(getAllBranchesListFailure(response.error_message));
-      yield call(action.payload.onError);
-    }
-  } catch (error) {
-    yield put(hideLoader());
-    yield put(getAllBranchesListFailure("Invalid Request"));
-  }
-}
+// function* getAllBranches(action) {
+//   try {
+//     yield put(showLoader());
+//     const response = yield call(fetchAllBranchesList, action.payload.params);
+//     if (response.success) {
+//       yield put(hideLoader());
+//       yield put(getAllBranchesListSuccess(response.details));
+//       yield call(action.payload.onSuccess((response.details)));
+//     } else {
+//       yield put(hideLoader());
+//       yield put(getAllBranchesListFailure(response.error_message));
+//       yield call(action.payload.onError);
+//     }
+//   } catch (error) {
+//     yield put(hideLoader());
+//     yield put(getAllBranchesListFailure("Invalid Request"));
+//   }
+// }
 
 function* getEmployeeDetails(action) {
   try {
@@ -560,11 +560,11 @@ function* getUpdateEmployeeStatus(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getUpdateEmployeeStatusSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(getUpdateEmployeeStatusFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
@@ -939,7 +939,7 @@ function* getBranchAdminsSaga(action) {
 function* EmployeeSaga() {
   yield takeLatest(FETCH_DESIGNATION, getDesignation);
   yield takeLatest(FETCH_DEPARTMENT, getDepartments);
-  yield takeLatest(FETCH_ALL_BRANCHES_LIST, getAllBranches);
+  // yield takeLatest(FETCH_ALL_BRANCHES_LIST, getAllBranches);
   yield takeLatest(FETCH_EMPLOYEE_DETAILS, getEmployeeDetails);
   yield takeLatest(FETCH_EMPLOYEE_LIST, getEmployeesList);
   yield takeLatest(POST_EMPLOYEE_ADDITION, employeeAddition);

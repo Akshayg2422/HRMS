@@ -22,10 +22,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import{ getAllBranchesList} from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
-  getAllBranchesList,
   getEmployeeDetails,
 } from "../../../../store/employee/actions";
 

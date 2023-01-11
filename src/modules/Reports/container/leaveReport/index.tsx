@@ -12,10 +12,12 @@ type LeaveReportProps = {
     department: string;
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
+    designation: string
+
 }
 
 
-function LeaveReports({ data, department, reportType, customrange }: LeaveReportProps) {
+function LeaveReports({ data, department, reportType, customrange, designation }: LeaveReportProps) {
 
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
@@ -27,8 +29,8 @@ function LeaveReports({ data, department, reportType, customrange }: LeaveReport
     } = useSelector((state: any) => state.EmployeeReducer);
 
 
-    console.log(JSON.stringify(currentPage)+"+========");
-    
+    console.log(JSON.stringify(currentPage) + "+========");
+
 
     let dispatch = useDispatch();
     const { t } = useTranslation();
@@ -49,6 +51,8 @@ function LeaveReports({ data, department, reportType, customrange }: LeaveReport
         const params = {
             report_type: reportType,
             attendance_type: '-1',
+            ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
+            designation_id: designation,
             department_id: department,
             download: false,
             ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
@@ -97,20 +101,20 @@ function LeaveReports({ data, department, reportType, customrange }: LeaveReport
     return (
         <>
             <Card>
-                {data && data.length > 0 &&(
-                <CommonTable
-                    noHeader
-                    isPagination
-                    currentPage={currentPage}
-                    noOfPage={numOfPages}
-                    paginationNumberClick={(currentPage) => {
-                        paginationHandler("current", currentPage);
-                    }}
-                    previousClick={() => paginationHandler("prev")}
-                    nextClick={() => paginationHandler("next")}
-                    displayDataSet={normalizedEmployee(data)}
-                    custombutton={"h5"}
-                />
+                {data && data.length > 0 && (
+                    <CommonTable
+                        noHeader
+                        isPagination
+                        currentPage={currentPage}
+                        noOfPage={numOfPages}
+                        paginationNumberClick={(currentPage) => {
+                            paginationHandler("current", currentPage);
+                        }}
+                        previousClick={() => paginationHandler("prev")}
+                        nextClick={() => paginationHandler("next")}
+                        displayDataSet={normalizedEmployee(data)}
+                        custombutton={"h5"}
+                    />
                 )}
             </Card>
         </>
