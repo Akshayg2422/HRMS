@@ -48,7 +48,6 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
         },
         onError: () => {
-          console.log("=========error");
         },
       })
     );
@@ -155,22 +154,22 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
   };
 
 
-  function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
-    const childIds = getAllSubBranches(allBranch, item.id);
-    dispatch(setBranchAllHierarchical(0))
-    dispatch(
-      setBranchHierarchical({
-        ids: {
-          ...hierarchicalBranchIds,
-          branch_id: item.id,
-          child_ids: childIds,
-        },
-        name: item.name,
-      })
-    );
+  // function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
+  //   const childIds = getAllSubBranches(allBranch, item.id);
+  //   dispatch(setBranchAllHierarchical(0))
+  //   dispatch(
+  //     setBranchHierarchical({
+  //       ids: {
+  //         ...hierarchicalBranchIds,
+  //         branch_id: item.id,
+  //         child_ids: childIds,
+  //       },
+  //       name: item.name,
+  //     })
+  //   );
 
-    setModel(!model);
-  }
+  //   setModel(!model);
+  // }
 
   const SelectedBranchFilter = () => {
     let filteredBranch = [...branch]
@@ -235,61 +234,6 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
               }}
             />
           </Container>
-          {!searchBranches && <div className="row align-items-center my-4 mx-4">
-            <div className="col-8" onClick={(e) => {
-              e.stopPropagation();
-              setModel(!model);
-              dispatch(setBranchAllHierarchical(-1))
-            }} >
-              <h5 className="mb-0">{'All'}</h5>
-            </div>
-            <div className="col-4 text-right">
-              <ImageView
-                icon={
-                  hierarchicalAllBranchIds === -1
-                    ? Icons.TickActive
-                    : Icons.TickDefault
-                }
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setModel(!model);
-                  dispatch(setBranchAllHierarchical(-1))
-                }}
-              />
-            </div>
-          </div>}
-          {brancheslist &&
-            allBranches &&
-            allBranches.length > 0 ?
-            allBranches.map(
-              (item: LocationProps, index: number) => {
-                return (
-                  <div>
-                    <div className="row align-items-center my-4 mx-4" onClick={(e) => {
-                      e.stopPropagation();
-                      saveChildIdHandler(brancheslist, item)
-                    }}>
-                      <div className="col-8">
-                        <h5 className="mb-0">{item?.name}</h5>
-                      </div>
-                      <div className="col-4 text-right">
-                        <ImageView
-                          icon={
-                            hierarchicalAllBranchIds === -1 ? Icons.TickDefault : hierarchicalBranchIds.branch_id === item.id
-                              ? Icons.TickActive
-                              : Icons.TickDefault
-                          }
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            saveChildIdHandler(brancheslist, item)
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-            ) : <NoRecordFound />}
         </div>
       </Modal>
     </div>
