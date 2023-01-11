@@ -140,9 +140,9 @@ const DashBoardAttendance = ({ }) => {
     switch (statusType) {
       case 1: color = "#2ECC71"
         break;
-      case 6: color = "#E74C3C";
+      case 6: color = "#DC4A1F";
         break;
-      case 9 : color = "#C39DE9";
+      case 9: color = "#C39DE9";
         break;
       case 2: color = "#BA4A00";
         break;
@@ -150,7 +150,7 @@ const DashBoardAttendance = ({ }) => {
         break;
       case 10: color = "#FFFF00";
         break;
-      case 7: color = "#000000";
+      case 5: color = "#FF351F";
         break;
       default:
         color = "#000000"

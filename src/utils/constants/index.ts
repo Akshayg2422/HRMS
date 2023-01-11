@@ -48,7 +48,7 @@ export const ROUTE = {
   ROUTE_DEDUCTION_GROUP: '/deduction-group-List',
   ROUTE_CREATE_GROUP: '/create-group',
   ROUTE_DASHBOARD_OTP: "/dashboard-otp",
-  ROUTE_MY_BRANCHES:'/my-branches'
+  ROUTE_MY_BRANCHES: '/my-branches'
 
 }
 
@@ -103,17 +103,17 @@ export const BLOOD_GROUP_LIST = [
   { id: 'AB-ve', name: 'AB-ve', value: 'AB-ve' },
   { id: 'O-ve', name: 'O-ve', value: 'O-ve' },
 ];
+// single-copy-04
 
 
 export const NAV_ITEM = [
   { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", route: ROUTE.ROUTE_DASHBOARD },
-  { id: '2', name: 'Employee Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, route: ROUTE.ROUTE_EMPLOYEE },
+  { id: '2', name: 'Employees Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, route: ROUTE.ROUTE_EMPLOYEE },
   { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', image: Icons.LocationSecondary, route: ROUTE.ROUTE_LOCATION },
-  // {id: '4', name: 'Reports', value: 'RE', icon: 'ni ni-single-copy-04', route: ROUTE.ROUTE_REPORT},
   { id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', image: Icons.AssignLocation, route: ROUTE.ROUTE_ASSIGN_LOCATION },
   { id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', image: Icons.Admin, route: ROUTE.ROUTE_FENCE_ADMIN },
-  { id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-single-copy-04', image: Icons.Employee, route: ROUTE.ROUTE_EMPLOYEE_LOG },
-  { id: '7', name: 'Work Book', value: 'WB', icon: 'ni ni-book-bookmark', image: Icons.Department, route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK },
+  { id: '6', name: 'Employee Log', value: 'EL', icon: 'ni ni-book-bookmark', image: Icons.Employee, route: ROUTE.ROUTE_EMPLOYEE_LOG },
+  { id: '7', name: 'Time Sheets', value: 'TS', icon: 'ni ni-single-copy-04', image: Icons.Department, route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK },
   { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, route: ROUTE.ROUTE_DASHBOARD_STATS },
   { id: '9', name: 'Holiday Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, route: ROUTE.ROUTE_CALENDAR },
   { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
@@ -123,7 +123,7 @@ export const NAV_ITEM = [
   // { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
   // { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
-  { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route:ROUTE.ROUTE_MY_BRANCHES },
+  { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
 ];
 
 
@@ -278,4 +278,5 @@ export const LastWeek = moment()
 export const MAX_LENGTH_MOBILE_NUMBER = 10;
 export const MAX_LENGTH_AADHAR = 12;
 export const MAX_LENGTH_PAN_CARD = 12;
+
 

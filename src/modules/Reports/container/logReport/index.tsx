@@ -9,10 +9,11 @@ type LogReportsProps = {
     department: string;
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
+    designation: string
 };
 
 
-function LogReports({ data, department, reportType, customrange }: LogReportsProps) {
+function LogReports({ data, department, reportType, customrange, designation }: LogReportsProps) {
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -41,18 +42,13 @@ function LogReports({ data, department, reportType, customrange }: LogReportsPro
         return updatedData
     }
 
-    const branchId = (() => {
-        if (hierarchicalAllBranchIds === -1) {
-            return hierarchicalAllBranchIds
-        } else {
-            return [hierarchicalBranchIds.branch_id]
-        }
-    })
 
     const getReports = ((pageNumber: number) => {
         const params = {
             report_type: reportType,
             attendance_type: '-1',
+            ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
+            designation_id: designation,
             department_id: department,
             download: false,
             ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
@@ -130,8 +126,8 @@ const LocationTable = ({
             else {
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
                     <div className="column">
-                        <h6 className="mb-0 text-xs mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.start_time}`}</h6>
-                        <h6 className="mb-0 text-xs mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.end_time}`}</h6>
+                        <h6 className="mb-0  mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.start_time}`}</h6>
+                        <h6 className="mb-0  mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.end_time}`}</h6>
                         {/* <div className='mb-2'>
                             <ImageView icon={key != 'string' && coloredIcons(eachObject[key as keyof object]?.attendance_status_code)} height={16} width={16} />
                         </div> */}

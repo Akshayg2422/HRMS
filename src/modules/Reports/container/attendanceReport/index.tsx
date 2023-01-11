@@ -12,9 +12,10 @@ type AttendanceReportProps = {
   department: string;
   reportType: string;
   customrange: { dateFrom: string, dataTo: string };
+  designation:string
 };
 
-function AttendanceReport({ data, department, reportType, customrange }: AttendanceReportProps) {
+function AttendanceReport({ data, department, reportType, customrange,designation }: AttendanceReportProps) {
 
   let dispatch = useDispatch();
 
@@ -31,6 +32,8 @@ function AttendanceReport({ data, department, reportType, customrange }: Attenda
   const getReports = ((pageNumber: number) => {
     const params = {
       report_type: reportType,
+      ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
+      designation_id: designation,
       attendance_type: '-1',
       department_id: department,
       download: false,
@@ -54,6 +57,8 @@ function AttendanceReport({ data, department, reportType, customrange }: Attenda
         "Leave Days": el.leave,
         "Holidays": el.holiday,
         "Absent": el.absent,
+        "Alert":el.alert,
+        "Billable Days":el?.billable_days
       };
     });
   };

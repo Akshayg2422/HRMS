@@ -38,10 +38,10 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import{ getAllBranchesList} from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
-  getAllBranchesList,
   getEmployeeDetails,
   addDepartment,
   addDesignation,
@@ -354,10 +354,6 @@ const ManageEmployee = () => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
-  const valiadtionHandler = (value: string, key: string) => {
-    setEmployeeDetails({ ...employeeDetails, [key]: value });
-  };
-
   const validateDesignationPostParams = () => {
     return validateDefault(designation).status;
   };
@@ -484,12 +480,12 @@ const ManageEmployee = () => {
         <InputDefault
           label={t("aadhar")}
           placeholder={t("typeypurAadharNo")}
-          // maxLength={10}
+          maxLength={12}
           validator={validateAadhar}
           value={employeeDetails.aadharrNo}
           name={"aadharrNo"}
           onChange={(event) => {
-            mobileNumberHandler(inputAadharLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
+            onChangeHandler(event);
           }}
         />
         <div className="row align-items-center">

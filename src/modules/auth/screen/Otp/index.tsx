@@ -1,5 +1,5 @@
 import React, { RefObject, useEffect, useState } from 'react';
-import { Container, ScreenTitle, Primary } from '@components';
+import { Container, ScreenTitle, Primary, useKeyPress } from '@components';
 import { OtpInput } from '../../container';
 import {
   ROUTE,
@@ -31,11 +31,12 @@ type LoginResponse = {
 }
 
 function Otp() {
-  
+
   const navigate = useNav();
   let dispatch = useDispatch();
 
   const { t } = useTranslation();
+  const enterPress = useKeyPress('Enter')
   const { userDetails, success, mobileNumber, error } = useSelector(
     (state: any) => state.AuthReducer
   );
@@ -44,10 +45,10 @@ function Otp() {
   const [counter, setCounter] = useState<number>(59);
   const maxLength = 1
 
-   const inputRef1 = React.createRef<HTMLInputElement>();
-   const inputRef2 = React.createRef<HTMLInputElement>();
-   const inputRef3 = React.createRef<HTMLInputElement>();
-   const inputRef4 = React.createRef<HTMLInputElement>();
+  const inputRef1 = React.createRef<HTMLInputElement>();
+  const inputRef2 = React.createRef<HTMLInputElement>();
+  const inputRef3 = React.createRef<HTMLInputElement>();
+  const inputRef4 = React.createRef<HTMLInputElement>();
 
   const [otp, setOtp] = useState({
     field1: '',
@@ -63,6 +64,12 @@ function Otp() {
     return () => clearTimeout(timer);
   }, [counter]);
 
+  useEffect(() => {
+    if (enterPress) {
+      handleSignIn()
+    }
+  }, [enterPress])
+
   const onChangeHandler = (e: any) => {
     setOtp({ ...otp, [e.target.name]: e.target.value });
   };
@@ -73,17 +80,17 @@ function Otp() {
     }));
   };
 
-  const signInOTP =  (params: object) => {
+  const signInOTP = (params: object) => {
     dispatch(proceedSignIn({
       params,
-      onSuccess: async(response: LoginResponse) => {
+      onSuccess: async (response: LoginResponse) => {
 
         if (response.is_admin || response.is_branch_admin) {
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
           dispatch(setUserLoginDetails(params))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
           goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
-        }else{
+        } else {
           showToast('error', t('invalidAdmin'));
         }
       },
@@ -111,8 +118,8 @@ function Otp() {
         };
         signInOTP(params);
       }
-    }else{
-      showToast('error', t('invalidParams'));
+    } else {
+      showToast('error', t('formInvalidParams'));
     }
   };
 
@@ -124,7 +131,7 @@ function Otp() {
     reSendOTP(params);
   };
 
- 
+
 
   const changeInputFocus = () => {
     if (otp.field1 === '' && inputRef1.current) {
@@ -135,7 +142,7 @@ function Otp() {
       inputRef3.current.focus();
     } else if (otp.field4 === '' && inputRef4.current) {
       inputRef4.current.focus();
-    } 
+    }
   };
 
   useEffect(() => {
@@ -190,7 +197,7 @@ function Otp() {
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);
               }
-            
+
             }}
           />
           <OtpInput
@@ -201,7 +208,7 @@ function Otp() {
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);
               }
-             
+
             }}
           />
           <OtpInput

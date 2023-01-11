@@ -1,26 +1,40 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView } from '@components';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon } from '@components';
 import React, { useEffect, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence } from '../../../../store/location/actions';
 import { goTo, useNav, ROUTE, showToast } from '@utils';
-import {Icons} from '@assets'
+import { Icons } from '@assets'
+import { useTranslation } from 'react-i18next';
 
 function LocationScreen() {
 
   const dispatch = useDispatch();
   const navigation = useNav();
-
+  const { t } = useTranslation();
+  const [branch, setBranch] = useState<any>([])
   const { brancheslist } = useSelector((state: any) => state.LocationReducer);
   const [model, setModel] = useState(false);
   const [modelData, setModelData] = useState<Location>();
+  const [searchBranches, setsearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
 
 
   const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
   useEffect(() => {
-    dispatch(getAllBranchesList({}));
+    const params = {};
+    dispatch(
+      getAllBranchesList({
+        params,
+        onSuccess: (response: any) => {
+          setBranch(response)
+        },
+        onError: () => {
+          console.log("=========error");
+        },
+      })
+    );
   }, [isRefresh]);
 
   const normalizedEmployeeLog = (data: any) => {
@@ -35,17 +49,11 @@ function LocationScreen() {
     goTo(navigation, ROUTE.ROUTE_MANAGE_BRANCHES);
   };
 
-  function resetRadiusApi(radius : number) {
-    
-    const params = {id : modelData?.geo_location_id , fencing_radius: radius}
-
-    
-
-    console.log(JSON.stringify(params));
-
+  function resetRadiusApi(radius: number) {
+    const params = { id: modelData?.geo_location_id, fencing_radius: radius }
     dispatch(updateBranchLocationRadius({
       params,
-      onSuccess: (success:any) => {
+      onSuccess: (success: any) => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
         setModel(!model)
@@ -56,14 +64,13 @@ function LocationScreen() {
 
   }
 
+  function enableReFetchApi(branchDetail: Location) {
 
-  function enableReFetchApi(branchDetail : Location) {
-    
-    const params = {id : branchDetail?.id}
-   
+    const params = { id: branchDetail?.id }
+
     dispatch(enableBranchRefence({
       params,
-      onSuccess: (success:any) => {
+      onSuccess: (success: any) => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
       },
@@ -73,18 +80,45 @@ function LocationScreen() {
 
   }
 
+  const SelectedBranchFilter = () => {
+    let filteredBranch = [...branch]
+    if (searchBranches !== "") {
+      filteredBranch = filteredBranch.filter((element: any) => {
+        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
+      })
+      setBranch(filteredBranch)
+    }
+    else {
+      setBranch(brancheslist)
+    }
+  }
 
   return (
     <>
-      {brancheslist && brancheslist.length > 0 && (
+      <Container additionClass={"col-xl-4 row"}>
+        <InputText
+          value={searchBranches}
+          col={'col'}
+          placeholder={t("searchBranch")}
+          onChange={(e) => {
+            setsearchBranches(e.target.value);
+          }}
+        />
+        <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+          onClick={() => {
+            SelectedBranchFilter()
+          }}
+        />
+      </Container>
+      {branch && branch.length > 0 && (
         <CommonTable
           tableTitle={'Branches'}
           buttonOnClock={() => manageBranchesHandler(undefined)}
-          displayDataSet={normalizedEmployeeLog(brancheslist)}
+          displayDataSet={normalizedEmployeeLog(branch)}
           buttonText={'Add Branch'}
           tableChildren={
             <LocationTable
-              tableDataSet={brancheslist}
+              tableDataSet={branch}
               resetRadiusOnchange={(item) => {
                 setModelData(item)
                 setModel(!model)

@@ -1,18 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches } from '@components'
+import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches } from '@components'
 import { Icons } from '@assets'
 import { downloadFile, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { getDepartmentData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
+import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
 import { AttendanceReport, LeaveReports, LogReports } from '../container';
-import { getDashboard } from '../../../store/dashboard/actions';
 
 
 function Reports() {
 
   const {
-    misReport, departmentDropdownData,
+    misReport, departmentDropdownData, designationDropdownData,
     currentPage,
   } = useSelector((state: any) => state.EmployeeReducer);
 
@@ -28,17 +27,26 @@ function Reports() {
     id: "-1",
     name: "All"
   }])
+  const [designationData, setDesignationData] = useState([{
+    id: "-1",
+    name: "All"
+  }])
   const [selectedDepartment, setSelectedDepartment] = useState(departmentsData[0].id);
+  const [selectedDesignation, setSelectedDesignation] = useState<any>(designationData[0].id);
+
   const [customRange, setCustomRange] = useState({
     dateFrom: Today,
     dataTo: Today,
   });
 
-
   useEffect(() => {
     getDepartments()
+    getDesignation()
+  }, [])
+
+  useEffect(() => {
     getReports(currentPage)
-  }, [hierarchicalBranchIds, selectedDepartment, hierarchicalAllBranchIds, reportsType])
+  }, [hierarchicalBranchIds, selectedDepartment, hierarchicalAllBranchIds, reportsType, selectedDesignation])
 
   const getDepartments = (() => {
     const params = {}
@@ -47,6 +55,22 @@ function Reports() {
       onSuccess: (response: any) => {
         if (departmentsData.length === 1) {
           setDepartmentsData(departmentsData.concat(departmentDropdownData))
+        }
+      },
+      onError: (errorMessage: string) => {
+      },
+    }));
+
+
+  })
+
+  const getDesignation = (() => {
+    const params = {}
+    dispatch(getDesignationData({
+      params,
+      onSuccess: (response: any) => {
+        if (departmentsData.length === 1) {
+          setDesignationData(designationData.concat(designationDropdownData))
         }
       },
       onError: (errorMessage: string) => {
@@ -72,22 +96,21 @@ function Reports() {
   // const reset=()=>
   const getReports = ((pageNumber: number) => {
     const params = {
+      ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
       ...(searchEmployee && { q: searchEmployee }),
       ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds?.branch_id] }),
       attendance_type: '-1',
       report_type: reportsType,
       department_id: selectedDepartment,
+      designation_id: selectedDesignation,
       download: false,
       selected_date: customRange.dateFrom,
       selected_date_to: customRange.dataTo,
       page_number: pageNumber,
     };
-    console.log(JSON.stringify(params) + "=======");
     dispatch(getMisReport({
       params,
       onSuccess: (response: any) => {
-        // console.log(JSON.stringify(response) + "========misreport");
-
       },
       onError: (errorMessage: string) => {
       },
@@ -103,8 +126,10 @@ function Reports() {
   const downloadSampleFile = () => {
     const params = {
       report_type: reportsType,
+      ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
       attendance_type: reportsType === "attendance" ? '-1' : '',
       department_id: selectedDepartment,
+      designation_id: selectedDesignation,
       ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
       selected_date: customRange.dateFrom,
       selected_date_to: customRange.dataTo,
@@ -124,15 +149,12 @@ function Reports() {
     }));
   };
 
-  console.log(JSON.stringify(misReport)+"======misReport");
-  
-
   return (
     <>
       <Card>
         <Container flexDirection={'row'} display={'d-flex'} alignItems={'align-items-center'}>
           <DropDown
-            additionClass={'col-lg-3 col-md-12'}
+            additionClass={'col-lg-3 col-md-12 mt-xl--2'}
             placeholder={'Select Report'}
             value={reportsType} label={t('misReport')}
             data={REPORTS_TYPE}
@@ -140,8 +162,11 @@ function Reports() {
               setReportsType(event.target.value)
               dispatch(resetMisReportData([]))
             }} />
+          <Container additionClass={'col-lg-6  mt-xl-4'}>
+            <AllHierarchical />
+          </Container>
           <DropDown
-            additionClass={'col-lg-3 col-md-12'}
+            additionClass={'col-lg-3 col-md-12  mt-xl--2'}
             label={"Department"}
             placeholder={"Select Department"}
             data={departmentsData}
@@ -152,12 +177,20 @@ function Reports() {
               }
             }}
           />
-          <Container additionClass={'col-lg-6  mt-xl-2'}>
-            <AllHierarchical />
-          </Container>
-
         </Container>
-        <Container flexDirection={'row'} display={'d-flex'} additionClass={'mt-lg-4'}  >
+        <Container flexDirection={'row'} display={'d-flex'} additionClass={''}  >
+          <DropDown
+            additionClass={'col-lg-3 col-md-12'}
+            label={t('designation')}
+            placeholder={t('selectDesignation')}
+            data={designationData}
+            value={selectedDesignation}
+            onChange={(event) => {
+              if (setSelectedDesignation) {
+                setSelectedDesignation(event.target.value);
+              }
+            }}
+          />
           <Container additionClass={'col-lg-3 col-md-12'}>
             <InputText
               placeholder={t("enterEmployeeName")}
@@ -168,7 +201,7 @@ function Reports() {
               }}
             />
           </Container>
-          <Container additionClass={'col-lg-2'}>
+          <Container additionClass={'col-lg-2 ml--2'}>
             <h5>{t("startDate")}</h5>
             <DatePicker
               placeholder={"Select Date"}
@@ -180,7 +213,7 @@ function Reports() {
               value={customRange.dateFrom}
             />
           </Container>
-          <Container additionClass={'col-lg-2'}>
+          <Container additionClass={'col-lg-2 ml-xl--2'}>
             <h5>{t("endDate")}</h5>
             <DatePicker
               placeholder={"Select Date"}
@@ -190,23 +223,23 @@ function Reports() {
               value={customRange.dataTo}
             />
           </Container>
-          <Container additionClass={'col-lg-4'} style={{ marginTop: "30px" }}>
+          <Container additionClass={'col-lg-2'} style={{ marginTop: "30px" }}>
             <Icon icon={Icons.DownloadSecondary} onClick={() => downloadSampleFile()} />
             <Primary text={'Search'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </Card>
       {reportsType === "leave" &&
-        <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} />
+        <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation}/>
           : <NoRecordFound />}</>
       }
       {reportsType === "attendance" && <>
-        {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} />
+        {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation}/>
           : <NoRecordFound />}
       </>
       }
       {reportsType === "log" &&
-        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} />
+        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation}/>
           : <NoRecordFound />}</>
       }
     </>

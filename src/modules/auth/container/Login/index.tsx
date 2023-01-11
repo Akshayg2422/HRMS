@@ -6,6 +6,7 @@ import {
   InputNumber,
   Primary,
   Social,
+  useKeyPress,
 } from '@components';
 import { Icons } from '@assets';
 import {
@@ -16,7 +17,7 @@ import {
   useNav,
   ASYN_USER_AUTH,
   inputNumberMaxLength,
-  MAX_LENGTH_MOBILE_NUMBER
+  MAX_LENGTH_MOBILE_NUMBER,
 } from '@utils';
 
 import { useTranslation } from 'react-i18next';
@@ -37,10 +38,14 @@ function Login() {
 
 
   const { t } = useTranslation();
-
+  const enterPress = useKeyPress("Enter");
   let dispatch = useDispatch();
 
-
+  useEffect(() => {
+    if (enterPress) {
+      proceedValidateUserApi()
+    }
+  }, [enterPress])
 
   const proceedValidateUser = (params: object) => {
     dispatch(
@@ -76,8 +81,8 @@ function Login() {
       col={'col'}
       display={'d-flex'}
       flexDirection={'flex-column'}
-      // additionClass={'scrollable-register'}
-      >
+    // additionClass={'scrollable-register'}
+    >
       <Container
         display={'d-flex'}
         justifyContent={'justify-content-between'}
@@ -104,7 +109,7 @@ function Login() {
         <small className={'text-center'}>{t('loginwith')}</small>
         <Container flexDirection={'flex-row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} display={'d-flex'} margin={'mt-4'}>
           <Social icon={Icons.Facebook} text={t('facebook')} backgroundColor={'bg-facebook'} />
-          <Container padding={'pl-2'}  />
+          <Container padding={'pl-2'} />
           <Social icon={Icons.Google} text={t('google')} backgroundColor={'bg-google'} />
         </Container>
       </div>

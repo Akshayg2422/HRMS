@@ -193,7 +193,7 @@ function MyWorkLog() {
           </div>
           <div className="mr--3">
             <CommonTable
-              tableTitle={"My Work Book"}
+              tableTitle={"My Time Sheet"}
               displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
               tableOnClick={(e, index, item) => {
                 const attachment = employeeEachUserSheets[index].attachments;
