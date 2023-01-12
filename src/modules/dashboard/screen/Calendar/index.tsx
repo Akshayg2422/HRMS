@@ -172,6 +172,7 @@ function Calendar() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
+          <h1 className="mb-3">{t('Calendar')}</h1>
           <Container additionClass={"row"}>
             <Container additionClass="col-xl-5">
               <ChooseBranchFromHierarchical showCheckBox={false} />

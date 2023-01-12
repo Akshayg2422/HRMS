@@ -13,7 +13,7 @@ import {
   getEmployeeLeavesSuccess,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,7 +44,7 @@ const Pending = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => {},
+        onSuccess: (success: object) => { },
         onError: (error: string) => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
@@ -60,8 +60,8 @@ const Pending = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
@@ -99,7 +99,7 @@ const Pending = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           if (el === 1) {
             setApproveModel(!approveModel);
           }
@@ -107,8 +107,12 @@ const Pending = () => {
             setRejectModel(!rejectModel);
           }
           fetchPendingDetail(currentPage);
+          console.log('success', success);
+
+          showToast('success', success?.message)
+
         },
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
   };

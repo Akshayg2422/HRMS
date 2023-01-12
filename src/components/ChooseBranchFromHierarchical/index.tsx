@@ -12,9 +12,10 @@ import { useTranslation } from "react-i18next";
 
 interface HierarchicalProps {
   showCheckBox?: boolean;
+  showActiveBranch?: boolean
 }
 
-function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
+function Hierarchical({ showCheckBox = true, showActiveBranch = true }: HierarchicalProps) {
   const { t } = useTranslation();
 
   const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails } =
@@ -30,7 +31,7 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
     []
   );
 
-  useEffect(() => {   
+  useEffect(() => {
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -55,7 +56,7 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
         },
       })
     );
-  }, [hierarchicalBranchName,hierarchicalBranchIds ]);
+  }, [hierarchicalBranchName, hierarchicalBranchIds]);
 
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -145,11 +146,11 @@ function Hierarchical({ showCheckBox = true }: HierarchicalProps) {
           )}
         </div>
       </div>
-      <div className="col-lg-6">
+      {showActiveBranch && <div className="col-lg-6">
         <div className="form-group">
           <MyActiveBranches />
         </div>
-      </div>
+      </div>}
       <Modal showModel={model} toggle={() => setModel(!model)}>
         {brancheslist &&
           hierarchicalBranch &&

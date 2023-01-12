@@ -1,9 +1,9 @@
-import { Container, CommonTable, Modal, ImageView, Divider, NoRecordFound, } from '@components'
+import { Container, CommonTable, Modal, ImageView, Divider, NoRecordFound, InputText, Icon, } from '@components'
 import React, { useEffect, useState } from 'react'
 import { Navbar } from '../dashboard/container'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllBranchesList } from '../.././store/location/actions';
-import { getEmployeesList , addFenceAdmin} from '../.././store/employee/actions';
+import { getEmployeesList, addFenceAdmin } from '../.././store/employee/actions';
 import { Icons } from '@assets'
 
 import { goTo, useNav, ROUTE, showToast } from '@utils'
@@ -26,15 +26,19 @@ function FenceAdmin() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const [model, setModel] = useState(false);
+    const [branch, setBranch] = useState<any>([])
+    const [searchEmployee, setSearchEmployee] = useState<any>('')
     const [selectedEmployeeFenceId, setSelectedEmployeeFenceId] = useState();
     const [selectedBranchId, setSelectedBranchId] = useState();
+    const [searchBranches, setsearchBranches] = useState<any>('')
+
 
 
     const { brancheslist } = useSelector(
         (state: any) => state.LocationReducer
     );
 
-    const { registeredEmployeesList, numOfPages, currentPage  } = useSelector(
+    const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
         (state: any) => state.EmployeeReducer
     );
 
@@ -42,12 +46,22 @@ function FenceAdmin() {
 
 
     useEffect(() => {
-        dispatch(getAllBranchesList({}))
+        const params = {};
+        dispatch(
+            getAllBranchesList({
+                params,
+                onSuccess: (response: any) => {
+                    setBranch(response)
+                },
+                onError: () => {
+                    console.log("=========error");
+                },
+            })
+        );
     }, [])
 
 
     const normalizedBranchList = (data: any) => {
-
         return data.map((el: any) => {
             return {
                 Branch: el.name
@@ -57,12 +71,11 @@ function FenceAdmin() {
 
 
     function getRegisteredFenceAdmin(pageNumber: number) {
-
         const params = {
-            q: "",
+            ...(searchEmployee && { q: searchEmployee }),
             page_number: pageNumber,
             branch_id: selectedBranchId
-        }   
+        }
         dispatch(getEmployeesList({ params }))
     }
 
@@ -85,10 +98,9 @@ function FenceAdmin() {
 
     function addFenceAdminApiHandler(item: Employee) {
         const params = { branch_id: selectedBranchId, employee_id: item.id }
-        console.log(JSON.stringify(item));
         dispatch(addFenceAdmin({
             params,
-            onSuccess: (success:any) => {
+            onSuccess: (success: any) => {
                 showToast("success", success.message);
                 dispatch(getAllBranchesList({}))
                 setModel(!model)
@@ -99,30 +111,73 @@ function FenceAdmin() {
 
     }
 
-    function proceedModelHandler(index: number) {
-        const selectedBranch = brancheslist[index];
+    function proceedModelHandler(selectedBranch: any) {
         setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
         setSelectedBranchId(selectedBranch.id);
-        getRegisteredFenceAdminDefault(selectedBranch.id,currentPage);
+        getRegisteredFenceAdminDefault(selectedBranch.id, currentPage);
         setModel(!model)
-        
+        setSearchEmployee('')
+    }
+
+    const SelectedBranchFilter = () => {
+        let filteredBranch = [...branch]
+        if (searchBranches !== "") {
+            filteredBranch = filteredBranch.filter((element: any) => {
+                return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
+            })
+            setBranch(filteredBranch)
+        }
+        else {
+            setBranch(brancheslist)
+        }
     }
 
     return (
         <>
+            <Container additionClass={"col-xl-4 row"}>
+                <InputText
+                    value={searchBranches}
+                    col={'col'}
+                    placeholder={t("searchBranch")}
+                    onChange={(e) => {
+                        setsearchBranches(e.target.value);
+                    }}
+                />
+                <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+                    onClick={() => {
+                        SelectedBranchFilter()
+                    }}
+                />
+            </Container>
             {
-                brancheslist && brancheslist.length > 0 &&
+                branch && branch.length > 0 &&
                 <CommonTable
-                    tableTitle={t('fenceAdmin')}
-                    displayDataSet={normalizedBranchList(brancheslist)}
+                    tableTitle={t('allRegisteredLocation')}
+                    displayDataSet={normalizedBranchList(branch)}
                     tableOnClick={(e, index, item) => {
-                        proceedModelHandler(index);
+                        let currentItem = branch[index];
+                        proceedModelHandler(currentItem);
                     }}
                 />
             }
 
             {
                 <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => setModel(!model)}>
+                    <Container additionClass={"col-xl-6 row"}>
+                        <InputText
+                            value={searchEmployee}
+                            col={'col'}
+                            placeholder={t("searchEmployee")}
+                            onChange={(e) => {
+                                setSearchEmployee(e.target.value);
+                            }}
+                        />
+                        <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+                            onClick={() => {
+                                getRegisteredFenceAdmin(currentPage)
+                            }}
+                        />
+                    </Container>
                     {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
                         <CommonTable
                             noHeader
@@ -152,7 +207,7 @@ function FenceAdmin() {
 type EmployeeTableProps = {
     tableDataSet?: Array<Employee>;
     employeeFenceId?: string;
-    proceedFenceAdmin?:(item : Employee)=> void;
+    proceedFenceAdmin?: (item: Employee) => void;
 
 }
 
@@ -165,7 +220,6 @@ const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: Emp
                     <th scope='col'>{'Name'}</th>
                     <th scope='col'>{''}</th>
                 </tr>
-
             </thead>
             <tbody>
                 {

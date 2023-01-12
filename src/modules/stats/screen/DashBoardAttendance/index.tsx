@@ -106,8 +106,6 @@ const DashBoardAttendance = ({ }) => {
 
   const normalizedEmployee = (data: any) => {
     return data.map((el: any) => {
-      console.log(el);
-
       return {
         name: el.name,
         "Mobile Number": el.mobile_number,
@@ -289,7 +287,7 @@ const DashBoardAttendance = ({ }) => {
       downloadSampleCsvFile(false)
     }
   }
-
+  
   return (
     <div className="mx-3">
       <Card>

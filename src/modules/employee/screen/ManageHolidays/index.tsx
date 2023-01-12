@@ -92,7 +92,7 @@ const ManageHolidays = () => {
           onSuccess: (success: object) => {
             goTo(navigation, ROUTE.ROUTE_CALENDAR);
           },
-          onError: (error: string) => {},
+          onError: (error: string) => { },
         })
       );
     }
@@ -105,13 +105,12 @@ const ManageHolidays = () => {
         onClick={onSubmit}
         buttonTittle={selectedEventId ? t("update") : t("addHoildays")}
       >
-        <small className="form-control-label ml-3 text-black">
-          {t("selectBranch")}
-        </small>
-        <ChooseBranchFromHierarchical showCheckBox={false} />
+        <Container additionClass="col-xl-12">
+          <ChooseBranchFromHierarchical showCheckBox={false} />
+        </Container>
         <InputText
           col="col-xl-12"
-          label={t("eventTitle")}
+          label={t("title")}
           validator={validateName}
           value={holidayEvents.title}
           name={"title"}

@@ -49,6 +49,7 @@ function EmployeeLog() {
   const [userId, setUserId] = useState<string>();
   const [activeSort, setActiveSort] = useState<number>(1);
   const [searchEmployee, setSearchEmployee] = useState('')
+  const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
 
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("yyyy-MM-DD")
@@ -106,9 +107,8 @@ function EmployeeLog() {
     }
   };
 
-  function getUserCheckInLogs(index: number) {
-    const selectedEmployee = registeredEmployeesList[index];
-    setUserId(selectedEmployee.id);
+  function getUserCheckInLogs(selectedEmployee: any) {
+    setSelectedEmployeeDetails(selectedEmployee)
     const params = {
       start_time: startDate,
       end_time: endDate,
@@ -128,23 +128,21 @@ function EmployeeLog() {
 
   function getEmployeeCheckInDetailedLogPerDay(index: number) {
     const selectedDate = employeeCheckInLogs[index].date;
-
     dispatch(
       getCheckInDetailedLogPerDay({
         date: selectedDate,
         ...(userId && { user_id: userId }),
       })
     );
-
-    if (
-      employeeCheckInDetailedLogPerDay &&
-      employeeCheckInDetailedLogPerDay.length > 0
-    ) {
-      console.log(
-        JSON.stringify(employeeCheckInDetailedLogPerDay) +
-        "=======getEmployeeCheckInDetailedLogPerDay"
-      );
-    }
+    // if (
+    //   employeeCheckInDetailedLogPerDay &&
+    //   employeeCheckInDetailedLogPerDay.length > 0
+    // ) {
+    //   console.log(
+    //     JSON.stringify(employeeCheckInDetailedLogPerDay) +
+    //     "=======getEmployeeCheckInDetailedLogPerDay"
+    //   );
+    // }
   }
 
   return (
@@ -190,7 +188,8 @@ function EmployeeLog() {
           noOfPage={numOfPages}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
           tableOnClick={(e, index, item) => {
-            getUserCheckInLogs(index);
+            const selectedEmployee = registeredEmployeesList[index];
+            getUserCheckInLogs(selectedEmployee);
           }}
           paginationNumberClick={(currentPage) => {
             getEmployeeLogs(paginationHandler("current", currentPage));
@@ -205,7 +204,7 @@ function EmployeeLog() {
       ) : <Card><NoRecordFound /></Card>}
       <Modal
         showModel={model}
-        title={"Logs"}
+        title={`${selectedEmployeeDetails?.name}'s ${t('log')}`}
         size={"modal-xl"}
         toggle={() => setModel(!model)}
       >
