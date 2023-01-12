@@ -8,7 +8,8 @@ import {
   Divider,
   Primary,
   ChooseBranchFromHierarchical,
-  NoRecordFound
+  NoRecordFound,
+  Secondary
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../../container";
@@ -156,7 +157,7 @@ function ManageAssignLocation() {
       >
         <Container col={"col-xl-3 col-md-6 col-sm-12 mt--2"}>
           <InputText
-            placeholder={t("enterEmployeeName")}
+            placeholder={t("searchEmployee")}
             label={t("employeeName")}
             onChange={(e) => {
               setSearchEmployee(e.target.value);
@@ -202,8 +203,6 @@ function ManageAssignLocation() {
           title={"All Registered Branches"}
           showModel={model}
           toggle={() => setModel(!model)}
-          footer
-          saveChange={updateEmployeeCheckInAssociationApi}
         >
           <div className="my-4">
             {brancheslist.map((item: Branch, index: number) => {
@@ -231,6 +230,19 @@ function ManageAssignLocation() {
               );
             })}
           </div>
+          <Container
+            justifyContent={"justify-content-end"}
+            display={"d-flex"}
+          >
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setModel(!model)}
+            />
+            <Primary
+              text={t("submit")}
+              onClick={() => updateEmployeeCheckInAssociationApi()}
+            />
+          </Container>
         </Modal>
       )}
     </>

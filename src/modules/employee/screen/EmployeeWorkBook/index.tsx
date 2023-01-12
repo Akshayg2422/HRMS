@@ -49,6 +49,7 @@ function EmployeeTimeSheets() {
   const [model, setModel] = useState(false);
   const [accordion, setAccordion] = useState<number>();
   const [searchEmployee, setSearchEmployee] = useState('')
+  const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
 
   const {
     employeeTimeSheets,
@@ -131,7 +132,7 @@ function EmployeeTimeSheets() {
               }}
             />
           </Container>
-          
+
           <div className="col text-right my-sm-2 mt-3 mt-sm-0 mt-xl-4">
             <Sort
               sortData={sortData}
@@ -149,9 +150,10 @@ function EmployeeTimeSheets() {
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
-          tableTitle={t("timeSheets")}
+          tableTitle={t("employeeTimeSheets")}
           displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
+            setSelectedEmployeeDetails(employeeTimeSheets[index])
             getEmployeeEachUserTimeSheetsApi(index);
           }}
           paginationNumberClick={(currentPage) => {
@@ -168,7 +170,7 @@ function EmployeeTimeSheets() {
 
       <Modal
         showModel={model}
-        title={"Logs"}
+        title={`${selectedEmployeeDetails?.name}'s ${t('timeSheets')}`}
         size={"modal-xl"}
         toggle={() => setModel(!model)}
       >

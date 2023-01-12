@@ -6,7 +6,6 @@ export const Images = {
 export const Icons = {
   Logo: require('./icons/Logo/Logo.png'),
   LogoSmall: require('./icons/LogoSmall/LogoSmall.png'),
-
   Admin: require('./icons/Admin/Admin.png'),
   AssignLocation: require('./icons/AssignLocation/asignLocation.png'),
   LocationSecondary: require('./icons/LocationSecondary/locationSecondary.png'),
