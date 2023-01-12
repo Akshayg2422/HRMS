@@ -119,12 +119,12 @@ import {
 
     return (
       <FormWrapper
-        title={t("Add Company Branch")}
+        title={t("addCompanyBranch")}
         onClick={onSubmit}
       >
         <InputText
-          label={t("Company Name")}
-          placeholder={t("Company Name")}
+          label={t("branchName")}
+          placeholder={t("branchName")}
           validator={validateDefault}
           value={branchDetails.companyname}
           name={"companyname"}
@@ -133,8 +133,8 @@ import {
           }}
         />
         <InputText
-          label={t("Display Company Name")}
-          placeholder={t("Display Company Name")}
+          label={t("displayCompanyName")}
+          placeholder={t("displayCompanyName")}
           validator={validateName}
           value={branchDetails.displaycompanyname}
           name={"displaycompanyname"}

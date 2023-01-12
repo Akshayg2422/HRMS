@@ -112,7 +112,7 @@ function LocationScreen() {
       </Container>
       {branch && branch.length > 0 && (
         <CommonTable
-          tableTitle={'Branches'}
+          tableTitle={t('allRegisteredLocation')}
           buttonOnClock={() => manageBranchesHandler(undefined)}
           displayDataSet={normalizedEmployeeLog(branch)}
           buttonText={'Add Branch'}
