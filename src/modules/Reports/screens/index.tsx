@@ -150,7 +150,7 @@ function Reports() {
       <Card>
         <Container flexDirection={'row'} display={'d-flex'} alignItems={'align-items-center'}>
           <DropDown
-            additionClass={'col-lg-3 col-md-12 mt-xl--2'}
+            additionClass={'col-lg-3 col-md-12'}
             placeholder={'Select Report'}
             value={reportsType} label={t('misReport')}
             data={REPORTS_TYPE}
@@ -189,7 +189,7 @@ function Reports() {
               }}
             />
             <DropDown
-              additionClass={'col-lg-3 col-md-12  mt-xl--2'}
+              additionClass={'col-lg-3 col-md-12'}
               label={"Department"}
               placeholder={"Select Department"}
               data={departmentsData}
@@ -232,7 +232,7 @@ function Reports() {
                 value={customRange.dataTo}
               />
             </Container>
-            <Container additionClass={'col-lg-2'} style={{ marginTop: "30px" }}>
+            <Container additionClass={'col-lg-2'}>
               <Icon icon={Icons.DownloadSecondary} onClick={() => downloadSampleFile()} />
               <Primary text={'Search'} onClick={() => getReports(currentPage)} />
             </Container>
