@@ -142,9 +142,9 @@ const validateBasicSalary = (value: any | undefined) => {
   return output;
 };
 
-const dropDownValueCheck = (value: any, placeHolder: string) => {
-  if (value != placeHolder) {
-    return value
+const dropDownValueCheck = (event: any, placeHolder: string) => {
+  if (event.target.value != placeHolder) {
+    return event
   } else {
     return ''
   }

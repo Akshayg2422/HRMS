@@ -9,6 +9,7 @@ import {
   Secondary,
   ChooseBranchFromHierarchical,
   NoRecordFound,
+  useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -41,12 +42,11 @@ function EmployeeScreen() {
   const [searchEmployeeById, setSearchEmployeeById] = useState("");
 
   const navigation = useNav();
+  const enterPress = useKeyPress("Enter");
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
   );
-  // console.log("registeredEmployeesList",registeredEmployeesList);
-
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -55,6 +55,12 @@ function EmployeeScreen() {
   useEffect(() => {
     getEmployeesApi(currentPage);
   }, [hierarchicalBranchIds]);
+
+  useEffect(() => {
+    if (enterPress) {
+      getEmployeesApi(currentPage);
+    }
+  }, [enterPress])
 
   function getEmployeesApi(pageNumber: number) {
     const params: object = {

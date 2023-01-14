@@ -36,7 +36,8 @@ import {
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
   MAX_LENGTH_AADHAR,
-  inputAadharLength
+  inputAadharLength,
+  dropDownValueCheck
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -510,7 +511,7 @@ const ManageEmployee = () => {
               data={designationDropdownData}
               name={"designation"}
               value={employeeDetails.designation}
-              onChange={(event) => onChangeHandler(event)}
+              onChange={(event) => onChangeHandler(dropDownValueCheck(event.target.value, t("enterDesignation")))}
             />
           </div>
           <Icon
@@ -564,6 +565,7 @@ const ManageEmployee = () => {
         <DatePicker
           icon={Icons.Calendar}
           iconPosition={"append"}
+          maxDate={Today}
           onChange={(date: string) => dateTimePickerHandler(date, "dob")}
           value={employeeDetails.dob}
         />
