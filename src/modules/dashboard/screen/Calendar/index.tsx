@@ -117,8 +117,6 @@ function Calendar() {
     }
   };
 
-
-
   const handleAddHolidays = () => {
     dispatch(getSelectedEventId(undefined));
     dispatch(getLeaveFromDate(""));

@@ -194,6 +194,13 @@
 "endDate":"End Date",
 "dateFromToValidation":"End Date Can't Be greaterThan Start Date",
 "searchBranch":"Search Branch",
+"inValidType":"Invalid Type",
+"inValidDesignation":"Invalid Designation",
+"inValidDepartment":"Invalid Department",
+"inValidAttendance":"InValid Attendance Type",
+
+
+
 
 
 

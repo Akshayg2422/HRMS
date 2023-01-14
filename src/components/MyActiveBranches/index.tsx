@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAdminBranches, getAllBranchesList, getBranchAdmins, postAdminUpdateBranches } from "../../store/employee/actions";
 import { useTranslation } from "react-i18next";
-import { showToast } from "@utils";
+import { dropDownValueCheck, showToast } from "@utils";
 import { setBranchHierarchical } from "../../store/dashboard/actions";
 
 
@@ -82,6 +82,15 @@ function MyActiveBranches() {
         dispatch(setBranchHierarchical({ ids: { branch_id: id, child_ids: childIds, include_child: false }, name: name }))
     }
 
+    const validateParams = (id: any) => {
+        if (!id) {
+            showToast('error', "invalidBranch")
+            return
+        } else {
+            changeActiveStatus(id)
+        }
+    }
+
 
     const changeActiveStatus = (id: string) => {
         const params = {
@@ -94,7 +103,6 @@ function MyActiveBranches() {
             onSuccess: (success: any) => {
                 showToast("success", success?.message);
                 getAdminBranchesData()
-
             },
             onError: (error: string) => {
                 showToast("error", error);
@@ -102,9 +110,9 @@ function MyActiveBranches() {
         }));
     }
 
-    const branchAdmins = (pageNumber:number) => {
+    const branchAdmins = (pageNumber: number) => {
         const params = {
-            page_number:pageNumber,
+            page_number: pageNumber,
             child_ids: hierarchicalBranchIds?.child_ids
         }
         dispatch(getBranchAdmins({ params }));
@@ -118,7 +126,7 @@ function MyActiveBranches() {
                 name={"dropdownSelectedBranch"}
                 value={dropdownSelectedBranch}
                 onChange={(event) => {
-                    changeActiveStatus(event.target.value)
+                    validateParams(dropDownValueCheck(event.target.value, t('selectBranch')))
                 }}
             />
         </>

@@ -20,7 +20,8 @@ import {
   SET_HIERARCHICAL_BRANCH_IDS,
   SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
   RESET_REDUCER,
-  SET_HIERARCHICAL_ALL_BRANCH_IDS
+  SET_HIERARCHICAL_ALL_BRANCH_IDS,
+  SET_MULTISELECT_ALL_BRANCH_IDS
 
 } from "./actionTypes";
 
@@ -210,3 +211,10 @@ export const resetDashboard = () => {
 //     payload:params
 //   }
 // }
+
+export const multiSelectBranch = (branches) => {
+  return {
+    type: SET_MULTISELECT_ALL_BRANCH_IDS,
+    payload: branches
+  }
+}

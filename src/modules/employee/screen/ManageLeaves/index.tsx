@@ -95,7 +95,6 @@ function ManageLeaves() {
     setRecall(true);
   };
 
-  console.log(" calendarEvents?.days_leave", calendarEvents?.days_leave);
 
   return (
     <>

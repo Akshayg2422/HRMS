@@ -142,7 +142,13 @@ const validateBasicSalary = (value: any | undefined) => {
   return output;
 };
 
-
+const dropDownValueCheck = (value: any, placeHolder: string) => {
+  if (value != placeHolder) {
+    return value
+  } else {
+    return ''
+  }
+}
 
 export {
   validateMobileNumber,
@@ -156,5 +162,6 @@ export {
   validateAddress,
   validateDefault,
   validateReason,
-  validateBasicSalary
+  validateBasicSalary,
+  dropDownValueCheck
 };
