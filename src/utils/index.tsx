@@ -11,6 +11,7 @@ import {
   validateDefault,
   validateBasicSalary,
   validateReason,
+  dropDownValueCheck
 } from './validation'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -240,5 +241,6 @@ export {
   formatAMPM,
   EMPLOYEE_ADDITIONAL_DATA_EDIT,
   validateBasicSalary,
-  ATTENDANCE_TYPE
+  ATTENDANCE_TYPE,
+  dropDownValueCheck
 }

@@ -41,7 +41,7 @@ function Dashboard() {
   useEffect(() => {
     dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
-    dispatch(getAdminBranches({}));
+    // dispatch(getAdminBranches({}));
   }, []);
   
 
