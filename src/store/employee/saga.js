@@ -156,7 +156,7 @@ import {
   getBranchAdminsApi
 } from "../../helpers/backend_helper";
 
-import { showLoader, hideLoader } from "../app/actions";
+import { showLoader, hideLoader } from "../loader/actions";
 
 function* getDesignation(action) {
   try {

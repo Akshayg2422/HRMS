@@ -11,7 +11,7 @@ import { deleteAccountUserFail, deleteAccountUserSuccess, editProfilePictureFail
 import {
   showLoader,
   hideLoader
-} from '../app/actions'
+} from '../loader/actions'
 
 function* getDashboard(action) {
 
