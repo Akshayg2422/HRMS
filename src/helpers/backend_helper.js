@@ -107,5 +107,9 @@ export const PostUpdatedAdminBranches= (payload) => post(url.UPDATING_THE_ADMIN_
 
 export const getBranchAdminsApi= (payload) => post(url.GET_ADMIN_BRANCHES,payload,{})
 
+/**
+ * 
+ * EDIT BRANCH NAME 
+ */
 
-
+export const PostEditBranchNameApi= (payload) => post(url.POST_EDIT_BRANCH_NAME,payload,{})

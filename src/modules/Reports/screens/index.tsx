@@ -182,9 +182,7 @@ function Reports() {
     }
   };
 
-
-
-
+  
   return (
     <>
       <Card>
