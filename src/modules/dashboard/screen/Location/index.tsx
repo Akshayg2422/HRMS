@@ -1,9 +1,9 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon } from '@components';
-import React, { useEffect, useState } from 'react';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault } from '@components';
+import React, { useEffect, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence } from '../../../../store/location/actions';
-import { goTo, useNav, ROUTE, showToast } from '@utils';
+import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName } from '../../../../store/location/actions';
+import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
 
@@ -15,10 +15,15 @@ function LocationScreen() {
   const [branch, setBranch] = useState<any>([])
   const { brancheslist } = useSelector((state: any) => state.LocationReducer);
   const [model, setModel] = useState(false);
+  const [editBranchDetails, setEditBranchDetails] = useState('');
+  const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
   const [modelData, setModelData] = useState<Location>();
+  const [editModel, setEditModel] = useState<any>(false);
   const [searchBranches, setsearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
 
+  const enterPress = useKeyPress("Enter");
+  const inputRef = useRef<HTMLInputElement>();
 
   const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
@@ -36,6 +41,20 @@ function LocationScreen() {
       })
     );
   }, [isRefresh]);
+
+  useEffect(() => {
+    if (enterPress) {
+      SelectedBranchFilter()
+    }
+  }, [enterPress])
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+      inputRef.current.selectionStart = editBranchDetails.length;
+      inputRef.current.selectionEnd = editBranchDetails.length;
+    }
+  }, [inputRef, editBranchDetails]);
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
@@ -93,29 +112,82 @@ function LocationScreen() {
     }
   }
 
+  const handleEdit = (item: any) => {
+    setEditBranchDetails(item.name)
+    setCurrentBranchDetails(item)
+    setEditModel(!editModel)
+  };
+
+  const ValidateParams = () => {
+    if (validateDefault(editBranchDetails).status === false) {
+      showToast("error", t("invalidCompanyName"));
+      return false;
+    }
+    return true
+  }
+
+  const updateBranch = () => {
+    if (ValidateParams()) {
+      const params = {
+        id: currentBranchDetails.id,
+        name: editBranchDetails,
+        display_name: editBranchDetails
+      }
+      dispatch(editBranchName({
+        params,
+        onSuccess: (success: any) => {
+          showToast("success", success.message);
+          updateCurrentList(currentBranchDetails.id)
+          setEditModel(!editModel)
+        },
+        onError: (error: string) => {
+          showToast("error", error);
+        },
+      }))
+    }
+  }
+
+  const updateCurrentList = (id: any) => {
+    let updateBranch = [...branch]
+    updateBranch.map((branch: any) => {
+      if (branch.id === id) {
+        branch.name = editBranchDetails
+      }
+    })
+    setBranch(updateBranch)
+  }
+
+
   return (
     <>
-      <Container additionClass={"col-xl-4 row"}>
-        <InputText
-          value={searchBranches}
-          col={'col'}
-          placeholder={t("searchBranch")}
-          onChange={(e) => {
-            setsearchBranches(e.target.value);
-          }}
-        />
-        <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-          onClick={() => {
-            SelectedBranchFilter()
-          }}
-        />
-      </Container>
+      <Card additionClass='mx-3 row'>
+        <h2 className='mb-3'>{t('allRegisteredLocation')}</h2>
+        <Container additionClass={"col-xl-4 row ml--4"}>
+          <InputText
+            value={searchBranches}
+            col={'col'}
+            placeholder={t("searchBranch")}
+            onChange={(e) => {
+              setsearchBranches(e.target.value);
+            }}
+          />
+          <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+            onClick={() => {
+              SelectedBranchFilter()
+            }}
+          />
+        </Container>
+        <Container additionClass='text-right mt--3'>
+          <Primary
+            text={t("AddBranch")}
+            onClick={() => manageBranchesHandler(undefined)}
+            size={"btn-sm"}
+          />
+        </Container>
+      </Card>
       {branch && branch.length > 0 && (
         <CommonTable
-          tableTitle={t('allRegisteredLocation')}
-          buttonOnClock={() => manageBranchesHandler(undefined)}
           displayDataSet={normalizedEmployeeLog(branch)}
-          buttonText={'Add Branch'}
           tableChildren={
             <LocationTable
               tableDataSet={branch}
@@ -124,6 +196,9 @@ function LocationScreen() {
                 setModel(!model)
               }}
               enableReFetch={enableReFetchApi}
+              onEditClick={(item) => {
+                handleEdit(item)
+              }}
             />}
         />
       )}
@@ -131,7 +206,6 @@ function LocationScreen() {
         title={'Select Radius'}
         showModel={model}
         toggle={() => setModel(!model)}>
-
         {DEFAULT_RADIUS_LIST.map(el => {
           return (
             <div
@@ -146,6 +220,33 @@ function LocationScreen() {
           );
         })}
 
+      </Modal>
+      <Modal title={t('editBranch')}
+        showModel={editModel}
+        toggle={() => setEditModel(!editModel)}>
+        <>
+          <InputText
+            col={"col-xl-6"}
+            ref={inputRef}
+            label={t("branchName")}
+            placeholder={t("branchName")}
+            validator={validateDefault}
+            value={editBranchDetails}
+            onChange={(event) => {
+              setEditBranchDetails(event.target.value)
+            }}
+          />
+          <Container margin={"mt-5"} additionClass={"text-right"}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setEditModel(!editModel)}
+            />
+            <Primary
+              text={t("update")}
+              onClick={() => { updateBranch() }}
+            />
+          </Container>
+        </>
       </Modal>
     </>
   );
@@ -166,11 +267,11 @@ type LocationTableProps = {
   tableDataSet?: Array<Location>
   resetRadiusOnchange?: (item: Location) => void;
   enableReFetch?: (item: Location) => void;
-
+  onEditClick?: (item: Location) => void;
 }
 
 
-const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch }: LocationTableProps) => {
+const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch, onEditClick }: LocationTableProps) => {
   return <div className='table-responsive'>
     <table className='table align-items-center table-flush'>
       <thead className='thead-light'>
@@ -180,6 +281,8 @@ const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch }: Loc
           <th scope='col'>{''}</th>
           <th scope='col'>{''}</th>
           <th scope='col'>{''}</th>
+          <th scope='col'>{'Edit'}</th>
+
         </tr>
 
       </thead>
@@ -192,6 +295,8 @@ const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch }: Loc
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.has_location ? <Primary text={'Reset Radius'} size={'btn-sm'} onClick={() => { if (resetRadiusOnchange) resetRadiusOnchange(item) }} /> : <></>}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{(item.has_location && !item.can_update_location) && <Primary text={'Enable Refetch'} size={'btn-sm'} onClick={() => { if (enableReFetch) enableReFetch(item) }} />}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{<ImageView height={20} width={20} icon={item.has_location ? Icons.Location : Icons.LocationGray} />}</td>
+              <td style={{ whiteSpace: 'pre-wrap', cursor: 'pointer' }} onClick={() => { if (onEditClick) onEditClick(item) }} >{"Edit"}</td>
+
             </tr>
           })
         }

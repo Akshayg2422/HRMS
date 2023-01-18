@@ -20,7 +20,8 @@ import {
   SET_HIERARCHICAL_BRANCH_IDS,
   SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
   RESET_REDUCER,
-  SET_HIERARCHICAL_ALL_BRANCH_IDS
+  SET_HIERARCHICAL_ALL_BRANCH_IDS,
+  SET_MULTISELECT_ALL_BRANCH_IDS
 } from "./actionTypes";
 
 const initialState = {
@@ -30,6 +31,7 @@ const initialState = {
   hierarchicalBranchIds: {},
   hierarchicalAllBranchIds: 0,
   hierarchicalBranchName: '',
+  multiSelectHierarchicalBranch: []
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -165,6 +167,13 @@ const DashboardReducer = (state = initialState, action) => {
       state = {
         ...state,
         hierarchicalAllBranchIds: action.payload
+      };
+      break;
+
+    case SET_MULTISELECT_ALL_BRANCH_IDS:
+      state = {
+        ...state,
+        multiSelectHierarchicalBranch: action.payload
       };
       break;
 

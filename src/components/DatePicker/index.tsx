@@ -12,6 +12,7 @@ function DatePicker({
   minDate,
   disabledDate,
   additionalClass,
+  maxDate,
   ...props
 }: DatePickerProps) {
 
@@ -39,7 +40,7 @@ function DatePicker({
     <div className={`form-group ${additionalClass}`}>
       <div className="input-group" >
         {icon && iconPosition === "prepend" && (
-          <div className="input-group-prepend" onClick={() => openCalendar()} style={{cursor:'pointer'}}>
+          <div className="input-group-prepend" onClick={() => openCalendar()} style={{ cursor: 'pointer' }}>
             <span className="input-group-text">
               <ImageView icon={icon} />
             </span>
@@ -48,17 +49,13 @@ function DatePicker({
         <Flatpickr
           ref={datePickerRef}
           onChange={handleChange}
-          options={
-            disabledDate && {
-              disable: disabledDate,
-            }
-          }
+          options={{ ...maxDate && { maxDate: maxDate }, ...disabledDate && { disable: disabledDate } }}
           className="form-control bg-white pl-2"
           value={value}
           placeholder={placeholder}
         />
         {icon && iconPosition === "append" && (
-          <div className="input-group-append pe-auto" onClick={() => openCalendar()} style={{cursor:'pointer'}}>
+          <div className="input-group-append pe-auto" onClick={() => openCalendar()} style={{ cursor: 'pointer' }}>
             <span className="input-group-text">
               <ImageView icon={icon} />
             </span>

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, CommonTable, ImageView, Secondary } from '@components';
 import { Icons } from '@assets';
+import moment from 'moment';
+import { useEffect } from 'react';
 
 type LogReportsProps = {
     data?: Array<any>;
@@ -10,10 +12,13 @@ type LogReportsProps = {
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
     designation: string
+    attendanceType: any
+    startDate: string
+    endDate: string
 };
 
 
-function LogReports({ data, department, reportType, customrange, designation }: LogReportsProps) {
+function LogReports({ data, department, reportType, customrange, designation, attendanceType, startDate, endDate }: LogReportsProps) {
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -26,27 +31,42 @@ function LogReports({ data, department, reportType, customrange, designation }: 
     let dispatch = useDispatch();
     const { t } = useTranslation();
 
-
     const getConvertedTableData = (data: any) => {
         const updatedData = []
+        let key = getDatesListBetweenStartEndDates(startDate, endDate)
         for (let i = 0; i < data.length; i++) {
             let { days, name, designation } = data[i]
             let updateObject = { name, designation }
-            if (days && days.length > 0) {
-                for (let j = 0; j < days.length; j++) {
-                    updateObject = { ...updateObject, [days[j].date]: days[j] }
-                }
+            if (key && key.length > 0) {
+                key.forEach((each: any) => {
+                    const index = days.findIndex((day: any) => day.date === each)
+                    updateObject = { ...updateObject, [each]: index !== '-1' ? days[index] : {} }
+                })
             }
             updatedData[i] = updateObject
         }
         return updatedData
     }
 
+    const getDatesListBetweenStartEndDates = (
+        startDate: moment.MomentInput,
+        stopDate: moment.MomentInput,
+    ) => {
+        const dateObj = [];
+        let currentDate = moment(startDate);
+        stopDate = moment(stopDate);
+        while (currentDate <= stopDate) {
+            dateObj.push(moment(currentDate).format('YYYY-MM-DD'));
+            currentDate = moment(currentDate).add(1, 'days');
+        }
+
+        return dateObj;
+    };
 
     const getReports = ((pageNumber: number) => {
         const params = {
             report_type: reportType,
-            attendance_type: '-1',
+            ...(reportType === "log" ? { attendance_type: attendanceType } : { attendance_type: -1 }),
             ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
             designation_id: designation,
             department_id: department,
@@ -112,6 +132,7 @@ const LocationTable = ({
             const mostkeys = tableDataSet.sort(
                 (a: {}, b: {}) => Object.keys(b).length - Object.keys(a).length
             )[0];
+
             const header = Object.keys(mostkeys)
             return header.map(key => {
                 return <th scope="col" key={key}>{key.trim()}</th>
@@ -122,20 +143,24 @@ const LocationTable = ({
         return Object.keys(eachObject).map((key: string) => {
             const isString = typeof (eachObject[key as keyof object]) === 'string'
             if (isString)
-                return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{eachObject[key as keyof object]}</td>
+                return <td className='text-center' style={{ whiteSpace: 'pre-wrap' }} key={key} >{eachObject[key as keyof object]}</td>
             else {
-                return <td style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
-                    <div className="column">
-                        <h6 className="mb-0  mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.start_time}`}</h6>
-                        <h6 className="mb-0  mb-2 ml-2" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.end_time}`}</h6>
+                let startTime = eachObject[key as keyof object]?.start_time
+                let endTime = eachObject[key as keyof object]?.end_time
+                return <td className='text-center' style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
+                    {eachObject[key as keyof object] ? <div className="column">
+                        {!startTime && !endTime ? <h6>{"-"}</h6> : <>
+                            {eachObject[key as keyof object]?.start_time ? <h6 className="" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.start_time}`}</h6> : <h6>{"-"}</h6>}
+                            {eachObject[key as keyof object]?.end_time ? <h6 className="" style={{ color: getTextColor(eachObject[key as keyof object]?.attendance_status_code) }}>{`${eachObject[key as keyof object]?.end_time}`}</h6> : <h6>{"-"}</h6>}
+                        </>}
                         {/* <div className='mb-2'>
                             <ImageView icon={key != 'string' && coloredIcons(eachObject[key as keyof object]?.attendance_status_code)} height={16} width={16} />
                         </div> */}
-                        <h6 className="mb-0  mb-2 ml-2 text-center" style={{
+                        {<h6 className="text-center" style={{
                             color: getTextColor(eachObject[key as keyof object]?.attendance_status_code)
-                        }}>{eachObject[key as keyof object]?.day_status}</h6>
+                        }}>{eachObject[key as keyof object]?.day_status}</h6>}
                         {/* {eachObject[key as keyof object]?.attendance_status_code === 6 ? <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> : null} */}
-                    </div>
+                    </div> : <h6 className='ml-2'>{'N/A'}</h6>}
                 </div></td>
             }
         })

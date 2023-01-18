@@ -107,5 +107,12 @@ export const UPDATING_THE_ADMIN_BRANCHES = 'employee/updateBranchAdminBranches'
 export const GET_ADMIN_BRANCHES = 'employee/getBranchAdmins'
 
 
+/**
+ * edit branch name
+ */
+
+export const POST_EDIT_BRANCH_NAME = 'company/updateBranch'    
+
+
 
 
