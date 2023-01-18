@@ -222,7 +222,7 @@ function ELocker() {
                 title={"Documents"}
                 toggle={() => setPreviewModel(!previewModel)} >
                 <Container additionClass='vh-100'>
-                    {preview != null && (preview.endsWith('.jpeg') || preview.endsWith('.jpg') || preview.endsWith('.png')) && <img src={preview} style={{ height: '100%', objectFit: 'cover', width: '100%' }} />}
+                    {preview != null && (preview.endsWith('.jpeg') || preview.endsWith('.jpg') || preview.endsWith('.png')) && <img src={preview} style={{ height: '100%', width: '100%' }} />}
                     {preview != "" && preview.endsWith('.pdf') &&
                         <iframe src={`${preview}#toolbar=0`} style={{ width: "100%", height: "100%", overflow: 'hidden', position: 'static' }}
                         />

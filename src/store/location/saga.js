@@ -1,12 +1,14 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 import {
   fetchAllBranchesList, postBranchAddition, updateBranchLocationRadius, postEnableBranchRefence, fetchEmployeeCheckinAssociations,
-  postEmployeeCheckinAssociations
+  postEmployeeCheckinAssociations,
+  PostEditBranchNameApi
 } from "../../helpers/backend_helper";
 import {
   FETCH_ALL_BRANCHES_LIST, POST_BRANCH_ADDITION, UPDATE_BRANCH_LOCATION_RADIUS, ENABLE_BRANCH_REFENCE,
   GET_EMPLOYEE_CHECKIN_ASSOCIATIONS,
-  UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS
+  UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS,
+  EDIT_BRANCH_NAME
 } from "./actionsType";
 import {
   getAllBranchesListFailure, getAllBranchesListSuccess, branchAdditionSuccess, branchAdditionFailure,
@@ -17,7 +19,9 @@ import {
   getEmployeeCheckinAssociationsSuccess,
   getEmployeeCheckinAssociationsFailure,
   updateEmployeeCheckinAssociationsSuccess,
-  updatetEmployeeCheckinAssociationsFailure
+  updatetEmployeeCheckinAssociationsFailure,
+  editBranchNameSuccess,
+  editBranchNameFailure
 } from "./actions";
 
 
@@ -33,11 +37,11 @@ function* getAllBranches(action) {
     yield put(showLoader());
 
     const response = yield call(fetchAllBranchesList, action.payload.params);
-   
+
     if (response.success) {
 
-    yield put(hideLoader());
-     
+      yield put(hideLoader());
+
       yield put(getAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
 
@@ -192,7 +196,28 @@ function* updateEmployeeCheckinAssociations(action) {
 
     yield put(hideLoader());
     yield put(updatetEmployeeCheckinAssociationsFailure("Invalid Request"));
-    
+
+  }
+}
+
+function* updatedBranchName(action) {
+  try {
+
+    yield put(showLoader());
+    const response = yield call(PostEditBranchNameApi, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(editBranchNameSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(editBranchNameFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(editBranchNameFailure("Invalid Request"));
+
   }
 }
 
@@ -205,6 +230,8 @@ function* LocationSaga() {
   yield takeLatest(ENABLE_BRANCH_REFENCE, enableBranchRefence);
   yield takeLatest(GET_EMPLOYEE_CHECKIN_ASSOCIATIONS, getEmployeeCheckinAssociations);
   yield takeLatest(UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS, updateEmployeeCheckinAssociations);
+  yield takeLatest(EDIT_BRANCH_NAME, updatedBranchName)
+
 }
 
 export default LocationSaga;

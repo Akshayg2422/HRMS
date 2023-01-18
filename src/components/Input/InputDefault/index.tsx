@@ -4,7 +4,7 @@ import "./input.css";
 
 const Input = React.forwardRef(({
   label,
-  size='md',
+  size = 'md',
   value,
   onChange,
   placeholder,
@@ -19,6 +19,8 @@ const Input = React.forwardRef(({
   validator,
   name,
   disabled,
+  onFocus,
+  defaultValue
 }: InputProps, ref: any) => {
   const [validStatus, setValidStatus] = useState({ status: true, error: "" });
 
@@ -28,9 +30,11 @@ const Input = React.forwardRef(({
       <input
         className={`form-control mt-2  ${formCustomClass}`}
         type={type}
+        onFocus={onFocus}
         value={value}
         min={min}
         max={max}
+        defaultValue={defaultValue}
         name={name}
         ref={ref}
         disabled={disabled}

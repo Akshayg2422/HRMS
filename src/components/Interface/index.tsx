@@ -365,6 +365,8 @@ export interface InputProps extends ContainerProps {
   formCustomClass?: string | undefined;
   validator?: any;
   ref?: any;
+  onFocus?: any
+  defaultValue?:string
 }
 
 export interface DatePickerProps {
