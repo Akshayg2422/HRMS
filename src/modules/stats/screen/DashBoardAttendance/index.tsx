@@ -123,11 +123,13 @@ const DashBoardAttendance = ({ }) => {
             )
             : "-"
           : "-",
-
         remark: <div style={{
           fontWeight: 'bold',
           color: fontColor(el.per_day_details.day_status_type)
-        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>
+        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
+        'Modify': <>{el.attendance_status_code === 5 || el.attendance_status_code === 9 || el.attendance_status_code === 2 || el.attendance_status_code === 6 ?
+          <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) =>{}} />
+          : '-'}</>
       };
     });
   };
@@ -287,7 +289,7 @@ const DashBoardAttendance = ({ }) => {
       downloadSampleCsvFile(false)
     }
   }
-  
+
   return (
     <div className="mx-3">
       <Card>

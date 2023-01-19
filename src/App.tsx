@@ -63,7 +63,7 @@ function App() {
   return (
     <>
       {/* <AutoLogout /> */}
-      {/* <Requestpermission/> */}
+      <Requestpermission/>
       <AppLoader />
       <Routes>
         <Route path={"/"} element={<ZenylogSite />} />
