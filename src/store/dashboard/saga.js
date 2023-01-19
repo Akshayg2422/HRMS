@@ -22,7 +22,6 @@ function* getDashboard(action) {
     const response = yield call(fetchDashboard, action.payload.params);
 
     if (response.success) {
-
       yield put(getDashboardSuccess(response.details));
       yield put(hideLoader());
 
