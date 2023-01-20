@@ -59,10 +59,15 @@ import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 function App() {
 
-
+/**
+ * test git codebsuaus 
+ */
+/**
+ * sajkshjash
+ */
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>

@@ -31,14 +31,14 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
     if (displayDataSet) {
       const header = Object.keys(displayDataSet[0])
       return header.map(key => {
-        return <th className='text-center' scope="col" key={key}>{key}</th>
+        return <th  scope="col" key={key}>{key}</th>
       })
     }
   }
 
   function renderTableValue(eachObject: object) {
     return Object.keys(eachObject).map((key: string) => {
-      return <td className='text-center' style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
+      return <td  style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
     })
   }
 

@@ -135,7 +135,7 @@ const LocationTable = ({
 
             const header = Object.keys(mostkeys)
             return header.map(key => {
-                return <th scope="col" key={key}>{key.trim()}</th>
+                return <th  scope="col" key={key}>{key.trim()}</th>
             })
         }
     }
@@ -143,7 +143,7 @@ const LocationTable = ({
         return Object.keys(eachObject).map((key: string) => {
             const isString = typeof (eachObject[key as keyof object]) === 'string'
             if (isString)
-                return <td className='text-center' style={{ whiteSpace: 'pre-wrap' }} key={key} >{eachObject[key as keyof object]}</td>
+                return <td  style={{ whiteSpace: 'pre-wrap' }} key={key} >{eachObject[key as keyof object]}</td>
             else {
                 let startTime = eachObject[key as keyof object]?.start_time
                 let endTime = eachObject[key as keyof object]?.end_time
