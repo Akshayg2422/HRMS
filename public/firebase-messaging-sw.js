@@ -11,30 +11,33 @@ const firebaseConfig = {
   measurementId: "G-XEC0XF1H61"
 };
 
-  firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
+// firebase.initializeApp(firebaseConfig);
+firebase.initializeApp({
+  messagingSenderId: "220885026819",
+});
 
-  messaging.onBackgroundMessage((payload) => {
-    console.log('[firebase-messaging-sw.js] Received background message ', payload)
-    const notificationTitle = payload.notification.title
-    const notificationOptions = {
-      body: payload.notification.body,
-      icon: payload.notification.icon || payload.notification.image,
-    }
-  
-    self.registration.showNotification(notificationTitle, notificationOptions)
-  })
-  
-  self.addEventListener('notificationclick', (event) => {
-    if (event.action) {
-      clients.openWindow(event.action)
-    }
-    event.notification.close()
-  })
+const messaging = firebase.messaging();
 
-  navigator.serviceWorker.addEventListener('notificationclick', function(event) {
-    event.notification.close();
-    event.waitUntil(
-      clients.openWindow("/")
-    );
-  });
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload)
+  const notificationTitle = payload.notification.title
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: payload.notification.icon || payload.notification.image,
+  }
+  return self.registration.showNotification(notificationTitle, notificationOptions)
+})
+
+self.addEventListener('notificationclick', (event) => {
+  if (event.action) {
+    clients.openWindow(event.action)
+  }
+  event.notification.close()
+})
+
+  // navigator.serviceWorker.addEventListener('notificationclick', function(event) {
+  //   event.notification.close();
+  //   event.waitUntil(
+  //     clients.openWindow("/")
+  //   );
+  // });

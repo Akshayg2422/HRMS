@@ -86,8 +86,8 @@ function MyLog() {
     reason: "",
     id: "",
   });
+  
   const [attachment, setAttachment] = useState<Array<string>>([]);
-
   const {
     employeeCheckInLogs,
     employeeCheckInDetailedLogPerDay,
@@ -127,7 +127,7 @@ function MyLog() {
           : "-",
         remark: el.day_status,
         "Modify": <>{el.day_status_type === 5 || el.day_status_type === 9 || el.day_status_type === 2 || el.day_status_type === 6 ?
-          <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
+          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
           :'-'}</>
       };
     });

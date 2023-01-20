@@ -9,6 +9,7 @@ import {
   Icon,
   InputText,
   Card,
+  Secondary,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -114,7 +115,6 @@ function EmployeeLog() {
       end_time: endDate,
       user_id: selectedEmployee.id,
     };
-
     dispatch(getEmployeesCheckInLogs({
       params,
       onSuccess: (success: object) => {
@@ -131,18 +131,9 @@ function EmployeeLog() {
     dispatch(
       getCheckInDetailedLogPerDay({
         date: selectedDate,
-        ...(userId && { user_id: userId }),
+        user_id: selectedEmployeeDetails.id,
       })
     );
-    // if (
-    //   employeeCheckInDetailedLogPerDay &&
-    //   employeeCheckInDetailedLogPerDay.length > 0
-    // ) {
-    //   console.log(
-    //     JSON.stringify(employeeCheckInDetailedLogPerDay) +
-    //     "=======getEmployeeCheckInDetailedLogPerDay"
-    //   );
-    // }
   }
 
   return (
@@ -219,6 +210,8 @@ function EmployeeLog() {
               <h5 className="mb-0 col">{"In"}</h5>
               <h5 className="mb-0 col">{"Out"}</h5>
               <h5 className="mb-0 col">{"Remark"}</h5>
+              <h5 className="mb-0 col">{"Modify"}</h5>
+
             </Container>
             <Divider />
 
@@ -259,6 +252,9 @@ function EmployeeLog() {
                             : "-"}
                         </small>
                         <small className="mb-0 col">{item.day_status}</small>
+                        <small className="mb-0 col">{item.day_status_type === 5 || item.day_status_type === 9 || item.day_status_type === 2 || item.day_status_type === 6 ?
+                          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { }} />
+                          : '-'}</small>
                       </Container>
                       <Divider />
                     </div>

@@ -28,6 +28,7 @@ import {
   showToast,
   downloadFile,
   DOWNLOAD_RANGE,
+  validateDefault,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -35,7 +36,12 @@ import { Icons } from "@assets";
 const DashBoardAttendance = ({ }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+  const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
+    date: "",
+    reason: "",
+    id: "",
+  });
   const {
     routeParams,
     employeeAttendanceStats,
@@ -104,6 +110,15 @@ const DashBoardAttendance = ({ }) => {
     dispatch(getEmployeeTodayStatus(params));
   };
 
+  const onModify = (e: any, item: any) => {
+    e.stopPropagation()
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      date: item.attendance_date,
+      id: item.id,
+    });
+    setMarkAsPresentModel(!markAsPresentModel);
+  }
   const normalizedEmployee = (data: any) => {
     return data.map((el: any) => {
       return {
@@ -128,7 +143,7 @@ const DashBoardAttendance = ({ }) => {
           color: fontColor(el.per_day_details.day_status_type)
         }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
         'Modify': <>{el.attendance_status_code === 5 || el.attendance_status_code === 9 || el.attendance_status_code === 2 || el.attendance_status_code === 6 ?
-          <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) =>{}} />
+          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
       };
     });
@@ -289,6 +304,45 @@ const DashBoardAttendance = ({ }) => {
       downloadSampleCsvFile(false)
     }
   }
+  
+  const onChangeHandler = (event: any) => {
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const validateOnSubmit = () => {
+    if (!validateDefault(markAsPresentDetails.reason).status) {
+      showToast("error", t("invalidReason"));
+      return false;
+    }
+    return true;
+  };
+
+  const onRequestHandler = () => {
+    if (validateOnSubmit()) {
+      const params = {
+        day_status_id: markAsPresentDetails.id,
+        date_from: markAsPresentDetails.date,
+        date_to: markAsPresentDetails.date,
+        reason: markAsPresentDetails.reason,
+      };
+      // dispatch(
+      //   applyLeave({
+      //     params,
+      //     onSuccess: (response: object) => {
+      //       setMarkAsPresentModel(!markAsPresentModel);
+      //       setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+      //     },
+      //     onError: (error: string) => {
+      //       showToast("error", error);
+      //       setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+      //     },
+      //   })
+      // );
+    }
+  };
 
   return (
     <div className="mx-3">
@@ -446,6 +500,41 @@ const DashBoardAttendance = ({ }) => {
             />
           </Container>
         </div>
+      </Modal>
+      <Modal
+        showModel={markAsPresentModel}
+        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+      >
+        <Container>
+          <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
+          <Container additionClass="col-6 my-4">
+            <InputText
+              disabled
+              label={t("today")}
+              value={markAsPresentDetails.date}
+              name={"date"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+            <InputText
+              label={t("reason")}
+              validator={validateDefault}
+              value={markAsPresentDetails.reason}
+              name={"reason"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </Container>
+          <Container margin={"mt-5"} additionClass={"text-right"}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+            />
+            <Primary text={t("request")} onClick={() => onRequestHandler()} />
+          </Container>
+        </Container>
       </Modal>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { messaging } from '../../container'
-import { getToken} from "firebase/messaging"
+import { getToken } from "firebase/messaging"
 
 const Requestpermission = () => {
 
@@ -21,13 +21,13 @@ const Requestpermission = () => {
             console.log("")
           }
         }).catch((err: any) => { console.log("err", err) })
-
     }
     else if (permission === "denied") {
       console.log("Denied Notifications")
     }
 
   }
+
 
   return (
     <div></div>
