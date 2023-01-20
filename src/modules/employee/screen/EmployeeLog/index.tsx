@@ -114,7 +114,6 @@ function EmployeeLog() {
       end_time: endDate,
       user_id: selectedEmployee.id,
     };
-
     dispatch(getEmployeesCheckInLogs({
       params,
       onSuccess: (success: object) => {
@@ -131,7 +130,7 @@ function EmployeeLog() {
     dispatch(
       getCheckInDetailedLogPerDay({
         date: selectedDate,
-        ...(userId && { user_id: userId }),
+        user_id: selectedEmployeeDetails.id,
       })
     );
     // if (
