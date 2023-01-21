@@ -31,6 +31,15 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     []
   );
 
+  function sortArray(arr: any) {
+    return arr
+      .map((item: any) => ({
+        ...item,
+        child: sortArray(item.child)
+      }))
+      .sort((a: any, b:any)  => a.name.localeCompare(b.name))
+  }
+
   useEffect(() => {
     const params = {};
     dispatch(
@@ -39,6 +48,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         onSuccess: async (response: Array<LocationProps>) => {
           setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
+      
           if (parentBranch) {
             const hierarchicalBranchArray = {
               ...parentBranch,
@@ -48,7 +58,15 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
               dashboardDetails.company_branch.id,
               [hierarchicalBranchArray]
             );
-            setHierarchicalBranch({ child: [filteredBranch] });
+
+            let modifiedBranch = filteredBranch
+            try {
+              modifiedBranch = sortArray([filteredBranch])
+            } catch (e) {
+              modifiedBranch = filteredBranch
+            }
+
+            setHierarchicalBranch({ child: modifiedBranch});
           }
         },
         onError: () => {
@@ -57,6 +75,8 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       })
     );
   }, [hierarchicalBranchName, hierarchicalBranchIds]);
+
+
 
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -120,6 +140,8 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     setModel(!model);
   }
 
+
+  
   return (
     <div className="row flex-row-reverse" >
       <div className="col-lg-6">
@@ -196,8 +218,7 @@ const SubLevelComponent = ({
       <div
         className="card-header"
         data-toggle="collapse"
-        data-target={"#collapse" + item.id}
-      >
+        data-target={"#collapse" + item.id}>
         <div className="row align-items-center mx-4">
           <div className="col-8">
             <h5 className="mb-0">{item.name}</h5>
