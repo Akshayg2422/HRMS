@@ -86,7 +86,7 @@ function MyLog() {
     reason: "",
     id: "",
   });
-  
+
   const [attachment, setAttachment] = useState<Array<string>>([]);
   const {
     employeeCheckInLogs,
@@ -98,9 +98,9 @@ function MyLog() {
     getUserCheckInLogs();
   }, [startDate]);
 
-  useEffect(() => {
-    getEmployeeEachUserTimeSheetsApi();
-  }, [type]);
+  // useEffect(() => {
+  //   getEmployeeEachUserTimeSheetsApi();
+  // }, [type]);
 
   function getUserCheckInLogs() {
     const params = { start_time: startDate, end_time: endDate };
@@ -126,9 +126,9 @@ function MyLog() {
           ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
           : "-",
         remark: el.day_status,
-        "Modify": <>{el.day_status_type === 5 || el.day_status_type === 9 || el.day_status_type === 2 || el.day_status_type === 6 ?
-          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
-          :'-'}</>
+        "Request": <>{el.day_status_type === 5 || el.day_status_type === 9 || el.day_status_type === 2 || el.day_status_type === 6 ?
+          <Secondary text={'Request'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
+          : '-'}</>
       };
     });
   };
@@ -200,13 +200,15 @@ function MyLog() {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: object) => {
+          onSuccess: (response: any) => {
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            showToast("success", response?.message);
           },
           onError: (error: string) => {
             showToast("error", error);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            setMarkAsPresentModel(!markAsPresentModel);
           },
         })
       );

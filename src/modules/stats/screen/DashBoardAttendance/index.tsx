@@ -19,6 +19,7 @@ import {
   getEmployeeTodayStatus,
   getCheckInDetailedLogPerDay,
   getDownloadTodayStatus,
+  applyLeave,
 } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import {
@@ -40,7 +41,8 @@ const DashBoardAttendance = ({ }) => {
   const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
     date: "",
     reason: "",
-    id: "",
+    emp_id: '',
+    day_status_id: ''
   });
   const {
     routeParams,
@@ -115,7 +117,8 @@ const DashBoardAttendance = ({ }) => {
     setMarkAsPresentDetails({
       ...markAsPresentDetails,
       date: item.attendance_date,
-      id: item.id,
+      emp_id: item.id,
+      day_status_id: item?.per_day_details?.id
     });
     setMarkAsPresentModel(!markAsPresentModel);
   }
@@ -143,7 +146,7 @@ const DashBoardAttendance = ({ }) => {
           color: fontColor(el.per_day_details.day_status_type)
         }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
         'Modify': <>{el.attendance_status_code === 5 || el.attendance_status_code === 9 || el.attendance_status_code === 2 || el.attendance_status_code === 6 ?
-          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
+          <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
       };
     });
@@ -304,7 +307,7 @@ const DashBoardAttendance = ({ }) => {
       downloadSampleCsvFile(false)
     }
   }
-  
+
   const onChangeHandler = (event: any) => {
     setMarkAsPresentDetails({
       ...markAsPresentDetails,
@@ -323,24 +326,28 @@ const DashBoardAttendance = ({ }) => {
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
       const params = {
-        day_status_id: markAsPresentDetails.id,
+        day_status_id: markAsPresentDetails.day_status_id,
         date_from: markAsPresentDetails.date,
         date_to: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
+        is_approved: true,
+        employee_id: markAsPresentDetails.emp_id,
+        // day_status_id: ''
       };
-      // dispatch(
-      //   applyLeave({
-      //     params,
-      //     onSuccess: (response: object) => {
-      //       setMarkAsPresentModel(!markAsPresentModel);
-      //       setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
-      //     },
-      //     onError: (error: string) => {
-      //       showToast("error", error);
-      //       setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
-      //     },
-      //   })
-      // );
+      dispatch(
+        applyLeave({
+          params,
+          onSuccess: (response: any) => {
+            showToast("success", response?.message);
+            setMarkAsPresentModel(!markAsPresentModel);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+        })
+      );
     }
   };
 
@@ -532,7 +539,7 @@ const DashBoardAttendance = ({ }) => {
               text={t("cancel")}
               onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
             />
-            <Primary text={t("request")} onClick={() => onRequestHandler()} />
+            <Primary text={t("modify")} onClick={() => onRequestHandler()} />
           </Container>
         </Container>
       </Modal>

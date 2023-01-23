@@ -10,12 +10,14 @@ import {
   InputText,
   Card,
   Secondary,
+  Primary,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
   getEmployeesList,
   getEmployeesCheckInLogs,
   getCheckInDetailedLogPerDay,
+  applyLeave,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -24,6 +26,7 @@ import {
   getDisplayTimeFromMoment,
   getMomentObjFromServer,
   showToast,
+  validateDefault,
 } from "@utils";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -51,6 +54,12 @@ function EmployeeLog() {
   const [activeSort, setActiveSort] = useState<number>(1);
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
+  const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+  const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
+    date: "",
+    reason: "",
+    day_status_id: ''
+  });
 
   const [startDate, setStartDate] = useState(
     moment().startOf("month").format("yyyy-MM-DD")
@@ -135,6 +144,57 @@ function EmployeeLog() {
       })
     );
   }
+
+  const onModify = (e: any, item: any) => {
+    e.stopPropagation()
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      date: item.date,
+      day_status_id: item.id
+    });
+    setMarkAsPresentModel(!markAsPresentModel);
+  }
+  const onChangeHandler = (event: any) => {
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const validateOnSubmit = () => {
+    if (!validateDefault(markAsPresentDetails.reason).status) {
+      showToast("error", t("invalidReason"));
+      return false;
+    }
+    return true;
+  };
+
+  const onRequestHandler = () => {
+    if (validateOnSubmit()) {
+      const params = {
+        day_status_id: markAsPresentDetails.day_status_id,
+        date_from: markAsPresentDetails.date,
+        date_to: markAsPresentDetails.date,
+        reason: markAsPresentDetails.reason,
+        is_approved: true,
+        employee_id: selectedEmployeeDetails.id,  
+      };
+      dispatch(
+        applyLeave({
+          params,
+          onSuccess: (response: any) => {
+            showToast("success", response?.message);
+            setMarkAsPresentModel(!markAsPresentModel);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+        })
+      );
+    }
+  };
 
   return (
     <>
@@ -253,7 +313,7 @@ function EmployeeLog() {
                         </small>
                         <small className="mb-0 col">{item.day_status}</small>
                         <small className="mb-0 col">{item.day_status_type === 5 || item.day_status_type === 9 || item.day_status_type === 2 || item.day_status_type === 6 ?
-                          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { }} />
+                          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, item) }} />
                           : '-'}</small>
                       </Container>
                       <Divider />
@@ -327,6 +387,41 @@ function EmployeeLog() {
         ) : (
           <NoRecordFound />
         )}
+      </Modal>
+      <Modal
+        showModel={markAsPresentModel}
+        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+      >
+        <Container>
+          <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
+          <Container additionClass="col-6 my-4">
+            <InputText
+              disabled
+              label={t("today")}
+              value={markAsPresentDetails.date}
+              name={"date"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+            <InputText
+              label={t("reason")}
+              validator={validateDefault}
+              value={markAsPresentDetails.reason}
+              name={"reason"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </Container>
+          <Container margin={"mt-5"} additionClass={"text-right"}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+            />
+            <Primary text={t("modify")} onClick={() => onRequestHandler()} />
+          </Container>
+        </Container>
       </Modal>
     </>
   );

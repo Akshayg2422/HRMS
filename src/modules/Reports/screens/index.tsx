@@ -271,9 +271,9 @@ function Reports() {
               value={customRange.dataTo}
             />
           </Container>
-          <Container additionClass={'col-lg-2'}>
-            <Icon icon={Icons.DownloadSecondary} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} onClick={() => getReports(currentPage)} />
+          <Container additionClass={'col-lg-2 col-md-3 row ml-1'}>
+            <Icon icon={Icons.DownloadSecondary} additionClass={'col'} onClick={() => downloadSampleFile()} />
+            <Primary text={'Search'} col={'col'}  onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </Card>
