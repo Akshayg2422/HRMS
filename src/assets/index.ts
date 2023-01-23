@@ -86,7 +86,10 @@ export const Icons = {
   Remove: require('./icons/Remove/remove.png'),
   DeleteSecondary: require('./icons/DeleteSecondary/deleteSecondary.png'),
   MyBranches: require('./icons/MyBranches/MyBranches.png'),
-
+  ShiftRequest:require('./icons/ShiftRequest/ShiftRequest.png'),
+  AttendanceRequest:require('./icons/AttendanceRequest/AttendanceRequest.png'),
+  FaceRegister:require('./icons/FaceRegister/FaceRegister.png'),
+  LeaveRequest:require('./icons/LeaveRequest/LeaveRequest.png')
 }
 
 

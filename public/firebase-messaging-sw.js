@@ -11,10 +11,8 @@ const firebaseConfig = {
   measurementId: "G-XEC0XF1H61"
 };
 
-// firebase.initializeApp(firebaseConfig);
-firebase.initializeApp({
-  messagingSenderId: "220885026819",
-});
+firebase.initializeApp(firebaseConfig);
+
 
 const messaging = firebase.messaging();
 
@@ -25,8 +23,14 @@ messaging.onBackgroundMessage((payload) => {
     body: payload.notification.body,
     icon: payload.notification.icon || payload.notification.image,
   }
-  return self.registration.showNotification(notificationTitle, notificationOptions)
+ self.registration.showNotification(notificationTitle, notificationOptions)
 })
+
+// const foregroundMessaging = getMessaging();
+// onMessage(messaging, (payload) => {
+//   console.log('Message received. ', payload);
+//   // ...
+// });
 
 self.addEventListener('notificationclick', (event) => {
   if (event.action) {
@@ -34,6 +38,8 @@ self.addEventListener('notificationclick', (event) => {
   }
   event.notification.close()
 })
+
+
 
   // navigator.serviceWorker.addEventListener('notificationclick', function(event) {
   //   event.notification.close();
