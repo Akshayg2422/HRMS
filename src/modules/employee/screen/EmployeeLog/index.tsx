@@ -27,6 +27,7 @@ import {
   getMomentObjFromServer,
   showToast,
   validateDefault,
+  showAdminModify,
 } from "@utils";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -38,7 +39,7 @@ type CheckInLog = {
   logs?: [];
   start_time?: string;
   end_time?: string;
-  day_status_type?: number;
+  day_status_type?: number|undefined;
   day_status?: string;
   hours_spent?: number;
   mobile_number?: string;
@@ -154,6 +155,7 @@ function EmployeeLog() {
     });
     setMarkAsPresentModel(!markAsPresentModel);
   }
+  
   const onChangeHandler = (event: any) => {
     setMarkAsPresentDetails({
       ...markAsPresentDetails,
@@ -177,7 +179,7 @@ function EmployeeLog() {
         date_to: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
         is_approved: true,
-        employee_id: selectedEmployeeDetails.id,  
+        employee_id: selectedEmployeeDetails.id,
       };
       dispatch(
         applyLeave({
@@ -186,6 +188,12 @@ function EmployeeLog() {
             showToast("success", response?.message);
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            const params = {
+              start_time: startDate,
+              end_time: endDate,
+              user_id: selectedEmployeeDetails.id,
+            };
+            dispatch(getEmployeesCheckInLogs({params}));
           },
           onError: (error: string) => {
             showToast("error", error);
@@ -312,8 +320,8 @@ function EmployeeLog() {
                             : "-"}
                         </small>
                         <small className="mb-0 col">{item.day_status}</small>
-                        <small className="mb-0 col">{item.day_status_type === 5 || item.day_status_type === 9 || item.day_status_type === 2 || item.day_status_type === 6 ?
-                          <Secondary text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, item) }} />
+                        <small className="mb-0 col">{showAdminModify(item?.day_status_type) ?
+                          <Secondary text={t('modify')} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, item) }} />
                           : '-'}</small>
                       </Container>
                       <Divider />

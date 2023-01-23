@@ -30,6 +30,7 @@ import {
   downloadFile,
   DOWNLOAD_RANGE,
   validateDefault,
+  showAdminModify,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -145,7 +146,7 @@ const DashBoardAttendance = ({ }) => {
           fontWeight: 'bold',
           color: fontColor(el.per_day_details.day_status_type)
         }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
-        'Modify': <>{el.attendance_status_code === 5 || el.attendance_status_code === 9 || el.attendance_status_code === 2 || el.attendance_status_code === 6 ?
+        'Modify': <>{showAdminModify(el?.day_status_type) ?
           <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
       };
@@ -332,7 +333,6 @@ const DashBoardAttendance = ({ }) => {
         reason: markAsPresentDetails.reason,
         is_approved: true,
         employee_id: markAsPresentDetails.emp_id,
-        // day_status_id: ''
       };
       dispatch(
         applyLeave({
@@ -341,6 +341,7 @@ const DashBoardAttendance = ({ }) => {
             showToast("success", response?.message);
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            getTodayStats(currentPage);
           },
           onError: (error: string) => {
             showToast("error", error);

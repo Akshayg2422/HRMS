@@ -1,4 +1,4 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE, EMPLOYEE_CHANGE_SHIFT, EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE } from './constants'
+import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE, EMPLOYEE_CHANGE_SHIFT, EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE, DAY_STATUS_ABSENT, DAY_STATUS_ALERT } from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -96,6 +96,24 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
 
   return toastElement;
 }
+
+
+const showAdminModify = (type: number | undefined) => {
+  let showModify = false
+  switch (type) {
+    case DAY_STATUS_LATE:
+    case DAY_STATUS_ABSENT:
+    case DAY_STATUS_LEAVE:
+    case DAY_STATUS_ALERT:
+      showModify = true
+      break;
+    default:
+      showModify = false
+      break;
+  }
+  return showModify;
+}
+
 
 const getObjectFromArrayByKey = (array: any, key: string, value: string) => {
   return array.find((item: any) => {
@@ -242,5 +260,6 @@ export {
   EMPLOYEE_ADDITIONAL_DATA_EDIT,
   validateBasicSalary,
   ATTENDANCE_TYPE,
-  dropDownValueCheck
+  dropDownValueCheck,
+  showAdminModify
 }

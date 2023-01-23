@@ -187,6 +187,10 @@ export const TABLE_ELEMENT_TEXT_STATUS = 2
 export const TABLE_ELEMENT_TEXT_IMAGE = 3
 
 
+export const DAY_STATUS_LATE=2
+export const DAY_STATUS_LEAVE=9
+export const DAY_STATUS_ABSENT=6
+export const DAY_STATUS_ALERT=5
 
 
 export const TABLE_CONTENT_TYPE_REPORT = 1

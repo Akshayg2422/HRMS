@@ -28,6 +28,7 @@ import {
   getDisplayDateTimeFromMoment,
   useNav,
   validateDefault,
+  showAdminModify,
 } from "@utils";
 
 type CheckInLog = {
@@ -117,6 +118,8 @@ function MyLog() {
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: CheckInLog) => {
+console.log(" showAdminModify(el.day_status_type)", showAdminModify(el.day_status_type),el.day_status_type,typeof(el.day_status_type));
+
       return {
         date: el.date,
         in: el.start_time
@@ -126,9 +129,9 @@ function MyLog() {
           ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
           : "-",
         remark: el.day_status,
-        "Request": <>{el.day_status_type === 5 || el.day_status_type === 9 || el.day_status_type === 2 || el.day_status_type === 6 ?
+        "Request": <>{showAdminModify(el.day_status_type) ?
           <Secondary text={'Request'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
-          : '-'}</>
+          : '-'  }</>
       };
     });
   };
