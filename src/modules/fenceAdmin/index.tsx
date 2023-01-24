@@ -1,4 +1,4 @@
-import { Container, CommonTable, Modal, ImageView, Divider, NoRecordFound, InputText, Icon, } from '@components'
+import { Container, CommonTable, Modal, ImageView, Divider, NoRecordFound, InputText, Icon, Card, useKeyPress, } from '@components'
 import React, { useEffect, useState } from 'react'
 import { Navbar } from '../dashboard/container'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,6 +25,7 @@ function FenceAdmin() {
 
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const enterPress = useKeyPress("Enter");
     const [model, setModel] = useState(false);
     const [branch, setBranch] = useState<any>([])
     const [searchEmployee, setSearchEmployee] = useState<any>('')
@@ -43,8 +44,6 @@ function FenceAdmin() {
     );
 
 
-
-
     useEffect(() => {
         const params = {};
         dispatch(
@@ -59,6 +58,13 @@ function FenceAdmin() {
             })
         );
     }, [])
+
+
+    useEffect(() => {
+        if (enterPress) {
+            getRegisteredFenceAdmin(currentPage);
+        }
+    }, [enterPress])
 
 
     const normalizedBranchList = (data: any) => {
@@ -134,25 +140,27 @@ function FenceAdmin() {
 
     return (
         <>
-            <Container additionClass={"col-xl-4 row"}>
-                <InputText
-                    value={searchBranches}
-                    col={'col'}
-                    placeholder={t("searchBranch")}
-                    onChange={(e) => {
-                        setsearchBranches(e.target.value);
-                    }}
-                />
-                <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-                    onClick={() => {
-                        SelectedBranchFilter()
-                    }}
-                />
-            </Container>
+            <Card additionClass='mx-3'>
+                <h2>{t('allRegisteredLocation')}</h2>
+                <Container additionClass={"col-xl-4 ml--4 row"}>
+                    <InputText
+                        value={searchBranches}
+                        col={'col-xl'}
+                        placeholder={t("searchBranch")}
+                        onChange={(e) => {
+                            setsearchBranches(e.target.value);
+                        }}
+                    />
+                    <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0 ml-3 ml-sm-0'} icon={Icons.Search}
+                        onClick={() => {
+                            SelectedBranchFilter()
+                        }}
+                    />
+                </Container>
+            </Card>
             {
                 branch && branch.length > 0 &&
                 <CommonTable
-                    tableTitle={t('allRegisteredLocation')}
                     displayDataSet={normalizedBranchList(branch)}
                     tableOnClick={(e, index, item) => {
                         let currentItem = branch[index];

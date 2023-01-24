@@ -9,7 +9,9 @@ import {
   Primary,
   ChooseBranchFromHierarchical,
   NoRecordFound,
-  Secondary
+  Secondary,
+  useKeyPress,
+  Card
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Navbar } from "../../container";
@@ -39,6 +41,7 @@ type Branch = {
 function ManageAssignLocation() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const enterPress = useKeyPress("Enter");
 
   const [searchEmployee, setSearchEmployee] = useState("");
   const [model, setModel] = useState(false);
@@ -57,6 +60,13 @@ function ManageAssignLocation() {
   useEffect(() => {
     getConsolidatedEmployeeList(currentPage);
   }, [hierarchicalBranchIds]);
+
+
+  useEffect(() => {
+    if (enterPress) {
+      getConsolidatedEmployeeList(currentPage);
+    }
+  }, [enterPress])
 
   const getConsolidatedEmployeeList = (pageNumber: number) => {
     const params = {
@@ -100,23 +110,16 @@ function ManageAssignLocation() {
     associatedBranch.some((branch: Branch) => branch.id === id);
 
   const addSelectedBranch = (item: Branch) => {
-    console.log("sasa");
-
     let updateSelectedBranch = [...associatedBranch];
     const branchExists = updateSelectedBranch.some(
       (eachBranch) => eachBranch.id === item.id
     );
-    console.log(branchExists);
-
     if (branchExists) {
       updateSelectedBranch = updateSelectedBranch.filter(
         (eachItem) => eachItem.id !== item.id
       );
     } else {
-      console.log("false");
-
       updateSelectedBranch = [...updateSelectedBranch, item];
-      console.log(JSON.stringify(updateSelectedBranch));
     }
 
     dispatch(updateEmployeeCheckinAssociationsReducer(updateSelectedBranch));
@@ -150,36 +153,38 @@ function ManageAssignLocation() {
 
   return (
     <>
-      <Container
-        flexDirection={"row"}
-        additionClass={"col"}
-        alignItems={"align-items-center"}
-      >
-        <Container col={"col-xl-3 col-md-6 col-sm-12 mt--2"}>
-          <InputText
-            placeholder={t("searchEmployee")}
-            label={t("employeeName")}
-            onChange={(e) => {
-              setSearchEmployee(e.target.value);
-            }}
-          />
-        </Container>
+      <Card additionClass="mx-3">
         <Container
-          col={"col-xl-5 col-md-6 col-sm-12"}
-          additionClass={"mt-xl-4"}
-        >
-          <ChooseBranchFromHierarchical />
-        </Container>
-        <Container
-          col={"col"}
-          additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
-          justifyContent={"justify-content-center"}
+          flexDirection={"row"}
+          additionClass={"col"}
           alignItems={"align-items-center"}
-          onClick={proceedSearchApi}
         >
-          <Icon type={"btn-primary"} icon={Icons.Search} />
+          <Container col={"col-xl-3 col-md-6 col-sm-12 mt--2"}>
+            <InputText
+              placeholder={t("searchEmployee")}
+              label={t("employeeName")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+          </Container>
+          <Container
+            col={"col-xl-5 col-md-6 col-sm-12"}
+            additionClass={"mt-xl-4"}
+          >
+            <ChooseBranchFromHierarchical />
+          </Container>
+          <Container
+            col={"col"}
+            additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
+            justifyContent={"justify-content-center"}
+            alignItems={"align-items-center"}
+            onClick={proceedSearchApi}
+          >
+            <Icon type={"btn-primary"} icon={Icons.Search} />
+          </Container>
         </Container>
-      </Container>
+      </Card>
 
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable

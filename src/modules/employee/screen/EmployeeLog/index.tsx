@@ -11,6 +11,7 @@ import {
   Card,
   Secondary,
   Primary,
+  useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -48,6 +49,7 @@ type CheckInLog = {
 function EmployeeLog() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  let enterPress = useKeyPress("Enter");
 
   const [model, setModel] = useState(false);
   const [accordion, setAccordion] = useState<number>();
@@ -89,6 +91,14 @@ function EmployeeLog() {
   useEffect(() => {
     getEmployeeLogs(currentPage);
   }, [startDate, hierarchicalBranchIds]);
+
+
+  useEffect(() => {
+    if (enterPress) {
+      getEmployeeLogs(currentPage);
+    }
+  }, [enterPress])
+
 
   function getEmployeeLogs(pageNumber: number) {
     const params: object = {
