@@ -178,10 +178,10 @@ const DashboardStats = () => {
                   employeeattendancedatalog
                 )}
                 tableOnClick={(e, index, item) => {
-                  console.log(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id + "====="
-                  );
+                  // console.log(
+                  //   employeeattendancedatalog.departments_stats[index]
+                  //     .department_id + "====="
+                  // );
 
                   setSelectedDepartmentName(
                     employeeattendancedatalog.departments_stats[index].name

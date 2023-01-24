@@ -14,6 +14,7 @@ import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
+import { Notification } from '../Notification';
 
 
 
@@ -105,6 +106,7 @@ const Header = () => {
             </a>
             <h6 className='h2 text-white d-inline-block mb-0'>{'Dashboard'}</h6>
             <ul className='navbar-nav align-items-center  ml-md-auto '>
+              {/* <Notification /> */}
               <div className='media-body  d-none d-lg-block'>
                 {dashboardDetails && dashboardDetails.user_details && (
                   <span className='mb-0 text-white  font-weight-bold'>

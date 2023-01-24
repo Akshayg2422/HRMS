@@ -28,6 +28,8 @@ import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup } from './ShiftManagement';
 import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList,CreateGroup } from './Payroll'
 
+import {Notifications,ManageRequest} from './notifications'
+
 export {
   getDashboardDetails,
   getNatureOfBusiness,
@@ -80,7 +82,9 @@ export {
   CreateGroup,
   Requestpermission,
   DashBoardOtp,
-  MyBranches
+  MyBranches,
+  Notifications,
+  ManageRequest
 }
 
 

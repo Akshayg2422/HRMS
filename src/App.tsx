@@ -45,6 +45,8 @@ import {
   DeductionGroupList,
   CreateGroup,
   MyBranches,
+  Notifications,
+  ManageRequest,
   // DashBoardOtp
 } from "@modules";
 
@@ -59,10 +61,9 @@ import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 function App() {
 
-
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
@@ -237,6 +238,14 @@ function App() {
         <Route
           path={ROUTE.ROUTE_MY_BRANCHES}
           element={<RequireAuth>{<MyBranches />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_NOTIFICATIONS}
+          element={<RequireAuth>{<Notifications />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_MANAGE_REQUEST}
+          element={<RequireAuth>{<ManageRequest />}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

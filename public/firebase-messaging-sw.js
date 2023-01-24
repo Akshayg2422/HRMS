@@ -1,5 +1,5 @@
-importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-app-compat.js')
-importScripts('https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging-compat.js')
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
@@ -11,50 +11,39 @@ const firebaseConfig = {
   measurementId: "G-XEC0XF1H61"
 };
 
-  firebase.initializeApp(firebaseConfig);
-  const messaging = firebase.messaging();
-
-  messaging.onBackgroundMessage((payload) => {
-    console.log(
-      "[firebase-messaging-sw.js] Received background message ",
-      payload
-    );
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-      body: payload.notification.body,
-      icon: payload.notification.icon,
-      image: payload.data.Image,
-      data:payload.notification.data
-    };
-
-    self.registration.showNotification(notificationTitle, notificationOptions);
-  });
+firebase.initializeApp(firebaseConfig);
 
 
-  self.addEventListener("notificationclick", (event) => {
-    console.log("event",event)
-    event.waitUntil(async function () {
-        const allClients = await clients.matchAll({
-            includeUncontrolled: true
-        });
-        console.log("allclient",allClients)
-        let chatClient;
-        let appUrl = "Profile";
-        for (const client of allClients) {
- 
-            if(client['url'].indexOf(appUrl) >= 0) 
-            {
-                client.focus();
-                chatClient = client;
-                break;
-            }
-        }
-        
-        if (!chatClient) {
-            chatClient = await clients.openWindow(appUrl);
-        }
-    }());
- 
+const messaging = firebase.messaging();
+
+messaging.onBackgroundMessage((payload) => {
+  console.log('[firebase-messaging-sw.js] Received background message ', payload)
+  const notificationTitle = payload.notification.title
+  const notificationOptions = {
+    body: payload.notification.body,
+    icon: payload.notification.icon || payload.notification.image,
+  }
+ self.registration.showNotification(notificationTitle, notificationOptions)
+})
+
+// const foregroundMessaging = getMessaging();
+// onMessage(messaging, (payload) => {
+//   console.log('Message received. ', payload);
+//   // ...
+// });
+
+self.addEventListener('notificationclick', (event) => {
+  if (event.action) {
+    clients.openWindow(event.action)
+  }
+  event.notification.close()
+})
 
 
-  });
+
+  // navigator.serviceWorker.addEventListener('notificationclick', function(event) {
+  //   event.notification.close();
+  //   event.waitUntil(
+  //     clients.openWindow("/")
+  //   );
+  // });

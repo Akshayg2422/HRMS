@@ -48,8 +48,9 @@ export const ROUTE = {
   ROUTE_DEDUCTION_GROUP: '/deduction-group-List',
   ROUTE_CREATE_GROUP: '/create-group',
   ROUTE_DASHBOARD_OTP: "/dashboard-otp",
-  ROUTE_MY_BRANCHES: '/my-branches'
-
+  ROUTE_MY_BRANCHES: '/my-branches',
+  ROUTE_NOTIFICATIONS:'/notifications',
+  ROUTE_MANAGE_REQUEST:'/manage-request',
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
@@ -121,10 +122,11 @@ export const NAV_ITEM = [
   { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
   { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', image: Icons.Clients, route: ROUTE.ROUTE_PORTFOLIO },
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, route: ROUTE.ROUTE_REPORTS },
-  // { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
-  // { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
+  { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
+  { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
+  // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
 
 
@@ -185,6 +187,10 @@ export const TABLE_ELEMENT_TEXT_STATUS = 2
 export const TABLE_ELEMENT_TEXT_IMAGE = 3
 
 
+export const DAY_STATUS_LATE=2
+export const DAY_STATUS_LEAVE=9
+export const DAY_STATUS_ABSENT=6
+export const DAY_STATUS_ALERT=5
 
 
 export const TABLE_CONTENT_TYPE_REPORT = 1

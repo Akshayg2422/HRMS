@@ -43,13 +43,13 @@ function PortFolio() {
       route: ROUTE.ROUTE_E_LOCKER,
       icon: Icons.E_Locker,
     },
-    // {
-    //   id: "6",
-    //   name: "My Shifts",
-    //   value: "MS",
-    //   route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
-    //   icon: Icons.MY_SHIFTS,
-    // }
+    {
+      id: "6",
+      name: "My Shifts",
+      value: "MS",
+      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
+      icon: Icons.MY_SHIFTS,
+    }
   ];
 
   return (

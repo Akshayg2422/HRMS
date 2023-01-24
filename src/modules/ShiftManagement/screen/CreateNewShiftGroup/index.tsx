@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView } from '@components'
 import {
-
-    goTo,
     useNav,
-    ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA,
     showToast,
     goBack,
-
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -179,7 +174,6 @@ const CreateShiftGroup = () => {
      */
 
     const getShiftEmployeesGroupDetails = () => {
-
         const params = {
             shift_id: selectedShiftGroupDetails.id
         }
@@ -197,36 +191,30 @@ const CreateShiftGroup = () => {
     //function for adding an selected employees to selectedEmployeesList state while clicking
 
     const addAnSelectedEmployees = (selectedEmployee: any) => {
-
         let updatedSelectedEmployee = [...selectedEmployeesList]
-        const isExist = selectedEmployeesList.some((item: any) => item.id === selectedEmployee.id)
+        const isExist = selectedEmployeesList.some((item: any) => item?.id === selectedEmployee.id || item?.employee_pk === selectedEmployee.id)
         if (!isExist) {
             updatedSelectedEmployee = [...updatedSelectedEmployee, selectedEmployee]
             setSelectedEmployeesList(updatedSelectedEmployee)
             setSelectedEmployeesIds([...selectedEmployeesIds, selectedEmployee.id as never])
             setFilteredEmployees(updatedSelectedEmployee as never)
-
         }
     }
 
     /**
      * Function for on deSelect the selected employee
      */
-
     const onRevertSelectedEmployees = (employeeDetails: any) => {
         // deSelect the selected employees in an selectedEmployeesList array
         const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== employeeDetails.id)
         setSelectedEmployeesList(filteredPeople)
         setFilteredEmployees(filteredPeople)
-
         const filteredIds = selectedEmployeesIds.filter((item: any) => item !== employeeDetails.id)
         setSelectedEmployeesIds(filteredIds)
 
     }
 
-
     //Function called for Searching an employee in selected employee list
-
     const SelectedEmployeeFilter = () => {
         // filter the selected employee while searching
         if (searchSelectedEmployee !== "") {
@@ -598,7 +586,7 @@ const SelectedEmployeeListTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap"}}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );

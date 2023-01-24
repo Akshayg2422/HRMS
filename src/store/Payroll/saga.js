@@ -1,7 +1,7 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 
 
-import { showLoader, hideLoader } from "../app/actions";
+import { showLoader, hideLoader } from "../loader/actions";
 
 // function* fetchAddWeeklyShiftSaga(action) {
 //     try {
