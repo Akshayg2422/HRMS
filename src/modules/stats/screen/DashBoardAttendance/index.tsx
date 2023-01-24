@@ -131,20 +131,20 @@ const DashBoardAttendance = ({ }) => {
         in: el.per_day_details
           ? el.per_day_details.start_time
             ? getDisplayTimeFromMoment(
-              getMomentObjFromServer(el.per_day_details.start_time)
+              getMomentObjFromServer(el?.per_day_details?.start_time)
             )
             : "-"
           : "-",
         out: el.per_day_details
           ? el.per_day_details.end_time
             ? getDisplayTimeFromMoment(
-              getMomentObjFromServer(el.per_day_details.end_time)
+              getMomentObjFromServer(el?.per_day_details?.end_time)
             )
             : "-"
           : "-",
         remark: <div style={{
           fontWeight: 'bold',
-          color: fontColor(el.per_day_details.day_status_type)
+          color: fontColor(el.per_day_details?.day_status_type)
         }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
         'Modify': <>{showAdminModify(el?.day_status_type) ?
           <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />

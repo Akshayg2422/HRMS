@@ -10,9 +10,6 @@ import {
   Icon,
   Modal,
   CheckBox,
-  Container,
-  Secondary,
-  Primary,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -35,21 +32,20 @@ import {
   inputNumberMaxLength,
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
-  MAX_LENGTH_AADHAR,
-  inputAadharLength
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllBranchesList } from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
+  getAllBranchesList,
   getEmployeeDetails,
   addDepartment,
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
+import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -73,6 +69,10 @@ type EmployeeDetail = {
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
+  shift?: {
+    id: string;
+    name: string;
+  }
 };
 
 const ManageEmployee = () => {
@@ -87,6 +87,10 @@ const ManageEmployee = () => {
     isEdit,
   } = useSelector((state: any) => state.EmployeeReducer);
 
+  const { dashboardDetails, hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
     lastName: "",
@@ -98,13 +102,14 @@ const ManageEmployee = () => {
     aadharrNo: "",
     designation: "",
     department: "",
-    branch: "",
+    branch: dashboardDetails?.company_branch?.id,
     dateOfJoining: new Date(),
     dob: "",
     kgid_No: "",
     employeeType: "",
     attendanceStartTime: "10:00",
     attendanceEndTime: "06:00",
+    shift: ''
   });
 
   const [departmentModel, setDepartmentModel] = useState(false);
@@ -115,10 +120,8 @@ const ManageEmployee = () => {
   const [isRefresh, setIsRefresh] = useState(false);
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
-
-  const { dashboardDetails } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
+  const [shiftsDropdownData, setShiftsDropdownData] =
+    useState<any>();
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -137,7 +140,7 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-
+    ShiftDetails(employeeDetails.branch)
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -158,7 +161,6 @@ const ManageEmployee = () => {
         onError: (error: string) => { },
       })
     );
-
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
     }
@@ -168,7 +170,6 @@ const ManageEmployee = () => {
     const params = {
       user_id: id,
     };
-
     dispatch(
       getEmployeeDetails({
         params,
@@ -184,6 +185,32 @@ const ManageEmployee = () => {
       })
     );
   };
+
+  const ShiftDetails = (id: any) => {
+    const params = { branch_id: id }
+    dispatch(getBranchShifts({
+      params,
+      onSuccess: (success: any) => {
+        setShiftsDropdownData(success)
+        success.map((el: any) => {
+          if (el.is_default) {
+            setEmployeeDetails({ ...employeeDetails, shift: el.id });
+          }
+        })
+      },
+      onError: (error: string) => {
+        showToast("error", t("Somthingwentworng"));
+      },
+    }));
+  }
+
+
+  // useEffect(() => {
+  //   if (employeeDetails.branch !== '') {
+  //     ShiftDetails(employeeDetails.branch)
+  //   }
+  // }, [employeeDetails.branch])
+  
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -212,7 +239,11 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
       return false;
-    } else {
+    } else if (Object.keys(employeeDetails.shift).length === 0) {
+      showToast("error", "choose Shift");
+      return false;
+    }
+    else {
       return true;
     }
   };
@@ -244,6 +275,7 @@ const ManageEmployee = () => {
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: false,
           associated_branch: [employeeDetails.branch],
+          shift_settings: { shift_id: employeeDetails.shift }
         },
         ...(employeeDetails.dateOfJoining && {
           date_of_joining: getServerDateFromMoment(
@@ -258,11 +290,12 @@ const ManageEmployee = () => {
         }),
       };
 
+
+
       dispatch(
         employeeAddition({
           params,
           onSuccess: (success: any) => {
-
             showToast("success", success.message);
             goBack(navigation);
           },
@@ -339,6 +372,13 @@ const ManageEmployee = () => {
       )
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.shift?.id
+      )
+        employeeInitData.shift =
+          editEmployeeDetails.shift?.id;
     }
 
 
@@ -367,21 +407,15 @@ const ManageEmployee = () => {
       dispatch(
         addDesignation({
           params,
-          onSuccess: (response: any) => {
-            showToast('success', response?.message)
+          onSuccess: () => {
             setDesignationModel(!designationModel);
             setIsRefresh(!isRefresh);
             setDesignation("");
             setIsAdminRights(false);
           },
-          onError: (error: any) => {
-            showToast('error', error)
-
-          },
+          onError: () => { },
         })
       );
-    } else {
-      showToast('error', t('formInvalidParams'))
     }
   }
 
@@ -397,19 +431,14 @@ const ManageEmployee = () => {
       dispatch(
         addDepartment({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: () => {
             setDepartmentModel(!departmentModel);
             setIsRefresh(!isRefresh);
             setDepartment("");
-            showToast('success', response?.message)
           },
-          onError: (error: any) => {
-            showToast('error', error)
-          },
+          onError: () => { },
         })
       );
-    } else {
-      showToast('error', t('formInvalidParams'))
     }
   }
 
@@ -419,7 +448,6 @@ const ManageEmployee = () => {
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}
         onClick={onSubmit}
-        buttonTittle={isEdit ? t('update') : t('submit')}
       >
         <InputText
           label={t("fullName")}
@@ -494,7 +522,7 @@ const ManageEmployee = () => {
         <InputDefault
           label={t("aadhar")}
           placeholder={t("typeypurAadharNo")}
-          maxLength={12}
+          // maxLength={10}
           validator={validateAadhar}
           value={employeeDetails.aadharrNo}
           name={"aadharrNo"}
@@ -540,7 +568,10 @@ const ManageEmployee = () => {
           data={companyBranchDropdownData}
           name={"branch"}
           value={employeeDetails.branch}
-          onChange={(event) => onChangeHandler(event)}
+          onChange={(event) => {
+            ShiftDetails(event.target.value)
+            onChangeHandler(event)
+          }}
         />
         <DropDown
           label={t("category")}
@@ -578,7 +609,17 @@ const ManageEmployee = () => {
             onChangeHandler(event);
           }}
         />
+
         <h4 className="mb-4">{t("attendanceDetails")}</h4>
+
+        <DropDown
+          label={t("shiftss")}
+          placeholder={t("SelectShift")}
+          data={shiftsDropdownData}
+          name={"shift"}
+          value={employeeDetails.shift}
+          onChange={(event) => onChangeHandler(event)}
+        />
         <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
           title={t("pleaseSelect")}
@@ -604,29 +645,19 @@ const ManageEmployee = () => {
         title={t("department")}
         showModel={departmentModel}
         toggle={() => setDepartmentModel(!departmentModel)}
+        footer
+        saveChange={submitDepartment}
       >
         {
-          <Container>
-            <div className="col-xl-7 col-md-10">
-              <InputText
-                placeholder={t("department")}
-                validator={validateDefault}
-                onChange={(e) => {
-                  setDepartment(e.target.value);
-                }}
-              />
-            </div>
-            <Container margin={"mt-5"} additionClass={"text-right"}>
-              <Secondary
-                text={t("cancel")}
-                onClick={() => setDepartmentModel(!departmentModel)}
-              />
-              <Primary
-                text={t("submit")}
-                onClick={() => submitDepartment()}
-              />
-            </Container>
-          </Container>
+          <div className="col-xl-7 col-md-10">
+            <InputText
+              placeholder={t("department")}
+              validator={validateDefault}
+              onChange={(e) => {
+                setDepartment(e.target.value);
+              }}
+            />
+          </div>
         }
       </Modal>
 
@@ -634,35 +665,25 @@ const ManageEmployee = () => {
         title={t("designation")}
         showModel={designationModel}
         toggle={() => setDesignationModel(!designationModel)}
+        footer
+        saveChange={submitDesignation}
       >
         {
-          <Container>
-            <div className="col-xl-7 col-md-10">
-              <InputText
-                placeholder={t("designation")}
-                validator={validateDefault}
-                onChange={(e) => {
-                  setDesignation(e.target.value);
-                }}
+          <div className="col-xl-7 col-md-10">
+            <InputText
+              placeholder={t("designation")}
+              validator={validateDefault}
+              onChange={(e) => {
+                setDesignation(e.target.value);
+              }}
+            />
+            <div className="col text-right">
+              <CheckBox
+                text={"As Admin rights"}
+                onChange={(e) => setIsAdminRights(e.target.checked)}
               />
-              <div className="col text-right">
-                <CheckBox
-                  text={"As Admin rights"}
-                  onChange={(e) => setIsAdminRights(e.target.checked)}
-                />
-              </div>
             </div>
-            <Container margin={"mt-5"} additionClass={"text-right"}>
-              <Secondary
-                text={t("cancel")}
-                onClick={() => setDesignationModel(!designationModel)}
-              />
-              <Primary
-                text={t("submit")}
-                onClick={() => submitDesignation()}
-              />
-            </Container>
-          </Container>
+          </div>
         }
       </Modal>
     </>
