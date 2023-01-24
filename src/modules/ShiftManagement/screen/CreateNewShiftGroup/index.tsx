@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView } from '@components'
 import {
-
-    goTo,
     useNav,
-    ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA,
     showToast,
     goBack,
-
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -185,7 +180,6 @@ const CreateShiftGroup = () => {
         dispatch(getShiftEmployeesDetails({
             params,
             onSuccess: (success: any) => {
-                console.log('success', success);
                 setSelectedEmployeesList(success)
                 setFilteredEmployees(success)
             },
@@ -197,9 +191,8 @@ const CreateShiftGroup = () => {
     //function for adding an selected employees to selectedEmployeesList state while clicking
 
     const addAnSelectedEmployees = (selectedEmployee: any) => {
-
         let updatedSelectedEmployee = [...selectedEmployeesList]
-        const isExist = selectedEmployeesList.some((item: any) => item.id || item?.employee_pk === selectedEmployee.id)
+        const isExist = selectedEmployeesList.some((item: any) => item?.id === selectedEmployee.id || item?.employee_pk === selectedEmployee.id)
         if (!isExist) {
             updatedSelectedEmployee = [...updatedSelectedEmployee, selectedEmployee]
             setSelectedEmployeesList(updatedSelectedEmployee)
@@ -211,7 +204,6 @@ const CreateShiftGroup = () => {
     /**
      * Function for on deSelect the selected employee
      */
-
     const onRevertSelectedEmployees = (employeeDetails: any) => {
         // deSelect the selected employees in an selectedEmployeesList array
         const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== employeeDetails.id)

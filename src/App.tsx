@@ -63,7 +63,7 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
@@ -239,7 +239,7 @@ function App() {
           path={ROUTE.ROUTE_MY_BRANCHES}
           element={<RequireAuth>{<MyBranches />}</RequireAuth>}
         />
-          <Route
+        <Route
           path={ROUTE.ROUTE_NOTIFICATIONS}
           element={<RequireAuth>{<Notifications />}</RequireAuth>}
         />

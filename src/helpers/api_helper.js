@@ -16,7 +16,7 @@ const PROD_web = 'https://webapi.zenyq.com';
 
 
 
-export const REACT_APP_APP_URL = LOCAL_DEV ;
+export const REACT_APP_APP_URL = PROD_web ;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
