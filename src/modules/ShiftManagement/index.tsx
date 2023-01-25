@@ -1,5 +1,5 @@
-import {WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup} from "./screen"
+import {WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup,ShiftRequest} from "./screen"
 
-export {WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup}
+export {WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup,ShiftRequest}
 
 export * from './container'

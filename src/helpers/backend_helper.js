@@ -113,3 +113,27 @@ export const getBranchAdminsApi= (payload) => post(url.GET_ADMIN_BRANCHES,payloa
  */
 
 export const PostEditBranchNameApi= (payload) => post(url.POST_EDIT_BRANCH_NAME,payload,{})
+
+/**
+ * employees Shift request
+ */
+export const getShiftRequestedEmployeesApi= (payload) => post(url.FETCH_SHIFT_REQUESTED_EMPLOYEES,payload,{})
+
+/**
+ * SHIFT_REQUESTED_STATUS
+ */
+
+export const getShiftRequestedStatusApi= (payload) => post(url.FETCH_SHIFT_REQUESTED_STATUS,payload,{})
+
+/**
+ * POST_REQUEST_SHIFT_CHANGE
+ */
+
+export const postRequestShiftChangeApi= (payload) => post(url.POST_REQUEST_SHIFT_CHANGE,payload,{})
+
+
+/**
+ * change Employee Shift
+ */
+
+export const postChangeEmployeeShiftApi= (payload) => post(url.POST_CHANGE_EMPLOYEE_SHIFT,payload,{})

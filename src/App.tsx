@@ -47,6 +47,8 @@ import {
   MyBranches,
   Notifications,
   ManageRequest,
+  ShiftRequest,
+  EmployeeShiftRequest,
   // DashBoardOtp
 } from "@modules";
 
@@ -246,6 +248,14 @@ function App() {
         <Route
           path={ROUTE.ROUTE_MANAGE_REQUEST}
           element={<RequireAuth>{<ManageRequest />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_REQUEST}
+          element={<RequireAuth>{<ShiftRequest />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST}
+          element={<RequireAuth>{<EmployeeShiftRequest />}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

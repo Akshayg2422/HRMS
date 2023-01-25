@@ -5,12 +5,12 @@ import { ContainerProps } from "../Interface";
 interface DropDownProps extends ContainerProps {
   label?: string;
   placeholder?: string;
-  data?: Array<{ id?: string; name?: string; value?: string, title?: string, type?: string, group_name?: string }>;
+  data?: Array<{ id?: string | number; name?: string; value?: string | number, title?: string, type?: string, group_name?: string }>;
   error?: string;
   onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   name?: string
   title?: string
-  value?: string;
+  value?: any
   id?: string
 
 }

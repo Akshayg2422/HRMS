@@ -29,7 +29,20 @@ import {
   GET_EMPLOYEE_WITH_SHIFTS_FAILURE,
   POST_EMPLOYEE_SHIFT_CHANGE,
   POST_EMPLOYEE_SHIFT_CHANGE_SUCCESS,
-  POST_EMPLOYEE_SHIFT_CHANGE_FAILURE
+  POST_EMPLOYEE_SHIFT_CHANGE_FAILURE,
+  GET_SHIFT_REQUESTED_EMPLOYEES,
+  GET_SHIFT_REQUESTED_EMPLOYEES_SUCCESS,
+  GET_SHIFT_REQUESTED_EMPLOYEES_FAILURE,
+  GET_SHIFT_REQUESTED_STATUS,
+  GET_SHIFT_REQUESTED_STATUS_SUCCESS,
+  GET_SHIFT_REQUESTED_STATUS_FAILURE,
+  POST_REQUEST_SHIFT_CHANGE,
+  POST_REQUEST_SHIFT_CHANGE_SUCCESS,
+  POST_REQUEST_SHIFT_CHANGE_FAILURE,
+  POST_CHANGE_SHIFT_CHANGE,
+  POST_CHANGE_SHIFT_CHANGE_SUCCESS,
+  POST_CHANGE_SHIFT_CHANGE_FAILURE,
+  CURRENT_STATUS_TYPE
 } from "./actionTypes";
 
 const initialState = {
@@ -45,7 +58,10 @@ const initialState = {
   selectedWeeklyShiftName: '',
   shiftEmployeesGroupDetails: {},
   myShifts: {},
-  employeeWithShifts: []
+  employeeWithShifts: [],
+  shiftRequestedEmployees: [],
+  requestList: [],
+  currentType: -2
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
@@ -293,8 +309,130 @@ const ShiftManagementReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+    /**
+     * employees Shift request
+     */
+    case GET_SHIFT_REQUESTED_EMPLOYEES:
+      state = {
+        ...state,
+        shiftRequestedEmployees: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case GET_SHIFT_REQUESTED_EMPLOYEES_SUCCESS:
+      const employeesRequest = action.payload;
+      state = {
+        ...state,
+        loading: false,
+        shiftRequestedEmployees: employeesRequest.data,
+        numOfPages: employeesRequest.num_pages,
+        currentPage:
+          employeesRequest.next_page === -1
+            ? employeesRequest.num_pages
+            : employeesRequest.next_page - 1,
+      };
+      break;
+
+    case GET_SHIFT_REQUESTED_EMPLOYEES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+     * employee Shift request Status
+     */
+    case GET_SHIFT_REQUESTED_STATUS:
+      state = {
+        ...state,
+        requestList: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case GET_SHIFT_REQUESTED_STATUS_SUCCESS:
+      const employeeRequest = action.payload;
+      state = {
+        ...state,
+        loading: false,
+        requestList: employeeRequest.data,
+        numOfPages: employeeRequest.num_pages,
+        currentPage:
+          employeeRequest.next_page === -1
+            ? employeeRequest.num_pages
+            : employeeRequest.next_page - 1,
+      };
+      break;
+
+    case GET_SHIFT_REQUESTED_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    /**
+     * POST_REQUEST_SHIFT_CHANGE
+     */
+    case POST_REQUEST_SHIFT_CHANGE:
+      state = {
+        ...state,
+      };
+      break;
+    case POST_REQUEST_SHIFT_CHANGE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case POST_REQUEST_SHIFT_CHANGE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    /**
+     * POST_CHANGE_SHIFT_CHANGE
+     */
+
+    case POST_CHANGE_SHIFT_CHANGE:
+      state = {
+        ...state,
+      };
+      break;
+    case POST_CHANGE_SHIFT_CHANGE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case POST_CHANGE_SHIFT_CHANGE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+      
+    /**
+     * 
+     */
+
+    case CURRENT_STATUS_TYPE:
+      state = {
+        ...state,
+        currentType: action.payload,
+      };
+      break;
 
 
+    // ******************************** //
 
     case RESET_REDUCER:
       state = initialState;

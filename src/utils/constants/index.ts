@@ -49,8 +49,10 @@ export const ROUTE = {
   ROUTE_CREATE_GROUP: '/create-group',
   ROUTE_DASHBOARD_OTP: "/dashboard-otp",
   ROUTE_MY_BRANCHES: '/my-branches',
-  ROUTE_NOTIFICATIONS:'/notifications',
-  ROUTE_MANAGE_REQUEST:'/manage-request',
+  ROUTE_NOTIFICATIONS: '/notifications',
+  ROUTE_MANAGE_REQUEST: '/manage-request',
+  ROUTE_SHIFT_REQUEST: '/shift-request',
+  ROUTE_EMPLOYEE_SHIFT_REQUEST: '/employee-shift-request',
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
@@ -80,6 +82,46 @@ export const LEAVES_TYPE = [
   { id: 'Rejected Leave', name: 'Rejected Leave', value: 'Rejected Leave' },
 
 
+];
+
+
+export const REQUEST_TYPE_SUBSET = [
+  { id: 'All', name: 'All', value: -2 },
+  { id: 'Pending', name: 'Pending', value: -1 },
+  { id: 'Approved', name: 'Approved', value: 1 },
+  { id: 'Rejected', name: 'Rejected', value: 0 },
+
+
+];
+
+ export const getRequestType = (value: any) => {
+  let type
+  switch (value) {
+      case 'All':
+          type = -2
+          break;
+      case 'Pending':
+          type = -1
+          break;
+      case 'Approved':
+          type = 1
+          break;
+      case 'Rejected':
+          type = 0
+          break;
+
+      default:
+          type = -2
+          break;
+  }
+  return type
+}
+
+export const REQUEST_TYPE = [
+  { id: 1, name: 'All', value: -2 },
+  { id: 2, name: 'Pending', value: -1 },
+  { id: 3, name: 'Approved', value: 1 },
+  { id: 4, name: 'Rejected', value: 0 }, 
 ];
 
 export const DOWNLOAD_RANGE = [
@@ -124,6 +166,7 @@ export const NAV_ITEM = [
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, route: ROUTE.ROUTE_REPORTS },
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
+  { id: '16', name: 'Shifts Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
@@ -187,10 +230,10 @@ export const TABLE_ELEMENT_TEXT_STATUS = 2
 export const TABLE_ELEMENT_TEXT_IMAGE = 3
 
 
-export const DAY_STATUS_LATE=2
-export const DAY_STATUS_LEAVE=9
-export const DAY_STATUS_ABSENT=6
-export const DAY_STATUS_ALERT=5
+export const DAY_STATUS_LATE = 2
+export const DAY_STATUS_LEAVE = 9
+export const DAY_STATUS_ABSENT = 6
+export const DAY_STATUS_ALERT = 5
 
 
 export const TABLE_CONTENT_TYPE_REPORT = 1

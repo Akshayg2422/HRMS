@@ -80,6 +80,8 @@
   "somethingWrong":"Something went wrong",
   "invalidReason":"Invalid Reason",
   "invalidDate":"Invalid Date",
+  "invalidShiftId":"Invalid Shift",
+  "invalidType":"Invalid Type",
   "invalidAdmin":"User is not a Admin / Branch Admin",
 
   
@@ -215,6 +217,9 @@
 "myShift":"My Shifts",
 "SelectShift":"Select Shift",
 "employeeShifts":"Employee Shifts",
+"requestList":"Request List",
+"changeShift":"Change Shift",
+"shiftRequest":"Shift Request",
 
 
 

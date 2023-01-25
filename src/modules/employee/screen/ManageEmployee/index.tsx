@@ -140,7 +140,6 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    ShiftDetails(employeeDetails.branch)
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -164,6 +163,7 @@ const ManageEmployee = () => {
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
     }
+    // ShiftDetails(employeeDetails.branch)
   }, [isRefresh]);
 
   const getEmployeeDetailsAPi = (id: any) => {
@@ -174,8 +174,6 @@ const ManageEmployee = () => {
       getEmployeeDetails({
         params,
         onSuccess: (response: EmployeeDetail) => {
-          console.log(JSON.stringify(response));
-
           preFillEmployeeDetails(response);
         },
         onError: (error: string) => {
@@ -210,7 +208,7 @@ const ManageEmployee = () => {
   //     ShiftDetails(employeeDetails.branch)
   //   }
   // }, [employeeDetails.branch])
-  
+
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {

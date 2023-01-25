@@ -89,7 +89,8 @@ export const Icons = {
   ShiftRequest:require('./icons/ShiftRequest/ShiftRequest.png'),
   AttendanceRequest:require('./icons/AttendanceRequest/AttendanceRequest.png'),
   FaceRegister:require('./icons/FaceRegister/FaceRegister.png'),
-  LeaveRequest:require('./icons/LeaveRequest/LeaveRequest.png')
+  LeaveRequest:require('./icons/LeaveRequest/LeaveRequest.png'),
+  ShiftChange:require('./icons/ShiftChange/ShiftChange.png')
 }
 
 

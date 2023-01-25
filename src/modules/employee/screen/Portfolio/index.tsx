@@ -48,6 +48,13 @@ function PortFolio() {
       name: "My Shifts",
       value: "MS",
       route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
+      icon: Icons.ShiftChange,
+    },
+    {
+      id: "7",
+      name: "Shift Change",
+      value: "SC",
+      route: ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST,
       icon: Icons.MY_SHIFTS,
     }
   ];

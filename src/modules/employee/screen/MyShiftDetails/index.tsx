@@ -36,6 +36,7 @@ function MyShiftDetails() {
                 <Container col={"col-xl-3 col-md-6 col-sm-12 ml--2"}>
                     <InputText
                         label={t("shifts")}
+                        placeholder={t("shifts")}
                         value={myShifts?.group_name}
                         disabled
                     />
