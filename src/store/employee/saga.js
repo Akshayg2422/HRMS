@@ -36,7 +36,7 @@ import {
   GET_ADMIN_BRANCHES,
   POST_UPDATED_ADMIN_BRANCHES,
   GET_BRANCHES_ADMIN,
-  
+
 } from "./actionTypes";
 
 import {
@@ -156,7 +156,7 @@ import {
   getBranchAdminsApi
 } from "../../helpers/backend_helper";
 
-import { showLoader, hideLoader } from "../app/actions";
+import { showLoader, hideLoader } from "../loader/actions";
 
 function* getDesignation(action) {
   try {
@@ -182,9 +182,9 @@ function* getDepartments(action) {
     yield put(showLoader());
     const response = yield call(fetchDepartmentData, action.payload.params);
     if (response.success) {
-      yield put(hideLoader());
       yield put(getDepartmentDataSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getDepartmentDataFailure(response.error_message));
@@ -226,9 +226,9 @@ function* getEmployeeDetails(action) {
       yield call(action.payload.onSuccess(response.details));
       yield put(hideLoader());
     } else {
-      yield put(hideLoader());
       yield put(getEmployeeDetailsFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
     }
   } catch (error) {
     yield put(hideLoader());
@@ -247,9 +247,9 @@ function* getEmployeesList(action) {
       yield call(action.payload.onSuccess(response.details));
       yield put(hideLoader());
     } else {
-      yield put(hideLoader());
       yield put(getEmployeesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
     }
   } catch (error) {
     yield put(hideLoader());
@@ -268,9 +268,9 @@ function* employeeAddition(action) {
       yield call(action.payload.onSuccess(response));
       yield put(hideLoader());
     } else {
-      yield put(hideLoader());
       yield put(employeeAdditionFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
     }
   } catch (error) {
     yield put(hideLoader());
@@ -285,8 +285,8 @@ function* getEmployeesTimeSheets(action) {
     const response = yield call(fetchEmployeeTimeSheets, action.payload.params);
 
     if (response.success) {
-      yield put(hideLoader());
       yield put(getEmployeesTimeSheetsSuccess(response.details));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getEmployeesTimeSheetsFailure(response.error_message));
@@ -312,9 +312,9 @@ function* getEmployeeCheckInLogs(action) {
     );
 
     if (response.success) {
-      yield put(hideLoader());
       yield put(getEmployeesCheckInLogsSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getEmployeesCheckInLogsFailure(response.error_message));
@@ -339,8 +339,8 @@ function* getCheckInDetailedLogPerDay(action) {
     const response = yield call(fetchCheckInDetailedLogPerDay, action.payload);
 
     if (response.success) {
-      yield put(hideLoader());
       yield put(getCheckInDetailedLogPerDaySuccess(response.details));
+      yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getCheckInDetailedLogPerDayFailure(response.error_message));

@@ -179,13 +179,13 @@ const CreateShiftGroup = () => {
      */
 
     const getShiftEmployeesGroupDetails = () => {
-
         const params = {
             shift_id: selectedShiftGroupDetails.id
         }
         dispatch(getShiftEmployeesDetails({
             params,
             onSuccess: (success: any) => {
+                console.log('success', success);
                 setSelectedEmployeesList(success)
                 setFilteredEmployees(success)
             },
@@ -199,13 +199,12 @@ const CreateShiftGroup = () => {
     const addAnSelectedEmployees = (selectedEmployee: any) => {
 
         let updatedSelectedEmployee = [...selectedEmployeesList]
-        const isExist = selectedEmployeesList.some((item: any) => item.id === selectedEmployee.id)
+        const isExist = selectedEmployeesList.some((item: any) => item.id || item?.employee_pk === selectedEmployee.id)
         if (!isExist) {
             updatedSelectedEmployee = [...updatedSelectedEmployee, selectedEmployee]
             setSelectedEmployeesList(updatedSelectedEmployee)
             setSelectedEmployeesIds([...selectedEmployeesIds, selectedEmployee.id as never])
             setFilteredEmployees(updatedSelectedEmployee as never)
-
         }
     }
 
@@ -218,15 +217,12 @@ const CreateShiftGroup = () => {
         const filteredPeople = selectedEmployeesList.filter((item: any) => item.id !== employeeDetails.id)
         setSelectedEmployeesList(filteredPeople)
         setFilteredEmployees(filteredPeople)
-
         const filteredIds = selectedEmployeesIds.filter((item: any) => item !== employeeDetails.id)
         setSelectedEmployeesIds(filteredIds)
 
     }
 
-
     //Function called for Searching an employee in selected employee list
-
     const SelectedEmployeeFilter = () => {
         // filter the selected employee while searching
         if (searchSelectedEmployee !== "") {
@@ -598,7 +594,7 @@ const SelectedEmployeeListTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap"}}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );
