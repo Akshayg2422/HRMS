@@ -35,7 +35,7 @@ import {
 } from "./actions";
 
 import { postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi, fetchShiftEmployeesApi,fetchMyShiftsApi,fetchEmployeeWithShiftsApi,PostEmployeeWithChangeShiftApi } from "../../helpers/backend_helper";
-import { showLoader, hideLoader } from "../app/actions";
+import { showLoader, hideLoader } from "../loader/actions";
 
 
 
