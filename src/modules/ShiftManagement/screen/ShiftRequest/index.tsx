@@ -64,7 +64,7 @@ function ShiftRequest() {
           additionClass={"col"}
           alignItems={"align-items-center"}
         >
-          <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+          <Container col={"col-xl-3 col-md-6 col-sm-12 mt-xl--3"}>
             <InputText
               placeholder={t("enterEmployeeName")}
               label={t("employeeName")}
@@ -75,7 +75,7 @@ function ShiftRequest() {
           </Container>
           <Container
             col={"col-xl-5 col-md-6 col-sm-12"}
-            additionClass={"mt-xl-4"}
+            additionClass={"mt-xl-3"}
           >
             <ChooseBranchFromHierarchical />
           </Container>

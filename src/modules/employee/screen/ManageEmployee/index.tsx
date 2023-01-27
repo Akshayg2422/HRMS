@@ -163,7 +163,7 @@ const ManageEmployee = () => {
     if (isEdit !== undefined) {
       getEmployeeDetailsAPi(isEdit);
     }
-    // ShiftDetails(employeeDetails.branch)
+    ShiftDetails(dashboardDetails?.company_branch?.id)
   }, [isRefresh]);
 
   const getEmployeeDetailsAPi = (id: any) => {
@@ -201,14 +201,6 @@ const ManageEmployee = () => {
       },
     }));
   }
-
-
-  // useEffect(() => {
-  //   if (employeeDetails.branch !== '') {
-  //     ShiftDetails(employeeDetails.branch)
-  //   }
-  // }, [employeeDetails.branch])
-
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -446,6 +438,7 @@ const ManageEmployee = () => {
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}
         onClick={onSubmit}
+        buttonTittle={isEdit ? t("update") : t("submit")}
       >
         <InputText
           label={t("fullName")}
