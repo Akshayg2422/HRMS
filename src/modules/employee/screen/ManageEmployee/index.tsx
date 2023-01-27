@@ -670,6 +670,7 @@ const ManageEmployee = () => {
             />
             <div className="col text-right">
               <CheckBox
+                id={'2'}
                 text={"As Admin rights"}
                 onChange={(e) => setIsAdminRights(e.target.checked)}
               />
