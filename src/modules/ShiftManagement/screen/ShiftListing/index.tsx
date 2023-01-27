@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { BackArrow, CommonTable, Container, NoRecordFound, Primary } from '@components'
+import { BackArrow, Card, CommonTable, Container, NoRecordFound, Primary } from '@components'
 import {
 
     goTo,
@@ -58,31 +58,30 @@ const ShiftListing = () => {
 
     return (
         <>
-            <Container additionClass={"row mx-2 my-4"}>
-                <Container additionClass='row'>
-                    <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                    <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
-                </Container>
-                <div className="col text-right my-sm-2 mt-3 mt-sm-0">
-                    <Primary
-                        text={t('addNew')}
-                        onClick={() => {
-                            manageWeeklyShiftSelectionHandler(undefined)
-                        }}
-                    />
-                </div>
-
+            <Container>
+                <Card additionClass={'mx-3'}>
+                    <Container additionClass='row'>
+                        <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
+                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
+                    </Container>
+                    <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+                        <Primary
+                            text={t('addNew')}
+                            onClick={() => {
+                                manageWeeklyShiftSelectionHandler(undefined)
+                            }}
+                        />
+                    </div>
+                </Card>
                 {branchesWeeklyShifts && branchesWeeklyShifts.length > 0 ? (
-                    <Container margin={'mt-4'}>
+                    <Container margin={'mt-4'} additionClass={'mx-0'}>
                         <CommonTable
-                            tableTitle={t('branchShifts')}
                             displayDataSet={normalizedBranchWeeklyShifts(branchesWeeklyShifts)}
                             additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
                                 const current = branchesWeeklyShifts[index];
-
                                 if (elv === "Edit") {
                                     dispatch(selectedWeeklyShiftNameAction(current.group_name))
                                     manageWeeklyShiftSelectionHandler(current.id)
@@ -93,7 +92,7 @@ const ShiftListing = () => {
                             }}
                         />
                     </Container>
-                ) : <NoRecordFound />}
+                ) : <Container additionClass={'mx-3'}><NoRecordFound /></Container>}
             </Container>
         </>
     )

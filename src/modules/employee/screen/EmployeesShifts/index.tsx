@@ -199,7 +199,7 @@ function EmployeeShifts() {
           {Object.keys(myShifts).length > 0 && <Card>
             <Container col={"col-xl-3 col-md-6 col-sm-12 ml--2"}>
               <InputText
-                label={t("shifts")}
+                label={t("Weelelyshift")}
                 value={myShifts.group_name}
                 disabled
               />

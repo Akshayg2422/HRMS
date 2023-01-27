@@ -9,11 +9,15 @@ function ApprovedRequest() {
   const { currentPage, numOfPages, shiftRequestedEmployees } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
+  const { hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
 
   const getEmployeeRequest = (type: number, pageNumber: number) => {
     const params = {
       status: type,
       page_number: pageNumber,
+      ...hierarchicalBranchIds
     }
     dispatch(getShiftRequestedEmployees({ params }));
   }

@@ -225,6 +225,7 @@
 "requestList":"Request List",
 "changeShift":"Change Shift",
 "shiftRequest":"Shift Request",
+"searchGroup":"Search Group",
 
 
 
@@ -493,6 +494,7 @@
   "addNew":"Add New",
   "manageWeeklyShifts":"Manage Weekly Shifts",
   "branchShifts":"Branch Shifts",
+  "Weelelyshift":"Weekly Shift",
   "WeelelyshiftListing":"Weekly Shift Listing",
   "theShiftNameCantBeEmpty":"The Shift name can't be empty",
   "alreadyShiftAllocated":"Already shift allocated for the selected time",

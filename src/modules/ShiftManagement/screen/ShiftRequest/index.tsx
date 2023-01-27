@@ -20,6 +20,9 @@ function ShiftRequest() {
   const { currentPage, currentType } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
+  const { hierarchicalBranchIds } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
   const enterPress = useKeyPress("Enter");
   const [active, setActive] = useState(1);
   const [searchEmployee, setSearchEmployee] = useState('')
@@ -27,7 +30,7 @@ function ShiftRequest() {
 
   useEffect(() => {
     getRequestDetails(active)
-  }, [])
+  }, [hierarchicalBranchIds])
 
   useEffect(() => {
     if (enterPress) {
@@ -49,6 +52,7 @@ function ShiftRequest() {
     const params = {
       status: type,
       page_number: pageNumber,
+      ...hierarchicalBranchIds,
       ...(searchEmployee && { q: searchEmployee })
     }
     dispatch(getShiftRequestedEmployees({

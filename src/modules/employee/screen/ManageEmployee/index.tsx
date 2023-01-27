@@ -10,6 +10,9 @@ import {
   Icon,
   Modal,
   CheckBox,
+  Container,
+  Secondary,
+  Primary,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -160,7 +163,7 @@ const ManageEmployee = () => {
         onError: (error: string) => { },
       })
     );
-    if (isEdit !== undefined) {
+    if (isEdit) {
       getEmployeeDetailsAPi(isEdit);
     }
     ShiftDetails(dashboardDetails?.company_branch?.id)
@@ -190,11 +193,13 @@ const ManageEmployee = () => {
       params,
       onSuccess: (success: any) => {
         setShiftsDropdownData(success)
-        success.map((el: any) => {
-          if (el.is_default) {
-            setEmployeeDetails({ ...employeeDetails, shift: el.id });
-          }
-        })
+        if (!isEdit) {
+          success.map((el: any) => {
+            if (el.is_default) {
+              setEmployeeDetails({ ...employeeDetails, shift: el.id });
+            }
+          })
+        } 
       },
       onError: (error: string) => {
         showToast("error", t("Somthingwentworng"));
@@ -279,9 +284,6 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-
-
-
       dispatch(
         employeeAddition({
           params,
@@ -365,7 +367,7 @@ const ManageEmployee = () => {
 
       if (
         editEmployeeDetails &&
-        editEmployeeDetails.shift?.id
+        editEmployeeDetails.shift
       )
         employeeInitData.shift =
           editEmployeeDetails.shift?.id;
@@ -636,19 +638,29 @@ const ManageEmployee = () => {
         title={t("department")}
         showModel={departmentModel}
         toggle={() => setDepartmentModel(!departmentModel)}
-        footer
-        saveChange={submitDepartment}
       >
         {
-          <div className="col-xl-7 col-md-10">
-            <InputText
-              placeholder={t("department")}
-              validator={validateDefault}
-              onChange={(e) => {
-                setDepartment(e.target.value);
-              }}
-            />
-          </div>
+          <Container>
+            <div className="col-xl-7 col-md-10">
+              <InputText
+                placeholder={t("department")}
+                validator={validateDefault}
+                onChange={(e) => {
+                  setDepartment(e.target.value);
+                }}
+              />
+            </div>
+            <Container margin={"mt-5"} additionClass={"text-right"}>
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setDepartmentModel(!departmentModel)}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={() => submitDepartment()}
+              />
+            </Container>
+          </Container>
         }
       </Modal>
 
@@ -656,26 +668,36 @@ const ManageEmployee = () => {
         title={t("designation")}
         showModel={designationModel}
         toggle={() => setDesignationModel(!designationModel)}
-        footer
-        saveChange={submitDesignation}
       >
         {
-          <div className="col-xl-7 col-md-10">
-            <InputText
-              placeholder={t("designation")}
-              validator={validateDefault}
-              onChange={(e) => {
-                setDesignation(e.target.value);
-              }}
-            />
-            <div className="col text-right">
-              <CheckBox
-                id={'2'}
-                text={"As Admin rights"}
-                onChange={(e) => setIsAdminRights(e.target.checked)}
+          <Container>
+            <div className="col-xl-7 col-md-10">
+              <InputText
+                placeholder={t("designation")}
+                validator={validateDefault}
+                onChange={(e) => {
+                  setDesignation(e.target.value);
+                }}
               />
+              <div className="col text-right">
+                <CheckBox
+                  id={'2'}
+                  text={"As Admin rights"}
+                  onChange={(e) => setIsAdminRights(e.target.checked)}
+                />
+              </div>
             </div>
-          </div>
+            <Container margin={"mt-5"} additionClass={"text-right"}>
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setDesignationModel(!designationModel)}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={() => submitDesignation()}
+              />
+            </Container>
+          </Container>
         }
       </Modal>
     </>

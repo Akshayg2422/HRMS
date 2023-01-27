@@ -4,6 +4,7 @@ import {
     useNav,
     showToast,
     goBack,
+    dropDownValueCheck,
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -112,13 +113,12 @@ const CreateShiftGroup = () => {
     }
 
     const validatePostParams = () => {
-
-        if (groupName === undefined) {
+        if (!groupName) {
             showToast("error", t('theGroupNameCantBeEmpty'));
             return false;
         }
-        else if (selectedShift === '') {
-            showToast("error", t('theGroupNameCantBeEmpty'));
+        else if (!selectedShift) {
+            showToast("error", t('invalidShift'));
             return false;
         }
         else {
@@ -265,6 +265,10 @@ const CreateShiftGroup = () => {
 
     }
 
+
+    console.log('departmentId', departmentId, "designationId", designationId);
+
+
     return (
         <>
             <Card additionClass='mx--2'>
@@ -351,7 +355,7 @@ const CreateShiftGroup = () => {
                                 data={departmentDropdownData}
                                 value={departmentId}
                                 onChange={(event) => {
-                                    setDepartmentId(event.target.value)
+                                    setDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
                                 }}
                             />
                         </Container>
@@ -365,7 +369,7 @@ const CreateShiftGroup = () => {
                                 data={designationDropdownData}
                                 value={designationId}
                                 onChange={(event) => {
-                                    setDesignationId(event.target.value)
+                                    setDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
                                 }}
                             />
                         </Container>
