@@ -253,20 +253,13 @@ const CreateShiftGroup = () => {
             else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
                 if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
                     return item
-
                 }
-
             }
-
         }
         )
-
         setFilteredEmployees(updateFilteredData as never)
 
     }
-
-
-    console.log('departmentId', departmentId, "designationId", designationId);
 
 
     return (
@@ -439,7 +432,7 @@ const CreateShiftGroup = () => {
                                 data={departmentDropdownData}
                                 value={selectedEmpListDepartmentId}
                                 onChange={(event) => {
-                                    setSelectedEmpListDepartmentId(event.target.value)
+                                    setSelectedEmpListDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
                                 }}
                             />
                         </Container>
@@ -453,7 +446,7 @@ const CreateShiftGroup = () => {
                                 data={designationDropdownData}
                                 value={selectedEmpListDesignationId}
                                 onChange={(event) => {
-                                    setSelectedEmpListDesignationId(event.target.value)
+                                    setSelectedEmpListDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
                                 }}
                             />
                         </Container>
