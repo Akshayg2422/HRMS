@@ -257,7 +257,7 @@ function EmployeeShifts() {
         </div>
       </Modal>
       <Modal showModel={changeShiftModel}
-        title={t('shiftss')}
+        title={t('shiftGroups')}
         size={"modal-sm"}
         toggle={() => setChangeShiftModelModel(!changeShiftModel)}>
         <Container>
