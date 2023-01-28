@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import {ROUTE} from '@utils'
-import { Navbar} from '@modules'
+import { ROUTE } from '@utils'
+import { Header, Navbar } from '@modules'
 
 type RequireAuthProps = {
     children: React.ReactNode;
@@ -11,7 +11,9 @@ type RequireAuthProps = {
 export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     const location = useLocation()
-
+    const { dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+    );
     const { userLoggedIn } = useSelector(
         (state: any) => state.AppReducer
     );
@@ -24,6 +26,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         <>
             <Navbar />
             <div className='main-content'>
+                {dashboardDetails && dashboardDetails.user_details && <div><Header /></div>}
                 <div className='mx-3 my-4'>
                     {children}
                 </div>
