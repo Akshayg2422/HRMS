@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { BackArrow, Card, CommonTable, Container, NoRecordFound, Primary } from '@components'
+import React, { useEffect, useState } from 'react'
+import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
 import {
 
     goTo,
@@ -15,12 +15,17 @@ import {
     selectedWeeklyShiftNameAction
 } from "../../../../store/shiftManagement/actions";
 import { useTranslation } from 'react-i18next';
+import { Icons } from '@assets';
 
 const ShiftListing = () => {
 
     const navigation = useNav();
     let dispatch = useDispatch();
     const { t } = useTranslation();
+    const enterPress = useKeyPress("Enter");
+    const [shiftList, setShiftList] = useState<any>()
+    const [searchShift, setSearchShift] = useState<any>('')
+
 
     const { branchesWeeklyShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
@@ -29,7 +34,6 @@ const ShiftListing = () => {
     const { hierarchicalBranchIds, dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
-    // hierarchicalBranchIds.branch_id
 
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
@@ -38,7 +42,14 @@ const ShiftListing = () => {
 
     useEffect(() => {
         getBranchesWeeklyShiftsList()
+        setShiftList(branchesWeeklyShifts)
     }, []);
+
+    useEffect(() => {
+        if (enterPress) {
+            searchHandler()
+        }
+    }, [enterPress])
 
     const normalizedBranchWeeklyShifts = (branchesWeeklyShift: any) => {
         return branchesWeeklyShift && branchesWeeklyShift.length > 0 && branchesWeeklyShift.map((element: any) => {
@@ -56,6 +67,20 @@ const ShiftListing = () => {
 
     const deleteBranchShift = () => { }
 
+
+    const searchHandler = () => {
+        let filteredGroup = [...shiftList]
+        if (searchShift !== "") {
+            filteredGroup = filteredGroup.filter((element: any) => {
+                return element?.group_name.replace(/\s/g, '').toLowerCase().includes(searchShift.replace(/\s/g, '').toLowerCase())
+            })
+            setShiftList(filteredGroup)
+        }
+        else {
+            setShiftList(branchesWeeklyShifts)
+        }
+    }
+
     return (
         <>
             <Container>
@@ -64,24 +89,44 @@ const ShiftListing = () => {
                         <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
                         <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
                     </Container>
-                    <div className="col text-right my-sm-2 mt-3 mt-sm-0">
-                        <Primary
-                            text={t('addNew')}
-                            onClick={() => {
-                                manageWeeklyShiftSelectionHandler(undefined)
-                            }}
-                        />
-                    </div>
+                    <Container additionClass='row mt-xl-3'>
+                        <Container additionClass='row col'>
+                            <InputText
+                                col={'col'}
+                                placeholder={t('searchWeeklyShift')}
+                                onChange={(e) => {
+                                    setSearchShift(e.target.value);
+                                }}
+                            />
+                            <Container
+                                col={"col"}
+                                style={{ marginTop: '10px' }}
+                                justifyContent={"justify-content-center"}
+                                alignItems={"align-items-center"}
+                                onClick={() => { searchHandler() }}
+                            >
+                                <Icon type={"btn-primary"} icon={Icons.Search} />
+                            </Container>
+                        </Container>
+                        <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+                            <Primary
+                                text={t('addNew')}
+                                onClick={() => {
+                                    manageWeeklyShiftSelectionHandler(undefined)
+                                }}
+                            />
+                        </div>
+                    </Container>
                 </Card>
-                {branchesWeeklyShifts && branchesWeeklyShifts.length > 0 ? (
+                {shiftList && shiftList.length > 0 ? (
                     <Container margin={'mt-4'} additionClass={'mx-0'}>
                         <CommonTable
-                            displayDataSet={normalizedBranchWeeklyShifts(branchesWeeklyShifts)}
+                            displayDataSet={normalizedBranchWeeklyShifts(shiftList)}
                             additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
-                                const current = branchesWeeklyShifts[index];
+                                const current = shiftList[index];
                                 if (elv === "Edit") {
                                     dispatch(selectedWeeklyShiftNameAction(current.group_name))
                                     manageWeeklyShiftSelectionHandler(current.id)

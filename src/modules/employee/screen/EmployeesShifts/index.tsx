@@ -34,6 +34,8 @@ function EmployeeShifts() {
   const [model, setModel] = useState(false);
   const [changeShiftModel, setChangeShiftModelModel] = useState(false);
   const [shiftsList, setShiftList] = useState<any>()
+  const [defaultShiftId, setDefaultShiftId] = useState<any>()
+
   const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
   const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
   const [employeeName, setEmployeeName] = useState()
@@ -72,6 +74,13 @@ function EmployeeShifts() {
     });
   };
 
+  const getDefaultShift = (item: any) => {
+    item && item.length > 0 && item.map((el: any) => {
+      if (el.is_default) {
+        setDefaultShiftId(el.id)
+      }
+    })
+  }
 
   function getUserShifts(index: number) {
     const selectedEmployee = employeeWithShifts[index];
@@ -81,7 +90,7 @@ function EmployeeShifts() {
     }
     dispatch(getMyShifts({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: any) => {
         setModel(!model);
       },
       onError: (error: string) => {
@@ -103,16 +112,24 @@ function EmployeeShifts() {
     getEmployeeLogsWithShifts(page);
   }
 
+  const setDefaultShift = (shiftId: string) => {
+    if (!shiftId) {
+      return defaultShiftId
+    } else {
+      return shiftId
+    }
+  }
 
 
   const handleChangeShift = (selectedEmployeeDetails: any) => {
     setEmployeeCurrentObject(selectedEmployeeDetails)
-    setCurrentEmployeeShiftId(selectedEmployeeDetails?.shift?.id)
     const params = { branch_id: hierarchicalBranchIds.branch_id }
     dispatch(getBranchShifts({
       params,
       onSuccess: (success: object) => {
         setShiftList(success)
+        getDefaultShift(success)
+        setCurrentEmployeeShiftId(setDefaultShift(selectedEmployeeDetails?.shift?.id))
         setChangeShiftModelModel(!changeShiftModel)
       },
       onError: (error: string) => {
