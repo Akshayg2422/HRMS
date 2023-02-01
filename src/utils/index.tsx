@@ -128,6 +128,15 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
   });
 };
 
+const getDropDownValueByName = (dropDownArray: any, id: string) => {
+  console.log('dropDownArray', dropDownArray, "id", id);
+  if (id) {
+    return dropDownArray.find((item: any) => {
+      return item?.id === id
+    });
+  }
+};
+
 //moment
 
 const getMomentObjFromServer = (date: any) => {
@@ -266,5 +275,6 @@ export {
   REQUEST_TYPE,
   REQUEST_TYPE_SUBSET,
   getRequestType,
-  dropDownValueCheckByEvent
+  dropDownValueCheckByEvent,
+  getDropDownValueByName
 }

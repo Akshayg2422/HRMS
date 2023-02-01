@@ -481,6 +481,7 @@
   "invalidShift":"Invalid Shift",
   "selectEmployee":"Select Employees to add to the group",
   "createShiftGroup":"Create shift group",
+  "createGroup":"Create Group",
   "editShiftGroup":"Edit shift group",
   "enterTheGroupName":"Enter the Group Name",
   "groupName":"Group Name",

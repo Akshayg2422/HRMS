@@ -42,7 +42,8 @@ import {
   POST_CHANGE_SHIFT_CHANGE,
   POST_CHANGE_SHIFT_CHANGE_SUCCESS,
   POST_CHANGE_SHIFT_CHANGE_FAILURE,
-  CURRENT_STATUS_TYPE
+  CURRENT_STATUS_TYPE,
+  DESIGNATION_GROUP_DETAILS
 } from "./actionTypes";
 
 const initialState = {
@@ -61,7 +62,8 @@ const initialState = {
   employeeWithShifts: [],
   shiftRequestedEmployees: [],
   requestList: [],
-  currentType: -2
+  currentType: -2,
+  designationShiftGroup: {}
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
@@ -419,7 +421,7 @@ const ShiftManagementReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
-      
+
     /**
      * 
      */
@@ -431,6 +433,14 @@ const ShiftManagementReducer = (state = initialState, action) => {
       };
       break;
 
+    // DESIGNATION_GROUP_DETAILS
+
+    case DESIGNATION_GROUP_DETAILS:
+      state = {
+        ...state,
+        designationShiftGroup: action.payload,
+      };
+      break;
 
     // ******************************** //
 

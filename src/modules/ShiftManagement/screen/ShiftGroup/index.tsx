@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
+import { Card, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
 import {
     goTo,
     useNav,
     ROUTE,
     EMPLOYEE_ADDITIONAL_DATA_EDIT,
+    showToast,
+    getDropDownValueByID,
+    getDropDownValueByName,
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchShifts,
+    getDesignationGroup,
     selectedShiftGroupDetails
 } from "../../../../store/shiftManagement/actions";
 import { useTranslation } from 'react-i18next';
@@ -28,13 +32,17 @@ const ShiftGroup = () => {
     const { hierarchicalBranchIds, dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
+
+    const { designationDropdownData } = useSelector(
+        (state: any) => state.EmployeeReducer
+    );
+
     const [shiftGroup, setShiftGroup] = useState<any>()
     const [searchGroup, setSearchGroup] = useState('')
 
 
     useEffect(() => {
         getBranchShiftsList()
-        setShiftGroup(branchShifts)
     }, []);
 
     useEffect(() => {
@@ -45,15 +53,27 @@ const ShiftGroup = () => {
 
     const getBranchShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchShifts({ params }));
+        dispatch(getBranchShifts({
+            params, onSuccess: (success: any) => {
+                setShiftGroup(success)
+            },
+            onError: (error: string) => {
+                showToast('error', error)
+            },
+        }));
     }
+
 
 
     const normalizedBranchShifts = (branchShift: any) => {
         return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
             return {
                 name: element.name,
-                "Employees count": element.employee_count
+                "Designation": getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id) ? getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id).name : <>{'-'}</>,
+                "Employees count": element.employee_count,
+                '': <>
+                    <ImageView height={20} width={20} icon={Icons.AddEmployee} onClick={() => { handleAddEmployeeToGroup(element) }} />
+                </>
             };
         });
     };
@@ -61,7 +81,9 @@ const ShiftGroup = () => {
     const manageShiftGroupHandler = (value: any) => {
         dispatch(selectedShiftGroupDetails(value ? value : undefined))
         goTo(navigation, ROUTE.ROUTE_CREATE_SHIFT_GROUP)
+        dispatch(getDesignationGroup(undefined))
     }
+
 
     const deleteBranchShift = () => { }
 
@@ -76,6 +98,11 @@ const ShiftGroup = () => {
         else {
             setShiftGroup(branchShifts)
         }
+    }
+
+    const handleAddEmployeeToGroup = (item: any) => {
+        manageShiftGroupHandler(undefined)
+        dispatch(getDesignationGroup(item))
     }
 
 
@@ -106,7 +133,7 @@ const ShiftGroup = () => {
                         <div className="col text-right my-sm-2  mt-3 mt-sm-0">
                             <Primary
                                 text={t('addNew')}
-                                onClick={() => { manageShiftGroupHandler(undefined) }}
+                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
                             />
                             <Primary
                                 additionClass='mt-2 mt-sm-0'
@@ -125,7 +152,6 @@ const ShiftGroup = () => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
                                 const current = shiftGroup[index];
-                                console.log('current', current);
                                 if (elv === "Edit") {
                                     manageShiftGroupHandler(current)
                                 }

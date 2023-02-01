@@ -49,6 +49,7 @@ import {
   ManageRequest,
   ShiftRequest,
   EmployeeShiftRequest,
+  CreateNewDesignationGroup,
   // DashBoardOtp
 } from "@modules";
 
@@ -256,6 +257,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST}
           element={<RequireAuth>{<EmployeeShiftRequest />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_SHIFT_SET}
+          element={<RequireAuth>{<CreateNewDesignationGroup />}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

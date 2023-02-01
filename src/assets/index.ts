@@ -90,7 +90,8 @@ export const Icons = {
   AttendanceRequest:require('./icons/AttendanceRequest/AttendanceRequest.png'),
   FaceRegister:require('./icons/FaceRegister/FaceRegister.png'),
   LeaveRequest:require('./icons/LeaveRequest/LeaveRequest.png'),
-  ShiftChange:require('./icons/ShiftChange/ShiftChange.png')
+  ShiftChange:require('./icons/ShiftChange/ShiftChange.png'),
+  AddEmployee:require('./icons/AddEmployee/employees.png'),
 }
 
 

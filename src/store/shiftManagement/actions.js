@@ -42,7 +42,8 @@ import {
   POST_CHANGE_SHIFT_CHANGE,
   POST_CHANGE_SHIFT_CHANGE_SUCCESS,
   POST_CHANGE_SHIFT_CHANGE_FAILURE,
-  CURRENT_STATUS_TYPE
+  CURRENT_STATUS_TYPE,
+  DESIGNATION_GROUP_DETAILS
 } from "./actionTypes";
 
 
@@ -402,5 +403,16 @@ export const setCurrentStatusType = (type) => {
   return {
     type: CURRENT_STATUS_TYPE,
     payload: type,
+  };
+};
+
+
+// DESIGNATION_GROUP_DETAILS
+
+
+export const getDesignationGroup = (data) => {
+  return {
+    type: DESIGNATION_GROUP_DETAILS,
+    payload: data,
   };
 };

@@ -5,12 +5,15 @@ import {
     showToast,
     goBack,
     dropDownValueCheck,
+    goTo,
+    ROUTE,
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchWeeklyShifts,
     postAddShift,
-    getShiftEmployeesDetails
+    getShiftEmployeesDetails,
+    getDesignationGroup
 } from "../../../../store/shiftManagement/actions";
 
 import {
@@ -20,7 +23,6 @@ import {
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 import { useTranslation } from 'react-i18next';
-import { updateBranchLocationRadius } from '@src/store/location/actions';
 
 const CreateShiftGroup = () => {
 
@@ -28,7 +30,7 @@ const CreateShiftGroup = () => {
     let dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { branchesWeeklyShifts, selectedShiftGroupDetails } = useSelector(
+    const { branchesWeeklyShifts, selectedShiftGroupDetails, designationShiftGroup } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
     const { hierarchicalBranchIds, dashboardDetails } = useSelector(
@@ -54,13 +56,11 @@ const CreateShiftGroup = () => {
 
     const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
     const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
+    const [isDisabledDropdown, setIsDisabledDropDown] = useState(false)
 
 
     useEffect(() => {
-        if (selectedShiftGroupDetails) {
-            setGroupName(selectedShiftGroupDetails.name)
-            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
-        }
+        PreFilledDetails()
         getBranchesWeeklyShiftsList()
         dispatch(getDepartmentData({}));
         dispatch(getDesignationData({}));
@@ -68,6 +68,7 @@ const CreateShiftGroup = () => {
             setSelectedEmployeesList([])
             setSelectedEmpListDepartmentId("")
             setSelectedEmpListDesignationId("")
+            dispatch(getDesignationGroup(undefined))
         };
     }, []);
 
@@ -85,6 +86,32 @@ const CreateShiftGroup = () => {
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
+    const PreFilledDetails = () => {
+        if (selectedShiftGroupDetails) {
+            setGroupName(selectedShiftGroupDetails.name)
+            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
+            setDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
+            setSelectedEmpListDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
+            selectedEmployeesDepartmentFilter()
+        } else {
+            if (designationShiftGroup) {
+                setGroupName(designationShiftGroup.name)
+                setSelectedShift(designationShiftGroup.weekly_shift.id)
+                setDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
+                setSelectedEmpListDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
+                selectedEmployeesDepartmentFilter()
+            }
+            dropDownDisable(designationShiftGroup?.weekly_shift?.designation_id)
+        }
+    }
+
+    const dropDownDisable = (id: string) => {
+        if (id) {
+            setIsDisabledDropDown(true)
+        } else {
+            setIsDisabledDropDown(false)
+        }
+    }
 
     //getting employees from API
 
@@ -101,9 +128,11 @@ const CreateShiftGroup = () => {
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => {
-
                 if (selectedShiftGroupDetails) {
-                    getShiftEmployeesGroupDetails()
+                    getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
+                }
+                if (designationShiftGroup) {
+                    getShiftEmployeesGroupDetails(designationShiftGroup.id)
                 }
             },
             onError: (error: string) => {
@@ -112,6 +141,8 @@ const CreateShiftGroup = () => {
         }));
     }
 
+
+
     const validatePostParams = () => {
         if (!groupName) {
             showToast("error", t('theGroupNameCantBeEmpty'));
@@ -119,6 +150,10 @@ const CreateShiftGroup = () => {
         }
         else if (!selectedShift) {
             showToast("error", t('invalidShift'));
+            return false;
+        }
+        else if (!designationId) {
+            showToast("error", t('inValidDesignation'));
             return false;
         }
         else {
@@ -135,7 +170,9 @@ const CreateShiftGroup = () => {
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds,
-                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id })
+                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id }),
+                ...(designationShiftGroup && { id: designationShiftGroup.id }),
+                designation_id: designationId
             }
             dispatch(postAddShift({
                 params,
@@ -143,6 +180,7 @@ const CreateShiftGroup = () => {
                     setSelectedEmployeesIds([])
                     // setEmployeesList([])
                     goBack(navigation);
+                    // goTo(navigation, ROUTE.ROUTE_SHIFT_GROUP)
                     showToast("success", success.status)
                 },
                 onError: (error: string) => {
@@ -173,9 +211,9 @@ const CreateShiftGroup = () => {
      * getting shift employees list while editing
      */
 
-    const getShiftEmployeesGroupDetails = () => {
+    const getShiftEmployeesGroupDetails = (id: string) => {
         const params = {
-            shift_id: selectedShiftGroupDetails.id
+            shift_id: id
         }
         dispatch(getShiftEmployeesDetails({
             params,
@@ -242,7 +280,6 @@ const CreateShiftGroup = () => {
                     return item
 
                 }
-
             }
             else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
                 if (selectedEmpListDesignationId === item.designation_id) {
@@ -258,8 +295,8 @@ const CreateShiftGroup = () => {
         }
         )
         setFilteredEmployees(updateFilteredData as never)
-
     }
+
 
 
     return (
@@ -281,6 +318,7 @@ const CreateShiftGroup = () => {
                                 placeholder={t('enterTheGroupName')}
                                 label={t('groupName')}
                                 value={groupName}
+                                disabled={!selectedShiftGroupDetails && true}
                                 onChange={(e) => {
                                     setGroupName(e.target.value)
                                 }}
@@ -295,12 +333,28 @@ const CreateShiftGroup = () => {
                                 placeholder={t('selectWeeklyShift')}
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
+                                isDisabled={!selectedShiftGroupDetails && true}
                                 onChange={(event) => {
                                     setSelectedShift(event.target.value)
                                 }}
                             />
-                        </Container>
 
+                        </Container>
+                        <Container
+                            col={"col-xl-3 col-md-6 col-sm-12"}
+                            additionClass={"xl-4"}
+                        >
+                            <DropDown
+                                label={t('designation')}
+                                placeholder={t('selectDesignation')}
+                                data={designationDropdownData}
+                                value={designationId}
+                                isDisabled={isDisabledDropdown && true}
+                                onChange={(event) => {
+                                    setDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
+                                }}
+                            />
+                        </Container>
                         <Container additionClass={'float-right'}>
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
@@ -318,7 +372,7 @@ const CreateShiftGroup = () => {
                 <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
                     <h3>{t('addEmployeesToGroup')}</h3>
                     <Container additionClass={'row'}>
-                        <Container col={"col col-md-6 col-sm-12"} >
+                        <Container col={"col col-md-6 col-sm-12 mt-xl-4"} >
                             <InputText
                                 placeholder={t('enterEmployeeName')}
                                 onChange={(e) => {
@@ -326,18 +380,6 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
-                        <Container
-                            col={"col"}
-                            style={{ marginTop: '10px' }}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => { proceedSearchApi() }}
-                        >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
-                        </Container>
-                    </Container>
-
-                    <Container additionClass={'row'}>
                         <Container
                             col={"col-md-6 col-sm-12"}
                             additionClass={"xl-4"}
@@ -352,19 +394,17 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
+                    </Container>
+
+                    <Container additionClass={'row'}>
                         <Container
-                            col={"col-md-6 col-sm-12"}
-                            additionClass={"xl-4"}
+                            col={"col"}
+                            additionClass={'mb-3'}
+                            justifyContent={"justify-content-center"}
+                            alignItems={"align-items-center"}
+                            onClick={() => { proceedSearchApi() }}
                         >
-                            <DropDown
-                                label={t('designation')}
-                                placeholder={t('selectDesignation')}
-                                data={designationDropdownData}
-                                value={designationId}
-                                onChange={(event) => {
-                                    setDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
-                                }}
-                            />
+                            <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
                     </Container>
 
@@ -401,7 +441,7 @@ const CreateShiftGroup = () => {
                 <Card additionClass='col-xl col-sm-3 col-0 mt-4 mx-2 '>
                     <h3>{t('selectedEmployeesList')}</h3>
                     <Container additionClass={'row'}>
-                        <Container col={"col col-md-6 col-sm-12"}>
+                        <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
                             <InputText
                                 placeholder={t('enterEmployeeName')}
                                 value={searchSelectedEmployee}
@@ -411,20 +451,7 @@ const CreateShiftGroup = () => {
                             />
                         </Container>
                         <Container
-                            col={"col"}
-                            style={{ marginTop: '10px' }}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => { SelectedEmployeeFilter() }}
-                        >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
-                        </Container>
-                    </Container>
-
-                    <Container additionClass={'row'}>
-                        <Container
                             col={"col-md-6 col-sm-12"}
-                            additionClass={"xl-4"}
                         >
                             <DropDown
                                 label={t('department')}
@@ -436,19 +463,17 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
+                    </Container>
+
+                    <Container additionClass={'row'}>
                         <Container
-                            col={"col-md-6 col-sm-12"}
-                            additionClass={"xl-4"}
+                            col={"col"}
+                            additionClass={'mb-3'}
+                            justifyContent={"justify-content-center"}
+                            alignItems={"align-items-center"}
+                            onClick={() => { SelectedEmployeeFilter() }}
                         >
-                            <DropDown
-                                label={t('designation')}
-                                placeholder={t('selectDesignation')}
-                                data={designationDropdownData}
-                                value={selectedEmpListDesignationId}
-                                onChange={(event) => {
-                                    setSelectedEmpListDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
-                                }}
-                            />
+                            <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
                     </Container>
 

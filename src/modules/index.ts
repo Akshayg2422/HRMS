@@ -30,7 +30,7 @@ import { AutoLogout } from './SessionTimeout'
 import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
-import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup, ShiftRequest } from './ShiftManagement';
+import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup, ShiftRequest,CreateNewDesignationGroup } from './ShiftManagement';
 import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGroup } from './Payroll'
 
 import { Notifications, ManageRequest } from './notifications'
@@ -91,7 +91,8 @@ export {
   Notifications,
   ManageRequest,
   ShiftRequest,
-  EmployeeShiftRequest
+  EmployeeShiftRequest,
+  CreateNewDesignationGroup
 }
 
 

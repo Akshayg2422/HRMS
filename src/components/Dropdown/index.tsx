@@ -12,7 +12,7 @@ interface DropDownProps extends ContainerProps {
   title?: string
   value?: any
   id?: string
-
+  isDisabled?: boolean
 }
 
 const DropDown = ({
@@ -27,13 +27,13 @@ const DropDown = ({
   value,
   title,
   id,
-
+  isDisabled = false,
   ...props
 }: DropDownProps) => (
 
   <Container additionClass={`form-group ${additionClass}`} col={col} >
     {label && <label className="form-control-label">{label}</label>}
-    <select value={value} className="form-control form-select" {...props} onChange={onChange} name={name} >
+    <select value={value} className="form-control form-select" {...props} onChange={onChange} name={name} disabled={isDisabled}>
       <option>{placeholder}</option>
       {data && data.length > 0 && data.map((item, index) => (
         <option className="dropdown-item" key={index} value={item.id || item.type}>

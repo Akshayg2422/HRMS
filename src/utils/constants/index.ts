@@ -38,6 +38,7 @@ export const ROUTE = {
   ROUTE_E_LOCKER_UPLOAD: '/E-Locker-Upload',
   ROUTE_SHIFT_MANAGEMENT: '/shift-management',
   ROUTE_SHIFT_GROUP: '/shift-group',
+  ROUTE_SHIFT_SET: '/shift-set',
   ROUTE_SHIFT_LISTING: '/shift-listing',
   ROUTE_CREATE_SHIFT_GROUP: '/create-shift-group',
   ROUTE_MY_SHIFTS_DETAILS: '/my-shifts-details',
@@ -260,7 +261,7 @@ export const EMPLOYEE_ADDITIONAL_DATA_EDIT = [
     elh: 'Edit',
   },
   // {
-  //   elt: TABLE_ELEMENT_TEXT_BUTTON,
+  //   elt: TABLE_ELEMENT_TEXT_IMAGE,
   //   elv: 'Delete',
   //   elh: 'Delete',
   // },
