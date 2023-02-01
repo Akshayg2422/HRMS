@@ -11,13 +11,15 @@ const LOCAL_PROD = 'http://15.206.224.132:8000';
 
 const PRE_PROD = 'http://3.110.109.115'
 
+
 const SAMPLE_IP = 'http://3.109.244.227:8000';
 
 // const PROD = 'https://api.zenyq.com';
 const PROD_WEB = 'https://webapi.zenyq.com';
 
 
-export const REACT_APP_APP_URL = PRE_PROD;
+
+export const REACT_APP_APP_URL = PRE_PROD ;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;

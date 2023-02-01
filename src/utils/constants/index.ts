@@ -217,14 +217,24 @@ export const WEEK_DAY_LIST = [
 export const ATTENDANCE_TYPE: any = [
   { type: -1, title: "All" },
   { type: 1, title: "Present" },
-  { type: 10, title: "Present (Modified)" },
-  { type: 2, title: "Late" },
   { type: 4, title: "Exempted" },
   { type: 5, title: "Alert" },
   { type: 7, title: "Yet To Start" },
   { type: 6, title: "Absent" },
   { type: 9, title: "Leave" }
 ]
+
+// export const ATTENDANCE_TYPE: any = [
+//   { type: -1, title: "All" },
+//   { type: 1, title: "Present" },
+//   { type: 10, title: "Present (Modified)" },
+//   { type: 2, title: "Late" },
+//   { type: 4, title: "Exempted" },
+//   { type: 5, title: "Alert" },
+//   { type: 7, title: "Yet To Start" },
+//   { type: 6, title: "Absent" },
+//   { type: 9, title: "Leave" }
+// ]
 
 export const TABLE_ELEMENT_TEXT_BUTTON = 1
 export const TABLE_ELEMENT_TEXT_STATUS = 2
