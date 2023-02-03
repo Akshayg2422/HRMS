@@ -17,6 +17,7 @@ import {
 } from "../../../../store/shiftManagement/actions";
 import { useTranslation } from 'react-i18next';
 import { Icons } from '@assets';
+import { getDesignationData } from '../../../../store/employee/actions';
 
 const ShiftGroup = () => {
     const navigation = useNav();
@@ -43,6 +44,7 @@ const ShiftGroup = () => {
 
     useEffect(() => {
         getBranchShiftsList()
+        dispatch(getDesignationData({}));
     }, []);
 
     useEffect(() => {
@@ -100,6 +102,7 @@ const ShiftGroup = () => {
         }
     }
 
+
     const handleAddEmployeeToGroup = (item: any) => {
         manageShiftGroupHandler(undefined)
         dispatch(getDesignationGroup(item))
@@ -111,36 +114,52 @@ const ShiftGroup = () => {
             <Container>
                 <Card additionClass='row mx-3'>
                     <h2>{t('shiftGroups')}</h2>
-                    <Container additionClass='row mt-3'>
-                        <Container additionClass='row col'>
-                            <InputText
-                                col={'col'}
-                                placeholder={t('searchGroup')}
-                                onChange={(e) => {
-                                    setSearchGroup(e.target.value);
-                                }}
-                            />
-                            <Container
-                                col={"col"}
-                                style={{ marginTop: '10px' }}
-                                justifyContent={"justify-content-center"}
-                                alignItems={"align-items-center"}
-                                onClick={() => { searchHandler() }}
-                            >
-                                <Icon type={"btn-primary"} icon={Icons.Search} />
-                            </Container>
+                    {/* <Container additionClass='row mt-3'>
+                        <InputText
+                            col='col-xl-3'
+                            placeholder={t('searchGroup')}
+                            onChange={(e) => {
+                                setSearchGroup(e.target.value);
+                            }}
+                        />
+                        <Container
+                            additionClass='col'
+                            style={{ marginTop: '10px' }}
+                            justifyContent={"justify-content-center"}
+                            alignItems={"align-items-center"}
+                            onClick={() => { searchHandler() }}
+                        >
+                            <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
-                        <div className="col text-right my-sm-2  mt-3 mt-sm-0">
+                    </Container> */}
+                    <Container additionClass='row mt-xl-3'>
+                        <InputText
+                            col='col-xl-3'
+                            placeholder={t('searchGroup')}
+                            onChange={(e) => {
+                                setSearchGroup(e.target.value);
+                            }}
+                        />
+                        <Container
+                            additionClass='col mt-xl-2'
+                            justifyContent={"justify-content-center"}
+                            alignItems={"align-items-center"}
+                            onClick={() => { searchHandler() }}
+                        >
+                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                        </Container>
+                        <Container additionClass="text-right col-xl-8 mt-sm-0 mt-3">
                             <Primary
+                                additionClass='col-xl-3'
                                 text={t('addNew')}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
                             />
                             <Primary
-                                additionClass='mt-2 mt-sm-0'
+                                additionClass='col-xl-4 mt-sm-0 mt-3'
                                 text={t('manageWeeklyShifts')}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
                             />
-                        </div>
+                        </Container>
                     </Container>
                 </Card>
                 {shiftGroup && shiftGroup.length > 0 ? (

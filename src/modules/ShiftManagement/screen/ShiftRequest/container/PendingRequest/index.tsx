@@ -44,6 +44,7 @@ function PendingRequest() {
             {el.status_code === -1 ? (
               <span
                 className="h5 text-primary"
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   handleApproveModel(el)
                 }}
@@ -58,6 +59,7 @@ function PendingRequest() {
             {el.status_code === -1 ? (
               <span
                 className="h5 text-primary"
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   handleRejectModel(el)
                 }}

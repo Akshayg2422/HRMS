@@ -253,7 +253,6 @@ function EmployeeShifts() {
             </ul>
             <EmployeeShiftListing datesList={myShifts.weekly_group_details[isActiveWeek - 1]} />
           </Card> : <NoRecordFound />}
-
         </div>
       </Modal>
       <Modal showModel={changeShiftModel}

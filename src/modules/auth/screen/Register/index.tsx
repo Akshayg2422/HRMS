@@ -122,26 +122,26 @@ function SignUp() {
   };
 
   const validateCompanyDetailsParams = () => {
-    console.log(
-      validateDefault(businessName).status +
-        "=====" +
-        validateDefault(brandName).status +
-        "======" +
-        validatePAN(companyPan).status +
-        "======" +
-        validateGST(companyGst).status +
-        "=======" +
-        validateAddress(communicationAddress).status +
-        "======" +
-        validatePincode(pinCode).status +
-        "=======" +
-        validateDefault(city).status +
-        "======" +
-        (businesType !== "") +
-        "=======" +
-        (businessNature !== "") +
-        "====="
-    );
+    // console.log(
+    //   validateDefault(businessName).status +
+    //     "=====" +
+    //     validateDefault(brandName).status +
+    //     "======" +
+    //     validatePAN(companyPan).status +
+    //     "======" +
+    //     validateGST(companyGst).status +
+    //     "=======" +
+    //     validateAddress(communicationAddress).status +
+    //     "======" +
+    //     validatePincode(pinCode).status +
+    //     "=======" +
+    //     validateDefault(city).status +
+    //     "======" +
+    //     (businesType !== "") +
+    //     "=======" +
+    //     (businessNature !== "") +
+    //     "====="
+    // );
 
     return (
       validateDefault(businessName).status &&
@@ -210,8 +210,6 @@ function SignUp() {
         pan: pan,
         aadhar_number: aadharNumber,
       };
-      console.log(JSON.stringify(params));
-
       dispatch(getRegisterAdmin({ params }));
     } else {
       showToast("error", t("formInvalidParams"));

@@ -129,7 +129,6 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
 };
 
 const getDropDownValueByName = (dropDownArray: any, id: string) => {
-  console.log('dropDownArray', dropDownArray, "id", id);
   if (id) {
     return dropDownArray.find((item: any) => {
       return item?.id === id

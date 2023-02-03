@@ -71,6 +71,9 @@ function EmployeeShiftRequest() {
         );
     };
 
+    console.log("dashboardDetails",dashboardDetails);
+    
+
     function paginationHandler(
         type: "next" | "prev" | "current",
         position?: number

@@ -54,9 +54,9 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
           {it?.time_breakdown && it.time_breakdown.length > 0 && it.time_breakdown.map((el: any, index: number) => {
             return (
               <>
-                <Input disabled={true} label={'IN'} value={el.start_time} col={'col-4'} />
-                <Input disabled={true} label={'Out'} value={el.end_time} col={'col-4'} />
-                <Container col={'col-4'} style={{ marginTop: "34px" }}>
+                <Input disabled={true} label={'IN'} value={el.start_time} col={'col-xl-4 col-sm-0 col-5' } />
+                <Input disabled={true} label={'Out'} value={el.end_time} col={'col-xl-4 col-sm-0 col-5'} />
+                <Container col={'col-xl-4 col-sm-0 col-2 ml-sm-0'} style={{ marginTop: "34px" }}>
                   <Icon
                     height={20}
                     width={20}

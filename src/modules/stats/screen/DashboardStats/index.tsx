@@ -97,7 +97,6 @@ const DashboardStats = () => {
       getAttendanceConsolidatedCards({
         params,
         onSuccess: (response: any) => {
-          console.log(JSON.stringify(response) + "====");
           if (response && response.cards?.length > 0) {
             setAttendanceConsolidatedCardsData(response.cards);
             setModel(!model);

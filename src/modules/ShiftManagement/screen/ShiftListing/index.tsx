@@ -90,32 +90,30 @@ const ShiftListing = () => {
                         <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
                     </Container>
                     <Container additionClass='row mt-xl-3'>
-                        <Container additionClass='row col'>
-                            <InputText
-                                col={'col'}
-                                placeholder={t('searchWeeklyShift')}
-                                onChange={(e) => {
-                                    setSearchShift(e.target.value);
-                                }}
-                            />
-                            <Container
-                                col={"col"}
-                                style={{ marginTop: '10px' }}
-                                justifyContent={"justify-content-center"}
-                                alignItems={"align-items-center"}
-                                onClick={() => { searchHandler() }}
-                            >
-                                <Icon type={"btn-primary"} icon={Icons.Search} />
-                            </Container>
+                        <InputText
+                            col={'col-xl-3'}
+                            placeholder={t('searchWeeklyShift')}
+                            onChange={(e) => {
+                                setSearchShift(e.target.value);
+                            }}
+                        />
+                        <Container
+                            col={'col-xl'}
+                            additionClass={'mt-xl-2'}
+                            justifyContent={"justify-content-center"}
+                            alignItems={"align-items-center"}
+                            onClick={() => { searchHandler() }}
+                        >
+                            <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
-                        <div className="col text-right my-sm-2 mt-3 mt-sm-0">
+                        <Container additionClass="text-right col">
                             <Primary
                                 text={t('addNew')}
                                 onClick={() => {
                                     manageWeeklyShiftSelectionHandler(undefined)
                                 }}
                             />
-                        </div>
+                        </Container>
                     </Container>
                 </Card>
                 {shiftList && shiftList.length > 0 ? (

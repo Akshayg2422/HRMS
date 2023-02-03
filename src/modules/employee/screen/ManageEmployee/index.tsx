@@ -72,10 +72,7 @@ type EmployeeDetail = {
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
-  shift?: {
-    id: string;
-    name: string;
-  }
+  shift?: any
 };
 
 const ManageEmployee = () => {
@@ -114,7 +111,7 @@ const ManageEmployee = () => {
     attendanceEndTime: "06:00",
     shift: ''
   });
-
+  const [shiftGroup, setShiftGroup] = useState<any>()
   const [departmentModel, setDepartmentModel] = useState(false);
   const [designationModel, setDesignationModel] = useState(false);
   const [isAdminRights, setIsAdminRights] = useState(false);
@@ -143,6 +140,7 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
+    getBranchShiftsList()
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -159,14 +157,13 @@ const ManageEmployee = () => {
             parentBranch,
           ]);
         },
-
         onError: (error: string) => { },
       })
     );
     if (isEdit) {
       getEmployeeDetailsAPi(isEdit);
+      getBranchShiftsList()
     }
-    ShiftDetails(dashboardDetails?.company_branch?.id)
   }, [isRefresh]);
 
   const getEmployeeDetailsAPi = (id: any) => {
@@ -180,31 +177,39 @@ const ManageEmployee = () => {
           preFillEmployeeDetails(response);
         },
         onError: (error: string) => {
-          console.log("fail");
-          // showToast('error', t('invalidUser'));
+          showToast('error', error);
         },
       })
     );
+
   };
 
-  const ShiftDetails = (id: any) => {
-    const params = { branch_id: id }
+  useEffect(() => {
+    setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
+  }, [employeeDetails.designation,shiftGroup])
+
+
+  const getBranchShiftsList = () => {
+    const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
-      params,
+      params, 
       onSuccess: (success: any) => {
-        setShiftsDropdownData(success)
-        if (!isEdit) {
-          success.map((el: any) => {
-            if (el.is_default) {
-              setEmployeeDetails({ ...employeeDetails, shift: el.id });
-            }
-          })
-        } 
+        setShiftGroup(success)
       },
       onError: (error: string) => {
-        showToast("error", t("Somthingwentworng"));
+        showToast('error', error)
       },
     }));
+  }
+
+  const designationMatchShifts = (id: any) => {
+    let shifts: any[] = []
+    shiftGroup && shiftGroup.length > 0 && shiftGroup.map((el: any) => {
+      if (el?.weekly_shift?.designation_id === id) {
+        shifts = [...shifts, el]
+      }
+    })
+    return shifts
   }
 
   const validatePostParams = () => {
@@ -329,8 +334,9 @@ const ManageEmployee = () => {
       if (editEmployeeDetails.blood_group)
         employeeInitData.bloodGroup = editEmployeeDetails.blood_group;
 
-      if (editEmployeeDetails.designation_id)
+      if (editEmployeeDetails.designation_id) {
         employeeInitData.designation = editEmployeeDetails.designation_id;
+      }
 
       if (editEmployeeDetails.department_id)
         employeeInitData.department = editEmployeeDetails.department_id;
@@ -368,14 +374,15 @@ const ManageEmployee = () => {
       if (
         editEmployeeDetails &&
         editEmployeeDetails.shift
-      )
+      ) {
         employeeInitData.shift =
-          editEmployeeDetails.shift?.id;
+          editEmployeeDetails.shift?.id
+
+      }
     }
-
-
     setEmployeeDetails(employeeInitData);
   };
+
 
   const onChangeHandler = (e: any) => {
     setEmployeeDetails({ ...employeeDetails, [e.target.name]: e.target.value });
@@ -418,8 +425,6 @@ const ManageEmployee = () => {
   function submitDepartment() {
     if (validateDepartmentPostParams()) {
       const params = { name: department };
-
-      console.log(JSON.stringify(params));
       dispatch(
         addDepartment({
           params,
@@ -531,7 +536,9 @@ const ManageEmployee = () => {
               data={designationDropdownData}
               name={"designation"}
               value={employeeDetails.designation}
-              onChange={(event) => onChangeHandler(event)}
+              onChange={(event) => {
+                onChangeHandler(event)
+              }}
             />
           </div>
           <Icon
@@ -562,7 +569,6 @@ const ManageEmployee = () => {
           name={"branch"}
           value={employeeDetails.branch}
           onChange={(event) => {
-            ShiftDetails(event.target.value)
             onChangeHandler(event)
           }}
         />

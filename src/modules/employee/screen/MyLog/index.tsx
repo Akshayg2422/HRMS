@@ -118,8 +118,6 @@ function MyLog() {
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: CheckInLog) => {
-console.log(" showAdminModify(el.day_status_type)", showAdminModify(el.day_status_type),el.day_status_type,typeof(el.day_status_type));
-
       return {
         date: el.date,
         in: el.start_time

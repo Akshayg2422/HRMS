@@ -128,8 +128,6 @@ const ApplyLeave = () => {
         reason: fromDetails.reason,
       };
 
-      console.log(JSON.stringify(params));
-
       dispatch(
         applyLeave({
           params,

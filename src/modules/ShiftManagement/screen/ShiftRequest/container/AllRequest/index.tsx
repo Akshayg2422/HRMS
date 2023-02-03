@@ -42,6 +42,7 @@ function AllRequest() {
           "Approve": <>
             {el.status_code === -1 ? (
               <span
+                style={{ cursor: 'pointer' }}
                 className="h5 text-primary"
                 onClick={() => {
                   handleApproveModel(el)
@@ -57,6 +58,7 @@ function AllRequest() {
             {el.status_code === -1 ? (
               <span
                 className="h5 text-primary"
+                style={{ cursor: 'pointer' }}
                 onClick={() => {
                   handleRejectModel(el)
                 }}

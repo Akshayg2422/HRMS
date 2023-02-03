@@ -38,7 +38,6 @@ const Header = () => {
     (state: any) => state.DashboardReducer
   );
 
-  console.log(selectedLanguage);
 
 
 

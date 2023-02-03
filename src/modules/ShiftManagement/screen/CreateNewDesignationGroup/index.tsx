@@ -10,17 +10,13 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     getBranchWeeklyShifts,
     postAddShift,
-    getShiftEmployeesDetails
 } from "../../../../store/shiftManagement/actions";
 
 import {
-    getEmployeesList,
-    getDepartmentData,
     getDesignationData,
 } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
 import { useTranslation } from 'react-i18next';
-import { updateBranchLocationRadius } from '@src/store/location/actions';
 
 const CreateNewDesignationGroup = () => {
 

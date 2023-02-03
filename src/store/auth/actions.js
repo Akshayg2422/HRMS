@@ -169,7 +169,6 @@ export const getResendLoginOtpFailure = (error) => {
 //ADMIN_VERIFICATION_OTP
 
 export const getAdminVerificationOtp = (params) => {
-  console.log("param-->",params)
   return {
     type: ADMIN_VERIFICATION_OTP,
     payload: params,

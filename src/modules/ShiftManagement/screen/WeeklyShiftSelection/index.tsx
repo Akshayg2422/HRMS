@@ -23,7 +23,7 @@ const WEEK_DAYS_LIST = [
 
 
 const WeeklyShiftSelection = () => {
-  const [weeklyData,  setWeeklyData] = useState<any>([
+  const [weeklyData, setWeeklyData] = useState<any>([
     { week: 1, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 3, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
@@ -68,7 +68,7 @@ const WeeklyShiftSelection = () => {
       return true;
     }
   }
-  
+
   const onSubmit = () => {
     if (validatePostParams()) {
       const params = {
@@ -172,7 +172,7 @@ const WeeklyShiftSelection = () => {
     }))
   }
 
-  
+
 
   return (
     <>
