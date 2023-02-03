@@ -6,6 +6,7 @@ import {
     useNav,
     ROUTE,
     EMPLOYEE_ADDITIONAL_DATA_EDIT,
+    showToast,
 
 } from "@utils";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,28 +23,37 @@ const ShiftListing = () => {
     const navigation = useNav();
     let dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const { branchesWeeklyShifts } = useSelector(
+        (state: any) => state.ShiftManagementReducer
+    );
     const enterPress = useKeyPress("Enter");
     const [shiftList, setShiftList] = useState<any>()
     const [searchShift, setSearchShift] = useState<any>('')
 
 
-    const { branchesWeeklyShifts } = useSelector(
-        (state: any) => state.ShiftManagementReducer
-    );
 
     const { hierarchicalBranchIds, dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
 
-    const getBranchesWeeklyShiftsList = () => {
-        const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchWeeklyShifts({ params }));
-    }
-
     useEffect(() => {
         getBranchesWeeklyShiftsList()
-        setShiftList(branchesWeeklyShifts)
     }, []);
+
+    const getBranchesWeeklyShiftsList = () => {
+        const params = { branch_id: dashboardDetails?.company_branch?.id }
+        dispatch(getBranchWeeklyShifts({
+            params, onSuccess: (success: any) => {
+                setShiftList(success)
+            },
+            onError: (error: string) => {
+                showToast("error", error);
+            },
+        }));
+    }
+
+
 
     useEffect(() => {
         if (enterPress) {
@@ -62,7 +72,6 @@ const ShiftListing = () => {
     const manageWeeklyShiftSelectionHandler = (id: string | undefined) => {
         dispatch(selectedWeeklyShiftIdAction(id ? id : undefined))
         goTo(navigation, ROUTE.ROUTE_SHIFT_MANAGEMENT)
-
     }
 
     const deleteBranchShift = () => { }

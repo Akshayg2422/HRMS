@@ -36,6 +36,7 @@ function EmployeeShifts() {
   const [shiftsList, setShiftList] = useState<any>()
   const [defaultShiftId, setDefaultShiftId] = useState<any>()
 
+
   const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
   const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
   const [employeeName, setEmployeeName] = useState()
@@ -74,13 +75,6 @@ function EmployeeShifts() {
     });
   };
 
-  const getDefaultShift = (item: any) => {
-    item && item.length > 0 && item.map((el: any) => {
-      if (el.is_default) {
-        setDefaultShiftId(el.id)
-      }
-    })
-  }
 
   function getUserShifts(index: number) {
     const selectedEmployee = employeeWithShifts[index];
@@ -127,10 +121,8 @@ function EmployeeShifts() {
     dispatch(getBranchShifts({
       params,
       onSuccess: (success: object) => {
-        setShiftList(success)
-        getDefaultShift(success)
+        designationMatchShifts(selectedEmployeeDetails?.designation_id, success)
         setCurrentEmployeeShiftId(setDefaultShift(selectedEmployeeDetails?.shift?.id))
-        setChangeShiftModelModel(!changeShiftModel)
       },
       onError: (error: string) => {
         showToast("error", error);
@@ -155,6 +147,12 @@ function EmployeeShifts() {
         showToast("error", error);
       },
     }));
+  }
+ 
+  const designationMatchShifts = (id: any, response: any) => {
+    let shifts = response && response.length > 0 && response.filter((el: any) => el?.weekly_shift?.designation_id === id)
+    setShiftList(shifts)
+    setChangeShiftModelModel(!changeShiftModel)
   }
 
   return (
@@ -260,7 +258,7 @@ function EmployeeShifts() {
         size={"modal-sm"}
         toggle={() => setChangeShiftModelModel(!changeShiftModel)}>
         <Container>
-          {shiftsList !== undefined ? <Container>
+          {shiftsList && shiftsList.length > 0 ? <Container>
             {shiftsList && shiftsList.length > 0 && shiftsList.map((el: any) => {
               return (
                 <Container additionClass="mx-2 p-2 row">

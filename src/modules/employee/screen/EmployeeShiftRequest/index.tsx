@@ -18,15 +18,11 @@ function EmployeeShiftRequest() {
     );
     const [requestTypes, setRequestTypes] = useState(REQUEST_TYPE_SUBSET[0].name);
     const [changeShiftModel, setChangeShiftModel] = useState(false)
+    const [shiftList, setShiftList] = useState()
     const [requestDetails, setRequestDetails] = useState({
         shiftId: '',
         reason: ''
     })
-
-
-    useEffect(() => {
-        getBranchShiftsList()
-    }, [])
 
     useEffect(() => {
         getRequestList(getRequestType(requestTypes), currentPage);
@@ -53,8 +49,18 @@ function EmployeeShiftRequest() {
 
     const getBranchShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchShifts({ params }));
+        dispatch(getBranchShifts({
+            params,
+            onSuccess: (success: object) => {
+                designationMatchShifts(dashboardDetails?.user_details?.designation_id, success)
+            },
+            onError: (error: string) => {
+                showToast("error", error);
+            },
+        }));
+
     }
+
 
     const normalizedRequestList = (data: any) => {
         return (
@@ -71,8 +77,6 @@ function EmployeeShiftRequest() {
         );
     };
 
-    console.log("dashboardDetails",dashboardDetails);
-    
 
     function paginationHandler(
         type: "next" | "prev" | "current",
@@ -125,6 +129,14 @@ function EmployeeShiftRequest() {
     }
 
 
+    const designationMatchShifts = (id: any, response: any) => {
+        let shifts = response && response.length > 0 && response.filter((el: any) => el?.weekly_shift?.designation_id === id)
+        setShiftList(shifts)
+        setChangeShiftModel(!changeShiftModel)
+        setRequestDetails({...requestDetails,shiftId:id})
+    }
+
+
     return (
         <div>
             <Container additionClass={"mt-5 main-contain"}>
@@ -145,7 +157,7 @@ function EmployeeShiftRequest() {
                         <Container additionClass="col">
                             <Primary
                                 text={t("changeShift")}
-                                onClick={() => setChangeShiftModel(!changeShiftModel)}
+                                onClick={() => getBranchShiftsList()}
                                 col={"col-xl-3"}
                                 size={"btn-md"}
                             />
@@ -181,7 +193,7 @@ function EmployeeShiftRequest() {
                         <DropDown
                             label={t('selectWeeklyShift')}
                             placeholder={t('selectWeeklyShift')}
-                            data={branchShifts}
+                            data={shiftList}
                             value={requestDetails.shiftId}
                             name={"shiftId"}
                             onChange={(event) => {

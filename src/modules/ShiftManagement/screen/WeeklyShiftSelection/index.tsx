@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } from '@components'
 import { Icons } from "@assets";
-import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
+import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav, goTo, ROUTE } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
@@ -81,8 +81,10 @@ const WeeklyShiftSelection = () => {
           params,
           onSuccess: (success: any) => {
             showToast("success", success.status);
-            goBack(navigation);
             selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
+            goBack(navigation);
+            // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
+
           },
           onError: (error: string) => {
             showToast("error", error);

@@ -331,6 +331,7 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('selectWeeklyShift')}
                                 placeholder={t('selectWeeklyShift')}
+                                showArrow={!selectedShiftGroupDetails && false}
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
                                 isDisabled={!selectedShiftGroupDetails && true}
@@ -350,6 +351,7 @@ const CreateShiftGroup = () => {
                                 data={designationDropdownData}
                                 value={designationId}
                                 isDisabled={isDisabledDropdown && true}
+                                showArrow={isDisabledDropdown && false}
                                 onChange={(event) => {
                                     setDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
                                 }}

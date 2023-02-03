@@ -106,11 +106,11 @@ function* fetchBranchWeeklyShiftsSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(getBranchWeeklyShiftsSuccess(response.details));
-            yield call(action.payload.onSuccess);
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getBranchWeeklyShiftsFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());

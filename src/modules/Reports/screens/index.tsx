@@ -183,6 +183,7 @@ function Reports() {
   };
 
   
+
   return (
     <>
       <Card>
@@ -271,9 +272,9 @@ function Reports() {
               value={customRange.dataTo}
             />
           </Container>
-          <Container additionClass={'col-lg-2 col-md-3 row ml-1'}>
-            <Icon icon={Icons.DownloadSecondary} additionClass={'col'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col'}  onClick={() => getReports(currentPage)} />
+          <Container additionClass={'col-lg-6 col-md-6 row ml-1'}>
+            <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1'} onClick={() => downloadSampleFile()} />
+            <Primary text={'Search'} col={'col-xl-2 col-md-3'}  onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </Card>

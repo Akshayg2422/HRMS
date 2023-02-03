@@ -186,13 +186,13 @@ const ManageEmployee = () => {
 
   useEffect(() => {
     setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
-  }, [employeeDetails.designation,shiftGroup])
+  }, [employeeDetails.designation, shiftGroup])
 
 
   const getBranchShiftsList = () => {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
-      params, 
+      params,
       onSuccess: (success: any) => {
         setShiftGroup(success)
       },
@@ -239,10 +239,11 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
       return false;
-    } else if (Object.keys(employeeDetails.shift).length === 0) {
-      showToast("error", "choose Shift");
-      return false;
-    }
+    } 
+    // else if (Object.keys(employeeDetails.shift).length === 0) {
+    //   showToast("error", "choose Shift");
+    //   return false;
+    // }
     else {
       return true;
     }
@@ -275,7 +276,7 @@ const ManageEmployee = () => {
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: false,
           associated_branch: [employeeDetails.branch],
-          shift_settings: { shift_id: employeeDetails.shift }
+          ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
         },
         ...(employeeDetails.dateOfJoining && {
           date_of_joining: getServerDateFromMoment(
@@ -285,7 +286,7 @@ const ManageEmployee = () => {
         dob: getServerDateFromMoment(
           getMomentObjFromServer(employeeDetails.dob)
         ),
-        ...(employeeDetails.kgid_No && {
+        ...(employeeDetails.kgid_No && {  
           kgid_number: employeeDetails.kgid_No,
         }),
       };
