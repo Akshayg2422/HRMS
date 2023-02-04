@@ -4,7 +4,7 @@ import {
     goTo,
     useNav,
     ROUTE,
-    EMPLOYEE_ADDITIONAL_DATA_EDIT,
+    EMPLOYEES_SHIFT_DATA_EDIT,
     showToast,
     getDropDownValueByID,
     getDropDownValueByName,
@@ -70,12 +70,9 @@ const ShiftGroup = () => {
     const normalizedBranchShifts = (branchShift: any) => {
         return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
             return {
-                name: element.name,
+                "Group Name": element.name,
                 "Designation": getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id) ? getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id).name : <>{'-'}</>,
-                "Employees count": element.employee_count,
-                '': <>
-                    <ImageView height={20} width={20} icon={Icons.AddEmployee} onClick={() => { handleAddEmployeeToGroup(element) }} />
-                </>
+                " Total Employees": element.employee_count,
             };
         });
     };
@@ -114,24 +111,6 @@ const ShiftGroup = () => {
             <Container>
                 <Card additionClass='row mx-3'>
                     <h2>{t('shiftGroups')}</h2>
-                    {/* <Container additionClass='row mt-3'>
-                        <InputText
-                            col='col-xl-3'
-                            placeholder={t('searchGroup')}
-                            onChange={(e) => {
-                                setSearchGroup(e.target.value);
-                            }}
-                        />
-                        <Container
-                            additionClass='col'
-                            style={{ marginTop: '10px' }}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => { searchHandler() }}
-                        >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
-                        </Container>
-                    </Container> */}
                     <Container additionClass='row mt-xl-3'>
                         <InputText
                             col='col-xl-3'
@@ -166,7 +145,7 @@ const ShiftGroup = () => {
                     <Container>
                         <CommonTable
                             displayDataSet={normalizedBranchShifts(shiftGroup)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
+                            additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {
@@ -174,9 +153,9 @@ const ShiftGroup = () => {
                                 if (elv === "Edit") {
                                     manageShiftGroupHandler(current)
                                 }
-                                // if (elv === "Delete") {
-                                //     deleteBranchShift()
-                                // }
+                                if (elv === "Manage Employee") {
+                                    handleAddEmployeeToGroup(current)
+                                }
                             }}
                         />
                     </Container>

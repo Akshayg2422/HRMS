@@ -167,7 +167,7 @@ export const NAV_ITEM = [
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, route: ROUTE.ROUTE_REPORTS },
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
-  { id: '16', name: 'Shifts Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
+  { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
@@ -270,6 +270,28 @@ export const EMPLOYEE_ADDITIONAL_DATA_EDIT = [
     elv: 'Edit',
     elh: 'Edit',
   },
+ 
+  // {
+  //   elt: TABLE_ELEMENT_TEXT_IMAGE,
+  //   elv: 'Delete',
+  //   elh: 'Delete',
+  // },
+
+]
+
+
+export const EMPLOYEES_SHIFT_DATA_EDIT = [
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Manage Employee',
+    elh: 'Manage Employee',
+  },
+  {
+    elt: TABLE_ELEMENT_TEXT_BUTTON,
+    elv: 'Edit',
+    elh: 'Edit',
+  },
+ 
   // {
   //   elt: TABLE_ELEMENT_TEXT_IMAGE,
   //   elv: 'Delete',
@@ -309,14 +331,6 @@ export const LEAVE_STATUS_REVERT = [
   }
 ]
 
-
-export const EMPLOYEE_CHANGE_SHIFT = [
-  {
-    elt: TABLE_ELEMENT_TEXT_BUTTON,
-    elv: 'Change Shift',
-    elh: 'Change Shift',
-  }
-]
 
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';

@@ -1,4 +1,4 @@
-import { BackArrow, Card, CommonTable, Container, DropDown, InputText, Modal, NoRecordFound, Primary, Secondary } from '@components'
+import { BackArrow, Card, CommonTable, Container, DropDown, InputText, Modal, NoRecordFound, Primary, Secondary, useKeyPress } from '@components'
 import { getBranchShifts, getBranchWeeklyShifts, getShiftRequestedStatus, postRequestShiftChange } from '../../../../store/shiftManagement/actions';
 import { dropDownValueCheck, dropDownValueCheckByEvent, getRequestType, LEAVES_TYPE, REQUEST_TYPE, REQUEST_TYPE_SUBSET, showToast, useNav, validateDefault } from '@utils'
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ function EmployeeShiftRequest() {
     const navigation = useNav();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
+    const enterPress = useKeyPress("Enter");
 
     const { requestList, currentPage, numOfPages, branchShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
@@ -17,17 +18,18 @@ function EmployeeShiftRequest() {
         (state: any) => state.DashboardReducer
     );
     const [requestTypes, setRequestTypes] = useState(REQUEST_TYPE_SUBSET[0].name);
-    const [changeShiftModel, setChangeShiftModel] = useState(false)
-    const [shiftList, setShiftList] = useState()
-    const [requestDetails, setRequestDetails] = useState({
-        shiftId: '',
-        reason: ''
-    })
+   
 
     useEffect(() => {
         getRequestList(getRequestType(requestTypes), currentPage);
     }, [requestTypes])
 
+
+    useEffect(() => {
+        if (enterPress) {
+        //   getEmployeeRequest(currentType, currentPage)
+        }
+      }, [enterPress])
 
     const typeValidation = () => {
         if (!requestTypes) {
@@ -47,21 +49,7 @@ function EmployeeShiftRequest() {
         }
     }
 
-    const getBranchShiftsList = () => {
-        const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchShifts({
-            params,
-            onSuccess: (success: object) => {
-                designationMatchShifts(dashboardDetails?.user_details?.designation_id, success)
-            },
-            onError: (error: string) => {
-                showToast("error", error);
-            },
-        }));
-
-    }
-
-
+  
     const normalizedRequestList = (data: any) => {
         return (
             data &&
@@ -91,58 +79,12 @@ function EmployeeShiftRequest() {
         getRequestList(getRequestType(requestTypes), page);
     }
 
-    const onChangeHandler = (event: any) => {
-        setRequestDetails({ ...requestDetails, [event.target.name]: event.target.value });
-    };
-
-    const onValidationParams = () => {
-        if (!validateDefault(requestDetails.reason).status) {
-            showToast("error", t("invalidReason"));
-            return false;
-        } else if (!requestDetails.shiftId) {
-            showToast("error", t("invalidShiftId"));
-            return false;
-        }
-        return true
-    }
-
-    const onRequestHandler = () => {
-        if (onValidationParams()) {
-            const params = {
-                reason: requestDetails.reason,
-                request_shift_id: requestDetails.shiftId
-            }
-            dispatch(
-                postRequestShiftChange({
-                    params,
-                    onSuccess: (success: any) => {
-                        showToast('success', success)
-                        setChangeShiftModel(!changeShiftModel)
-                        getRequestList(getRequestType(requestTypes), currentPage);
-                    },
-                    onError: (error: string) => {
-                        showToast('error', error)
-                    },
-                })
-            );
-        }
-    }
-
-
-    const designationMatchShifts = (id: any, response: any) => {
-        let shifts = response && response.length > 0 && response.filter((el: any) => el?.weekly_shift?.designation_id === id)
-        setShiftList(shifts)
-        setChangeShiftModel(!changeShiftModel)
-        setRequestDetails({...requestDetails,shiftId:id})
-    }
-
-
     return (
         <div>
             <Container additionClass={"mt-5 main-contain"}>
                 <Card>
                     <BackArrow />
-                    <h2 className='mt-3'>{t("shiftRequest")}</h2>
+                    <h2 className='mt-3'>{t("shiftRequestHistory")}</h2>
                     <Container additionClass={"text-right row mt-3"}>
                         <Container additionClass="col-xl-4">
                             <DropDown
@@ -152,14 +94,6 @@ function EmployeeShiftRequest() {
                                 onChange={(event) => {
                                     setRequestTypes(dropDownValueCheck(event.target.value, "Select Type"))
                                 }}
-                            />
-                        </Container>
-                        <Container additionClass="col">
-                            <Primary
-                                text={t("changeShift")}
-                                onClick={() => getBranchShiftsList()}
-                                col={"col-xl-3"}
-                                size={"btn-md"}
                             />
                         </Container>
                     </Container>
@@ -184,49 +118,7 @@ function EmployeeShiftRequest() {
                     )}
                 </Card>
             </Container>
-            <Modal title={t("changeShift")} showModel={changeShiftModel} toggle={() => setChangeShiftModel(!changeShiftModel)}>
-                <Container >
-                    <Container
-                        col={"col-xl-5 col-md-6 col-sm-12"}
-                        additionClass={"xl-4"}
-                    >
-                        <DropDown
-                            label={t('selectWeeklyShift')}
-                            placeholder={t('selectWeeklyShift')}
-                            data={shiftList}
-                            value={requestDetails.shiftId}
-                            name={"shiftId"}
-                            onChange={(event) => {
-                                onChangeHandler(dropDownValueCheckByEvent(event, t('selectWeeklyShift')))
-                            }}
-                        />
-                    </Container>
-                    <Container
-                        col={"col-xl-5 col-md-6 col-sm-12"}
-                        additionClass={"xl-4"}
-                    >
-                        <InputText
-                            label={t("reason")}
-                            validator={validateDefault}
-                            value={requestDetails.reason}
-                            name={"reason"}
-                            onChange={(event) => {
-                                onChangeHandler(event);
-                            }}
-                        />
-                    </Container>
-                    <Container margin={"mt-5"} additionClass={"text-right"}>
-                        <Secondary
-                            text={t("cancel")}
-                            onClick={() => setChangeShiftModel(!changeShiftModel)}
-                        />
-                        <Primary
-                            text={t("request")}
-                            onClick={() => onRequestHandler()}
-                        />
-                    </Container>
-                </Container>
-            </Modal>
+           
         </div>
     )
 }

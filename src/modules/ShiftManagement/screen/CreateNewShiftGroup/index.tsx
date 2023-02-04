@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView } from '@components'
+import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound } from '@components'
 import {
     useNav,
     showToast,
@@ -56,7 +56,6 @@ const CreateShiftGroup = () => {
 
     const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
     const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
-    const [isDisabledDropdown, setIsDisabledDropDown] = useState(false)
 
 
     useEffect(() => {
@@ -93,6 +92,7 @@ const CreateShiftGroup = () => {
             setDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
             setSelectedEmpListDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
             selectedEmployeesDepartmentFilter()
+            getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
         } else {
             if (designationShiftGroup) {
                 setGroupName(designationShiftGroup.name)
@@ -100,19 +100,10 @@ const CreateShiftGroup = () => {
                 setDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 setSelectedEmpListDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 selectedEmployeesDepartmentFilter()
+                getShiftEmployeesGroupDetails(designationShiftGroup.id)
             }
-            dropDownDisable(designationShiftGroup?.weekly_shift?.designation_id)
         }
     }
-
-    const dropDownDisable = (id: string) => {
-        if (id) {
-            setIsDisabledDropDown(true)
-        } else {
-            setIsDisabledDropDown(false)
-        }
-    }
-
     //getting employees from API
 
     const getEmployeesApi = (pageNumber: number) => {
@@ -128,12 +119,12 @@ const CreateShiftGroup = () => {
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => {
-                if (selectedShiftGroupDetails) {
-                    getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
-                }
-                if (designationShiftGroup) {
-                    getShiftEmployeesGroupDetails(designationShiftGroup.id)
-                }
+                // if (selectedShiftGroupDetails) {
+                //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
+                // }
+                // if (designationShiftGroup) {
+                //     getShiftEmployeesGroupDetails(designationShiftGroup.id)
+                // }
             },
             onError: (error: string) => {
 
@@ -163,6 +154,7 @@ const CreateShiftGroup = () => {
 
     // API for add shift 
 
+
     const onSubmitAddShift = () => {
         if (validatePostParams()) {
             const params = {
@@ -178,7 +170,6 @@ const CreateShiftGroup = () => {
                 params,
                 onSuccess: (success: any) => {
                     setSelectedEmployeesIds([])
-                    // setEmployeesList([])
                     goBack(navigation);
                     // goTo(navigation, ROUTE.ROUTE_SHIFT_GROUP)
                     showToast("success", success.status)
@@ -305,9 +296,13 @@ const CreateShiftGroup = () => {
                 <Container additionClass={"mx-2 "}>
                     <Container additionClass='row'>
                         <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedShiftGroupDetails ? t('editShiftGroup') : t('createShiftGroup')}</h2>
+                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
                     </Container>
-                    <Container
+                    {designationShiftGroup && <Container additionClass={'float-right'}>
+                        <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
+                        ></Primary>
+                    </Container>}
+                    {selectedShiftGroupDetails && <Container
                         flexDirection={"row"}
                         additionClass={"col"}
                         margin={'mt-4'}
@@ -318,7 +313,6 @@ const CreateShiftGroup = () => {
                                 placeholder={t('enterTheGroupName')}
                                 label={t('groupName')}
                                 value={groupName}
-                                disabled={!selectedShiftGroupDetails && true}
                                 onChange={(e) => {
                                     setGroupName(e.target.value)
                                 }}
@@ -331,10 +325,8 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('selectWeeklyShift')}
                                 placeholder={t('selectWeeklyShift')}
-                                showArrow={!selectedShiftGroupDetails && false}
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
-                                isDisabled={!selectedShiftGroupDetails && true}
                                 onChange={(event) => {
                                     setSelectedShift(event.target.value)
                                 }}
@@ -350,8 +342,6 @@ const CreateShiftGroup = () => {
                                 placeholder={t('selectDesignation')}
                                 data={designationDropdownData}
                                 value={designationId}
-                                isDisabled={isDisabledDropdown && true}
-                                showArrow={isDisabledDropdown && false}
                                 onChange={(event) => {
                                     setDesignationId(dropDownValueCheck(event.target.value, t('selectDesignation')))
                                 }}
@@ -361,7 +351,7 @@ const CreateShiftGroup = () => {
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </Container>
-                    </Container>
+                    </Container>}
 
                 </Container>
             </Card>
@@ -372,7 +362,7 @@ const CreateShiftGroup = () => {
                  */}
 
                 <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
-                    <h3>{t('addEmployeesToGroup')}</h3>
+                    <h3>{t('allEmployees')}</h3>
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12 mt-xl-4"} >
                             <InputText
@@ -411,7 +401,7 @@ const CreateShiftGroup = () => {
                     </Container>
 
 
-                    {registeredEmployeesList && registeredEmployeesList.length > 0 && (
+                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
                         <CommonTable
                             noHeader
                             isPagination
@@ -433,7 +423,7 @@ const CreateShiftGroup = () => {
                             }
 
                         />
-                    )}
+                    ) : <NoRecordFound />}
                 </Card>
 
                 {/**
@@ -479,7 +469,7 @@ const CreateShiftGroup = () => {
                         </Container>
                     </Container>
 
-                    <CommonTable
+                    {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
                         noHeader
                         tableTitle={t('selectedEmployeesList')}
                         tableChildren={
@@ -491,7 +481,7 @@ const CreateShiftGroup = () => {
                                 employeeListDataSet={registeredEmployeesList}
                             />
                         }
-                    />
+                    /> : <NoRecordFound />}
                 </Card>
             </Container>
 

@@ -64,7 +64,7 @@ const ShiftListing = () => {
     const normalizedBranchWeeklyShifts = (branchesWeeklyShift: any) => {
         return branchesWeeklyShift && branchesWeeklyShift.length > 0 && branchesWeeklyShift.map((element: any) => {
             return {
-                name: element.group_name,
+               "Shift Name": element.group_name,
             };
         });
     };

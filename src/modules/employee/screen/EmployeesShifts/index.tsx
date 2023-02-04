@@ -11,6 +11,7 @@ import {
   Secondary,
   Primary,
   Icon,
+  useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -18,7 +19,6 @@ import {
   paginationHandler,
   getWeekAndWeekDaysById,
   WEEK_LIST,
-  EMPLOYEE_CHANGE_SHIFT,
   showToast,
 } from "@utils";
 import { useTranslation } from "react-i18next";
@@ -29,6 +29,7 @@ import { Icons } from "@assets";
 function EmployeeShifts() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const enterPress = useKeyPress("Enter");
 
   const [isActiveWeek, setIsActiveWeek] = useState(1)
   const [model, setModel] = useState(false);
@@ -54,11 +55,18 @@ function EmployeeShifts() {
     getEmployeeLogsWithShifts(currentPage);
   }, [hierarchicalBranchIds]);
 
+  useEffect(() => {
+    if (enterPress) {
+      getEmployeeLogsWithShifts(currentPage);
+    }
+  }, [enterPress])
+
+
   function getEmployeeLogsWithShifts(pageNumber: number) {
     const params: object = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      ...(searchEmployee && { q: searchEmployee }),
+      ...(searchEmployee && { q: searchEmployee })
     };
     dispatch(getEmployeeWithShift({ params }));
   }
@@ -70,7 +78,9 @@ function EmployeeShifts() {
         id: element.employee_id,
         name: element.name,
         'Shift Name': element.shift?.name ? element.shift?.name : <div className="ml-4">{'-'}</div>,
-        "mobile number": element.mobile_number
+        "mobile number": element.mobile_number,
+        "Change Shift": <> <span style={{ cursor: 'pointer' }} className={`text-primary h5`}
+          onClick={(e) => handleChangeShift(e, element)}>{!element.shift ? "Assign Shift" : "Change Shift"}</span></>
       };
     });
   };
@@ -114,8 +124,8 @@ function EmployeeShifts() {
     }
   }
 
-
-  const handleChangeShift = (selectedEmployeeDetails: any) => {
+  const handleChangeShift = (e: any, selectedEmployeeDetails: any) => {
+    e.stopPropagation()
     setEmployeeCurrentObject(selectedEmployeeDetails)
     const params = { branch_id: hierarchicalBranchIds.branch_id }
     dispatch(getBranchShifts({
@@ -148,7 +158,7 @@ function EmployeeShifts() {
       },
     }));
   }
- 
+
   const designationMatchShifts = (id: any, response: any) => {
     let shifts = response && response.length > 0 && response.filter((el: any) => el?.weekly_shift?.designation_id === id)
     setShiftList(shifts)
@@ -190,18 +200,10 @@ function EmployeeShifts() {
           }}
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
-          additionalDataSet={EMPLOYEE_CHANGE_SHIFT}
           displayDataSet={normalizedEmployeeDetails(employeeWithShifts)}
           tableOnClick={(e, index, item) => {
             getUserShifts(index);
           }}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeeWithShifts[index];
-            if (elv === "Change Shift") {
-              handleChangeShift(current)
-            }
-          }}
-          custombutton={'h5'}
         />
       ) : <Card><NoRecordFound /></Card>}
       <Modal

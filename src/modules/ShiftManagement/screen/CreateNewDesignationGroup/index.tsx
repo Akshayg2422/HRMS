@@ -97,14 +97,14 @@ const CreateNewDesignationGroup = () => {
 
     return (
         <>
-            <FormWrapper title={t('createGroup')} onClick={() => onSubmitAddShift()}>
+            <FormWrapper title={t('createShift')} onClick={() => onSubmitAddShift()}>
                 <Container
                     margin={'mt-4'}
                     alignItems={"align-items-center"}
                 >
                     <InputText
                         placeholder={t('enterTheGroupName')}
-                        label={t('groupName')}
+                        label={t('name')}
                         value={groupName}
                         onChange={(e) => {
                             setGroupName(e.target.value)
