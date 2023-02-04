@@ -66,7 +66,7 @@ function App() {
 
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
