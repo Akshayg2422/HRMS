@@ -340,6 +340,8 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('designation')}
                                 placeholder={t('selectDesignation')}
+                                showArrow={false}
+                                isDisabled={true}
                                 data={designationDropdownData}
                                 value={designationId}
                                 onChange={(event) => {
