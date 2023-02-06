@@ -1,10 +1,12 @@
-import { WELCOME_CARD, WELCOME_NOTE, REQUEST_TYPE_SUBSET, getRequestType, GENDER_LIST, REQUEST_TYPE, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, 
+import {
+  WELCOME_CARD, WELCOME_NOTE, REQUEST_TYPE_SUBSET, getRequestType, GENDER_LIST, REQUEST_TYPE, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA,
   TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST,
-   MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, 
-   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
-    WEEK_DAY_LIST, REPORTS_TYPE, 
+  MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE,
+  LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
+  WEEK_DAY_LIST, REPORTS_TYPE,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-   DAY_STATUS_ABSENT, DAY_STATUS_ALERT,EMPLOYEES_SHIFT_DATA_EDIT } from './constants'
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT
+} from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -184,6 +186,27 @@ const getEndTime = (endTime?: string | number) => {
   return new Date('Wed Jul 20 2022 ' + endTime + ' GMT+0530 (IST)');
 };
 
+const getDateFormat = (date: string) => {
+  if (!date) {
+    date = '18:00';
+  }
+  return new Date('Wed Jul 20 2022 ' + date + ':00 GMT+0530 (IST)');
+};
+
+function convertTo24Hour(s: any) {
+  let AMPM = s.slice(-2);
+  let timeArr = s.slice(0, -2).split(":");
+  if (AMPM === "AM" && timeArr[0] === "12") {
+      // catching edge-case of 12AM
+      timeArr[0] = "00";
+  } else if (AMPM === "PM") {
+      // everything with PM can just be mod'd and added with 12 - the max will be 23
+      timeArr[0] = (timeArr[0] % 12) + 12
+  }  
+  return timeArr.join(":");
+}
+
+
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
 const inputNumberMaxLength = (value: any, length: number) => value && value.slice(0, length);
 const inputAadharLength = (value: any, length: number) => value && value.slice(0, length);
@@ -281,5 +304,7 @@ export {
   getRequestType,
   dropDownValueCheckByEvent,
   getDropDownValueByName,
-  EMPLOYEES_SHIFT_DATA_EDIT
+  EMPLOYEES_SHIFT_DATA_EDIT,
+  getDateFormat,
+  convertTo24Hour
 }

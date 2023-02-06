@@ -17,6 +17,7 @@ function MyShiftDetails() {
     const { dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
+
     const enterPress = useKeyPress("Enter");
 
     const [isActiveWeek, setIsActiveWeek] = useState(1)
@@ -31,11 +32,11 @@ function MyShiftDetails() {
         getMyShiftsDetails()
     }, [])
 
-    useEffect(() => {
-        if (enterPress) {
-        //   getEmployeeRequest(currentType, currentPage)
-        }
-      }, [enterPress])
+    // useEffect(() => {
+    //     if (enterPress) {
+    //     //   getEmployeeRequest(currentType, currentPage)
+    //     }
+    //   }, [enterPress])
 
     const getMyShiftsDetails = () => {
         const params = {}
@@ -90,7 +91,7 @@ function MyShiftDetails() {
     const designationMatchShifts = (id: any, response: any) => {
         let shifts = response && response.length > 0 && response.filter((el: any) => el?.weekly_shift?.designation_id === id)
         setShiftList(shifts)
-        setRequestDetails({ ...requestDetails, shiftId: id })
+        // setRequestDetails({ ...requestDetails, shiftId: id })
         checkShiftExist(dashboardDetails?.user_details?.designation_id, shifts)
     }
 

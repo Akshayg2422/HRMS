@@ -328,7 +328,7 @@ const CreateShiftGroup = () => {
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
                                 onChange={(event) => {
-                                    setSelectedShift(event.target.value)
+                                    setSelectedShift(dropDownValueCheck(event.target.value, t('selectDesignation')))
                                 }}
                             />
 

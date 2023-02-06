@@ -24,13 +24,6 @@ function EmployeeShiftRequest() {
         getRequestList(getRequestType(requestTypes), currentPage);
     }, [requestTypes])
 
-
-    useEffect(() => {
-        if (enterPress) {
-        //   getEmployeeRequest(currentType, currentPage)
-        }
-      }, [enterPress])
-
     const typeValidation = () => {
         if (!requestTypes) {
             showToast("error", t("invalidType"));

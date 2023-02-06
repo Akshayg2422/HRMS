@@ -34,8 +34,8 @@ function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...prop
           options={{
             enableTime: true,
             noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true
+            dateFormat: "h:i K",
+            time_24hr: false
           }}
           value={value}
           onChange={handleChange}

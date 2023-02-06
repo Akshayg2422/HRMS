@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BackArrow, Card, CheckBox, Container, InputText, Modal, Primary, TimePicker } from '@components'
 import { Icons } from "@assets";
-import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav, goTo, ROUTE } from '@utils';
+import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav, goTo, ROUTE, convertTo24Hour } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
@@ -53,8 +53,10 @@ const WeeklyShiftSelection = () => {
   }, [])
 
   const dateTimePickerHandler = (value: string, key: string) => {
-    setShiftsTime({ ...shiftsTime, [key]: value });
+    setShiftsTime({ ...shiftsTime, [key]: convertTo24Hour(value) });
   };
+
+
 
   const shiftTimeReset = () => {
     setShiftsTime({ ...shiftsTime, inTime: '', outTime: '' });
@@ -104,7 +106,7 @@ const WeeklyShiftSelection = () => {
   //       if (weekEnable.length > 0) {
   //         weekEnable.map((el: any) => {
   //           console.log("el",el.time_breakdown.length);
-            
+
   //           if (el?.time_breakdown.length > 0) {
   //             output = { status: true, error: 'No' }
   //           } else {

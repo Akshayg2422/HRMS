@@ -35,6 +35,7 @@ import {
   inputNumberMaxLength,
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
+  dropDownValueCheckByEvent
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -239,7 +240,7 @@ const ManageEmployee = () => {
     } else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
       return false;
-    } 
+    }
     // else if (Object.keys(employeeDetails.shift).length === 0) {
     //   showToast("error", "choose Shift");
     //   return false;
@@ -286,7 +287,7 @@ const ManageEmployee = () => {
         dob: getServerDateFromMoment(
           getMomentObjFromServer(employeeDetails.dob)
         ),
-        ...(employeeDetails.kgid_No && {  
+        ...(employeeDetails.kgid_No && {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
@@ -386,7 +387,7 @@ const ManageEmployee = () => {
 
 
   const onChangeHandler = (e: any) => {
-    setEmployeeDetails({ ...employeeDetails, [e.target.name]: e.target.value });
+    setEmployeeDetails({ ...employeeDetails, [e.target?.name]: e.target?.value });
   };
 
   const dateTimePickerHandler = (value: string, key: string) => {
@@ -439,6 +440,9 @@ const ManageEmployee = () => {
       );
     }
   }
+
+
+  console.log("employeeDetails", employeeDetails);
 
   return (
 
@@ -493,7 +497,7 @@ const ManageEmployee = () => {
           name={"gender"}
           value={employeeDetails.gender}
           onChange={(event) => {
-            onChangeHandler(event);
+            onChangeHandler(dropDownValueCheckByEvent(event, t("selectYourGender")));
           }}
         />
         <DropDown
@@ -503,7 +507,9 @@ const ManageEmployee = () => {
           name={"bloodGroup"}
           value={employeeDetails.bloodGroup}
           onChange={(event) => {
-            onChangeHandler(event);
+            // onChangeHandler(event);
+            onChangeHandler(dropDownValueCheckByEvent(event, t("enterBloodGroup")));
+
           }}
         />
 
@@ -538,7 +544,7 @@ const ManageEmployee = () => {
               name={"designation"}
               value={employeeDetails.designation}
               onChange={(event) => {
-                onChangeHandler(event)
+                onChangeHandler(dropDownValueCheckByEvent(event, t("enterDesignation")));
               }}
             />
           </div>
@@ -555,7 +561,9 @@ const ManageEmployee = () => {
               data={departmentDropdownData}
               value={employeeDetails.department}
               name={"department"}
-              onChange={(event) => onChangeHandler(event)}
+              onChange={(event) =>
+                onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
+              }
             />
           </div>
           <Icon
@@ -570,7 +578,7 @@ const ManageEmployee = () => {
           name={"branch"}
           value={employeeDetails.branch}
           onChange={(event) => {
-            onChangeHandler(event)
+            onChangeHandler(dropDownValueCheckByEvent(event, t("branch")))
           }}
         />
         <DropDown
@@ -579,7 +587,9 @@ const ManageEmployee = () => {
           name={"employeeType"}
           data={EMPLOYEE_TYPE}
           value={employeeDetails.employeeType}
-          onChange={(event) => onChangeHandler(event)}
+          onChange={(event) =>
+            onChangeHandler(dropDownValueCheckByEvent(event, t("category")))
+          }
         />
         <h5>{t("dataOfJoining")}</h5>
         <DatePicker
@@ -618,7 +628,9 @@ const ManageEmployee = () => {
           data={shiftsDropdownData}
           name={"shift"}
           value={employeeDetails.shift}
-          onChange={(event) => onChangeHandler(event)}
+          onChange={(event) =>
+            onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
+          }
         />
         <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
