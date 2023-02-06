@@ -122,7 +122,7 @@ const ManageEmployee = () => {
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
   const [shiftsDropdownData, setShiftsDropdownData] =
-    useState<any>();
+    useState<any>([]);
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -196,6 +196,7 @@ const ManageEmployee = () => {
       params,
       onSuccess: (success: any) => {
         setShiftGroup(success)
+        setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
       },
       onError: (error: string) => {
         showToast('error', error)
@@ -205,11 +206,15 @@ const ManageEmployee = () => {
 
   const designationMatchShifts = (id: any) => {
     let shifts: any[] = []
-    shiftGroup && shiftGroup.length > 0 && shiftGroup.map((el: any) => {
-      if (el?.weekly_shift?.designation_id === id) {
-        shifts = [...shifts, el]
-      }
-    })
+    if (id) {
+      shiftGroup && shiftGroup.length > 0 && shiftGroup.map((el: any) => {
+        if (el?.weekly_shift?.designation_id === id) {
+          shifts = [...shifts, el]
+        }
+      })
+    } else (
+      shifts = []
+    )
     return shifts
   }
 
@@ -442,8 +447,6 @@ const ManageEmployee = () => {
   }
 
 
-  console.log("employeeDetails", employeeDetails);
-
   return (
 
     <>
@@ -622,7 +625,7 @@ const ManageEmployee = () => {
 
         <h4 className="mb-4">{t("attendanceDetails")}</h4>
 
-        <DropDown
+        {shiftsDropdownData.length > 0 && <DropDown
           label={t("shiftss")}
           placeholder={t("SelectShift")}
           data={shiftsDropdownData}
@@ -631,7 +634,7 @@ const ManageEmployee = () => {
           onChange={(event) =>
             onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
           }
-        />
+        />}
         <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
           title={t("pleaseSelect")}
