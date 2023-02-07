@@ -209,29 +209,29 @@ function ManageAssignLocation() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-          <div className="my-4">
+          <div>
             {brancheslist.map((item: Branch, index: number) => {
               return (
-                <div
-                  className="row align-items-center mx-4"
-                  onClick={() => addSelectedBranch(item)}
-                >
-                  <div className="col-8">
-                    <span className="text-xl text-gray">{item.name}</span>
-                  </div>
+                <>
+                  <div className="row mx-3 my-1"
+                    onClick={() => addSelectedBranch(item)}
+                  >
+                    <div className="col-8">
+                      <span className=" text-gray">{item.name}</span>
+                    </div>
 
-                  <div className="col-4 text-right">
-                    <ImageView
-                      icon={
-                        checkStatus(item.id!)
-                          ? Icons.TickActive
-                          : Icons.TickDefault
-                      }
-                    />
+                    <div className="col-4 text-right">
+                      <ImageView
+                        icon={
+                          checkStatus(item.id!)
+                            ? Icons.TickActive
+                            : Icons.TickDefault
+                        }
+                      />
+                    </div>
                   </div>
                   {index !== brancheslist.length - 1 && <Divider />}
-                  <></>
-                </div>
+                </>
               );
             })}
           </div>

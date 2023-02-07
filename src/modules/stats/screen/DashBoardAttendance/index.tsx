@@ -167,7 +167,7 @@ const DashBoardAttendance = ({ }) => {
         break;
       case 4: color = "#D4AC0D";
         break;
-      case 10: color = "#FFFF00";
+      case 10: color = "#2ECC71";
         break;
       case 5: color = "#FF351F";
         break;

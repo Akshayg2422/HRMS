@@ -467,7 +467,6 @@ function* getEmployeeTodayStatus(action) {
       yield put(getEmployeeTodayStatusSuccess(response.details));
       yield call(action.payload.onSuccess(response));
     } else {
-      console.log("error");
       yield put(hideLoader());
       yield put(getEmployeeTodayStatusFailure(response.error_message));
       yield call(action.payload.onError);
@@ -605,7 +604,6 @@ function* applyLeave(action) {
       yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
-    console.log("error-->", error);
     yield put(hideLoader());
     yield put(applyLeaveFailure("Invalid Request"));
   }

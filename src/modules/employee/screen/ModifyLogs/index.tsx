@@ -157,7 +157,6 @@ const ModifyLogs = () => {
           </ul>
         </div>
       </Card>
-
       <Card>
       <div className="tab-content" id="myTabContent">
         <div

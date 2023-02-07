@@ -146,8 +146,6 @@ const ViewEmployeeDetails = () => {
       getEmployeeDetails({
         params,
         onSuccess: (response: EmployeeDetail) => {
-          console.log(JSON.stringify(response) + "=======EmployeeDetail");
-
           preFillEmployeeDetails(response);
         },
         onError: (error: string) => {

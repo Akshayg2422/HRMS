@@ -414,7 +414,6 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case FETCH_EMPLOYEE_EACH_USER_TIME_SHEETS_SUCCESS:
-      console.log(JSON.stringify(action.payload));
       state = {
         ...state,
         loading: false,
@@ -585,7 +584,6 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
     // Stats card type //
     case SELECTED_CARD_TYPE:
-      console.log(JSON.stringify(action.payload) + "+======SELECTED_CARD_TYPE");
       state = {
         ...state,
         routeParams: action.payload,

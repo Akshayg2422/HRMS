@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Flatpickr from "react-flatpickr";
 import { DatePickerProps } from '../Interface'
 import { ImageView } from '@components'
 
 
 
-function TimePicker({ icon, iconPosition, onChange,value,defaultValue, ...props }: DatePickerProps) {
+function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...props }: DatePickerProps) {
+
+  const timePickerRef = useRef<any>(null);
+
+  const openTimePicker = () => {
+    if (timePickerRef.current) {
+      timePickerRef.current.flatpickr.open();
+      
+    }
+  }
 
   const handleChange = (dates: Date[], currentDateString: string, self: any, data?: any) => {
     if (onChange) {
@@ -16,21 +25,22 @@ function TimePicker({ icon, iconPosition, onChange,value,defaultValue, ...props 
   return (
     <div className="form-group">
       <div className="input-group">
-        {icon && iconPosition === 'prepend' && <div className="input-group-prepend">
+        {icon && iconPosition === 'prepend' && <div className="input-group-prepend" onClick={() => openTimePicker()} style={{ cursor: 'pointer' }}>
           <span className="input-group-text"><ImageView icon={icon} /></span>
         </div>}
         <Flatpickr
+          ref={timePickerRef}
           className="form-control bg-white pl-2"
           options={{
             enableTime: true,
             noCalendar: true,
-            dateFormat: "H:i",
-            time_24hr: true
+            dateFormat: "h:i K",
+            time_24hr: false
           }}
           value={value}
           onChange={handleChange}
         />
-        {icon && iconPosition === 'append' && <div className="input-group-append">
+        {icon && iconPosition === 'append' && <div className="input-group-append" onClick={() => openTimePicker()} style={{ cursor: 'pointer' }}>
           <span className="input-group-text"><ImageView icon={icon} /></span>
         </div>}
 

@@ -11,7 +11,6 @@ const getHeaders = async () => {
     const value = await localStorage.getItem("ZENYLOG::USER_AUTH");
     const valueJ = value != null ? JSON.parse(value) : null;
     if (valueJ && valueJ.userDetails.token) {
-      console.log("001c113", valueJ);
       return { Authorization: "Token " + valueJ.userDetails.token };
     } else {
       return {};
@@ -27,8 +26,6 @@ export const proceedGet = (url, params) => {
   return new Promise(async (resolve, reject) => {
     try {
       const headers = await getHeaders();
-      console.log("headers22");
-      console.log(headers);
       const response = await instance.get(url, {
         headers: headers,
       });
@@ -45,7 +42,6 @@ export const proceedGet = (url, params) => {
       resolve(response.data);
     } catch (e) {
       // Toast.show('Something went wrong. Please try again later');
-      console.log(e.request);
       console.log("Error", e.message);
       reject(e);
     }
@@ -56,7 +52,6 @@ export const proceedPost = (url, params) => {
   return new Promise(async (resolve, reject) => {
     try {
       const headers = await getHeaders();
-      console.log("hhh", headers);
       const response = await instance.post(url, params, {
         headers: headers,
       });
@@ -71,8 +66,6 @@ export const proceedPost = (url, params) => {
 
       resolve(response.data);
     } catch (e) {
-      console.log(e);
-      console.log(e.request);
       console.log("Error", e.message);
       // Toast.show('Something went wrong. Please try again later');
       reject(e);

@@ -111,8 +111,16 @@ export const GET_ADMIN_BRANCHES = 'employee/getBranchAdmins'
  * edit branch name
  */
 
-export const POST_EDIT_BRANCH_NAME = 'company/updateBranch'    
+export const POST_EDIT_BRANCH_NAME = 'company/updateBranch'
 
 
+export const FETCH_SHIFT_REQUESTED_EMPLOYEES = 'attendance/getEmployeesShiftCr'
 
+
+export const FETCH_SHIFT_REQUESTED_STATUS = 'attendance/getEmployeeShiftCr'
+
+
+export const POST_REQUEST_SHIFT_CHANGE = 'attendance/requestShiftChange'
+
+export const POST_CHANGE_EMPLOYEE_SHIFT = 'attendance/changeEmployeeShift'
 

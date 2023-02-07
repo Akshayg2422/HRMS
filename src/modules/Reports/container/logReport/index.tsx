@@ -184,7 +184,7 @@ const LocationTable = ({
                     color = '#f0c434';
                     break;
                 case 10:
-                    color = '#FF8c00'
+                    color = '#00b603'
                     break;
                 case 9:
                     color = '#de9b00'

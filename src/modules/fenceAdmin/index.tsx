@@ -107,8 +107,8 @@ function FenceAdmin() {
         dispatch(addFenceAdmin({
             params,
             onSuccess: (success: any) => {
-                showToast("success", success.message);
                 dispatch(getAllBranchesList({}))
+                showToast("success", success.message);
                 setModel(!model)
             },
             onError: () => {

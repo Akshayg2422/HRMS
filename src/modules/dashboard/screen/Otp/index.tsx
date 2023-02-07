@@ -137,7 +137,6 @@ function DashBoardOtp() {
         // signInOTP(params);
         NAV_ITEM.map((item)=>{
            if(item.id === routeName){
-               console.log("fafnafaf",item.id,item.route)
             goTo(navigate, item.route, true)
            }
         })
