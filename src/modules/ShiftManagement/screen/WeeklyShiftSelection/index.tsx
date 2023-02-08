@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import { BackArrow, Card, CheckBox, Container, InputText, Modal, TimePicker } from '@components'
+import { BackArrow, Card, CheckBox, Container, InputText, Modal, Primary, TimePicker } from '@components'
 import { Icons } from "@assets";
-import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav } from '@utils';
+import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav, goTo, ROUTE, convertTo24Hour } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +10,7 @@ import {
   getWeeklyShiftDetails,
   selectedWeeklyShiftIdAction
 } from "../../../../store/shiftManagement/actions";
+import { log } from 'console';
 
 
 const WEEK_DAYS_LIST = [
@@ -23,7 +24,7 @@ const WEEK_DAYS_LIST = [
 
 
 const WeeklyShiftSelection = () => {
-  const [weeklyData,  setWeeklyData] = useState<any>([
+  const [weeklyData, setWeeklyData] = useState<any>([
     { week: 1, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 2, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
     { week: 3, is_working: true, week_calendar: [...WEEK_DAYS_LIST] },
@@ -53,8 +54,9 @@ const WeeklyShiftSelection = () => {
   }, [])
 
   const dateTimePickerHandler = (value: string, key: string) => {
-    setShiftsTime({ ...shiftsTime, [key]: value });
+    setShiftsTime({ ...shiftsTime, [key]: convertTo24Hour(value).trim() });
   };
+
 
   const shiftTimeReset = () => {
     setShiftsTime({ ...shiftsTime, inTime: '', outTime: '' });
@@ -64,11 +66,12 @@ const WeeklyShiftSelection = () => {
     if (shiftName === "") {
       showToast("error", t('theShiftNameCantBeEmpty'));
       return false;
-    } else {
+    }
+    else {
       return true;
     }
   }
-  
+
   const onSubmit = () => {
     if (validatePostParams()) {
       const params = {
@@ -76,13 +79,15 @@ const WeeklyShiftSelection = () => {
         group_name: shiftName,
         weekly_group_details: weeklyData
       }
+      console.log('params', params)
       dispatch(
         addWeeklyShift({
           params,
           onSuccess: (success: any) => {
             showToast("success", success.status);
-            goBack(navigation);
             selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
+            goBack(navigation);
+            // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
           },
           onError: (error: string) => {
             showToast("error", error);
@@ -91,6 +96,33 @@ const WeeklyShiftSelection = () => {
       );
     }
   }
+
+
+  // const shiftTimeValidation = () => {
+  //   let output = { status: false, error: '' }
+  //   let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
+  //   if (WeekEnable) {
+  //     weeklyData.map((el: any, i: any) => {
+  //       let weekEnable = el.week_calendar.filter((enable: any) => enable?.is_working)
+  //       if (weekEnable.length > 0) {
+  //         weekEnable.map((el: any) => {
+  //           console.log("el",el.time_breakdown.length);
+
+  //           if (el?.time_breakdown.length > 0) {
+  //             output = { status: true, error: 'No' }
+  //           } else {
+  //             output = { status: false, error: 'Please Select Time For Working Enable Days' }
+  //           }
+  //         })
+  //       } else {
+  //         output = { status: false, error: `Please Enable Days For Enable Week` }
+  //       }
+  //     })
+  //   } else {
+  //     output = { status: false, error: `Can't Create Shift Please Enable At least one Week` }
+  //   }
+  //   return output
+  // }
 
 
   const onShiftAdd = () => {
@@ -106,7 +138,6 @@ const WeeklyShiftSelection = () => {
       else if (timeBreakdown.length > 0) {
         let isInRange = false
         for (let i = 0; i < timeBreakdown.length; i++) {
-
           if ((shiftsTime.inTime >= timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
             (shiftsTime.outTime >= timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
             showToast("error", t('alreadyShiftAllocated'))
@@ -119,7 +150,6 @@ const WeeklyShiftSelection = () => {
         }
 
       }
-
       setWeeklyData(updatedWeek)
       setOpenModel(!openModel)
       shiftTimeReset()
@@ -172,7 +202,7 @@ const WeeklyShiftSelection = () => {
     }))
   }
 
-  
+
 
   return (
     <>
@@ -181,8 +211,9 @@ const WeeklyShiftSelection = () => {
           <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
           <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
         </Container>
-        <Container col={"col-xl-5 col-md-6 col-sm-12"}>
+        <Container col={"row"}>
           <InputText
+            col='col-xl-4'
             label={t("shiftName")}
             placeholder={t("shiftName")}
             name={"shiftName"}
@@ -191,6 +222,12 @@ const WeeklyShiftSelection = () => {
               setShiftName(event.target.value)
             }}
           />
+          <Container additionClass='col mt-xl-4 text-right'>
+            <Primary
+              text={selectedWeeklyShiftId ? t('update') : t('submit')}
+              onClick={() => onSubmit()}
+            />
+          </Container>
         </Container>
 
         <Container>
@@ -260,7 +297,7 @@ const WeeklyShiftSelection = () => {
           onDelete(el, index)
         }}
 
-        onSubmit={() => { onSubmit() }}
+      // onSubmit={() => { onSubmit() }}
       />
 
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={t('selectShiftTiming')}>

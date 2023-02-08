@@ -26,7 +26,6 @@ import {
   getServerDateFromMoment,
   getMomentObjFromServer,
 } from "@utils";
-import { Navbar } from "@modules";
 import { Icons } from "@assets";
 
 const DashboardStats = () => {
@@ -47,6 +46,7 @@ const DashboardStats = () => {
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
   const [attendanceConsolidatedCardsData, setAttendanceConsolidatedCardsData] =
     useState([]);
+
   const [selectedDate, setSelectedDate] = useState(
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
@@ -57,7 +57,6 @@ const DashboardStats = () => {
         Name: el.name,
         Total: el.total,
         Present: el.present,
-        Late: el.late,
         Absent: el.absent,
         "To Start": el.to_start,
         "Alert":el.alert
@@ -98,7 +97,6 @@ const DashboardStats = () => {
       getAttendanceConsolidatedCards({
         params,
         onSuccess: (response: any) => {
-          console.log(JSON.stringify(response) + "====");
           if (response && response.cards?.length > 0) {
             setAttendanceConsolidatedCardsData(response.cards);
             setModel(!model);
@@ -178,10 +176,10 @@ const DashboardStats = () => {
                   employeeattendancedatalog
                 )}
                 tableOnClick={(e, index, item) => {
-                  console.log(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id + "====="
-                  );
+                  // console.log(
+                  //   employeeattendancedatalog.departments_stats[index]
+                  //     .department_id + "====="
+                  // );
 
                   setSelectedDepartmentName(
                     employeeattendancedatalog.departments_stats[index].name

@@ -19,6 +19,7 @@ import {
   getEmployeeTodayStatus,
   getCheckInDetailedLogPerDay,
   getDownloadTodayStatus,
+  applyLeave,
 } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import {
@@ -28,6 +29,8 @@ import {
   showToast,
   downloadFile,
   DOWNLOAD_RANGE,
+  validateDefault,
+  showAdminModify,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -35,7 +38,13 @@ import { Icons } from "@assets";
 const DashBoardAttendance = ({ }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-
+  const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+  const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
+    date: "",
+    reason: "",
+    emp_id: '',
+    day_status_id: ''
+  });
   const {
     routeParams,
     employeeAttendanceStats,
@@ -104,6 +113,16 @@ const DashBoardAttendance = ({ }) => {
     dispatch(getEmployeeTodayStatus(params));
   };
 
+  const onModify = (e: any, item: any) => {
+    e.stopPropagation()
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      date: item.attendance_date,
+      emp_id: item.id,
+      day_status_id: item?.per_day_details?.id
+    });
+    setMarkAsPresentModel(!markAsPresentModel);
+  }
   const normalizedEmployee = (data: any) => {
     return data.map((el: any) => {
       return {
@@ -112,22 +131,24 @@ const DashBoardAttendance = ({ }) => {
         in: el.per_day_details
           ? el.per_day_details.start_time
             ? getDisplayTimeFromMoment(
-              getMomentObjFromServer(el.per_day_details.start_time)
+              getMomentObjFromServer(el?.per_day_details?.start_time)
             )
             : "-"
           : "-",
         out: el.per_day_details
           ? el.per_day_details.end_time
             ? getDisplayTimeFromMoment(
-              getMomentObjFromServer(el.per_day_details.end_time)
+              getMomentObjFromServer(el?.per_day_details?.end_time)
             )
             : "-"
           : "-",
-
         remark: <div style={{
           fontWeight: 'bold',
-          color: fontColor(el.per_day_details.day_status_type)
-        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>
+          color: fontColor(el.per_day_details?.day_status_type)
+        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
+        'Modify': <>{showAdminModify(el?.per_day_details?.day_status_type) ?
+          <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
+          : '-'}</>
       };
     });
   };
@@ -146,7 +167,7 @@ const DashBoardAttendance = ({ }) => {
         break;
       case 4: color = "#D4AC0D";
         break;
-      case 10: color = "#FFFF00";
+      case 10: color = "#2ECC71";
         break;
       case 5: color = "#FF351F";
         break;
@@ -287,7 +308,50 @@ const DashBoardAttendance = ({ }) => {
       downloadSampleCsvFile(false)
     }
   }
-  
+
+  const onChangeHandler = (event: any) => {
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const validateOnSubmit = () => {
+    if (!validateDefault(markAsPresentDetails.reason).status) {
+      showToast("error", t("invalidReason"));
+      return false;
+    }
+    return true;
+  };
+
+  const onRequestHandler = () => {
+    if (validateOnSubmit()) {
+      const params = {
+        day_status_id: markAsPresentDetails.day_status_id,
+        date_from: markAsPresentDetails.date,
+        date_to: markAsPresentDetails.date,
+        reason: markAsPresentDetails.reason,
+        is_approved: true,
+        employee_id: markAsPresentDetails.emp_id,
+      };
+      dispatch(
+        applyLeave({
+          params,
+          onSuccess: (response: any) => {
+            showToast("success", response?.message);
+            setMarkAsPresentModel(!markAsPresentModel);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            getTodayStats(currentPage);
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+            setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+          },
+        })
+      );
+    }
+  };
+
   return (
     <div className="mx-3">
       <Card>
@@ -347,9 +411,9 @@ const DashBoardAttendance = ({ }) => {
               </Container>
               <Container additionClass={"col mb-4"}>
                 <Primary text={'Search'} onClick={() => getTodayStats(currentPage)} />
-                <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
+                {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
                   <Icon icon={Icons.DownloadSecondary} />
-                </a>
+                </a> */}
               </Container>
             </Container>
           </div>
@@ -444,6 +508,41 @@ const DashBoardAttendance = ({ }) => {
             />
           </Container>
         </div>
+      </Modal>
+      <Modal
+        showModel={markAsPresentModel}
+        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+      >
+        <Container>
+          <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
+          <Container additionClass="col-6 my-4">
+            <InputText
+              disabled
+              label={t("today")}
+              value={markAsPresentDetails.date}
+              name={"date"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+            <InputText
+              label={t("reason")}
+              validator={validateDefault}
+              value={markAsPresentDetails.reason}
+              name={"reason"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </Container>
+          <Container margin={"mt-5"} additionClass={"text-right"}>
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+            />
+            <Primary text={t("modify")} onClick={() => onRequestHandler()} />
+          </Container>
+        </Container>
       </Modal>
     </div>
   );

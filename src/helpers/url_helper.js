@@ -24,6 +24,8 @@ export const GET_EMPLOYEES_LIST = '/employee/web/v1/getEmployees';
 export const FETCH_DESIGNATION = '/employee/getDesignations';
 export const FETCH_DEPARTMENT = '/company/getDepartments';
 export const FETCH_ALL_BRANCHES_LIST = '/company/getAllBranches';
+export const FETCH_LIST_ALL_BRANCHES_LIST = '/company/getAllBranchesL';
+
 export const FETCH_EMPLOYEE_DETAILS = '/employee/getEmployeeDetails';
 export const POST_EMPLOYEE_ADDITION_V1 = '/employee/v1/addEmployee';
 export const POST_BRANCH_ADDITION = '/company/addBranch';
@@ -111,8 +113,16 @@ export const GET_ADMIN_BRANCHES = 'employee/getBranchAdmins'
  * edit branch name
  */
 
-export const POST_EDIT_BRANCH_NAME = 'company/updateBranch'    
+export const POST_EDIT_BRANCH_NAME = 'company/updateBranch'
 
 
+export const FETCH_SHIFT_REQUESTED_EMPLOYEES = 'attendance/getEmployeesShiftCr'
 
+
+export const FETCH_SHIFT_REQUESTED_STATUS = 'attendance/getEmployeeShiftCr'
+
+
+export const POST_REQUEST_SHIFT_CHANGE = 'attendance/requestShiftChange'
+
+export const POST_CHANGE_EMPLOYEE_SHIFT = 'attendance/changeEmployeeShift'
 

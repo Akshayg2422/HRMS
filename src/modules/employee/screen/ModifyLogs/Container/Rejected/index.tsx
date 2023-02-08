@@ -103,7 +103,6 @@ const Rejected = () => {
       })
     );
   };
-  console.log("employeesLeaves", employeesModifyLeaves);
   return (
     <div>
       <div className="row">

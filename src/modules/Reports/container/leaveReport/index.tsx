@@ -29,9 +29,6 @@ function LeaveReports({ data, department, reportType, customrange, designation }
     } = useSelector((state: any) => state.EmployeeReducer);
 
 
-    console.log(JSON.stringify(currentPage) + "+========");
-
-
     let dispatch = useDispatch();
     const { t } = useTranslation();
 

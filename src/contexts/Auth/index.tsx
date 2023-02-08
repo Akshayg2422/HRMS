@@ -151,7 +151,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({children}) => {
   useEffect(() => {
     const value = businesType;
     const jsonValue = JSON.stringify(value);
-    console.log("jsondata-->", jsonValue);
   }, [businesType]);
 
   return (

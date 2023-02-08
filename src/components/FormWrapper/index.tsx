@@ -19,7 +19,7 @@ function index({
   hideFooter = false,
 }: FormWrapperProps) {
   return (
-    <div className="container p-5">
+    <div className="container p-xl-5">
       <div className="row">
         <div className="card">
           <BackArrow additionClass={'mt-4 ml-4'} />

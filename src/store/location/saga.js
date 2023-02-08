@@ -2,13 +2,14 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import {
   fetchAllBranchesList, postBranchAddition, updateBranchLocationRadius, postEnableBranchRefence, fetchEmployeeCheckinAssociations,
   postEmployeeCheckinAssociations,
-  PostEditBranchNameApi
+  PostEditBranchNameApi,fetchListAllBranchesList
 } from "../../helpers/backend_helper";
 import {
   FETCH_ALL_BRANCHES_LIST, POST_BRANCH_ADDITION, UPDATE_BRANCH_LOCATION_RADIUS, ENABLE_BRANCH_REFENCE,
   GET_EMPLOYEE_CHECKIN_ASSOCIATIONS,
   UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS,
-  EDIT_BRANCH_NAME
+  EDIT_BRANCH_NAME,
+  FETCH_LIST_ALL_BRANCHES_LIST
 } from "./actionsType";
 import {
   getAllBranchesListFailure, getAllBranchesListSuccess, branchAdditionSuccess, branchAdditionFailure,
@@ -21,7 +22,9 @@ import {
   updateEmployeeCheckinAssociationsSuccess,
   updatetEmployeeCheckinAssociationsFailure,
   editBranchNameSuccess,
-  editBranchNameFailure
+  editBranchNameFailure,
+  getListAllBranchesListSuccess,
+  getListAllBranchesListFailure
 } from "./actions";
 
 
@@ -221,10 +224,39 @@ function* updatedBranchName(action) {
   }
 }
 
+function* getListAllBranches(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(fetchListAllBranchesList, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+
+      yield put(getListAllBranchesListSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(getListAllBranchesListFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(getListAllBranchesListFailure("Invalid Request"));
+
+  }
+}
+
 
 function* LocationSaga() {
 
   yield takeLatest(FETCH_ALL_BRANCHES_LIST, getAllBranches)
+  yield takeLatest(FETCH_LIST_ALL_BRANCHES_LIST, getListAllBranches)
   yield takeLatest(POST_BRANCH_ADDITION, branchAddition);
   yield takeLatest(UPDATE_BRANCH_LOCATION_RADIUS, updateLocationRadius);
   yield takeLatest(ENABLE_BRANCH_REFENCE, enableBranchRefence);

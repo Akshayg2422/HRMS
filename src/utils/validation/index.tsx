@@ -150,6 +150,14 @@ const dropDownValueCheck = (value: any, placeHolder: string) => {
   }
 }
 
+const dropDownValueCheckByEvent = (e: any, placeHolder: string | undefined) => {
+  if (e.target.value != placeHolder) {
+    return e
+  } else {
+    return ''
+  }
+}
+
 export {
   validateMobileNumber,
   validateName,
@@ -163,5 +171,6 @@ export {
   validateDefault,
   validateReason,
   validateBasicSalary,
-  dropDownValueCheck
+  dropDownValueCheck,
+  dropDownValueCheckByEvent
 };

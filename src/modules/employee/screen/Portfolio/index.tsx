@@ -43,13 +43,20 @@ function PortFolio() {
       route: ROUTE.ROUTE_E_LOCKER,
       icon: Icons.E_Locker,
     },
-    // {
-    //   id: "6",
-    //   name: "My Shifts",
-    //   value: "MS",
-    //   route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
-    //   icon: Icons.MY_SHIFTS,
-    // }
+    {
+      id: "6",
+      name: "My Shift",
+      value: "MS",
+      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
+      icon: Icons.ShiftChange,
+    },
+    {
+      id: "7",
+      name: "Shift Request History",
+      value: "SC",
+      route: ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST,
+      icon: Icons.MY_SHIFTS,
+    }
   ];
 
   return (
@@ -71,8 +78,8 @@ function PortFolio() {
                     additionClass={"m-0"}
                     icon={it?.icon}
                     alt={it.name}
-                    height={50}
-                    width={50}
+                    height={60}
+                    width={60}
                   />
                 </Container>
                 <div className="col">

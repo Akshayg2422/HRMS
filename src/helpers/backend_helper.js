@@ -24,6 +24,8 @@ export const fetchEmployeeList = (payload) => post(url.GET_EMPLOYEES_LIST, paylo
 export const fetchDesignationData = (payload) => post(url.FETCH_DESIGNATION, payload, {})
 export const fetchDepartmentData = (payload) => post(url.FETCH_DEPARTMENT, payload, {})
 export const fetchAllBranchesList = (payload) => post(url.FETCH_ALL_BRANCHES_LIST, payload, {})
+export const fetchListAllBranchesList = (payload) => post(url.FETCH_LIST_ALL_BRANCHES_LIST, payload, {})
+
 export const fetchEmployeeDetails = (payload) => post(url.FETCH_EMPLOYEE_DETAILS, payload, {})
 export const postEmployeeAddition = (payload) => post(url.POST_EMPLOYEE_ADDITION_V1, payload, {})
 export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {})
@@ -113,3 +115,27 @@ export const getBranchAdminsApi= (payload) => post(url.GET_ADMIN_BRANCHES,payloa
  */
 
 export const PostEditBranchNameApi= (payload) => post(url.POST_EDIT_BRANCH_NAME,payload,{})
+
+/**
+ * employees Shift request
+ */
+export const getShiftRequestedEmployeesApi= (payload) => post(url.FETCH_SHIFT_REQUESTED_EMPLOYEES,payload,{})
+
+/**
+ * SHIFT_REQUESTED_STATUS
+ */
+
+export const getShiftRequestedStatusApi= (payload) => post(url.FETCH_SHIFT_REQUESTED_STATUS,payload,{})
+
+/**
+ * POST_REQUEST_SHIFT_CHANGE
+ */
+
+export const postRequestShiftChangeApi= (payload) => post(url.POST_REQUEST_SHIFT_CHANGE,payload,{})
+
+
+/**
+ * change Employee Shift
+ */
+
+export const postChangeEmployeeShiftApi= (payload) => post(url.POST_CHANGE_EMPLOYEE_SHIFT,payload,{})

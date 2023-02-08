@@ -1,4 +1,12 @@
-import { WELCOME_CARD, WELCOME_NOTE, GENDER_LIST, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA, TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST, MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE, LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, WEEK_DAY_LIST, REPORTS_TYPE, EMPLOYEE_CHANGE_SHIFT, EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE } from './constants'
+import {
+  WELCOME_CARD, WELCOME_NOTE, REQUEST_TYPE_SUBSET, getRequestType, GENDER_LIST, REQUEST_TYPE, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA,
+  TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST,
+  MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE,
+  LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
+  WEEK_DAY_LIST, REPORTS_TYPE,
+  EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT
+} from './constants'
 import {
   validateMobileNumber, validateName,
   validateEmail,
@@ -11,7 +19,8 @@ import {
   validateDefault,
   validateBasicSalary,
   validateReason,
-  dropDownValueCheck
+  dropDownValueCheck,
+  dropDownValueCheckByEvent
 } from './validation'
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -97,6 +106,24 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
   return toastElement;
 }
 
+
+const showAdminModify = (type: number | undefined) => {
+  let showModify = false
+  switch (type) {
+    case DAY_STATUS_LATE:
+    case DAY_STATUS_ABSENT:
+    case DAY_STATUS_LEAVE:
+    case DAY_STATUS_ALERT:
+      showModify = true
+      break;
+    default:
+      showModify = false
+      break;
+  }
+  return showModify;
+}
+
+
 const getObjectFromArrayByKey = (array: any, key: string, value: string) => {
   return array.find((item: any) => {
     return item[key] === value;
@@ -107,6 +134,14 @@ const getDropDownValueByID = (dropDownArray: any, id: string) => {
   return dropDownArray.find((item: any) => {
     return item.id === id;
   });
+};
+
+const getDropDownValueByName = (dropDownArray: any, id: string) => {
+  if (id) {
+    return dropDownArray.find((item: any) => {
+      return item?.id === id
+    });
+  }
 };
 
 //moment
@@ -151,6 +186,27 @@ const getEndTime = (endTime?: string | number) => {
   return new Date('Wed Jul 20 2022 ' + endTime + ' GMT+0530 (IST)');
 };
 
+const getDateFormat = (date: string) => {
+  if (!date) {
+    date = '18:00';
+  }
+  return new Date('Wed Jul 20 2022 ' + date + ':00 GMT+0530 (IST)');
+};
+
+function convertTo24Hour(s: any) {
+  let AMPM = s.slice(-2);
+  let formattedTime = s.slice(0, -2).split(":")[0].length === 1 ? "0" + s.slice(0, -2).split(":")[0] : s.slice(0, -2).split(":")[0]
+  let timeArr = s.slice(0, -2).split(":");
+  let convertedTime = [formattedTime, timeArr[1]]
+  if (AMPM === "AM" && convertedTime[0] === "12") {
+    convertedTime[0] = "00";
+  } else if (AMPM === "PM") {
+    convertedTime[0] = (convertedTime[0] % 12) + 12
+  }
+  return convertedTime.join(":");
+}
+
+
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
 const inputNumberMaxLength = (value: any, length: number) => value && value.slice(0, length);
 const inputAadharLength = (value: any, length: number) => value && value.slice(0, length);
@@ -174,7 +230,7 @@ const downloadFile = ((response: any) => {
 
 const formatAMPM = (time: any) => {
   let [hours, minutes, seconds] = time.split(':');
-  var ampm = hours >= 12 ? 'pm' : 'am';
+  var ampm = hours >= 12 ? 'Pm' : 'Am';
   hours = hours % 12;
   hours = hours ? hours : 12;
   let strTime = hours + ':' + minutes + ' ' + ampm;
@@ -201,7 +257,6 @@ export {
   LEAVE_STATUS_UPDATE,
   MY_PORTFOLIO_ITEM,
   LEAVES_TYPE,
-  EMPLOYEE_CHANGE_SHIFT,
   showToast,
   goBack,
   ASYN_USER_AUTH,
@@ -242,5 +297,14 @@ export {
   EMPLOYEE_ADDITIONAL_DATA_EDIT,
   validateBasicSalary,
   ATTENDANCE_TYPE,
-  dropDownValueCheck
+  dropDownValueCheck,
+  showAdminModify,
+  REQUEST_TYPE,
+  REQUEST_TYPE_SUBSET,
+  getRequestType,
+  dropDownValueCheckByEvent,
+  getDropDownValueByName,
+  EMPLOYEES_SHIFT_DATA_EDIT,
+  getDateFormat,
+  convertTo24Hour
 }

@@ -28,6 +28,7 @@ import {
   getDisplayDateTimeFromMoment,
   useNav,
   validateDefault,
+  showAdminModify,
 } from "@utils";
 
 type CheckInLog = {
@@ -86,8 +87,8 @@ function MyLog() {
     reason: "",
     id: "",
   });
-  const [attachment, setAttachment] = useState<Array<string>>([]);
 
+  const [attachment, setAttachment] = useState<Array<string>>([]);
   const {
     employeeCheckInLogs,
     employeeCheckInDetailedLogPerDay,
@@ -98,9 +99,9 @@ function MyLog() {
     getUserCheckInLogs();
   }, [startDate]);
 
-  useEffect(() => {
-    getEmployeeEachUserTimeSheetsApi();
-  }, [type]);
+  // useEffect(() => {
+  //   getEmployeeEachUserTimeSheetsApi();
+  // }, [type]);
 
   function getUserCheckInLogs() {
     const params = { start_time: startDate, end_time: endDate };
@@ -113,8 +114,6 @@ function MyLog() {
         type,
       })
     );
-
-    console.log(JSON.stringify(employeeEachUserSheets) + "======");
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -128,18 +127,9 @@ function MyLog() {
           ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
           : "-",
         remark: el.day_status,
-      };
-    });
-  };
-
-  const normalizedTimeSheet = (timesheet1: any) => {
-    return timesheet1.map((it: TimeSheetResponse) => {
-      return {
-        Details: it.details,
-        Time: getDisplayDateTimeFromMoment(
-          getMomentObjFromServer(it.time_stamp)
-        ),
-        address: it.address?.address_text,
+        "Request": <>{showAdminModify(el.day_status_type) ?
+          <Secondary text={'Request'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
+          : '-'  }</>
       };
     });
   };
@@ -162,25 +152,24 @@ function MyLog() {
     }
   };
 
+  const onModify = (e: any, item: any) => {
+    e.stopPropagation()
+    setMarkAsPresentDetails({
+      ...markAsPresentDetails,
+      date: item.date,
+      id: item.id,
+    });
+    setMarkAsPresentModel(!markAsPresentModel);
+  }
+
   function getEmployeeCheckInDetailedLogPerDay(index: number) {
     const selectedDate = employeeCheckInLogs[index].date;
-    const dayStatus = employeeCheckInLogs[index].day_status;
-    const id = employeeCheckInLogs[index].id;
-    if (dayStatus === "Absent") {
-      setMarkAsPresentDetails({
-        ...markAsPresentDetails,
+    dispatch(
+      getCheckInDetailedLogPerDay({
         date: selectedDate,
-        id: id,
-      });
-      setMarkAsPresentModel(!markAsPresentModel);
-    } else {
-      dispatch(
-        getCheckInDetailedLogPerDay({
-          date: selectedDate,
-        })
-      );
-      setLogPerDayModel(!logPerDayModel);
-    }
+      })
+    );
+    setLogPerDayModel(!logPerDayModel);
   }
 
   const dateTimePickerHandler = (value: string, key: string) => {
@@ -212,13 +201,15 @@ function MyLog() {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: object) => {
+          onSuccess: (response: any) => {
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            showToast("success", response?.message);
           },
           onError: (error: string) => {
             showToast("error", error);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+            setMarkAsPresentModel(!markAsPresentModel);
           },
         })
       );
@@ -268,7 +259,7 @@ function MyLog() {
         toggle={() => setLogPerDayModel(!logPerDayModel)}
       >
         {employeeCheckInDetailedLogPerDay &&
-        employeeCheckInDetailedLogPerDay.length > 0 ? (
+          employeeCheckInDetailedLogPerDay.length > 0 ? (
           <Table
             displayDataSet={normalizedPerDayData(
               employeeCheckInDetailedLogPerDay
