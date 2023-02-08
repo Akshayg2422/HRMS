@@ -23,7 +23,7 @@ import {
   deleteHoliday,
   getLeavesByTypes,
 } from "../../../../store/employee/actions";
-import { goTo, LEAVES_TYPE, ROUTE, showToast, useNav } from "@utils";
+import { dropDownValueCheck, goTo, LEAVES_TYPE, ROUTE, showToast, useNav } from "@utils";
 
 function MyLeaves() {
   const navigation = useNav();
@@ -71,8 +71,8 @@ function MyLeaves() {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -103,13 +103,14 @@ function MyLeaves() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
-          <BackArrow/>
+          <BackArrow />
           <Container additionClass={"text-right row my-4"}>
             <Container additionClass="col-xl-4">
               <DropDown
                 data={LEAVES_TYPE}
+                placeholder={'Select Type'}
                 value={leaveTypes}
-                onChange={(event) => setLeaveTypes(event.target.value)}
+                onChange={(event) => setLeaveTypes(dropDownValueCheck(event.target.value, 'Select Type'))}
               />
             </Container>
             <Container additionClass="col">

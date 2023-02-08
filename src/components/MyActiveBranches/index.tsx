@@ -3,7 +3,7 @@ import {
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAdminBranches, getAllBranchesList, getBranchAdmins, postAdminUpdateBranches } from "../../store/employee/actions";
+import { getAdminBranches, getBranchAdmins, postAdminUpdateBranches } from "../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import { dropDownValueCheck, showToast } from "@utils";
 import { setBranchHierarchical } from "../../store/dashboard/actions";

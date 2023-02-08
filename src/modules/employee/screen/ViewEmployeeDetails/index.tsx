@@ -22,12 +22,13 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import{ getAllBranchesList} from '../../../../store/location/actions'
+import { getAllBranchesList } from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
   getEmployeeDetails,
 } from "../../../../store/employee/actions";
+import { log } from "console";
 
 type EmployeeDetail = {
   id?: string;
@@ -239,9 +240,12 @@ const ViewEmployeeDetails = () => {
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
     }
+    console.log(employeeInitData);
 
     setEmployeeDetails(employeeInitData);
   };
+
+
 
   return (
     <FormWrapper hideFooter title={t("viewEmployeeDetails")}>
@@ -344,13 +348,12 @@ const ViewEmployeeDetails = () => {
       />
       <h4 className="mb-4">{t("attendanceDetails")}</h4>
 
-      <InputDefault
+      {employeeDetails.shift && <InputDefault
         label={"Shift"}
         placeholder={"Shift"}
-        value={employeeDetails.shift ?
-          employeeDetails.shift : "-:-"}
+        value={employeeDetails.shift}
         disabled={true}
-      />
+      />}
       <InputText
         label={t("startTime")}
         placeholder={t("startTime")}

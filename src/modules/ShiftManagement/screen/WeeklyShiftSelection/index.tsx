@@ -10,6 +10,7 @@ import {
   getWeeklyShiftDetails,
   selectedWeeklyShiftIdAction
 } from "../../../../store/shiftManagement/actions";
+import { log } from 'console';
 
 
 const WEEK_DAYS_LIST = [
@@ -53,9 +54,8 @@ const WeeklyShiftSelection = () => {
   }, [])
 
   const dateTimePickerHandler = (value: string, key: string) => {
-    setShiftsTime({ ...shiftsTime, [key]: convertTo24Hour(value) });
+    setShiftsTime({ ...shiftsTime, [key]: convertTo24Hour(value).trim() });
   };
-
 
 
   const shiftTimeReset = () => {
@@ -79,6 +79,7 @@ const WeeklyShiftSelection = () => {
         group_name: shiftName,
         weekly_group_details: weeklyData
       }
+      console.log('params', params)
       dispatch(
         addWeeklyShift({
           params,
@@ -137,7 +138,6 @@ const WeeklyShiftSelection = () => {
       else if (timeBreakdown.length > 0) {
         let isInRange = false
         for (let i = 0; i < timeBreakdown.length; i++) {
-
           if ((shiftsTime.inTime >= timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
             (shiftsTime.outTime >= timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
             showToast("error", t('alreadyShiftAllocated'))
@@ -150,7 +150,6 @@ const WeeklyShiftSelection = () => {
         }
 
       }
-
       setWeeklyData(updatedWeek)
       setOpenModel(!openModel)
       shiftTimeReset()

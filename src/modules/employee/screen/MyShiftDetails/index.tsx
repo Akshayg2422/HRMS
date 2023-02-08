@@ -28,6 +28,8 @@ function MyShiftDetails() {
         reason: ''
     })
 
+    const [error, setError] = useState('')
+
     useEffect(() => {
         getMyShiftsDetails()
     }, [])
@@ -40,7 +42,15 @@ function MyShiftDetails() {
 
     const getMyShiftsDetails = () => {
         const params = {}
-        dispatch(getMyShifts({ params }));
+        dispatch(getMyShifts({
+            params, onSuccess: (success: object) => {
+                setError('')
+            },
+            onError: (error: string) => {
+                showToast("error", error);
+                setError(error)
+            },
+        }));
     }
 
     const getBranchShiftsList = () => {
@@ -123,16 +133,18 @@ function MyShiftDetails() {
             <Card>
                 <Container additionClass='row mb-4'>
                     <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                    <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{`${t('myShift')} (${myShifts && myShifts?.group_name})`}</h2>
-                    <Container additionClass="text-right">
-                        <Primary
-                            text={t("requestForShift")}
-                            onClick={() => getBranchShiftsList()}
-                            col={"col-xl-3"}
-                            size={"btn-md"}
-                            additionClass={""}
-                        />
-                    </Container>
+                    {!error ? <Container additionClass='row'>
+                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')} (${myShifts && myShifts?.group_name})`}</h2>
+                        <Container additionClass="text-right">
+                            <Primary
+                                text={t("requestForShift")}
+                                onClick={() => getBranchShiftsList()}
+                                col={"col-xl-3"}
+                                size={"btn-md"}
+                                additionClass={""}
+                            />
+                        </Container>
+                    </Container> : <div className="text-muted text-center"><small>{error}</small></div>}
                 </Container>
             </Card>
             {Object.keys(myShifts).length > 0 ? <Card>
@@ -173,13 +185,13 @@ function MyShiftDetails() {
                         additionClass={"xl-4"}
                     >
                         <DropDown
-                            label={t('selectWeeklyShift')}
-                            placeholder={t('selectWeeklyShift')}
+                            label={t('selectShift')}
+                            placeholder={t('selectShift')}
                             data={shiftList}
                             value={requestDetails.shiftId}
                             name={"shiftId"}
                             onChange={(event) => {
-                                onChangeHandler(dropDownValueCheckByEvent(event, t('selectWeeklyShift')))
+                                onChangeHandler(dropDownValueCheckByEvent(event, t('selectShift')))
                             }}
                         />
                     </Container>

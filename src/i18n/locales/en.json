@@ -343,7 +343,7 @@
   "employeeEditInformation": "Click on a employee name to edit information",
   "searchLocation": "Search Location",
   "employeeName":"Employee Name",
-  "enterEmployeeName":"Enter employee name",
+  "enterEmployeeName":"Search employee",
   "employeeId":"Employee Id",
   "enterEmployeeId":"Enter employee id",
   "addEmployee":"Add Employee",
@@ -362,7 +362,7 @@
 
  
   "home": "Home",
-  "log": "Log",
+  "log": "Log's",
   "totalEmployee": "Total Employee",
   "tabExpand": "Tab to Expand",
   "presen" :"Present",
@@ -488,6 +488,7 @@
   "enterTheGroupName":"Enter the Name",
   "groupName":"Group Name",
   "selectWeeklyShift":"Select weekly shift",
+  "selectShift":"Select Shift",
   "allEmployees":"All Employees",
   "selectDepartment":"Select Department",
   "selectDesignation":"Select Designation",
