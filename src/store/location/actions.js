@@ -17,7 +17,10 @@ import {
   RESET_REDUCER,
   EDIT_BRANCH_NAME,
   EDIT_BRANCH_NAME_SUCCESS,
-  EDIT_BRANCH_NAME_FAILURE
+  EDIT_BRANCH_NAME_FAILURE,
+  FETCH_LIST_ALL_BRANCHES_LIST,
+  FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS,
+  FETCH_LIST_ALL_BRANCHES_LIST_FAILURE
 } from "./actionsType"
 
 
@@ -43,8 +46,31 @@ export const getAllBranchesListFailure = (error) => {
   };
 };
 
+
+export const getListAllBranchesList = (params) => {
+  return {
+    type: FETCH_LIST_ALL_BRANCHES_LIST,
+    payload: params,
+
+  };
+};
+
+export const getListAllBranchesListSuccess = (response) => {
+  return {
+    type: FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getListAllBranchesListFailure = (error) => {
+  return {
+    type: FETCH_LIST_ALL_BRANCHES_LIST_FAILURE,
+    payload: error,
+  };
+};
+
+
 export const branchAddition = (params) => {
-  console.log("payload", params)
   return {
     type: POST_BRANCH_ADDITION,
     payload: params,

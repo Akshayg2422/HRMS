@@ -70,7 +70,7 @@ const ShiftGroup = () => {
     const normalizedBranchShifts = (branchShift: any) => {
         return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
             return {
-                "Group Name": element.name,
+                "Shift Name": element.name,
                 "Designation": getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id) ? getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id).name : <>{'-'}</>,
                 " Total Employees": element.employee_count,
             };
@@ -110,31 +110,31 @@ const ShiftGroup = () => {
         <>
             <Container>
                 <Card additionClass='row mx-3'>
-                    <h2>{t('shiftGroups')}</h2>
+                    <h2>{t('shiftss')}</h2>
                     <Container additionClass='row mt-xl-3'>
                         <InputText
-                            col='col-xl-3'
+                            col='col-xl-3 col-md-4'
                             placeholder={t('searchGroup')}
                             onChange={(e) => {
                                 setSearchGroup(e.target.value);
                             }}
                         />
                         <Container
-                            additionClass='col mt-xl-2'
+                            additionClass='col mt-xl-2 mt-md-2'
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
                             onClick={() => { searchHandler() }}
                         >
                             <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
-                        <Container additionClass="text-right col-xl-8 mt-sm-0 mt-3">
+                        <Container additionClass="text-right col-xl-8  col-md-6 mt-sm-0 mt-3">
                             <Primary
-                                additionClass='col-xl-3'
+                                additionClass='col-xl-3 col-md-4'
                                 text={t('addNew')}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
                             />
                             <Primary
-                                additionClass='col-xl-4 mt-sm-0 mt-3'
+                                additionClass='col-xl-4 mt-sm-0 mt-3 col-md-6'
                                 text={t('manageWeeklyShifts')}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
                             />

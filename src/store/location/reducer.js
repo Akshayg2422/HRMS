@@ -15,7 +15,7 @@ import {
   UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER,
   RESET_REDUCER,
   EDIT_BRANCH_NAME,
-  EDIT_BRANCH_NAME_FAILURE, EDIT_BRANCH_NAME_SUCCESS
+  EDIT_BRANCH_NAME_FAILURE, EDIT_BRANCH_NAME_SUCCESS, FETCH_LIST_ALL_BRANCHES_LIST, FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS, FETCH_LIST_ALL_BRANCHES_LIST_FAILURE
 } from "./actionsType";
 
 
@@ -32,6 +32,7 @@ import {
 
 const initialState = {
   brancheslist: [],
+  listBranchesList: [],
   loading: false,
   error: "",
   associatedBranch: [],
@@ -194,6 +195,25 @@ const LocationReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+      case FETCH_LIST_ALL_BRANCHES_LIST:
+        state = { ...state, loading: true };
+        break;
+
+      case FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS:
+        state = {
+          ...state,
+          loading: false,
+          listBranchesList: action.payload
+        };
+        break;
+      case FETCH_LIST_ALL_BRANCHES_LIST_FAILURE:
+        state = {
+          ...state,
+          error: action.payload,
+          loading: false,
+        };
+        break;
 
     case RESET_REDUCER:
       state = initialState;

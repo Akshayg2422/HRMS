@@ -1,4 +1,4 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault } from '@components';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound } from '@components';
 import React, { useEffect, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +41,8 @@ function LocationScreen() {
       })
     );
   }, [isRefresh]);
+
+
 
   useEffect(() => {
     if (enterPress) {
@@ -166,7 +168,7 @@ function LocationScreen() {
           <InputText
             value={searchBranches}
             col={'col'}
-            placeholder={t("searchBranch")}
+            placeholder={t("searchLocation")}
             onChange={(e) => {
               setsearchBranches(e.target.value);
             }}
@@ -185,7 +187,7 @@ function LocationScreen() {
           />
         </Container>
       </Card>
-      {branch && branch.length > 0 && (
+      {branch && branch.length > 0 ? (
         <CommonTable
           displayDataSet={normalizedEmployeeLog(branch)}
           tableChildren={
@@ -201,7 +203,7 @@ function LocationScreen() {
               }}
             />}
         />
-      )}
+      ) : <Card><NoRecordFound /></Card>}
       <Modal
         title={'Select Radius'}
         showModel={model}

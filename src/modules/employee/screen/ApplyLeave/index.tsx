@@ -1,6 +1,7 @@
 import { DatePicker, DropDown, FormWrapper, InputText } from "@components";
 import { Icons } from "@assets";
 import {
+  dropDownValueCheckByEvent,
   getMomentObjFromServer,
   getServerDateFromMoment,
   goBack,
@@ -172,7 +173,7 @@ const ApplyLeave = () => {
           data={FilterDropdown(leaveTypes)}
           name={"leaveType"}
           value={fromDetails.leaveType}
-          onChange={(event) => onChangeHandler(event)}
+          onChange={(event) => onChangeHandler(dropDownValueCheckByEvent(event, t("leaveType")))}
         />
         <h5>{t("dataFrom")}</h5>
         <DatePicker

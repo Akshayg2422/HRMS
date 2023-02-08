@@ -165,7 +165,7 @@ const CreateShiftGroup = () => {
                 ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id }),
                 ...(designationShiftGroup && { id: designationShiftGroup.id }),
                 designation_id: designationId
-            }
+            }            
             dispatch(postAddShift({
                 params,
                 onSuccess: (success: any) => {

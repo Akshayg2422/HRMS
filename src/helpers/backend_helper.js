@@ -24,6 +24,8 @@ export const fetchEmployeeList = (payload) => post(url.GET_EMPLOYEES_LIST, paylo
 export const fetchDesignationData = (payload) => post(url.FETCH_DESIGNATION, payload, {})
 export const fetchDepartmentData = (payload) => post(url.FETCH_DEPARTMENT, payload, {})
 export const fetchAllBranchesList = (payload) => post(url.FETCH_ALL_BRANCHES_LIST, payload, {})
+export const fetchListAllBranchesList = (payload) => post(url.FETCH_LIST_ALL_BRANCHES_LIST, payload, {})
+
 export const fetchEmployeeDetails = (payload) => post(url.FETCH_EMPLOYEE_DETAILS, payload, {})
 export const postEmployeeAddition = (payload) => post(url.POST_EMPLOYEE_ADDITION_V1, payload, {})
 export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {})

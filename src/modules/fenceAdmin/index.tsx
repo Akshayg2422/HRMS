@@ -146,7 +146,7 @@ function FenceAdmin() {
                     <InputText
                         value={searchBranches}
                         col={'col-xl'}
-                        placeholder={t("searchBranch")}
+                        placeholder={t("searchLocation")}
                         onChange={(e) => {
                             setsearchBranches(e.target.value);
                         }}
@@ -159,15 +159,15 @@ function FenceAdmin() {
                 </Container>
             </Card>
             {
-                branch && branch.length > 0 &&
-                <CommonTable
-                    displayDataSet={normalizedBranchList(branch)}
-                    tableOnClick={(e, index, item) => {
-                        let currentItem = branch[index];
-                        proceedModelHandler(currentItem);
-                    }}
-                />
-            }
+                branch && branch.length > 0 ?
+                    <CommonTable
+                        displayDataSet={normalizedBranchList(branch)}
+                        tableOnClick={(e, index, item) => {
+                            let currentItem = branch[index];
+                            proceedModelHandler(currentItem);
+                        }}
+                    />
+                    : <Card><NoRecordFound /></Card>}
 
             {
                 <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => setModel(!model)}>

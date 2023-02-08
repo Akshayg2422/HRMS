@@ -117,6 +117,7 @@ const ManageEmployee = () => {
   const [designationModel, setDesignationModel] = useState(false);
   const [isAdminRights, setIsAdminRights] = useState(false);
   const [department, setDepartment] = useState("");
+  const [designationNote, setDesignationNote] = useState('')
   const [designation, setDesignation] = useState("");
   const [isRefresh, setIsRefresh] = useState(false);
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
@@ -161,9 +162,11 @@ const ManageEmployee = () => {
         onError: (error: string) => { },
       })
     );
+    setDesignationNote('')
     if (isEdit) {
       getEmployeeDetailsAPi(isEdit);
       getBranchShiftsList()
+      setDesignationNote("* Changing Designation Will Impact in Shift")
     }
   }, [isRefresh]);
 
@@ -185,7 +188,9 @@ const ManageEmployee = () => {
 
   };
 
+
   useEffect(() => {
+    setEmployeeDetails({ ...employeeDetails, shift: '' });
     setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
   }, [employeeDetails.designation, shiftGroup])
 
@@ -296,6 +301,7 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
+      console.log("params", params);
       dispatch(
         employeeAddition({
           params,
@@ -556,6 +562,7 @@ const ManageEmployee = () => {
             onClick={() => setDesignationModel(!designationModel)}
           />
         </div>
+        {designationNote && <p className="text-right h6 mr-md-6  mt--3 mr-xl-6">{designationNote}</p>}
         <div className="row align-items-center">
           <div className="col mt--2">
             <DropDown

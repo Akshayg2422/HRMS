@@ -146,7 +146,7 @@ const DashBoardAttendance = ({ }) => {
           fontWeight: 'bold',
           color: fontColor(el.per_day_details?.day_status_type)
         }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
-        'Modify': <>{showAdminModify(el?.day_status_type) ?
+        'Modify': <>{showAdminModify(el?.per_day_details?.day_status_type) ?
           <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
       };
@@ -411,9 +411,9 @@ const DashBoardAttendance = ({ }) => {
               </Container>
               <Container additionClass={"col mb-4"}>
                 <Primary text={'Search'} onClick={() => getTodayStats(currentPage)} />
-                <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
+                {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
                   <Icon icon={Icons.DownloadSecondary} />
-                </a>
+                </a> */}
               </Container>
             </Container>
           </div>

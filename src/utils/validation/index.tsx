@@ -150,7 +150,7 @@ const dropDownValueCheck = (value: any, placeHolder: string) => {
   }
 }
 
-const dropDownValueCheckByEvent = (e: any, placeHolder: string) => {
+const dropDownValueCheckByEvent = (e: any, placeHolder: string | undefined) => {
   if (e.target.value != placeHolder) {
     return e
   } else {

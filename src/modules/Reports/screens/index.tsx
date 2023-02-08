@@ -160,6 +160,7 @@ function Reports() {
         report_type: reportsType,
         ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
         ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
+        ...(searchEmployee && { q: searchEmployee }),
         department_id: selectedDepartment,
         designation_id: selectedDesignation,
         ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),

@@ -195,15 +195,15 @@ const getDateFormat = (date: string) => {
 
 function convertTo24Hour(s: any) {
   let AMPM = s.slice(-2);
+  let formattedTime = s.slice(0, -2).split(":")[0].length === 1 ? "0" + s.slice(0, -2).split(":")[0] : s.slice(0, -2).split(":")[0]
   let timeArr = s.slice(0, -2).split(":");
-  if (AMPM === "AM" && timeArr[0] === "12") {
-      // catching edge-case of 12AM
-      timeArr[0] = "00";
+  let convertedTime = [formattedTime, timeArr[1]]
+  if (AMPM === "AM" && convertedTime[0] === "12") {
+    convertedTime[0] = "00";
   } else if (AMPM === "PM") {
-      // everything with PM can just be mod'd and added with 12 - the max will be 23
-      timeArr[0] = (timeArr[0] % 12) + 12
-  }  
-  return timeArr.join(":");
+    convertedTime[0] = (convertedTime[0] % 12) + 12
+  }
+  return convertedTime.join(":");
 }
 
 
@@ -230,7 +230,7 @@ const downloadFile = ((response: any) => {
 
 const formatAMPM = (time: any) => {
   let [hours, minutes, seconds] = time.split(':');
-  var ampm = hours >= 12 ? 'pm' : 'am';
+  var ampm = hours >= 12 ? 'Pm' : 'Am';
   hours = hours % 12;
   hours = hours ? hours : 12;
   let strTime = hours + ':' + minutes + ' ' + ampm;
