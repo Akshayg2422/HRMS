@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NAV_ITEM, useNav } from "@utils";
 import { Icons } from "@assets";
 import { ImageView } from "@components";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
+import { log } from "console";
 // import { matchRouteName } from "../../../../store/dashboard/actions";
 
 type NavItemProps = {
@@ -18,12 +19,26 @@ const Navbar = ({ }) => {
   const dispatch = useDispatch();
 
   const { navIndex } = useSelector((state: any) => state.AppReducer);
+  const pathname = window.location.pathname
 
   const currentNav = (it: any, index: any) => {
-    dispatch(currentNavIndex(index));
     navigate(it.route);
     // dispatch(matchRouteName(it.id))
+    dynamicActiveNav()
   };
+
+  useEffect(() => {
+    dynamicActiveNav()
+  }, [pathname])
+
+
+  const dynamicActiveNav = () => {
+    NAV_ITEM.filter((el: any, index: number) => {
+      if (pathname === el.route) {
+        dispatch(currentNavIndex(index));
+      }
+    })
+  }
 
   return (
     <nav

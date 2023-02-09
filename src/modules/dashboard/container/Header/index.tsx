@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST } from '@utils';
+import React, { useEffect, useState } from 'react';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, Secondary, Primary, Divider, } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,15 +16,10 @@ import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
 import { Notification } from '../Notification';
 
-
-
-
-
-
-
 const Header = () => {
   const [languageModel, setLanguageModel] = useState(false);
   const [model, setModel] = useState(false);
+  const [headerTitle, setHeaderTitle] = useState('')
   const { t, i18n } = useTranslation();
   const navigate = useNav();
 
@@ -37,8 +32,21 @@ const Header = () => {
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  const pathname = window.location.pathname
 
 
+  useEffect(() => {
+    dynamicHeaderTitle()
+  }, [pathname])
+
+
+  const dynamicHeaderTitle = () => {
+    NAV_ITEM.filter((el: any) => {
+      if (pathname === el.route) {
+        setHeaderTitle(el.name)
+      }
+    })
+  }
 
 
   const DropdownHandler = (item: any) => {
@@ -85,6 +93,10 @@ const Header = () => {
     }
   };
 
+
+
+
+
   return (
     <>
       <nav className='navbar navbar-top navbar-expand   bg-primary border-bottom'>
@@ -103,9 +115,8 @@ const Header = () => {
                 </div>
               </div>
             </a>
-            <h6 className='h2 text-white d-inline-block mb-0'>{'Dashboard'}</h6>
+            <h6 className='h2 text-white d-inline-block mb-0'>{headerTitle}</h6>
             <ul className='navbar-nav align-items-center  ml-md-auto '>
-              {/* <Notification /> */}
               <div className='media-body  d-none d-lg-block'>
                 {dashboardDetails && dashboardDetails.user_details && (
                   <span className='mb-0 text-white  font-weight-bold'>
