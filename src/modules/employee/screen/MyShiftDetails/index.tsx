@@ -222,6 +222,7 @@ function MyShiftDetails() {
                 </Container>
             </Modal>
         </div>
+
     )
 }
 

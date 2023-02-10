@@ -54,6 +54,8 @@ export const ROUTE = {
   ROUTE_MANAGE_REQUEST: '/manage-request',
   ROUTE_SHIFT_REQUEST: '/shift-request',
   ROUTE_EMPLOYEE_SHIFT_REQUEST: '/employee-shift-request',
+  ROUTE_LAUNCH_SUCCESS: '/launch-success',
+
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
@@ -170,6 +172,7 @@ export const NAV_ITEM = [
   { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
+  { id: '18', name: 'Face Approval', value: 'FA', icon: 'ni ni-circle-08', image: Icons.MyBranches, route: "" },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
 

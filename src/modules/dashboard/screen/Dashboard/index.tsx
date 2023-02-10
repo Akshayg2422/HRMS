@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";import { useTranslation } from "react-
 
 
 import {
-  getAllBranchesList,
+  getListAllBranchesList,
 } from '../../../../store/location/actions';
 
 import { LocationProps } from '../../../../components/Interface';
@@ -40,7 +40,6 @@ function Dashboard() {
   useEffect(() => {
     dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
-    // dispatch(getAdminBranches({}));
   }, []);
   
 
@@ -67,7 +66,7 @@ function Dashboard() {
   useEffect(() => {
     if (dashboardDetails) {
       const params = {}
-      dispatch(getAllBranchesList({
+      dispatch(getListAllBranchesList({
         params,
         onSuccess: (response: Array<LocationProps>) => {
           const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)

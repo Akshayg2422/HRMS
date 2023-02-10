@@ -62,6 +62,7 @@ import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
+import { LaunchSuccessScreen } from "./screens/Zenylog_site/Container";
 function App() {
 
   return (
@@ -261,6 +262,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_SHIFT_SET}
           element={<RequireAuth>{<CreateNewDesignationGroup />}</RequireAuth>}
+        />
+         <Route
+          path={ROUTE.ROUTE_LAUNCH_SUCCESS}
+          element={<LaunchSuccessScreen/>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

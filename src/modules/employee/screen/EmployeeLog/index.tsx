@@ -40,7 +40,7 @@ type CheckInLog = {
   logs?: [];
   start_time?: string;
   end_time?: string;
-  day_status_type?: number|undefined;
+  day_status_type?: number | undefined;
   day_status?: string;
   hours_spent?: number;
   mobile_number?: string;
@@ -58,6 +58,8 @@ function EmployeeLog() {
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
   const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+  const [presentModifiedModel, setPresentModifiedModel] = useState<boolean>(false);
+  const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
   const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
     date: "",
     reason: "",
@@ -165,7 +167,7 @@ function EmployeeLog() {
     });
     setMarkAsPresentModel(!markAsPresentModel);
   }
-  
+
   const onChangeHandler = (event: any) => {
     setMarkAsPresentDetails({
       ...markAsPresentDetails,
@@ -203,7 +205,7 @@ function EmployeeLog() {
               end_time: endDate,
               user_id: selectedEmployeeDetails.id,
             };
-            dispatch(getEmployeesCheckInLogs({params}));
+            dispatch(getEmployeesCheckInLogs({ params }));
           },
           onError: (error: string) => {
             showToast("error", error);
@@ -213,6 +215,39 @@ function EmployeeLog() {
       );
     }
   };
+
+  function fontColor(statusType: any) {
+    let color = ''
+    switch (statusType) {
+      case 1: color = "#2ECC71"
+        break;
+      case 6: color = "#DC4A1F";
+        break;
+      case 9: color = "#C39DE9";
+        break;
+      case 2: color = "#BA4A00";
+        break;
+      case 4: color = "#D4AC0D";
+        break;
+      case 10: color = "#2ECC71";
+        break;
+      case 5: color = "#FF351F";
+        break;
+      default:
+        color = "#000000"
+    }
+    return color
+  }
+
+  const handlePresentModified = (e: any, type: any) => {
+    if (type?.day_status_type === 10) {
+      e.stopPropagation()
+      setPresentModifiedModel(!presentModifiedModel)
+      setPresentModifiedDetails(type)
+    }
+  }
+
+  console.log("presentModifiedDetails", presentModifiedDetails)
 
   return (
     <>
@@ -329,8 +364,11 @@ function EmployeeLog() {
                             )
                             : "-"}
                         </small>
-                        <small className="mb-0 col">{item.day_status}</small>
-                        <small className="mb-0 col">{showAdminModify(item?.day_status_type) ?
+                        <small className="mb-0 p-0 col" style={{
+                          cursor: item.day_status_type === 10 ? 'pointer' : '', fontWeight: 'bold',
+                          color: fontColor(item.day_status_type),
+                        }} onClick={(e) => { handlePresentModified(e, item) }}>{item.day_status}</small>
+                        <small className="mb-0 col" >{showAdminModify(item?.day_status_type) ?
                           <Secondary text={t('modify')} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, item) }} />
                           : '-'}</small>
                       </Container>
@@ -439,6 +477,21 @@ function EmployeeLog() {
             />
             <Primary text={t("modify")} onClick={() => onRequestHandler()} />
           </Container>
+        </Container>
+      </Modal>
+      <Modal showModel={presentModifiedModel}
+        toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
+        <Container additionClass={'m-3'}><span>
+          {t("approver")}
+          {":"}&nbsp;&nbsp;
+          <span className="text-black">{presentModifiedDetails?.approved_by}</span>
+        </span>
+          <br />
+          <span>
+            {t("reason")}
+            {":"}&nbsp;&nbsp;
+            <span className="text-black">{presentModifiedDetails?.note}</span>
+          </span>
         </Container>
       </Modal>
     </>

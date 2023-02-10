@@ -34,7 +34,7 @@ function MyBranches() {
     const [adminId, setAdminId] = useState<any>()
     const [removeAssociatedBranch, setRemoveAssociatedBranch] = useState<any>([])
     const [branchesListSet, setBranchesListSet] = useState<any>([])
-    const { brancheslist } =
+    const { listBranchesList } =
         useSelector((state: any) => state.LocationReducer);
     const { hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
@@ -82,7 +82,7 @@ function MyBranches() {
 
     const AdminSubBranches = () => {
         let subBranches: any[] = []
-        brancheslist.map((branch: any) => {
+        listBranchesList.map((branch: any) => {
             hierarchicalBranchIds.child_ids.map((ids: any) => {
                 if (branch.id === ids) {
                     subBranches.push(branch)
