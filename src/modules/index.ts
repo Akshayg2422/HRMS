@@ -11,6 +11,7 @@ import {
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile, DashBoardOtp } from './dashboard';
 
+
 import {
   ManageEmployee, EmployeeLog, EmployeeWorkBook,
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
@@ -30,8 +31,9 @@ import { AutoLogout } from './SessionTimeout'
 import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
-import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup, ShiftRequest,CreateNewDesignationGroup } from './ShiftManagement';
+import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup, ShiftRequest, CreateNewDesignationGroup } from './ShiftManagement';
 import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGroup } from './Payroll'
+import { FaceApproval } from './FaceApproval'
 
 import { Notifications, ManageRequest } from './notifications'
 
@@ -92,7 +94,8 @@ export {
   ManageRequest,
   ShiftRequest,
   EmployeeShiftRequest,
-  CreateNewDesignationGroup
+  CreateNewDesignationGroup,
+  FaceApproval
 }
 
 

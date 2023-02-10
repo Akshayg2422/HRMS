@@ -50,6 +50,7 @@ import {
   ShiftRequest,
   EmployeeShiftRequest,
   CreateNewDesignationGroup,
+  FaceApproval,
   // DashBoardOtp
 } from "@modules";
 
@@ -261,6 +262,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_SHIFT_SET}
           element={<RequireAuth>{<CreateNewDesignationGroup />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_FACE_APPROVAL}
+          element={<RequireAuth>{<FaceApproval/>}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
