@@ -62,33 +62,30 @@ import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
-import { LaunchScreen, LaunchSuccessScreen } from "./screens/Zenylog_site/Container";
+import { LaunchScreen, LaunchSuccessScreen, LaunchScreenSecondary } from "./screens/Zenylog_site/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { launchActive } from "./store/app/actions";
+import { launchActive, timerAction } from "./store/app/actions";
 
 function App() {
   let clockedIn = new Date()
-  let clockedOut = new Date("2023-02-11 19:30:00");
-  // let clockedOut = new Date("2023-02-11 09:15:00");
-
+  let clockedOut = new Date("2023-02-11 20:48:00");
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
-  const { setLaunch } = useSelector(
+  const { setLaunch, hideOTP } = useSelector(
     (state: any) => state.AppReducer
   );
 
 
   const dispatch = useDispatch()
 
+  console.log(setLaunch+'====');
+  
+
   useEffect(() => {
     if (clockedIn < clockedOut) {
-      if (dashboardDetails && dashboardDetails.user_details) {
-        dispatch(launchActive(true))
-      } else {
-        dispatch(launchActive(false))
-      }
+      dispatch(timerAction(40))
     } else if (clockedIn > clockedOut) {
       dispatch(launchActive(true))
     }
@@ -101,7 +98,7 @@ function App() {
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
-        {setLaunch ? <Route path={"/"} element={<ZenylogSite />} /> : <Route path={"/"} element={<LaunchScreen />} />}
+        {false ? <Route path={"/"} element={<ZenylogSite />} /> : <Route path={"/"} element={<LaunchScreenSecondary />} />}
         <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
         <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
         <Route

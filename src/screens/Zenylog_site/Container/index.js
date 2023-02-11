@@ -7,4 +7,5 @@ import Flowchart from './FlowChart'
 import AboutUs from './AboutUs'
 import LaunchScreen from './LaunchScreen'
 import LaunchSuccessScreen from './LaunchSuccessScreen'
-export {Home,Navbar,Features,Contact,Policy,Flowchart,AboutUs,LaunchScreen,LaunchSuccessScreen};
+import LaunchScreenSecondary from './LaunchScreenSecondary'
+export {Home,Navbar,Features,Contact,Policy,Flowchart,AboutUs,LaunchScreen,LaunchSuccessScreen,LaunchScreenSecondary};

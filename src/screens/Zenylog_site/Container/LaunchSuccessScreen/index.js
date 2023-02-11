@@ -21,7 +21,7 @@ const LaunchSuccessScreen = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      goTo(navigate, '/login')
+      // goTo(navigate, '/login')
     }, 2000)
   }, [])
 

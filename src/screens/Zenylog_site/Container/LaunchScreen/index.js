@@ -8,8 +8,7 @@ import {
 import { Secondary } from '@components'
 import { useDispatch, useSelector } from "react-redux";
 import { launchActive } from "../../../../store/app/actions";
-
-
+import './launch.css'
 
 
 const LaunchScreen = () => {
@@ -19,17 +18,13 @@ const LaunchScreen = () => {
     (state) => state.AppReducer
   );
   let clockedIn = new Date();
-  // let clockedOut = new Date("2023-02-11 13:00:00");
-  let clockedOut = new Date("2023-02-11 19:30:00");
-  // let clockedOut = new Date("2023-02-11 09:15:00");
-
+  let clockedOut = new Date("2023-02-11 18:00:00");
   let timestamp = (clockedOut - clockedIn) / 1000
   const [seconds, setSeconds] = useState(timestamp);
 
-
   useEffect(() => {
     if (clockedIn > clockedOut) {
-        goTo(navigate, ROUTE.ROUTE_LAUNCH_SUCCESS, true)
+      goTo(navigate, ROUTE.ROUTE_LAUNCH_SUCCESS, true)
     } else {
       const intervalId = setInterval(() => {
         setSeconds(seconds - 1);
@@ -47,17 +42,7 @@ const LaunchScreen = () => {
 
   return (
     <div
-      style={{
-        backgroundImage:
-          `url(${Images.LaunchScreenBackGround})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        backgroundRepeat: "no-repeat"
-      }}
-      className="m-0 p-0"
+      className="m-0 p-0 responsive-bg-element"
     >
       <div className="container-fluid ml-xl-6 mt-xl-5 mt-sm-0 mt-3 d-flex" style={{ position: 'absolute', justifyContent: 'flex-start', alignSelf: 'flex-start' }}>
         <img src={Images.LaunchLogo} height={"10%"} width={"10%"}></img>
@@ -66,8 +51,8 @@ const LaunchScreen = () => {
             additionClass="bg-white"
             text={"Login"}
             onClick={() => {
-              goTo(navigate, '/login', true)
               dispatch(launchActive(true))
+              goTo(navigate, '/login', true)
             }}
           />
         </div>
@@ -75,7 +60,7 @@ const LaunchScreen = () => {
 
       {timestamp > 0 &&
         <div className="container-fluid ml-xl-5 ml-sm-0 ml-3 mt-sm-0 mt-9">
-          <div className="text-white h1 ml-1 fs-3" ><b>{"ZenyQ"}</b> {"launching in"}</div>
+          <div className="text-white h1 ml-1 fs-3 mt-sm-0 mt-9" ><b>{"ZenyQ"}</b> {"launching in"}</div>
           <div className="row col-xl ml--4 my-3">
             <div className="col-2 col-sm-0 col-3 col-xl-1 ">
               <h1 className="display-1 text-white ">{hours.toString().padStart(2, "0")}</h1>
