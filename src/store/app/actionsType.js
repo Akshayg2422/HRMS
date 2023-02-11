@@ -7,5 +7,10 @@ export const RESET_REDUCER = 'RESET_REDUCER';
 
 export const IS_LAUNCH = 'IS_LAUNCH';
 
+export const TIMER = 'TIMER';
+
+
+
+
 
 export const NAV_INDEX = 'NAV_INDEX'
