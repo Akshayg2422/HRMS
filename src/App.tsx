@@ -69,6 +69,8 @@ import { launchActive } from "./store/app/actions";
 function App() {
   let clockedIn = new Date()
   let clockedOut = new Date("2023-02-11 13:00:00");
+  // let clockedOut = new Date("2023-02-11 09:15:00");
+
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
@@ -95,7 +97,7 @@ function App() {
 
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
