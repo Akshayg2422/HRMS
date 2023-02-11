@@ -19,7 +19,8 @@ const LaunchScreen = () => {
     (state) => state.AppReducer
   );
   let clockedIn = new Date();
-  let clockedOut = new Date("2023-02-11 13:00:00");
+  // let clockedOut = new Date("2023-02-11 13:00:00");
+  let clockedOut = new Date("2023-02-11 19:30:00");
   // let clockedOut = new Date("2023-02-11 09:15:00");
 
   let timestamp = (clockedOut - clockedIn) / 1000
