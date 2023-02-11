@@ -26,13 +26,22 @@ const LeaveRequest = () => {
 
   const { currentPage } = useSelector((state: any) => state.EmployeeReducer);
 
+  const LEAVE_TYPE = [
+    { id: 1, name: 'All', value: -2, component: <AllLeaves /> },
+    { id: 2, name: 'Pending', value: -1, component: <Pending /> },
+    { id: 3, name: 'Approved', value: 1, component: <Approved /> },
+    { id: 4, name: 'Rejected', value: 0, component: <Rejected /> },
+  ];
+
   const [searchEmployee, setSearchEmployee] = useState("");
   const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
 
   useEffect(() => {
-    fetchPendingDetail(currentPage, -2);
+    fetchPendingDetail(currentPage, currentStatusId);
   }, [hierarchicalBranchIds]);
 
+
+  
   const fetchPendingDetail = (pageNumber: number, statusId: number) => {
     setCurrentStatusId(statusId);
     const params = {
@@ -93,103 +102,46 @@ const LeaveRequest = () => {
             id="tabs-icons-text"
             role="tablist"
           >
-            <li className="nav-item">
-              <a
-                className="nav-link mb-sm-3 mb-md-0 active"
-                id="tabs-icons-text-1-tab"
-                data-toggle="tab"
-                href="#tabs-icons-text-1"
-                role="tab"
-                aria-controls="tabs-icons-text-1"
-                aria-selected="true"
-                onClick={() => fetchPendingDetail(currentPage, -2)}
-              >
-                {t("all")}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link mb-sm-3 mb-md-0"
-                id="tabs-icons-text-2-tab"
-                data-toggle="tab"
-                href="#tabs-icons-text-2"
-                role="tab"
-                aria-controls="tabs-icons-text-2"
-                aria-selected="true"
-                onClick={() => fetchPendingDetail(currentPage, -1)}
-              >
-                {t("pending")}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link mb-sm-3 mb-md-0"
-                id="tabs-icons-text-3-tab"
-                data-toggle="tab"
-                href="#tabs-icons-text-3"
-                role="tab"
-                aria-controls="tabs-icons-text-3"
-                aria-selected="false"
-                onClick={() => fetchPendingDetail(currentPage, 1)}
-              >
-                {t("approved")}
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link mb-sm-3 mb-md-0"
-                id="tabs-icons-text-4-tab"
-                data-toggle="tab"
-                href="#tabs-icons-text-4"
-                role="tab"
-                aria-controls="tabs-icons-text-4"
-                aria-selected="false"
-                onClick={() => fetchPendingDetail(currentPage, 0)}
-              >
-                {t("rejected")}
-              </a>
-            </li>
+            {LEAVE_TYPE.map((el: any, index: number) => {
+              return (
+                <li className="nav-item">
+                  <a
+                    className={`nav-link mb-sm-3 mb-md-0 ${currentStatusId === el.value && "active"
+                      }`}
+                    id={`tabs-icons-text-${el.id}-tab`}
+                    data-toggle="tab"
+                    href={`#tabs-icons-text-${el.id}`}
+                    role="tab"
+                    aria-controls={`tabs-icons-text-${el.id}`}
+                    aria-selected="true"
+                    onClick={() => fetchPendingDetail(currentPage, el.value)}
+                  >
+                    {el.name}
+                  </a>
+                </li>
+              )
+            })}
           </ul>
         </div>
       </Card>
 
       <Card>
         <div className="tab-content" id="myTabContent">
-          <div
-            className="tab-pane fade show active"
-            id="tabs-icons-text-1"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-1-tab"
-          >
-            <AllLeaves />
-          </div>
-          <div
-            className="tab-pane fade show"
-            id="tabs-icons-text-2"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-2-tab"
-          >
-            <Pending />
-          </div>
-          <div
-            className="tab-pane fade"
-            id="tabs-icons-text-3"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-3-tab"
-          >
-            <Approved />
-          </div>
-          <div
-            className="tab-pane fade"
-            id="tabs-icons-text-4"
-            role="tabpanel"
-            aria-labelledby="tabs-icons-text-4-tab"
-          >
-            <Rejected />
-          </div>
+          {LEAVE_TYPE.map((el) => {
+            return (
+              <div
+                className={`tab-pane fade ${currentStatusId === el.value && " show active"}`}
+                id={`tabs-icons-text-${el.id}`}
+                role="tabpanel"
+                aria-labelledby={`tabs-icons-text-${el.id}-tab`}
+              >
+                {el.component}
+              </div>
+            )
+          })}
         </div>
-      </Card>
-    </div>
+      </Card >
+    </div >
   );
 };
 

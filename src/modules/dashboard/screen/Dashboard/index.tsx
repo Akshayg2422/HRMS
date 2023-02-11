@@ -82,7 +82,7 @@ function Dashboard() {
 
   return (
     <>
-      {dashboardDetails && dashboardDetails.user_details && <div className="mx--3 my--4"><Header /></div>}
+      {/* {dashboardDetails && dashboardDetails.user_details && <div className="mx--3 my--4"><Header /></div>} */}
       <div className='my-5'>
         <DashBoardCard />
       </div>

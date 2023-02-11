@@ -87,7 +87,6 @@ const Rejected = () => {
       })
     );
   };
-console.log("employeesLeaves",employeesLeaves)
   return (
     <div>
       <div className="row">

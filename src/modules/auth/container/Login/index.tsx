@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { getValidateUser } from '../../../../store/auth/actions';
 import { useSelector } from 'react-redux';
+import { launchActive } from '../../../../store/app/actions';
 
 function Login() {
 
@@ -45,6 +46,7 @@ function Login() {
     if (enterPress) {
       proceedValidateUserApi()
     }
+    dispatch(launchActive(true))
   }, [enterPress])
 
   const proceedValidateUser = (params: object) => {
