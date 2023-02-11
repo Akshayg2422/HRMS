@@ -54,6 +54,7 @@ export const ROUTE = {
   ROUTE_MANAGE_REQUEST: '/manage-request',
   ROUTE_SHIFT_REQUEST: '/shift-request',
   ROUTE_EMPLOYEE_SHIFT_REQUEST: '/employee-shift-request',
+  ROUTE_LAUNCH_SUCCESS: '/launch-success',
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]

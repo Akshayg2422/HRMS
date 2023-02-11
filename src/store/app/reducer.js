@@ -3,7 +3,8 @@ import {
   HIDE_LOADER,
   SET_USER_LOGIN_DETAILS,
   RESET_REDUCER,
-  NAV_INDEX
+  NAV_INDEX,
+  IS_LAUNCH
 } from "./actionsType";
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
   userDetails: "",
   mobileNumber: "",
   navIndex: 0,
+  setLaunch: false
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -44,6 +46,11 @@ const AppReducer = (state = initialState, action) => {
     case NAV_INDEX:
       state = { ...state, navIndex: action.payload };
       break;
+
+    case IS_LAUNCH:
+      state = { ...state, setLaunch: action.payload };
+      break;
+
 
     case RESET_REDUCER:
       state = initialState;
