@@ -147,7 +147,7 @@ const LaunchScreenSecondary = () => {
         // dispatch(timerAction(Math.floor(displaySeconds) - INTERVEL))
         // setActiveUser(currentUser)
         // setActiveUser(undefined)
-      }
+      } 
     }
   }, [otp.field1, otp.field2, otp.field3, otp.field4, otp.field5, otp.field6, otp.field7])
 
