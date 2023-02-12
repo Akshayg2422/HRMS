@@ -46,7 +46,6 @@ function Login() {
     if (enterPress) {
       proceedValidateUserApi()
     }
-    dispatch(launchActive(true))
   }, [enterPress])
 
   const proceedValidateUser = (params: object) => {

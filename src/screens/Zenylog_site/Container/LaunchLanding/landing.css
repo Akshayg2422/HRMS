@@ -1,0 +1,18 @@
+.responsive-bg-element {
+    background-image: url('../../../../assets/images//LaunchScreen/LaunchScreen.png');
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+
+}
+
+@media (max-width: 991px) {
+    .responsive-bg-element {
+        height: 100vh;
+        background-position: center;
+        background-image: url('../../../../assets/images/LauchScreenSmall//LaunchScreenSmall.png');
+    }
+}

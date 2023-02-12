@@ -4,7 +4,10 @@ import {
   SET_USER_LOGIN_DETAILS,
   RESET_REDUCER,
   NAV_INDEX,
-  IS_LAUNCH
+  IS_LAUNCH,
+  HIDE_OTP,
+  LAUNCH_TIME,
+  TIMER
 } from "./actionsType";
 
 const initialState = {
@@ -14,7 +17,8 @@ const initialState = {
   userDetails: "",
   mobileNumber: "",
   navIndex: 0,
-  setLaunch: false
+  setLaunch: false,
+  timer: 40,
 };
 
 const AppReducer = (state = initialState, action) => {
@@ -51,6 +55,9 @@ const AppReducer = (state = initialState, action) => {
       state = { ...state, setLaunch: action.payload };
       break;
 
+    case TIMER:
+      state = { ...state, timer: action.payload };
+      break;
 
     case RESET_REDUCER:
       state = initialState;
