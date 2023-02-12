@@ -62,7 +62,36 @@ import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
+import { LaunchScreen, LaunchSuccessScreen } from "./screens/Zenylog_site/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { launchActive } from "./store/app/actions";
+
 function App() {
+  let clockedIn = new Date()
+  let clockedOut = new Date("2023-02-11 13:00:00");
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
+  const { setLaunch } = useSelector(
+    (state: any) => state.AppReducer
+  );
+
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (clockedIn < clockedOut) {
+      if (dashboardDetails && dashboardDetails.user_details) {
+        dispatch(launchActive(true))
+      } else {
+        dispatch(launchActive(false))
+      }
+    } else if (clockedIn > clockedOut) {
+      dispatch(launchActive(true))
+    }
+  }, [])
+
 
   return (
     <>
@@ -70,7 +99,7 @@ function App() {
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
-        <Route path={"/"} element={<ZenylogSite />} />
+        {setLaunch ? <Route path={"/"} element={<ZenylogSite />} /> : <Route path={"/"} element={<LaunchScreen />} />}
         <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
         <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
         <Route
@@ -261,6 +290,10 @@ function App() {
         <Route
           path={ROUTE.ROUTE_SHIFT_SET}
           element={<RequireAuth>{<CreateNewDesignationGroup />}</RequireAuth>}
+        />
+        <Route
+          path={ROUTE.ROUTE_LAUNCH_SUCCESS}
+          element={<LaunchSuccessScreen />}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>
