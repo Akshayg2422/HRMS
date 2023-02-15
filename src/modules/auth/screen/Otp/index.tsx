@@ -197,7 +197,6 @@ function Otp() {
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);
               }
-
             }}
           />
           <OtpInput

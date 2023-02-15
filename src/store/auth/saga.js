@@ -162,15 +162,14 @@ function* registerAdmin(action) {
     const response = yield call(postRegisterAdmin, action.payload.params);
 
     if (response.success) {
-
       yield put(hideLoader());
       yield put(getRegisterAdminSuccess({ ...response, ...action.payload.params }));
+      yield call(action.payload.onSuccess(response));
 
     } else {
-
       yield put(hideLoader());
       yield put(getRegisterAdminFailure(response.error_message));
-
+      yield call(action.payload.onError(response));
     }
   } catch (error) {
 
@@ -186,7 +185,7 @@ function* registerCompany(action) {
     yield put(showLoader());
 
     const response = yield call(postRegisterCompany, action.payload.params);
-  
+
     if (response.success) {
 
       yield put(hideLoader());
@@ -214,18 +213,18 @@ function* uploadCompanyDocument(action) {
     yield put(showLoader());
 
     const response = yield call(postUploadCompanyDocument, action.payload.params);
-   
+
     if (response.success) {
 
       yield put(hideLoader());
       yield put(uploadCompanyDocumentsSuccess(response.details));
-      yield call(action.payload.onSuccess());
+      yield call(action.payload.onSuccess(response.details));
 
     } else {
 
       yield put(hideLoader());
       yield put(uploadCompanyDocumentsFailure(response.error_message));
-      yield call(action.payload.onError());
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {

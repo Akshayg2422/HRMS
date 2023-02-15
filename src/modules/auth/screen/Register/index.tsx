@@ -38,6 +38,9 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getNatureOfBusiness,
   getTypeOfBusiness,
+  registerOtpVerify,
+  updateAdminInput,
+  updateCompanyInput,
 } from "../../../../store/auth/actions";
 import Otp from "../RegisterOtp";
 import {
@@ -46,16 +49,15 @@ import {
   getAdminVerificationOtp,
   uploadCompanyDocuments,
 } from "../../../../store/auth/actions";
+import { setUserLoginDetails } from "../../../../store/app/actions";
 
 function SignUp() {
   const { t, i18n } = useTranslation();
   let dispatch = useDispatch();
 
   const {
-    natureOfBusiness,
-    typeOfBusiness,
     registerCurrentContainer,
-    mobileNumber,
+    mobileNumber, registerAdminDetails, registerOtp, registerCompanyDetails, fileUpload
   } = useSelector((state: any) => state.AuthReducer);
 
   const REGISTER_USER_DETAILS = 1;
@@ -63,32 +65,7 @@ function SignUp() {
   const REGISTER_COMPANY_DETAILS = 3;
   const REGISTER_DOCUMENT_UPLOAD = 4;
 
-  const {
-    firstName,
-    lastName,
-    e_mail,
-    pan,
-    registerMobileNumber,
-    aadharNumber,
-    designation,
-    gender,
-    businessName,
-    brandName,
-    companyPan,
-    companyGst,
-    communicationAddress,
-    pinCode,
-    city,
-    state,
-    refferalId,
-    otp1,
-    otp2,
-    otp3,
-    otp4,
-    businesType,
-    businessNature,
-    fileUpload,
-  } = useAuth();
+  console.log('registerAdminDetails', registerAdminDetails)
 
   const navigation = useNav();
 
@@ -100,6 +77,7 @@ function SignUp() {
     } else if (registerCurrentContainer === REGISTER_COMPANY_DETAILS) {
       proceedCompanyDetailsApi();
     } else if (registerCurrentContainer === REGISTER_DOCUMENT_UPLOAD) {
+      proceedDocumentUploadAPi();
     }
   };
 
@@ -108,84 +86,125 @@ function SignUp() {
     dispatch(getTypeOfBusiness({}));
   }, []);
 
+
+
   const validateUserDetailsParams = () => {
-    return (
-      validateName(firstName).status &&
-      validateDefault(lastName).status &&
-      validateMobileNumber(registerMobileNumber).status &&
-      validateEmail(e_mail).status &&
-      validatePAN(pan).status &&
-      validateAadhar(aadharNumber).status &&
-      validateDefault(designation).status &&
-      gender !== ""
-    );
+    if (validateName(registerAdminDetails.firstName).status === false) {
+      showToast("error", t("invalidName"));
+      return false;
+    } else if (
+      validateDefault(registerAdminDetails.lastName).status === false
+    ) {
+      showToast("error", t("invalidsccdName"));
+      return false;
+    }
+    else if (
+      validateMobileNumber(registerAdminDetails.mobileNumber).status === false
+    ) {
+      showToast("error", t("invalidNumber"));
+      return false;
+    } else if (validateEmail(registerAdminDetails.eMail).status === false) {
+      showToast("error", t("invalidEmail"));
+      return false;
+    } else if (validateDefault(registerAdminDetails.designation).status === false) {
+      showToast("error", t("invalidDesignation"));
+      return false;
+    } else if (!registerAdminDetails.gender) {
+      showToast("error", t("invalidGender"));
+      return false;
+    } else if (validateAadhar(registerAdminDetails.aadhaar).status === false) {
+      showToast("error", t("formInvalidParams"));
+      return false;
+    }
+    else if (validatePAN(registerAdminDetails.pan).status === false) {
+      showToast("error", t("formInvalidParams"));
+      return false;
+    }
+    else {
+      return true;
+    }
   };
 
-  const validateCompanyDetailsParams = () => {
-    // console.log(
-    //   validateDefault(businessName).status +
-    //     "=====" +
-    //     validateDefault(brandName).status +
-    //     "======" +
-    //     validatePAN(companyPan).status +
-    //     "======" +
-    //     validateGST(companyGst).status +
-    //     "=======" +
-    //     validateAddress(communicationAddress).status +
-    //     "======" +
-    //     validatePincode(pinCode).status +
-    //     "=======" +
-    //     validateDefault(city).status +
-    //     "======" +
-    //     (businesType !== "") +
-    //     "=======" +
-    //     (businessNature !== "") +
-    //     "====="
-    // );
 
-    return (
-      validateDefault(businessName).status &&
-      validateDefault(brandName).status &&
-      validatePAN(companyPan).status &&
-      validateGST(companyGst).status &&
-      validateAddress(communicationAddress).status &&
-      validatePincode(pinCode).status &&
-      validateDefault(city).status &&
-      businesType !== "" &&
-      businessNature !== ""
-    );
+  const validateCompanyDetailsParams = () => {
+    if (validateDefault(registerCompanyDetails.businessName).status === false) {
+      showToast("error", t("inValidBusinessName"));
+      return false
+    } else if (validateDefault(registerCompanyDetails.brandName).status === false) {
+      showToast("error", t("inValidBrandName"));
+      return false
+    }
+    else if (!validatePAN(registerCompanyDetails.companyPan).status) {
+      showToast("error", t("invalidPan"));
+      return false
+    }
+    else if (!validateGST(registerCompanyDetails.companyGst).status) {
+      showToast("error", t("invalidGst"));
+      return false
+    }
+    else if (!validateAddress(registerCompanyDetails.communicationAddress).status) {
+      showToast("error", t("invalidAddress"));
+      return false
+    }
+    else if (!validatePincode(registerCompanyDetails.pinCode).status) {
+      showToast("error", t("invalidPincode"));
+      return false
+    }
+    else if (!validateDefault(registerCompanyDetails.city).status) {
+      showToast("error", t("invalidCity"));
+      return false
+    }
+    else if (!validateDefault(registerCompanyDetails.state).status) {
+      showToast("error", t("invalidState"));
+      return false
+    }
+    else if (registerCompanyDetails.businesType === "") {
+      showToast("error", t("inValidBusinessType"));
+      return false
+    }
+    else if (registerCompanyDetails.businessNature === "") {
+      showToast("error", t("inValidNatureBusiness"));
+      return false
+    } else {
+      return true
+    }
   };
 
   const verifyOTP = (params: object) => {
     dispatch(
       getAdminVerificationOtp({
         params,
-        onSuccess: async (response: object) => {
-          const value = {
-            userLoggedIn: false,
-            userDetails: response,
-            mobileNumber,
-          };
-          const jsonValue = JSON.stringify(value);
-          await localStorage.setItem(ASYN_USER_AUTH, jsonValue);
+        onSuccess: async (response: any) => {
+          const value = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
+          dispatch(setUserLoginDetails(value))
+          await localStorage.setItem(ASYN_USER_AUTH, response.token);
+          dispatch(registerOtpVerify({}))
         },
         onError: (error: string) => {
-          showToast("error",t("invalidUser"));
+          showToast("error", error);
         },
       })
     );
   };
 
   const validatePostParams = () => {
-    const otpConvertor = otp1 + otp2 + otp3 + otp4;
-    return (
-      validateMobileNumber(mobileNumber).status && otpConvertor.length === 4
-    );
+    const otpConvertor = registerOtp.otp1 + registerOtp.otp2 + registerOtp.otp3 + registerOtp.otp4;
+
+    if (validateMobileNumber(mobileNumber).status === false) {
+      showToast("error", t("invalidNumber"));
+      return false;
+    }
+    else if (otpConvertor.length !== 4) {
+      showToast("error", t("invalidOTP"));
+    }
+    else {
+      return true;
+    }
   };
 
   const proceedVerifyOtpApi = () => {
     if (validatePostParams()) {
-      const otpConvertor = otp1 + otp2 + otp3 + otp4;
+      const otpConvertor = registerOtp.otp1 + registerOtp.otp2 + registerOtp.otp3 + registerOtp.otp4;
       if (otpConvertor.length === 4) {
         const params = {
           mobile_number: mobileNumber,
@@ -193,46 +212,49 @@ function SignUp() {
         };
         verifyOTP(params);
       }
-    } else {
-      showToast("error", t("somethingWrong"));
     }
   };
 
   const proceedUserDetailsApi = () => {
     if (validateUserDetailsParams()) {
       const params = {
-        first_name: firstName,
-        last_name: lastName,
-        mobile_number: registerMobileNumber,
-        email: e_mail,
-        gender: gender,
-        designation: designation,
-        pan: pan,
-        aadhar_number: aadharNumber,
+        first_name: registerAdminDetails.firstName,
+        last_name: registerAdminDetails.lastName,
+        mobile_number: registerAdminDetails.mobileNumber,
+        email: registerAdminDetails.eMail,
+        gender: registerAdminDetails.gender,
+        designation: registerAdminDetails.designation,
+        pan: registerAdminDetails.pan,
+        aadhar_number: registerAdminDetails.aadhaar,
       };
-      dispatch(getRegisterAdmin({ params }));
-    } else {
-      showToast("error", t("formInvalidParams"));
+      dispatch(getRegisterAdmin({
+        params, onSuccess: (response: object) => {
+          dispatch(updateAdminInput({}))
+        },
+        onError: (error: any) => {
+          showToast("error", error?.error_message ?error?.error_message :error?.error);
+
+        },
+      }));
     }
   };
 
   const proceedCompanyDetailsApi = () => {
     if (validateCompanyDetailsParams()) {
       const params = {
-        registered_name: businessName,
-        business_name: brandName,
-        business_type_id: businesType,
-        nature_of_business_id: businessNature,
-        pan: companyPan,
-        gst: companyGst,
-        communication_address: communicationAddress,
-        pincode: pinCode,
-        city: city,
-        state: state,
-        referral_id: refferalId,
+        registered_name: registerCompanyDetails.businessName,
+        business_name: registerCompanyDetails.brandName,
+        business_type_id: registerCompanyDetails.businesType,
+        nature_of_business_id: registerCompanyDetails.businessNature,
+        pan: registerCompanyDetails.companyPan,
+        gst: registerCompanyDetails.companyGst,
+        communication_address: registerCompanyDetails.communicationAddress,
+        pincode: registerCompanyDetails.pinCode,
+        city: registerCompanyDetails.city,
+        state: registerCompanyDetails.state,
+        referral_id: registerCompanyDetails.refferalId,
       };
       console.log("company details params--->", params);
-
       dispatch(
         getValidateCompanyDetails({
           params,
@@ -245,16 +267,16 @@ function SignUp() {
                 userLoggedIn: true,
               });
               await localStorage.setItem(ASYN_USER_AUTH, value);
-              goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
             }
+            dispatch(updateCompanyInput({}))
           },
-          onError: (error: string) => {},
+          onError: (error: string) => { },
         })
       );
-    } else {
-      showToast("error",  t("formInvalidParams"));
     }
   };
+
+  // goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
 
   const proceedDocumentUploadAPi = () => {
     let params: object = {};
@@ -267,66 +289,63 @@ function SignUp() {
           params = { ...params, [param]: base64 };
         }
       }
-
+      console.log(" uploadCompanyDocumentsParams", params);
       dispatch(
         uploadCompanyDocuments({
           params,
-          onSuccess: async (response: object) => {
-            goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
+          onSuccess: (response: object) => {
+            goTo(navigation, ROUTE.ROUTE_LOGIN);
           },
-          onError: (error: string) => {},
+          onError: (error: string) => {
+            showToast("error", error);
+          },
         })
       );
     }
   };
 
   return (
-    <Container flexDirection={"row"} height={"vh-100"} width={"vw-100"}>
+    <Container additionClass="m-0 p-0" flexDirection={"row"} height={"vh-100"} width={"vw-100"}>
       <WelcomeBoard />
-      <Container
-        col={"col"}
-        display={"d-inline-flex"}
-        flexDirection={"flex-column"}
-      >
-        <Container
-          display={"d-inline-flex"}
-          justifyContent={"justify-content-between"}
-          additionClass={"container-fluid"}
-          margin={"mt-4"}
-        >
+      <Container additionClass="col-xl-6">
+        <Container additionClass="d-flex container-fluid justify-content-between my-3">
           <Container>
             <Logo />
           </Container>
-          <Secondary text={t("login")} />
+          <Secondary text={t("login")} onClick={() =>
+            goTo(navigation, ROUTE.ROUTE_LOGIN)
+          } />
         </Container>
-        <RegisterFlow
-          current={
-            registerCurrentContainer === 2 ? 1 : registerCurrentContainer
-          }
-        />
-        <Container
-          additionClass={
-            "scrollable-register col-xl-9 col-md-12 d-flex flex-column aligns-item-center  align-self-center justify-content-center mt-2 mb-5"
-          }
-        >
-          {registerCurrentContainer === REGISTER_USER_DETAILS && (
-            <RegisterUserDetail />
-          )}
-          {registerCurrentContainer === MOBILE_NUMBER_VERIFICATION && <Otp />}
-          {registerCurrentContainer === REGISTER_COMPANY_DETAILS && (
-            <RegisterCompanyDetail />
-          )}
-          {registerCurrentContainer === REGISTER_DOCUMENT_UPLOAD && (
-            <RegisterDocumentUpload />
-          )}
+        <Container additionClass="aligns-item-center d-flex container ml-sm-0 ml--5 px-sm-0 px-3  ml-xl-5 my-4 justify-content-center" >
+          <RegisterFlow
+            current={
+              registerCurrentContainer === 2 ? 1 : registerCurrentContainer
+            }
+          />
         </Container>
-        <div className="position-absolute fixed-bottom  d-flex aligns-item-center justify-content-center my-1">
+        <Container additionClass={`${registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION && 'scrollable-register'} aligns-item-center  justify-content-center`}>
+          <Container
+            additionClass={"col-xl-9 col-md-9 col-sm-3"}
+          >
+            {registerCurrentContainer === REGISTER_USER_DETAILS && (
+              <RegisterUserDetail />
+            )}
+            {registerCurrentContainer === MOBILE_NUMBER_VERIFICATION && <Otp />}
+            {registerCurrentContainer === REGISTER_COMPANY_DETAILS && (
+              <RegisterCompanyDetail />
+            )}
+            {registerCurrentContainer === REGISTER_DOCUMENT_UPLOAD && (
+              <RegisterDocumentUpload />
+            )}
+          </Container>
+        </Container>
+        <Container additionClass={'text-center my-4'}>
           <Primary
             additionClass={"col-6"}
             text={t("submit")}
             onClick={proceedNext}
           />
-        </div>
+        </Container>
       </Container>
     </Container>
   );

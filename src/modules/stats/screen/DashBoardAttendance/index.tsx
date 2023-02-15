@@ -31,6 +31,8 @@ import {
   DOWNLOAD_RANGE,
   validateDefault,
   showAdminModify,
+  dropDownValueCheckByEvent,
+  dropDownValueCheck,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -99,19 +101,37 @@ const DashBoardAttendance = ({ }) => {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
-  const getTodayStats = (pageNumber: number) => {
-    const params = {
-      ...hierarchicalBranchIds,
-      department_id: selectedDepartment + "",
-      attendance_type: selectedAttendance + "",
-      selected_date: customselectedDate,
-      page_number: pageNumber,
-      download: false,
-      ...(searchEmployee && { q: searchEmployee }),
-    };
 
-    dispatch(getEmployeeTodayStatus(params));
+  const validateTodayStatsParams = () => {
+    if (selectedDepartment === '') {
+      showToast("error", t("inValidDepartment"));
+      return false;
+    } else if (selectedAttendance === '') {
+      showToast("error", t("inValidAttendance"));
+      return false
+    }
+    return true;
   };
+
+
+
+  const getTodayStats = (pageNumber: number) => {
+    if (validateTodayStatsParams()) {
+      const params = {
+        ...hierarchicalBranchIds,
+        department_id: selectedDepartment + "",
+        attendance_type: selectedAttendance + "",
+        selected_date: customselectedDate,
+        page_number: pageNumber,
+        download: false,
+        ...(searchEmployee && { q: searchEmployee }),
+      };
+
+      dispatch(getEmployeeTodayStatus(params));
+    }
+  };
+
+
 
   const onModify = (e: any, item: any) => {
     e.stopPropagation()
@@ -367,7 +387,7 @@ const DashBoardAttendance = ({ }) => {
                   value={selectedDepartment}
                   onChange={(event) => {
                     if (setSelectedDepartment) {
-                      setSelectedDepartment(event.target.value);
+                      setSelectedDepartment(dropDownValueCheck(event.target.value, "Select Department"));
                     }
                   }}
                 />

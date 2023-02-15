@@ -87,7 +87,7 @@ function Login() {
     >
       <Container
         display={'d-flex'}
-        justifyContent={'justify-content-between'}
+        justifyContent={'justify-content-between'}  
         additionClass={'container-fluid'}
         margin={'mt-4'}
       >
