@@ -615,6 +615,7 @@ const ManageEmployee = () => {
         <DatePicker
           icon={Icons.Calendar}
           iconPosition={"append"}
+          maxDate={Today}
           onChange={(date: string) => dateTimePickerHandler(date, "dob")}
           value={employeeDetails.dob}
         />
