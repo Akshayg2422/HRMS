@@ -19,14 +19,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getEmployeesList } from "../../../../store/employee/actions";
 import {
   getEmployeeCheckinAssociations,
-  getAllBranchesList,
   updateEmployeeCheckinAssociationsReducer,
   updateEmployeeCheckinAssociations,
+  getListAllBranchesList,
 } from "../../../../store/location/actions";
 
 import { Icons } from "@assets";
 import { useTranslation } from "react-i18next";
 import { showToast } from "@utils";
+import { log } from "console";
 
 type Branch = {
   id?: string;
@@ -50,7 +51,7 @@ function ManageAssignLocation() {
     (state: any) => state.EmployeeReducer
   );
 
-  const { brancheslist, associatedBranch, associatedId, defaultBranchId } =
+  const {associatedBranch, associatedId, defaultBranchId,listBranchesList } =
     useSelector((state: any) => state.LocationReducer);
 
   const { hierarchicalBranchIds } = useSelector(
@@ -102,7 +103,7 @@ function ManageAssignLocation() {
   function getEmployeeAssociationBranch(index: number) {
     const employees = registeredEmployeesList[index];
     dispatch(getEmployeeCheckinAssociations({ user_id: employees.id }));
-    dispatch(getAllBranchesList({}));
+    dispatch(getListAllBranchesList({}));
     setModel(!model);
   }
 
@@ -203,14 +204,14 @@ function ManageAssignLocation() {
           nextClick={() => paginationHandler("next")}
         />
       ) : <NoRecordFound />}
-      {brancheslist && brancheslist.length > 0 && (
+      {listBranchesList && listBranchesList.length > 0 && (
         <Modal
           title={"All Registered Branches"}
           showModel={model}
           toggle={() => setModel(!model)}
         >
           <div>
-            {brancheslist.map((item: Branch, index: number) => {
+            {listBranchesList.map((item: Branch, index: number) => {
               return (
                 <>
                   <div className="row mx-3 my-1"
@@ -230,7 +231,7 @@ function ManageAssignLocation() {
                       />
                     </div>
                   </div>
-                  {index !== brancheslist.length - 1 && <Divider />}
+                  {index !== listBranchesList.length - 1 && <Divider />}
                 </>
               );
             })}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches, Container, InputText, Icon, NoRecordFound } from "@components";
-import { getAllBranchesList } from "../../store/location/actions";
+import { getListAllBranchesList } from "../../store/location/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { LocationProps } from "../Interface";
 import { Icons } from "@assets";
@@ -25,7 +25,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
 
 
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
   const [showAll, setShowAll] = useState(false);
@@ -42,7 +42,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
   const getBranchesList = () => {
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
 
@@ -55,25 +55,25 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
 
   useEffect(() => {
     getBranchesList()
-    if (brancheslist) {
-      const currentBranch = getAllSubBranchesAlternative(brancheslist, dashboardDetails?.company_branch.id);
-      const parentBranch = brancheslist.find((it: { parent_id: any; }) => !it.parent_id);
-      const currentEmployeeParent = brancheslist.find((it: { id: any; }) => it.id === dashboardDetails.company_branch.id);
+    if (listBranchesList) {
+      const currentBranch = getAllSubBranchesAlternative(listBranchesList, dashboardDetails?.company_branch.id);
+      const parentBranch = listBranchesList.find((it: { parent_id: any; }) => !it.parent_id);
+      const currentEmployeeParent = listBranchesList.find((it: { id: any; }) => it.id === dashboardDetails.company_branch.id);
       let searchArray = [currentEmployeeParent]
       currentBranch.forEach((element: any) => {
-        const index = brancheslist.findIndex((item: { id: any; }) => item.id === element)
+        const index = listBranchesList.findIndex((item: { id: any; }) => item.id === element)
         if (index) {
-          searchArray = [...searchArray, brancheslist[index]]
+          searchArray = [...searchArray, listBranchesList[index]]
         }
       });
       setBranch(searchArray)
       setAllBranches(searchArray)
-      setStructuredData(brancheslist);
+      setStructuredData(listBranchesList);
       setDefaultBranch(searchArray)
       if (parentBranch) {
         const hierarchicalBranchArray = {
           ...parentBranch,
-          child: getChild(brancheslist, parentBranch.id),
+          child: getChild(listBranchesList, parentBranch.id),
         };
         const filteredBranch = getCurrentBranchNode(
           dashboardDetails.company_branch.id,

@@ -84,6 +84,8 @@ const DashBoardAttendance = ({ }) => {
     dateFrom: "",
     dataTo: "",
   });
+  const [presentModifiedModel, setPresentModifiedModel] = useState<boolean>(false);
+  const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
 
   useEffect(() => {
     getTodayStats(currentPage);
@@ -164,14 +166,28 @@ const DashBoardAttendance = ({ }) => {
           : "-",
         remark: <div style={{
           fontWeight: 'bold',
+          cursor: el?.per_day_details?.day_status_type === 10 ? 'pointer' : '',
           color: fontColor(el.per_day_details?.day_status_type)
-        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
+        }}
+          onClick={(e) => { handlePresentModified(e, el) }}
+        >{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
         'Modify': <>{showAdminModify(el?.per_day_details?.day_status_type) ?
           <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
       };
     });
   };
+
+
+
+  const handlePresentModified = (e: any, type: any) => {
+    if (type?.per_day_details?.day_status_type === 10) {
+      e.stopPropagation()
+      setPresentModifiedModel(!presentModifiedModel)
+      setPresentModifiedDetails(type)
+    }
+  }
+
 
 
   function fontColor(statusType: any) {
@@ -562,6 +578,21 @@ const DashBoardAttendance = ({ }) => {
             />
             <Primary text={t("modify")} onClick={() => onRequestHandler()} />
           </Container>
+        </Container>
+      </Modal>
+      <Modal showModel={presentModifiedModel}
+        toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
+        <Container additionClass={'m-3'}><span>
+          {t("approver")}
+          {":"}&nbsp;&nbsp;
+          <span className="text-black">{"approver"}</span>
+        </span>
+          <br />
+          <span>
+            {t("reason")}
+            {":"}&nbsp;&nbsp;
+            <span className="text-black">{presentModifiedDetails?.per_day_details?.note}</span>
+          </span>
         </Container>
       </Modal>
     </div>

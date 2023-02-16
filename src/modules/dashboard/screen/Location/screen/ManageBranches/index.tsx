@@ -18,7 +18,7 @@ import {
   import { useState, useEffect } from "react";
   import { useSelector, useDispatch } from "react-redux";
   import {
-    getAllBranchesList,
+    getListAllBranchesList,
     branchAddition
   } from '../../../../../../store/location/actions';
   
@@ -28,7 +28,7 @@ import {
     let dispatch = useDispatch();
 
     const {
-        brancheslist
+      listBranchesList
       } = useSelector((state: any) => state.LocationReducer);
   
     const [branchDetails, setBranchDetails] = useState({
@@ -43,7 +43,7 @@ import {
     });
   
     useEffect(() => {
-      dispatch(getAllBranchesList({}))
+      dispatch(getListAllBranchesList({}))
     }, [])
 
   
@@ -145,7 +145,7 @@ import {
         <DropDown
           label={t("Parent Branch")}
           placeholder={t("Parent Branch")}
-          data={brancheslist}
+          data={listBranchesList}
           name={"parentbranch"}
           onChange={(event) => {
 

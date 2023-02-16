@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches, Container, Secondary, Primary } from "@components";
-import { getAllBranchesList } from "../../store/location/actions";
+import { getListAllBranchesList } from "../../store/location/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { LocationProps } from "../Interface";
 import { Icons } from "@assets";
@@ -20,7 +20,7 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
   const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails } =
     useSelector((state: any) => state.DashboardReducer);
 
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
   let dispatch = useDispatch();
@@ -33,7 +33,7 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
   useEffect(() => {
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
           setStructuredData(hierarchicalBranchIds);
@@ -165,7 +165,7 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
         </div>
       </div>}
       {model && <Modal showModel={model} toggle={() => setModel(!model)} title={t('MyBranches')}>
-        {brancheslist &&
+        {listBranchesList &&
           hierarchicalBranch &&
           hierarchicalBranch?.child &&
           hierarchicalBranch?.child.length > 0 &&
@@ -181,7 +181,7 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
                       onChange={(array, item) => handleMultiselect(array, item)}
                       includeChild={(id: string) => handleIncludeChild(id)}
                       hierarchicalBranchIds={hierarchicalBranchIds}
-                      defaultData={brancheslist}
+                      defaultData={listBranchesList}
                       filteredBranch={selectedBranch}
                     />
                   </div>

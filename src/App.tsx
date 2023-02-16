@@ -62,7 +62,6 @@ import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
-
 function App() {
 
   return (

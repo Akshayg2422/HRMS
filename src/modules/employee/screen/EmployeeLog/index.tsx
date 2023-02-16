@@ -58,6 +58,8 @@ function EmployeeLog() {
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
   const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+  const [presentModifiedModel, setPresentModifiedModel] = useState<boolean>(false);
+  const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
   const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
     date: "",
     reason: "",
@@ -214,7 +216,6 @@ function EmployeeLog() {
     }
   };
 
-
   function fontColor(statusType: any) {
     let color = ''
     switch (statusType) {
@@ -237,6 +238,16 @@ function EmployeeLog() {
     }
     return color
   }
+
+  const handlePresentModified = (e: any, type: any) => {
+    if (type?.day_status_type === 10) {
+      e.stopPropagation()
+      setPresentModifiedModel(!presentModifiedModel)
+      setPresentModifiedDetails(type)
+    }
+  }
+
+  console.log("presentModifiedDetails", presentModifiedDetails)
 
   return (
     <>
@@ -353,11 +364,11 @@ function EmployeeLog() {
                             )
                             : "-"}
                         </small>
-                        <small className="mb-0 col" style={{
-                          fontWeight: 'bold',
-                          color: fontColor(item.day_status_type)
-                        }}>{item.day_status}</small>
-                        <small className="mb-0 col">{showAdminModify(item?.day_status_type) ?
+                        <small className="mb-0 p-0 col" style={{
+                          cursor: item.day_status_type === 10 ? 'pointer' : '', fontWeight: 'bold',
+                          color: fontColor(item.day_status_type),
+                        }} onClick={(e) => { handlePresentModified(e, item) }}>{item.day_status}</small>
+                        <small className="mb-0 col" >{showAdminModify(item?.day_status_type) ?
                           <Secondary text={t('modify')} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, item) }} />
                           : '-'}</small>
                       </Container>
@@ -466,6 +477,21 @@ function EmployeeLog() {
             />
             <Primary text={t("modify")} onClick={() => onRequestHandler()} />
           </Container>
+        </Container>
+      </Modal>
+      <Modal showModel={presentModifiedModel}
+        toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
+        <Container additionClass={'m-3'}><span>
+          {t("approver")}
+          {":"}&nbsp;&nbsp;
+          <span className="text-black">{presentModifiedDetails?.approved_by}</span>
+        </span>
+          <br />
+          <span>
+            {t("reason")}
+            {":"}&nbsp;&nbsp;
+            <span className="text-black">{presentModifiedDetails?.note}</span>
+          </span>
         </Container>
       </Modal>
     </>

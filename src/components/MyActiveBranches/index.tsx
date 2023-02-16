@@ -30,7 +30,7 @@ function MyActiveBranches() {
     const { dashboardDetails, hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
-    const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+    const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
 
     useEffect(() => {
@@ -78,7 +78,7 @@ function MyActiveBranches() {
     };
 
     const setActiveBranch = (id: string, name: string) => {
-        const childIds = getAllSubBranches(brancheslist, id)
+        const childIds = getAllSubBranches(listBranchesList, id)
         dispatch(setBranchHierarchical({ ids: { branch_id: id, child_ids: childIds, include_child: false }, name: name }))
     }
 
