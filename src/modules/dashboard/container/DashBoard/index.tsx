@@ -17,27 +17,25 @@ function DashBoardCard() {
   };
 
   return (
-    <Container flexDirection={"row"} margin={"mt-3"}>
+    <Container flexDirection={"row"} >
       {NAV_ITEM.map((it, index) => {
         return (
           <>
             {it.name !== "Dashboard" && <Container additionClass={"col-xl-3 col-md-6"}>
               <Card
-                additionClass={"border"}
-                style={{ border: "1px bg-gray" }}
+                additionClass={"d-flex"}
                 onClick={() => currentNav(it, index)}
               >
                 <Container
                   additionClass={"row py-3"}
-                  justifyContent={"justify-content-center"}
                 >
-                  <Container col={"col-auto"} alignItems={"align-items-center"}>
+                  <Container col={"col-auto"} >
                     <ImageView additionClass={'m-0'} icon={it?.image} alt={it.name} height={50} width={50} />
                   </Container>
-                  <div className="col">
-                    <h5 className="text-black h3 mb-0 mt-2 font-weight-bold">
+                  <div className="col d-flex align-items-xl-center justify-content-xl-center">
+                    <h4 className="text-black  font-weight-bold">
                       {it.name}
-                    </h5>
+                    </h4>
                   </div>
                 </Container>
               </Card>

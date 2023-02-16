@@ -580,12 +580,12 @@ const DashBoardAttendance = ({ }) => {
           </Container>
         </Container>
       </Modal>
-      <Modal showModel={presentModifiedModel}
+      <Modal showModel={presentModifiedModel} title={t('markAsPresent')}
         toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
-        <Container additionClass={'m-3'}><span>
+        <Container additionClass={'ml-3'}><span>
           {t("approver")}
           {":"}&nbsp;&nbsp;
-          <span className="text-black">{"approver"}</span>
+          <span className="text-black">{presentModifiedDetails?.per_day_details?.approved_by}</span>
         </span>
           <br />
           <span>
