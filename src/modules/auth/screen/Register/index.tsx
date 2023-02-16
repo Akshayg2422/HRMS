@@ -6,6 +6,7 @@ import {
   Secondary,
   ScreenTitle,
   Primary,
+  useKeyPress,
 } from "@components";
 import {
   RegisterUserDetail,
@@ -54,6 +55,8 @@ import { setUserLoginDetails } from "../../../../store/app/actions";
 function SignUp() {
   const { t, i18n } = useTranslation();
   let dispatch = useDispatch();
+  const enterPress = useKeyPress("Enter");
+
 
   const {
     registerCurrentContainer,
@@ -86,6 +89,12 @@ function SignUp() {
     dispatch(getTypeOfBusiness({}));
   }, []);
 
+
+  useEffect(() => {
+    if (enterPress) {
+      proceedNext()
+    }
+  }, [enterPress])
 
 
   const validateUserDetailsParams = () => {
@@ -232,7 +241,7 @@ function SignUp() {
           dispatch(updateAdminInput({}))
         },
         onError: (error: any) => {
-          showToast("error", error?.error_message ?error?.error_message :error?.error);
+          showToast("error", error?.error_message ? error?.error_message : error?.error);
 
         },
       }));

@@ -46,7 +46,6 @@ function Login() {
     if (enterPress) {
       proceedValidateUserApi()
     }
-    dispatch(launchActive(true))
   }, [enterPress])
 
   const proceedValidateUser = (params: object) => {
@@ -83,11 +82,10 @@ function Login() {
       col={'col'}
       display={'d-flex'}
       flexDirection={'flex-column'}
-    // additionClass={'scrollable-register'}
     >
       <Container
         display={'d-flex'}
-        justifyContent={'justify-content-between'}  
+        justifyContent={'justify-content-between'}
         additionClass={'container-fluid'}
         margin={'mt-4'}
       >
