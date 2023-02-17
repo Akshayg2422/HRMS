@@ -1,7 +1,13 @@
 export const Images = {
   Welcome: require('./images/Welcome/Welcome.png'),
   WelcomePattern: require('./images/WelcomePattern/WelcomePattern.png'),
-  FlowChart: require('./images/Flowchart/FlowChart.png')
+  FlowChart: require('./images/Flowchart/FlowChart.png'),
+  LaunchScreenBackGround: require('./images/LaunchScreen/LaunchScreen.png'),
+  LaunchLogo: require('./images/LaunchLogo/LaunchLogo.png'),
+  LaunchSuccess: require('./images/LaunchSuccess/LaunchSuccess.png'),
+  LaunchLogoSecondary:require('./images/LaunchLogoSecondary/LaunchLogoSecondary.png'),
+  LaunchBackGround:require('./images/LaunchBackGround/LaunchBackGround.png'),
+  LaunchSecondaryBackground:require('./images/LaunchSecondaryBackground/LaunchSecondaryBackground.png')
 }
 export const Icons = {
   Logo: require('./icons/Logo/Logo.png'),

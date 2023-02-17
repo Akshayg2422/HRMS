@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
-import { Contact,Features,Home,Navbar,Policy,Flowchart,AboutUs } from "./Container";
-import {hideLoader} from '../../store/loader/actions';
-import {useDispatch} from 'react-redux';
+import { Contact, Features, Home, Navbar, Policy, Flowchart, AboutUs, LaunchScreen,LaunchSuccessScreen } from "./Container";
+import { hideLoader } from '../../store/loader/actions';
+import { useDispatch } from 'react-redux';
 
-function ZenylogSite (props) {
+function ZenylogSite(props) {
 
     const dispatch = useDispatch()
 
@@ -20,6 +20,8 @@ function ZenylogSite (props) {
             <Flowchart/>
             <Contact/>
             <Policy/>
+            {/* <LaunchScreen />
+            <LaunchSuccessScreen/> */}
         </div>
     )
 }

@@ -22,7 +22,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllBranchesList } from '../../../../store/location/actions'
+import { getListAllBranchesList } from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
@@ -114,7 +114,7 @@ const ViewEmployeeDetails = () => {
 
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: (success: object) => {
           const parentBranch = branchesDropdownData.find(
