@@ -127,14 +127,14 @@ const ShiftGroup = () => {
                         >
                             <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
-                        <Container additionClass="text-right col-xl-8  col-md-6 mt-sm-0 mt-3">
+                        <Container additionClass="text-right col-md-5 mt-sm-0 mt-3">
                             <Primary
-                                additionClass='col-xl-3 col-md-4'
+                                additionClass='col col-md-4'
                                 text={t('addNew')}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
                             />
                             <Primary
-                                additionClass='col-xl-4 mt-sm-0 mt-3 col-md-6'
+                                additionClass='col mt-sm-0 mt-3 col-md-6'
                                 text={t('manageWeeklyShifts')}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
                             />

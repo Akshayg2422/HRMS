@@ -8,7 +8,7 @@ import {
   InputDefault,
 } from "@components";
 
-import { GENDER_LIST } from "@utils";
+import { dropDownValueCheck, GENDER_LIST, inputAadharLength, inputNumberMaxLength, MAX_LENGTH_AADHAR, MAX_LENGTH_PAN_CARD, MAX_LENGTH_MOBILE_NUMBER, inputTextMaxLength } from "@utils";
 import {
   validateName,
   validateEmail,
@@ -17,109 +17,81 @@ import {
   validateDefault,
   validateMobileNumber,
 } from "@utils";
-import {useTranslation} from "react-i18next";
-
-
-import { useAuth } from "@contexts";
+import { useTranslation } from "react-i18next";
+import { updateAdminInput } from '../../../../store/auth/actions'
+import { useDispatch, useSelector } from "react-redux";
 
 function RegisterUserDetail() {
- const {t,i18n}=useTranslation()
+  const {
+    registerAdminDetails,
+  } = useSelector((state: any) => state.AuthReducer);
 
-  const {setRegisterMobileNumber,setE_mail,setFirstName,setDesignation,setPan,setAadharNumber,setGender,setLastName } = useAuth();
+
+  const { t, i18n } = useTranslation()
+  let dispatch = useDispatch();
 
   return (
-    <Container
-      flexDirection={"row"}
-      col={"col-12"}
-      justifyContent={"justify-content-center"}
-    >
+    <Container>
       <InputText
         label={t('firstName')}
         placeholder={t('typeYourName')}
         maxLength={20}
         validator={validateName}
-        onChange={(e) => {
-          if (setFirstName) {
-            setFirstName(e.target.value);
-          }
-        }}
+        name={'firstName'}
+        onChange={(e) => dispatch(updateAdminInput('firstName', e.target.value))}
       />
       <InputText
         label={t('lastName')}
         placeholder={t('typeLastName')}
         maxLength={20}
         validator={validateDefault}
-        onChange={(e) => {
-          if (setLastName) {
-            setLastName(e.target.value);
-          }
-        }}
+        name={'lastName'}
+        onChange={(e) => dispatch(updateAdminInput('lastName', e.target.value))}
       />
       <InputNumber
         label={t('mobileNumber')}
         placeholder={t('enterYourMobileNumber')}
         validator={validateMobileNumber}
-        maxLength={10}
-        onChange={(e) => {
-          if (setRegisterMobileNumber) {
-            setRegisterMobileNumber(e.target.value);
-          }
-        }}
+        // maxLength={10}
+        value={registerAdminDetails.mobileNumber}
+        name={'mobileNumber'}
+        onChange={(e) => dispatch(updateAdminInput('mobileNumber', inputNumberMaxLength(e.target.value, MAX_LENGTH_MOBILE_NUMBER)))}
       />
       <InputMail
         type={"email"}
         label={t('companyEmail')}
         placeholder={t('companyEmail')}
         validator={validateEmail}
-        onChange={(e) => {
-          if (setE_mail) {
-            setE_mail(e.target.value);
-          }
-        }}
+        onChange={(e) => dispatch(updateAdminInput('eMail', e.target.value))}
+
       />
       <DropDown
         label={t('gender')}
         placeholder={t('selectYourGender')}
         data={GENDER_LIST}
-        onChange={ (event) =>{
-          if (setGender) {
-            setGender(event.target.value);
-          }
-        }
-        }
+        onChange={(e) => dispatch(updateAdminInput('gender', dropDownValueCheck(e.target.value, t('selectYourGender'))))}
+
       />
       <InputText
         label={t('designation')}
         placeholder={t('enterDesignation')}
         validator={validateDefault}
         maxLength={10}
-        onChange={(e) => {
-          if (setDesignation) {
-            setDesignation(e.target.value);
-          }
-        }}
+        onChange={(e) => dispatch(updateAdminInput('designation', e.target.value))}
       />
       <InputDefault
         label={t('pan')}
         placeholder={t('typeYourPanNo')}
         validator={validatePAN}
-        maxLength={10}
-        onChange={(e) => {
-          if (setPan) {
-            setPan(e.target.value);
-          }
-        }}
+        value={registerAdminDetails.pan}
+        onChange={(e) => dispatch(updateAdminInput('pan', inputTextMaxLength(e.target.value, MAX_LENGTH_PAN_CARD)))}
       />
       <InputNumber
         label={t('aadhar')}
         placeholder={t('typeypurAadharNo')}
         validator={validateAadhar}
-        maxLength={12}
-        onChange={(e) => {
-          if (setAadharNumber) {
-            setAadharNumber(e.target.value);
-          }
-        }}
+        value={registerAdminDetails.aadhaar}
+        onChange={(e) => dispatch(updateAdminInput('aadhaar', inputAadharLength(e.target.value, MAX_LENGTH_AADHAR)))}
       />
     </Container>
   );

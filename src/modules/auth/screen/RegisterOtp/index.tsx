@@ -7,16 +7,24 @@ import { loginOtp, resendOtp } from "@modules";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 
-import { getResendLoginOtp } from "../../../../store/auth/actions";
+import { getResendLoginOtp, registerOtpVerify } from "../../../../store/auth/actions";
 
 function Otp() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
-  const { mobileNumber } = useSelector((state: any) => state.AuthReducer);
+  const { mobileNumber, registerOtp } = useSelector((state: any) => state.AuthReducer);
 
   const [counter, setCounter] = useState<number>(59);
-  const { setOtp1, setOtp2, setOtp3, setOtp4 } = useAuth();
+
+
+  const maxLength = 1
+
+  const inputRef1 = React.createRef<HTMLInputElement>();
+  const inputRef2 = React.createRef<HTMLInputElement>();
+  const inputRef3 = React.createRef<HTMLInputElement>();
+  const inputRef4 = React.createRef<HTMLInputElement>();
+
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,14 +49,24 @@ function Otp() {
     );
   };
 
+  const changeInputFocus = () => {
+    if (registerOtp.otp1 === '' && inputRef1.current) {
+      inputRef1.current.focus();
+    } else if (registerOtp.otp2 === '' && inputRef2.current) {
+      inputRef2.current.focus();
+    } else if (registerOtp.otp3 === '' && inputRef3.current) {
+      inputRef3.current.focus();
+    } else if (registerOtp.otp4 === '' && inputRef4.current) {
+      inputRef4.current.focus();
+    }
+  };
+
+  useEffect(() => {
+    changeInputFocus()
+  }, [registerOtp.otp1, registerOtp.otp2, registerOtp.otp3, registerOtp.otp4]);
+
   return (
-    <Container
-      col={"col"}
-      height={"vh-100"}
-      display={"d-flex"}
-      justifyContent={"justify-content-center"}
-      alignItems={"align-items-center"}
-      additionClass={"container"}
+    <Container additionClass="ml-xl-7 mt-xl-3 col-xl-12"
     >
       <Container
         display={"d-flex"}
@@ -62,7 +80,7 @@ function Otp() {
           textAlign={"text-center"}
           justifyContent={"justify-content-center"}
           textColor={"text-muted"}
-          margin={"mt-5"}
+          margin={"mt-3"}
         >
           <small>{t("verificationCode") + "+91-" + mobileNumber}</small>
           {/* <small className="ml-2 text-primary text-center" role="button" onClick={() => goBack(navigation)}>
@@ -83,35 +101,45 @@ function Otp() {
         >
           <OtpInput
             formCustomClass={"col-lg-3"}
-            onChange={(e: any) => {
-              if (setOtp1) {
-                setOtp1(e.target.value);
+            ref={inputRef1}
+            value={registerOtp.otp1}
+            onChange={(e) => {
+              if (e.target.value.length <= maxLength) {
+                dispatch(registerOtpVerify('otp1', e.target.value))
+              }
+            }}
+
+          />
+          <OtpInput
+            formCustomClass={"col-lg-3"}
+            ref={inputRef2}
+            value={registerOtp.otp2}
+            onChange={(e) => {
+              if (e.target.value.length <= maxLength) {
+                dispatch(registerOtpVerify('otp2', e.target.value))
               }
             }}
           />
           <OtpInput
             formCustomClass={"col-lg-3"}
-            onChange={(e: any) => {
-              if (setOtp2) {
-                setOtp2(e.target.value);
+            ref={inputRef3}
+            value={registerOtp.otp3}
+            onChange={(e) => {
+              if (e.target.value.length <= maxLength) {
+                dispatch(registerOtpVerify('otp3', e.target.value))
               }
             }}
           />
           <OtpInput
             formCustomClass={"col-lg-3"}
-            onChange={(e: any) => {
-              if (setOtp3) {
-                setOtp3(e.target.value);
+            ref={inputRef4}
+            value={registerOtp.otp4}
+            onChange={(e) => {
+              if (e.target.value.length <= maxLength) {
+                dispatch(registerOtpVerify('otp4', e.target.value))
               }
             }}
-          />
-          <OtpInput
-            formCustomClass={"col-lg-3"}
-            onChange={(e: any) => {
-              if (setOtp4) {
-                setOtp4(e.target.value);
-              }
-            }}
+
           />
         </Container>
 

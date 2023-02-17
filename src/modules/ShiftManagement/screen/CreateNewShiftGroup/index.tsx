@@ -139,11 +139,11 @@ const CreateShiftGroup = () => {
             showToast("error", t('theGroupNameCantBeEmpty'));
             return false;
         }
-        else if (!selectedShift) {
+        else if (selectedShift === '') {
             showToast("error", t('invalidShift'));
             return false;
         }
-        else if (!designationId) {
+        else if (designationId === '') {
             showToast("error", t('inValidDesignation'));
             return false;
         }
@@ -165,7 +165,7 @@ const CreateShiftGroup = () => {
                 ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id }),
                 ...(designationShiftGroup && { id: designationShiftGroup.id }),
                 designation_id: designationId
-            }            
+            }
             dispatch(postAddShift({
                 params,
                 onSuccess: (success: any) => {
@@ -328,7 +328,7 @@ const CreateShiftGroup = () => {
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
                                 onChange={(event) => {
-                                    setSelectedShift(dropDownValueCheck(event.target.value, t('selectDesignation')))
+                                    setSelectedShift(dropDownValueCheck(event.target.value, t('selectWeeklyShift')))
                                 }}
                             />
 

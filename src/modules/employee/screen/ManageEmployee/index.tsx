@@ -43,13 +43,13 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getDepartmentData,
   getDesignationData,
-  getAllBranchesList,
   getEmployeeDetails,
   addDepartment,
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
 import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
+import { getListAllBranchesList } from "../../../../store/location/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -145,7 +145,7 @@ const ManageEmployee = () => {
     getBranchShiftsList()
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: (success: object) => {
           const parentBranch = branchesDropdownData.find(
@@ -615,6 +615,7 @@ const ManageEmployee = () => {
         <DatePicker
           icon={Icons.Calendar}
           iconPosition={"append"}
+          maxDate={Today}
           onChange={(date: string) => dateTimePickerHandler(date, "dob")}
           value={employeeDetails.dob}
         />

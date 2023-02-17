@@ -107,8 +107,7 @@ const Pending = () => {
             setRejectModel(!rejectModel);
           }
           fetchPendingDetail(currentPage);
-          showToast('success', success?.message)
-
+          showToast('success', success?.status)
         },
         onError: (error: string) => { },
       })

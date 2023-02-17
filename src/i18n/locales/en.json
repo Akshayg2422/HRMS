@@ -9,6 +9,8 @@
   "add":"Add",
   "title":"Title",
   "modify":"Modify",
+  "approver":"Approver",  
+
 
 
   "mobileNumber": "Mobile Number",
@@ -53,7 +55,7 @@
 
   "adminProfile":"Admin profile",
   "fullName":"Full Name",
-  "firsrName":"First Name",
+  "firstName":"First Name",
   "lastName":"Last Name",
   "typeYourName":"Enter your first name",
   "typeLastName":"Enter your last name",
@@ -83,12 +85,12 @@
   "invalidShiftId":"Invalid Shift",
   "invalidType":"Invalid Type",
   "invalidAdmin":"User is not a Admin / Branch Admin",
+  "invalidOTP":"Invalid OTP",
+  
 
   
 
 
-
-  
 
   "companyProfile":"Company profile",
   "businessName": "Registered Business Name",
@@ -207,8 +209,16 @@
 "inValidDepartment":"Invalid Department",
 "inValidAttendance":"InValid Attendance Type",
 
-
-
+"invalidPan":"Invalid Pan",
+"inValidBusinessName":"Invalid Business Name",
+"inValidBrandName":"Invalid Brand Name",
+"inValidBusinessType":"Invalid Business Type",
+"inValidNatureBusiness":"InValid Nature Of Business",
+"invalidGst":"Invalid GST",
+"invalidAddress":"Invalid Address",
+"invalidPincode":"Invalid Pincode",
+"invalidCity":"Invalid City",
+"invalidState":"Invalid State",
 
 
 

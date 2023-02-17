@@ -6,36 +6,31 @@ type RegisterFlowProps = {
 
 const RegisterFlow = ({ current }: RegisterFlowProps) => {
   const FLOW_DATA = [
-    { id: 1, heading: '1', title: "adminProfile" },
+    { id: 1, heading: '1', title: "Admin Profile" },
     { id: 3, heading: '2', title: "Company profile" },
     { id: 4, heading: '3', title: "Document Upload" },
   ];
   return (
-    <Container
-    additionClass={'container'}
-      display={'d-flex'}
-      alignItems={"align-items-center"}
-      margin={"my-1"}
-      >
-      {FLOW_DATA.map((it, index) => {
+    <div className='container-fluid d-flex'>
+      {FLOW_DATA.map((it, i) => {
         return (
-          <>
-            <span
-              className={`badge badge-lg badge-circle  mr-3 ${current === it.id 
-                  ? "badge-primary text-white"
-                  : "bg-white text-light"
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <div
+              className={`badge badge-lg badge-circle col-xl-2 col-sm-0 col-2 ${current === it.id
+                ? "badge-primary text-white"
+                : "bg-white text-light"
                 }`}
             >
               {it.heading}
-            </span>
-            <small>{it.title}</small>
-            {index !== FLOW_DATA.length - 1 && (
-              <hr className="col-sm-1 ml-3 mr-3"></hr>
+            </div>
+            <div className='col-xl-4'> <small>{it.title} </small></div>
+            {i !== FLOW_DATA.length - 1 && (
+              <hr className="col-sm-1  position-relative ml-xl-5 bg-primary"></hr>
             )}
-          </>
+          </div>
         );
       })}
-    </Container>
+    </div>
   );
 };
 export default RegisterFlow;

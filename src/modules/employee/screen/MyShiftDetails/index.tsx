@@ -128,6 +128,12 @@ function MyShiftDetails() {
     }
 
 
+    const handleClose = () => {
+        setRequestDetails({ ...requestDetails, shiftId: '', reason: '' })
+        setChangeShiftModel(!changeShiftModel)
+    }
+
+
     return (
         <div>
             <Card>
@@ -178,7 +184,7 @@ function MyShiftDetails() {
                 </ul>
                 <EmployeeShiftListing datesList={myShifts.weekly_group_details[isActiveWeek - 1]} />
             </Card> : <NoRecordFound />}
-            <Modal title={t("changeShift")} showModel={changeShiftModel} toggle={() => setChangeShiftModel(!changeShiftModel)}>
+            <Modal title={t("changeShift")} showModel={changeShiftModel} toggle={() => handleClose()}>
                 <Container >
                     <Container
                         col={"col-xl-5 col-md-6 col-sm-12"}
@@ -212,7 +218,7 @@ function MyShiftDetails() {
                     <Container margin={"mt-5"} additionClass={"text-right"}>
                         <Secondary
                             text={t("cancel")}
-                            onClick={() => setChangeShiftModel(!changeShiftModel)}
+                            onClick={() => handleClose()}
                         />
                         <Primary
                             text={t("request")}
@@ -222,6 +228,7 @@ function MyShiftDetails() {
                 </Container>
             </Modal>
         </div>
+
     )
 }
 

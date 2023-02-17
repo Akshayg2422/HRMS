@@ -62,12 +62,11 @@ import FenceAdmin from "./modules/fenceAdmin";
 import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
-
 function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       {/* <Requestpermission/> */}
       <AppLoader />
       <Routes>
@@ -82,7 +81,7 @@ function App() {
           path={ROUTE.ROUTE_OTP}
           element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
         />
-        {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
+        <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} />
         <Route
           path={ROUTE.ROUTE_DASHBOARD}
           element={<RequireAuth>{<Dashboard />}</RequireAuth>}

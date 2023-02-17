@@ -30,7 +30,7 @@ function FenceAdmin() {
     const [branch, setBranch] = useState<any>([])
     const [searchEmployee, setSearchEmployee] = useState<any>('')
     const [selectedEmployeeFenceId, setSelectedEmployeeFenceId] = useState();
-    const [selectedBranchId, setSelectedBranchId] = useState();
+    const [selectedBranchId, setSelectedBranchId] = useState<any>();
     const [searchBranches, setsearchBranches] = useState<any>('')
 
 
@@ -80,20 +80,30 @@ function FenceAdmin() {
         const params = {
             ...(searchEmployee && { q: searchEmployee }),
             page_number: pageNumber,
-            branch_id: selectedBranchId
+            branch_id: selectedBranchId.id
         }
-        dispatch(getEmployeesList({ params }))
+        dispatch(getEmployeesList({
+            params,
+            onSuccess: (success: any) => {
+                success && success?.data.length > 0 && success?.data.map((item: any) => {
+                    if (item?.id == selectedBranchId?.fence_admin_id) {
+                        setSelectedEmployeeFenceId(item.id)
+                    }
+                })
+            },
+            onError: () => {
+            },
+        }))
     }
 
-
-    function getRegisteredFenceAdminDefault(id: string, pageNumber: number) {
-        const params = {
-            q: "",
-            page_number: pageNumber,
-            branch_id: id
-        }
-        dispatch(getEmployeesList({ params }))
-    }
+    // function getRegisteredFenceAdminDefault(id: string, pageNumber: number) {
+    //     const params = {
+    //         q: "",
+    //         page_number: pageNumber,
+    //         branch_id: id
+    //     }
+    //     dispatch(getEmployeesList({ params }))
+    // }
 
 
 
@@ -103,7 +113,7 @@ function FenceAdmin() {
     }
 
     function addFenceAdminApiHandler(item: Employee) {
-        const params = { branch_id: selectedBranchId, employee_id: item.id }
+        const params = { branch_id: selectedBranchId.id, employee_id: item.id }
         dispatch(addFenceAdmin({
             params,
             onSuccess: (success: any) => {
@@ -118,11 +128,10 @@ function FenceAdmin() {
     }
 
     function proceedModelHandler(selectedBranch: any) {
+        setSelectedBranchId(selectedBranch);
         setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
-        setSelectedBranchId(selectedBranch.id);
-        getRegisteredFenceAdminDefault(selectedBranch.id, currentPage);
+        getRegisteredFenceAdmin(currentPage)
         setModel(!model)
-        setSearchEmployee('')
     }
 
     const SelectedBranchFilter = () => {
@@ -214,7 +223,7 @@ function FenceAdmin() {
 
 type EmployeeTableProps = {
     tableDataSet?: Array<Employee>;
-    employeeFenceId?: string;
+    employeeFenceId?: any;
     proceedFenceAdmin?: (item: Employee) => void;
 
 }
