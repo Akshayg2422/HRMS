@@ -5,10 +5,15 @@ import styled, { css } from 'styled-components';
 
 const DarkBackground = styled.div<{ disappear: boolean }>`
   display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 999; /* Sit on top */
-  left: 0;
+  // position: fixed; /* Stay in place */
+  // z-index: 999; /* Sit on top */
+  // left: 0;
+  // top: 0;
+  position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
@@ -29,7 +34,7 @@ function AppLoader() {
   return (
     <div>
       <DarkBackground disappear={loading}>
-      <LoadingOverlay styles={{
+        <LoadingOverlay styles={{
           spinner: (base) => ({
             ...base,
             '& svg circle': {

@@ -78,10 +78,10 @@ export const REPORTS_TYPE = [
 ];
 
 export const LEAVES_TYPE = [
-  { id: 'All', name: 'All', value: 'All' },
-  { id: 'Pending Leave', name: 'Pending Leave', value: 'Pending Leave' },
-  { id: 'Approved Leave', name: 'Approved Leave', value: 'Approved Leave' },
-  { id: 'Rejected Leave', name: 'Rejected Leave', value: 'Rejected Leave' },
+  { id: 'All', name: 'All', value: -2 },
+  { id: 'Pending Leave', name: 'Pending Leave', value: -1,},
+  { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
+  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
 
 
 ];

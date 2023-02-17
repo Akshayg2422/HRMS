@@ -11,6 +11,7 @@ import {
   InputText,
   Icon,
   Card,
+  useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -50,6 +51,7 @@ function EmployeeTimeSheets() {
   const [accordion, setAccordion] = useState<number>();
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
+  const KeyPress = useKeyPress('Enter')
 
   const {
     employeeTimeSheets,
@@ -71,6 +73,12 @@ function EmployeeTimeSheets() {
   useEffect(() => {
     getEmployeeTimeSheets(currentPage);
   }, [hierarchicalBranchIds]);
+
+  useEffect(() => {
+    if (KeyPress) {
+      getEmployeeTimeSheets(currentPage);
+    }
+  }, [KeyPress])
 
   function getEmployeeTimeSheets(pageNumber: number) {
     const params: object = {
@@ -112,7 +120,7 @@ function EmployeeTimeSheets() {
 
   return (
     <>
-      <Card>
+      <Card additionClass="mx-3">
         <Container additionClass={"row mx-2 my-4"}>
           <Container col={"col-xl-5"}>
             <ChooseBranchFromHierarchical />

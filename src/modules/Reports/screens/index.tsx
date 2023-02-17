@@ -60,7 +60,7 @@ function Reports() {
 
   useEffect(() => {
     getReports(currentPage)
-  }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, multiSelectHierarchicalBranch])
+  }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
   const getDepartments = (() => {
     const params = {}

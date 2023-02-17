@@ -832,7 +832,6 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
     case GET_LEAVES_BY_TYPES_SUCCESS:
       const getLeaves = action.payload;
-
       state = {
         ...state,
         loading: false,
