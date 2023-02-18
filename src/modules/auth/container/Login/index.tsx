@@ -25,6 +25,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { getValidateUser } from '../../../../store/auth/actions';
 import { useSelector } from 'react-redux';
+import { launchActive } from '../../../../store/app/actions';
 
 function Login() {
 
@@ -81,7 +82,6 @@ function Login() {
       col={'col'}
       display={'d-flex'}
       flexDirection={'flex-column'}
-    // additionClass={'scrollable-register'}
     >
       <Container
         display={'d-flex'}

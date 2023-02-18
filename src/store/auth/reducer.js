@@ -26,7 +26,11 @@ import {
   ADMIN_VERIFICATION_OTP,
   ADMIN_VERIFICATION_OTP_SUCCESS,
   ADMIN_VERIFICATION_OTP_FAILURE,
-  RESET_REDUCER
+  RESET_REDUCER,
+  UPDATE_ADMIN_DETAILS,
+  REGISTER_OTP_VERIFY,
+  UPDATE_COMPANY_DETAILS,
+  UPDATE_FILE_DETAILS
 } from "./actionTypes";
 
 
@@ -44,9 +48,48 @@ const initialState = {
   success: "",
   userDetails: {},
   natureOfBusiness: [],
+  registerAdminDetails: { firstName: '', lastName: '', gender: '', mobileNumber: '', eMail: '', designation: '', pan: '', aadhaar: '' },
   typeOfBusiness: [],
-  registerCurrentContainer: REGISTER_USER_DETAILS
-
+  registerCurrentContainer: REGISTER_USER_DETAILS,
+  registerOtp: {
+    otp1: '',
+    otp2: '',
+    otp3: '',
+    otp4: ''
+  },
+  registerCompanyDetails: {
+    businessName: '',
+    brandName: '',
+    companyPan: '',
+    companyGst: '',
+    communicationAddress: '',
+    pinCode: '',
+    city: '',
+    state: '',
+    refferalId: '',
+    businesType: '',
+    businessNature: '',
+  },
+  fileUpload: [
+    {
+      name: 'Company GST',
+      base64: '',
+      filePath: '',
+      param: 'attachment_gst',
+    },
+    {
+      name: 'ProfilePhoto',
+      base64: '',
+      filePath: '',
+      param: 'attachment_profile',
+    },
+    {
+      name: 'Company Logo',
+      base64: '',
+      filePath: '',
+      param: 'attachment_logo'
+    },
+  ]
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -128,6 +171,7 @@ const AuthReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
+        registerCurrentContainer: REGISTER_USER_DETAILS
       };
       break;
     case UPLOAD_COMPANY_DOCUMENT_FAILURE:
@@ -243,7 +287,51 @@ const AuthReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+    /** */
+    case UPDATE_ADMIN_DETAILS:
+      const { name, value } = action.payload;
+      return {
+        ...state,
+        registerAdminDetails: { ...state.registerAdminDetails, [name]: value },
+      };
+    /**
+     * Register OTP verify
+     */
+    case REGISTER_OTP_VERIFY:
+      const { field, otp } = action.payload;
+      return {
+        ...state,
+        registerOtp: { ...state.registerOtp, [field]: otp },
+      };
 
+    /**
+     * Update Company Details
+     */
+
+    case UPDATE_COMPANY_DETAILS:
+      const { CompanyField, CompanyValue } = action.payload;
+      return {
+        ...state,
+        registerCompanyDetails: { ...state.registerCompanyDetails, [CompanyField]: CompanyValue },
+      };
+
+    /**
+     * Update Documents
+     */
+    case UPDATE_FILE_DETAILS:
+      const { file, index } = action.payload;
+      return {
+        ...state,
+        fileUpload: state.fileUpload.map((item, i) => {
+          if (i === index) {
+            return {
+              ...item,
+              base64: file
+            }
+          }
+          return item;
+        })
+      }
 
     /**
      *  SET_LOGOUT

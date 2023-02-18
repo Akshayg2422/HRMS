@@ -55,7 +55,6 @@ export const ROUTE = {
   ROUTE_SHIFT_REQUEST: '/shift-request',
   ROUTE_EMPLOYEE_SHIFT_REQUEST: '/employee-shift-request',
   ROUTE_FACE_APPROVAL: '/face-approval',
-
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
@@ -79,10 +78,10 @@ export const REPORTS_TYPE = [
 ];
 
 export const LEAVES_TYPE = [
-  { id: 'All', name: 'All', value: 'All' },
-  { id: 'Pending Leave', name: 'Pending Leave', value: 'Pending Leave' },
-  { id: 'Approved Leave', name: 'Approved Leave', value: 'Approved Leave' },
-  { id: 'Rejected Leave', name: 'Rejected Leave', value: 'Rejected Leave' },
+  { id: 'All', name: 'All', value: -2 },
+  { id: 'Pending Leave', name: 'Pending Leave', value: -1,},
+  { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
+  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
 
 
 ];
@@ -368,6 +367,5 @@ export const LastWeek = moment()
 
 export const MAX_LENGTH_MOBILE_NUMBER = 10;
 export const MAX_LENGTH_AADHAR = 12;
-export const MAX_LENGTH_PAN_CARD = 12;
-
-
+export const MAX_LENGTH_PAN_CARD = 10;
+export const MAX_LENGTH_PIN_CODE = 6

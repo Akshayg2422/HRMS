@@ -2,7 +2,7 @@ import { CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from
 import {
   changeEmployeeLeaveStatus, getEmployeeLeaves, getEmployeeLeavesSuccess, getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,7 @@ const Rejected = () => {
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
 
-  const { employeesLeaves, numOfPages, currentPage,selectedEventId } = useSelector(
+  const { employeesLeaves, numOfPages, currentPage, selectedEventId } = useSelector(
     (state: any) => state.EmployeeReducer
   );
   const { hierarchicalBranchIds } = useSelector(
@@ -27,13 +27,14 @@ const Rejected = () => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      status:0
+      status: 0
     };
-    dispatch(getEmployeeLeaves({  params,
+    dispatch(getEmployeeLeaves({
+      params,
       onSuccess: (success: object) => {
       },
       onError: (error: string) => {
-        dispatch(getEmployeeLeavesSuccess(''))  
+        dispatch(getEmployeeLeavesSuccess(''))
       },
     }));
   };
@@ -46,26 +47,26 @@ const Rejected = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchRejectedLeaves(page);
   }
 
   const normalizedEmployeeLog = (data: any) => {
-    return data && data.length >0 && data.map((el: any) => {
+    return data && data.length > 0 && data.map((el: any) => {
       return {
         name: `${el.name}${' '}(${el.employee_id})`,
         "Date From": el.date_from,
         "Date To": el.date_to,
         "Leave Types": el.leave_type,
-        "Reason":el.reason,
-        "Branch":el.branch_name
+        "Reason": el.reason,
+        "Branch": el.branch_name
       };
     });
   };
 
 
-  const RevertStatusHandler=(item:object)=>{
+  const RevertStatusHandler = (item: object) => {
     dispatch(getSelectedEventId(item));
     setRevertModel(!revertModel)
   }
@@ -78,9 +79,10 @@ const Rejected = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           setRevertModel(!revertModel)
           fetchRejectedLeaves(currentPage);
+          showToast('success', success?.status)
         },
         onError: (error: string) => {
         },
@@ -116,36 +118,36 @@ const Rejected = () => {
         )}
       </div>
       <Modal
-          title={t("revertStatus")}
-          showModel={revertModel}
-          toggle={() => setRevertModel(!revertModel)}
-        >
-          <Container>
-            <span className="h4 ml-xl-4">{t("revertWarningMessage")}</span>
-            <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
-              <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br/>
-              <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br/>
-              <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br/>
-              <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br/>
-              <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
+        title={t("revertStatus")}
+        showModel={revertModel}
+        toggle={() => setRevertModel(!revertModel)}
+      >
+        <Container>
+          <span className="h4 ml-xl-4">{t("revertWarningMessage")}</span>
+          <Container additionClass={'ml-xl-4'} textAlign={'text-left'}>
+            <span >{t('employeeName')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.name}</span></span><br />
+            <span >{t('dataFrom')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_from}</span></span><br />
+            <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br />
+            <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br />
+            <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
 
-            </Container>
-            <Container
-              margin={"mt-5"}
-              additionClass={'text-right'}
-            >
-              <Secondary
-                text={t("cancel")}
-                onClick={() =>setRevertModel(!revertModel)}
-              />
-              <Primary
-                text={t("confirm")}
-                onClick={() =>  manageRevertHandler()
-                }
-              />
-            </Container>
           </Container>
-        </Modal>
+          <Container
+            margin={"mt-5"}
+            additionClass={'text-right'}
+          >
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setRevertModel(!revertModel)}
+            />
+            <Primary
+              text={t("confirm")}
+              onClick={() => manageRevertHandler()
+              }
+            />
+          </Container>
+        </Container>
+      </Modal>
     </div>
   );
 };

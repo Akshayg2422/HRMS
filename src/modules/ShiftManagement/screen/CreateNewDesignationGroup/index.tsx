@@ -81,16 +81,16 @@ const CreateNewDesignationGroup = () => {
                 weekly_shift_id: selectedShift,
                 designation_id: designationId
             }            
-            dispatch(postAddShift({
-                params,
-                onSuccess: (success: any) => {
-                    goBack(navigation);
-                    showToast("success", success.status)
-                },
-                onError: (error: string) => {
-                    showToast("error", error)
-                },
-            }));
+            // dispatch(postAddShift({
+            //     params,
+            //     onSuccess: (success: any) => {
+            //         goBack(navigation);
+            //         showToast("success", success.status)
+            //     },
+            //     onError: (error: string) => {
+            //         showToast("error", error)
+            //     },
+            // }));
         }
     }
 
@@ -117,7 +117,7 @@ const CreateNewDesignationGroup = () => {
                         data={branchesWeeklyShifts}
                         value={selectedShift}
                         onChange={(event) => {
-                            setSelectedShift(event.target.value)
+                            setSelectedShift(dropDownValueCheck(event.target.value,t('selectWeeklyShift')))
                         }}
                     />
                     <DropDown

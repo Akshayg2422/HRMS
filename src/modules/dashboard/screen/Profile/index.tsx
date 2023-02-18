@@ -17,7 +17,6 @@ const Profile = () => {
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  console.log('dashboardDetails', dashboardDetails);
 
   return (
     <Container additionClass="row justify-content-center my-4">

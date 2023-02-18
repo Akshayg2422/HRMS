@@ -5,9 +5,9 @@ export const Images = {
   LaunchScreenBackGround: require('./images/LaunchScreen/LaunchScreen.png'),
   LaunchLogo: require('./images/LaunchLogo/LaunchLogo.png'),
   LaunchSuccess: require('./images/LaunchSuccess/LaunchSuccess.png'),
-  LaunchLogoSecondary:require('./images/LaunchLogoSecondary/LaunchLogoSecondary.png'),
-  LaunchBackGround:require('./images/LaunchBackGround/LaunchBackGround.png'),
-  LaunchSecondaryBackground:require('./images/LaunchSecondaryBackground/LaunchSecondaryBackground.png')
+  LaunchLogoSecondary: require('./images/LaunchLogoSecondary/LaunchLogoSecondary.png'),
+  LaunchBackGround: require('./images/LaunchBackGround/LaunchBackGround.png'),
+  LaunchSecondaryBackground: require('./images/LaunchSecondaryBackground/LaunchSecondaryBackground.png')
 }
 export const Icons = {
   Logo: require('./icons/Logo/Logo.png'),
@@ -92,12 +92,12 @@ export const Icons = {
   Remove: require('./icons/Remove/remove.png'),
   DeleteSecondary: require('./icons/DeleteSecondary/deleteSecondary.png'),
   MyBranches: require('./icons/MyBranches/MyBranches.png'),
-  ShiftRequest:require('./icons/ShiftRequest/ShiftRequest.png'),
-  AttendanceRequest:require('./icons/AttendanceRequest/AttendanceRequest.png'),
-  FaceRegister:require('./icons/FaceRegister/FaceRegister.png'),
-  LeaveRequest:require('./icons/LeaveRequest/LeaveRequest.png'),
-  ShiftChange:require('./icons/ShiftChange/ShiftChange.png'),
-  AddEmployee:require('./icons/AddEmployee/employees.png'),
+  ShiftRequest: require('./icons/ShiftRequest/ShiftRequest.png'),
+  AttendanceRequest: require('./icons/AttendanceRequest/AttendanceRequest.png'),
+  FaceRegister: require('./icons/FaceRegister/FaceRegister.png'),
+  LeaveRequest: require('./icons/LeaveRequest/LeaveRequest.png'),
+  ShiftChange: require('./icons/ShiftChange/ShiftChange.png'),
+  AddEmployee: require('./icons/AddEmployee/employees.png'),
 }
 
 

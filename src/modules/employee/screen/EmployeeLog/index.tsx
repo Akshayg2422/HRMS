@@ -242,8 +242,8 @@ function EmployeeLog() {
   const handlePresentModified = (e: any, type: any) => {
     if (type?.day_status_type === 10) {
       e.stopPropagation()
-      setPresentModifiedModel(!presentModifiedModel)
       setPresentModifiedDetails(type)
+      setPresentModifiedModel(!presentModifiedModel)
     }
   }
 
@@ -479,9 +479,9 @@ function EmployeeLog() {
           </Container>
         </Container>
       </Modal>
-      <Modal showModel={presentModifiedModel}
+      <Modal showModel={presentModifiedModel} title={t('markAsPresent')}
         toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
-        <Container additionClass={'m-3'}><span>
+        <Container additionClass={'ml-3'}><span>
           {t("approver")}
           {":"}&nbsp;&nbsp;
           <span className="text-black">{presentModifiedDetails?.approved_by}</span>

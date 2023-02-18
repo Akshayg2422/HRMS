@@ -73,13 +73,8 @@ const Header = () => {
       dispatch(resetLocation())
       dispatch(resetShiftManagement())
       goTo(navigate, ROUTE.ROUTE_LOGIN, true)
-
-
     } catch (error) {
-
     }
-
-
   }
 
   const changeLanguageHandler = (key: string) => {
@@ -96,7 +91,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className='navbar navbar-top navbar-expand  bg-primary border-bottom'>
+      <nav className='navbar navbar-top navbar-expand  bg-primary '>
         <div className='container-fluid'>
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <a className='nav-item d-xl-none'>

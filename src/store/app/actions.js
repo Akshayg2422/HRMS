@@ -4,7 +4,8 @@ import {
   HIDE_LOADER,
   SET_USER_LOGIN_DETAILS,
   RESET_REDUCER,
-  NAV_INDEX
+  NAV_INDEX,
+  IS_LAUNCH
 } from "./actionsType"
 
 
@@ -46,7 +47,16 @@ export const resetApp = () => {
 export const currentNavIndex = (index) => {
   return {
     type: NAV_INDEX,
-    payload:index
+    payload: index
+  };
+};
+
+
+export const launchActive = (params) => {
+  console.log("-------------->", params);
+  return {
+    type: IS_LAUNCH,
+    payload: params
   };
 };
 

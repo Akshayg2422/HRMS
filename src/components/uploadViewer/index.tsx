@@ -15,12 +15,14 @@ interface DropZoneProps {
 
 const DropZone = ({ id, suffix, item, onChange, onDelete }: DropZoneProps) => {
 
+  let prefix = "data:image/png;base64,"
+
   const inputRef = React.useRef<HTMLInputElement>(null)
 
   return (
     <>
       <Container display={'d-flex'} flexDirection={'flex-column'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} margin={'mt-2'}>
-        <Card cardPadding={'m--2'} onClick={() => { if (inputRef) { inputRef.current!.click(); } }}>
+        <Card cardPadding={'m--3'} onClick={() => { if (inputRef) { inputRef.current!.click(); } }}>
           <input
             className="custom-file-input d-none"
             onChange={onChange}
@@ -30,16 +32,16 @@ const DropZone = ({ id, suffix, item, onChange, onDelete }: DropZoneProps) => {
           />
           {item.base64 ?
             <div>
-              <img style={{ position: 'absolute', right: 20, top: 20 }} src={Icons.Delete} alt={'image'} onClick={(e) => {
+              <img style={{ position: 'absolute', right: 20, top: 20 }} src={Icons.DeleteSecondary} alt={'image'} onClick={(e) => {
                 if (onDelete) {
                   onDelete();
                   e.preventDefault();
                   e.stopPropagation();
                 }
               }} />
-              <img style={{ height: '120px', width: '120px', borderRadius: 10 }} src={item.base64} alt={'image'} />
+              <img style={{ height: '100px', width: '100px', borderRadius: 10 }} src={prefix+item.base64} alt={'image'} />
             </div> :
-            <img style={{ height: '120px', width: '120px', padding: '15px' }} alt={'placeholder'} src={Icons.Gallery} />}
+            <img style={{ height: '100px', width: '100px', padding: '15px' }} alt={'placeholder'} src={Icons.Gallery} />}
         </Card>
 
         <small className="text-center mt--3">{item.name}</small>
