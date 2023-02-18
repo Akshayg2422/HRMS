@@ -126,3 +126,15 @@ export const POST_REQUEST_SHIFT_CHANGE = 'attendance/requestShiftChange'
 
 export const POST_CHANGE_EMPLOYEE_SHIFT = 'attendance/changeEmployeeShift'
 
+/**
+ * getEmployeesLoginFaceFailure
+ */
+
+export const GET_EMPLOYEE_LOGIN_FACE_FAILURE = 'attendance/getEmployeesLoginFaceFailure'
+
+
+/**
+ * changeEmployeeFacevalidationRequest
+ */
+
+export const CHANGE_EMPLOYEE_FACE_VALIDATION = 'attendance/changeEmployeeFacevalidationRequest'

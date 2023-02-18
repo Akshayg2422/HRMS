@@ -43,13 +43,13 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   getDepartmentData,
   getDesignationData,
+  getAllBranchesList,
   getEmployeeDetails,
   addDepartment,
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
 import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
-import { getListAllBranchesList } from "../../../../store/location/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -145,7 +145,7 @@ const ManageEmployee = () => {
     getBranchShiftsList()
     const params = {};
     dispatch(
-      getListAllBranchesList({
+      getAllBranchesList({
         params,
         onSuccess: (success: object) => {
           const parentBranch = branchesDropdownData.find(

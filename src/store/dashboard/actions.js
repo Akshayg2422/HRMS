@@ -21,7 +21,14 @@ import {
   SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
   RESET_REDUCER,
   SET_HIERARCHICAL_ALL_BRANCH_IDS,
-  SET_MULTISELECT_ALL_BRANCH_IDS
+  SET_MULTISELECT_ALL_BRANCH_IDS,
+  EMPLOYEE_FACE_FAILURE_LIST,
+  EMPLOYEE_FACE_FAILURE_LIST_SUCCESS,
+  EMPLOYEE_FACE_FAILURE_LIST_FAIL,
+  CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST,
+  CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST_SUCCESS,
+  CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST_FAIL,
+  CURRENT_FACE_STATUS_TYPE
 
 } from "./actionTypes";
 
@@ -218,3 +225,59 @@ export const multiSelectBranch = (branches) => {
     payload: branches
   }
 }
+
+
+
+export const getEmployeesLoginFaceFailureAction = (params) => {
+  return {
+    type: EMPLOYEE_FACE_FAILURE_LIST,
+    payload: params,
+
+  };
+};
+
+export const getEmployeesLoginFaceFailureActionSuccess = (response) => {
+  return {
+    type: EMPLOYEE_FACE_FAILURE_LIST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeesLoginFaceFailureActionFail = (error) => {
+  return {
+    type: EMPLOYEE_FACE_FAILURE_LIST_FAIL,
+    payload: error,
+  };
+};
+
+
+
+export const changeEmployeeFaceValidationRequestAction = (params) => {
+  return {
+    type: CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST,
+    payload: params,
+
+  };
+};
+
+export const changeEmployeeFaceValidationRequestActionSuccess = (response) => {
+  return {
+    type: CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const changeEmployeeFaceValidationRequestActionFail = (error) => {
+  return {
+    type: CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST_FAIL,
+    payload: error,
+  };
+};
+
+
+export const setFaceCurrentStatusType = (type) => {
+  return {
+    type: CURRENT_FACE_STATUS_TYPE,
+    payload: type,
+  };
+};

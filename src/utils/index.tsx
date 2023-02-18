@@ -227,6 +227,10 @@ const downloadFile = ((response: any) => {
   window.URL.revokeObjectURL(url);
 })
 
+const base64ToImage = (base64: any) => {
+  return 'data:image/png;base64,' + base64
+
+}
 
 const formatAMPM = (time: any) => {
   let [hours, minutes, seconds] = time.split(':');
@@ -306,5 +310,6 @@ export {
   getDropDownValueByName,
   EMPLOYEES_SHIFT_DATA_EDIT,
   getDateFormat,
-  convertTo24Hour
+  convertTo24Hour,
+  base64ToImage
 }
