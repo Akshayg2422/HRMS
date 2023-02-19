@@ -19,7 +19,7 @@ function FaceApproval() {
   ];
 
 
-  const { currentPage, hierarchicalBranchIds, currentFaceType } =
+  const { currentPage, hierarchicalBranchIds, currentFaceType, employeesLoginFaceFailureDetails } =
     useSelector((state: any) => state.DashboardReducer);
 
   const enterPress = useKeyPress("Enter");

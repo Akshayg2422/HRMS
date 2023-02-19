@@ -265,7 +265,7 @@ function App() {
         />
         <Route
           path={ROUTE.ROUTE_FACE_APPROVAL}
-          element={<RequireAuth>{<FaceApproval/>}</RequireAuth>}
+          element={<RequireAuth>{<FaceApproval />}</RequireAuth>}
         />
         <Route path={"*"} element={<PageNotFound />} />
       </Routes>

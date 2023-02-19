@@ -1,4 +1,4 @@
-import { takeLatest, put, call } from "redux-saga/effects";
+import { takeLatest, put, call, delay } from "redux-saga/effects";
 
 import { FETCH_DASHBOARD, GET_CHECK_IN_DETAILED_LOG, URL_CHECK_IN, POST_DAILY_LOG, EMPLOYEE_FACE_FAILURE_LIST, CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST } from "./actionTypes";
 
@@ -153,19 +153,22 @@ function* editProfilePicture(action) {
 function* getEmployeesLoginFaceFailureSaga(action) {
   try {
     yield put(showLoader());
+
     const response = yield call(postGetEmployeesLoginFaceFailureApi, action.payload.params);
+
     if (response.success) {
+      yield put(hideLoader());
       yield put(getEmployeesLoginFaceFailureActionSuccess(response));
       yield call(action.payload.onSuccess(response));
-      yield put(hideLoader());
     } else {
+
+      yield put(hideLoader());
       yield put(getEmployeesLoginFaceFailureActionFail(response.error_message));
       yield call(action.payload.onError(response.error_message));
-      yield put(hideLoader());
     }
   } catch (error) {
-    yield put(hideLoader());
     yield put(getEmployeesLoginFaceFailureActionFail("Invalid Request"));
+    yield put(hideLoader());
     // yield call(action.payload.onError);
   }
 }
