@@ -35,7 +35,8 @@ import {
   inputNumberMaxLength,
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
-  dropDownValueCheckByEvent
+  dropDownValueCheckByEvent,
+  MAX_LENGTH_AADHAR
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -465,6 +466,8 @@ const ManageEmployee = () => {
     setDepartmentModel(!departmentModel);
   }
 
+  console.log('employeeDetails', employeeDetails);
+
 
   return (
 
@@ -549,12 +552,11 @@ const ManageEmployee = () => {
         <InputDefault
           label={t("aadhar")}
           placeholder={t("typeypurAadharNo")}
-          // maxLength={10}
           validator={validateAadhar}
           value={employeeDetails.aadharrNo}
           name={"aadharrNo"}
           onChange={(event) => {
-            onChangeHandler(event);
+            mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
           }}
         />
         <div className="row align-items-center">
