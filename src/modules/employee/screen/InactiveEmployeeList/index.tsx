@@ -144,7 +144,7 @@ function InActiveEmployeeList() {
     <>
       <Card margin={"m-4"}>
         <BackArrow additionClass={'my-3'} />
-        <h2>{t("deletedUser")}</h2>
+        <h2>{t("deletedUserList")}</h2>
         <Container additionClass="row my-3">
           <Container additionClass={'col-xl-6'}>
             <ChooseBranchFromHierarchical />
@@ -153,7 +153,7 @@ function InActiveEmployeeList() {
             <InputText
               value={searchEmployee}
               col={'col'}
-              label={t("searchEmployee")}
+              label={t("employeeName")}
               placeholder={t("searchEmployee")}
               onChange={(e) => {
                 setSearchEmployee(e.target.value);

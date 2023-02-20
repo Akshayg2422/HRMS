@@ -65,7 +65,7 @@
   "pan": "PAN number",
   "typeYourPanNo":"Enter your PAN number",
   "aadhar": "Aadhar Number",
-  "typeypurAadharNo":"Enter your Aadhaar number",
+  "typeypurAadharNo":"Enter your Aadhar number",
   "designation": "Designation",
   "enterDesignation":"Enter your Designation",
 
@@ -126,9 +126,9 @@
 
 
 "bloodGroup": "Blood Group",
-"enterBloodGroup":"Select Blood Group",
-"enterPanNUmber":"Enter Pan Number",
-"enterAadharNumber":"Enter Aadhar Number",
+"enterBloodGroup":"Select Your Blood Group",
+"enterPanNUmber":"Enter Your Pan Number",
+"enterAadharNumber":"Enter aadhar Number",
 "enterDepartment":"Enter your Department",
 "branch":"Branch",
 "category":"Category",
@@ -365,7 +365,8 @@
  "deleteUser":"Delete User",
  "deleteWarningMessage":"Please click on Proceed to deactivate user",
  "proceed":"Proceed",
- "deletedUser":"Deleted Employees",
+ "deletedUser":"Deleted Employee",
+ "deletedUserList":"Deleted Employee List",
  "deleteSuccessfully":"Deleted SuccessFully",
  "enableMessage":"Please click on Proceed to Activate user",
 

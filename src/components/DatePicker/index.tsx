@@ -36,6 +36,9 @@ function DatePicker({
     }
   }
 
+  // clickOpens: true,
+  // allowInput: true,
+
   return (
     <div className={`form-group ${additionalClass}`}>
       <div className="input-group" >
@@ -49,7 +52,9 @@ function DatePicker({
         <Flatpickr
           ref={datePickerRef}
           onChange={handleChange}
-          options={{ ...maxDate && { maxDate: maxDate }, ...disabledDate && { disable: disabledDate } }}
+          options={{
+            ...maxDate && { maxDate: maxDate }, ...disabledDate && { disable: disabledDate },
+          }}
           className="form-control bg-white pl-2"
           value={value}
           placeholder={placeholder}

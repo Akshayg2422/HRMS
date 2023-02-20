@@ -419,10 +419,11 @@ const ManageEmployee = () => {
       dispatch(
         addDesignation({
           params,
-          onSuccess: () => {
+          onSuccess: (success: any) => {
             setDesignationModel(!designationModel);
             setIsRefresh(!isRefresh);
             setDesignation("");
+            showToast('success', success?.message)
             setIsAdminRights(false);
           },
           onError: () => { },
@@ -441,15 +442,27 @@ const ManageEmployee = () => {
       dispatch(
         addDepartment({
           params,
-          onSuccess: () => {
+          onSuccess: (success: any) => {
             setDepartmentModel(!departmentModel);
             setIsRefresh(!isRefresh);
-            setDepartment("");
+
+            showToast('success', success?.message)
           },
           onError: () => { },
         })
       );
     }
+  }
+
+
+  const handleCancelDesignation = () => {
+    setDesignation("");
+    setDesignationModel(!designationModel);
+  }
+
+  const handleCancelDepartment = () => {
+    setDepartment("");
+    setDepartmentModel(!departmentModel);
   }
 
 
@@ -667,7 +680,7 @@ const ManageEmployee = () => {
       <Modal
         title={t("department")}
         showModel={departmentModel}
-        toggle={() => setDepartmentModel(!departmentModel)}
+        toggle={() => handleCancelDepartment()}
       >
         {
           <Container>
@@ -675,6 +688,7 @@ const ManageEmployee = () => {
               <InputText
                 placeholder={t("department")}
                 validator={validateDefault}
+                value={department}
                 onChange={(e) => {
                   setDepartment(e.target.value);
                 }}
@@ -683,7 +697,7 @@ const ManageEmployee = () => {
             <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() => setDepartmentModel(!departmentModel)}
+                onClick={() => handleCancelDepartment()}
               />
               <Primary
                 text={t("submit")}
@@ -697,7 +711,7 @@ const ManageEmployee = () => {
       <Modal
         title={t("designation")}
         showModel={designationModel}
-        toggle={() => setDesignationModel(!designationModel)}
+        toggle={() => handleCancelDesignation()}
       >
         {
           <Container>
@@ -705,6 +719,7 @@ const ManageEmployee = () => {
               <InputText
                 placeholder={t("designation")}
                 validator={validateDefault}
+                value={designation}
                 onChange={(e) => {
                   setDesignation(e.target.value);
                 }}
@@ -720,7 +735,7 @@ const ManageEmployee = () => {
             <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() => setDesignationModel(!designationModel)}
+                onClick={() => handleCancelDesignation()}
               />
               <Primary
                 text={t("submit")}

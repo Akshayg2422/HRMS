@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches, Container } from "@components";
+import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches, Container, NoRecordFound } from "@components";
 import { getListAllBranchesList } from "../../store/location/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { LocationProps } from "../Interface";
@@ -37,7 +37,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         ...item,
         child: sortArray(item.child)
       }))
-      .sort((a: any, b:any)  => a.name.localeCompare(b.name))
+      .sort((a: any, b: any) => a.name.localeCompare(b.name))
   }
 
   useEffect(() => {
@@ -48,7 +48,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         onSuccess: async (response: Array<LocationProps>) => {
           setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
-      
+
           if (parentBranch) {
             const hierarchicalBranchArray = {
               ...parentBranch,
@@ -66,7 +66,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
               modifiedBranch = filteredBranch
             }
 
-            setHierarchicalBranch({ child: modifiedBranch});
+            setHierarchicalBranch({ child: modifiedBranch });
           }
         },
         onError: () => {
@@ -141,7 +141,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   }
 
 
-  
+
   return (
     <div className="row flex-row-reverse" >
       <div className="col-lg-6">
@@ -243,7 +243,7 @@ const SubLevelComponent = ({
       <div className="collapse" id={"collapse" + item.id}>
         <div className="card-body row align-items-center">
           {item.child &&
-            item.child.length > 0 &&
+            item.child.length > 0 ?
             item.child.map((item: any, index: number) => {
               return (
                 <SubLevelComponent
@@ -254,7 +254,8 @@ const SubLevelComponent = ({
                   defaultData={defaultData}
                 />
               );
-            })}
+            }) :
+            <NoRecordFound />}
         </div>
       </div>
     </>
