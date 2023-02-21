@@ -8,7 +8,7 @@ import { changeEmployeeFaceValidationRequestAction, getEmployeesLoginFaceFailure
 const PendingApproval = () => {
   let dispatch = useDispatch();
   const { t } = useTranslation();
- 
+
 
   const { currentPage, hierarchicalBranchIds, numOfPages, employeesLoginFaceFailureDetails } =
     useSelector((state: any) => state.DashboardReducer);
@@ -46,11 +46,11 @@ const PendingApproval = () => {
     const params = { id: item.id, status: type }
     dispatch(changeEmployeeFaceValidationRequestAction({
       params,
-      onSuccess: (success: any) =>()=> {
+      onSuccess: (success: any) => () => {
         showToast("success", success?.status)
         getEmployeeRequest(-1, currentPage);
       },
-      onError: (error: string) =>()=> {
+      onError: (error: string) => () => {
         showToast("error", error)
       }
     }));
@@ -119,13 +119,13 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
         {
           tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: any, index: number) => {
             return <tr className='align-items-center'>
-              <td className='col' style={{ whiteSpace: 'pre-wrap' }}  ><div><ImageView height={150} style={{ objectFit: "cover"}} width={100} icon={item?.employee_photos[0]} />
-                <ImageView additionClass='ml-xl-3'height={150} style={{ objectFit: "cover"}} width={100} icon={item?.employee_photos[3]} /></div></td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  ><ImageView height={150} style={{ objectFit: "cover"}} width={100} icon={base64ToImage(item?.log_photos_b64)} /></td>
+              <td className='col' style={{ whiteSpace: 'pre-wrap' }}  ><div><ImageView height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[0]} />
+                <ImageView additionClass='ml-xl-3' height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[3]} /></div></td>
+              <td style={{ whiteSpace: 'pre-wrap' }}  ><ImageView height={150} style={{ objectFit: "cover" }} width={100} icon={base64ToImage(item?.log_photos_b64)} /></td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.mobile_number}</td>
               <td className='col' style={{ whiteSpace: 'pre-wrap' }}  >{item?.checkin_location}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{getDisplayDateTimeFromMoment(getMomentObjFromServer(item?.checkin_time))}</td>
+              <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.checkin_time ? getDisplayDateTimeFromMoment(getMomentObjFromServer(item?.checkin_time)) : ''}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.status_text}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  > {item.status_code === -1 ? (
                 <span

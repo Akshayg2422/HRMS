@@ -25,7 +25,7 @@ const RejectApproval = () => {
         }));
     }
 
-    
+
     const normalizedRequestList = (data: any) => {
 
         return (
@@ -39,7 +39,7 @@ const RejectApproval = () => {
                     name: `${el?.name}`,
                     "PhoneNo": el?.mobile_number,
                     "Location": el?.checkin_location,
-                    "Time": getDisplayDateTimeFromMoment(getMomentObjFromServer(el?.checkin_time)),
+                    "Time": el?.checkin_time ? getDisplayDateTimeFromMoment(getMomentObjFromServer(el?.checkin_time)) : '',
                     "Status": el.status_text,
                 };
             })

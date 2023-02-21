@@ -50,7 +50,7 @@ const ModifyLogs = () => {
         params,
         onSuccess: (success: any) => {
         },
-        onError: (error: string) => {},
+        onError: (error: string) => { },
       })
     );
   };
@@ -87,9 +87,9 @@ const ModifyLogs = () => {
             additionClass={"mt-sm-3 mb-xl-3"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={proceedSearchApi}
+
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Icon type={"btn-primary"} icon={Icons.Search} onClick={proceedSearchApi} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -158,40 +158,40 @@ const ModifyLogs = () => {
         </div>
       </Card>
       <Card>
-      <div className="tab-content" id="myTabContent">
-        <div
-          className="tab-pane fade show active"
-          id="tabs-icons-text-1"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-1-tab"
-        >
-          <AllLeaves />
+        <div className="tab-content" id="myTabContent">
+          <div
+            className="tab-pane fade show active"
+            id="tabs-icons-text-1"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-1-tab"
+          >
+            <AllLeaves />
+          </div>
+          <div
+            className="tab-pane fade show"
+            id="tabs-icons-text-2"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-2-tab"
+          >
+            <Pending />
+          </div>
+          <div
+            className="tab-pane fade"
+            id="tabs-icons-text-3"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-3-tab"
+          >
+            <Approved />
+          </div>
+          <div
+            className="tab-pane fade"
+            id="tabs-icons-text-4"
+            role="tabpanel"
+            aria-labelledby="tabs-icons-text-4-tab"
+          >
+            <Rejected />
+          </div>
         </div>
-        <div
-          className="tab-pane fade show"
-          id="tabs-icons-text-2"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-2-tab"
-        >
-          <Pending />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-icons-text-3"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-3-tab"
-        >
-          <Approved />
-        </div>
-        <div
-          className="tab-pane fade"
-          id="tabs-icons-text-4"
-          role="tabpanel"
-          aria-labelledby="tabs-icons-text-4-tab"
-        >
-          <Rejected />
-        </div>
-      </div>
       </Card>
     </div>
   );

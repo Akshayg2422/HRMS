@@ -120,6 +120,8 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
       <tbody>
         {
           tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: any, index: number) => {
+            console.log("item?.checkin_time", item?.checkin_time);
+
             return <tr className=''>
               <td className='' ><div><ImageView height={150} width={100} style={{ objectFit: "cover" }} icon={item?.employee_photos[0]} />
                 <ImageView additionClass='ml-3' height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[3]} /></div></td>
@@ -127,7 +129,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.mobile_number}</td>
               <td className='col' style={{ whiteSpace: 'pre-wrap' }}  >{item?.checkin_location}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{getDisplayDateTimeFromMoment(getMomentObjFromServer(item?.checkin_time))}</td>
+              <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.checkin_time ? getDisplayDateTimeFromMoment(getMomentObjFromServer(item?.checkin_time)) : ''}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.status_text}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  > {item.status_code === -1 ? (
                 <span

@@ -1,4 +1,4 @@
-import { takeLatest, put, call, delay } from "redux-saga/effects";
+import { takeLatest, put, call } from "redux-saga/effects";
 
 import { FETCH_DASHBOARD, GET_CHECK_IN_DETAILED_LOG, URL_CHECK_IN, POST_DAILY_LOG, EMPLOYEE_FACE_FAILURE_LIST, CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST } from "./actionTypes";
 
@@ -12,6 +12,8 @@ import {
   showLoader,
   hideLoader
 } from '../loader/actions'
+
+
 
 function* getDashboard(action) {
 
@@ -148,7 +150,6 @@ function* editProfilePicture(action) {
   }
 }
 
-// getEmployeesLoginFaceFailureAction
 
 function* getEmployeesLoginFaceFailureSaga(action) {
   try {
@@ -177,7 +178,6 @@ function* getEmployeesLoginFaceFailureSaga(action) {
  * changeEmployeeFaceValidationRequest
  */
 
-// changeEmployeeFaceValidationRequestActionSuccess
 function* changeEmployeeFaceValidationRequestSaga(action) {
   try {
     yield put(showLoader());
