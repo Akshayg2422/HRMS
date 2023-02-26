@@ -119,7 +119,13 @@ import {
   IS_RENDER_ADMIN_BRANCHES,
   GET_BRANCHES_ADMIN,
   GET_BRANCHES_ADMIN_SUCCESS,
-  GET_BRANCHES_ADMIN_FAILURE
+  GET_BRANCHES_ADMIN_FAILURE,
+  GET_LEAVES_TYPE_DETAILS,
+  GET_EDIT_LEAVES_DETAILS,
+  UPDATE_LEAVE_TYPE_DETAILS,
+  UPDATE_LEAVE_TYPE_DETAILS_SUCCESS,
+  UPDATE_LEAVE_TYPE_DETAILS_FAILURE,
+  CURRENT_LEAVE_TYPE
 } from "./actionTypes";
 
 const initialState = {
@@ -161,7 +167,10 @@ const initialState = {
   employeeDocuments: [],
   adminBranches: [],
   RenderAdminBranch: false,
-  branchAdmins: []
+  branchAdmins: [],
+  leaveTypesDetails: {},
+  editLeaveTypesDetails: '',
+  currentLeaveType: -2
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -832,7 +841,6 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
     case GET_LEAVES_BY_TYPES_SUCCESS:
       const getLeaves = action.payload;
-
       state = {
         ...state,
         loading: false,
@@ -902,6 +910,7 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
     case GET_MODIFY_LOGS_SUCCESS:
+      
       const modifyLogs = action.payload;
       state = {
         ...state,
@@ -1005,15 +1014,15 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-      /**
-       * mis report data reset
-       */
-      case RESET_MIS_REPORT_DATA:
-        state = {
-          ...state,
-          misReport: [],
-        };
-        break;
+    /**
+     * mis report data reset
+     */
+    case RESET_MIS_REPORT_DATA:
+      state = {
+        ...state,
+        misReport: [],
+      };
+      break;
 
     // ***MIS Report Download
 
@@ -1114,7 +1123,7 @@ const EmployeeReducer = (state = initialState, action) => {
         branchAdmins: admins.data,
         adminNumOfPages: admins.num_pages,
         adminCurrentPage:
-          admins  .next_page === -1
+          admins.next_page === -1
             ? admins.num_pages
             : admins.next_page - 1,
         loading: false,
@@ -1128,6 +1137,51 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
+    case GET_LEAVES_TYPE_DETAILS:
+      state = {
+        ...state,
+        leaveTypesDetails: action.payload,
+      };
+      break;
+
+    case GET_EDIT_LEAVES_DETAILS:
+      state = {
+        ...state,
+        editLeaveTypesDetails: action.payload,
+      };
+      break;
+    /**
+     * Update Leave Status
+     */
+    case UPDATE_LEAVE_TYPE_DETAILS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case UPDATE_LEAVE_TYPE_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case UPDATE_LEAVE_TYPE_DETAILS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    /**
+     * current Leave Type
+     */
+    case CURRENT_LEAVE_TYPE:
+      state = {
+        ...state,
+        currentLeaveType: action.payload,
+      };
+      break;
     /**
      * Default
      */

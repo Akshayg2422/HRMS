@@ -13,16 +13,17 @@ import { useDashboard } from "@contexts";
 import { goTo, ROUTE, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
-import { useSelector } from "react-redux";import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
 
 
 import {
-  getAllBranchesList,
+  getListAllBranchesList,
 } from '../../../../store/location/actions';
 
 import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 import { getAdminBranches } from "../../../../store/employee/actions";
+import { postAppConfig } from "../../../../store/auth/actions";
 
 
 function Dashboard() {
@@ -35,14 +36,36 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
-  
+
+  const { appConfig, fcmToken } = useSelector(
+    (state: any) => state.AuthReducer
+  );
+
+
+
+  useEffect(() => {
+    getpostAppConfig()
+  }, [])
 
   useEffect(() => {
     dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
-    // dispatch(getAdminBranches({}));
   }, []);
-  
+
+
+
+
+  const getpostAppConfig = () => {
+    const params = {
+      device_model: appConfig.model,
+      device_platform: appConfig.platform,
+      device_brand: appConfig.brand,
+      device_token: fcmToken
+    }
+    console.log('params------------->', params);
+    // dispatch(postAppConfig({ params }))
+  }
+
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     let branchListFiltered: any = [];
@@ -67,11 +90,11 @@ function Dashboard() {
   useEffect(() => {
     if (dashboardDetails) {
       const params = {}
-      dispatch(getAllBranchesList({
+      dispatch(getListAllBranchesList({
         params,
         onSuccess: (response: Array<LocationProps>) => {
           const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
-          dispatch(setBranchHierarchical({ids:{ branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name}))
+          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name }))
         },
         onError: () => {
         },
@@ -82,7 +105,6 @@ function Dashboard() {
 
   return (
     <>
-      {/* {dashboardDetails && dashboardDetails.user_details && <div className="mx--3 my--4"><Header /></div>} */}
       <div className='my-5'>
         <DashBoardCard />
       </div>

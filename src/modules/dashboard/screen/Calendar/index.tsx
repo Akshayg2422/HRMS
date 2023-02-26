@@ -172,15 +172,20 @@ function Calendar() {
         <Card>
           <h1 className="mb-3">{t('Calendar')}</h1>
           <Container additionClass={"row"}>
-            <Container additionClass="col-xl-5">
+            <Container additionClass="col">
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
-            <Container additionClass="text-right col mt-xl-4 ">
+
+            <Container additionClass="text-right col-md-5 mt-4">
               <Primary
+                additionClass='col col-md-4'
                 text={t("addHoildays")}
                 onClick={handleAddHolidays}
-                col={"col-xl-3"}
-                size={"btn-md"}
+              />
+              <Primary
+                additionClass='col mt-sm-0 mt-3 col-md-6'
+                text={t('manageLeaveTypes')}
+                onClick={() => { goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES) }}
               />
             </Container>
           </Container>

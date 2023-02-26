@@ -27,7 +27,16 @@ import {
   ADMIN_VERIFICATION_OTP,
   ADMIN_VERIFICATION_OTP_SUCCESS,
   ADMIN_VERIFICATION_OTP_FAILURE,
-  RESET_REDUCER
+  RESET_REDUCER,
+  UPDATE_ADMIN_DETAILS,
+  REGISTER_OTP_VERIFY,
+  UPDATE_COMPANY_DETAILS,
+  UPDATE_FILE_DETAILS,
+  POST_APP_CONFIG,
+  POST_APP_CONFIG_SUCCESS,
+  POST_APP_CONFIG_FAILURE,
+  GET_APP_CONFIG_DATA,
+  GET_FCM_TOKEN
 } from "./actionTypes";
 
 
@@ -57,7 +66,7 @@ export const getValidateCompanyDetails = (params) => {
   return {
     type: VALIDATE_COMPANY_DETAILS,
     payload: params,
-  
+
   };
 };
 
@@ -80,14 +89,14 @@ export const getRegisterAdmin = (params) => {
   return {
     type: REGISTER_ADMIN,
     payload: params,
-  
+
   };
 };
 
 export const getRegisterAdminSuccess = (response) => {
   return {
     type: REGISTER_ADMIN_SUCCESS,
-    payload:response
+    payload: response
   };
 };
 
@@ -132,7 +141,7 @@ export const proceedSignIn = (params) => {
 export const proceedSignInSuccess = (details) => {
   return {
     type: OTP_LOGIN_SUCCESS,
-    payload:details
+    payload: details
   };
 };
 
@@ -155,7 +164,7 @@ export const getResendLoginOtp = (params) => {
 export const getResendLoginOtpSuccess = (message) => {
   return {
     type: RESEND_LOGIN_OTP_SUCCESS,
-    payload:message
+    payload: message
   };
 };
 
@@ -178,7 +187,7 @@ export const getAdminVerificationOtp = (params) => {
 export const getAdminVerificationOtpSuccess = (message) => {
   return {
     type: ADMIN_VERIFICATION_OTP_SUCCESS,
-    payload:message
+    payload: message
   };
 };
 
@@ -195,7 +204,7 @@ export const getNatureOfBusiness = (params) => {
   return {
     type: NATURE_OF_BUSINESS,
     payload: params,
-  
+
   };
 };
 
@@ -219,7 +228,7 @@ export const getTypeOfBusiness = (params) => {
   return {
     type: TYPE_OF_BUSINESS,
     payload: params,
-  
+
   };
 };
 
@@ -237,14 +246,94 @@ export const getTypeOfBusinessFailure = (error) => {
   };
 };
 
+/**
+ * 
+ * Update Admin Details
+ */
+
+export const updateAdminInput = (name, value) => ({
+  type: UPDATE_ADMIN_DETAILS,
+  payload: { name, value },
+});
+
+/**
+ * 
+ * Register OTP verify
+ */
+
+
+export const registerOtpVerify = (field, otp) => ({
+  type: REGISTER_OTP_VERIFY,
+  payload: { field, otp },
+});
+/**
+ * 
+ * Update Company Details
+ */
+
+export const updateCompanyInput = (CompanyField, CompanyValue) => ({
+  type: UPDATE_COMPANY_DETAILS,
+  payload: { CompanyField, CompanyValue },
+});
+
+/**
+ * 
+ * Update Documents Details
+ */
+export const updateDocumentsInput = (file, index) => ({
+  type: UPDATE_FILE_DETAILS,
+  payload: { file, index },
+});
 
 /**
  *  set logout 
  */
 
 
- export const resetAuth = () => {
+export const resetAuth = () => {
   return {
     type: RESET_REDUCER,
+  };
+};
+
+/**
+ * App Config
+ */
+
+
+export const postAppConfig = (params) => {
+  return {
+    type: POST_APP_CONFIG,
+    payload: params,
+  };
+};
+
+export const postAppConfigSuccess = (details) => {
+  return {
+    type: POST_APP_CONFIG_SUCCESS,
+    payload: details
+  };
+};
+
+export const postAppConfigFailure = (error) => {
+  return {
+    type: POST_APP_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const getAppConfigData = (details) => {
+  return {
+    type: GET_APP_CONFIG_DATA,
+    payload: details,
+  };
+};
+
+
+export const getFcmToken = (token) => {
+  return {
+    type: GET_FCM_TOKEN,
+    payload: token,
   };
 };

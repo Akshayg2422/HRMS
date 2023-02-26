@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches, Container } from "@components";
-import { getAllBranchesList } from "../../store/location/actions";
+import { Modal, InputDefault, CheckBox, ImageView, MyActiveBranches, Container, NoRecordFound } from "@components";
+import { getListAllBranchesList } from "../../store/location/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { LocationProps } from "../Interface";
 import { Icons } from "@assets";
@@ -21,7 +21,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails } =
     useSelector((state: any) => state.DashboardReducer);
 
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
   let dispatch = useDispatch();
@@ -37,18 +37,18 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         ...item,
         child: sortArray(item.child)
       }))
-      .sort((a: any, b:any)  => a.name.localeCompare(b.name))
+      .sort((a: any, b: any) => a.name.localeCompare(b.name))
   }
 
   useEffect(() => {
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
           setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
-      
+
           if (parentBranch) {
             const hierarchicalBranchArray = {
               ...parentBranch,
@@ -66,7 +66,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
               modifiedBranch = filteredBranch
             }
 
-            setHierarchicalBranch({ child: modifiedBranch});
+            setHierarchicalBranch({ child: modifiedBranch });
           }
         },
         onError: () => {
@@ -141,7 +141,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   }
 
 
-  
+
   return (
     <div className="row flex-row-reverse" >
       <div className="col-lg-6">
@@ -174,7 +174,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         </div>
       </div>}
       <Modal showModel={model} toggle={() => setModel(!model)}>
-        {brancheslist &&
+        {listBranchesList &&
           hierarchicalBranch &&
           hierarchicalBranch?.child &&
           hierarchicalBranch?.child.length > 0 &&
@@ -187,7 +187,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
                     item={item}
                     onChange={(array, item) => saveChildIdHandler(array, item)}
                     hierarchicalBranchIds={hierarchicalBranchIds}
-                    defaultData={brancheslist}
+                    defaultData={listBranchesList}
                   />
                 </div>
               );
@@ -216,7 +216,7 @@ const SubLevelComponent = ({
   return (
     <>
       <div
-        className="card-header"
+        className="card-header p-3"
         data-toggle="collapse"
         data-target={"#collapse" + item.id}>
         <div className="row align-items-center mx-4">
@@ -243,7 +243,7 @@ const SubLevelComponent = ({
       <div className="collapse" id={"collapse" + item.id}>
         <div className="card-body row align-items-center">
           {item.child &&
-            item.child.length > 0 &&
+            item.child.length > 0 ?
             item.child.map((item: any, index: number) => {
               return (
                 <SubLevelComponent
@@ -254,7 +254,8 @@ const SubLevelComponent = ({
                   defaultData={defaultData}
                 />
               );
-            })}
+            }) :
+            <NoRecordFound />}
         </div>
       </div>
     </>

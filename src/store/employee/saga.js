@@ -36,6 +36,7 @@ import {
   GET_ADMIN_BRANCHES,
   POST_UPDATED_ADMIN_BRANCHES,
   GET_BRANCHES_ADMIN,
+  UPDATE_LEAVE_TYPE_DETAILS,
 
 } from "./actionTypes";
 
@@ -115,6 +116,8 @@ import {
   postAdminUpdateBranchesFailure,
   getBranchAdminsSuccess,
   getBranchAdminsFailure,
+  updateLeaveTypeSuccess,
+  updateLeaveTypeFailure,
 
 } from "./actions";
 
@@ -153,7 +156,8 @@ import {
   attachUserDocuments,
   fetchAdminBranches,
   PostUpdatedAdminBranches,
-  getBranchAdminsApi
+  getBranchAdminsApi,
+  updateLeaveTypeApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -928,6 +932,33 @@ function* getBranchAdminsSaga(action) {
   }
 }
 
+/**
+ * Update Leave Status
+ */
+
+function* updateLeaveTypeSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(updateLeaveTypeApi, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(updateLeaveTypeSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(updateLeaveTypeFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(updateLeaveTypeFailure("Invalid Request"));
+  }
+}
+
+
+
+
 // *** WATCHER*** //
 
 function* EmployeeSaga() {
@@ -978,8 +1009,7 @@ function* EmployeeSaga() {
   yield takeLatest(GET_ADMIN_BRANCHES, fetchAdminBranchSaga);
   yield takeLatest(POST_UPDATED_ADMIN_BRANCHES, postUpdateAdminBranchesSaga);
   yield takeLatest(GET_BRANCHES_ADMIN, getBranchAdminsSaga);
-
-
+  yield takeLatest(UPDATE_LEAVE_TYPE_DETAILS, updateLeaveTypeSaga);
 }
 
 export default EmployeeSaga;

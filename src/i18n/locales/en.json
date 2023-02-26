@@ -9,6 +9,8 @@
   "add":"Add",
   "title":"Title",
   "modify":"Modify",
+  "approver":"Approver",  
+
 
 
   "mobileNumber": "Mobile Number",
@@ -53,9 +55,13 @@
 
   "adminProfile":"Admin profile",
   "fullName":"Full Name",
-  "firsrName":"First Name",
+  "typeName":"Type Name",
+  "allocatedDays":"Allocated Days",
+  "EnterAllocatedDays":"Enter Allocated Days",
+  "firstName":"First Name",
   "lastName":"Last Name",
   "typeYourName":"Enter your first name",
+  "EnterTypeName":"Enter Type name",
   "typeLastName":"Enter your last name",
   "companyEmail":"Enter your email",
   "gender": "Gender",
@@ -63,12 +69,13 @@
   "pan": "PAN number",
   "typeYourPanNo":"Enter your PAN number",
   "aadhar": "Aadhar Number",
-  "typeypurAadharNo":"Enter your Aadhaar number",
+  "typeypurAadharNo":"Enter your Aadhar number",
   "designation": "Designation",
   "enterDesignation":"Enter your Designation",
 
   "invalidName": "Invalid Name",
   "invalidNumber": "Invalid Number",
+  "InvalidDays":"Invalid Days",
   "invalidDesignation": "Invalid Designation",
   "invalidDepartment": "Invalid Department",
   "invalidCategory": "Invalid Category",
@@ -83,12 +90,12 @@
   "invalidShiftId":"Invalid Shift",
   "invalidType":"Invalid Type",
   "invalidAdmin":"User is not a Admin / Branch Admin",
+  "invalidOTP":"Invalid OTP",
+  
 
   
 
 
-
-  
 
   "companyProfile":"Company profile",
   "businessName": "Registered Business Name",
@@ -124,9 +131,9 @@
 
 
 "bloodGroup": "Blood Group",
-"enterBloodGroup":"Select Blood Group",
-"enterPanNUmber":"Enter Pan Number",
-"enterAadharNumber":"Enter Aadhar Number",
+"enterBloodGroup":"Select Your Blood Group",
+"enterPanNUmber":"Enter Your Pan Number",
+"enterAadharNumber":"Enter aadhar Number",
 "enterDepartment":"Enter your Department",
 "branch":"Branch",
 "category":"Category",
@@ -156,6 +163,8 @@
 "rejected":"Rejected",
 "markAsPresent":"Mark As Present",
 "addHoildays":"Add Holidays",
+"leaveTypes":"Leave Types",
+"manageLeaveTypes":"Manage Leave Types",
 "editHoliday":"Edit Holiday",
 "deleteHoliday":"Delete Holiday",
 "description":"Description",
@@ -171,6 +180,7 @@
 "update":"Update",
 "Calendar":"Calendar",
 "leaveList":"Leave List",
+"AvailableLeaves":"Available Leaves",
 "apply":"Apply",
 "approveLeave":"Approve Leave",
 "approveShift":"Approve Shift",
@@ -207,8 +217,16 @@
 "inValidDepartment":"Invalid Department",
 "inValidAttendance":"InValid Attendance Type",
 
-
-
+"invalidPan":"Invalid Pan",
+"inValidBusinessName":"Invalid Business Name",
+"inValidBrandName":"Invalid Brand Name",
+"inValidBusinessType":"Invalid Business Type",
+"inValidNatureBusiness":"InValid Nature Of Business",
+"invalidGst":"Invalid GST",
+"invalidAddress":"Invalid Address",
+"invalidPincode":"Invalid Pincode",
+"invalidCity":"Invalid City",
+"invalidState":"Invalid State",
 
 
 
@@ -262,6 +280,13 @@
  "MyActiveBranches": "My Active Branch",
  "AddBranch":"Add Branch",
  "editBranch":"Edit Branch",
+
+
+
+ "addType":"Add Leave Type",
+ "editType":"Edit Leave Type",
+
+
 
 
   
@@ -355,7 +380,8 @@
  "deleteUser":"Delete User",
  "deleteWarningMessage":"Please click on Proceed to deactivate user",
  "proceed":"Proceed",
- "deletedUser":"Deleted Employees",
+ "deletedUser":"Deleted Employee",
+ "deletedUserList":"Deleted Employee List",
  "deleteSuccessfully":"Deleted SuccessFully",
  "enableMessage":"Please click on Proceed to Activate user",
 

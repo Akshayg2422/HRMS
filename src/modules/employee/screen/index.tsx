@@ -17,10 +17,13 @@ import MyShiftDetails from './MyShiftDetails'
 import EmployeeShifts from './EmployeesShifts'
 import MyBranches from './MyBranches'
 import EmployeeShiftRequest from './EmployeeShiftRequest'
+import AvailableLeaves from './AvailableLeaves'
+import LeaveTypes from './LeaveTypes'
+import ManageLeaveTypes from './manageLeaveTypes'
 
 export {
     ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList,
     ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
     ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches,
-    EmployeeShiftRequest
+    EmployeeShiftRequest,AvailableLeaves,LeaveTypes,ManageLeaveTypes
 }

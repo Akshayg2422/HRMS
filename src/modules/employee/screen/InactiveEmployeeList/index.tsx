@@ -9,7 +9,8 @@ import {
   Secondary,
   NoRecordFound,
   ChooseBranchFromHierarchical,
-  BackArrow
+  BackArrow,
+  useKeyPress
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -36,10 +37,13 @@ import { useTranslation } from "react-i18next";
 function InActiveEmployeeList() {
   let dispatch = useDispatch();
   const { t } = useTranslation();
+  const enterPress = useKeyPress("Enter");
+
 
   const navigation = useNav();
   const [enableUserModel, setEnableUserModel] = useState(false);
   const [enableUserId, setEnableUserId] = useState("");
+  const [searchEmployee, setSearchEmployee] = useState('')
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
@@ -52,6 +56,7 @@ function InActiveEmployeeList() {
   const manageInactiveEmployeeList = () => {
     const params: object = {
       ...hierarchicalBranchIds,
+      ...(searchEmployee && { q: searchEmployee }),
       page_number: currentPage,
       is_active: false,
     };
@@ -69,6 +74,13 @@ function InActiveEmployeeList() {
   useEffect(() => {
     manageInactiveEmployeeList();
   }, [hierarchicalBranchIds]);
+
+
+  useEffect(() => {
+    if (enterPress) {
+      manageInactiveEmployeeList();
+    }
+  }, [enterPress])
 
   function getEmployeesApi(pageNumber: number) {
     const params: object = {
@@ -131,11 +143,32 @@ function InActiveEmployeeList() {
   return (
     <>
       <Card margin={"m-4"}>
-        <Container additionClass="col-xl-6 my-3">
-          <BackArrow additionClass={'my-3'} />
-          <h2>{t("deletedUser")}</h2>
-          <ChooseBranchFromHierarchical />
+        <BackArrow additionClass={'my-3'} />
+        <h2>{t("deletedUserList")}</h2>
+        <Container additionClass="row my-3">
+          <Container additionClass={'col-xl-6'}>
+            <ChooseBranchFromHierarchical />
+          </Container>
+          <Container additionClass={"col-xl-4 row"}>
+            <InputText
+              value={searchEmployee}
+              col={'col'}
+              label={t("employeeName")}
+              placeholder={t("searchEmployee")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+            <Container additionClass={'col-xl-2 mt-xl-2'}>
+              <Icon type={"btn-primary"} additionClass={'mt-xl-4 mt-2 mt-sm-0'} icon={Icons.Search}
+                onClick={() => {
+                  manageInactiveEmployeeList()
+                }}
+              />
+            </Container>
+          </Container>
         </Container>
+
         {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
           <CommonTable
             noHeader

@@ -54,7 +54,10 @@ export const ROUTE = {
   ROUTE_MANAGE_REQUEST: '/manage-request',
   ROUTE_SHIFT_REQUEST: '/shift-request',
   ROUTE_EMPLOYEE_SHIFT_REQUEST: '/employee-shift-request',
-  ROUTE_LAUNCH_SUCCESS: '/launch-success',
+  ROUTE_FACE_APPROVAL: '/face-approval',
+  ROUTE_AVAILABLE_LEAVES: '/available-leaves',
+  ROUTE_LEAVES_TYPES: '/leaves-types',
+  ROUTE_MANAGE_LEAVE_TYPES: '/manage-leave-types',
 }
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
@@ -78,10 +81,10 @@ export const REPORTS_TYPE = [
 ];
 
 export const LEAVES_TYPE = [
-  { id: 'All', name: 'All', value: 'All' },
-  { id: 'Pending Leave', name: 'Pending Leave', value: 'Pending Leave' },
-  { id: 'Approved Leave', name: 'Approved Leave', value: 'Approved Leave' },
-  { id: 'Rejected Leave', name: 'Rejected Leave', value: 'Rejected Leave' },
+  { id: 'All', name: 'All', value: -2 },
+  { id: 'Pending Leave', name: 'Pending Leave', value: -1,},
+  { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
+  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
 
 
 ];
@@ -96,25 +99,25 @@ export const REQUEST_TYPE_SUBSET = [
 
 ];
 
- export const getRequestType = (value: any) => {
+export const getRequestType = (value: any) => {
   let type
   switch (value) {
-      case 'All':
-          type = -2
-          break;
-      case 'Pending':
-          type = -1
-          break;
-      case 'Approved':
-          type = 1
-          break;
-      case 'Rejected':
-          type = 0
-          break;
+    case 'All':
+      type = -2
+      break;
+    case 'Pending':
+      type = -1
+      break;
+    case 'Approved':
+      type = 1
+      break;
+    case 'Rejected':
+      type = 0
+      break;
 
-      default:
-          type = -2
-          break;
+    default:
+      type = -2
+      break;
   }
   return type
 }
@@ -123,7 +126,7 @@ export const REQUEST_TYPE = [
   { id: 1, name: 'All', value: -2 },
   { id: 2, name: 'Pending', value: -1 },
   { id: 3, name: 'Approved', value: 1 },
-  { id: 4, name: 'Rejected', value: 0 }, 
+  { id: 4, name: 'Rejected', value: 0 },
 ];
 
 export const DOWNLOAD_RANGE = [
@@ -170,7 +173,8 @@ export const NAV_ITEM = [
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
-  { id: '17', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
+  { id: '17', name: 'Face Approval', value: 'FA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_FACE_APPROVAL },
+  { id: '18', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
 
@@ -271,7 +275,7 @@ export const EMPLOYEE_ADDITIONAL_DATA_EDIT = [
     elv: 'Edit',
     elh: 'Edit',
   },
- 
+
   // {
   //   elt: TABLE_ELEMENT_TEXT_IMAGE,
   //   elv: 'Delete',
@@ -292,7 +296,7 @@ export const EMPLOYEES_SHIFT_DATA_EDIT = [
     elv: 'Edit',
     elh: 'Edit',
   },
- 
+
   // {
   //   elt: TABLE_ELEMENT_TEXT_IMAGE,
   //   elv: 'Delete',
@@ -366,6 +370,5 @@ export const LastWeek = moment()
 
 export const MAX_LENGTH_MOBILE_NUMBER = 10;
 export const MAX_LENGTH_AADHAR = 12;
-export const MAX_LENGTH_PAN_CARD = 12;
-
-
+export const MAX_LENGTH_PAN_CARD = 10;
+export const MAX_LENGTH_PIN_CODE = 6

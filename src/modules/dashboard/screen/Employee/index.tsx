@@ -47,8 +47,6 @@ function EmployeeScreen() {
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
   );
-  // console.log("registeredEmployeesList",registeredEmployeesList);
-
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer

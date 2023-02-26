@@ -23,7 +23,7 @@ import {
   deleteHoliday,
   getLeavesByTypes,
 } from "../../../../store/employee/actions";
-import { dropDownValueCheck, goTo, LEAVES_TYPE, ROUTE, showToast, useNav } from "@utils";
+import { dropDownValueCheck, getRequestType, goTo, LEAVES_TYPE, REQUEST_TYPE_SUBSET, ROUTE, showToast, useNav } from "@utils";
 
 function MyLeaves() {
   const navigation = useNav();
@@ -31,7 +31,7 @@ function MyLeaves() {
   const [deleteModel, setDeleteModel] = useState(false);
   const [daysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
-  const [leaveTypes, setLeaveTypes] = useState(LEAVES_TYPE[0].value);
+  const [leaveTypes, setLeaveTypes] = useState(REQUEST_TYPE_SUBSET[0].name);
   const { myLeaves, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
   );
@@ -41,24 +41,13 @@ function MyLeaves() {
   );
 
   useEffect(() => {
-    getDataForTypes();
+    fetchleaveDetail(getRequestType(leaveTypes), currentPage)
   }, [leaveTypes]);
 
-  const getDataForTypes = () => {
-    if (leaveTypes === "All") {
-      fetchleaveDetail(-2);
-    } else if (leaveTypes === "Pending Leave") {
-      fetchleaveDetail(-1);
-    } else if (leaveTypes === "Approved Leave") {
-      fetchleaveDetail(1);
-    } else if (leaveTypes === "Rejected Leave") {
-      fetchleaveDetail(0);
-    }
-  };
-
-  const fetchleaveDetail = (type: number) => {
+  const fetchleaveDetail = (type: number, pageNumber: number) => {
     const params = {
       status: type,
+      page_number: pageNumber,
     };
     dispatch(getLeavesByTypes({ params }));
   };
@@ -73,6 +62,7 @@ function MyLeaves() {
         : type === "prev"
           ? currentPage - 1
           : position;
+    fetchleaveDetail(getRequestType(leaveTypes), page)
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -86,18 +76,10 @@ function MyLeaves() {
     });
   };
 
-  // const getTableContent = () => {
-  //   let arr = Array.prototype.concat(
-  //     calendarEvents?.days_leave,
-  //     calendarEvents?.days_absent
-  //   );
-  //   return arr;
+  // const handleApplyLeave = () => {
+  //   dispatch(getLeaveFromDate(""));
+  //   goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
   // };
-
-  const handleApplyLeave = () => {
-    dispatch(getLeaveFromDate(""));
-    goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
-  };
 
   return (
     <>
@@ -107,20 +89,20 @@ function MyLeaves() {
           <Container additionClass={"text-right row my-4"}>
             <Container additionClass="col-xl-4">
               <DropDown
-                data={LEAVES_TYPE}
+                data={REQUEST_TYPE_SUBSET}
                 placeholder={'Select Type'}
                 value={leaveTypes}
                 onChange={(event) => setLeaveTypes(dropDownValueCheck(event.target.value, 'Select Type'))}
               />
             </Container>
-            <Container additionClass="col">
+            {/* <Container additionClass="col">
               <Primary
                 text={t("applyLeave")}
                 onClick={handleApplyLeave}
                 col={"col-xl-3"}
                 size={"btn-md"}
               />
-            </Container>
+            </Container> */}
           </Container>
         </Card>
         <h1>{t("leaveList")}</h1>

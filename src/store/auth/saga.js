@@ -9,7 +9,8 @@ import {
   UPLOAD_COMPANY_DOCUMENT,
   NATURE_OF_BUSINESS,
   TYPE_OF_BUSINESS,
-  ADMIN_VERIFICATION_OTP
+  ADMIN_VERIFICATION_OTP,
+  POST_APP_CONFIG
 } from "./actionTypes";
 
 import {
@@ -30,7 +31,9 @@ import {
   getTypeOfBusinessSuccess,
   getTypeOfBusinessFailure,
   getAdminVerificationOtpSuccess,
-  getAdminVerificationOtpFailure
+  getAdminVerificationOtpFailure,
+  postAppConfigSuccess,
+  postAppConfigFailure
 
 } from "./actions";
 
@@ -42,7 +45,8 @@ import {
   postRegisterAdmin,
   postUploadCompanyDocument,
   fetchNatureOfBusiness,
-  fetchTypeOfBusiness
+  fetchTypeOfBusiness,
+  postAppConfigDetailsApi
 } from "../../helpers/backend_helper";
 
 import {
@@ -162,15 +166,14 @@ function* registerAdmin(action) {
     const response = yield call(postRegisterAdmin, action.payload.params);
 
     if (response.success) {
-
       yield put(hideLoader());
       yield put(getRegisterAdminSuccess({ ...response, ...action.payload.params }));
+      yield call(action.payload.onSuccess(response));
 
     } else {
-
       yield put(hideLoader());
       yield put(getRegisterAdminFailure(response.error_message));
-
+      yield call(action.payload.onError(response));
     }
   } catch (error) {
 
@@ -186,7 +189,7 @@ function* registerCompany(action) {
     yield put(showLoader());
 
     const response = yield call(postRegisterCompany, action.payload.params);
-  
+
     if (response.success) {
 
       yield put(hideLoader());
@@ -214,18 +217,18 @@ function* uploadCompanyDocument(action) {
     yield put(showLoader());
 
     const response = yield call(postUploadCompanyDocument, action.payload.params);
-   
+
     if (response.success) {
 
       yield put(hideLoader());
       yield put(uploadCompanyDocumentsSuccess(response.details));
-      yield call(action.payload.onSuccess());
+      yield call(action.payload.onSuccess(response.details));
 
     } else {
 
       yield put(hideLoader());
       yield put(uploadCompanyDocumentsFailure(response.error_message));
-      yield call(action.payload.onError());
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
@@ -288,6 +291,38 @@ function* getTypeOfBusiness(action) {
   }
 }
 
+
+// postAppConfigDetailsApi
+
+
+function* postAppConfigDetailsSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(postAppConfigDetailsApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(postAppConfigSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(postAppConfigFailure(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(postAppConfigFailure("Invalid Request"));
+
+  }
+}
+
+
+
 ///watcher///
 
 function* AuthSaga() {
@@ -300,6 +335,8 @@ function* AuthSaga() {
   yield takeLatest(NATURE_OF_BUSINESS, getNatureOfBusiness);
   yield takeLatest(TYPE_OF_BUSINESS, getTypeOfBusiness);
   yield takeLatest(ADMIN_VERIFICATION_OTP, adminVerificationOtp);
+  yield takeLatest(POST_APP_CONFIG, postAppConfigDetailsSaga);
+
 }
 
 export default AuthSaga;

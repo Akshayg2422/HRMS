@@ -29,7 +29,7 @@ function ShiftRequest() {
 
 
   useEffect(() => {
-    getRequestDetails(active)
+    getEmployeeRequest(currentType, currentPage)
   }, [hierarchicalBranchIds])
 
   useEffect(() => {
@@ -137,7 +137,7 @@ function ShiftRequest() {
       </div>
     </div>
   )
-  
+
 }
 
 export { ShiftRequest }

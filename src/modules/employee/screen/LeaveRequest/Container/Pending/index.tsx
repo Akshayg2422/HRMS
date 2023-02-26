@@ -31,10 +31,7 @@ const Pending = () => {
     (state: any) => state.DashboardReducer
   );
 
-  useEffect(() => {
-    fetchPendingDetail(currentPage);
-  }, [hierarchicalBranchIds]);
-
+  
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -107,8 +104,7 @@ const Pending = () => {
             setRejectModel(!rejectModel);
           }
           fetchPendingDetail(currentPage);
-          showToast('success', success?.message)
-
+          showToast('success', success?.status)
         },
         onError: (error: string) => { },
       })

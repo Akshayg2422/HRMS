@@ -35,7 +35,8 @@ import {
   inputNumberMaxLength,
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
-  dropDownValueCheckByEvent
+  dropDownValueCheckByEvent,
+  MAX_LENGTH_AADHAR
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -419,10 +420,11 @@ const ManageEmployee = () => {
       dispatch(
         addDesignation({
           params,
-          onSuccess: () => {
+          onSuccess: (success: any) => {
             setDesignationModel(!designationModel);
             setIsRefresh(!isRefresh);
             setDesignation("");
+            showToast('success', success?.message)
             setIsAdminRights(false);
           },
           onError: () => { },
@@ -441,16 +443,29 @@ const ManageEmployee = () => {
       dispatch(
         addDepartment({
           params,
-          onSuccess: () => {
+          onSuccess: (success: any) => {
             setDepartmentModel(!departmentModel);
             setIsRefresh(!isRefresh);
-            setDepartment("");
+
+            showToast('success', success?.message)
           },
           onError: () => { },
         })
       );
     }
   }
+
+
+  const handleCancelDesignation = () => {
+    setDesignation("");
+    setDesignationModel(!designationModel);
+  }
+
+  const handleCancelDepartment = () => {
+    setDepartment("");
+    setDepartmentModel(!departmentModel);
+  }
+
 
 
   return (
@@ -536,12 +551,11 @@ const ManageEmployee = () => {
         <InputDefault
           label={t("aadhar")}
           placeholder={t("typeypurAadharNo")}
-          // maxLength={10}
           validator={validateAadhar}
           value={employeeDetails.aadharrNo}
           name={"aadharrNo"}
           onChange={(event) => {
-            onChangeHandler(event);
+            mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
           }}
         />
         <div className="row align-items-center">
@@ -615,6 +629,7 @@ const ManageEmployee = () => {
         <DatePicker
           icon={Icons.Calendar}
           iconPosition={"append"}
+          maxDate={Today}
           onChange={(date: string) => dateTimePickerHandler(date, "dob")}
           value={employeeDetails.dob}
         />
@@ -666,7 +681,7 @@ const ManageEmployee = () => {
       <Modal
         title={t("department")}
         showModel={departmentModel}
-        toggle={() => setDepartmentModel(!departmentModel)}
+        toggle={() => handleCancelDepartment()}
       >
         {
           <Container>
@@ -674,6 +689,7 @@ const ManageEmployee = () => {
               <InputText
                 placeholder={t("department")}
                 validator={validateDefault}
+                value={department}
                 onChange={(e) => {
                   setDepartment(e.target.value);
                 }}
@@ -682,7 +698,7 @@ const ManageEmployee = () => {
             <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() => setDepartmentModel(!departmentModel)}
+                onClick={() => handleCancelDepartment()}
               />
               <Primary
                 text={t("submit")}
@@ -696,7 +712,7 @@ const ManageEmployee = () => {
       <Modal
         title={t("designation")}
         showModel={designationModel}
-        toggle={() => setDesignationModel(!designationModel)}
+        toggle={() => handleCancelDesignation()}
       >
         {
           <Container>
@@ -704,6 +720,7 @@ const ManageEmployee = () => {
               <InputText
                 placeholder={t("designation")}
                 validator={validateDefault}
+                value={designation}
                 onChange={(e) => {
                   setDesignation(e.target.value);
                 }}
@@ -719,7 +736,7 @@ const ManageEmployee = () => {
             <Container margin={"mt-5"} additionClass={"text-right"}>
               <Secondary
                 text={t("cancel")}
-                onClick={() => setDesignationModel(!designationModel)}
+                onClick={() => handleCancelDesignation()}
               />
               <Primary
                 text={t("submit")}

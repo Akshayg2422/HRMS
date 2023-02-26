@@ -3,7 +3,7 @@ import {
   TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST,
   MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE,
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
-  WEEK_DAY_LIST, REPORTS_TYPE,
+  WEEK_DAY_LIST, REPORTS_TYPE,MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
   DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT
 } from './constants'
@@ -28,7 +28,7 @@ import moment from 'moment';
 import { REACT_APP_APP_URL } from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
-import { hideLoader, showLoader } from '../store/app/actions';
+// import { hideLoader, showLoader } from '../store/app/actions';
 
 const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 
@@ -227,6 +227,10 @@ const downloadFile = ((response: any) => {
   window.URL.revokeObjectURL(url);
 })
 
+const base64ToImage = (base64: any) => {
+  return 'data:image/png;base64,' + base64
+
+}
 
 const formatAMPM = (time: any) => {
   let [hours, minutes, seconds] = time.split(':');
@@ -306,5 +310,7 @@ export {
   getDropDownValueByName,
   EMPLOYEES_SHIFT_DATA_EDIT,
   getDateFormat,
-  convertTo24Hour
+  convertTo24Hour,
+  base64ToImage,
+  MAX_LENGTH_PAN_CARD
 }

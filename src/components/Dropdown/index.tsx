@@ -38,8 +38,8 @@ const DropDown = ({
     <select value={value} className={`form-control ${showArrow && "form-select"}`} {...props} onChange={onChange} name={name} disabled={isDisabled}>
       <option>{placeholder}</option>
       {data && data.length > 0 && data.map((item, index) => (
-        <option className="dropdown-item" key={index} value={item.id || item.type}>
-          {item.name ? item.name : item.group_name}  {item.title}
+        <option className="dropdown-item" key={index} value={item?.id || item?.type}>
+          {item?.name ? item?.name : item?.group_name}  {item?.title}
         </option>
       ))}
     </select>

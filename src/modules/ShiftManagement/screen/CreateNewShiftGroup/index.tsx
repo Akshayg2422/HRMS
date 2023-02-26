@@ -85,6 +85,7 @@ const CreateShiftGroup = () => {
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
+    
     const PreFilledDetails = () => {
         if (selectedShiftGroupDetails) {
             setGroupName(selectedShiftGroupDetails.name)
@@ -108,7 +109,6 @@ const CreateShiftGroup = () => {
 
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
-            // ...hierarchicalBranchIds,
             branch_id: dashboardDetails?.company_branch?.id,      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             ...(designationId && { designation_id: designationId }),
@@ -139,11 +139,11 @@ const CreateShiftGroup = () => {
             showToast("error", t('theGroupNameCantBeEmpty'));
             return false;
         }
-        else if (!selectedShift) {
+        else if (selectedShift === '') {
             showToast("error", t('invalidShift'));
             return false;
         }
-        else if (!designationId) {
+        else if (designationId === '') {
             showToast("error", t('inValidDesignation'));
             return false;
         }
@@ -165,13 +165,12 @@ const CreateShiftGroup = () => {
                 ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id }),
                 ...(designationShiftGroup && { id: designationShiftGroup.id }),
                 designation_id: designationId
-            }            
+            }
             dispatch(postAddShift({
                 params,
                 onSuccess: (success: any) => {
                     setSelectedEmployeesIds([])
                     goBack(navigation);
-                    // goTo(navigation, ROUTE.ROUTE_SHIFT_GROUP)
                     showToast("success", success.status)
                 },
                 onError: (error: string) => {
@@ -328,7 +327,7 @@ const CreateShiftGroup = () => {
                                 data={branchesWeeklyShifts}
                                 value={selectedShift}
                                 onChange={(event) => {
-                                    setSelectedShift(dropDownValueCheck(event.target.value, t('selectDesignation')))
+                                    setSelectedShift(dropDownValueCheck(event.target.value, t('selectWeeklyShift')))
                                 }}
                             />
 

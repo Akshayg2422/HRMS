@@ -31,6 +31,8 @@ import {
   DOWNLOAD_RANGE,
   validateDefault,
   showAdminModify,
+  dropDownValueCheckByEvent,
+  dropDownValueCheck,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -82,6 +84,8 @@ const DashBoardAttendance = ({ }) => {
     dateFrom: "",
     dataTo: "",
   });
+  const [presentModifiedModel, setPresentModifiedModel] = useState<boolean>(false);
+  const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
 
   useEffect(() => {
     getTodayStats(currentPage);
@@ -99,19 +103,37 @@ const DashBoardAttendance = ({ }) => {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
-  const getTodayStats = (pageNumber: number) => {
-    const params = {
-      ...hierarchicalBranchIds,
-      department_id: selectedDepartment + "",
-      attendance_type: selectedAttendance + "",
-      selected_date: customselectedDate,
-      page_number: pageNumber,
-      download: false,
-      ...(searchEmployee && { q: searchEmployee }),
-    };
 
-    dispatch(getEmployeeTodayStatus(params));
+  const validateTodayStatsParams = () => {
+    if (selectedDepartment === '') {
+      showToast("error", t("inValidDepartment"));
+      return false;
+    } else if (selectedAttendance === '') {
+      showToast("error", t("inValidAttendance"));
+      return false
+    }
+    return true;
   };
+
+
+
+  const getTodayStats = (pageNumber: number) => {
+    if (validateTodayStatsParams()) {
+      const params = {
+        ...hierarchicalBranchIds,
+        department_id: selectedDepartment + "",
+        attendance_type: selectedAttendance + "",
+        selected_date: customselectedDate,
+        page_number: pageNumber,
+        download: false,
+        ...(searchEmployee && { q: searchEmployee }),
+      };
+
+      dispatch(getEmployeeTodayStatus(params));
+    }
+  };
+
+
 
   const onModify = (e: any, item: any) => {
     e.stopPropagation()
@@ -144,8 +166,11 @@ const DashBoardAttendance = ({ }) => {
           : "-",
         remark: <div style={{
           fontWeight: 'bold',
+          cursor: el?.per_day_details?.day_status_type === 10 ? 'pointer' : '',
           color: fontColor(el.per_day_details?.day_status_type)
-        }}>{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
+        }}
+          onClick={(e) => { handlePresentModified(e, el) }}
+        >{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
         'Modify': <>{showAdminModify(el?.per_day_details?.day_status_type) ?
           <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
@@ -154,25 +179,46 @@ const DashBoardAttendance = ({ }) => {
   };
 
 
+
+  const handlePresentModified = (e: any, type: any) => {
+    if (type?.per_day_details?.day_status_type === 10) {
+      e.stopPropagation()
+      setPresentModifiedModel(!presentModifiedModel)
+      setPresentModifiedDetails(type)
+    }
+  }
+
+
+
   function fontColor(statusType: any) {
     let color = ''
     switch (statusType) {
-      case 1: color = "#2ECC71"
+      case 1:
+        color = '#00b603'
         break;
-      case 6: color = "#DC4A1F";
+      case 6:
+        color = '#DC4A1F';
         break;
-      case 9: color = "#C39DE9";
+      case 5:
+        color = '#ff351f';
         break;
-      case 2: color = "#BA4A00";
+      case 2:
+        color = '#642209';
         break;
-      case 4: color = "#D4AC0D";
+      case 4:
+        color = '#f0c434';
         break;
-      case 10: color = "#2ECC71";
+      case 10:
+        color = '#00b603'
         break;
-      case 5: color = "#FF351F";
+      case 9:
+        color = '#de9b00'
+        break;
+      case 8:
+        color = '#5d00ff'
         break;
       default:
-        color = "#000000"
+        color = '#000000'
     }
     return color
   }
@@ -367,7 +413,7 @@ const DashBoardAttendance = ({ }) => {
                   value={selectedDepartment}
                   onChange={(event) => {
                     if (setSelectedDepartment) {
-                      setSelectedDepartment(event.target.value);
+                      setSelectedDepartment(dropDownValueCheck(event.target.value, "Select Department"));
                     }
                   }}
                 />
@@ -542,6 +588,21 @@ const DashBoardAttendance = ({ }) => {
             />
             <Primary text={t("modify")} onClick={() => onRequestHandler()} />
           </Container>
+        </Container>
+      </Modal>
+      <Modal showModel={presentModifiedModel} title={t('markAsPresent')}
+        toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
+        <Container additionClass={'ml-3'}><span>
+          {t("approver")}
+          {":"}&nbsp;&nbsp;
+          <span className="text-black">{presentModifiedDetails?.per_day_details?.approved_by}</span>
+        </span>
+          <br />
+          <span>
+            {t("reason")}
+            {":"}&nbsp;&nbsp;
+            <span className="text-black">{presentModifiedDetails?.per_day_details?.note}</span>
+          </span>
         </Container>
       </Modal>
     </div>

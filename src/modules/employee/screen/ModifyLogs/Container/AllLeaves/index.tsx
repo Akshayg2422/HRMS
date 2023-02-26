@@ -33,10 +33,7 @@ const AllLeaves = () => {
     (state: any) => state.DashboardReducer
   );
 
-  useEffect(() => {
-    fetchPendingDetail(currentPage);
-  }, [hierarchicalBranchIds]);
-
+ 
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -361,6 +358,7 @@ const LocationTable = ({
                     {item.status_code === -1 ? (
                       <span
                         className="h5 text-primary"
+                        style={{cursor:'pointer'}}
                         onClick={() => {
                           if (onApproveClick) onApproveClick(item);
                         }}
@@ -378,6 +376,7 @@ const LocationTable = ({
                     ) : item.status_code === 0 ? (
                       <span
                         className="h5 text-primary"
+                        style={{cursor:'pointer'}}
                         onClick={() => {
                           if (onRevertClick) onRevertClick(item);
                         }}
@@ -392,6 +391,7 @@ const LocationTable = ({
                     {item.status_code === -1 ? (
                       <span
                         className="h5 text-primary"
+                        style={{cursor:'pointer'}}
                         onClick={() => {
                           if (onRejectClick) onRejectClick(item);
                         }}

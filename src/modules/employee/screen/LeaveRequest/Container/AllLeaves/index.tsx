@@ -13,7 +13,7 @@ import {
   getEmployeeLeavesSuccess,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,10 +32,7 @@ const AllLeaves = () => {
     (state: any) => state.DashboardReducer
   );
 
-  useEffect(() => {
-    fetchPendingDetail(currentPage);
-  }, [hierarchicalBranchIds]);
-
+ 
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -65,7 +62,7 @@ const AllLeaves = () => {
           : position;
     fetchPendingDetail(page);
   }
-  
+
   const manageApproveStatus = (item: object) => {
     dispatch(getSelectedEventId(item));
     setApproveModel(!approveModel);
@@ -89,7 +86,7 @@ const AllLeaves = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           if (el === 1) {
             setApproveModel(!approveModel);
           }
@@ -100,6 +97,7 @@ const AllLeaves = () => {
             setRevertModel(!revertModel);
           }
           fetchPendingDetail(currentPage);
+          showToast('success',success?.status)
         },
         onError: (error: string) => { },
       })

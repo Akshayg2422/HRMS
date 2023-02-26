@@ -21,7 +21,10 @@ import {
   SET_HIERARCHICAL_BRANCH_INCLUDE_CHILD,
   RESET_REDUCER,
   SET_HIERARCHICAL_ALL_BRANCH_IDS,
-  SET_MULTISELECT_ALL_BRANCH_IDS
+  SET_MULTISELECT_ALL_BRANCH_IDS,
+  EMPLOYEE_FACE_FAILURE_LIST,
+  EMPLOYEE_FACE_FAILURE_LIST_SUCCESS,
+  EMPLOYEE_FACE_FAILURE_LIST_FAIL
 } from "./actionTypes";
 
 const initialState = {
@@ -31,7 +34,13 @@ const initialState = {
   hierarchicalBranchIds: {},
   hierarchicalAllBranchIds: 0,
   hierarchicalBranchName: '',
-  multiSelectHierarchicalBranch: []
+  multiSelectHierarchicalBranch: [],
+  employeesLoginFaceFailureDetails: [],
+  numOfPages: 0,
+  currentPage: 1,
+  total: "",
+  total_count: "",
+  currentFaceType: -2
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -176,6 +185,44 @@ const DashboardReducer = (state = initialState, action) => {
         multiSelectHierarchicalBranch: action.payload
       };
       break;
+
+
+    /**
+     * face Validation
+     */
+
+
+    case EMPLOYEE_FACE_FAILURE_LIST:
+      state = {
+        ...state,
+        employeesLoginFaceFailureDetails: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case EMPLOYEE_FACE_FAILURE_LIST_SUCCESS:
+      const employeeRes = action.payload.details;
+      state = {
+        ...state,
+        loading: false,
+        employeesLoginFaceFailureDetails: employeeRes.data,
+        numOfPages: employeeRes.num_pages,
+        currentPage:
+          employeeRes.next_page === -1
+            ? employeeRes.num_pages
+            : employeeRes.next_page - 1,
+      };
+      break;
+    case EMPLOYEE_FACE_FAILURE_LIST_FAIL:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
+
 
     case RESET_REDUCER:
       state = initialState;

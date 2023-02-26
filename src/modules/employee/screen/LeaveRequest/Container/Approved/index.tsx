@@ -12,7 +12,7 @@ import {
   getEmployeeLeavesSuccess,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE } from "@utils";
+import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,10 +27,6 @@ const Approved = () => {
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
-  useEffect(() => {
-    fetchApprovedLeaves(currentPage);
-  }, [hierarchicalBranchIds]);
 
   const fetchApprovedLeaves = (pageNumber: number) => {
     const params = {
@@ -90,9 +86,11 @@ const Approved = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
           setRevertModel(!revertModel);
           fetchApprovedLeaves(currentPage);
+          showToast('success',success?.status)
+
         },
         onError: (error: string) => {},
       })

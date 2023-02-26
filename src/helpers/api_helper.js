@@ -4,10 +4,10 @@ import { ASYN_USER_AUTH } from '@utils'
 //apply base url for axios
 const STAGING = 'http://43.204.233.45/';
 
-const LOCAL_DEV = 'http://192.168.43.116:8001';
+const LOCAL_DEV = 'http://192.168.43.116:8003';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
-const LOCAL_PROD = 'http://15.206.224.132:8000';
+const LOCAL_PROD = 'http://192.168.143.204:8001';
 
 const PRE_PROD = 'http://15.206.224.132'
 
@@ -18,7 +18,7 @@ const PROD_WEB = 'https://webapi.zenyq.com';
 
 
 
-export const REACT_APP_APP_URL = PROD_WEB ;
+export const REACT_APP_APP_URL = PROD_WEB;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
