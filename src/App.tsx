@@ -75,6 +75,7 @@ function App() {
   return (
     <>
       <AutoLogout />
+      <AutoLogout />
       {/* <Requestpermission/> */}
       {/* <DeviceInfo /> */}
       <AppProvider >
