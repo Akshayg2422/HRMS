@@ -910,6 +910,7 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
     case GET_MODIFY_LOGS_SUCCESS:
+      
       const modifyLogs = action.payload;
       state = {
         ...state,

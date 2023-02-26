@@ -65,7 +65,7 @@ const ApplyLeave = () => {
     const numberOfDays = getNumberOfDays(startDate, endDate);
     let currentType = dropDownData.find((item: { leave_type_id: any; }) => item.leave_type_id === fromDetails.leaveType)
     if (numberOfDays > currentType?.available_days) {
-      showToast('info', `Exiding Avaliable Days Please Choose less then ${currentType?.available_days} ${currentType?.available_days > 1 ? 'days' : 'day'} `)
+      showToast('info', `Exceeding Available Days Please Choose less then ${currentType?.available_days} ${currentType?.available_days > 1 ? 'days' : 'day'} `)
       setFormDetails({ ...fromDetails, dataTo: "" });
     }
   }, [fromDetails.dateFrom, fromDetails.dataTo]);
@@ -114,7 +114,7 @@ const ApplyLeave = () => {
           setDropDownData(success.leave_types)
         },
         onError: (error: string) => {
-          showToast("error", t("somethingWrong"));
+          showToast("error", error);
         },
       })
     );
@@ -164,7 +164,8 @@ const ApplyLeave = () => {
             goTo(navigation, ROUTE.ROUTE_AVAILABLE_LEAVES);
           },
           onError: (error: string) => {
-            showToast("error", t("somethingWrong"));
+            showToast("error", error);
+            setFormDetails({ ...fromDetails, dataTo: "", dateFrom: '', reason: '' });
           },
         })
       );

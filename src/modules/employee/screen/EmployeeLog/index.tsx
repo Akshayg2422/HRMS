@@ -219,22 +219,32 @@ function EmployeeLog() {
   function fontColor(statusType: any) {
     let color = ''
     switch (statusType) {
-      case 1: color = "#2ECC71"
+      case 1:
+        color = '#00b603'
         break;
-      case 6: color = "#DC4A1F";
+      case 6:
+        color = '#DC4A1F';
         break;
-      case 9: color = "#C39DE9";
+      case 5:
+        color = '#ff351f';
         break;
-      case 2: color = "#BA4A00";
+      case 2:
+        color = '#642209';
         break;
-      case 4: color = "#D4AC0D";
+      case 4:
+        color = '#f0c434';
         break;
-      case 10: color = "#2ECC71";
+      case 10:
+        color = '#00b603'
         break;
-      case 5: color = "#FF351F";
+      case 9:
+        color = '#de9b00'
+        break;
+      case 8:
+        color = '#5d00ff'
         break;
       default:
-        color = "#000000"
+        color = '#000000'
     }
     return color
   }

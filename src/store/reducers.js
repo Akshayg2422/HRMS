@@ -7,6 +7,7 @@ import DashboardReducer from "./dashboard/reducer";
 import AppReducer from "./app/reducer";
 import ShiftManagementReducer from "./shiftManagement/reducer";
 import PayrollReducer from './Payroll/reducer'
+import LoaderReducer from './loader/reducer'
 
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
     DashboardReducer,
     AppReducer,
     ShiftManagementReducer,
-    PayrollReducer
+    PayrollReducer,
+    LoaderReducer
 });
 
 export default rootReducer;

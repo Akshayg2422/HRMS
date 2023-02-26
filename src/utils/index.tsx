@@ -28,7 +28,7 @@ import moment from 'moment';
 import { REACT_APP_APP_URL } from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
-import { hideLoader, showLoader } from '../store/app/actions';
+// import { hideLoader, showLoader } from '../store/app/actions';
 
 const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 

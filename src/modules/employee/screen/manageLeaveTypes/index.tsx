@@ -55,10 +55,9 @@ function ManageLeaveTypes() {
         if (ValidateParams()) {
             const params = {
                 name: typeDetails.typeName,
-                allocated_leaves: typeDetails.allocated_leaves,
+                allocated_days: typeDetails.allocated_leaves,
                 ...(editLeaveTypesDetails && { id: typeDetails.id })
             }
-            console.log("params------------->", params);
             dispatch(
                 updateLeaveType({
                     params,
@@ -85,6 +84,7 @@ function ManageLeaveTypes() {
             >
                 <InputText
                     label={t("typeName")}
+                    disabled
                     placeholder={t("EnterTypeName")}
                     validator={validateName}
                     value={typeDetails.typeName}
