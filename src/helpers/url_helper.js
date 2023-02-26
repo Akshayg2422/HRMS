@@ -108,7 +108,6 @@ export const UPDATING_THE_ADMIN_BRANCHES = 'employee/updateBranchAdminBranches'
 
 export const GET_ADMIN_BRANCHES = 'employee/getBranchAdmins'
 
-
 /**
  * edit branch name
  */
@@ -138,3 +137,17 @@ export const GET_EMPLOYEE_LOGIN_FACE_FAILURE = 'attendance/getEmployeesLoginFace
  */
 
 export const CHANGE_EMPLOYEE_FACE_VALIDATION = 'attendance/changeEmployeeFacevalidationRequest'
+
+
+/**
+ * App Config
+ */
+
+
+export const  POST_APP_CONFIG_DETAILS = 'authentication/v1/webAppConfig'
+
+/**
+ * Update Leaves Type
+ */
+
+export const  UPDATE_LEAVE_TYPE = 'attendance/updateLeaveTypes'

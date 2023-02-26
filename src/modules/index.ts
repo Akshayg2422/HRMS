@@ -8,6 +8,7 @@ import {
   registerCompanyDocument,
   resendOtp,
   validateUser,
+  DeviceInfo
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile, DashBoardOtp } from './dashboard';
 
@@ -16,7 +17,8 @@ import {
   ManageEmployee, EmployeeLog, EmployeeWorkBook,
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
   ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
-  ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches, EmployeeShiftRequest
+  ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches, EmployeeShiftRequest,
+  AvailableLeaves, LeaveTypes, ManageLeaveTypes
 } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
@@ -95,7 +97,11 @@ export {
   ShiftRequest,
   EmployeeShiftRequest,
   CreateNewDesignationGroup,
-  FaceApproval
+  FaceApproval,
+  AvailableLeaves,
+  LeaveTypes,
+  ManageLeaveTypes,
+  DeviceInfo
 }
 
 

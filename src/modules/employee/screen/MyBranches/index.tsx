@@ -82,8 +82,9 @@ function MyBranches() {
 
     const AdminSubBranches = () => {
         let subBranches: any[] = []
+        console.log(' hierarchicalBranchIds.child_ids', hierarchicalBranchIds.child_ids, "--------->", listBranchesList);
         listBranchesList.map((branch: any) => {
-            hierarchicalBranchIds.child_ids.map((ids: any) => {
+            hierarchicalBranchIds?.child_ids.map((ids: any) => {
                 if (branch.id === ids) {
                     subBranches.push(branch)
                 }
@@ -91,6 +92,7 @@ function MyBranches() {
         })
         return subBranches
     }
+
 
     const sortedBranchList = () => {
         if (associatedBranch.length <= 0) {
@@ -132,6 +134,8 @@ function MyBranches() {
         } else {
             updateSelectedBranch = item.admin_branch_ids;
         }
+        console.log("updateSelectedBranch", updateSelectedBranch);
+
         setAssociatedBranch(updateSelectedBranch)
         setAdminId(item)
     }
@@ -196,7 +200,7 @@ function MyBranches() {
                         <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
                         <Divider />
                         <div className="my-4">
-                            {branchesListSet && branchesListSet.map((item: Branch, index: number) => {
+                            {branchesListSet && branchesListSet.length > 0 ? branchesListSet.map((item: Branch, index: number) => {
                                 const isActive = associatedBranch && associatedBranch.length > 0 && associatedBranch.some((el: any) => el === item.id)
                                 return (
                                     <div
@@ -219,13 +223,13 @@ function MyBranches() {
                                         <></>
                                     </div>
                                 );
-                            })}
-                            <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
+                            }) : <NoRecordFound />}
+                            {branchesListSet && branchesListSet.length > 0 ? <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
                                 <Primary
                                     text={"Submit"}
                                     onClick={() => onSubmit()}
                                 />
-                            </div>
+                            </div> : null}
                         </div>
                     </Card>
                 )}

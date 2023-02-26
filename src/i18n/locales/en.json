@@ -55,9 +55,13 @@
 
   "adminProfile":"Admin profile",
   "fullName":"Full Name",
+  "typeName":"Type Name",
+  "allocatedDays":"Allocated Days",
+  "EnterAllocatedDays":"Enter Allocated Days",
   "firstName":"First Name",
   "lastName":"Last Name",
   "typeYourName":"Enter your first name",
+  "EnterTypeName":"Enter Type name",
   "typeLastName":"Enter your last name",
   "companyEmail":"Enter your email",
   "gender": "Gender",
@@ -71,6 +75,7 @@
 
   "invalidName": "Invalid Name",
   "invalidNumber": "Invalid Number",
+  "InvalidDays":"Invalid Days",
   "invalidDesignation": "Invalid Designation",
   "invalidDepartment": "Invalid Department",
   "invalidCategory": "Invalid Category",
@@ -158,6 +163,8 @@
 "rejected":"Rejected",
 "markAsPresent":"Mark As Present",
 "addHoildays":"Add Holidays",
+"leaveTypes":"Leave Types",
+"manageLeaveTypes":"Manage Leave Types",
 "editHoliday":"Edit Holiday",
 "deleteHoliday":"Delete Holiday",
 "description":"Description",
@@ -173,6 +180,7 @@
 "update":"Update",
 "Calendar":"Calendar",
 "leaveList":"Leave List",
+"AvailableLeaves":"Available Leaves",
 "apply":"Apply",
 "approveLeave":"Approve Leave",
 "approveShift":"Approve Shift",
@@ -272,6 +280,13 @@
  "MyActiveBranches": "My Active Branch",
  "AddBranch":"Add Branch",
  "editBranch":"Edit Branch",
+
+
+
+ "addType":"Add Leave Type",
+ "editType":"Edit Leave Type",
+
+
 
 
   

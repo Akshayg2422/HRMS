@@ -32,10 +32,7 @@ const AllLeaves = () => {
     (state: any) => state.DashboardReducer
   );
 
-  useEffect(() => {
-    fetchPendingDetail(currentPage);
-  }, [hierarchicalBranchIds]);
-
+ 
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,

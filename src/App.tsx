@@ -51,6 +51,10 @@ import {
   EmployeeShiftRequest,
   CreateNewDesignationGroup,
   FaceApproval,
+  AvailableLeaves,
+  LeaveTypes,
+  ManageLeaveTypes,
+  DeviceInfo,
   // DashBoardOtp
 } from "@modules";
 
@@ -72,6 +76,7 @@ function App() {
     <>
       {/* <AutoLogout /> */}
       {/* <Requestpermission/> */}
+      {/* <DeviceInfo /> */}
       <AppProvider >
         <AppLoader />
         <ScreenLoader />
@@ -271,6 +276,18 @@ function App() {
           <Route
             path={ROUTE.ROUTE_FACE_APPROVAL}
             element={<RequireAuth>{<FaceApproval />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_AVAILABLE_LEAVES}
+            element={<RequireAuth>{<AvailableLeaves />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_LEAVES_TYPES}
+            element={<RequireAuth>{<LeaveTypes />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_MANAGE_LEAVE_TYPES}
+            element={<RequireAuth>{<ManageLeaveTypes />}</RequireAuth>}
           />
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>

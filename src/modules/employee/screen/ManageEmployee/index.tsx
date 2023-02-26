@@ -466,7 +466,6 @@ const ManageEmployee = () => {
     setDepartmentModel(!departmentModel);
   }
 
-  console.log('employeeDetails', employeeDetails);
 
 
   return (

@@ -98,7 +98,8 @@ export const Icons = {
   LeaveRequest: require('./icons/LeaveRequest/LeaveRequest.png'),
   ShiftChange: require('./icons/ShiftChange/ShiftChange.png'),
   AddEmployee: require('./icons/AddEmployee/employees.png'),
-  FaceApproval:require('./icons/FaceApproval/FaceApproval.png')
+  FaceApproval: require('./icons/FaceApproval/FaceApproval.png'),
+  ApplyLeave: require('./icons/ApplyLeave/ApplyLeave.png')
 }
 
 

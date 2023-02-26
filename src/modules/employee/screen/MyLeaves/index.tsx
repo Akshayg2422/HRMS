@@ -76,10 +76,10 @@ function MyLeaves() {
     });
   };
 
-  const handleApplyLeave = () => {
-    dispatch(getLeaveFromDate(""));
-    goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
-  };
+  // const handleApplyLeave = () => {
+  //   dispatch(getLeaveFromDate(""));
+  //   goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
+  // };
 
   return (
     <>
@@ -95,14 +95,14 @@ function MyLeaves() {
                 onChange={(event) => setLeaveTypes(dropDownValueCheck(event.target.value, 'Select Type'))}
               />
             </Container>
-            <Container additionClass="col">
+            {/* <Container additionClass="col">
               <Primary
                 text={t("applyLeave")}
                 onClick={handleApplyLeave}
                 col={"col-xl-3"}
                 size={"btn-md"}
               />
-            </Container>
+            </Container> */}
           </Container>
         </Card>
         <h1>{t("leaveList")}</h1>

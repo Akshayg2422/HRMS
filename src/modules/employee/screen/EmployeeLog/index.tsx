@@ -247,7 +247,6 @@ function EmployeeLog() {
     }
   }
 
-  console.log("presentModifiedDetails", presentModifiedDetails)
 
   return (
     <>

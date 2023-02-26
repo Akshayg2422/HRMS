@@ -20,14 +20,16 @@ import {
   fetchCalendardetails,
   getLeaveTypes,
 } from "../../../../../src/store/employee/actions";
+import moment from "moment";
 
 
 const ApplyLeave = () => {
   const { t } = useTranslation();
   const navigation = useNav();
   let dispatch = useDispatch();
-  const [leaveTypes, setLeaveTypes] = useState([]);
-  const { leaveFromDate, calendarEvents, numOfPages, currentPage } =
+  const [leaveTypes, setLeaveTypes] = useState<any>([]);
+  const [dropDownData, setDropDownData] = useState<any>([])
+  const { leaveFromDate, calendarEvents, numOfPages, currentPage, leaveTypesDetails } =
     useSelector((state: any) => state.EmployeeReducer);
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -45,14 +47,6 @@ const ApplyLeave = () => {
     getCalendarDetails(currentPage);
   }, []);
 
-  const getCalendarDetails = (pageNumber: number) => {
-    const params = {
-      ...hierarchicalBranchIds,
-      pageNumber: pageNumber,
-    };
-    dispatch(fetchCalendardetails({ params }));
-  };
-
   useEffect(() => {
     const toSeverDate = new Date(
       getServerDateFromMoment(getMomentObjFromServer(fromDetails.dataTo))
@@ -65,16 +59,50 @@ const ApplyLeave = () => {
     }
   }, [fromDetails.dateFrom, fromDetails.dataTo]);
 
+  useEffect(() => {
+    const startDate = fromDetails.dateFrom + '';
+    const endDate = fromDetails.dataTo + '';
+    const numberOfDays = getNumberOfDays(startDate, endDate);
+    let currentType = dropDownData.find((item: { leave_type_id: any; }) => item.leave_type_id === fromDetails.leaveType)
+    if (numberOfDays > currentType?.available_days) {
+      showToast('info', `Exiding Avaliable Days Please Choose less then ${currentType?.available_days} ${currentType?.available_days > 1 ? 'days' : 'day'} `)
+      setFormDetails({ ...fromDetails, dataTo: "" });
+    }
+  }, [fromDetails.dateFrom, fromDetails.dataTo]);
+
+  function getNumberOfDays(startDate: any, endDate: any) {
+    const start = moment(startDate);
+    const end = moment(endDate);
+    const diffDays = end.diff(start, 'days') + 1;
+    return diffDays;
+  }
+
+  const getCalendarDetails = (pageNumber: number) => {
+    const params = {
+      ...hierarchicalBranchIds,
+      pageNumber: pageNumber,
+    };
+    dispatch(fetchCalendardetails({ params }));
+  };
+
   const FilterDropdown = (data: any) => {
     let arr: { id: string; name: string }[] = [];
     data.forEach((el: any) => {
-      arr.push({
-        id: el.leave_type_id,
-        name: el.name,
-      });
+      if (el?.available_days > 0) {
+        arr.push({
+          id: el.leave_type_id,
+          name: el.name,
+        });
+      }
     });
     return arr;
   };
+
+
+  useEffect(() => {
+    let index = leaveTypes && leaveTypes.length > 0 && leaveTypes.findIndex((rank: { id: any; }) => rank?.id === leaveTypesDetails.leave_type_id);
+    setFormDetails({ ...fromDetails, leaveType: leaveTypes[index]?.id })
+  }, [leaveTypes])
 
   const fetchLeaveTypes = () => {
     const params = {};
@@ -82,7 +110,8 @@ const ApplyLeave = () => {
       getLeaveTypes({
         params,
         onSuccess: (success: any) => {
-          setLeaveTypes(success.leave_types);
+          setLeaveTypes(FilterDropdown(success.leave_types));
+          setDropDownData(success.leave_types)
         },
         onError: (error: string) => {
           showToast("error", t("somethingWrong"));
@@ -93,7 +122,6 @@ const ApplyLeave = () => {
 
   const dateTimePickerHandler = (value: string, key: string) => {
     setFormDetails({ ...fromDetails, [key]: value });
-    // console.log(JSON.stringify({ ...fromDetails, [key]: value }));
   };
 
   const onChangeHandler = (event: any) => {
@@ -133,7 +161,7 @@ const ApplyLeave = () => {
         applyLeave({
           params,
           onSuccess: (response: object) => {
-            goTo(navigation, ROUTE.ROUTE_MY_LEAVES);
+            goTo(navigation, ROUTE.ROUTE_AVAILABLE_LEAVES);
           },
           onError: (error: string) => {
             showToast("error", t("somethingWrong"));
@@ -159,6 +187,7 @@ const ApplyLeave = () => {
   };
 
 
+
   return (
     <>
       <FormWrapper
@@ -170,7 +199,7 @@ const ApplyLeave = () => {
       >
         <DropDown
           placeholder={t("leaveType")}
-          data={FilterDropdown(leaveTypes)}
+          data={leaveTypes}
           name={"leaveType"}
           value={fromDetails.leaveType}
           onChange={(event) => onChangeHandler(dropDownValueCheckByEvent(event, t("leaveType")))}

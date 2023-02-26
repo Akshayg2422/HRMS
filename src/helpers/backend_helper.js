@@ -154,3 +154,14 @@ export const postGetEmployeesLoginFaceFailureApi = (payload) => post(url.GET_EMP
 
 export const postChangeEmployeeFaceValidationRequestApi = (payload) => post(url.CHANGE_EMPLOYEE_FACE_VALIDATION, payload, {})
 
+/**
+ * App Config
+ */
+
+export const postAppConfigDetailsApi = (payload) => post(url.POST_APP_CONFIG_DETAILS, payload, {})
+
+/**
+ * Update Leave Status
+ */
+
+export const updateLeaveTypeApi = (payload) => post(url.UPDATE_LEAVE_TYPE, payload, {})
