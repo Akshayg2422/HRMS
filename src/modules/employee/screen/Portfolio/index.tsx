@@ -34,7 +34,7 @@ function PortFolio() {
       name: "My Leaves",
       value: "ML",
       route: ROUTE.ROUTE_MY_LEAVES,
-      icon: Icons.myLeaves  ,
+      icon: Icons.myLeaves,
     },
     {
       id: "5",
@@ -56,6 +56,13 @@ function PortFolio() {
       value: "SC",
       route: ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST,
       icon: Icons.MY_SHIFTS,
+    },
+    {
+      id: "8",
+      name: "Apply Leave",
+      value: "AL",
+      route: ROUTE.ROUTE_AVAILABLE_LEAVES,
+      icon: Icons.ApplyLeave,
     }
   ];
 
@@ -87,9 +94,8 @@ function PortFolio() {
                     {it.name}
                   </h5>
                   <Container
-                    additionClass={`rounded px-2 ${
-                      index === 0 ? "bg-success" : "bg-white"
-                    }`}
+                    additionClass={`rounded px-2 ${index === 0 ? "bg-success" : "bg-white"
+                      }`}
                   ></Container>
                 </div>
               </Container>

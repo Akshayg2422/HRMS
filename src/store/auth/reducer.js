@@ -30,7 +30,12 @@ import {
   UPDATE_ADMIN_DETAILS,
   REGISTER_OTP_VERIFY,
   UPDATE_COMPANY_DETAILS,
-  UPDATE_FILE_DETAILS
+  UPDATE_FILE_DETAILS,
+  POST_APP_CONFIG,
+  POST_APP_CONFIG_SUCCESS,
+  POST_APP_CONFIG_FAILURE,
+  GET_APP_CONFIG_DATA,
+  GET_FCM_TOKEN
 } from "./actionTypes";
 
 
@@ -89,7 +94,9 @@ const initialState = {
       filePath: '',
       param: 'attachment_logo'
     },
-  ]
+  ],
+  appConfig: {},
+  fcmToken: ''
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -332,6 +339,43 @@ const AuthReducer = (state = initialState, action) => {
           return item;
         })
       }
+    /**
+     * App Config
+     */
+    case POST_APP_CONFIG:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case POST_APP_CONFIG_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case POST_APP_CONFIG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    case GET_APP_CONFIG_DATA:
+      state = {
+        ...state,
+        appConfig: action.payload,
+        loading: false,
+      };
+      break;
+
+    case GET_FCM_TOKEN:
+      state = {
+        ...state,
+        fcmToken: action.payload,
+      };
+      break;
 
     /**
      *  SET_LOGOUT

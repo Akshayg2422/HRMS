@@ -74,28 +74,28 @@ export const attachUserDocuments = (payload) => post(url.ATTACH_USER_DOCUMENT, p
 
 
 
-export const fetchMisReportsLog= (payload) => post(url.FETCH_MIS_REPORT,payload,{})
+export const fetchMisReportsLog = (payload) => post(url.FETCH_MIS_REPORT, payload, {})
 
-export const fetchDownloadMisReportsLog= (payload) => postHeader(url.FETCH_MIS_REPORT,payload,{})
+export const fetchDownloadMisReportsLog = (payload) => postHeader(url.FETCH_MIS_REPORT, payload, {})
 
 
-export const postAddWeeklyShift= (payload) => post(url.POST_ADD_WEEKLY_SHIFT,payload,{})
+export const postAddWeeklyShift = (payload) => post(url.POST_ADD_WEEKLY_SHIFT, payload, {})
 
-export const fetchBranchShifts= (payload) => post(url.FETCH_BRANCH_SHIFTS,payload,{})
+export const fetchBranchShifts = (payload) => post(url.FETCH_BRANCH_SHIFTS, payload, {})
 
-export const fetchBranchWeeklyShifts= (payload) => post(url.FETCH_BRANCH_WEEKLY_SHIFTS,payload,{})
+export const fetchBranchWeeklyShifts = (payload) => post(url.FETCH_BRANCH_WEEKLY_SHIFTS, payload, {})
 
-export const postAddShiftApi= (payload) => post(url.POST_ADD_SHIFTS,payload,{})
+export const postAddShiftApi = (payload) => post(url.POST_ADD_SHIFTS, payload, {})
 
-export const fetchWeeklyShiftDetailsApi= (payload) => post(url.FETCH_WEEKLY_SHIFT_DETAILS,payload,{})
+export const fetchWeeklyShiftDetailsApi = (payload) => post(url.FETCH_WEEKLY_SHIFT_DETAILS, payload, {})
 
-export const fetchShiftEmployeesApi= (payload) => post(url.FETCH_SHIFT_EMPLOYEES,payload,{})
+export const fetchShiftEmployeesApi = (payload) => post(url.FETCH_SHIFT_EMPLOYEES, payload, {})
 
-export const fetchMyShiftsApi= (payload) => post(url.FETCH_MY_SHIFTS_DETAILS,payload,{})
+export const fetchMyShiftsApi = (payload) => post(url.FETCH_MY_SHIFTS_DETAILS, payload, {})
 
-export const fetchEmployeeWithShiftsApi= (payload) => post(url.FETCH_EMPLOYEE_WITH_SHIFTS,payload,{})
+export const fetchEmployeeWithShiftsApi = (payload) => post(url.FETCH_EMPLOYEE_WITH_SHIFTS, payload, {})
 
-export const PostEmployeeWithChangeShiftApi= (payload) => post(url.POST_EMPLOYEE_SHIFT_CHANGE,payload,{})
+export const PostEmployeeWithChangeShiftApi = (payload) => post(url.POST_EMPLOYEE_SHIFT_CHANGE, payload, {})
 
 
 
@@ -103,39 +103,65 @@ export const PostEmployeeWithChangeShiftApi= (payload) => post(url.POST_EMPLOYEE
  * Admin My Branches
  */
 
-export const fetchAdminBranches= (payload) => post(url.GET_BRANCH_ADMIN_BRANCHES,payload,{})
+export const fetchAdminBranches = (payload) => post(url.GET_BRANCH_ADMIN_BRANCHES, payload, {})
 
-export const PostUpdatedAdminBranches= (payload) => post(url.UPDATING_THE_ADMIN_BRANCHES,payload,{})
+export const PostUpdatedAdminBranches = (payload) => post(url.UPDATING_THE_ADMIN_BRANCHES, payload, {})
 
-export const getBranchAdminsApi= (payload) => post(url.GET_ADMIN_BRANCHES,payload,{})
+export const getBranchAdminsApi = (payload) => post(url.GET_ADMIN_BRANCHES, payload, {})
 
 /**
  * 
  * EDIT BRANCH NAME 
  */
 
-export const PostEditBranchNameApi= (payload) => post(url.POST_EDIT_BRANCH_NAME,payload,{})
+export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {})
 
 /**
  * employees Shift request
  */
-export const getShiftRequestedEmployeesApi= (payload) => post(url.FETCH_SHIFT_REQUESTED_EMPLOYEES,payload,{})
+export const getShiftRequestedEmployeesApi = (payload) => post(url.FETCH_SHIFT_REQUESTED_EMPLOYEES, payload, {})
 
 /**
  * SHIFT_REQUESTED_STATUS
  */
 
-export const getShiftRequestedStatusApi= (payload) => post(url.FETCH_SHIFT_REQUESTED_STATUS,payload,{})
+export const getShiftRequestedStatusApi = (payload) => post(url.FETCH_SHIFT_REQUESTED_STATUS, payload, {})
 
 /**
  * POST_REQUEST_SHIFT_CHANGE
  */
 
-export const postRequestShiftChangeApi= (payload) => post(url.POST_REQUEST_SHIFT_CHANGE,payload,{})
+export const postRequestShiftChangeApi = (payload) => post(url.POST_REQUEST_SHIFT_CHANGE, payload, {})
 
 
 /**
  * change Employee Shift
  */
 
-export const postChangeEmployeeShiftApi= (payload) => post(url.POST_CHANGE_EMPLOYEE_SHIFT,payload,{})
+export const postChangeEmployeeShiftApi = (payload) => post(url.POST_CHANGE_EMPLOYEE_SHIFT, payload, {})
+
+
+/**
+ * 
+ */
+
+export const postGetEmployeesLoginFaceFailureApi = (payload) => post(url.GET_EMPLOYEE_LOGIN_FACE_FAILURE, payload, {})
+
+
+/**
+ * changeEmployeeFaceValidationRequest
+ */
+
+export const postChangeEmployeeFaceValidationRequestApi = (payload) => post(url.CHANGE_EMPLOYEE_FACE_VALIDATION, payload, {})
+
+/**
+ * App Config
+ */
+
+export const postAppConfigDetailsApi = (payload) => post(url.POST_APP_CONFIG_DETAILS, payload, {})
+
+/**
+ * Update Leave Status
+ */
+
+export const updateLeaveTypeApi = (payload) => post(url.UPDATE_LEAVE_TYPE, payload, {})

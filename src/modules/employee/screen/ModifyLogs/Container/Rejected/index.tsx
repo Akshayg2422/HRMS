@@ -29,10 +29,7 @@ const Rejected = () => {
     (state: any) => state.DashboardReducer
   );
 
-  useEffect(() => {
-    fetchRejectedLeaves(currentPage);
-  }, [hierarchicalBranchIds]);
-
+  
   const fetchRejectedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,

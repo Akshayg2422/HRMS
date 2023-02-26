@@ -20,7 +20,7 @@ const initialState = {
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
     case SHOW_LOADER:
-      state = {
+    state = {
         ...state,
         loading: true,
       };

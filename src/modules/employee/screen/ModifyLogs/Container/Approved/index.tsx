@@ -28,9 +28,6 @@ const Approved = () => {
     (state: any) => state.DashboardReducer
   );
 
-  useEffect(() => {
-    fetchApprovedLeaves(currentPage);
-  }, [hierarchicalBranchIds]);
 
   const fetchApprovedLeaves = (pageNumber: number) => {
     const params = {

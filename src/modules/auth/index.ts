@@ -1,5 +1,5 @@
 
-import {Welcome, Login, Otp, Register} from './screen';
+import {Welcome, Login, Otp, Register,DeviceInfo} from './screen';
 
 
 import {
@@ -23,5 +23,5 @@ export {
   registerCompanyDocument,
   resendOtp,
   validateUser,
-  Welcome, Login, Otp, Register
+  Welcome, Login, Otp, Register,DeviceInfo
 }

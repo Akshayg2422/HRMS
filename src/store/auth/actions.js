@@ -31,7 +31,12 @@ import {
   UPDATE_ADMIN_DETAILS,
   REGISTER_OTP_VERIFY,
   UPDATE_COMPANY_DETAILS,
-  UPDATE_FILE_DETAILS
+  UPDATE_FILE_DETAILS,
+  POST_APP_CONFIG,
+  POST_APP_CONFIG_SUCCESS,
+  POST_APP_CONFIG_FAILURE,
+  GET_APP_CONFIG_DATA,
+  GET_FCM_TOKEN
 } from "./actionTypes";
 
 
@@ -275,9 +280,9 @@ export const updateCompanyInput = (CompanyField, CompanyValue) => ({
  * 
  * Update Documents Details
  */
-export const updateDocumentsInput = (file,index) => ({
+export const updateDocumentsInput = (file, index) => ({
   type: UPDATE_FILE_DETAILS,
-  payload: {file,index},
+  payload: { file, index },
 });
 
 /**
@@ -288,5 +293,47 @@ export const updateDocumentsInput = (file,index) => ({
 export const resetAuth = () => {
   return {
     type: RESET_REDUCER,
+  };
+};
+
+/**
+ * App Config
+ */
+
+
+export const postAppConfig = (params) => {
+  return {
+    type: POST_APP_CONFIG,
+    payload: params,
+  };
+};
+
+export const postAppConfigSuccess = (details) => {
+  return {
+    type: POST_APP_CONFIG_SUCCESS,
+    payload: details
+  };
+};
+
+export const postAppConfigFailure = (error) => {
+  return {
+    type: POST_APP_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const getAppConfigData = (details) => {
+  return {
+    type: GET_APP_CONFIG_DATA,
+    payload: details,
+  };
+};
+
+
+export const getFcmToken = (token) => {
+  return {
+    type: GET_FCM_TOKEN,
+    payload: token,
   };
 };

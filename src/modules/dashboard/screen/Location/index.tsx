@@ -203,7 +203,7 @@ function LocationScreen() {
               }}
             />}
         />
-      ) : <Card><NoRecordFound /></Card>}
+      ) : <Card additionClass='mx-3'><NoRecordFound /></Card>}
       <Modal
         title={'Select Radius'}
         showModel={model}

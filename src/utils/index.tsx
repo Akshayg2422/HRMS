@@ -28,7 +28,7 @@ import moment from 'moment';
 import { REACT_APP_APP_URL } from '../helpers/api_helper'
 
 import { useNavigate } from 'react-router-dom'
-import { hideLoader, showLoader } from '../store/app/actions';
+// import { hideLoader, showLoader } from '../store/app/actions';
 
 const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 
@@ -227,6 +227,10 @@ const downloadFile = ((response: any) => {
   window.URL.revokeObjectURL(url);
 })
 
+const base64ToImage = (base64: any) => {
+  return 'data:image/png;base64,' + base64
+
+}
 
 const formatAMPM = (time: any) => {
   let [hours, minutes, seconds] = time.split(':');
@@ -307,5 +311,6 @@ export {
   EMPLOYEES_SHIFT_DATA_EDIT,
   getDateFormat,
   convertTo24Hour,
+  base64ToImage,
   MAX_LENGTH_PAN_CARD
 }

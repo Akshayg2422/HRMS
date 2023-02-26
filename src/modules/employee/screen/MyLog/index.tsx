@@ -126,10 +126,16 @@ function MyLog() {
         out: el.end_time
           ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
           : "-",
-        remark: el.day_status,
+        remark: <span className="mb-0 p-0 col" style={{
+          // cursor: el.day_status_type === 10 ? 'pointer' : '',
+          fontWeight: 'bold',
+          color: fontColor(el.day_status_type),
+        }}
+        //  onClick={(e) => { handlePresentModified(e, item) }}
+        >{el.day_status}</span>,
         "Request": <>{showAdminModify(el.day_status_type) ?
           <Secondary text={'Request'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
-          : '-'  }</>
+          : '-'}</>
       };
     });
   };
@@ -215,6 +221,39 @@ function MyLog() {
       );
     }
   };
+
+  function fontColor(statusType: any) {
+    let color = ''
+    switch (statusType) {
+      case 1:
+        color = '#00b603'
+        break;
+      case 6:
+        color = '#DC4A1F';
+        break;
+      case 5:
+        color = '#ff351f';
+        break;
+      case 2:
+        color = '#642209';
+        break;
+      case 4:
+        color = '#f0c434';
+        break;
+      case 10:
+        color = '#00b603'
+        break;
+      case 9:
+        color = '#de9b00'
+        break;
+      case 8:
+        color = '#5d00ff'
+        break;
+      default:
+        color = '#000000'
+    }
+    return color
+  }
 
   return (
     <>

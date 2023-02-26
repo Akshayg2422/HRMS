@@ -14,6 +14,8 @@ module.exports = {
       '@i18n': path.resolve(__dirname, 'src/i18n'),
       '@helpers': path.resolve(__dirname, 'src/helpers'),
       '@screens': path.resolve(__dirname, 'src/screens'),
+      '@Hooks': path.resolve(__dirname, 'src/Hooks'),
+
     }
   },
 };

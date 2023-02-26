@@ -85,6 +85,7 @@ const CreateShiftGroup = () => {
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
+    
     const PreFilledDetails = () => {
         if (selectedShiftGroupDetails) {
             setGroupName(selectedShiftGroupDetails.name)
@@ -108,7 +109,6 @@ const CreateShiftGroup = () => {
 
     const getEmployeesApi = (pageNumber: number) => {
         const params: object = {
-            // ...hierarchicalBranchIds,
             branch_id: dashboardDetails?.company_branch?.id,      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             ...(designationId && { designation_id: designationId }),
@@ -171,7 +171,6 @@ const CreateShiftGroup = () => {
                 onSuccess: (success: any) => {
                     setSelectedEmployeesIds([])
                     goBack(navigation);
-                    // goTo(navigation, ROUTE.ROUTE_SHIFT_GROUP)
                     showToast("success", success.status)
                 },
                 onError: (error: string) => {

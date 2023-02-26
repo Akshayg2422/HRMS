@@ -632,7 +632,10 @@
 
  @media screen and (max-width: 991px) {
      .scrollable-register {
-         overflow-y: auto;
+         overflow-y: scroll;
+         overflow: hidden;
+         touch-action: none;
+
      }
  }
 

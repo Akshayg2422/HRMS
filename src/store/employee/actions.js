@@ -121,7 +121,13 @@ import {
   GET_BRANCHES_ADMIN,
   GET_BRANCHES_ADMIN_SUCCESS,
   GET_BRANCHES_ADMIN_FAILURE,
-  GET_FILTERED_BRANCHES
+  GET_FILTERED_BRANCHES,
+  GET_LEAVES_TYPE_DETAILS,
+  GET_EDIT_LEAVES_DETAILS,
+  UPDATE_LEAVE_TYPE_DETAILS,
+  UPDATE_LEAVE_TYPE_DETAILS_SUCCESS,
+  UPDATE_LEAVE_TYPE_DETAILS_FAILURE,
+  CURRENT_LEAVE_TYPE
 } from "./actionTypes";
 
 // Delete Account
@@ -1106,5 +1112,55 @@ export const getFIlteredBranch = (branches) => {
   return {
     type: GET_FILTERED_BRANCHES,
     payload: branches,
+  };
+};
+
+
+export const getLeaveTypesDetails = (types) => {
+  return {
+    type: GET_LEAVES_TYPE_DETAILS,
+    payload: types,
+  };
+};
+
+
+export const getEditLeaveTypesDetails = (params) => {
+  return {
+    type: GET_EDIT_LEAVES_DETAILS,
+    payload: params,
+  };
+};
+
+/**
+ * Update leave type
+ */
+
+export const updateLeaveType = (params) => {
+  return {
+    type: UPDATE_LEAVE_TYPE_DETAILS,
+    payload: params,
+  };
+};
+
+export const updateLeaveTypeSuccess = (response) => {
+  return {
+    type: UPDATE_LEAVE_TYPE_DETAILS_SUCCESS,
+    payload: response,
+  };
+};
+
+
+export const updateLeaveTypeFailure = (error) => {
+  return {
+    type: UPDATE_LEAVE_TYPE_DETAILS_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const getCurrentLeaveType = (type) => {
+  return {
+    type: CURRENT_LEAVE_TYPE,
+    payload: type,
   };
 };
