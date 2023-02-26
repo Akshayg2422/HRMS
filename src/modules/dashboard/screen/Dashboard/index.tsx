@@ -43,9 +43,9 @@ function Dashboard() {
 
 
 
-  useEffect(() => {
-    getpostAppConfig()
-  }, [])
+  // useEffect(() => {
+  //   getpostAppConfig()
+  // }, [])
 
   useEffect(() => {
     dispatch(currentNavIndex(0))
@@ -55,16 +55,16 @@ function Dashboard() {
 
 
 
-  const getpostAppConfig = () => {
-    const params = {
-      device_model: appConfig.model,
-      device_platform: appConfig.platform,
-      device_brand: appConfig.brand,
-      device_token: fcmToken
-    }
-    console.log('params------------->', params);
-    // dispatch(postAppConfig({ params }))
-  }
+  // const getpostAppConfig = () => {
+  //   const params = {
+  //     device_model: appConfig.model,
+  //     device_platform: appConfig.platform,
+  //     device_brand: appConfig.brand,
+  //     device_token: fcmToken
+  //   }
+  //   console.log('params------------->', params);
+  //   // dispatch(postAppConfig({ params }))
+  // }
 
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
