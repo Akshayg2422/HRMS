@@ -184,7 +184,10 @@ function FenceAdmin() {
                     : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
 
             {
-                <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => setModel(!model)}>
+                <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => {
+                    setModel(!model)
+                    setSearchEmployee("")
+                }}>
                     <Container additionClass={"col-xl-6 row"}>
                         <InputText
                             value={searchEmployee}
