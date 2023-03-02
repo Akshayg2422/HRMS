@@ -89,7 +89,8 @@ const ManageHolidays = () => {
       dispatch(
         addHoliday({
           params,
-          onSuccess: (success: object) => {
+          onSuccess: (success: any) => {
+            showToast('success', success.message)
             goTo(navigation, ROUTE.ROUTE_CALENDAR);
           },
           onError: (error: string) => { },

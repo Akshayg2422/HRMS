@@ -160,7 +160,8 @@ const ApplyLeave = () => {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: object) => {
+          onSuccess: (response: any) => {
+            showToast("success", response?.message);
             goTo(navigation, ROUTE.ROUTE_AVAILABLE_LEAVES);
           },
           onError: (error: string) => {
@@ -227,6 +228,7 @@ const ApplyLeave = () => {
         />
         <InputText
           label={t("reason")}
+          maxLength={150}
           validator={validateDefault}
           value={fromDetails.reason}
           name={"reason"}

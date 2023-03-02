@@ -314,7 +314,7 @@ function EmployeeLog() {
             getEmployeeLogs(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card><NoRecordFound /></Card>}
+      ) : <Card additionClass={"mx-4"}><NoRecordFound /></Card>}
       <Modal
         showModel={model}
         title={`${selectedEmployeeDetails?.name}'s ${t('log')}`}
@@ -338,7 +338,7 @@ function EmployeeLog() {
             <Divider />
 
             <div>
-              {employeeCheckInLogs.map((item: CheckInLog, index: number) => {
+              {employeeCheckInLogs.slice(0).reverse().map((item: CheckInLog, index: number) => {
                 return (
                   <div className="accordion" id="accordionExample">
                     <div

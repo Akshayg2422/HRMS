@@ -319,6 +319,7 @@ const ManageEmployee = () => {
   };
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
+    
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
@@ -660,7 +661,7 @@ const ManageEmployee = () => {
         <h5 className="mb-2">{t("startTime")}</h5>
         <TimePicker
           title={t("pleaseSelect")}
-          icon={Icons.Calendar}
+          icon={Icons.Time}
           iconPosition={"append"}
           value={employeeDetails.attendanceStartTime}
           onChange={(time: any) =>
@@ -670,7 +671,7 @@ const ManageEmployee = () => {
         <h5 className="mb-2">{t("endTime")}</h5>
         <TimePicker
           title={t("pleaseSelect")}
-          icon={Icons.Calendar}
+          icon={Icons.Time}
           iconPosition={"append"}
           value={employeeDetails.attendanceEndTime}
           onChange={(time: any) => {

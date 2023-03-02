@@ -205,12 +205,17 @@ function MyBranches() {
                                 return (
                                     <div
                                         className="row align-items-center mx-4"
-                                        onClick={() => adminId && addSelectedBranch(item)}
                                     >
-                                        <div className="col-8">
+                                        <div className="col-8"
+                                            onClick={() => adminId && addSelectedBranch(item)}
+
+                                        >
                                             <span className="text-xl text-gray">{item.name}</span>
                                         </div>
-                                        {adminId ? <div className="col-4 text-right">
+                                        {adminId ? <div className="col-4 text-right"
+                                            onClick={() => adminId && addSelectedBranch(item)}
+
+                                        >
                                             <ImageView
                                                 icon={
                                                     isActive
