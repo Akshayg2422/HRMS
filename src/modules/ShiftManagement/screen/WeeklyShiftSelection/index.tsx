@@ -169,6 +169,75 @@ const WeeklyShiftSelection = () => {
   //   }
   //   return output
   // }
+    var dt = new Date();//current Date that gives us current Time also
+
+  const onShiftTimeAdd = () => {
+
+
+    var startTime = '07:00:00';
+    var endTime = '05:30:00';
+
+    const data = [{ startTime: '08:00:00', endTime: '17:00:00' }];
+
+
+    if (data.length > 0) {
+
+      const isExist = data.some(each => {
+        return startTime === each.startTime && endTime === each.endTime
+      })
+
+      console.log(isExist);
+
+      if (!isExist) {
+        let is_add = true
+
+        data.forEach(element => {
+          const isOverLab = dateRangeOverlaps(getDate(startTime), getDate(endTime), getDate(element.startTime), getDate(element.endTime))
+
+          console.log(isOverLab);
+          if (isOverLab) {
+            is_add = false
+            return
+          }
+        });
+
+
+        if (is_add) {
+          data.push({ startTime, endTime })
+
+        }
+        console.log(data);
+
+
+      } else {
+        console.log('data already Exist');
+      }
+
+
+    } else {
+      data.push({ startTime, endTime })
+      console.log(data);
+    }
+
+  }
+  
+  function getDate(time:any) {
+    var start = time.split(':');
+    return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),
+      parseInt(start[0]), parseInt(start[1]), parseInt(start[2]));
+  }
+
+  function dateRangeOverlaps(a_start:any, a_end:any, b_start:any, b_end:any) {
+
+
+    console.log(a_start + "====" + a_end + '====' + b_start + "=====" + b_end);
+
+
+    if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
+    if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
+    if (b_start < a_start && a_end < b_end) return true; // a in b
+    return false;
+  }
 
 
   const onShiftAdd = () => {
