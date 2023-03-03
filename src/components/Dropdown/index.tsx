@@ -1,6 +1,8 @@
 import React from "react";
 import { Container } from "@components";
 import { ContainerProps } from "../Interface";
+import './styles.css';
+
 
 interface DropDownProps extends ContainerProps {
   label?: string;
@@ -13,10 +15,10 @@ interface DropDownProps extends ContainerProps {
   value?: any
   id?: string
   isDisabled?: boolean
-  showArrow?:boolean
+  showArrow?: boolean
 }
 
-const DropDown = ({
+const DropDown = (({
   label,
   placeholder,
   data,
@@ -29,22 +31,32 @@ const DropDown = ({
   title,
   id,
   isDisabled = false,
-  showArrow=true,
+  showArrow = true,
   ...props
-}: DropDownProps) => (
+}: DropDownProps) => {
 
-  <Container additionClass={`form-group ${additionClass}`} col={col} >
-    {label && <label className="form-control-label">{label}</label>}
-    <select value={value} className={`form-control ${showArrow && "form-select"}`} {...props} onChange={onChange} name={name} disabled={isDisabled}>
-      <option>{placeholder}</option>
-      {data && data.length > 0 && data.map((item, index) => (
-        <option className="dropdown-item" key={index} value={item?.id || item?.type}>
-          {item?.name ? item?.name : item?.group_name}  {item?.title}
-        </option>
-      ))}
-    </select>
-    {error && <code className="text-danger">{error}</code>}
-  </Container>
-);
+  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = event.target.value;
+    if (selectedValue === placeholder) {
+      return ""
+    }
+    if (onChange)
+      onChange(event);
+  };
+  return (  
+    <Container additionClass={`form-group ${additionClass}`} col={col} >
+      {label && <label className="form-control-label">{label}</label>}
+      <select value={value} className={`form-control ${showArrow && "form-select"}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}>
+        <option>{placeholder}</option>
+        {data && data.length > 0 && data.map((item, index) => (
+          <option className="dropdown-item" key={index} value={item?.id || item?.type}>
+            {item?.name ? item?.name : item?.group_name}  {item?.title}
+          </option>
+        ))}
+      </select>
+      {error && <code className="text-danger">{error}</code>}
+    </Container>
+  )
+});
 
 export default DropDown;

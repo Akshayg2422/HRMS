@@ -55,6 +55,8 @@ import {
   LeaveTypes,
   ManageLeaveTypes,
   DeviceInfo,
+  BroadCast,
+  ManageBroadCast,
   // DashBoardOtp
 } from "@modules";
 
@@ -74,9 +76,9 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
-      {/* <Requestpermission/> */}
-      {/* <DeviceInfo /> */}
+      {/* <AutoLogout /> */}
+      {/* <Requestpermission/>
+      <DeviceInfo /> */}
       <AppProvider >
         <AppLoader />
         <ScreenLoader />
@@ -288,6 +290,14 @@ function App() {
           <Route
             path={ROUTE.ROUTE_MANAGE_LEAVE_TYPES}
             element={<RequireAuth>{<ManageLeaveTypes />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_BROADCAST}
+            element={<RequireAuth>{<BroadCast />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_MANAGE_BROADCAST}
+            element={<RequireAuth>{<ManageBroadCast />}</RequireAuth>}
           />
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>

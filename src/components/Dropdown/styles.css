@@ -1,0 +1,20 @@
+.form-control.form-select {
+    padding-right: 2rem; /* Adjust the padding to make space for the arrow */
+  }
+  
+  .form-control.form-select::-ms-expand {
+    /* display: none; Hide the default arrow in Internet Explorer */
+  }
+  
+  .form-control.form-select:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 1rem; /* Adjust the right position of the arrow */
+    transform: translateY(-50%);
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    padding: 3px;
+    pointer-events: none;
+  }
+  
