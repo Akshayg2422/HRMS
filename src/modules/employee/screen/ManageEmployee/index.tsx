@@ -302,7 +302,6 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-      console.log("params", params);
       dispatch(
         employeeAddition({
           params,

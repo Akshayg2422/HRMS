@@ -170,7 +170,9 @@ function MyBranches() {
                 </Container>
             </Card>
             <Container additionClass="row">
-                <Card additionClass="col-xl col-sm-3 mx-2">
+                <Card additionClass="col-xl col-sm-3 mx-2"
+                    style={{ height: "100vh", overflowY: "scroll" }}
+                >
                     {branchAdmins && branchAdmins.length > 0 ? (
                         <CommonTable
                             noHeader
@@ -196,6 +198,7 @@ function MyBranches() {
                 {adminId && (
                     <Card
                         additionClass="col-xl col-sm-3 col-0 mx-2"
+                        style={{ height: "100vh", overflowY: "scroll" }}
                     >
                         <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
                         <Divider />
@@ -229,7 +232,7 @@ function MyBranches() {
                                     </div>
                                 );
                             }) : <NoRecordFound />}
-                            {branchesListSet && branchesListSet.length > 0 ? <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
+                            {branchesListSet && branchesListSet.length > 0 ? <div className="row col-lg-4 ml-4 my-5 float-right">
                                 <Primary
                                     text={"Submit"}
                                     onClick={() => onSubmit()}

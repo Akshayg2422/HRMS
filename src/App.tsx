@@ -55,8 +55,11 @@ import {
   LeaveTypes,
   ManageLeaveTypes,
   DeviceInfo,
+  BroadCast,
+  ManageBroadCast,
   // DashBoardOtp
 } from "@modules";
+import { EventNotification } from "./modules/BroadCast";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -75,8 +78,8 @@ function App() {
   return (
     <>
       {/* <AutoLogout /> */}
-      {/* <Requestpermission/> */}
-      {/* <DeviceInfo /> */}
+      {/* <Requestpermission/>
+      <DeviceInfo /> */}
       <AppProvider >
         <AppLoader />
         <ScreenLoader />
@@ -289,6 +292,19 @@ function App() {
             path={ROUTE.ROUTE_MANAGE_LEAVE_TYPES}
             element={<RequireAuth>{<ManageLeaveTypes />}</RequireAuth>}
           />
+          <Route
+            path={ROUTE.ROUTE_BROADCAST}
+            element={<RequireAuth>{<BroadCast />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_MANAGE_BROADCAST}
+            element={<RequireAuth>{<ManageBroadCast />}</RequireAuth>}
+          />
+           <Route
+            path={ROUTE.ROUTE_EVENT_NOTIFICATION}
+            element={<RequireAuth>{<EventNotification />}</RequireAuth>}
+          />
+         
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
         <ToastContainer />

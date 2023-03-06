@@ -34,7 +34,7 @@ function index({
               </div>
             </form>
             {!hideFooter && (
-              <div className="row col-lg-4 ml-4 mt-5 mb-3 float-right">
+              <div className="row col-lg-4 ml-4 mt-4 mb-3 float-right">
                 <Primary
                   disabled={buttonDisable}
                   text={buttonTittle ? buttonTittle : "Submit"}

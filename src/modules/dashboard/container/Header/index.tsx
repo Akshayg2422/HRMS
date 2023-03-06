@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM } from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, Secondary, Primary, Divider, } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -44,10 +44,23 @@ const Header = () => {
     NAV_ITEM.filter((el: any) => {
       if (pathname === el.route) {
         setHeaderTitle(el.name)
+      } else {
+        dynamicChildHeader()
       }
     })
   }
 
+  const dynamicChildHeader = () => {
+    CHILD_PATH.filter((el: any) => {
+      if (pathname === el.path) {
+        NAV_ITEM.filter((element: any) => {
+          if (el.parent === element.route) {
+            setHeaderTitle(element.name)
+          }
+        })
+      }
+    })
+  }
 
   const DropdownHandler = (item: any) => {
     if (item.value === 'CL') {
@@ -109,6 +122,7 @@ const Header = () => {
             </a>
             <h6 className='h2 text-white d-inline-block mb-0'>{headerTitle}</h6>
             <ul className='navbar-nav align-items-center  ml-md-auto '>
+              {/* <Notification /> */}
               <div className='media-body  d-none d-lg-block'>
                 {dashboardDetails && dashboardDetails.user_details && (
                   <span className='mb-0 text-white  font-weight-bold'>

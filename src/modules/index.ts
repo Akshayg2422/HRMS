@@ -36,7 +36,7 @@ import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup, ShiftRequest, CreateNewDesignationGroup } from './ShiftManagement';
 import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGroup } from './Payroll'
 import { FaceApproval } from './FaceApproval'
-
+import { BroadCast, ManageBroadCast } from './BroadCast'
 import { Notifications, ManageRequest } from './notifications'
 
 export {
@@ -101,7 +101,9 @@ export {
   AvailableLeaves,
   LeaveTypes,
   ManageLeaveTypes,
-  DeviceInfo
+  DeviceInfo,
+  BroadCast,
+  ManageBroadCast
 }
 
 
