@@ -313,6 +313,7 @@ const ManageEmployee = () => {
   };
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
+    
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)

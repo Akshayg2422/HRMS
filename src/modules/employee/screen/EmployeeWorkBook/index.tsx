@@ -174,7 +174,7 @@ function EmployeeTimeSheets() {
             getEmployeeTimeSheets(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card><NoRecordFound /></Card>}
+      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
 
       <Modal
         showModel={model}

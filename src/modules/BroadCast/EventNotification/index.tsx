@@ -8,7 +8,7 @@ import {
 } from "../../../../src/store/notifications/actions";
 import { Icons } from '@assets';
 
-function BroadCast() {
+function EventNotification() {
     const navigation = useNav();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
@@ -43,7 +43,7 @@ function BroadCast() {
         dispatch(getBroadcastMessage({
             params,
             onSuccess: (success: any) => {
-                if (id) {
+                if(id){
                     setDeleteModel(!deleteModel)
                 }
                 console.log("successsssss", success);
@@ -66,7 +66,7 @@ function BroadCast() {
                         <Container additionClass={'col'}>
                             <Sort
                                 sortData={sortData}
-                                activeIndex={activeSort || 0}
+                                activeIndex={activeSort}
                                 onClick={(index: any) => {
                                     setType(sortData[index].title.toLocaleLowerCase())
                                     setActiveSort(index);
@@ -89,44 +89,40 @@ function BroadCast() {
                         return (
                             <Container additionClass={"col"}>
                                 <Card>
-                                    <Container additionClass={"d-flex justify-content-between"} >
-                                        <Container>
-                                            <div className="h1">
-                                                {el.title}
+                                    <Container additionClass={"row "} >
+                                        <div className="h1 col">
+                                            {el.title}
+                                        </div>
+
+                                        <div className="h4 col text-right">
+                                            <div>
+                                            </div>
+                                            <div className='h6'>
+                                                {'Posted at'}
+                                            </div>
+                                            <div className='h5 mt--2'>
+                                                {getDisplayDateTimeFromMoment(
+                                                    getMomentObjFromServer(el.created_at)
+                                                )}
+                                            </div>
+                                            {type === "by me" && (
+                                                <ImageView icon={Icons.DeleteSecondary} height={25} onClick={() => {
+                                                    setDeleteModel(!deleteModel)
+                                                    setSelectedItemId(el.id)
+                                                }} />
+                                            )}
+                                        </div>
+                                        <Container additionClass={'h4 fw-normal'}>
+                                            {el.message}
+                                        </Container>
+                                        <Container additionClass={'text-right'}>
+                                            <div className='h6 mb--1'>
+                                                {'Posted by'}
+                                            </div>
+                                            <div className='h5 mb--1'>
+                                                {el.created_by}
                                             </div>
                                         </Container>
-                                        <Container additionClass='d-flex justify-content-between'>
-                                            <Container>
-                                                <span className='h6'>
-                                                    {'Posted at'}
-                                                </span>
-                                                <br />
-                                                <span className='h5'>
-                                                    {getDisplayDateTimeFromMoment(
-                                                        getMomentObjFromServer(el.created_at)
-                                                    )}
-                                                </span>
-                                            </Container>
-                                            <Container>
-                                                {type === "by me" && (
-                                                    <ImageView icon={Icons.DeleteSecondary} height={20} onClick={() => {
-                                                        setDeleteModel(!deleteModel)
-                                                        setSelectedItemId(el.id)
-                                                    }} />
-                                                )}
-                                            </Container>
-                                        </Container>
-                                    </Container>
-                                    <Container additionClass={'h4 fw-normal'}>
-                                        {el.message}
-                                    </Container>
-                                    <Container additionClass={'text-right'}>
-                                        <div className='h6 mb--1'>
-                                            {'Posted by'}
-                                        </div>
-                                        <div className='h5 mb--1'>
-                                            {el.created_by}
-                                        </div>
                                     </Container>
                                 </Card>
                             </Container>
@@ -164,4 +160,4 @@ function BroadCast() {
     )
 }
 
-export { BroadCast }
+export { EventNotification }

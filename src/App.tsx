@@ -59,6 +59,7 @@ import {
   ManageBroadCast,
   // DashBoardOtp
 } from "@modules";
+import { EventNotification } from "./modules/BroadCast";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -299,6 +300,11 @@ function App() {
             path={ROUTE.ROUTE_MANAGE_BROADCAST}
             element={<RequireAuth>{<ManageBroadCast />}</RequireAuth>}
           />
+           <Route
+            path={ROUTE.ROUTE_EVENT_NOTIFICATION}
+            element={<RequireAuth>{<EventNotification />}</RequireAuth>}
+          />
+         
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
         <ToastContainer />

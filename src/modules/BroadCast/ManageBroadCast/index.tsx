@@ -4,6 +4,9 @@ import { dropDownValueCheckByEvent, goBack, inputNumberMaxLength, showToast, use
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import {
+    createBroadcastMessage
+} from "../../../../src/store/notifications/actions";
 
 function ManageBroadCast() {
     const navigation = useNav();
@@ -24,7 +27,7 @@ function ManageBroadCast() {
         description: '',
         department: '',
         designation: ''
-    }) 
+    })
 
 
     useEffect(() => {
@@ -36,9 +39,63 @@ function ManageBroadCast() {
         setBroadCast({ ...broadCast, [e.target?.name]: e.target?.value });
     };
 
+    const getHierarchicalBranchIds = (branchIds: any) => {
+        if (branchIds.include_child) {
+            return [branchIds.branch_id, ...branchIds.child_ids]
+        }
+        else {
+            return [branchIds.branch_id]
+        }
+
+    }
+
+    const validatePostParams = () => {
+        if (!broadCast.title) {
+            showToast('error', 'The title field cannot be empty')
+            return false
+        }
+        else if (!broadCast.description) {
+            showToast('error', 'The message field cannot be empty')
+            return false
+        }
+        else if (!broadCast.department) {
+            showToast('error', t("invalidDepartment"))
+            return false
+        }
+        else if (!broadCast.designation) {
+            showToast('error', t("invalidDesignation"))
+            return false
+        }
+        else {
+            return true
+        }
+    }
+
     const onsubmit = () => {
-        console.log("broadCast", { ...hierarchicalBranchIds, ...broadCast });
-        setBroadCast({ ...broadCast, title: '', description: '', department: '', designation: '' })
+
+        const params = {
+            title: broadCast.title,
+            message: broadCast.description,
+            applicable_branches: getHierarchicalBranchIds(hierarchicalBranchIds),
+            applicable_departments: broadCast.department,
+            applicable_designations: broadCast.designation
+        }
+        console.log("params-->", params);
+
+        if (validatePostParams()) {
+            dispatch(createBroadcastMessage({
+                params,
+                onSuccess: (success: any) => {
+                    console.log("successsssss", success);
+                    goBack(navigation);
+                    showToast("success", success.status)
+                    setBroadCast({title: '', description: '', department: '', designation: '' })
+                },
+                onError: (error: string) => {
+                    showToast("error", error)
+                },
+            }));
+        } 
     }
 
     return (
@@ -50,14 +107,24 @@ function ManageBroadCast() {
                 <Container>
                     <ChooseBranchFromHierarchical />
                 </Container>
-                <DropDown
-                    label={t("designation")}
-                    placeholder={t("enterDesignation")}
-                    data={designationDropdownData}
-                    name={"designation"}
-                    value={broadCast.designation}
+                <InputText
+                    label={t("title")}
+                    placeholder={t("enterTitle")}
+                    validator={validateName}
+                    value={broadCast.title}
+                    name={"title"}
                     onChange={(event) => {
-                        onChangeHandler(dropDownValueCheckByEvent(event, t("enterDesignation")));
+                        onChangeHandler(event);
+                    }}
+                />
+                <InputText
+                    label={t("message")}
+                    placeholder={t("message")}
+                    validator={validateName}
+                    value={broadCast.description}
+                    name={"description"}
+                    onChange={(event) => {
+                        onChangeHandler(event);
                     }}
                 />
                 <DropDown
@@ -70,26 +137,18 @@ function ManageBroadCast() {
                         onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
                     }
                 />
-                <InputText
-                    label={t("title")}
-                    placeholder={t("enterTitle")}
-                    validator={validateName}
-                    value={broadCast.title}
-                    name={"title"}
+                <DropDown
+                    label={t("designation")}
+                    placeholder={t("enterDesignation")}
+                    data={designationDropdownData}
+                    name={"designation"}
+                    value={broadCast.designation}
                     onChange={(event) => {
-                        onChangeHandler(event);
+                        onChangeHandler(dropDownValueCheckByEvent(event, t("enterDesignation")));
                     }}
                 />
-                <InputText
-                    label={t("description")}
-                    placeholder={t("description")}
-                    validator={validateName}
-                    value={broadCast.description}
-                    name={"description"}
-                    onChange={(event) => {
-                        onChangeHandler(event);
-                    }}
-                />
+
+
             </FormWrapper>
         </div>
     )

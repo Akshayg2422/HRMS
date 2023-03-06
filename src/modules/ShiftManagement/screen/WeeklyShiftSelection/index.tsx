@@ -97,6 +97,52 @@ const WeeklyShiftSelection = () => {
     }
   }
 
+  //muthu validation
+
+  const shiftTimeValidation = () => {
+    let output = { status: false, error: '' }
+    let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
+    if (WeekEnable) {
+      console.log("weekly shoift on");
+      weeklyData.map((element: any) => {
+        if (element.is_working) {
+          const isDayEnable = element.week_calendar.some((element2: any) => element2.is_working)
+
+          if (isDayEnable) {
+            console.log("is day enable");
+
+            weeklyData.map((element3: any) => {
+
+              if (element3.is_working) {
+
+                element3.week_calendar.map((element4: any) => {
+
+                  if (element4.is_working) {
+
+                    if (element4.time_breakdown.length > 0) {
+                      console.log("shift time assigned for the selected day");
+                    }
+                    else {
+                      console.log("please assign shift time for the selected day");
+
+                    }
+                  }
+                })
+              }
+            })
+          }
+          else {
+            console.log("please atleast enable one day to add shift")
+          }
+        }
+      })
+    }
+    else {
+      output = { status: false, error: `Can't Create Shift Please Enable At least one Week` }
+    }
+    return output
+  }
+
 
   // const shiftTimeValidation = () => {
   //   let output = { status: false, error: '' }
@@ -123,6 +169,75 @@ const WeeklyShiftSelection = () => {
   //   }
   //   return output
   // }
+    var dt = new Date();//current Date that gives us current Time also
+
+  const onShiftTimeAdd = () => {
+
+
+    var startTime = '07:00:00';
+    var endTime = '05:30:00';
+
+    const data = [{ startTime: '08:00:00', endTime: '17:00:00' }];
+
+
+    if (data.length > 0) {
+
+      const isExist = data.some(each => {
+        return startTime === each.startTime && endTime === each.endTime
+      })
+
+      console.log(isExist);
+
+      if (!isExist) {
+        let is_add = true
+
+        data.forEach(element => {
+          const isOverLab = dateRangeOverlaps(getDate(startTime), getDate(endTime), getDate(element.startTime), getDate(element.endTime))
+
+          console.log(isOverLab);
+          if (isOverLab) {
+            is_add = false
+            return
+          }
+        });
+
+
+        if (is_add) {
+          data.push({ startTime, endTime })
+
+        }
+        console.log(data);
+
+
+      } else {
+        console.log('data already Exist');
+      }
+
+
+    } else {
+      data.push({ startTime, endTime })
+      console.log(data);
+    }
+
+  }
+  
+  function getDate(time:any) {
+    var start = time.split(':');
+    return new Date(dt.getFullYear(), dt.getMonth(), dt.getDate(),
+      parseInt(start[0]), parseInt(start[1]), parseInt(start[2]));
+  }
+
+  function dateRangeOverlaps(a_start:any, a_end:any, b_start:any, b_end:any) {
+
+
+    console.log(a_start + "====" + a_end + '====' + b_start + "=====" + b_end);
+
+
+    if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
+    if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
+    if (b_start < a_start && a_end < b_end) return true; // a in b
+    return false;
+  }
 
 
   const onShiftAdd = () => {
@@ -138,8 +253,8 @@ const WeeklyShiftSelection = () => {
       else if (timeBreakdown.length > 0) {
         let isInRange = false
         for (let i = 0; i < timeBreakdown.length; i++) {
-          if ((shiftsTime.inTime >= timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
-            (shiftsTime.outTime >= timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
+          if ((shiftsTime.inTime > timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
+            (shiftsTime.outTime > timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
             showToast("error", t('alreadyShiftAllocated'))
             isInRange = true
           }
@@ -306,7 +421,7 @@ const WeeklyShiftSelection = () => {
             <h5 className="mb-2">{t('timeFrom')}</h5>
             <TimePicker
               title={t("shiftStarttime")}
-              icon={Icons.Calendar}
+              icon={Icons.Time}
               iconPosition={"append"}
               value={shiftsTime.inTime}
               onChange={(time: any) => {
@@ -318,7 +433,7 @@ const WeeklyShiftSelection = () => {
             <h5 className="mb-2">{t('timeTo')}</h5>
             <TimePicker
               title={t("shiftStarttime")}
-              icon={Icons.Calendar}
+              icon={Icons.Time}
               value={shiftsTime.outTime}
               iconPosition={"append"}
               onChange={(time) => {

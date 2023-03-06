@@ -45,8 +45,8 @@ const DropDown = (({
   };
   return (  
     <Container additionClass={`form-group ${additionClass}`} col={col} >
-      {label && <label className="form-control-label">{label}</label>}
-      <select value={value} className={`form-control ${showArrow && "form-select"}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}>
+      {label && <small className="form-control-label text-black ">{label}</small>}
+      <select value={value} className={`form-control mt-2  ${showArrow && "form-select"}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}>
         <option>{placeholder}</option>
         {data && data.length > 0 && data.map((item, index) => (
           <option className="dropdown-item" key={index} value={item?.id || item?.type}>
