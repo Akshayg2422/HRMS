@@ -27,7 +27,7 @@ import {
   MyLog,
   MyWorkLog,
   MyLeaves,
-  Requestpermission,
+  Firebase,
   AutoLogout,
   ModifyLogs,
   Reports,
@@ -77,8 +77,8 @@ function App() {
   return (
     <>
       {/* <AutoLogout /> */}
-      {/* <Requestpermission/>
-      <DeviceInfo /> */}
+      <Firebase />
+      <DeviceInfo />
       <AppProvider >
         <AppLoader />
         <ScreenLoader />

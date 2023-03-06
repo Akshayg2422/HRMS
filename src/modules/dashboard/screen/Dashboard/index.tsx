@@ -45,7 +45,7 @@ function Dashboard() {
 
   useEffect(() => {
     getpostAppConfig()
-  }, [])
+  }, [fcmToken])
 
   useEffect(() => {
     dispatch(currentNavIndex(0))

@@ -190,10 +190,9 @@ const ManageEmployee = () => {
   };
 
 
-  useEffect(() => {
-    setEmployeeDetails({ ...employeeDetails, shift: '' });
-    setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
-  }, [employeeDetails.designation, shiftGroup])
+
+  // useEffect(() => {
+  // }, [shiftGroup])
 
 
   const getBranchShiftsList = () => {
@@ -252,10 +251,6 @@ const ManageEmployee = () => {
       showToast("error", t("invalidCategory"));
       return false;
     }
-    // else if (Object.keys(employeeDetails.shift).length === 0) {
-    //   showToast("error", "choose Shift");
-    //   return false;
-    // }
     else {
       return true;
     }
@@ -386,7 +381,7 @@ const ManageEmployee = () => {
 
       if (
         editEmployeeDetails &&
-        editEmployeeDetails.shift
+        editEmployeeDetails.shift?.id
       ) {
         employeeInitData.shift =
           editEmployeeDetails.shift?.id
@@ -395,6 +390,7 @@ const ManageEmployee = () => {
     }
     setEmployeeDetails(employeeInitData);
   };
+
 
 
   const onChangeHandler = (e: any) => {
@@ -465,6 +461,18 @@ const ManageEmployee = () => {
     setDepartmentModel(!departmentModel);
   }
 
+  const handleDesignationChange = (event: { target: { value: any } }) => {
+    setEmployeeDetails(prevDetails => ({
+      ...prevDetails,
+      designation: event.target.value
+    }));
+      setEmployeeDetails(prevDetails => ({
+      ...prevDetails,
+      shift: ''
+    }));
+    setShiftsDropdownData(designationMatchShifts( event.target.value))
+
+  }
 
 
   return (
@@ -566,7 +574,7 @@ const ManageEmployee = () => {
               name={"designation"}
               value={employeeDetails.designation}
               onChange={(event) => {
-                onChangeHandler(dropDownValueCheckByEvent(event, t("enterDesignation")));
+                handleDesignationChange(event)
               }}
             />
           </div>
@@ -643,9 +651,7 @@ const ManageEmployee = () => {
             onChangeHandler(event);
           }}
         />
-
         <h4 className="mb-4">{t("attendanceDetails")}</h4>
-
         {shiftsDropdownData.length > 0 && <DropDown
           label={t("shiftss")}
           placeholder={t("SelectShift")}
@@ -656,26 +662,27 @@ const ManageEmployee = () => {
             onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
           }
         />}
-        <h5 className="mb-2">{t("startTime")}</h5>
-        <TimePicker
-          title={t("pleaseSelect")}
-          icon={Icons.Calendar}
-          iconPosition={"append"}
-          value={employeeDetails.attendanceStartTime}
-          onChange={(time: any) =>
-            dateTimePickerHandler(time, "attendanceStartTime")
-          }
-        />
-        <h5 className="mb-2">{t("endTime")}</h5>
-        <TimePicker
-          title={t("pleaseSelect")}
-          icon={Icons.Calendar}
-          iconPosition={"append"}
-          value={employeeDetails.attendanceEndTime}
-          onChange={(time: any) => {
-            dateTimePickerHandler(time, "attendanceEndTime");
-          }}
-        />
+        {!employeeDetails.shift  && <>
+          <h5 className="mb-2">{t("startTime")}</h5>
+          <TimePicker
+            title={t("pleaseSelect")}
+            icon={Icons.Calendar}
+            iconPosition={"append"}
+            value={employeeDetails.attendanceStartTime}
+            onChange={(time: any) =>
+              dateTimePickerHandler(time, "attendanceStartTime")
+            }
+          />
+          <h5 className="mb-2">{t("endTime")}</h5>
+          <TimePicker
+            title={t("pleaseSelect")}
+            icon={Icons.Calendar}
+            iconPosition={"append"}
+            value={employeeDetails.attendanceEndTime}
+            onChange={(time: any) => {
+              dateTimePickerHandler(time, "attendanceEndTime");
+            }}
+          /></>}
       </FormWrapper>
       <Modal
         title={t("department")}

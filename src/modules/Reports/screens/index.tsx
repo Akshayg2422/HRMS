@@ -267,6 +267,7 @@ function Reports() {
             <DatePicker
               placeholder={"Select Date"}
               icon={Icons.Calendar}
+              maxDate={Today}
               iconPosition={"append"}
               onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
               value={customRange.dataTo}
