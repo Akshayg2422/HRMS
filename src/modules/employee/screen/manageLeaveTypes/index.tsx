@@ -134,18 +134,18 @@ function ManageLeaveTypes() {
                 max_days_per_week: typeDetails.weeklyDayLimit === '' && !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
             }
             console.log('params---->', params);
-            // dispatch(
-            //     updateLeaveType({
-            //         params,
-            //         onSuccess: (success: any) => {
-            //             showToast("success", success?.status);
-            //             goBack(navigation);
-            //         },
-            //         onError: (error: string) => {
-            //             showToast("error", error);
-            //         },
-            //     })
-            // );
+            dispatch(
+                updateLeaveType({
+                    params,
+                    onSuccess: (success: any) => {
+                        showToast("success", success?.status);
+                        goBack(navigation);
+                    },
+                    onError: (error: string) => {
+                        showToast("error", error);
+                    },
+                })
+            );
         }
     }
 

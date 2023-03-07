@@ -352,6 +352,8 @@ const ViewEmployeeDetails = () => {
         value={employeeDetails.shift}
         disabled={true}
       />}
+
+      
       <InputText
         label={t("startTime")}
         placeholder={t("startTime")}

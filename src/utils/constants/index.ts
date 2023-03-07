@@ -66,6 +66,7 @@ export const ROUTE = {
 
 export const CHILD_PATH = [
   { path: "/manage-employee", parent: '/employee' },
+  // {path:'/profile',parent:'/'}
   { path: "/manage-branches", parent: '/location' },
   { path: "/stats-attendance", parent: '/stats' },
   { path: "/manage-holidays", parent: '/calendar' },
@@ -75,7 +76,6 @@ export const CHILD_PATH = [
   { path: "/shift-listing", parent: '/shift-group' },
   { path: "/shift-management", parent: '/shift-group' },
   { path: "/create-shift-group", parent: '/shift-group' },
-  { path: "/manage-broadcast", parent: '/broadcast' },
   { path: "/my-work-book", parent: '/portfolio' },
   { path: "/my-log", parent: '/portfolio' },
   { path: "/manage-leaves", parent: '/portfolio' },
@@ -85,6 +85,7 @@ export const CHILD_PATH = [
   { path: "/employee-shift-request", parent: '/portfolio' },
   { path: "/available-leaves", parent: '/portfolio' },
   { path: "/apply-leave", parent: '/portfolio' },
+  { path: "/manage-broadcast", parent: '/broadcast' },
 ]
 
 
@@ -203,8 +204,8 @@ export const NAV_ITEM = [
   { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'Face Approval', value: 'FA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_FACE_APPROVAL },
-  { id: '18', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.ShiftRequest, route: ROUTE.ROUTE_BROADCAST },
-  { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.ShiftRequest, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
+  { id: '18', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST },
+  { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
 
   { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },

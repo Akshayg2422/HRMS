@@ -17117,6 +17117,7 @@ Zenylog
  .dropdown-menu .dropdown-item>svg {
      font-size: 1rem;
      margin-right: 1rem;
+     color:red;
      vertical-align: -17%
  }
 

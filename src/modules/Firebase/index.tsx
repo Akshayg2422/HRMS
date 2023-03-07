@@ -7,10 +7,10 @@ import { onMessageListener } from './OnMessage';
 const MAX_LENGTH = 70
 
 const Firebase = () => {
-    const [notification, setNotification] = useState({ title: 'hi', body: 'This Is Message', icon: 'https://picsum.photos/id/237/200/300' });
+    const [notification, setNotification] = useState({ title: '', body: '', icon: '' });
 
     const notify = () => toast(<ToastDisplay />, {
-        position: 'top-right', duration: 5000,
+        position: 'top-right', duration: 3000,
     });
 
     function ToastDisplay() {

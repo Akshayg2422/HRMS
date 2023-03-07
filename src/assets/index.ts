@@ -100,7 +100,9 @@ export const Icons = {
   AddEmployee: require('./icons/AddEmployee/employees.png'),
   FaceApproval: require('./icons/FaceApproval/FaceApproval.png'),
   ApplyLeave: require('./icons/ApplyLeave/ApplyLeave.png'),
-  Time: require('./icons/Time/time.png')
+  Time: require('./icons/Time/time.png'),
+  BroadCast:require('./icons/BroadCast/Broadcast.png'),
+  EventNotification:require('./icons/EventNotification/EventNotification.png')
 }
 
 

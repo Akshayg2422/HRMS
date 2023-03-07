@@ -137,6 +137,7 @@ function EmployeeLog() {
       end_time: endDate,
       user_id: selectedEmployee.id,
     };
+
     dispatch(getEmployeesCheckInLogs({
       params,
       onSuccess: (success: object) => {
@@ -338,7 +339,7 @@ function EmployeeLog() {
             <Divider />
 
             <div>
-              {employeeCheckInLogs.slice(0).reverse().map((item: CheckInLog, index: number) => {
+              {employeeCheckInLogs.map((item: CheckInLog, index: number) => {
                 return (
                   <div className="accordion" id="accordionExample">
                     <div
