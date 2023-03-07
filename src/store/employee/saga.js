@@ -37,6 +37,7 @@ import {
   POST_UPDATED_ADMIN_BRANCHES,
   GET_BRANCHES_ADMIN,
   UPDATE_LEAVE_TYPE_DETAILS,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
 
 } from "./actionTypes";
 
@@ -118,6 +119,8 @@ import {
   getBranchAdminsFailure,
   updateLeaveTypeSuccess,
   updateLeaveTypeFailure,
+  getDownloadEmployeeCheckinLogsSuccess,
+  getDownloadEmployeeCheckinLogsFailure,
 
 } from "./actions";
 
@@ -157,7 +160,8 @@ import {
   fetchAdminBranches,
   PostUpdatedAdminBranches,
   getBranchAdminsApi,
-  updateLeaveTypeApi
+  updateLeaveTypeApi,
+  getDownloadEmployeeCheckingLogReportApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -956,6 +960,31 @@ function* updateLeaveTypeSaga(action) {
   }
 }
 
+/**
+ * Download Employee CheckIn Logs
+ */
+
+function* getDownloadEmployeeCheckInLogsSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(getDownloadEmployeeCheckingLogReportApi, action.payload.params);
+    if (response) {
+      yield put(getDownloadEmployeeCheckinLogsSuccess(response.data));
+      console.log("response", response);
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+
+    } else {
+      yield put(getDownloadEmployeeCheckinLogsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getDownloadEmployeeCheckinLogsFailure("Invalid Request"));
+  }
+}
 
 
 
@@ -1010,6 +1039,7 @@ function* EmployeeSaga() {
   yield takeLatest(POST_UPDATED_ADMIN_BRANCHES, postUpdateAdminBranchesSaga);
   yield takeLatest(GET_BRANCHES_ADMIN, getBranchAdminsSaga);
   yield takeLatest(UPDATE_LEAVE_TYPE_DETAILS, updateLeaveTypeSaga);
+  yield takeLatest(GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, getDownloadEmployeeCheckInLogsSaga);
 }
 
 export default EmployeeSaga;

@@ -157,3 +157,6 @@ export const CREATE_BROADCAST_MESSAGE = 'messages/createBroadcastMessage'
 
 //get Broadcast message
 export const FETCH_BROADCAST_MESSAGE = 'messages/getBroadcastMessages'
+
+//get Employee Checking logs Report
+export const GET_EMPLOYEE_CHECK_IN_LOGS_REPORT = 'attendance/getEmployeeCheckInLogs'

@@ -24,12 +24,12 @@ function ManageLeaveTypes() {
         MonthlyDayLimit: ''
     })
 
-    const [showFieldWeekly, setShowFieldWeekly] = useState(true)
-    const [showFieldMonthly, setShowFieldMonthly] = useState(true)
-    const [isNew, setIsNew] = useState({
-        weekly: true,
-        monthly: true
-    })
+    // const [showFieldWeekly, setShowFieldWeekly] = useState(true)
+    // const [showFieldMonthly, setShowFieldMonthly] = useState(true)
+    // const [isNew, setIsNew] = useState({
+    //     weekly: true,
+    //     monthly: true
+    // })
 
     useEffect(() => {
         if (editLeaveTypesDetails) {
@@ -41,34 +41,34 @@ function ManageLeaveTypes() {
                 MonthlyDayLimit: !checkIsDefault(editLeaveTypesDetails.max_days_per_month) ? '' : editLeaveTypesDetails.max_days_per_month,
                 weeklyDayLimit: !checkIsDefault(editLeaveTypesDetails.max_days_per_week) ? '' : editLeaveTypesDetails.max_days_per_week
             })
-            setIsNew({ ...isNew, weekly: !checkIsDefault(editLeaveTypesDetails.max_days_per_week), monthly: !checkIsDefault(editLeaveTypesDetails.max_days_per_month) })
+            // setIsNew({ ...isNew, weekly: !checkIsDefault(editLeaveTypesDetails.max_days_per_week), monthly: !checkIsDefault(editLeaveTypesDetails.max_days_per_month) })
         }
     }, [])
 
 
 
 
-    useEffect(() => {
-        if (!isNew.weekly) {
-            if (!typeDetails.weeklyLimit) {
-                setShowFieldWeekly(!showFieldWeekly)
-                setTypeDetails({ ...typeDetails, weeklyDayLimit: '' })
-            } else {
-                setShowFieldWeekly(true)
-            }
-        }
+    // useEffect(() => {
+    //     if (!isNew.weekly) {
+    //         if (!typeDetails.weeklyLimit) {
+    //             setShowFieldWeekly(!showFieldWeekly)
+    //             setTypeDetails({ ...typeDetails, weeklyDayLimit: '' })
+    //         } else {
+    //             setShowFieldWeekly(true)
+    //         }
+    //     }
 
-        if (!isNew.monthly) {
-            if (typeDetails.MonthlyDayLimit && !typeDetails.monthlyLimit) {
-                setShowFieldMonthly(!showFieldMonthly)
-                setTypeDetails({ ...typeDetails, MonthlyDayLimit: '' })
-            }
-            else {
-                setShowFieldMonthly(true)
-            }
-        }
+    //     if (!isNew.monthly) {
+    //         if (typeDetails.MonthlyDayLimit && !typeDetails.monthlyLimit) {
+    //             setShowFieldMonthly(!showFieldMonthly)
+    //             setTypeDetails({ ...typeDetails, MonthlyDayLimit: '' })
+    //         }
+    //         else {
+    //             setShowFieldMonthly(true)
+    //         }
+    //     }
 
-    }, [typeDetails.weeklyLimit, typeDetails.monthlyLimit])
+    // }, [typeDetails.weeklyLimit, typeDetails.monthlyLimit])
 
     const checkIsDefault = (status: number) => {
         let type
@@ -104,10 +104,10 @@ function ManageLeaveTypes() {
             showToast("error", t("InvalidDays"));
             return false
         }
-        else if (isNew && validateDefault(typeDetails.weeklyDayLimit).status === false) {
+        else if (typeDetails.weeklyLimit && validateDefault(typeDetails.weeklyDayLimit).status === false) {
             showToast("error", t("invalidWeeklyLimit"));
             return false
-        } else if (isNew && validateDefault(typeDetails.MonthlyDayLimit).status === false) {
+        } else if (typeDetails.monthlyLimit && validateDefault(typeDetails.MonthlyDayLimit).status === false) {
             showToast("error", t("invalidMonthlyLimit"));
             return false
         }
@@ -130,8 +130,8 @@ function ManageLeaveTypes() {
                 name: typeDetails.typeName,
                 allocated_days: typeDetails.allocated_leaves,
                 ...(editLeaveTypesDetails && { id: typeDetails.id }),
-                max_days_per_month: typeDetails.MonthlyDayLimit === '' && !typeDetails.monthlyLimit ? -1 : parseInt(typeDetails.MonthlyDayLimit),
-                max_days_per_week: typeDetails.weeklyDayLimit === '' && !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
+                max_days_per_month:  !typeDetails.monthlyLimit ? -1 : parseInt(typeDetails.MonthlyDayLimit),
+                max_days_per_week:  !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
             }
             console.log('params---->', params);
             dispatch(
@@ -196,7 +196,7 @@ function ManageLeaveTypes() {
                         />
                     </Container>
                 </Container>
-                {showFieldWeekly &&
+                {typeDetails.weeklyLimit &&
                     <Container additionClass='mt-3'>
                         <InputNumber
                             label={t("weeklyLimit")}
@@ -208,7 +208,7 @@ function ManageLeaveTypes() {
                         />
                     </Container>
                 }
-                {showFieldMonthly &&
+                {typeDetails.monthlyLimit &&
                     <Container additionClass='mt-3'>
                         <InputNumber
                             label={t('MonthlyLimit')}

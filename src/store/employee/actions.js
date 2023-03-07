@@ -127,7 +127,10 @@ import {
   UPDATE_LEAVE_TYPE_DETAILS,
   UPDATE_LEAVE_TYPE_DETAILS_SUCCESS,
   UPDATE_LEAVE_TYPE_DETAILS_FAILURE,
-  CURRENT_LEAVE_TYPE
+  CURRENT_LEAVE_TYPE,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1162,5 +1165,26 @@ export const getCurrentLeaveType = (type) => {
   return {
     type: CURRENT_LEAVE_TYPE,
     payload: type,
+  };
+};
+
+// Download Employee Checkin loGS
+export const getDownloadEmployeeCheckinLogs = (params) => {
+  return {
+    type: GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
+    payload: params,
+  };
+};
+
+export const getDownloadEmployeeCheckinLogsSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
+    payload: response,
+  };
+};
+export const getDownloadEmployeeCheckinLogsFailure = (error) => {
+  return {
+    type: GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+    payload: error,
   };
 };

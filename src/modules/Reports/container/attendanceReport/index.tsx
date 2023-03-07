@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, ImageView } from '@components'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { getDisplayTimeFromMoment, getMomentObjFromServer } from '@utils';
-import { fetchCalendardetailsFailure, getMisReport } from '../../../../store/employee/actions';
+import { downloadFile, getDisplayTimeFromMoment, getMomentObjFromServer } from '@utils';
+import { fetchCalendardetailsFailure, getDownloadEmployeeCheckinLogs, getMisReport } from '../../../../store/employee/actions';
 import { validateHeaderValue } from 'http';
 import { Icons } from '@assets';
 
@@ -48,12 +48,31 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     }));
   })
 
+
+  const getEmployeeCheckInLogsReports = (id: string) => {
+    const params = {
+      emp_id: id,
+      selected_date: customrange?.dateFrom,
+      selected_date_to: customrange?.dataTo,
+      download: true
+    }
+    console.log("params----->", params);
+    dispatch(getDownloadEmployeeCheckinLogs({
+      params,
+      onSuccess: (response: any) => {
+        downloadFile(response);
+      },
+      onError: (error: string) => {
+      },
+    }));
+  }
+
   const normalizedEmployee = (data: any) => {
     return data && data.length > 0 && data.map((el: any) => {
       return {
         name: el.name,
         "": <>
-          <ImageView height={20} width={20} icon={Icons.Download} />
+          <ImageView height={20} width={20} icon={Icons.Download} onClick={() => { getEmployeeCheckInLogsReports(el?.emp_id) }} />
         </>,
         "Designation": el.designation,
         "Total Days": el.total,

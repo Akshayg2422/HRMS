@@ -176,4 +176,7 @@ export const createBroadcastMessageApi = (payload) => post(url.CREATE_BROADCAST_
 export const fetchBroadcastMessageApi = (payload) => post(url.FETCH_BROADCAST_MESSAGE, payload, {})
 
 
+//get Employee Checking logs Report
+
+export const getDownloadEmployeeCheckingLogReportApi = (payload) => postHeader(url.GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, payload, {})
 
