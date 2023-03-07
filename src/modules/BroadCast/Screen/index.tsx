@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {
+    createBroadcastMessage,
     getBroadcastMessage
 } from "../../../../src/store/notifications/actions";
 import { Icons } from '@assets';
@@ -37,8 +38,7 @@ function BroadCast() {
 
         const params = {
             ...(type === "by me" && { type: 'self' }),
-            ...(id && { id: id }),
-            ...(id && { is_deleted: true })
+     
         };
         dispatch(getBroadcastMessage({
             params,
@@ -57,6 +57,24 @@ function BroadCast() {
     const addOnClick = () => {
         goTo(navigation, ROUTE.ROUTE_MANAGE_BROADCAST);
     };
+
+    const deleteRecord = (id:any) =>{
+
+        const params = {
+            ...(id && { id: id }),
+            ...(id && { is_deleted: true })
+        };
+        dispatch(createBroadcastMessage({
+            params,
+            onSuccess: (success: any) => {
+                setDeleteModel(!deleteModel)
+                getBroadcastMessagesList()
+            },
+            onError: (error: string) => {
+                showToast("error", error)
+            },
+        }));
+    }
 
     return (
         <>
@@ -97,11 +115,11 @@ function BroadCast() {
                                         </Container>
                                         <Container additionClass='d-flex justify-content-between'>
                                             <Container>
-                                                <span className='h6'>
+                                                <span className='h6 float-right'>
                                                     {'Posted at'}
                                                 </span>
                                                 <br />
-                                                <span className='h5'>
+                                                <span className='h5 float-right mt--2'>
                                                     {getDisplayDateTimeFromMoment(
                                                         getMomentObjFromServer(el.created_at)
                                                     )}
@@ -109,7 +127,7 @@ function BroadCast() {
                                             </Container>
                                             <Container>
                                                 {type === "by me" && (
-                                                    <ImageView icon={Icons.DeleteSecondary} height={20} onClick={() => {
+                                                    <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
                                                         setDeleteModel(!deleteModel)
                                                         setSelectedItemId(el.id)
                                                     }} />
@@ -153,7 +171,7 @@ function BroadCast() {
                         <Primary
                             text={t("proceed")}
                             onClick={() => {
-                                getBroadcastMessagesList(selectedItemId)
+                                deleteRecord(selectedItemId)
 
                             }}
                         />

@@ -218,7 +218,8 @@ const SubLevelComponent = ({
       <div
         className="card-header p-3"
         data-toggle="collapse"
-        data-target={"#collapse" + item.id}>
+        data-target={"#collapse" + item.id}
+        >
         <div className="row align-items-center mx-4">
           <div className="col-8">
             <h5 className="mb-0">{item.name}</h5>
