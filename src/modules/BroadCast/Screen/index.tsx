@@ -1,4 +1,4 @@
-import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal } from '@components';
+import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal, Pagination } from '@components';
 import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,7 +20,7 @@ function BroadCast() {
     const [selectedItemId, setSelectedItemId] = useState('')
 
 
-    const { broadcastMessagesData } = useSelector(
+    const { broadcastMessagesData, currentPage, numOfPages } = useSelector(
         (state: any) => state.NotificationReducer
     );
 
@@ -30,13 +30,15 @@ function BroadCast() {
     ];
 
     useEffect(() => {
-        getBroadcastMessagesList()
+        getBroadcastMessagesList(currentPage)
     }, [])
 
 
-    const getBroadcastMessagesList = () => {
+    const getBroadcastMessagesList = (pageNumber: number) => {
+
         const params = {
             ...(type === "by me" && { type: 'self' }),
+            page_number: pageNumber,
         };
         dispatch(getBroadcastMessage({
             params,
@@ -52,8 +54,6 @@ function BroadCast() {
         goTo(navigation, ROUTE.ROUTE_MANAGE_BROADCAST);
     };
 
-
-
     const deleteRecord = (id: any) => {
 
         const params = {
@@ -64,12 +64,25 @@ function BroadCast() {
             params,
             onSuccess: (success: any) => {
                 setDeleteModel(!deleteModel)
-                getBroadcastMessagesList()
+                getBroadcastMessagesList(currentPage)
             },
             onError: (error: string) => {
                 showToast("error", error)
             },
         }));
+    }
+
+    function paginationHandler(
+        type: "next" | "prev" | "current",
+        position?: number
+    ) {
+        let page =
+            type === "next"
+                ? currentPage + 1
+                : type === "prev"
+                    ? currentPage - 1
+                    : position;
+        getBroadcastMessagesList(page);
     }
 
     return (
@@ -84,7 +97,7 @@ function BroadCast() {
                                 onClick={(index: any) => {
                                     setType(sortData[index].title.toLocaleLowerCase())
                                     setActiveSort(index);
-                                    getBroadcastMessagesList()
+                                    getBroadcastMessagesList(currentPage)
                                 }}
                             />
                         </Container>
@@ -121,31 +134,47 @@ function BroadCast() {
                                                     )}
                                                 </span>
                                             </Container>
-                                            <Container>
+                                            {/* <Container>
                                                 {type === "by me" && (
                                                     <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
                                                         setDeleteModel(!deleteModel)
                                                         setSelectedItemId(el.id)
                                                     }} />
                                                 )}
-                                            </Container>
+                                            </Container> */}
                                         </Container>
                                     </Container>
                                     <Container additionClass={'h4 fw-normal'}>
                                         {el.message}
                                     </Container>
                                     <Container additionClass={'text-right'}>
-                                        <div className='h6 mb--1'>
+                                        {type !== "by me" && (<><div className='h6 mb--1'>
                                             {'Posted by'}
                                         </div>
-                                        <div className='h5 mb--1'>
-                                            {el.created_by}
-                                        </div>
+                                            <div className='h5 mb--1'>
+                                                {el.created_by}
+                                            </div></>)}
+                                        {type === "by me" && (
+                                            <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
+                                                setDeleteModel(!deleteModel)
+                                                setSelectedItemId(el.id)
+                                            }} />
+                                        )}
                                     </Container>
                                 </Card>
                             </Container>
                         );
                     }) : <NoRecordFound />}
+                    <Pagination currentPage={currentPage}
+                        // additionalClass={'card-footer'}
+                        noOfPage={numOfPages}
+                        totalPages={numOfPages}
+                        paginationNumberClick={(currentPage: number | undefined) => {
+                            paginationHandler("current", currentPage);
+                        }}
+                        previousClick={() => paginationHandler("prev")}
+                        nextClick={() => paginationHandler("next")}
+                    />
                 </Container>
             </Container>
             <Modal

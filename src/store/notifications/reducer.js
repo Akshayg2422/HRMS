@@ -52,14 +52,23 @@ const NotificationReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
+        numOfPages: 0,
+        currentPage: 1,
         broadcastMessagesData: []
       };
       break;
     case FETCH_BROADCAST_MESSAGE_SUCCESS:
+      const notificationData = action.payload;
+      console.log('notificationData', notificationData);
       state = {
         ...state,
         loading: false,
-        broadcastMessagesData: action.payload
+        broadcastMessagesData: notificationData.data,
+        numOfPages: notificationData.num_pages,
+        currentPage:
+          notificationData.next_page === -1
+            ? notificationData.num_pages
+            : notificationData.next_page - 1,
       };
       break;
 

@@ -410,7 +410,7 @@ const WeeklyShiftSelection = () => {
                       <Container additionClass={'float-right'} margin={'mt-2'}>
                         <CheckBox
                           id={'Week_' + index}
-                          text={t('defaultCheck')}
+                          text={it.is_working ? t('working') : t('notWorking')}
                           checked={it.is_working}
                           onChange={() => {
 

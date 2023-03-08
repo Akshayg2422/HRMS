@@ -74,10 +74,10 @@
     "invalidType": "Invalid Type",
     "invalidAdmin": "User is not a Admin / Branch Admin",
     "invalidOTP": "Invalid OTP",
-    "invalidWeeklyLimit": "invalid Weekly Limit",
-    "invalidMonthlyLimit": "invalid Monthly Limit",
-    "weeklyLimitExceeds": "weekly Limit Exceeds 7 Day's",
-    "monthlyLimitExceeds": "Monthly Limit Exceeds 30 Day's",
+    "invalidWeeklyLimit": "Weekly Limit should not be empty. please uncheck to remove",
+    "invalidMonthlyLimit": "Monthly Limit should not be empty. please uncheck to remove",
+    "weeklyLimitExceeds": "weekly Limit should not Exceed 7 Day's",
+    "monthlyLimitExceeds": "Monthly Limit should not Exceed 30 Day's",
     "companyProfile": "Company profile",
     "businessName": "Registered Business Name",
     "enteryourbussinessname": "Type your Registered Business Name",
@@ -462,6 +462,7 @@
     "notWorking": "Not Working",
     "message": "Message",
     "deleteMessage":"Delete message",
-    "broadcastWarningMessage":"Please click on Proceed to Delete message"
+    "broadcastWarningMessage":"Please click on Proceed to Delete message",
+    "working":"Working"
   }
 }

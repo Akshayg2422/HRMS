@@ -111,6 +111,10 @@ function ManageLeaveTypes() {
             showToast("error", t("invalidMonthlyLimit"));
             return false
         }
+        // else if (typeDetails.weeklyDayLimit > 7) {
+        //     showToast("info", "Weekly limit should not exceed 7 days");
+        //     return false
+        // }
         return true
     }
 
@@ -130,8 +134,8 @@ function ManageLeaveTypes() {
                 name: typeDetails.typeName,
                 allocated_days: typeDetails.allocated_leaves,
                 ...(editLeaveTypesDetails && { id: typeDetails.id }),
-                max_days_per_month:  !typeDetails.monthlyLimit ? -1 : parseInt(typeDetails.MonthlyDayLimit),
-                max_days_per_week:  !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
+                max_days_per_month: !typeDetails.monthlyLimit ? -1 : parseInt(typeDetails.MonthlyDayLimit),
+                max_days_per_week: !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
             }
             dispatch(
                 updateLeaveType({
@@ -203,7 +207,9 @@ function ManageLeaveTypes() {
                             validator={validateDefault}
                             value={typeDetails.weeklyDayLimit}
                             name={"weeklyDayLimit"}
-                            onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, 1), "weeklyDayLimit")}
+                            onChange={(event) => {
+                                mobileNumberHandler(inputNumberMaxLength(event.target.value, 1), "weeklyDayLimit")
+                            }}
                         />
                     </Container>
                 }

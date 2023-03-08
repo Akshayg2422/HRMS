@@ -1,4 +1,4 @@
-import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal } from '@components';
+import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal, Pagination } from '@components';
 import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,7 +19,7 @@ function EventNotification() {
     const [selectedItemId, setSelectedItemId] = useState('')
 
 
-    const { broadcastMessagesData } = useSelector(
+    const { broadcastMessagesData, currentPage, numOfPages } = useSelector(
         (state: any) => state.NotificationReducer
     );
 
@@ -29,22 +29,20 @@ function EventNotification() {
     ];
 
     useEffect(() => {
-        getBroadcastMessagesList()
+        getBroadcastMessagesList(currentPage)
     }, [])
 
 
-    const getBroadcastMessagesList = (id?: string) => {
+    const getBroadcastMessagesList = (pageNumber: number) => {
+
         const params = {
             ...(type === "by me" && { type: 'self' }),
-            ...(id && { id: id }),
-            ...(id && { is_deleted: true })
+            page_number: pageNumber,
+
         };
         dispatch(getBroadcastMessage({
             params,
             onSuccess: (success: any) => {
-                if(id){
-                    setDeleteModel(!deleteModel)
-                }
             },
             onError: (error: string) => {
                 showToast("error", error)
@@ -55,6 +53,22 @@ function EventNotification() {
     const addOnClick = () => {
         goTo(navigation, ROUTE.ROUTE_MANAGE_BROADCAST);
     };
+
+
+    function paginationHandler(
+        type: "next" | "prev" | "current",
+        position?: number
+    ) {
+        let page =
+            type === "next"
+                ? currentPage + 1
+                : type === "prev"
+                    ? currentPage - 1
+                    : position;
+        getBroadcastMessagesList(page);
+    }
+
+    console.log("broadcastMessagesData", broadcastMessagesData);
 
     return (
         <>
@@ -68,7 +82,7 @@ function EventNotification() {
                                 onClick={(index: any) => {
                                     setType(sortData[index].title.toLocaleLowerCase())
                                     setActiveSort(index);
-                                    getBroadcastMessagesList()
+                                    getBroadcastMessagesList(currentPage)
                                 }}
                             />
                         </Container>
@@ -85,51 +99,59 @@ function EventNotification() {
                 <Container additionClass={" mx-1"}>
                     {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
                         return (
-                            <Container additionClass={"col"}>
-                            <Card>
-                                <Container additionClass={"d-flex justify-content-between"} >
-                                    <Container>
-                                        <div className="h1">
-                                            {el.title}
-                                        </div>
-                                    </Container>
-                                    <Container additionClass='d-flex justify-content-between'>
-                                        <Container>
-                                            <span className='h6 float-right'>
-                                                {'Posted at'}
-                                            </span>
-                                            <br />
-                                            <span className='h5 float-right mt--2'>
-                                                {getDisplayDateTimeFromMoment(
-                                                    getMomentObjFromServer(el.created_at)
+                            <>
+                                <Container additionClass={"col"}>
+                                    <Card>
+                                        <Container additionClass={"row "} >
+                                            <div className="h1 col">
+                                                {el.title}
+                                            </div>
+
+                                            <div className="h4 col text-right">
+                                                <div>
+                                                </div>
+                                                <div className='h6'>
+                                                    {'Posted at'}
+                                                </div>
+                                                <div className='h5 mt--2'>
+                                                    {getDisplayDateTimeFromMoment(
+                                                        getMomentObjFromServer(el.created_at)
+                                                    )}
+                                                </div>
+                                                {type === "by me" && (
+                                                    <ImageView icon={Icons.DeleteSecondary} height={25} onClick={() => {
+                                                        setDeleteModel(!deleteModel)
+                                                        setSelectedItemId(el.id)
+                                                    }} />
                                                 )}
-                                            </span>
+                                            </div>
+                                            <Container additionClass={'h4 fw-normal'}>
+                                                {el.message}
+                                            </Container>
+                                            <Container additionClass={'text-right'}>
+                                                <div className='h6 mb--1'>
+                                                    {'Posted by'}
+                                                </div>
+                                                <div className='h5 mb--1'>
+                                                    {el.created_by}
+                                                </div>
+                                            </Container>
                                         </Container>
-                                        <Container>
-                                            {type === "by me" && (
-                                                <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
-                                                    setDeleteModel(!deleteModel)
-                                                    setSelectedItemId(el.id)
-                                                }} />
-                                            )}
-                                        </Container>
-                                    </Container>
+                                    </Card>
                                 </Container>
-                                <Container additionClass={'h4 fw-normal'}>
-                                    {el.message}
-                                </Container>
-                                <Container additionClass={'text-right'}>
-                                    <div className='h6 mb--1'>
-                                        {'Posted by'}
-                                    </div>
-                                    <div className='h5 mb--1'>
-                                        {el.created_by}
-                                    </div>
-                                </Container>
-                            </Card>
-                        </Container>
+                            </>
                         );
                     }) : <NoRecordFound />}
+                    <Pagination currentPage={currentPage}
+                        // additionalClass='card-footer'
+                        noOfPage={numOfPages}
+                        totalPages={numOfPages}
+                        paginationNumberClick={(currentPage: number | undefined) => {
+                            paginationHandler("current", currentPage);
+                        }}
+                        previousClick={() => paginationHandler("prev")}
+                        nextClick={() => paginationHandler("next")}
+                    />
                 </Container>
             </Container>
             <Modal
@@ -151,8 +173,7 @@ function EventNotification() {
                         <Primary
                             text={t("proceed")}
                             onClick={() => {
-                                getBroadcastMessagesList(selectedItemId)
-
+                                getBroadcastMessagesList(currentPage)
                             }}
                         />
                     </Container>
