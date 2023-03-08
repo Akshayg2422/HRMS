@@ -22,7 +22,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getListAllBranchesList } from '../../../../store/location/actions'
+import { getAllBranchesList } from '../../../../store/location/actions'
 import {
   getDepartmentData,
   getDesignationData,
@@ -114,7 +114,7 @@ const ViewEmployeeDetails = () => {
 
     const params = {};
     dispatch(
-      getListAllBranchesList({
+      getAllBranchesList({
         params,
         onSuccess: (success: object) => {
           const parentBranch = branchesDropdownData.find(
@@ -240,8 +240,6 @@ const ViewEmployeeDetails = () => {
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
     }
-    console.log(employeeInitData);
-
     setEmployeeDetails(employeeInitData);
   };
 
@@ -354,6 +352,8 @@ const ViewEmployeeDetails = () => {
         value={employeeDetails.shift}
         disabled={true}
       />}
+
+      
       <InputText
         label={t("startTime")}
         placeholder={t("startTime")}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NAV_ITEM, useNav } from "@utils";
+import { CHILD_PATH, NAV_ITEM, useNav } from "@utils";
 import { Icons } from "@assets";
 import { ImageView } from "@components";
 import { useDispatch, useSelector } from "react-redux";
@@ -36,6 +36,21 @@ const Navbar = ({ }) => {
     NAV_ITEM.filter((el: any, index: number) => {
       if (pathname === el.route) {
         dispatch(currentNavIndex(index));
+      } else {
+        childNav()
+      }
+    })
+  }
+
+
+  const childNav = () => {
+    CHILD_PATH.filter((el: any) => {
+      if (pathname === el.path) {
+        NAV_ITEM.filter((element: any, index: number) => {
+          if (el.parent === element.route) {
+            dispatch(currentNavIndex(index));
+          }
+        })
       }
     })
   }
@@ -102,7 +117,7 @@ const Navbar = ({ }) => {
               })}
             </ul>
           </div>
-          <small className={"text-white text-version"}>Version: 1.20</small>
+          <small className={"text-white text-version"}>Version: 1.21</small>
         </div>
       </div>
 

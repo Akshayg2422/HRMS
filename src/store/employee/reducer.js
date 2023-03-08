@@ -125,7 +125,10 @@ import {
   UPDATE_LEAVE_TYPE_DETAILS,
   UPDATE_LEAVE_TYPE_DETAILS_SUCCESS,
   UPDATE_LEAVE_TYPE_DETAILS_FAILURE,
-  CURRENT_LEAVE_TYPE
+  CURRENT_LEAVE_TYPE,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -339,7 +342,12 @@ const EmployeeReducer = (state = initialState, action) => {
      */
 
     case FETCH_EMPLOYEE_TIME_SHEETS:
-      state = { ...state, loading: true };
+      state = {
+        ...state, loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+        employeeTimeSheets:[]
+      };
       break;
 
     case FETCH_EMPLOYEE_TIME_SHEETS_SUCCESS:
@@ -910,7 +918,7 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
     case GET_MODIFY_LOGS_SUCCESS:
-      
+
       const modifyLogs = action.payload;
       state = {
         ...state,
@@ -1180,6 +1188,30 @@ const EmployeeReducer = (state = initialState, action) => {
       state = {
         ...state,
         currentLeaveType: action.payload,
+      };
+      break;
+
+    /**
+     * // Download Employee CheckIn loGS
+     */
+    case GET_EMPLOYEE_CHECK_IN_LOGS_REPORT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
       };
       break;
     /**

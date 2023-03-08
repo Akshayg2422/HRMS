@@ -58,10 +58,41 @@ export const ROUTE = {
   ROUTE_AVAILABLE_LEAVES: '/available-leaves',
   ROUTE_LEAVES_TYPES: '/leaves-types',
   ROUTE_MANAGE_LEAVE_TYPES: '/manage-leave-types',
+  ROUTE_BROADCAST: '/broadcast',
+  ROUTE_EVENT_NOTIFICATION: '/event-notification',
+  ROUTE_MANAGE_BROADCAST: '/manage-broadcast',
+  ROUTE_MY_NOTIFICATION: '/my-notification'
 }
+
+
+export const CHILD_PATH = [
+  { path: "/manage-employee", parent: '/employee' },
+  // {path:'/profile',parent:'/'}
+  { path: "/manage-branches", parent: '/location' },
+  { path: "/stats-attendance", parent: '/stats' },
+  { path: "/manage-holidays", parent: '/calendar' },
+  { path: "/leaves-types", parent: '/calendar' },
+  { path: "/manage-leave-types", parent: '/calendar' },
+  { path: "/shift-set", parent: '/shift-group' },
+  { path: "/shift-listing", parent: '/shift-group' },
+  { path: "/shift-management", parent: '/shift-group' },
+  { path: "/create-shift-group", parent: '/shift-group' },
+  { path: "/my-work-book", parent: '/portfolio' },
+  { path: "/my-log", parent: '/portfolio' },
+  { path: "/manage-leaves", parent: '/portfolio' },
+  { path: "/my-leaves", parent: '/portfolio' },
+  { path: "/E-Locker", parent: '/portfolio' },
+  { path: "/my-shifts-details", parent: '/portfolio' },
+  { path: "/employee-shift-request", parent: '/portfolio' },
+  { path: "/available-leaves", parent: '/portfolio' },
+  { path: "/apply-leave", parent: '/portfolio' },
+  { path: "/manage-broadcast", parent: '/broadcast' },
+]
+
 
 export const WELCOME_NOTE = [{ key: '1', title: 'Geo tagging' }, { key: '2', title: 'Real-time statistics' }, { key: '3', title: 'Salary calculations' }, { key: '4', title: 'Payments and payslips' }, { key: '5', title: 'And much more!!!' }]
 export const WELCOME_CARD = [{ key: 'admin', icon: Icons.Admin, title: 'Admin', goTo: ROUTE.ROUTE_LOGIN }, { key: 'employee', icon: Icons.Employee, title: 'Employee', goTo: ROUTE.ROUTE_LOGIN }, { key: 'register-company', icon: Icons.RegisterCompany, title: 'Register a new company', goTo: ROUTE.ROUTE_REGISTER },]
+
 export const GENDER_LIST = [
   { id: 'M', name: 'Male', value: 'M' },
   { id: 'F', name: 'Female', value: 'F' },
@@ -82,7 +113,7 @@ export const REPORTS_TYPE = [
 
 export const LEAVES_TYPE = [
   { id: 'All', name: 'All', value: -2 },
-  { id: 'Pending Leave', name: 'Pending Leave', value: -1,},
+  { id: 'Pending Leave', name: 'Pending Leave', value: -1, },
   { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
   { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
 
@@ -174,7 +205,10 @@ export const NAV_ITEM = [
   { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'Face Approval', value: 'FA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_FACE_APPROVAL },
-  { id: '18', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
+  { id: '18', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST },
+  // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
+
+  { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
 

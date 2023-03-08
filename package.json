@@ -28,6 +28,7 @@
     "react-csv": "^2.2.2",
     "react-dom": "^18.2.0",
     "react-flatpickr": "^3.10.13",
+    "react-hot-toast": "^2.4.0",
     "react-i18next": "^11.18.4",
     "react-loading-overlay-ts": "^2.0.0",
     "react-pdf": "^6.1.0",

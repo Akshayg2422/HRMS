@@ -141,7 +141,8 @@ function Calendar() {
     dispatch(
       deleteHoliday({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: any) => {
+          showToast("success",success.message)
           getCalendarDetails(currentPage);
         },
         onError: (error: string) => {

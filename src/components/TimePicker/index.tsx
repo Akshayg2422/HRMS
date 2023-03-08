@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import Flatpickr from "react-flatpickr";
 import { DatePickerProps } from '../Interface'
 import { ImageView } from '@components'
-
+import { Icons } from "@assets";
 
 
 function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...props }: DatePickerProps) {
@@ -41,7 +41,7 @@ function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...prop
           onChange={handleChange}
         />
         {icon && iconPosition === 'append' && <div className="input-group-append" onClick={() => openTimePicker()} style={{ cursor: 'pointer' }}>
-          <span className="input-group-text"><ImageView icon={icon} /></span>
+          <span className="input-group-text"><ImageView icon={icon ? icon : Icons.Calendar} /></span>
         </div>}
 
       </div>
