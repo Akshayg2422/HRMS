@@ -16,7 +16,7 @@ function PortFolio() {
     },
     {
       id: "2",
-      name: "MY Log",
+      name: "My Log",
       value: "ML",
       route: ROUTE.ROUTE_MY_LOG,
       icon: Icons.MyLog,
@@ -71,7 +71,7 @@ function PortFolio() {
       {MY_PORTFOLIO_ITEM.map((it, index) => {
         return (
           <Container additionClass={"col-xl-3 col-md-6"}>
-            <Card
+            {/* <Card
               additionClass={"border"}
               style={{ border: "1px bg-gray" }}
               onClick={() => navigate(it.route)}
@@ -99,7 +99,20 @@ function PortFolio() {
                   ></Container>
                 </div>
               </Container>
-            </Card>
+            </Card> */}
+            <Card
+                additionClass={"d-flex"}
+                onClick={() => navigate(it.route)}
+              >
+                <Container
+                  additionClass={"d-flex py-3"}
+                >
+                  <ImageView  icon={it?.icon} alt={it.name} height={50} width={50} />
+                    <h4 className="text-black m-auto font-weight-bold">
+                      {it.name}
+                    </h4>
+                </Container>
+              </Card>
           </Container>
         );
       })}

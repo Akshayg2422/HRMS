@@ -45,6 +45,11 @@ function FenceAdmin() {
 
 
     useEffect(() => {
+        getAllBranchesListData()
+    }, [])
+
+    const getAllBranchesListData = () =>{
+
         const params = {};
         dispatch(
             getAllBranchesList({
@@ -53,18 +58,18 @@ function FenceAdmin() {
                     setBranch(response)
                 },
                 onError: () => {
-                    console.log("=========error");
                 },
             })
         );
-    }, [])
+    }
 
 
     useEffect(() => {
         if (enterPress) {
             getRegisteredFenceAdmin(currentPage);
         }
-    }, [enterPress])
+        getRegisteredFenceAdmin(currentPage)
+    }, [enterPress,selectedBranchId])
 
 
     const normalizedBranchList = (data: any) => {
@@ -80,7 +85,7 @@ function FenceAdmin() {
         const params = {
             ...(searchEmployee && { q: searchEmployee }),
             page_number: pageNumber,
-            branch_id: selectedBranchId.id
+           ...(selectedBranchId && { branch_id: selectedBranchId.id})
         }
         dispatch(getEmployeesList({
             params,
@@ -117,7 +122,7 @@ function FenceAdmin() {
         dispatch(addFenceAdmin({
             params,
             onSuccess: (success: any) => {
-                dispatch(getAllBranchesList({}))
+                getAllBranchesListData()
                 showToast("success", success.message);
                 setModel(!model)
             },
@@ -176,10 +181,13 @@ function FenceAdmin() {
                             proceedModelHandler(currentItem);
                         }}
                     />
-                    : <Card><NoRecordFound /></Card>}
+                    : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
 
             {
-                <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => setModel(!model)}>
+                <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={model} toggle={() => {
+                    setModel(!model)
+                    setSearchEmployee("")
+                }}>
                     <Container additionClass={"col-xl-6 row"}>
                         <InputText
                             value={searchEmployee}
@@ -231,7 +239,7 @@ type EmployeeTableProps = {
 
 const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: EmployeeTableProps) => {
     return <div className='table-responsive'>
-        <table className='table align-items-center table-flush'>
+        <table className='table align-items-center' style={{marginBottom:'0px'}}>
             <thead className='thead-light'>
                 <tr>
                     <th scope='col'>{'Name'}</th>

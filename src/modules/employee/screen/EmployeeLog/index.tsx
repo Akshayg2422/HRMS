@@ -137,6 +137,7 @@ function EmployeeLog() {
       end_time: endDate,
       user_id: selectedEmployee.id,
     };
+
     dispatch(getEmployeesCheckInLogs({
       params,
       onSuccess: (success: object) => {
@@ -148,12 +149,20 @@ function EmployeeLog() {
     }));
   }
 
-  function getEmployeeCheckInDetailedLogPerDay(index: number) {
-    const selectedDate = employeeCheckInLogs[index].date;
+  function getEmployeeCheckInDetailedLogPerDay(item: any, index: number) {
+    // setAccordion(index);
+    const params = {
+      date: item.date,
+      user_id: selectedEmployeeDetails.id,
+    }
     dispatch(
       getCheckInDetailedLogPerDay({
-        date: selectedDate,
-        user_id: selectedEmployeeDetails.id,
+        params,
+        onSuccess: (response: any) => {
+          console.log('----------------->');
+        },
+        onError: (error: string) => {
+        },
       })
     );
   }
@@ -314,7 +323,7 @@ function EmployeeLog() {
             getEmployeeLogs(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card><NoRecordFound /></Card>}
+      ) : <Card additionClass={"mx-4"}><NoRecordFound /></Card>}
       <Modal
         showModel={model}
         title={`${selectedEmployeeDetails?.name}'s ${t('log')}`}
@@ -338,9 +347,9 @@ function EmployeeLog() {
             <Divider />
 
             <div>
-              {employeeCheckInLogs.map((item: CheckInLog, index: number) => {
+              {employeeCheckInLogs.map((item: any, index: number) => {
                 return (
-                  <div className="accordion" id="accordionExample">
+                  <div className="accordion" id="accordionExample" key={item?.id}>
                     <div
                       data-toggle="collapse"
                       data-target={
@@ -348,8 +357,8 @@ function EmployeeLog() {
                       }
                       onClick={() => {
                         if (accordion !== index) {
+                          getEmployeeCheckInDetailedLogPerDay(item, index);
                           setAccordion(index);
-                          getEmployeeCheckInDetailedLogPerDay(index);
                         }
                       }}
                     >

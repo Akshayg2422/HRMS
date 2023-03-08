@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { BackArrow, Card, CheckBox, Container, InputText, Modal, Primary, TimePicker } from '@components'
 import { Icons } from "@assets";
-import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav, goTo, ROUTE, convertTo24Hour } from '@utils';
+import { showToast, WEEK_LIST, getWeekAndWeekDaysById, goBack, useNav, goTo, ROUTE, convertTo24Hour, getDisplayTimeWithoutSuffixFromMoment, getMomentObjFromServer } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { WeekDaysList } from '../../container';
 import { useDispatch, useSelector } from "react-redux";
@@ -97,6 +97,52 @@ const WeeklyShiftSelection = () => {
     }
   }
 
+  //muthu validation
+
+  // const shiftTimeValidation = () => {
+  //   let output = { status: false, error: '' }
+  //   let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
+  //   if (WeekEnable) {
+  //     console.log("weekly shoift on");
+  //     weeklyData.map((element: any) => {
+  //       if (element.is_working) {
+  //         const isDayEnable = element.week_calendar.some((element2: any) => element2.is_working)
+
+  //         if (isDayEnable) {
+  //           console.log("is day enable");
+
+  //           weeklyData.map((element3: any) => {
+
+  //             if (element3.is_working) {
+
+  //               element3.week_calendar.map((element4: any) => {
+
+  //                 if (element4.is_working) {
+
+  //                   if (element4.time_breakdown.length > 0) {
+  //                     console.log("shift time assigned for the selected day");
+  //                   }
+  //                   else {
+  //                     console.log("please assign shift time for the selected day");
+
+  //                   }
+  //                 }
+  //               })
+  //             }
+  //           })
+  //         }
+  //         else {
+  //           console.log("please atleast enable one day to add shift")
+  //         }
+  //       }
+  //     })
+  //   }
+  //   else {
+  //     output = { status: false, error: `Can't Create Shift Please Enable At least one Week` }
+  //   }
+  //   return output
+  // }
+
 
   // const shiftTimeValidation = () => {
   //   let output = { status: false, error: '' }
@@ -123,41 +169,147 @@ const WeeklyShiftSelection = () => {
   //   }
   //   return output
   // }
+  const dt = new Date();
+
+  function getDate(time: any) {
+    const start = time?.split(':');
+    return new Date(
+      dt.getFullYear(),
+      dt.getMonth(),
+      dt.getDate(),
+      parseInt(start[0]),
+      parseInt(start[1]),
+      // parseInt(start[2]),
+    );
+  }
+
+  function dateRangeOverlaps(
+    a_start: any,
+    a_end: any,
+    b_start: any,
+    b_end: any,
+  ) {
+    console.log(a_start + '====' + a_end + '====' + b_start + '=====' + b_end);
 
 
-  const onShiftAdd = () => {
-    if (dateValidation()) {
-      let updatedWeek = [...weeklyData]
-      let selectedWeekPosition = isActiveWeek - 1
-      let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
-      const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
-      if (timeBreakdown.length === 0) {
-        let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-        changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
-      }
-      else if (timeBreakdown.length > 0) {
-        let isInRange = false
-        for (let i = 0; i < timeBreakdown.length; i++) {
-          if ((shiftsTime.inTime >= timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
-            (shiftsTime.outTime >= timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
-            showToast("error", t('alreadyShiftAllocated'))
-            isInRange = true
+    if (a_start <= b_start && b_start <= a_end) {
+      return true;
+    } // b starts in a
+    if (a_start <= b_end && b_end <= a_end) {
+      return true;
+    } // b ends in a
+    if (b_start < a_start && a_end < b_end) {
+      return true;
+    } // a in b
+    return false;
+  }
+
+  function updateShiftTimeBreakdown() {
+
+    if(dateValidation()){
+      if (shiftsTime.inTime && shiftsTime.outTime) {
+        let updatedWeek = [...weeklyData]
+        let selectedWeekPosition = isActiveWeek - 1
+        let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
+        const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
+  
+        const currentShift = {
+          start_time: shiftsTime.inTime,
+  
+          end_time: shiftsTime.outTime,
+  
+        };
+  
+        if (timeBreakdown && timeBreakdown.length > 0) {
+          if (timeBreakdown.length < 3) {
+            const isExist = timeBreakdown.some((each: any) => {
+              return (
+                currentShift.start_time === each.startTime &&
+                currentShift.end_time === each.endTime
+              );
+            });
+            if (!isExist) {
+              let is_add = true;
+  
+              timeBreakdown.forEach((element: any) => {
+                const isOverLab = dateRangeOverlaps(
+                  getDate(currentShift.start_time),
+                  getDate(currentShift.end_time),
+                  getDate(element.start_time),
+                  getDate(element.end_time),
+                );
+  
+                console.log(isOverLab);
+                if (isOverLab) {
+                  is_add = false;
+                  return;
+                }
+              });
+  
+              if (is_add) {
+                console.log("111111", is_add);
+                
+                changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+              } 
+              else {
+                showToast("error", t('alreadyShiftAllocated'))
+              }
+            }
+         
+          } else {
+            // Toast(I18n.t('overLimit'));
           }
-        }
-        if (!isInRange && changedWeek[selectedDayIndex].time_breakdown.length < 3) {
-          let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-          changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
-        }
+        } 
+        else {
+          console.log("2222");
 
-      }
-      setWeeklyData(updatedWeek)
-      setOpenModel(!openModel)
-      shiftTimeReset()
+          changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+        }
+        setWeeklyData(updatedWeek)
+        setOpenModel(!openModel)
+        shiftTimeReset()
+      } 
     }
+  
     else {
       showToast("error", t('timeCantbeempty'))
     }
   }
+
+
+  // const onShiftAdd = () => {
+  //   if (dateValidation()) {
+  //     let updatedWeek = [...weeklyData]
+  //     let selectedWeekPosition = isActiveWeek - 1
+  //     let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
+  //     const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
+  //     if (timeBreakdown.length === 0) {
+  //       let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
+  //       changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
+  //     }
+  //     else if (timeBreakdown.length > 0) {
+  //       let isInRange = false
+  //       for (let i = 0; i < timeBreakdown.length; i++) {
+  //         if ((shiftsTime.inTime > timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
+  //           (shiftsTime.outTime > timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
+  //           showToast("error", t('alreadyShiftAllocated'))
+  //           isInRange = true
+  //         }
+  //       }
+  //       if (!isInRange && changedWeek[selectedDayIndex].time_breakdown.length < 3) {
+  //         let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
+  //         changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
+  //       }
+
+  //     }
+  //     setWeeklyData(updatedWeek)
+  //     setOpenModel(!openModel)
+  //     shiftTimeReset()
+  //   }
+  //   else {
+  //     showToast("error", t('timeCantbeempty'))
+  //   }
+  // }
 
 
   const onDelete = (selectedShift: any, index: number) => {
@@ -258,7 +410,7 @@ const WeeklyShiftSelection = () => {
                       <Container additionClass={'float-right'} margin={'mt-2'}>
                         <CheckBox
                           id={'Week_' + index}
-                          text={t('defaultCheck')}
+                          text={it.is_working ? t('working') : t('notWorking')}
                           checked={it.is_working}
                           onChange={() => {
 
@@ -306,7 +458,7 @@ const WeeklyShiftSelection = () => {
             <h5 className="mb-2">{t('timeFrom')}</h5>
             <TimePicker
               title={t("shiftStarttime")}
-              icon={Icons.Calendar}
+              icon={Icons.Time}
               iconPosition={"append"}
               value={shiftsTime.inTime}
               onChange={(time: any) => {
@@ -318,7 +470,7 @@ const WeeklyShiftSelection = () => {
             <h5 className="mb-2">{t('timeTo')}</h5>
             <TimePicker
               title={t("shiftStarttime")}
-              icon={Icons.Calendar}
+              icon={Icons.Time}
               value={shiftsTime.outTime}
               iconPosition={"append"}
               onChange={(time) => {
@@ -330,7 +482,7 @@ const WeeklyShiftSelection = () => {
 
         <div className="float-right">
           <button type="button" className="btn btn-secondary ml-auto" onClick={() => { setOpenModel(!openModel) }}>{t('cancel')}</button>
-          <button type="button" className="btn btn-primary ml-auto" onClick={() => { onShiftAdd() }}>{t('submit')}</button>
+          <button type="button" className="btn btn-primary ml-auto" onClick={() => { updateShiftTimeBreakdown() }}>{t('submit')}</button>
         </div>
       </Modal>
     </>

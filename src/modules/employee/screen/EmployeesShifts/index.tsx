@@ -205,7 +205,7 @@ function EmployeeShifts() {
             getUserShifts(index);
           }}
         />
-      ) : <Card><NoRecordFound /></Card>}
+      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
       <Modal
         showModel={model}
         title={`${employeeName}'s ${t('shifts')}`}

@@ -1,10 +1,11 @@
-import { getMisReport } from '../../../../store/employee/actions';
+import { getDownloadEmployeeCheckinLogs, getMisReport } from '../../../../store/employee/actions';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card, CommonTable, ImageView, Secondary } from '@components';
 import { Icons } from '@assets';
 import moment from 'moment';
 import { useEffect } from 'react';
+import { downloadFile } from '@utils';
 
 type LogReportsProps = {
     data?: Array<any>;
@@ -35,8 +36,8 @@ function LogReports({ data, department, reportType, customrange, designation, at
         const updatedData = []
         let key = getDatesListBetweenStartEndDates(startDate, endDate)
         for (let i = 0; i < data.length; i++) {
-            let { days, name, designation } = data[i]
-            let updateObject = { name, designation }
+            let { days, name, designation, emp_id } = data[i]
+            let updateObject = { name, emp_id, designation }
             if (key && key.length > 0) {
                 key.forEach((each: any) => {
                     const index = days.findIndex((day: any) => day.date === each)
@@ -95,6 +96,25 @@ function LogReports({ data, department, reportType, customrange, designation, at
     }
 
 
+    const getEmployeeCheckInLogsReports = (emp: any) => {
+        console.log("emp------->", emp);
+
+        const params = {
+            emp_id: emp?.emp_id,
+            selected_date: customrange?.dateFrom,
+            selected_date_to: customrange?.dataTo,
+            download: true
+        }
+        console.log("params----->", params);
+        dispatch(getDownloadEmployeeCheckinLogs({
+          params,
+          onSuccess: (response: any) => {
+            downloadFile(response);
+          },
+          onError: (error: string) => {
+          },
+        }));
+    }
     return (
         <>
             <Card>
@@ -109,7 +129,10 @@ function LogReports({ data, department, reportType, customrange, designation, at
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
                     tableChildren={
-                        <LocationTable tableDataSet={getConvertedTableData(data)} />
+                        <LocationTable tableDataSet={getConvertedTableData(data)}
+                            employeeLogDownload={(item: any) => {
+                                getEmployeeCheckInLogsReports(item)
+                            }} />
                     }
                     custombutton={"h5"}
                 />
@@ -121,10 +144,11 @@ function LogReports({ data, department, reportType, customrange, designation, at
 
 type LocationTableProps = {
     tableDataSet?: any;
+    employeeLogDownload?: any
 };
 
 const LocationTable = ({
-    tableDataSet,
+    tableDataSet, employeeLogDownload
 }: LocationTableProps) => {
 
     const renderTableHeader = () => {
@@ -135,7 +159,7 @@ const LocationTable = ({
 
             const header = Object.keys(mostkeys)
             return header.map(key => {
-                return <th  scope="col" key={key}>{key.trim()}</th>
+                return <th scope="col" key={key}>{key === 'emp_id' ? '' : key.trim()}</th>
             })
         }
     }
@@ -143,7 +167,15 @@ const LocationTable = ({
         return Object.keys(eachObject).map((key: string) => {
             const isString = typeof (eachObject[key as keyof object]) === 'string'
             if (isString)
-                return <td  style={{ whiteSpace: 'pre-wrap' }} key={key} >{eachObject[key as keyof object]}</td>
+                return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{key === 'emp_id' ? "" : eachObject[key as keyof object]}
+                    {key === 'emp_id' && (
+                        <ImageView height={20} width={20} icon={Icons.Download} onClick={() => {
+                            if (employeeLogDownload) {
+                                employeeLogDownload(eachObject)
+                            }
+                        }} />
+                    )}
+                </td>
             else {
                 let startTime = eachObject[key as keyof object]?.start_time
                 let endTime = eachObject[key as keyof object]?.end_time

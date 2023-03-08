@@ -117,7 +117,7 @@ function MyLog() {
   }
 
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: CheckInLog) => {
+    return data.slice(0).reverse().map((el: CheckInLog) => {
       return {
         date: el.date,
         in: el.start_time

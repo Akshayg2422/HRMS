@@ -93,12 +93,13 @@ function PendingRequest() {
     dispatch(postChangeShiftChange({
       params,
       onSuccess: (success: any) => {
-        showToast("success", success?.message)
         getEmployeeRequest(-1, currentPage);
         if (type === 1) {
+          showToast("success", success)
           setApproveModel(!approveModel);
         }
         if (type === 0) {
+          showToast("success", success)
           setRejectModel(!rejectModel);
         }
       },

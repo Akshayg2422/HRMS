@@ -1,52 +1,140 @@
-import { Card, Divider } from '@components'
-import React from 'react'
-import { Badge } from 'react-bootstrap'
+import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal, Pagination } from '@components';
+import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import {
+    createBroadcastMessage,
+    getBroadcastMessage
+} from "../../../../../src/store/notifications/actions";
+import { Icons } from '@assets';
 
 function Notification() {
+    const navigation = useNav();
+    const dispatch = useDispatch();
+    const { t, i18n } = useTranslation();
+    const [leaveTypes, setLeaveTypes] = useState('')
+    const [type, setType] = useState<string>("all");
+    const [activeSort, setActiveSort] = useState<number>(0);
+    const [deleteModel, setDeleteModel] = useState(false);
+    const [selectedItemId, setSelectedItemId] = useState('')
 
-    const NOTIFICATION_ITEMS = [{ name: 'Puma', type: 'LeaveRequest', description: "Let's meet at Starbucks at 11:30. Wdyt?" },
-    { name: 'Iniyan', type: 'Shift Request', description: "Let's meet at Starbucks at 11:30. Wdyt?" },
-    { name: 'Jai', type: 'Face re-Register', description: "Let's meet at Starbucks at 11:30. Wdyt?" },
-    { name: 'Jai', type: 'Face re-Register', description: "Let's meet at Starbucks at 11:30. Wdyt?" }]
+
+    const { broadcastMessagesData, currentPage, numOfPages } = useSelector(
+        (state: any) => state.NotificationReducer
+    );
+
+    const sortData = [
+        { id: 1, title: "All" },
+        { id: 2, title: "By me" },
+    ];
+
+    useEffect(() => {
+        getBroadcastMessagesList(currentPage)
+    }, [])
+
+
+    const getBroadcastMessagesList = (pageNumber: number) => {
+
+        const params = {
+            ...(type === "by me" && { type: 'self' }),
+            page_number: pageNumber,
+        };
+        dispatch(getBroadcastMessage({
+            params,
+            onSuccess: (success: any) => {
+            },
+            onError: (error: string) => {
+                showToast("error", error)
+            },
+        }));
+    };
+
+    function paginationHandler(
+        type: "next" | "prev" | "current",
+        position?: number
+    ) {
+        let page =
+            type === "next"
+                ? currentPage + 1
+                : type === "prev"
+                    ? currentPage - 1
+                    : position;
+        getBroadcastMessagesList(page);
+    }
 
     return (
-        <div className='mr-xl-3 ml-sm-0 ml-3'>
-            <li className="nav-item dropdown show  ">
-                <a className="nav-link" href="#" role="button" data-toggle="dropdown" aria-haspopup="false" aria-expanded="true">
-                    <i className="ni ni-bell-55 text-white"></i>
-                    <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2">{NOTIFICATION_ITEMS.length}</span>
-                </a>
-                <div className="dropdown-menu dropdown-menu-xl dropdown-menu-right py-0 overflow-hidden ">
-                    <div className="px-3 py-3">
-                        <h6 className="text-sm text-muted m-0">You have <strong className="text-primary">{NOTIFICATION_ITEMS.length}</strong> notifications.</h6>
-                    </div>
-                    <div className="list-group list-group-flush">
-                        <a href="#!" className="">
-                            {NOTIFICATION_ITEMS.map((item: any) => {
-                                return (
-                                    <Card additionClass="row align-items-center m-0">
-                                        <div className="col ml-2">
-                                            <div className="d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <h4 className="mb-0 text-sm">{item.name}</h4>
-                                                </div>
-                                                <div className="text-right text-muted">
-                                                    <small>2 hrs ago</small>
-                                                </div>
-                                            </div>
-                                            {/* <h5 className="mb-0 text-sm fw-normal">{item.type}</h5> */}
-                                            <h5 className="fw-normal text-black mb-0">Let's meet at Starbucks at 11:30. Wdyt?</h5>
+        <>
+            <div className='ml-3 mb-3'>
+                <BackArrow />
+            </div>
+            <Container additionClass={" mx-1"}>
+                {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
+                    return (
+                        <Container additionClass={"col"}>
+                            <Card>
+                                <Container additionClass={"d-flex justify-content-between"} >
+                                    <Container>
+                                        <div className="h1">
+                                            {el.title}
                                         </div>
-                                        {/* <Divider /> */}
-                                    </Card>
-                                )
-                            })}
-                        </a>
-                    </div>
-                    {/* <a href="#!" className="dropdown-item text-center text-primary font-weight-bold py-3">View all</a> */}
-                </div>
-            </li>
-        </div>
+                                    </Container>
+                                    <Container additionClass='d-flex justify-content-between'>
+                                        <Container>
+                                            <span className='h6 float-right'>
+                                                {'Posted at'}
+                                            </span>
+                                            <br />
+                                            <span className='h5 float-right mt--2'>
+                                                {getDisplayDateTimeFromMoment(
+                                                    getMomentObjFromServer(el.created_at)
+                                                )}
+                                            </span>
+                                        </Container>
+                                        {/* <Container>
+                                                {type === "by me" && (
+                                                    <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
+                                                        setDeleteModel(!deleteModel)
+                                                        setSelectedItemId(el.id)
+                                                    }} />
+                                                )}
+                                            </Container> */}
+                                    </Container>
+                                </Container>
+                                <Container additionClass={'h4 fw-normal'}>
+                                    {el.message}
+                                </Container>
+                                <Container additionClass={'text-right'}>
+                                    {type !== "by me" && (<><div className='h6 mb--1'>
+                                        {'Posted by'}
+                                    </div>
+                                        <div className='h5 mb--1'>
+                                            {el.created_by}
+                                        </div></>)}
+                                    {type === "by me" && (
+                                        <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
+                                            setDeleteModel(!deleteModel)
+                                            setSelectedItemId(el.id)
+                                        }} />
+                                    )}
+                                </Container>
+                            </Card>
+                        </Container>
+                    );
+                }) : <NoRecordFound />}
+                <Pagination currentPage={currentPage}
+                    // additionalClass={'card-footer'}
+                    noOfPage={numOfPages}
+                    totalPages={numOfPages}
+                    paginationNumberClick={(currentPage: number | undefined) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                />
+            </Container>
+
+        </>
     )
 }
 

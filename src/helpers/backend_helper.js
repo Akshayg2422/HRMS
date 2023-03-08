@@ -165,3 +165,18 @@ export const postAppConfigDetailsApi = (payload) => post(url.POST_APP_CONFIG_DET
  */
 
 export const updateLeaveTypeApi = (payload) => post(url.UPDATE_LEAVE_TYPE, payload, {})
+
+/**
+ * create Broadcast notification
+ */
+export const createBroadcastMessageApi = (payload) => post(url.CREATE_BROADCAST_MESSAGE, payload, {})
+
+//get broadcast message
+
+export const fetchBroadcastMessageApi = (payload) => post(url.FETCH_BROADCAST_MESSAGE, payload, {})
+
+
+//get Employee Checking logs Report
+
+export const getDownloadEmployeeCheckingLogReportApi = (payload) => postHeader(url.GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, payload, {})
+

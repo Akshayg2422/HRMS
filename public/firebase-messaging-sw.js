@@ -1,20 +1,23 @@
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
+// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
-const firebaseConfig = {
-  apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
-  authDomain: "zenylog-a7515.firebaseapp.com",
-  projectId: "zenylog-a7515",
-  storageBucket: "zenylog-a7515.appspot.com",
-  messagingSenderId: "220885026819",
-  appId: "1:220885026819:web:e471e84513a5ab99542636",
-  measurementId: "G-XEC0XF1H61"
-};
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-messaging-compat.js');
 
-firebase.initializeApp(firebaseConfig);
+// const firebaseConfig = {
+//   apiKey: 'api-key',
+//   authDomain: 'project-id.firebaseapp.com',
+//   databaseURL: 'https://project-id.firebaseio.com',
+//   projectId: 'project-id',
+//   storageBucket: 'project-id.appspot.com',
+//   messagingSenderId: 'sender-id',
+//   appId: 'app-id',
+//   measurementId: 'G-measurement-id',
+// }
 
+// firebase.initializeApp(firebaseConfig)
 
-const messaging = firebase.messaging();
+const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage((payload) => {
   console.log('[firebase-messaging-sw.js] Received background message ', payload)
@@ -23,14 +26,9 @@ messaging.onBackgroundMessage((payload) => {
     body: payload.notification.body,
     icon: payload.notification.icon || payload.notification.image,
   }
- self.registration.showNotification(notificationTitle, notificationOptions)
-})
 
-// const foregroundMessaging = getMessaging();
-// onMessage(messaging, (payload) => {
-//   console.log('Message received. ', payload);
-//   // ...
-// });
+  self.registration.showNotification(notificationTitle, notificationOptions)
+})
 
 self.addEventListener('notificationclick', (event) => {
   if (event.action) {
@@ -38,12 +36,3 @@ self.addEventListener('notificationclick', (event) => {
   }
   event.notification.close()
 })
-
-
-
-  // navigator.serviceWorker.addEventListener('notificationclick', function(event) {
-  //   event.notification.close();
-  //   event.waitUntil(
-  //     clients.openWindow("/")
-  //   );
-  // });

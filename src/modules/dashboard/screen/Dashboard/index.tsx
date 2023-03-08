@@ -45,7 +45,7 @@ function Dashboard() {
 
   useEffect(() => {
     getpostAppConfig()
-  }, [])
+  }, [fcmToken])
 
   useEffect(() => {
     dispatch(currentNavIndex(0))
@@ -57,9 +57,9 @@ function Dashboard() {
 
   const getpostAppConfig = () => {
     const params = {
-      device_model: appConfig.model,
-      device_platform: appConfig.platform,
-      device_brand: appConfig.brand,
+      device_model: appConfig?.model,
+      device_platform: appConfig?.platform,
+      device_brand: appConfig?.brand,
       device_token: fcmToken
     }
     console.log('params------------->', params);

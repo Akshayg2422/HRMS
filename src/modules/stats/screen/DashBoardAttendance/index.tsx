@@ -12,6 +12,7 @@ import {
   Secondary,
   Primary,
   InputText,
+  useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -38,6 +39,7 @@ import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
 
 const DashBoardAttendance = ({ }) => {
+  const keyPress = useKeyPress('Enter')
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
@@ -90,6 +92,13 @@ const DashBoardAttendance = ({ }) => {
   useEffect(() => {
     getTodayStats(currentPage);
   }, [selectedAttendance, selectedDepartment, customselectedDate]);
+
+
+  useEffect(() => {
+    if (keyPress) {
+      getTodayStats(currentPage);
+    }
+  }, [keyPress])
 
   useEffect(() => {
     const toSeverDate = new Date(
@@ -436,6 +445,7 @@ const DashBoardAttendance = ({ }) => {
                 <DatePicker
                   placeholder={"Select Date"}
                   icon={Icons.Calendar}
+                  maxDate={Today}
                   iconPosition={"prepend"}
                   value={customselectedDate}
                   onChange={(date: string) =>
