@@ -60,6 +60,7 @@ import {
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
+import { Notification } from "./modules/dashboard/container/Notification";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -303,6 +304,10 @@ function App() {
            <Route
             path={ROUTE.ROUTE_EVENT_NOTIFICATION}
             element={<RequireAuth>{<EventNotification />}</RequireAuth>}
+          />
+           <Route
+            path={ROUTE.ROUTE_MY_NOTIFICATION}
+            element={<RequireAuth>{<Notification />}</RequireAuth>}
           />
          
           <Route path={"*"} element={<PageNotFound />} />

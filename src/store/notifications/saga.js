@@ -54,9 +54,10 @@ function* getBroadcastMessageSaga(action) {
         yield put(showLoader());
 
         const response = yield call(fetchBroadcastMessageApi, action.payload.params);
+        console.log("response",response);
         if (response.success) {
             yield put(hideLoader());
-            yield put(getBroadcastMessageSuccess(response.details));
+            yield put(getBroadcastMessageSuccess(response?.details));
             yield call(action.payload.onSuccess(response));
         } else {
             yield put(hideLoader());
