@@ -301,15 +301,15 @@ function App() {
             path={ROUTE.ROUTE_MANAGE_BROADCAST}
             element={<RequireAuth>{<ManageBroadCast />}</RequireAuth>}
           />
-           <Route
+          <Route
             path={ROUTE.ROUTE_EVENT_NOTIFICATION}
             element={<RequireAuth>{<EventNotification />}</RequireAuth>}
           />
-           <Route
+          <Route
             path={ROUTE.ROUTE_MY_NOTIFICATION}
             element={<RequireAuth>{<Notification />}</RequireAuth>}
           />
-         
+
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
         <ToastContainer />
