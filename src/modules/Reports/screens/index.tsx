@@ -183,7 +183,7 @@ function Reports() {
     }
   };
 
-  
+
 
   return (
     <>
@@ -274,8 +274,8 @@ function Reports() {
             />
           </Container>
           <Container additionClass={'col-lg-6 col-md-6 row ml-1'}>
-            <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-2 col-md-3'}  onClick={() => getReports(currentPage)} />
+            <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
+            <Primary text={'Search'} col={'col-xl-2 col-md-3'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </Card>

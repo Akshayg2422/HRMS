@@ -342,7 +342,12 @@ const EmployeeReducer = (state = initialState, action) => {
      */
 
     case FETCH_EMPLOYEE_TIME_SHEETS:
-      state = { ...state, loading: true };
+      state = {
+        ...state, loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+        employeeTimeSheets:[]
+      };
       break;
 
     case FETCH_EMPLOYEE_TIME_SHEETS_SUCCESS:

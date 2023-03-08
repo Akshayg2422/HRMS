@@ -149,12 +149,20 @@ function EmployeeLog() {
     }));
   }
 
-  function getEmployeeCheckInDetailedLogPerDay(index: number) {
-    const selectedDate = employeeCheckInLogs[index].date;
+  function getEmployeeCheckInDetailedLogPerDay(item: any, index: number) {
+    // setAccordion(index);
+    const params = {
+      date: item.date,
+      user_id: selectedEmployeeDetails.id,
+    }
     dispatch(
       getCheckInDetailedLogPerDay({
-        date: selectedDate,
-        user_id: selectedEmployeeDetails.id,
+        params,
+        onSuccess: (response: any) => {
+          console.log('----------------->');
+        },
+        onError: (error: string) => {
+        },
       })
     );
   }
@@ -339,9 +347,9 @@ function EmployeeLog() {
             <Divider />
 
             <div>
-              {employeeCheckInLogs.map((item: CheckInLog, index: number) => {
+              {employeeCheckInLogs.map((item: any, index: number) => {
                 return (
-                  <div className="accordion" id="accordionExample">
+                  <div className="accordion" id="accordionExample" key={item?.id}>
                     <div
                       data-toggle="collapse"
                       data-target={
@@ -349,8 +357,8 @@ function EmployeeLog() {
                       }
                       onClick={() => {
                         if (accordion !== index) {
+                          getEmployeeCheckInDetailedLogPerDay(item, index);
                           setAccordion(index);
-                          getEmployeeCheckInDetailedLogPerDay(index);
                         }
                       }}
                     >

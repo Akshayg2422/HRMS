@@ -344,14 +344,16 @@ function* getCheckInDetailedLogPerDay(action) {
   try {
     yield put(showLoader());
 
-    const response = yield call(fetchCheckInDetailedLogPerDay, action.payload);
+    const response = yield call(fetchCheckInDetailedLogPerDay, action.payload.params);
 
     if (response.success) {
       yield put(getCheckInDetailedLogPerDaySuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
       yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getCheckInDetailedLogPerDayFailure(response.error_message));
+      yield call(action.payload.onError);
     }
   } catch (error) {
     yield put(hideLoader());
@@ -970,7 +972,6 @@ function* getDownloadEmployeeCheckInLogsSaga(action) {
     const response = yield call(getDownloadEmployeeCheckingLogReportApi, action.payload.params);
     if (response) {
       yield put(getDownloadEmployeeCheckinLogsSuccess(response.data));
-      console.log("response", response);
       yield call(action.payload.onSuccess(response));
       yield put(hideLoader());
 

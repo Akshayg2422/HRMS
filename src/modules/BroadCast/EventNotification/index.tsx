@@ -34,7 +34,6 @@ function EventNotification() {
 
 
     const getBroadcastMessagesList = (id?: string) => {
-
         const params = {
             ...(type === "by me" && { type: 'self' }),
             ...(id && { id: id }),
@@ -46,7 +45,6 @@ function EventNotification() {
                 if(id){
                     setDeleteModel(!deleteModel)
                 }
-                console.log("successsssss", success);
             },
             onError: (error: string) => {
                 showToast("error", error)
@@ -88,44 +86,48 @@ function EventNotification() {
                     {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
                         return (
                             <Container additionClass={"col"}>
-                                <Card>
-                                    <Container additionClass={"row "} >
-                                        <div className="h1 col">
+                            <Card>
+                                <Container additionClass={"d-flex justify-content-between"} >
+                                    <Container>
+                                        <div className="h1">
                                             {el.title}
                                         </div>
-
-                                        <div className="h4 col text-right">
-                                            <div>
-                                            </div>
-                                            <div className='h6'>
+                                    </Container>
+                                    <Container additionClass='d-flex justify-content-between'>
+                                        <Container>
+                                            <span className='h6 float-right'>
                                                 {'Posted at'}
-                                            </div>
-                                            <div className='h5 mt--2'>
+                                            </span>
+                                            <br />
+                                            <span className='h5 float-right mt--2'>
                                                 {getDisplayDateTimeFromMoment(
                                                     getMomentObjFromServer(el.created_at)
                                                 )}
-                                            </div>
+                                            </span>
+                                        </Container>
+                                        <Container>
                                             {type === "by me" && (
-                                                <ImageView icon={Icons.DeleteSecondary} height={25} onClick={() => {
+                                                <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
                                                     setDeleteModel(!deleteModel)
                                                     setSelectedItemId(el.id)
                                                 }} />
                                             )}
-                                        </div>
-                                        <Container additionClass={'h4 fw-normal'}>
-                                            {el.message}
-                                        </Container>
-                                        <Container additionClass={'text-right'}>
-                                            <div className='h6 mb--1'>
-                                                {'Posted by'}
-                                            </div>
-                                            <div className='h5 mb--1'>
-                                                {el.created_by}
-                                            </div>
                                         </Container>
                                     </Container>
-                                </Card>
-                            </Container>
+                                </Container>
+                                <Container additionClass={'h4 fw-normal'}>
+                                    {el.message}
+                                </Container>
+                                <Container additionClass={'text-right'}>
+                                    <div className='h6 mb--1'>
+                                        {'Posted by'}
+                                    </div>
+                                    <div className='h5 mb--1'>
+                                        {el.created_by}
+                                    </div>
+                                </Container>
+                            </Card>
+                        </Container>
                         );
                     }) : <NoRecordFound />}
                 </Container>

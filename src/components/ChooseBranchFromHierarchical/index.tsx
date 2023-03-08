@@ -46,6 +46,8 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
+          console.log("getListAllBranchesList",response);
+          
           setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
 

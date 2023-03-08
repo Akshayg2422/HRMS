@@ -34,19 +34,13 @@ function BroadCast() {
     }, [])
 
 
-    const getBroadcastMessagesList = (id?: string) => {
-
+    const getBroadcastMessagesList = () => {
         const params = {
             ...(type === "by me" && { type: 'self' }),
-     
         };
         dispatch(getBroadcastMessage({
             params,
             onSuccess: (success: any) => {
-                if (id) {
-                    setDeleteModel(!deleteModel)
-                }
-                console.log("successsssss", success);
             },
             onError: (error: string) => {
                 showToast("error", error)
@@ -58,7 +52,9 @@ function BroadCast() {
         goTo(navigation, ROUTE.ROUTE_MANAGE_BROADCAST);
     };
 
-    const deleteRecord = (id:any) =>{
+
+
+    const deleteRecord = (id: any) => {
 
         const params = {
             ...(id && { id: id }),

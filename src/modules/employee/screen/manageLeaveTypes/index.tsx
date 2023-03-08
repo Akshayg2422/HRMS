@@ -133,7 +133,6 @@ function ManageLeaveTypes() {
                 max_days_per_month:  !typeDetails.monthlyLimit ? -1 : parseInt(typeDetails.MonthlyDayLimit),
                 max_days_per_week:  !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
             }
-            console.log('params---->', params);
             dispatch(
                 updateLeaveType({
                     params,
