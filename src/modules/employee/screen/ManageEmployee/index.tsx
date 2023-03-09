@@ -297,23 +297,26 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-      dispatch(
-        employeeAddition({
-          params,
-          onSuccess: (success: any) => {
-            showToast("success", success.message);
-            goBack(navigation);
-          },
-          onError: (error: string) => {
-            showToast("error", error);
-          },
-        })
-      );
+
+      console.log("paramss=====>",params);
+      
+      // dispatch(
+      //   employeeAddition({
+      //     params,
+      //     onSuccess: (success: any) => {
+      //       showToast("success", success.message);
+      //       goBack(navigation);
+      //     },
+      //     onError: (error: string) => {
+      //       showToast("error", error);
+      //     },
+      //   })
+      // );
     }
   };
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
-    
+
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
@@ -467,11 +470,11 @@ const ManageEmployee = () => {
       ...prevDetails,
       designation: event.target.value
     }));
-      setEmployeeDetails(prevDetails => ({
+    setEmployeeDetails(prevDetails => ({
       ...prevDetails,
       shift: ''
     }));
-    setShiftsDropdownData(designationMatchShifts( event.target.value))
+    setShiftsDropdownData(designationMatchShifts(event.target.value))
 
   }
 
@@ -653,17 +656,18 @@ const ManageEmployee = () => {
           }}
         />
         <h4 className="mb-4">{t("attendanceDetails")}</h4>
-        {shiftsDropdownData.length > 0 && <DropDown
-          label={t("shiftss")}
-          placeholder={t("SelectShift")}
-          data={shiftsDropdownData}
-          name={"shift"}
-          value={employeeDetails.shift}
-          onChange={(event) =>
-            onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
-          }
-        />}
-        {!employeeDetails.shift  && <>
+        {employeeDetails.shift || shiftsDropdownData.length > 0 ? (
+          <DropDown
+            label={t("shiftss")}
+            placeholder={t("SelectShift")}
+            data={shiftsDropdownData}
+            name={"shift"}
+            value={employeeDetails.shift}
+            onChange={(event) =>
+              onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
+            }
+          />) : <></>}
+        {!employeeDetails.shift && <>
           <h5 className="mb-2">{t("startTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
