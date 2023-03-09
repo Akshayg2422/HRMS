@@ -122,16 +122,18 @@ function Notification() {
                         </Container>
                     );
                 }) : <NoRecordFound />}
-                <Pagination currentPage={currentPage}
-                    // additionalClass={'card-footer'}
-                    noOfPage={numOfPages}
-                    totalPages={numOfPages}
-                    paginationNumberClick={(currentPage: number | undefined) => {
-                        paginationHandler("current", currentPage);
-                    }}
-                    previousClick={() => paginationHandler("prev")}
-                    nextClick={() => paginationHandler("next")}
-                />
+                {broadcastMessagesData && (
+                    <Pagination currentPage={currentPage}
+                        // additionalClass={'card-footer'}
+                        noOfPage={numOfPages}
+                        totalPages={numOfPages}
+                        paginationNumberClick={(currentPage: number | undefined) => {
+                            paginationHandler("current", currentPage);
+                        }}
+                        previousClick={() => paginationHandler("prev")}
+                        nextClick={() => paginationHandler("next")}
+                    />
+                )}
             </Container>
 
         </>
