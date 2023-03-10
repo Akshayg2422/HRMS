@@ -247,11 +247,14 @@ const DashBoardAttendance = ({ }) => {
 
   function getEmployeeCheckInDetailedLogPerDay(index: number) {
     const selectedUser = employeeAttendanceStats[index];
+    const params = {
+      date: selectedUser.per_day_details.date,
+      user_id: selectedUser.id,
+    }
     if (selectedUser.per_day_details && selectedUser.id) {
       dispatch(
         getCheckInDetailedLogPerDay({
-          date: selectedUser.per_day_details.date,
-          user_id: selectedUser.id,
+          params
         })
       );
     }
