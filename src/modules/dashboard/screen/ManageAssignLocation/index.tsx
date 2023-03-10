@@ -51,7 +51,7 @@ function ManageAssignLocation() {
     (state: any) => state.EmployeeReducer
   );
 
-  const {associatedBranch, associatedId, defaultBranchId,listBranchesList } =
+  const { associatedBranch, associatedId, defaultBranchId, listBranchesList } =
     useSelector((state: any) => state.LocationReducer);
 
   const { hierarchicalBranchIds } = useSelector(
@@ -237,7 +237,7 @@ function ManageAssignLocation() {
             })}
           </div>
           <Container
-          additionClass={'mt-4'}
+            additionClass={'mt-4'}
             justifyContent={"justify-content-end"}
             display={"d-flex"}
           >

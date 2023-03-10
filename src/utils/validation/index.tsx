@@ -53,7 +53,7 @@ const validatePincode = (value: string | undefined) => {
   let output = { status: false, error: '' };
   if (value && value.length === 6) {
     output = { status: true, error: '' };
-  } else {
+  } else if (value && value.length < 6) {
     output = { status: false, error: 'Pincode is not valid' };
   }
   return output;
