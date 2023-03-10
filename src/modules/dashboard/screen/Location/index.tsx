@@ -284,9 +284,7 @@ const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch, onEdi
           <th scope='col'>{''}</th>
           <th scope='col'>{''}</th>
           <th scope='col'>{'Edit'}</th>
-
         </tr>
-
       </thead>
       <tbody>
         {
