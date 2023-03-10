@@ -168,14 +168,21 @@ function MyLog() {
     setMarkAsPresentModel(!markAsPresentModel);
   }
 
-  function getEmployeeCheckInDetailedLogPerDay(index: number) {
-    const selectedDate = employeeCheckInLogs[index].date;
+  function getEmployeeCheckInDetailedLogPerDay(item: any) {
+    const params = {
+      date: item.date
+    }
     dispatch(
       getCheckInDetailedLogPerDay({
-        date: selectedDate,
+        params,
+        onSuccess: (response: any) => {
+          setLogPerDayModel(!logPerDayModel); 
+        },
+        onError: (error: string) => {
+
+        },
       })
     );
-    setLogPerDayModel(!logPerDayModel);
   }
 
   const dateTimePickerHandler = (value: string, key: string) => {
@@ -276,7 +283,7 @@ function MyLog() {
               tableTitle={"My Log"}
               displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
               tableOnClick={(e, index, Item) => {
-                getEmployeeCheckInDetailedLogPerDay(index);
+                getEmployeeCheckInDetailedLogPerDay(Item);
               }}
             />
           </div>
