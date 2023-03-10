@@ -56,12 +56,16 @@ const CreateShiftGroup = () => {
 
     const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
     const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
+    const [departmentsData, setDepartmentsData] = useState([{
+        id: "-1",
+        name: "All"
+    }])
 
 
     useEffect(() => {
         PreFilledDetails()
         getBranchesWeeklyShiftsList()
-        dispatch(getDepartmentData({}));
+        getDepartments()
         dispatch(getDesignationData({}));
         return () => {
             setSelectedEmployeesList([])
@@ -85,7 +89,19 @@ const CreateShiftGroup = () => {
         dispatch(getBranchWeeklyShifts({ params }));
     }
 
-    
+    const getDepartments = (() => {
+        const params = {}
+        dispatch(getDepartmentData({
+            params,
+            onSuccess: (response: any) => {
+                let mergedDepartments = [...departmentsData, ...response]
+                setDepartmentsData(mergedDepartments)
+            },
+            onError: (errorMessage: string) => {
+            },
+        }));
+    })
+
     const PreFilledDetails = () => {
         if (selectedShiftGroupDetails) {
             setGroupName(selectedShiftGroupDetails.name)

@@ -191,21 +191,24 @@ const ManageEmployee = () => {
 
 
 
-  // useEffect(() => {
-  // }, [shiftGroup])
+  useEffect(() => {
+    setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
+  }, [shiftGroup])
+
+
 
 
   const getBranchShiftsList = () => {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: (success: any) => {
-        setShiftGroup(success)
-        setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
+      onSuccess: async (success: any) => {
+        await setShiftGroup(success)
       },
       onError: (error: string) => {
         showToast('error', error)
       },
+
     }));
   }
 
@@ -297,21 +300,19 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-
-      console.log("paramss=====>",params);
-      
-      // dispatch(
-      //   employeeAddition({
-      //     params,
-      //     onSuccess: (success: any) => {
-      //       showToast("success", success.message);
-      //       goBack(navigation);
-      //     },
-      //     onError: (error: string) => {
-      //       showToast("error", error);
-      //     },
-      //   })
-      // );
+      console.log("paramss=====>", params);
+      dispatch(
+        employeeAddition({
+          params,
+          onSuccess: (success: any) => {
+            showToast("success", success.message);
+            goBack(navigation);
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+          },
+        })
+      );
     }
   };
 
@@ -475,12 +476,10 @@ const ManageEmployee = () => {
       shift: ''
     }));
     setShiftsDropdownData(designationMatchShifts(event.target.value))
-
   }
 
 
   return (
-
     <>
       <FormWrapper
         title={isEdit ? t("editEmployee") : t("newEmployee")}

@@ -66,7 +66,6 @@ export const getValidateCompanyDetails = (params) => {
   return {
     type: VALIDATE_COMPANY_DETAILS,
     payload: params,
-
   };
 };
 

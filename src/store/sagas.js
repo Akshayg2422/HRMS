@@ -18,6 +18,4 @@ export default function* rootSaga() {
   yield all([fork(ShiftManagementSaga)]);
   yield all([fork(PayrollSaga)]);
   yield all([fork(NotificationSaga)]);
-
-
 }

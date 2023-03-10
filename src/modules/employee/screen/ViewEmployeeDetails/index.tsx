@@ -353,8 +353,8 @@ const ViewEmployeeDetails = () => {
         disabled={true}
       />}
 
-      
-      <InputText
+
+      {!employeeDetails.shift && <> <InputText
         label={t("startTime")}
         placeholder={t("startTime")}
         value={
@@ -366,17 +366,17 @@ const ViewEmployeeDetails = () => {
       // editable={false}
       />
 
-      <InputText
-        label={t("endTime")}
-        placeholder={t("endTime")}
-        value={
-          employeeDetails.attendanceEndTime
-            ? employeeDetails.attendanceEndTime
-            : "-:-"
-        }
-        disabled={true}
-      // editable={false}
-      />
+        <InputText
+          label={t("endTime")}
+          placeholder={t("endTime")}
+          value={
+            employeeDetails.attendanceEndTime
+              ? employeeDetails.attendanceEndTime
+              : "-:-"
+          }
+          disabled={true}
+        // editable={false}
+        /></>}
     </FormWrapper>
   );
 };
