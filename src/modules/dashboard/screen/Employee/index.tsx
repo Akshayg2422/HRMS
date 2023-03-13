@@ -10,6 +10,7 @@ import {
   ChooseBranchFromHierarchical,
   NoRecordFound,
   useKeyPress,
+  ImageView,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -39,7 +40,8 @@ function EmployeeScreen() {
   const [deletedUserModel, setDeletedUserModel] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState("");
   const [searchEmployee, setSearchEmployee] = useState("");
-  const [searchEmployeeById, setSearchEmployeeById] = useState("");
+  const [showEmployeeProfile, setShowEmployeeProfile] = useState<any>('');
+  const [ProfilePictureModel, setProfilePictureModel] = useState(false)
 
   const navigation = useNav();
   const enterPress = useKeyPress("Enter");
@@ -73,10 +75,24 @@ function EmployeeScreen() {
     dispatch(getEmployeesList({ params }));
   }
 
+  const handleShowProfile = (e: any, item: any) => {
+    e.stopPropagation()
+    setShowEmployeeProfile(item)
+    setProfilePictureModel(!ProfilePictureModel)
+  }
+
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any) => {
+    return data.map((el: any, index: number) => {
       return {
         id: el.employee_id,
+        "":
+          <span className='avatar avatar-sm rounded-circle'  style={{cursor:'pointer'}} onClick={(e) => handleShowProfile(e, el)}>
+            <ImageView
+              alt='Image placeholder'
+              icon={"https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-1.jpg"}
+            />
+          </span>
+        ,
         name: el.name,
         "mobile number": el.mobile_number,
         branch: el.branch,
@@ -240,8 +256,41 @@ function EmployeeScreen() {
               </Container>
             </Container>
           </Modal>
+          <Modal
+            title={showEmployeeProfile?.name}
+            showModel={ProfilePictureModel}
+            size={'modal-sm'}
+            toggle={() => setProfilePictureModel(!ProfilePictureModel)}
+          >
+            <Container>
+              <ImageView
+                style={{ objectFit: 'cover' }}
+                height={'100%'}
+                width={'100%'}
+                alt='Image placeholder'
+                icon={"https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-1.jpg"}
+              />
+              {/* <Container
+                margin={"m-5"}
+                justifyContent={"justify-content-end"}
+                display={"d-flex"}
+              >
+                <Secondary
+                  text={t("cancel")}
+                  onClick={() => setProfilePictureModel(!ProfilePictureModel)}
+                />
+                <Primary
+                  text={t("proceed")}
+                  onClick={() => manageProceedHandler()}
+                />
+              </Container> */}
+            </Container>
+          </Modal>
         </Container>
       </Card>
+      <div className='dropdown-menu dropdown-menu-right dropdown-toggle'>
+        hello
+      </div>
     </>
   );
 }

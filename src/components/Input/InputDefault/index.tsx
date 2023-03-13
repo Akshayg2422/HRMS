@@ -20,6 +20,7 @@ const Input = React.forwardRef(({
   name,
   disabled,
   onFocus,
+  onKeyUp,
   defaultValue
 }: InputProps, ref: any) => {
   const [validStatus, setValidStatus] = useState({ status: true, error: "" });
@@ -37,6 +38,7 @@ const Input = React.forwardRef(({
         defaultValue={defaultValue}
         name={name}
         ref={ref}
+        onKeyUp={onKeyUp}
         disabled={disabled}
         maxLength={maxLength}
         autoComplete={'off'}

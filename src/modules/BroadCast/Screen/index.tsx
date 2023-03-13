@@ -123,25 +123,17 @@ function BroadCast() {
                                             </div>
                                         </Container>
                                         <Container additionClass='d-flex justify-content-between'>
-                                            <Container>
-                                                <span className='h6 float-right'>
+                                            <Container additionClass='text-right'>
+                                                <span className='h6'>
                                                     {'Posted at'}
                                                 </span>
                                                 <br />
-                                                <span className='h5 float-right mt--2'>
+                                                <span className='h5  mt--2'>
                                                     {getDisplayDateTimeFromMoment(
                                                         getMomentObjFromServer(el.created_at)
                                                     )}
                                                 </span>
                                             </Container>
-                                            {/* <Container>
-                                                {type === "by me" && (
-                                                    <ImageView icon={Icons.DeleteSecondary} additionClass={'ml-1'} height={20} onClick={() => {
-                                                        setDeleteModel(!deleteModel)
-                                                        setSelectedItemId(el.id)
-                                                    }} />
-                                                )}
-                                            </Container> */}
                                         </Container>
                                     </Container>
                                     <Container additionClass={'h4 fw-normal'}>

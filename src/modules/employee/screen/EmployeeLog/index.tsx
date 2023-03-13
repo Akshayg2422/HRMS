@@ -60,6 +60,7 @@ function EmployeeLog() {
   const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
   const [presentModifiedModel, setPresentModifiedModel] = useState<boolean>(false);
   const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
+  const [clicked, setClicked] = useState(false);
   const [markAsPresentDetails, setMarkAsPresentDetails] = useState({
     date: "",
     reason: "",
@@ -355,10 +356,14 @@ function EmployeeLog() {
                       data-target={
                         index === accordion ? "#collapse" + index : undefined
                       }
+                      key={item?.id}
                       onClick={() => {
-                        if (accordion !== index) {
+                        if (accordion !== index || !clicked) {
                           getEmployeeCheckInDetailedLogPerDay(item, index);
                           setAccordion(index);
+                          setClicked(true);
+                        } else {
+                          setClicked(false);
                         }
                       }}
                     >
