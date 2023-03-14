@@ -151,8 +151,8 @@ const ManageBranches = () => {
         placeholder={t("Parent Branch")}
         data={listBranchesList}
         name={"parentbranch"}
+        value={branchDetails.parentbranch}
         onChange={(event) => {
-
           onChangeHandler(event);
         }}
       />

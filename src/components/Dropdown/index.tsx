@@ -17,7 +17,7 @@ interface DropDownProps extends ContainerProps {
   isDisabled?: boolean
   showArrow?: boolean
 }
-  
+
 const DropDown = (({
   label,
   placeholder,
@@ -36,22 +36,24 @@ const DropDown = (({
 }: DropDownProps) => {
 
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+
     const selectedValue = event.target.value;
     if (selectedValue === placeholder) {
-      return ""
+      return " "
     }
     if (onChange)
       onChange(event);
   }
+
   return (
     <Container additionClass={`form-group ${additionClass}`} col={col} >
       {label && <small className="form-control-label text-black ">{label}</small>}
       <select value={value} className={`form-control mt-2  ${showArrow && "form-select"}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}>
         <option >{placeholder}</option>
         {data && data.length > 0 && data.map((item, index) => (
-            <option className="dropdown-item mt-2" key={index} value={item?.id || item?.type}>
-              {item?.name ? item?.name : item?.group_name}  {item?.title}
-            </option>
+          <option className="dropdown-item mt-2" key={index} value={item?.id || item?.type}>
+            {item?.name ? item?.name : item?.group_name}  {item?.title}
+          </option>
         ))}
       </select>
       {error && <code className="text-danger">{error}</code>}

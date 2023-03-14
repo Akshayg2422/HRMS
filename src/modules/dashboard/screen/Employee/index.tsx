@@ -83,8 +83,10 @@ function EmployeeScreen() {
 
   const handleShowProfile = (e: any, item: any) => {
     e.stopPropagation()
-    setShowEmployeeProfile(item)
-    setProfilePictureModel(!ProfilePictureModel)
+    if (item.face_photo) {
+      setShowEmployeeProfile(item)
+      setProfilePictureModel(!ProfilePictureModel)
+    }
   }
 
 
@@ -95,11 +97,11 @@ function EmployeeScreen() {
         "":
           <span className='avatar avatar-sm rounded-circle' style={{ cursor: 'pointer' }} onClick={(e) => handleShowProfile(e, el)}>
             <ImageView
-              style={{ objectFit: 'cover' }}
+              style={{ objectFit: 'contain' }}
               height={'100%'}
               width={'100%'}
-              alt='Image placeholder'
-              icon={el?.face_photo && el?.face_photo.length > 0 ? el?.face_photo[0] : Icons.ProfilePlaceHolder}
+              alt='image placeholder'
+              icon={el?.face_photo ? el?.face_photo : Icons.ProfilePlaceHolder}
             />
           </span>
         ,
@@ -278,7 +280,7 @@ function EmployeeScreen() {
                 width={'100%'}
                 height={'100%'}
                 alt='Image placeholder'
-                icon={showEmployeeProfile.face_photo[0]}
+                icon={showEmployeeProfile?.face_photo}
               /> : <NoRecordFound />}
               {/* <Container
                 margin={"m-5"}
