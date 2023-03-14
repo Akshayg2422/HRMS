@@ -1,0 +1,23 @@
+.responsive-bg-element {
+    background-image: url('../../../../assets/images//LaunchScreen/LaunchScreen.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    background-repeat: no-repeat
+}
+
+@media (max-width: 991px) {
+    .responsive-bg-element {
+        height: 100vh;
+        background-position: center;
+        background-image: url('../../../../assets/images/LauchScreenSmall//LaunchScreenSmall.png');
+
+    }
+
+    .text-count-Down {
+        margin-top: 90px;
+    }
+}

@@ -118,8 +118,8 @@ function ManageBroadCast() {
                     }}
                 />
                 <InputText
-                    label={t("message")}
-                    placeholder={t("message")}
+                    label={t("description")}
+                    placeholder={t("description")}
                     validator={validateName}
                     value={broadCast.description}
                     name={"description"}

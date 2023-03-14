@@ -18,3 +18,10 @@
     pointer-events: none;
   }
   
+  .form-control.form-select option {
+    padding: 10px 4rem; /* increase padding for the options */
+  }
+  
+  .form-control.form-select::placeholder {
+    padding: 10px; /* increase padding for the placeholder */
+  }

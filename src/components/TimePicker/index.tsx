@@ -3,6 +3,7 @@ import Flatpickr from "react-flatpickr";
 import { DatePickerProps } from '../Interface'
 import { ImageView } from '@components'
 import { Icons } from "@assets";
+import './style.css'
 
 
 function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...props }: DatePickerProps) {
@@ -37,6 +38,7 @@ function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...prop
             dateFormat: "h:i K",
             time_24hr: false
           }}
+          
           value={value}
           onChange={handleChange}
         />

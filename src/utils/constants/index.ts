@@ -223,7 +223,7 @@ export const MY_PORTFOLIO_ITEM = [
 
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '2', name: 'ChangeLanguage', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '2', name: 'Select Language', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
