@@ -366,7 +366,8 @@ export interface InputProps extends ContainerProps {
   validator?: any;
   ref?: any;
   onFocus?: any
-  defaultValue?:string
+  defaultValue?: string
+  onKeyUp?: any
 }
 
 export interface DatePickerProps {

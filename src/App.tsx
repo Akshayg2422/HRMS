@@ -79,8 +79,8 @@ function App() {
   return (
     <>
       <AutoLogout />
-      {/* <Firebase />
-      <DeviceInfo /> */}
+      <Firebase />
+      <DeviceInfo />
       <AppProvider >
         <AppLoader />
         <ScreenLoader />

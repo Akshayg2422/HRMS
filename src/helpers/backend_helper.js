@@ -1,13 +1,14 @@
 import { get, post, postHeader } from "./api_helper";
+import { BASE_URL_AUTH_PROD, BASE_URL_REPORTS_PROD, BASE_URL_VALIDATE_USER_PROD, BASE_URL_ONBOARD_PROD } from "./api_helper";
 import * as url from "./url_helper";
 /***
  * Auth 
  */
-export const postValidateUser = (payload) => post(url.VALIDATE_USER, payload, {})
-export const postRegisterCompany = (payload) => post(url.VALIDATE_COMPANY_DETAILS, payload, {})
-export const postRegisterAdmin = (payload) => post(url.REGISTER_ADMIN, payload, {})
-export const postUploadCompanyDocument = (payload) => post(url.UPLOAD_COMPANY_DOCUMENT, payload, {})
-export const postOtpLogin = (payload) => post(url.OTP_LOGIN, payload, {})
+export const postValidateUser = (payload) => post(url.VALIDATE_USER, payload, {}, BASE_URL_AUTH_PROD)
+export const postRegisterCompany = (payload) => post(url.VALIDATE_COMPANY_DETAILS, payload, {}, BASE_URL_ONBOARD_PROD)
+export const postRegisterAdmin = (payload) => post(url.REGISTER_ADMIN, payload, {}, BASE_URL_ONBOARD_PROD)
+export const postUploadCompanyDocument = (payload) => post(url.UPLOAD_COMPANY_DOCUMENT, payload, {}, BASE_URL_ONBOARD_PROD)
+export const postOtpLogin = (payload) => post(url.OTP_LOGIN, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const postResendLoginOtp = (payload) => post(url.RESEND_LOGIN_OTP, payload, {})
 export const fetchNatureOfBusiness = (payload) => post(url.FETCH_NATURE_OF_BUSINESS, payload, {})
 export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS, payload, {})
@@ -43,7 +44,7 @@ export const fetchEmployeeAttendanceStats = (payload) => post(url.FETCH_EMPLOYEE
 
 export const fetchEmployeeTodayStatus = (payload) => post(url.FETCH_EMPLOYEE_TODAY_STATUS, payload, {})
 
-export const fetchDownloadTodayStatus = (payload) => postHeader(url.FETCH_EMPLOYEE_TODAY_STATUS, payload, {})
+export const fetchDownloadTodayStatus = (payload) => postHeader(url.FETCH_EMPLOYEE_TODAY_STATUS, payload, {}, BASE_URL_REPORTS_PROD)
 
 
 export const fetchCheckInDetailedLog = (payload) => post(url.FETCH_CHECK_IN_DETAILED_LOG, payload, {})
@@ -76,7 +77,7 @@ export const attachUserDocuments = (payload) => post(url.ATTACH_USER_DOCUMENT, p
 
 export const fetchMisReportsLog = (payload) => post(url.FETCH_MIS_REPORT, payload, {})
 
-export const fetchDownloadMisReportsLog = (payload) => postHeader(url.FETCH_MIS_REPORT, payload, {})
+export const fetchDownloadMisReportsLog = (payload) => postHeader(url.FETCH_MIS_REPORT, payload, {}, BASE_URL_REPORTS_PROD)
 
 
 export const postAddWeeklyShift = (payload) => post(url.POST_ADD_WEEKLY_SHIFT, payload, {})
@@ -178,5 +179,5 @@ export const fetchBroadcastMessageApi = (payload) => post(url.FETCH_BROADCAST_ME
 
 //get Employee Checking logs Report
 
-export const getDownloadEmployeeCheckingLogReportApi = (payload) => postHeader(url.GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, payload, {})
+export const getDownloadEmployeeCheckingLogReportApi = (payload) => postHeader(url.GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, payload, {}, BASE_URL_REPORTS_PROD)
 

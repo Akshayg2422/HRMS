@@ -1,0 +1,9 @@
+/* Hide the extra icons on medium screens */
+@media screen and (max-width: 768px) {
+    .flatpickr-monthDropdown-toggle,
+    .flatpickr-prev-month,
+    .flatpickr-next-month {
+      display: none;
+    }
+  }
+  

@@ -44,7 +44,7 @@ function Dashboard() {
 
 
   useEffect(() => {
-    getpostAppConfig()
+    getPostAppConfig()
   }, [fcmToken])
 
   useEffect(() => {
@@ -55,7 +55,7 @@ function Dashboard() {
 
 
 
-  const getpostAppConfig = () => {
+  const getPostAppConfig = () => {
     const params = {
       device_model: appConfig?.model,
       device_platform: appConfig?.platform,

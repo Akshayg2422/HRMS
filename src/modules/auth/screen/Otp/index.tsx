@@ -37,6 +37,8 @@ function Otp() {
 
   const { t } = useTranslation();
   const enterPress = useKeyPress('Enter')
+  const backPress = useKeyPress('Backspace')
+
   const { userDetails, success, mobileNumber, error } = useSelector(
     (state: any) => state.AuthReducer
   );
@@ -73,6 +75,9 @@ function Otp() {
   const onChangeHandler = (e: any) => {
     setOtp({ ...otp, [e.target.name]: e.target.value });
   };
+
+
+
 
   const reSendOTP = (params: object) => {
     dispatch(getResendLoginOtp({
@@ -149,6 +154,41 @@ function Otp() {
     changeInputFocus()
   }, [otp.field1, otp.field2, otp.field3, otp.field4]);
 
+
+  const changeBackWardInputFocus = (event: any) => {
+    const { value, name } = event.target as HTMLInputElement;
+    if (event.key === 'Backspace' && value === '') {
+      switch (name) {
+        case 'field2':
+          inputRef1.current?.focus();
+          break;
+        case 'field3':
+          inputRef2.current?.focus();
+          break;
+        case 'field4':
+          inputRef3.current?.focus();
+          break;
+        default:
+          break;
+      }
+    } else if (value !== '') {
+      switch (name) {
+        case 'field1':
+          inputRef2.current?.focus();
+          break;
+        case 'field2':
+          inputRef3.current?.focus();
+          break;
+        case 'field3':
+          inputRef4.current?.focus();
+          break;
+        default:
+          break;
+      }
+    }
+  };
+
+
   return (
     <Container
       col={'col'}
@@ -191,6 +231,7 @@ function Otp() {
         >
           <OtpInput
             name='field1'
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
             value={otp.field1}
             ref={inputRef1}
             onChange={(event) => {
@@ -198,10 +239,12 @@ function Otp() {
                 onChangeHandler(event);
               }
             }}
+
           />
           <OtpInput
             name='field2'
             value={otp.field2}
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
             ref={inputRef2}
             onChange={(event) => {
               if (event.target.value.length <= maxLength) {
@@ -214,6 +257,7 @@ function Otp() {
             name='field3'
             value={otp.field3}
             ref={inputRef3}
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
             onChange={(event) => {
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);
@@ -224,6 +268,7 @@ function Otp() {
             name='field4'
             value={otp.field4}
             ref={inputRef4}
+            onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
             onChange={(event) => {
               if (event.target.value.length <= maxLength) {
                 onChangeHandler(event);

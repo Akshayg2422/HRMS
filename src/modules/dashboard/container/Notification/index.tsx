@@ -122,7 +122,7 @@ function Notification() {
                         </Container>
                     );
                 }) : <NoRecordFound />}
-                {broadcastMessagesData && (
+                {broadcastMessagesData && broadcastMessagesData.length > 0 && (
                     <Pagination currentPage={currentPage}
                         // additionalClass={'card-footer'}
                         noOfPage={numOfPages}

@@ -10,6 +10,7 @@ import {
   ChooseBranchFromHierarchical,
   NoRecordFound,
   useKeyPress,
+  ImageView,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -31,6 +32,7 @@ import { Navbar } from "@modules";
 import { useSelector, useDispatch } from "react-redux";
 import { Employee } from "@api";
 import { useTranslation } from "react-i18next";
+import { getListAllBranchesList } from "../../../../store/location/actions";
 
 function EmployeeScreen() {
   let dispatch = useDispatch();
@@ -39,7 +41,8 @@ function EmployeeScreen() {
   const [deletedUserModel, setDeletedUserModel] = useState(false);
   const [deleteUserId, setDeleteUserId] = useState("");
   const [searchEmployee, setSearchEmployee] = useState("");
-  const [searchEmployeeById, setSearchEmployeeById] = useState("");
+  const [showEmployeeProfile, setShowEmployeeProfile] = useState<any>('');
+  const [ProfilePictureModel, setProfilePictureModel] = useState(false)
 
   const navigation = useNav();
   const enterPress = useKeyPress("Enter");
@@ -58,6 +61,11 @@ function EmployeeScreen() {
 
 
   useEffect(() => {
+    const params = {}
+    dispatch(getListAllBranchesList({ params }))
+  }, [])
+
+  useEffect(() => {
     if (enterPress) {
       getEmployeesApi(currentPage)
     }
@@ -73,10 +81,30 @@ function EmployeeScreen() {
     dispatch(getEmployeesList({ params }));
   }
 
+  const handleShowProfile = (e: any, item: any) => {
+    e.stopPropagation()
+    if (item.face_photo) {
+      setShowEmployeeProfile(item)
+      setProfilePictureModel(!ProfilePictureModel)
+    }
+  }
+
+
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any) => {
+    return data.map((el: any, index: number) => {
       return {
         id: el.employee_id,
+        "":
+          <span className='avatar avatar-sm rounded-circle' style={{ cursor: 'pointer' }} onClick={(e) => handleShowProfile(e, el)}>
+            <ImageView
+              style={{ objectFit: 'contain' }}
+              height={'100%'}
+              width={'100%'}
+              alt='image placeholder'
+              icon={el?.face_photo ? el?.face_photo : Icons.ProfilePlaceHolder}
+            />
+          </span>
+        ,
         name: el.name,
         "mobile number": el.mobile_number,
         branch: el.branch,
@@ -240,8 +268,41 @@ function EmployeeScreen() {
               </Container>
             </Container>
           </Modal>
+          <Modal
+            title={showEmployeeProfile?.name}
+            showModel={ProfilePictureModel}
+            size={'modal-sm'}
+            toggle={() => setProfilePictureModel(!ProfilePictureModel)}
+          >
+            <Container>
+              {showEmployeeProfile.face_photo ? <ImageView
+                style={{ objectFit: 'cover' }}
+                width={'100%'}
+                height={'100%'}
+                alt='Image placeholder'
+                icon={showEmployeeProfile?.face_photo}
+              /> : <NoRecordFound />}
+              {/* <Container
+                margin={"m-5"}
+                justifyContent={"justify-content-end"}
+                display={"d-flex"}
+              >
+                <Secondary
+                  text={t("cancel")}
+                  onClick={() => setProfilePictureModel(!ProfilePictureModel)}
+                />
+                <Primary
+                  text={t("proceed")}
+                  onClick={() => manageProceedHandler()}
+                />
+              </Container> */}
+            </Container>
+          </Modal>
         </Container>
       </Card>
+      <div className='dropdown-menu dropdown-menu-right dropdown-toggle'>
+        hello
+      </div>
     </>
   );
 }

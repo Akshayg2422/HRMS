@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH } from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, Secondary, Primary, Divider, } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,8 +26,6 @@ const Header = () => {
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
 
-
-
   let dispatch = useDispatch();
 
   const { dashboardDetails } = useSelector(
@@ -36,7 +34,7 @@ const Header = () => {
 
   const { broadcastMessagesData } = useSelector(
     (state: any) => state.NotificationReducer
-);
+  );
 
   const pathname = window.location.pathname
 
@@ -97,15 +95,16 @@ const Header = () => {
   }
 
   const changeLanguageHandler = (key: string) => {
+    setSelectedLanguage(key)
     i18n.changeLanguage(key);
     setLanguageModel(!languageModel)
     try {
       window.location.reload();
-
     } catch (e) {
-
+      // window.location.reload();
     }
   };
+
 
 
   return (
@@ -186,7 +185,7 @@ const Header = () => {
       </nav >
 
       <Modal
-        title={'Choose Language'}
+        title={'Select Language'}
         toggle={() => setLanguageModel(!languageModel)}
         showModel={languageModel}>
         {availableLanguages.map((item, index) => {

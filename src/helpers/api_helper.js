@@ -16,6 +16,15 @@ const SAMPLE_IP = 'http://3.109.244.227:8000';
 // const PROD = 'https://api.zenyq.com';
 const PROD_WEB = 'https://webapi.zenyq.com';
 
+export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
+
+export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
+
+export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuser.zenyq.com'; ////
+
+export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
+
+
 
 
 export const REACT_APP_APP_URL = PROD_WEB;
@@ -64,9 +73,17 @@ export async function get(url, config) {
     .then((response) => response.data);
 }
 
-export async function post(url, data, config) {
+export async function post(url, data, config, baseUrlType) {
+
+  baseUrlType = baseUrlType || REACT_APP_APP_URL
+
+  const baseUrl = axios.create({
+    baseURL: baseUrlType,
+  });
+
   let headers = { ...await getHeaders() }
-  return await axiosApi
+
+  return await baseUrl
     .post(url, data, {
       ...config,
       headers: headers,
@@ -77,9 +94,16 @@ export async function post(url, data, config) {
 }
 
 
-export async function postHeader(url, data, config) {
+export async function postHeader(url, data, config, baseUrlType) {
+  baseUrlType = baseUrlType || REACT_APP_APP_URL
+
+  const baseUrl = axios.create({
+    baseURL: baseUrlType,
+  });
+
   let headers = { ...await getHeaders() }
-  return await axiosApi
+
+  return await baseUrl
     .post(url, data, {
       ...config,
       headers: headers,
