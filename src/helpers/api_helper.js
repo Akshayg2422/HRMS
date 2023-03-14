@@ -102,7 +102,7 @@ export async function postHeader(url, data, config, baseUrlType) {
   });
 
   let headers = { ...await getHeaders() }
-  
+
   return await baseUrl
     .post(url, data, {
       ...config,
