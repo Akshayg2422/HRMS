@@ -32,6 +32,7 @@ import { Navbar } from "@modules";
 import { useSelector, useDispatch } from "react-redux";
 import { Employee } from "@api";
 import { useTranslation } from "react-i18next";
+import { getListAllBranchesList } from "../../../../store/location/actions";
 
 function EmployeeScreen() {
   let dispatch = useDispatch();
@@ -60,6 +61,11 @@ function EmployeeScreen() {
 
 
   useEffect(() => {
+    const params = {}
+    dispatch(getListAllBranchesList({ params }))
+  }, [])
+
+  useEffect(() => {
     if (enterPress) {
       getEmployeesApi(currentPage)
     }
@@ -81,7 +87,6 @@ function EmployeeScreen() {
     setProfilePictureModel(!ProfilePictureModel)
   }
 
-  console.log("showEmployeeProfile", showEmployeeProfile);
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any, index: number) => {
@@ -269,7 +274,7 @@ function EmployeeScreen() {
           >
             <Container>
               {showEmployeeProfile.face_photo ? <ImageView
-                style={{ objectFit: 'cover'}}
+                style={{ objectFit: 'cover' }}
                 width={'100%'}
                 height={'100%'}
                 alt='Image placeholder'

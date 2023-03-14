@@ -1,5 +1,5 @@
 .form-control.form-select {
-    padding-right: 10px 2rem; /* Adjust the padding to make space for the arrow */
+    padding-right: 2rem; /* Adjust the padding to make space for the arrow */
   }
   
   .form-control.form-select::-ms-expand {
