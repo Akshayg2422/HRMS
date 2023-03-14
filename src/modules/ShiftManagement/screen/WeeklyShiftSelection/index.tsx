@@ -230,7 +230,6 @@ const WeeklyShiftSelection = () => {
             });
             if (!isExist) {
               let is_add = true;
-  
               timeBreakdown.forEach((element: any) => {
                 const isOverLab = dateRangeOverlaps(
                   getDate(currentShift.start_time),
@@ -238,8 +237,8 @@ const WeeklyShiftSelection = () => {
                   getDate(element.start_time),
                   getDate(element.end_time),
                 );
-  
                 console.log(isOverLab);
+
                 if (isOverLab) {
                   is_add = false;
                   return;
@@ -248,7 +247,6 @@ const WeeklyShiftSelection = () => {
   
               if (is_add) {
                 console.log("111111", is_add);
-                
                 changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
               } 
               else {

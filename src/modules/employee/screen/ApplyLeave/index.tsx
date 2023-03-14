@@ -8,6 +8,7 @@ import {
   goTo,
   ROUTE,
   showToast,
+  Today,
   useNav,
   validateDefault,
   validateReason
@@ -209,6 +210,7 @@ const ApplyLeave = () => {
         <h5>{t("dataFrom")}</h5>
         <DatePicker
           icon={Icons.Calendar}
+          minDate={Today}
           iconPosition={"append"}
           disabledDate={disableDate(calendarEvents.days_holiday)}
           onChange={(date: string) => {
@@ -219,6 +221,7 @@ const ApplyLeave = () => {
         <h5>{t("dataTo")}</h5>
         <DatePicker
           icon={Icons.Calendar}
+          minDate={Today}
           iconPosition={"append"}
           disabledDate={disableDate(calendarEvents.days_holiday)}
           onChange={(date: string) => {

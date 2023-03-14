@@ -81,15 +81,20 @@ function EmployeeScreen() {
     setProfilePictureModel(!ProfilePictureModel)
   }
 
+  console.log("showEmployeeProfile", showEmployeeProfile);
+
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any, index: number) => {
       return {
         id: el.employee_id,
         "":
-          <span className='avatar avatar-sm rounded-circle'  style={{cursor:'pointer'}} onClick={(e) => handleShowProfile(e, el)}>
+          <span className='avatar avatar-sm rounded-circle' style={{ cursor: 'pointer' }} onClick={(e) => handleShowProfile(e, el)}>
             <ImageView
+              style={{ objectFit: 'cover' }}
+              height={'100%'}
+              width={'100%'}
               alt='Image placeholder'
-              icon={"https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-1.jpg"}
+              icon={el?.face_photo && el?.face_photo.length > 0 ? el?.face_photo[0] : Icons.ProfilePlaceHolder}
             />
           </span>
         ,
@@ -263,13 +268,13 @@ function EmployeeScreen() {
             toggle={() => setProfilePictureModel(!ProfilePictureModel)}
           >
             <Container>
-              <ImageView
-                style={{ objectFit: 'cover' }}
-                height={'100%'}
+              {showEmployeeProfile.face_photo ? <ImageView
+                style={{ objectFit: 'cover'}}
                 width={'100%'}
+                height={'100%'}
                 alt='Image placeholder'
-                icon={"https://demos.creative-tim.com/argon-dashboard/assets-old/img/theme/team-1.jpg"}
-              />
+                icon={showEmployeeProfile.face_photo[0]}
+              /> : <NoRecordFound />}
               {/* <Container
                 margin={"m-5"}
                 justifyContent={"justify-content-end"}

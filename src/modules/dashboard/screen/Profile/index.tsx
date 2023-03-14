@@ -26,13 +26,14 @@ const Profile = () => {
             <h1 className="text-black">{t("personalData")}</h1>
           </Container>
           <ImageView
+            style={{ objectFit: 'cover' }}
+            width={'100%'}
             icon={
               dashboardDetails && dashboardDetails.user_details.profile_photo
                 ? getImageUri(dashboardDetails.user_details.profile_photo)
                 : Icons.ProfilePlaceHolder
             }
             additionClass={"rounded-circle col-lg-3  order-lg-2"}
-            height={"130px"}
           ></ImageView>
           <Container additionClass={"text-center my-3"}>
             <h1 className="text-black">{dashboardDetails.user_details.name}</h1>

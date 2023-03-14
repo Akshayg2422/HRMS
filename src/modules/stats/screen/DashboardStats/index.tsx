@@ -59,7 +59,7 @@ const DashboardStats = () => {
         Present: el.present,
         Absent: el.absent,
         "To Start": el.to_start,
-        "Alert":el.alert
+        "Alert": el.alert
       };
     });
   };
