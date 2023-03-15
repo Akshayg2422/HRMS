@@ -440,7 +440,7 @@ function* addFenceAdmin(action) {
     } else {
       yield put(hideLoader());
       yield put(addFenceAdminFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
