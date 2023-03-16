@@ -110,8 +110,6 @@ function FenceAdmin() {
     //     dispatch(getEmployeesList({ params }))
     // }
 
-
-
     function paginationHandler(type: 'next' | 'prev' | 'current', position?: number) {
         let page = type === 'next' ? currentPage + 1 : type === 'prev' ? currentPage - 1 : position;
         getRegisteredFenceAdmin(page)

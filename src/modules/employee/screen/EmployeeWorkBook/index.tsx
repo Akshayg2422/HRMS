@@ -122,10 +122,10 @@ function EmployeeTimeSheets() {
     <>
       <Card additionClass="mx-3">
         <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-5"}>
+          <Container col={"col-xl-6"}>
             <ChooseBranchFromHierarchical />
           </Container>
-          <Container additionClass={"col-xl-3 col-md-6 col-sm-12 mt-xl-4 row"}>
+          <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
             <InputText
               value={searchEmployee}
               col={'col'}
@@ -134,24 +134,23 @@ function EmployeeTimeSheets() {
                 setSearchEmployee(e.target.value);
               }}
             />
-            <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
               onClick={() => {
                 getEmployeeTimeSheets(currentPage);
               }}
             />
           </Container>
-
-          <div className="col text-right my-sm-2 mt-3 mt-sm-0 mt-xl-4">
-            <Sort
-              sortData={sortData}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
         </Container>
+        <div className="text-right">
+          <Sort
+            sortData={sortData}
+            activeIndex={activeSort}
+            onClick={(index) => {
+              setActiveSort(index);
+              onTabChange(index);
+            }}
+          />
+        </div>
       </Card>
       {employeeTimeSheets && employeeTimeSheets.length > 0 ? (
         <CommonTable
