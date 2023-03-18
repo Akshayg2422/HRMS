@@ -118,7 +118,6 @@ const initialState = {
   fcmToken: '',
   esslConfigDataList: {},
   editEsslConfigDetails: '',
-  esslConfigDataList: [],
   esslDevicesData: [],
   esslDeviceDetails: undefined
 };

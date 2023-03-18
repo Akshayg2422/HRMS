@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getAllBranchesList } from '../../../../../store/location/actions';
+import { postAddEsslDevice, postEsslConfig } from '../../../../../store/auth/actions';
+
 
 function ManageDevices() {
 
@@ -19,11 +21,24 @@ function ManageDevices() {
         (state: any) => state.DashboardReducer
     );
 
+    const { esslDeviceDetails } = useSelector(
+        (state: any) => state.AuthReducer
+    );
+
     const [companyBranchDropdownData, setCompanyBranchDropdownData] =
         useState<any>();
 
+    const [devicesDetails, setDevicesDetails] = useState({
+        name: '',
+        device_id: '',
+        branch_id: '',
+    })
+
     useEffect(() => {
         getBranchList()
+        if (esslDeviceDetails) {
+            setDevicesDetails({ ...devicesDetails, name: esslDeviceDetails.name, device_id: esslDeviceDetails.device_id, branch_id: esslDeviceDetails.company_branch.id })
+        }
     }, [])
 
     const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -62,11 +77,7 @@ function ManageDevices() {
         );
     }
 
-    const [devicesDetails, setDevicesDetails] = useState({
-        name: '',
-        device_id: '',
-        branch_id: '',
-    })
+
 
 
     const addDevices = () => {
@@ -76,18 +87,16 @@ function ManageDevices() {
             device_id: devicesDetails.device_id,
             branch_id: devicesDetails.branch_id
         }
-        console.log("params------->", params);
-
-        // dispatch(postEsslConfig({
-        //     params,
-        //     onSuccess: (success: any) => {
-
-        //         goBack(navigation);
-        //     },
-        //     onError: (error: string) => {
-        //         showToast("error", error)
-        //     },
-        // }));
+        dispatch(postAddEsslDevice({
+            params,
+            onSuccess: (success: any) => {
+                showToast("success", success.message)
+                goBack(navigation);
+            },
+            onError: (error: string) => {
+                showToast("error", error)
+            },
+        }));
 
     }
 

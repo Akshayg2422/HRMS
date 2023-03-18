@@ -1,5 +1,5 @@
-import { Card, CommonTable, Container, FormWrapper, InputText, Primary } from '@components'
-import { editEsslConfig, getEsslConfig } from '../../../../../store/auth/actions';
+import { Card, CommonTable, Container, FormWrapper, InputText, NoRecordFound, Primary } from '@components'
+import { editEsslConfig, esslDeviceDetails, fetchEsslDevices, getEsslConfig } from '../../../../../store/auth/actions';
 import { ROUTE, goTo, useNav } from '@utils';
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -11,12 +11,13 @@ function EsslConfig() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
-  const { esslConfigDataList } = useSelector(
+  const { esslConfigDataList, esslDevicesData } = useSelector(
     (state: any) => state.AuthReducer
   );
 
   useEffect(() => {
     getEsslConfigDetails()
+    getEsslDevices()
   }, [])
 
   const getEsslConfigDetails = () => {
@@ -24,16 +25,22 @@ function EsslConfig() {
     dispatch(getEsslConfig({ params }))
   }
 
+  const getEsslDevices = () => {
+    const params = {}
+    dispatch(fetchEsslDevices({ params }))
+  }
+
+
   const normalizedDeviceList = (data: any) => {
     return (
       data &&
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          "id": '',
-          "DeviceName": '',
-          "Device id": '',
-          "CompanyBranchName": ''
+          // "id": '',
+          "DeviceName": el.name,
+          "Device id": el.device_id,
+          "CompanyBranchName": el.company_branch.name,
         };
       })
     );
@@ -49,17 +56,33 @@ function EsslConfig() {
     }
 
   }
+  const TABLE_ELEMENT_TEXT_BUTTON = 1
+
+  const EMPLOYEE_ADDITIONAL_DATA_EDIT = [
+    {
+      elt: TABLE_ELEMENT_TEXT_BUTTON,
+      elv: 'Edit',
+      elh: 'Edit',
+    },
+
+  ]
+
+  const manageDevice = (item: any) => {
+    console.log("item", item);
+    item ? dispatch(esslDeviceDetails(item)) : dispatch(esslDeviceDetails(''))
+    goTo(navigation, ROUTE.ROUTE_MANAGE_ESSL_DEVICES)
+  }
 
   return (
     <>
       <Card>
         <Container additionClass='d-flex justify-content-between'>
           <h3>{t('ESSL Config')}</h3>
-          <Primary text={Object.keys(esslConfigDataList).length > 0 ? t('edit') : t('add')}
-            onClick={() => handleNavigation(Object.keys(esslConfigDataList).length > 0 ? t('edit') : t('add'))}
+          <Primary text={esslConfigDataList !== undefined && Object.keys(esslConfigDataList)?.length > 0 ? t('edit') : t('add')}
+            onClick={() => handleNavigation(esslConfigDataList !== undefined && Object.keys(esslConfigDataList)?.length > 0 ? t('edit') : t('add'))}
           />
         </Container>
-        {Object.keys(esslConfigDataList).length > 0 &&
+        {esslConfigDataList !== undefined && Object.keys(esslConfigDataList)?.length > 0 &&
           <Container additionClass='mt-4 col-xl-6'>
             <Container>
               <Container textAlign={"text-left"}>
@@ -90,13 +113,28 @@ function EsslConfig() {
         <Container additionClass='d-flex justify-content-between'>
           <h3>{t('Devices')}</h3>
           <Primary size='btn-sm' text={t('AddDevices')}
-            onClick={() => goTo(navigation, ROUTE.ROUTE_MANAGE_ESSL_DEVICES)}
+            onClick={() => manageDevice("")}
           />
         </Container>
-        <CommonTable
-          noHeader
-          displayDataSet={normalizedDeviceList('')}
-        />
+        {esslDevicesData && esslDevicesData?.length > 0 ? (
+          <div className='mt-5'>
+            <CommonTable
+              noHeader
+              additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
+              displayDataSet={normalizedDeviceList(esslDevicesData)}
+              tableValueOnClick={(e, index, item, elv) => {
+                const selectedItem = esslDevicesData[index]
+                //esslDeviceDetails
+                if (elv === "Edit") {
+                  manageDevice(selectedItem)
+                }
+
+              }}
+            />
+          </div>
+        ) :
+          <NoRecordFound />
+        }
       </Card>
 
     </>

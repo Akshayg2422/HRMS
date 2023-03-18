@@ -451,7 +451,7 @@ function* fetchEsslDevicesSaga(action) {
 
       yield put(hideLoader());
       yield put(fetchEsslDevicesSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
 
 
     } else {
