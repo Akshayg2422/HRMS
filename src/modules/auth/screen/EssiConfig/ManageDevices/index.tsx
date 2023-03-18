@@ -122,10 +122,10 @@ function ManageDevices() {
                 label={t("branch")}
                 placeholder={t("branch")}
                 data={companyBranchDropdownData}
-                name={"branch"}
+                name={"branch_id"}
                 value={devicesDetails.branch_id}
                 onChange={(event) => {
-                    onChangeHandler(dropDownValueCheckByEvent(event, t("branch_id")))
+                    onChangeHandler(event)
                 }}
             />
 

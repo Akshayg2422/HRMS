@@ -1,5 +1,5 @@
 import { Card, CommonTable, Container, FormWrapper, InputText, Primary } from '@components'
-import { getEsslConfig } from '../../../../../store/auth/actions';
+import { editEsslConfig, getEsslConfig } from '../../../../../store/auth/actions';
 import { ROUTE, goTo, useNav } from '@utils';
 import React, { useEffect } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -39,13 +39,24 @@ function EsslConfig() {
     );
   };
 
+  const handleNavigation = (type: string) => {
+    if (type === 'Edit') {
+      dispatch(editEsslConfig(esslConfigDataList))
+      goTo(navigation, ROUTE.ROUTE_MANAGE_ESSL_CONFIG)
+    } else {
+      dispatch(editEsslConfig(''))
+      goTo(navigation, ROUTE.ROUTE_MANAGE_ESSL_CONFIG)
+    }
+
+  }
+
   return (
     <>
       <Card>
         <Container additionClass='d-flex justify-content-between'>
           <h3>{t('ESSL Config')}</h3>
           <Primary text={Object.keys(esslConfigDataList).length > 0 ? t('edit') : t('add')}
-            onClick={() => goTo(navigation, ROUTE.ROUTE_MANAGE_ESSL_CONFIG)}
+            onClick={() => handleNavigation(Object.keys(esslConfigDataList).length > 0 ? t('edit') : t('add'))}
           />
         </Container>
         {Object.keys(esslConfigDataList).length > 0 &&

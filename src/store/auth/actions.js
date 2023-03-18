@@ -393,9 +393,9 @@ export const getEsslConfigFailure = (error) => {
 };
 
 
-export const editEsslConfig = (error) => {
+export const editEsslConfig = (data) => {
   return {
     type: EDIT_ESSL_CONFIG_DETAILS,
-    payload: error,
+    payload: data,
   };
 };

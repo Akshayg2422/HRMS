@@ -1,7 +1,7 @@
 import { BackArrow, FormWrapper, InputText } from '@components'
 import { postEsslConfig } from '../../../../../store/auth/actions';
 import { goBack, showToast, useNav, validateName } from '@utils'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 
@@ -21,6 +21,13 @@ function ManageEsslConfig() {
         password: '',
         baseUrl: '',
     })
+
+    useEffect(() => {
+        if (editEsslConfigDetails) {
+            setEsslConfig({ ...esslConfig, name: editEsslConfigDetails.username, baseUrl: editEsslConfigDetails.baseurl, password: editEsslConfigDetails.password })
+        }
+    }, [])
+
 
     // editEsslConfigDetails
 
@@ -90,4 +97,4 @@ function ManageEsslConfig() {
     )
 }
 
-export  {ManageEsslConfig}
+export { ManageEsslConfig }
