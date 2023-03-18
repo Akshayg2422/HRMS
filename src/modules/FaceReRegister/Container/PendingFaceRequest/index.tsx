@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer, showToast } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { changeEmployeeFaceValidationRequestAction, faceReRegisterRequestAction, getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
+import { changeEmployeeFaceValidationRequestAction, faceReRegisterRequestAction, faceReRegisterRequestChangeStatus, getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 
 const PendingFaceRequest = () => {
     let dispatch = useDispatch();
@@ -44,16 +44,16 @@ const PendingFaceRequest = () => {
 
     const ChangeStatusHandler = (item: any, type: number) => {
         const params = { id: item.id, status: type }
-        // dispatch(changeEmployeeFaceValidationRequestAction({
-        //     params,
-        //     onSuccess: (success: any) => () => {
-        //         showToast("success", success?.status)
-        //         getEmployeeRequest(-1, currentPage);
-        //     },
-        //     onError: (error: string) => () => {
-        //         showToast("error", error)
-        //     }
-        // }));
+        dispatch(faceReRegisterRequestChangeStatus({
+            params,
+            onSuccess: (success: any) => () => {
+                showToast("success", success?.status)
+                getEmployeeRequest(-2, currentPage);
+            },
+            onError: (error: string) => () => {
+                showToast("error", error)
+            }
+        }));
     }
 
     return (
@@ -105,7 +105,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
             <thead className='thead-light'>
                 <tr>
                     <th scope='col' className='text-center'>{'User Photo'}</th>
-                    <th scope='col'>{'Log Photo'}</th>
+                    <th scope='col'>{'Re-register Photo'}</th>
                     <th scope='col'>{'Name'}</th>
                     <th scope='col'>{'Mobile NO'}</th>
                     <th scope='col'>{'Location'}</th>
@@ -121,7 +121,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
                         return <tr className='align-items-center'>
                             <td className='' ><div><ImageView height={150} width={100} style={{ objectFit: "cover" }} icon={item?.employee_photos[0]} />
                                 {/* <ImageView additionClass='ml-3' height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[3]} /> */}
-                                </div></td>
+                            </div></td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  ><ImageView height={150} style={{ objectFit: "cover" }} width={100} icon={item?.log_photos_b64[0]} /></td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.mobile_number}</td>

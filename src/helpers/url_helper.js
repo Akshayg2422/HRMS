@@ -164,3 +164,7 @@ export const GET_EMPLOYEE_CHECK_IN_LOGS_REPORT = 'attendance/getEmployeeCheckInL
 //Face Re-Register Request
 
 export const FACE_RE_REGISTER_REQUEST = 'employee/web/v1/getEmployeesFaceRegisterRequestsWithFace'
+
+// Face Re-Register Change Status
+
+export const FACE_RE_REGISTER_REQUEST_CHANGE_STATUS = 'employee/web/v1/changeStatusEmployeesFaceRegisterRequestsWithFace'

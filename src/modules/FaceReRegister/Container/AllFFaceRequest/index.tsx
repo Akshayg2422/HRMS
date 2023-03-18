@@ -3,7 +3,7 @@ import { Card, CommonTable, Container, ImageView, Modal, NoRecordFound, Primary,
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast, base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { changeEmployeeFaceValidationRequestAction, faceReRegisterRequestAction, } from '../../../../store/dashboard/actions';
+import { faceReRegisterRequestAction, faceReRegisterRequestChangeStatus, } from '../../../../store/dashboard/actions';
 import { Icons } from '@assets';
 
 const AllFFaceRequest = () => {
@@ -46,16 +46,16 @@ const AllFFaceRequest = () => {
 
     const ChangeStatusHandler = (item: any, type: number) => {
         const params = { id: item.id, status: type }
-        // dispatch(changeEmployeeFaceValidationRequestAction({
-        //     params,
-        //     onSuccess: (success: any) => () => {
-        //         showToast("success", success?.status)
-        //         getEmployeeRequest(-2, currentPage);
-        //     },
-        //     onError: (error: string) => () => {
-        //         showToast("error", error)
-        //     }
-        // }));
+        dispatch(faceReRegisterRequestChangeStatus({
+            params,
+            onSuccess: (success: any) => () => {
+                showToast("success", success?.status)
+                getEmployeeRequest(-2, currentPage);
+            },
+            onError: (error: string) => () => {
+                showToast("error", error)
+            }
+        }));
     }
 
     return (
@@ -107,7 +107,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
             <thead className='thead-light'>
                 <tr>
                     <th scope='col' className='text-center'>{'User Photo'}</th>
-                    <th scope='col'>{'Log Photo'}</th>
+                    <th scope='col'>{'Re-register Photo'}</th>
                     <th scope='col'>{'Name'}</th>
                     <th scope='col'>{'Mobile NO'}</th>
                     <th scope='col'>{'Location'}</th>

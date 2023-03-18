@@ -48,7 +48,7 @@ const DropDown = (({
 
 
   return (
-    <Container additionClass={`form-group ${additionClass}my-select`} col={col} >
+    <Container additionClass={`form-group ${additionClass} long-text-dropdown`} col={col} >
       {label && <small className="form-control-label text-black ">{label}</small>}
       <select value={value} className={`form-control mt-2  ${showArrow && "form-select"}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}
       >

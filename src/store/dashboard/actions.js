@@ -31,7 +31,10 @@ import {
   CURRENT_FACE_STATUS_TYPE,
   FACE_RE_REGISTER_REQUEST,
   FACE_RE_REGISTER_REQUEST_SUCCESS,
-  FACE_RE_REGISTER_REQUEST_FAIL
+  FACE_RE_REGISTER_REQUEST_FAIL,
+  FACE_RE_REGISTER_CHANGE_STATUS,
+  FACE_RE_REGISTER_CHANGE_STATUS_SUCCESS,
+  FACE_RE_REGISTER_CHANGE_STATUS_FAIL
 
 } from "./actionTypes";
 
@@ -306,6 +309,30 @@ export const faceReRegisterRequestActionSuccess = (response) => {
 export const faceReRegisterRequestActionFail = (error) => {
   return {
     type: FACE_RE_REGISTER_REQUEST_FAIL,
+    payload: error,
+  };
+};
+
+// Face Re-Register Change Status
+
+export const faceReRegisterRequestChangeStatus = (params) => {
+  return {
+    type: FACE_RE_REGISTER_CHANGE_STATUS,
+    payload: params,
+
+  };
+};
+
+export const faceReRegisterRequestChangeStatusSuccess = (response) => {
+  return {
+    type: FACE_RE_REGISTER_CHANGE_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const faceReRegisterRequestChangeStatusFail = (error) => {
+  return {
+    type: FACE_RE_REGISTER_CHANGE_STATUS_FAIL,
     payload: error,
   };
 };
