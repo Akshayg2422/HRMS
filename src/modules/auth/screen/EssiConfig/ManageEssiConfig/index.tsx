@@ -46,6 +46,7 @@ function ManageEsslConfig() {
             params,
             onSuccess: (success: any) => {
                 console.log("successs----->", success);
+                showToast("success", success.message)
 
                 goBack(navigation);
             },

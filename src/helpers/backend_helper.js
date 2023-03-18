@@ -196,4 +196,12 @@ export const setEsslConfigApi = (payload) => post(url.SET_ESSL_CONFIG_URL, paylo
 
 export const getEsslConfigApi = (payload) => post(url.GET_ESSL_CONFIG_URL, payload, {})
 
+//add ESSL device
+
+export const addEsslDeviceApi = (payload) => post(url.ADD_ESSL_DEVICE, payload, {})
+
+//get ESSL devices
+
+export const getEsslDevicesApi = (payload) => post(url.GET_ESSL_DEVICES, payload, {})
+
 

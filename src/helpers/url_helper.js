@@ -176,3 +176,11 @@ export const SET_ESSL_CONFIG_URL = 'company/setESSLConfig'
 //get ESSL config
 
 export const GET_ESSL_CONFIG_URL = 'company/getESSLConfig'
+
+//add ESSL device
+
+export const ADD_ESSL_DEVICE = 'company/addESSLDevice'
+
+//get ESSL device
+
+export const GET_ESSL_DEVICES = 'company/getESSLDevices'
