@@ -85,7 +85,8 @@ function ManageDevices() {
         const params = {
             name: devicesDetails.name,
             device_id: devicesDetails.device_id,
-            branch_id: devicesDetails.branch_id
+            branch_id: devicesDetails.branch_id,
+            ...(esslDeviceDetails && { id: esslDeviceDetails?.id })
         }
         dispatch(postAddEsslDevice({
             params,
@@ -105,7 +106,7 @@ function ManageDevices() {
     };
 
     return (
-        <FormWrapper title={t('AddDevices')} buttonTittle={t("submit")} onClick={() => {
+        <FormWrapper title={esslDeviceDetails ? 'Edit Device' : t('AddDevices')} buttonTittle={esslDeviceDetails ? t("update") : t("submit")} onClick={() => {
             addDevices()
         }}>
             <InputText
