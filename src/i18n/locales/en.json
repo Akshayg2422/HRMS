@@ -468,7 +468,8 @@
     "broadcastWarningMessage":"Please click on Proceed to Delete message",
     "working":"Working",
     "AddEsslConfig":"Add ESSL Config",
-    "EditEsslConfig":"Edit ESSL Config"
-
+    "EditEsslConfig":"Edit ESSL Config",
+    "AddDevices":"Add Device",
+    "DeviceId":"Device Id"
   }
 }

@@ -79,7 +79,7 @@ function EsslConfig() {
       <Card>
         <Container additionClass='d-flex justify-content-between'>
           <h3>{t('ESSL Config')}</h3>
-          <Primary text={esslConfigDataList  && Object?.keys(esslConfigDataList?.essl_config).length > 0 ? t('edit') : t('add')}
+          <Primary text={esslConfigDataList && Object?.keys(esslConfigDataList?.essl_config).length > 0 ? t('edit') : t('add')}
             onClick={() => handleNavigation(esslConfigDataList && Object?.keys(esslConfigDataList?.essl_config).length > 0 ? t('edit') : t('add'))}
           />
         </Container>
@@ -125,7 +125,6 @@ function EsslConfig() {
               displayDataSet={normalizedDeviceList(esslDevicesData)}
               tableValueOnClick={(e, index, item, elv) => {
                 const selectedItem = esslDevicesData[index]
-                //esslDeviceDetails
                 if (elv === "Edit") {
                   manageDevice(selectedItem)
                 }
@@ -134,7 +133,9 @@ function EsslConfig() {
             />
           </div>
         ) :
-          <NoRecordFound />
+          <Container additionClass='mt-4'>
+            <NoRecordFound />
+          </Container>
         }
       </Card>
 
