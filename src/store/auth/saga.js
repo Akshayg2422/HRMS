@@ -10,7 +10,10 @@ import {
   NATURE_OF_BUSINESS,
   TYPE_OF_BUSINESS,
   ADMIN_VERIFICATION_OTP,
-  POST_APP_CONFIG
+  POST_APP_CONFIG,
+
+  SET_ESSL_CONFIG,
+  GET_ESSL_CONFIG
 } from "./actionTypes";
 
 import {
@@ -33,7 +36,13 @@ import {
   getAdminVerificationOtpSuccess,
   getAdminVerificationOtpFailure,
   postAppConfigSuccess,
-  postAppConfigFailure
+  postAppConfigFailure,
+
+  postEsslConfigSuccess,
+  postEsslConfigFailure,
+
+  getEsslConfigSuccess,
+  getEsslConfigFailure
 
 } from "./actions";
 
@@ -46,7 +55,10 @@ import {
   postUploadCompanyDocument,
   fetchNatureOfBusiness,
   fetchTypeOfBusiness,
-  postAppConfigDetailsApi
+  postAppConfigDetailsApi,
+
+  setEsslConfigApi,
+  getEsslConfigApi
 } from "../../helpers/backend_helper";
 
 import {
@@ -321,6 +333,62 @@ function* postAppConfigDetailsSaga(action) {
   }
 }
 
+//set essl config
+
+function* postEsslConfigSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(setEsslConfigApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(postEsslConfigSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(postEsslConfigFailure(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(postEsslConfigFailure("Invalid Request"));
+
+  }
+}
+
+//set essl config
+
+function* fetchEsslConfigSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(getEsslConfigApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(getEsslConfigSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(getEsslConfigFailure(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(getEsslConfigFailure("Invalid Request"));
+
+  }
+}
+
 
 
 ///watcher///
@@ -336,6 +404,10 @@ function* AuthSaga() {
   yield takeLatest(TYPE_OF_BUSINESS, getTypeOfBusiness);
   yield takeLatest(ADMIN_VERIFICATION_OTP, adminVerificationOtp);
   yield takeLatest(POST_APP_CONFIG, postAppConfigDetailsSaga);
+
+  yield takeLatest(SET_ESSL_CONFIG, postEsslConfigSaga);
+  yield takeLatest(GET_ESSL_CONFIG, fetchEsslConfigSaga);
+
 
 }
 

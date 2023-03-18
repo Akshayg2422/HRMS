@@ -35,7 +35,15 @@ import {
   POST_APP_CONFIG_SUCCESS,
   POST_APP_CONFIG_FAILURE,
   GET_APP_CONFIG_DATA,
-  GET_FCM_TOKEN
+  GET_FCM_TOKEN,
+
+  SET_ESSL_CONFIG,
+  SET_ESSL_CONFIG_SUCCESS,
+  SET_ESSL_CONFIG_FAILURE,
+
+  GET_ESSL_CONFIG,
+  GET_ESSL_CONFIG_SUCCESS,
+  GET_ESSL_CONFIG_FAILURE
 } from "./actionTypes";
 
 
@@ -96,7 +104,8 @@ const initialState = {
     },
   ],
   appConfig: {},
-  fcmToken: ''
+  fcmToken: '',
+  esslConfigDataList: []
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -384,6 +393,53 @@ const AuthReducer = (state = initialState, action) => {
       state = initialState;
       break;
 
+
+    /**
+  * set essl Config
+  */
+    case SET_ESSL_CONFIG:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case SET_ESSL_CONFIG_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case SET_ESSL_CONFIG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /**
+  * get essl Config
+  */
+    case GET_ESSL_CONFIG:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_ESSL_CONFIG_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        esslConfigDataList: action.payload
+      };
+      break;
+    case GET_ESSL_CONFIG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
 
     default:

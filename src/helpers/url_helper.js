@@ -168,3 +168,11 @@ export const FACE_RE_REGISTER_REQUEST = 'employee/web/v1/getEmployeesFaceRegiste
 // Face Re-Register Change Status
 
 export const FACE_RE_REGISTER_REQUEST_CHANGE_STATUS = 'employee/web/v1/changeStatusEmployeesFaceRegisterRequestsWithFace'
+
+//set ESSL config
+
+export const SET_ESSL_CONFIG_URL = 'company/setESSLConfig'
+
+//get ESSL config
+
+export const GET_ESSL_CONFIG_URL = 'company/getESSLConfig'
