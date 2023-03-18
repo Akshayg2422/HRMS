@@ -57,6 +57,7 @@ import {
   DeviceInfo,
   BroadCast,
   ManageBroadCast,
+  FaceReRequest,
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -64,7 +65,6 @@ import { Notification } from "./modules/dashboard/container/Notification";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import {getToken} from "firebase/messaging"
 import { ToastContainer } from "react-toastify";
 import { AppLoader, PageNotFound, ScreenLoader } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
@@ -308,6 +308,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_MY_NOTIFICATION}
             element={<RequireAuth>{<Notification />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_FACE_RE_REQUEST}
+            element={<RequireAuth>{<FaceReRequest />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

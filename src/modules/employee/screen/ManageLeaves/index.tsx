@@ -22,14 +22,12 @@ import {
   deleteHoliday,
 } from "../../../../store/employee/actions";
 import { goTo, ROUTE, showToast, useNav } from "@utils";
-import Hierarchical from "@src/components/ChooseBranchFromHierarchical";
 
 function ManageLeaves() {
   const navigation = useNav();
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
   const [recall, setRecall] = useState(false);
-  const [deleteModel, setDeleteModel] = useState(false);
   const [daysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
   const { calendarEvents, numOfPages, currentPage, selectedEventId } =
@@ -72,8 +70,8 @@ function ManageLeaves() {
           item.status_code === 1
             ? "green"
             : item.status_code === 0
-            ? "red"
-            : "gray",
+              ? "red"
+              : "gray",
       });
     });
     calendarEvents?.days_absent?.map((item: any) => {
@@ -101,6 +99,7 @@ function ManageLeaves() {
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
           <BackArrow additionClass={"mb-3"} />
+          <h1 className="mb-3">{t('Calendar')}</h1>
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>

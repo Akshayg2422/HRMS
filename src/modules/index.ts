@@ -38,6 +38,7 @@ import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGro
 import { FaceApproval } from './FaceApproval'
 import { BroadCast, ManageBroadCast } from './BroadCast'
 import { Notifications, ManageRequest } from './notifications'
+import { FaceReRequest } from './FaceReRegister'
 
 export {
   getDashboardDetails,
@@ -103,7 +104,8 @@ export {
   ManageLeaveTypes,
   DeviceInfo,
   BroadCast,
-  ManageBroadCast
+  ManageBroadCast,
+  FaceReRequest
 }
 
 

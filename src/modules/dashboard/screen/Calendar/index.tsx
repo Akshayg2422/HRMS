@@ -177,7 +177,7 @@ function Calendar() {
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
 
-            <Container additionClass="text-right col-md-5 mt-4">
+            <Container additionClass="text-right col mt-4">
               <Primary
                 additionClass='col col-md-4'
                 text={t("addHoildays")}

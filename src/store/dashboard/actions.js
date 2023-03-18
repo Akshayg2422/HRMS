@@ -28,7 +28,10 @@ import {
   CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST,
   CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST_SUCCESS,
   CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST_FAIL,
-  CURRENT_FACE_STATUS_TYPE
+  CURRENT_FACE_STATUS_TYPE,
+  FACE_RE_REGISTER_REQUEST,
+  FACE_RE_REGISTER_REQUEST_SUCCESS,
+  FACE_RE_REGISTER_REQUEST_FAIL
 
 } from "./actionTypes";
 
@@ -279,5 +282,30 @@ export const setFaceCurrentStatusType = (type) => {
   return {
     type: CURRENT_FACE_STATUS_TYPE,
     payload: type,
+  };
+};
+
+//Face Re-Register Request
+
+export const faceReRegisterRequestAction = (params) => {
+  return {
+    type: FACE_RE_REGISTER_REQUEST,
+    payload: params,
+
+  };
+};
+
+export const faceReRegisterRequestActionSuccess = (response) => {
+  console.log("----ActionResponce", response);
+  return {
+    type: FACE_RE_REGISTER_REQUEST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const faceReRegisterRequestActionFail = (error) => {
+  return {
+    type: FACE_RE_REGISTER_REQUEST_FAIL,
+    payload: error,
   };
 };

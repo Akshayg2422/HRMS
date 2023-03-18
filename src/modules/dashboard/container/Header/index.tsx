@@ -132,7 +132,7 @@ const Header = () => {
                 <a className="nav-link" onClick={() => {
                   goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
-                  <i className="ni ni-chat-round text-white"></i>
+                  <i className="ni ni-chat-round text-white" style={{cursor:'pointer'}}></i>
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
               </div>

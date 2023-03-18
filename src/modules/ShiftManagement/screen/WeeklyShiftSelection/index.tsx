@@ -191,7 +191,6 @@ const WeeklyShiftSelection = () => {
   ) {
     console.log(a_start + '====' + a_end + '====' + b_start + '=====' + b_end);
 
-
     if (a_start <= b_start && b_start <= a_end) {
       return true;
     } // b starts in a
@@ -206,69 +205,98 @@ const WeeklyShiftSelection = () => {
 
   function updateShiftTimeBreakdown() {
 
-    if(dateValidation()){
+    if (dateValidation()) {
       if (shiftsTime.inTime && shiftsTime.outTime) {
         let updatedWeek = [...weeklyData]
         let selectedWeekPosition = isActiveWeek - 1
         let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
         const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
-  
+
         const currentShift = {
           start_time: shiftsTime.inTime,
-  
           end_time: shiftsTime.outTime,
-  
         };
-  
-        if (timeBreakdown && timeBreakdown.length > 0) {
-          if (timeBreakdown.length < 3) {
-            const isExist = timeBreakdown.some((each: any) => {
-              return (
-                currentShift.start_time === each.startTime &&
-                currentShift.end_time === each.endTime
-              );
-            });
-            if (!isExist) {
-              let is_add = true;
-              timeBreakdown.forEach((element: any) => {
-                const isOverLab = dateRangeOverlaps(
-                  getDate(currentShift.start_time),
-                  getDate(currentShift.end_time),
-                  getDate(element.start_time),
-                  getDate(element.end_time),
-                );
-                console.log(isOverLab);
 
-                if (isOverLab) {
-                  is_add = false;
-                  return;
-                }
-              });
-  
-              if (is_add) {
-                console.log("111111", is_add);
-                changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
-              } 
-              else {
-                showToast("error", t('alreadyShiftAllocated'))
+        if (timeBreakdown && timeBreakdown.length > 0) {
+
+          // if (timeBreakdown.length < 3) {
+          //   const isExist = timeBreakdown.some((each: any) => {
+          //     return (
+          //       currentShift.start_time === each.startTime &&
+          //       currentShift.end_time === each.endTime
+          //     );
+          //   });
+
+          //   console.log("isExist---------->", isExist);
+
+          //   if (!isExist) {
+          //     console.log("timeBreakdown------->", timeBreakdown);
+          //     let is_add = true;
+          //     timeBreakdown.forEach((element: any) => {
+          //       const isOverLab = dateRangeOverlaps(
+          //         getDate(currentShift.start_time),
+          //         getDate(currentShift.end_time),
+          //         getDate(element.start_time),
+          //         getDate(element.end_time),
+          //       );
+          //       console.log("isOverLab--------->", isOverLab);
+
+          //       if (isOverLab) {
+          //         is_add = false;
+          //         return;
+          //       }
+          //     });
+
+          //     if (is_add) {
+          //       console.log("is_add--------------->", is_add);
+          //       changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+          //     }
+          //     else {
+          //       showToast("error", t('alreadyShiftAllocated'))
+          //     }
+          //   }
+
+          // } else {
+          //   // Toast(I18n.t('overLimit'));
+          //   showToast("error", "overLimit")
+          // }
+          if (timeBreakdown.length < 3) {
+            const isMatching = timeBreakdown.some((el: { start_time: any; end_time: any; }) => el.start_time === currentShift.start_time && el.end_time === currentShift.end_time);
+
+            let isOverlapping = false;
+
+            for (let i = 0; i < timeBreakdown.length; i++) {
+              const consolidatedTime = timeBreakdown[i];
+              if (currentShift.start_time >= consolidatedTime.start_time && currentShift.start_time < consolidatedTime.end_time ||
+                currentShift.end_time > consolidatedTime.start_time && currentShift.end_time <= consolidatedTime.end_time ||
+                currentShift.start_time <= consolidatedTime.start_time && currentShift.end_time >= consolidatedTime.end_time) {
+                isOverlapping = true;
+                break;
               }
             }
-         
-          } else {
-            // Toast(I18n.t('overLimit'));
+            if (isMatching) {
+              showToast("error", t('alreadyShiftAllocated'))
+            } else {
+              if (isOverlapping) {
+                showToast("error", t('alreadyShiftAllocated'))
+              } else {
+                changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+              }
+            }
           }
-        } 
+          else {
+            showToast("error", 'Limit exceeds')
+          }
+        }
         else {
-          console.log("2222");
-
           changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
         }
         setWeeklyData(updatedWeek)
         setOpenModel(!openModel)
         shiftTimeReset()
-      } 
+      }
     }
-  
+
     else {
       showToast("error", t('timeCantbeempty'))
     }

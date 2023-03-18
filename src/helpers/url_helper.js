@@ -144,13 +144,13 @@ export const CHANGE_EMPLOYEE_FACE_VALIDATION = 'attendance/changeEmployeeFaceval
  */
 
 
-export const  POST_APP_CONFIG_DETAILS = 'authentication/v1/webAppConfig'
+export const POST_APP_CONFIG_DETAILS = 'authentication/v1/webAppConfig'
 
 /**
  * Update Leaves Type
  */
 
-export const  UPDATE_LEAVE_TYPE = 'attendance/updateLeaveTypes'
+export const UPDATE_LEAVE_TYPE = 'attendance/updateLeaveTypes'
 
 //Create broadcast message
 export const CREATE_BROADCAST_MESSAGE = 'messages/createBroadcastMessage'
@@ -160,3 +160,7 @@ export const FETCH_BROADCAST_MESSAGE = 'messages/getBroadcastMessages'
 
 //get Employee Checking logs Report
 export const GET_EMPLOYEE_CHECK_IN_LOGS_REPORT = 'attendance/getEmployeeCheckInLogs'
+
+//Face Re-Register Request
+
+export const FACE_RE_REGISTER_REQUEST = 'employee/web/v1/getEmployeesFaceRegisterRequestsWithFace'

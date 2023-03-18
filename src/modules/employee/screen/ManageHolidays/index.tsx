@@ -12,6 +12,7 @@ import {
   goTo,
   ROUTE,
   showToast,
+  Today,
   useNav,
   validateName,
 } from "@utils";
@@ -124,6 +125,7 @@ const ManageHolidays = () => {
           <DatePicker
             title={t("pleaseSelect")}
             icon={Icons.Calendar}
+            minDate={Today}
             iconPosition={"append"}
             value={holidayEvents.date}
             onChange={(date: string) => dateTimePickerHandler(date, "date")}

@@ -61,7 +61,8 @@ export const ROUTE = {
   ROUTE_BROADCAST: '/broadcast',
   ROUTE_EVENT_NOTIFICATION: '/event-notification',
   ROUTE_MANAGE_BROADCAST: '/manage-broadcast',
-  ROUTE_MY_NOTIFICATION: '/my-notification'
+  ROUTE_MY_NOTIFICATION: '/my-notification',
+  ROUTE_FACE_RE_REQUEST: '/face-re-request',
 }
 
 
@@ -206,8 +207,9 @@ export const NAV_ITEM = [
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'Face Approval', value: 'FA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_FACE_APPROVAL },
   { id: '18', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST },
-  // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
+  { id: '19', name: 'Face Re-Register ', value: 'FR', icon: 'ni ni-image', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REQUEST },
 
+  // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
   { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
