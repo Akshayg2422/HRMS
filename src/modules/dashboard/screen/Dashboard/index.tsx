@@ -36,11 +36,15 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
+  const { userDetails, success, mobileNumber, error } = useSelector(
+    (state: any) => state.AuthReducer
+  );
 
   const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );
 
+  console.log("userDetails----->", userDetails);
 
 
   useEffect(() => {
