@@ -181,3 +181,6 @@ export const fetchBroadcastMessageApi = (payload) => post(url.FETCH_BROADCAST_ME
 
 export const getDownloadEmployeeCheckingLogReportApi = (payload) => postHeader(url.GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, payload, {}, BASE_URL_REPORTS_PROD)
 
+//Face Re-Register Request
+
+export const faceReRegisterRequestApi = (payload) => post(url.FACE_RE_REGISTER_REQUEST, payload, {})

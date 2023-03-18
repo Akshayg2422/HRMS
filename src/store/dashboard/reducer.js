@@ -24,7 +24,10 @@ import {
   SET_MULTISELECT_ALL_BRANCH_IDS,
   EMPLOYEE_FACE_FAILURE_LIST,
   EMPLOYEE_FACE_FAILURE_LIST_SUCCESS,
-  EMPLOYEE_FACE_FAILURE_LIST_FAIL
+  EMPLOYEE_FACE_FAILURE_LIST_FAIL,
+  FACE_RE_REGISTER_REQUEST,
+  FACE_RE_REGISTER_REQUEST_SUCCESS,
+  FACE_RE_REGISTER_REQUEST_FAIL
 } from "./actionTypes";
 
 const initialState = {
@@ -40,7 +43,8 @@ const initialState = {
   currentPage: 1,
   total: "",
   total_count: "",
-  currentFaceType: -2
+  currentFaceType: -2,
+  faceReRegisterRequestDetails: []
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -220,6 +224,39 @@ const DashboardReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+    //Face Re-Register Request
+
+    case FACE_RE_REGISTER_REQUEST:
+      state = {
+        ...state, loading: true,
+        faceReRegisterRequestDetails: [],
+        numOfPages: 0,
+        currentPage: 1,
+      };
+      break;
+    case FACE_RE_REGISTER_REQUEST_SUCCESS:
+      const employeeFaceReRequest = action.payload.details;
+      state = {
+        ...state,
+        loading: false,
+        faceReRegisterRequestDetails: employeeFaceReRequest.data,
+        numOfPages: employeeFaceReRequest.num_pages,
+        currentPage:
+          employeeFaceReRequest.next_page === -1
+            ? employeeFaceReRequest.num_pages
+            : employeeFaceReRequest.next_page - 1,
+      };
+      break;
+    case FACE_RE_REGISTER_REQUEST_FAIL:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
 
 
 

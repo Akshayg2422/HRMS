@@ -57,6 +57,7 @@ import {
   DeviceInfo,
   BroadCast,
   ManageBroadCast,
+  FaceReRequest,
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -307,6 +308,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_MY_NOTIFICATION}
             element={<RequireAuth>{<Notification />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_FACE_RE_REQUEST}
+            element={<RequireAuth>{<FaceReRequest />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

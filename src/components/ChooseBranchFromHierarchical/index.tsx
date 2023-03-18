@@ -46,8 +46,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
-          console.log("getListAllBranchesList",response);
-          
           setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
 
@@ -221,7 +219,7 @@ const SubLevelComponent = ({
         className="card-header p-3"
         data-toggle="collapse"
         data-target={"#collapse" + item.id}
-        >
+      >
         <div className="row align-items-center mx-4">
           <div className="col-8">
             <h5 className="mb-0">{item.name}</h5>

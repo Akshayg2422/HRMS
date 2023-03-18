@@ -25,8 +25,6 @@ export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuser.zenyq.com'; ///
 export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
 
 
-
-
 export const REACT_APP_APP_URL = PROD_WEB;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 

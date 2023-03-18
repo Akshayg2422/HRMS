@@ -102,7 +102,8 @@ export const Icons = {
   ApplyLeave: require('./icons/ApplyLeave/ApplyLeave.png'),
   Time: require('./icons/Time/time.png'),
   BroadCast:require('./icons/BroadCast/Broadcast.png'),
-  EventNotification:require('./icons/EventNotification/EventNotification.png')
+  EventNotification:require('./icons/EventNotification/EventNotification.png'),
+  FaceRequest:require('./icons/FaceRequest/FaceRequest.png'),
 }
 
 
