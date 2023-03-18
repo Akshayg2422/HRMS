@@ -357,12 +357,15 @@ function* postEsslConfigSaga(action) {
     if (response.success) {
 
       yield put(hideLoader());
-      yield put(postEsslConfigSuccess(response.details));
+      yield put(postEsslConfigSuccess(response));
+      yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(postEsslConfigFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
@@ -386,11 +389,14 @@ function* fetchEsslConfigSaga(action) {
 
       yield put(hideLoader());
       yield put(getEsslConfigSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(getEsslConfigFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
@@ -414,11 +420,14 @@ function* postAddEsslDeviceSaga(action) {
 
       yield put(hideLoader());
       yield put(postAddEsslDeviceSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(postAddEsslDeviceFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
@@ -442,11 +451,14 @@ function* fetchEsslDevicesSaga(action) {
 
       yield put(hideLoader());
       yield put(fetchEsslDevicesSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(fetchEsslDevicesFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
