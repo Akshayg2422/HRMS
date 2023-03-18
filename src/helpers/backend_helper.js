@@ -188,3 +188,12 @@ export const faceReRegisterRequestApi = (payload) => post(url.FACE_RE_REGISTER_R
 // Face Re-Register Change Status
 export const faceReRegisterRequestChangeStatusApi = (payload) => post(url.FACE_RE_REGISTER_REQUEST_CHANGE_STATUS, payload, {})
 
+//set ESSL config
+
+export const setEsslConfigApi = (payload) => post(url.SET_ESSL_CONFIG_URL, payload, {})
+
+//get ESSL config
+
+export const getEsslConfigApi = (payload) => post(url.GET_ESSL_CONFIG_URL, payload, {})
+
+

@@ -36,7 +36,15 @@ import {
   POST_APP_CONFIG_SUCCESS,
   POST_APP_CONFIG_FAILURE,
   GET_APP_CONFIG_DATA,
-  GET_FCM_TOKEN
+  GET_FCM_TOKEN,
+
+  SET_ESSL_CONFIG,
+  SET_ESSL_CONFIG_SUCCESS,
+  SET_ESSL_CONFIG_FAILURE,
+
+  GET_ESSL_CONFIG,
+  GET_ESSL_CONFIG_SUCCESS,
+  GET_ESSL_CONFIG_FAILURE
 } from "./actionTypes";
 
 
@@ -334,5 +342,51 @@ export const getFcmToken = (token) => {
   return {
     type: GET_FCM_TOKEN,
     payload: token,
+  };
+};
+
+//set essl config
+
+export const postEsslConfig = (params) => {
+  return {
+    type: SET_ESSL_CONFIG,
+    payload: params,
+  };
+};
+
+export const postEsslConfigSuccess = (details) => {
+  return {
+    type: SET_ESSL_CONFIG_SUCCESS,
+    payload: details
+  };
+};
+
+export const postEsslConfigFailure = (error) => {
+  return {
+    type: SET_ESSL_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+//get essl config
+
+export const getEsslConfig = (params) => {
+  return {
+    type: GET_ESSL_CONFIG,
+    payload: params,
+  };
+};
+
+export const getEsslConfigSuccess = (details) => {
+  return {
+    type: GET_ESSL_CONFIG_SUCCESS,
+    payload: details
+  };
+};
+
+export const getEsslConfigFailure = (error) => {
+  return {
+    type: GET_ESSL_CONFIG_FAILURE,
+    payload: error,
   };
 };
