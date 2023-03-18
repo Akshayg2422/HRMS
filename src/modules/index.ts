@@ -8,7 +8,8 @@ import {
   registerCompanyDocument,
   resendOtp,
   validateUser,
-  DeviceInfo
+  DeviceInfo,
+  EssiConfig
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile, DashBoardOtp } from './dashboard';
 
@@ -105,7 +106,8 @@ export {
   DeviceInfo,
   BroadCast,
   ManageBroadCast,
-  FaceReRequest
+  FaceReRequest,
+  EssiConfig
 }
 
 

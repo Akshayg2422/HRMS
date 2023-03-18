@@ -58,6 +58,7 @@ import {
   BroadCast,
   ManageBroadCast,
   FaceReRequest,
+  EssiConfig,
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -313,6 +314,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_FACE_RE_REQUEST}
             element={<RequireAuth>{<FaceReRequest />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_ESSI_CONFIG}
+            element={<RequireAuth>{<EssiConfig/>}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />
