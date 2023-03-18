@@ -51,7 +51,9 @@ import {
 
   GET_ESSL_DEVICES,
   GET_ESSL_DEVICES_SUCCESS,
-  GET_ESSL_DEVICES_FAILURE
+  GET_ESSL_DEVICES_FAILURE,
+
+  ESSL_DEVICE_DETAILS
 } from "./actionTypes";
 
 
@@ -114,7 +116,8 @@ const initialState = {
   appConfig: {},
   fcmToken: '',
   esslConfigDataList: [],
-  esslDevicesData: []
+  esslDevicesData: [],
+  esslDeviceDetails: undefined
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -450,9 +453,9 @@ const AuthReducer = (state = initialState, action) => {
       };
       break;
 
-       /**
-  * add essl device
-  */
+    /**
+* add essl device
+*/
     case ADD_ESSL_DEVICE:
       state = {
         ...state,
@@ -473,9 +476,9 @@ const AuthReducer = (state = initialState, action) => {
       };
       break;
 
-            /**
-  * GET essl device
-  */
+    /**
+* GET essl device
+*/
     case GET_ESSL_DEVICES:
       state = {
         ...state,
@@ -496,6 +499,15 @@ const AuthReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+      //essl device details
+
+      case ESSL_DEVICE_DETAILS:
+        state = {
+          ...state,
+          esslDeviceDetails: action.payload
+        };
+        break;
 
 
     default:

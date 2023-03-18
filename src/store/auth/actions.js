@@ -52,7 +52,9 @@ import {
 
   GET_ESSL_DEVICES,
   GET_ESSL_DEVICES_SUCCESS,
-  GET_ESSL_DEVICES_FAILURE
+  GET_ESSL_DEVICES_FAILURE,
+
+  ESSL_DEVICE_DETAILS
 } from "./actionTypes";
 
 
@@ -444,3 +446,12 @@ export const fetchEsslDevicesFailure = (error) => {
     payload: error,
   };
 };
+
+/**
+ * ESSL device details
+ */
+
+export const esslDeviceDetails = (params) => ({
+  type: ESSL_DEVICE_DETAILS,
+  payload: params,
+});
