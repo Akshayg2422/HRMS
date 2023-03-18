@@ -64,6 +64,7 @@ export const ROUTE = {
   ROUTE_MY_NOTIFICATION: '/my-notification',
   ROUTE_FACE_RE_REQUEST: '/face-re-request',
   ROUTE_ESSI_CONFIG: '/essi-Config',
+  ROUTE_MANAGE_ESSL_CONFIG: '/manage-essl-config'
 }
 
 
