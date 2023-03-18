@@ -9,7 +9,9 @@ import {
   resendOtp,
   validateUser,
   DeviceInfo,
-  EssiConfig
+  EsslConfig,
+  ManageEsslConfig,
+  ManageDevices
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile, DashBoardOtp } from './dashboard';
 
@@ -107,7 +109,9 @@ export {
   BroadCast,
   ManageBroadCast,
   FaceReRequest,
-  EssiConfig
+  EsslConfig,
+  ManageEsslConfig,
+  ManageDevices
 }
 
 

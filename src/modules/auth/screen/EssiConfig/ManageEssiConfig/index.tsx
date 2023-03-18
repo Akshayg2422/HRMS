@@ -2,13 +2,19 @@ import { BackArrow, FormWrapper, InputText } from '@components'
 import { postEsslConfig } from '../../../../../store/auth/actions';
 import { goBack, showToast, useNav, validateName } from '@utils'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 
 function ManageEsslConfig() {
 
     let dispatch = useDispatch();
+    const { t } = useTranslation();
     const navigation = useNav();
 
+
+    const { editEsslConfigDetails } = useSelector(
+        (state: any) => state.AuthReducer
+    );
 
     const [esslConfig, setEsslConfig] = useState({
         name: '',
@@ -16,11 +22,13 @@ function ManageEsslConfig() {
         baseUrl: '',
     })
 
+    // editEsslConfigDetails
+
     const addEsslConfig = () => {
 
         const params = {
             essl_config: {
-                baseurl:'http://localhost:3001/manage-essl-config',
+                baseurl: 'http://localhost:3001/manage-essl-config',
                 password: esslConfig.password,
                 username: esslConfig.name
             }
@@ -46,12 +54,21 @@ function ManageEsslConfig() {
     };
 
     return (
-        <FormWrapper title={'Add ESSL config'} onClick={() => {
+        <FormWrapper title={editEsslConfigDetails ? t('EditEsslConfig') : t('AddEsslConfig')} buttonTittle={editEsslConfigDetails ? t("update") : t("submit")} onClick={() => {
             addEsslConfig()
         }}>
             <InputText
-                label={'User name'}
-                placeholder={'User name'}
+                label={t('BaseUrl')}
+                placeholder={t('BaseUrl')}
+                value={esslConfig.baseUrl}
+                name={"baseUrl"}
+                onChange={(event) => {
+                    onChangeHandler(event);
+                }}
+            />
+            <InputText
+                label={t('userName')}
+                placeholder={t('UserName')}
                 validator={validateName}
                 value={esslConfig.name}
                 name={"name"}
@@ -60,25 +77,17 @@ function ManageEsslConfig() {
                 }}
             />
             <InputText
-                label={'Password'}
-                placeholder={'Password'}
+                label={t('password')}
+                placeholder={t('password')}
                 value={esslConfig.password}
                 name={"password"}
                 onChange={(event) => {
                     onChangeHandler(event);
                 }}
             />
-            <InputText
-                label={'Base URL'}
-                placeholder={'Base URL'}
-                value={esslConfig.baseUrl}
-                name={"baseUrl"}
-                onChange={(event) => {
-                    onChangeHandler(event);
-                }}
-            />
+
         </FormWrapper>
     )
 }
 
-export default ManageEsslConfig
+export  {ManageEsslConfig}

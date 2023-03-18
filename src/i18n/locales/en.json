@@ -466,6 +466,9 @@
     "message": "Message",
     "deleteMessage":"Delete message",
     "broadcastWarningMessage":"Please click on Proceed to Delete message",
-    "working":"Working"
+    "working":"Working",
+    "AddEsslConfig":"Add ESSL Config",
+    "EditEsslConfig":"Edit ESSL Config"
+
   }
 }

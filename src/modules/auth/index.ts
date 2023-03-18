@@ -1,6 +1,5 @@
 
-import {Welcome, Login, Otp, Register,DeviceInfo,EssiConfig} from './screen';
-
+import { Welcome, Login, Otp, Register, DeviceInfo, ManageEsslConfig, EsslConfig, ManageDevices } from './screen';
 
 import {
   getDashboardDetails,
@@ -13,6 +12,7 @@ import {
   resendOtp,
   validateUser
 } from './service'
+
 export {
   getDashboardDetails,
   getNatureOfBusiness,
@@ -23,5 +23,5 @@ export {
   registerCompanyDocument,
   resendOtp,
   validateUser,
-  Welcome, Login, Otp, Register,DeviceInfo,EssiConfig
+  Welcome, Login, Otp, Register, DeviceInfo, EsslConfig, ManageEsslConfig, ManageDevices
 }

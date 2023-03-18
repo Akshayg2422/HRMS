@@ -58,7 +58,9 @@ import {
   BroadCast,
   ManageBroadCast,
   FaceReRequest,
-  EssiConfig,
+  EsslConfig,
+  ManageEsslConfig,
+  ManageDevices
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -73,7 +75,6 @@ import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
-import ManageEsslConfig from "./modules/auth/screen/EssiConfig/ManageEssiConfig";
 
 function App() {
 
@@ -318,12 +319,17 @@ function App() {
 
           <Route
             path={ROUTE.ROUTE_ESSI_CONFIG}
-            element={<RequireAuth>{<EssiConfig />}</RequireAuth>}
+            element={<RequireAuth>{<EsslConfig />}</RequireAuth>}
           />
 
           <Route
             path={ROUTE.ROUTE_MANAGE_ESSL_CONFIG}
             element={<RequireAuth>{<ManageEsslConfig />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_MANAGE_ESSL_DEVICES}
+            element={<RequireAuth>{<ManageDevices />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

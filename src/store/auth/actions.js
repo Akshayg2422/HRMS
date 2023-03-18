@@ -44,7 +44,8 @@ import {
 
   GET_ESSL_CONFIG,
   GET_ESSL_CONFIG_SUCCESS,
-  GET_ESSL_CONFIG_FAILURE
+  GET_ESSL_CONFIG_FAILURE,
+  EDIT_ESSL_CONFIG_DETAILS
 } from "./actionTypes";
 
 
@@ -387,6 +388,14 @@ export const getEsslConfigSuccess = (details) => {
 export const getEsslConfigFailure = (error) => {
   return {
     type: GET_ESSL_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const editEsslConfig = (error) => {
+  return {
+    type: EDIT_ESSL_CONFIG_DETAILS,
     payload: error,
   };
 };

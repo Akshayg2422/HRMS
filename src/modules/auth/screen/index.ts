@@ -3,8 +3,6 @@ import Login from "./Login"
 import Otp from "./Otp"
 import Register from "./Register"
 import DeviceInfo from './DeviceInfo'
-import EssiConfig from './EssiConfig'
+import { EsslConfig, ManageEsslConfig, ManageDevices } from "./EssiConfig"
 
-
-
-export { Welcome, Login, Otp, Register, DeviceInfo, EssiConfig }
+export { Welcome, Login, Otp, Register, DeviceInfo, EsslConfig, ManageEsslConfig, ManageDevices }

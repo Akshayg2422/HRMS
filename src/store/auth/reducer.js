@@ -43,7 +43,8 @@ import {
 
   GET_ESSL_CONFIG,
   GET_ESSL_CONFIG_SUCCESS,
-  GET_ESSL_CONFIG_FAILURE
+  GET_ESSL_CONFIG_FAILURE,
+  EDIT_ESSL_CONFIG_DETAILS
 } from "./actionTypes";
 
 
@@ -105,7 +106,8 @@ const initialState = {
   ],
   appConfig: {},
   fcmToken: '',
-  esslConfigDataList: []
+  esslConfigDataList: {},
+  editEsslConfigDetails: ''
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -440,7 +442,13 @@ const AuthReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
-
+    // editEsslConfigDetails
+    case EDIT_ESSL_CONFIG_DETAILS:
+      state = {
+        ...state,
+        editEsslConfigDetails: action.payload,
+      };
+      break;
 
     default:
       state = state;

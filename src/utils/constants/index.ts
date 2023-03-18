@@ -64,7 +64,9 @@ export const ROUTE = {
   ROUTE_MY_NOTIFICATION: '/my-notification',
   ROUTE_FACE_RE_REQUEST: '/face-re-request',
   ROUTE_ESSI_CONFIG: '/essi-Config',
-  ROUTE_MANAGE_ESSL_CONFIG: '/manage-essl-config'
+  ROUTE_MANAGE_ESSL_CONFIG: '/manage-essl-config',
+  ROUTE_MANAGE_ESSL_DEVICES: '/manage-essl-devices'
+
 }
 
 
@@ -212,7 +214,7 @@ export const NAV_ITEM = [
   { id: '19', name: 'Face Re-Register ', value: 'FR', icon: 'ni ni-image', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REQUEST },
   // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
   { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
-  { id: '21', name: 'ESSI Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG },
+  { id: '21', name: 'ESSL Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG },
   // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
 
