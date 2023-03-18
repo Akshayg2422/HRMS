@@ -1,10 +1,10 @@
 import { takeLatest, put, call } from "redux-saga/effects";
 
-import { FETCH_DASHBOARD, GET_CHECK_IN_DETAILED_LOG, URL_CHECK_IN, POST_DAILY_LOG, EMPLOYEE_FACE_FAILURE_LIST, CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST, URL_DELETE_USER, EDIT_PROFILE_PICTURE, FACE_RE_REGISTER_REQUEST } from "./actionTypes";
+import { FETCH_DASHBOARD, GET_CHECK_IN_DETAILED_LOG, URL_CHECK_IN, POST_DAILY_LOG, EMPLOYEE_FACE_FAILURE_LIST, CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST, URL_DELETE_USER, EDIT_PROFILE_PICTURE, FACE_RE_REGISTER_REQUEST,FACE_RE_REGISTER_CHANGE_STATUS } from "./actionTypes";
 
-import { getDashboardFail, getDashboardSuccess, checkInDetailedLogSuccess, checkInDetailedLogFail, checkInUserFail, checkInUserSuccess, dailyLogFail, dailyLogSuccess, getEmployeesLoginFaceFailureActionSuccess, getEmployeesLoginFaceFailureActionFail, changeEmployeeFaceValidationRequestActionSuccess, changeEmployeeFaceValidationRequestActionFail, faceReRegisterRequestActionSuccess, faceReRegisterRequestActionFail } from "./actions";
+import { getDashboardFail, getDashboardSuccess, checkInDetailedLogSuccess, checkInDetailedLogFail, checkInUserFail, checkInUserSuccess, dailyLogFail, dailyLogSuccess, getEmployeesLoginFaceFailureActionSuccess, getEmployeesLoginFaceFailureActionFail, changeEmployeeFaceValidationRequestActionSuccess, changeEmployeeFaceValidationRequestActionFail, faceReRegisterRequestActionSuccess, faceReRegisterRequestActionFail, faceReRegisterRequestChangeStatusSuccess, faceReRegisterRequestChangeStatusFail } from "./actions";
 
-import { deleteAccountUser, fetchDashboard, fetchCheckInDetailedLogPerDay, postCheckInUser, postDailyLog, postEditProfilePicture, postGetEmployeesLoginFaceFailureApi, postChangeEmployeeFaceValidationRequestApi, faceReRegisterRequestApi } from "../../helpers/backend_helper";
+import { deleteAccountUser, fetchDashboard, fetchCheckInDetailedLogPerDay, postCheckInUser, postDailyLog, postEditProfilePicture, postGetEmployeesLoginFaceFailureApi, postChangeEmployeeFaceValidationRequestApi, faceReRegisterRequestApi, faceReRegisterRequestChangeStatusApi } from "../../helpers/backend_helper";
 import { deleteAccountUserFail, deleteAccountUserSuccess, editProfilePictureFail, editProfilePictureSuccess } from "../dashboard/actions";
 
 
@@ -219,6 +219,27 @@ function* FaceReRegisterRequestSaga(action) {
   }
 }
 
+//// Face Re-Register Change Status
+
+function* FaceReRegisterRequestChangeStatusSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(faceReRegisterRequestChangeStatusApi, action.payload.params);
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(faceReRegisterRequestChangeStatusSuccess(response));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(faceReRegisterRequestChangeStatusFail(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(faceReRegisterRequestChangeStatusFail(error));
+  }
+}
+
 function* DashboardSaga() {
   yield takeLatest(FETCH_DASHBOARD, getDashboard);
   yield takeLatest(GET_CHECK_IN_DETAILED_LOG, checkInLog);
@@ -229,7 +250,7 @@ function* DashboardSaga() {
   yield takeLatest(EMPLOYEE_FACE_FAILURE_LIST, getEmployeesLoginFaceFailureSaga);
   yield takeLatest(CHANGE_EMPLOYEE_FACE_VALIDATION_REQUEST, changeEmployeeFaceValidationRequestSaga);
   yield takeLatest(FACE_RE_REGISTER_REQUEST, FaceReRegisterRequestSaga);
-
+  yield takeLatest(FACE_RE_REGISTER_CHANGE_STATUS, FaceReRegisterRequestChangeStatusSaga);
 }
 
 export default DashboardSaga;

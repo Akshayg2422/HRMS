@@ -34,8 +34,9 @@ const RejectFaceRequest = () => {
             data.map((el: any) => {
                 return {
                     "UserPhoto": <><img src={el?.employee_photos[0]} height={150} style={{ objectFit: "cover" }} width={100}></img>
-                        <img className='ml-3' src={el?.employee_photos[3]} height={150} style={{ objectFit: "cover" }} width={100}></img></>,
-                    "LogPhoto": <img src={base64ToImage(el?.log_photos_b64)} height={150} style={{ objectFit: "cover" }} width={100}></img>,
+                        {/* <img className='ml-3' src={el?.employee_photos[3]} height={150} style={{ objectFit: "cover" }} width={100}></img> */}
+                    </>,
+                    "Re-register Photo": <img src={el?.log_photos_b64[0]} height={150} style={{ objectFit: "cover" }} width={100}></img>,
                     name: `${el?.name}`,
                     "PhoneNo": el?.mobile_number,
                     "Location": el?.checkin_location,

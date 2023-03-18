@@ -16,6 +16,12 @@ const SAMPLE_IP = 'http://3.109.244.227:8000';
 // const PROD = 'https://api.zenyq.com';
 const PROD_WEB = 'https://webapi.zenyq.com';
 
+
+export const REACT_APP_APP_URL = LOCAL_PROD;
+// 'http://localhost:8000' 
+// 'http://43.204.233.45' 
+// process.env.REACT_APP_APP_URL;
+
 export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
 
 export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
@@ -23,12 +29,6 @@ export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
 export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuser.zenyq.com'; ////
 
 export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
-
-
-export const REACT_APP_APP_URL = PROD_WEB;
-// 'http://localhost:8000' 
-// 'http://43.204.233.45' 
-// process.env.REACT_APP_APP_URL;
 
 
 const axiosApi = axios.create({
@@ -100,7 +100,7 @@ export async function postHeader(url, data, config, baseUrlType) {
   });
 
   let headers = { ...await getHeaders() }
-  
+
   return await baseUrl
     .post(url, data, {
       ...config,

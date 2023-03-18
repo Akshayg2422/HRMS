@@ -19,10 +19,19 @@
   }
   
   .form-control.form-select option {
-    padding: 10px ; /* increase padding for the options */
+    padding: 10px; /* increase padding for the options */
     margin-top: 30px;
+    white-space: nowrap; /* prevent text from wrapping */
+    overflow-x: auto; /* enable horizontal scrolling */
   }
   
   .form-control.form-select::placeholder {
     padding: 10px; /* increase padding for the placeholder */
+  }
+
+
+  .long-text-dropdown {
+    overflow-x: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }

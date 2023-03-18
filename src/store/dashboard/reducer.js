@@ -27,7 +27,10 @@ import {
   EMPLOYEE_FACE_FAILURE_LIST_FAIL,
   FACE_RE_REGISTER_REQUEST,
   FACE_RE_REGISTER_REQUEST_SUCCESS,
-  FACE_RE_REGISTER_REQUEST_FAIL
+  FACE_RE_REGISTER_REQUEST_FAIL,
+  FACE_RE_REGISTER_CHANGE_STATUS,
+  FACE_RE_REGISTER_CHANGE_STATUS_SUCCESS,
+  FACE_RE_REGISTER_CHANGE_STATUS_FAIL
 } from "./actionTypes";
 
 const initialState = {
@@ -256,6 +259,24 @@ const DashboardReducer = (state = initialState, action) => {
       };
       break;
 
+    //// Face Re-Register Change Status
+
+    case FACE_RE_REGISTER_CHANGE_STATUS:
+      state = { ...state, loading: true };
+      break;
+    case FACE_RE_REGISTER_CHANGE_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case FACE_RE_REGISTER_CHANGE_STATUS_FAIL:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
 
 

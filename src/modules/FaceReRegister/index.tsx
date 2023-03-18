@@ -90,9 +90,9 @@ function FaceReRequest() {
             additionClass={"mt-sm-3 mb-xl-3"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
+
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
