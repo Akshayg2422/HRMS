@@ -349,9 +349,7 @@ function* postAppConfigDetailsSaga(action) {
 
 function* postEsslConfigSaga(action) {
   try {
-
     yield put(showLoader());
-
     const response = yield call(setEsslConfigApi, action.payload.params);
 
     if (response.success) {
@@ -453,9 +451,7 @@ function* fetchEsslDevicesSaga(action) {
       yield put(fetchEsslDevicesSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
 
-
     } else {
-
       yield put(hideLoader());
       yield put(fetchEsslDevicesFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
@@ -468,8 +464,6 @@ function* fetchEsslDevicesSaga(action) {
 
   }
 }
-
-
 
 ///watcher///
 

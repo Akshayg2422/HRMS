@@ -1,6 +1,6 @@
 import { BackArrow, FormWrapper, InputText } from '@components'
 import { postEsslConfig } from '../../../../../store/auth/actions';
-import { goBack, showToast, useNav, validateName } from '@utils'
+import { goBack, showToast, useNav, validateDefault, validateName } from '@utils'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -24,37 +24,49 @@ function ManageEsslConfig() {
 
     useEffect(() => {
         if (editEsslConfigDetails) {
-            setEsslConfig({ ...esslConfig, name: editEsslConfigDetails.username, baseUrl: editEsslConfigDetails.baseurl, password: editEsslConfigDetails.password })
+            setEsslConfig({ ...esslConfig, name: editEsslConfigDetails?.essl_config?.username, baseUrl: editEsslConfigDetails?.essl_config?.baseurl, password: editEsslConfigDetails?.essl_config?.password })
         }
     }, [])
 
 
     // editEsslConfigDetails
+    const validateParams = () => {
+        if (validateName(esslConfig.name).status === false) {
+            showToast("error", t("invalidName"));
+            return false;
+        } else if (validateDefault(esslConfig.baseUrl).status === false) {
+            showToast("error", t("invalidName"));
+            return false;
+        } else if (validateDefault(esslConfig.password).status === false) {
+            showToast("error", t("invalidName"));
+            return false;
+        }
+         else {
+            return true;
+        }
+    }
 
     const addEsslConfig = () => {
-
-        const params = {
-            essl_config: {
-                baseurl: 'http://localhost:3001/manage-essl-config',
-                password: esslConfig.password,
-                username: esslConfig.name
+        if (validateParams()) {
+            const params = {
+                essl_config: {
+                    baseurl: esslConfig.baseUrl,
+                    password: esslConfig.password,
+                    username: esslConfig.name
+                }
             }
+            console.log("params------->", params);
+            dispatch(postEsslConfig({
+                params,
+                onSuccess: (success: any) => {
+                    showToast("success", success.message)
+                    goBack(navigation);
+                },
+                onError: (error: string) => {
+                    showToast("error", error)
+                },
+            }));
         }
-        console.log("params------->", params);
-
-        dispatch(postEsslConfig({
-            params,
-            onSuccess: (success: any) => {
-                console.log("successs----->", success);
-                showToast("success", success.message)
-
-                goBack(navigation);
-            },
-            onError: (error: string) => {
-                showToast("error", error)
-            },
-        }));
-
     }
 
     const onChangeHandler = (e: any) => {
@@ -69,6 +81,7 @@ function ManageEsslConfig() {
                 label={t('BaseUrl')}
                 placeholder={t('BaseUrl')}
                 value={esslConfig.baseUrl}
+                validator={validateDefault}
                 name={"baseUrl"}
                 onChange={(event) => {
                     onChangeHandler(event);
@@ -87,6 +100,7 @@ function ManageEsslConfig() {
             <InputText
                 label={t('password')}
                 placeholder={t('password')}
+                validator={validateDefault}
                 value={esslConfig.password}
                 name={"password"}
                 onChange={(event) => {
