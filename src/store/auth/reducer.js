@@ -116,9 +116,8 @@ const initialState = {
   ],
   appConfig: {},
   fcmToken: '',
-  esslConfigDataList: {},
+  esslConfigDataList: '',
   editEsslConfigDetails: '',
-  esslConfigDataList: [],
   esslDevicesData: [],
   esslDeviceDetails: undefined
 };
@@ -439,6 +438,7 @@ const AuthReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: true,
+        esslConfigDataList: ''
       };
       break;
     case GET_ESSL_CONFIG_SUCCESS:
@@ -510,14 +510,14 @@ const AuthReducer = (state = initialState, action) => {
       };
       break;
 
-      //essl device details
+    //essl device details
 
-      case ESSL_DEVICE_DETAILS:
-        state = {
-          ...state,
-          esslDeviceDetails: action.payload
-        };
-        break;
+    case ESSL_DEVICE_DETAILS:
+      state = {
+        ...state,
+        esslDeviceDetails: action.payload
+      };
+      break;
 
 
     default:

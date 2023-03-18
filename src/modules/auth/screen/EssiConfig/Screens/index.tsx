@@ -50,36 +50,37 @@ function EsslConfig() {
 
   }
 
+
   return (
     <>
       <Card>
         <Container additionClass='d-flex justify-content-between'>
           <h3>{t('ESSL Config')}</h3>
-          <Primary text={Object.keys(esslConfigDataList).length > 0 ? t('edit') : t('add')}
-            onClick={() => handleNavigation(Object.keys(esslConfigDataList).length > 0 ? t('edit') : t('add'))}
+          <Primary text={esslConfigDataList  && Object?.keys(esslConfigDataList?.essl_config).length > 0 ? t('edit') : t('add')}
+            onClick={() => handleNavigation(esslConfigDataList && Object?.keys(esslConfigDataList?.essl_config).length > 0 ? t('edit') : t('add'))}
           />
         </Container>
-        {Object.keys(esslConfigDataList).length > 0 &&
+        {esslConfigDataList && Object?.keys(esslConfigDataList?.essl_config).length > 0 &&
           <Container additionClass='mt-4 col-xl-6'>
             <Container>
               <Container textAlign={"text-left"}>
                 <span>
                   {t('BaseUrl')}
                   {":"}&nbsp;&nbsp;
-                  <span className="text-black">{esslConfigDataList.baseurl}</span>
+                  <span className="text-black">{esslConfigDataList?.essl_config?.baseurl}</span>
                 </span>
                 <br />
                 <span >
                   {t("userName")}
                   {":"}&nbsp;&nbsp;
-                  <span className="text-black">{esslConfigDataList.username}</span>
+                  <span className="text-black">{esslConfigDataList?.essl_config?.username}</span>
                 </span>
                 <br />
                 <span>
                   {t('Password')}
                   {":"}&nbsp;&nbsp;
                   <span className="text-black">
-                    {esslConfigDataList.password ? '******' : ''}
+                    {esslConfigDataList?.essl_config?.password ? '******' : ''}
                   </span>
                 </span>
               </Container>
