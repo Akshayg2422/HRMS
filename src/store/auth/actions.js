@@ -44,7 +44,15 @@ import {
 
   GET_ESSL_CONFIG,
   GET_ESSL_CONFIG_SUCCESS,
-  GET_ESSL_CONFIG_FAILURE
+  GET_ESSL_CONFIG_FAILURE,
+
+  ADD_ESSL_DEVICE,
+  ADD_ESSL_DEVICE_SUCCESS,
+  ADD_ESSL_DEVICE_FAILURE,
+
+  GET_ESSL_DEVICES,
+  GET_ESSL_DEVICES_SUCCESS,
+  GET_ESSL_DEVICES_FAILURE
 } from "./actionTypes";
 
 
@@ -387,6 +395,52 @@ export const getEsslConfigSuccess = (details) => {
 export const getEsslConfigFailure = (error) => {
   return {
     type: GET_ESSL_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+//add essl device
+
+export const postAddEsslDevice = (params) => {
+  return {
+    type: ADD_ESSL_DEVICE,
+    payload: params,
+  };
+};
+
+export const postAddEsslDeviceSuccess = (details) => {
+  return {
+    type: ADD_ESSL_DEVICE_SUCCESS,
+    payload: details
+  };
+};
+
+export const postAddEsslDeviceFailure = (error) => {
+  return {
+    type: ADD_ESSL_DEVICE_FAILURE,
+    payload: error,
+  };
+};
+
+//add essl device
+
+export const fetchEsslDevices = (params) => {
+  return {
+    type: GET_ESSL_DEVICES,
+    payload: params,
+  };
+};
+
+export const fetchEsslDevicesSuccess = (details) => {
+  return {
+    type: GET_ESSL_DEVICES_SUCCESS,
+    payload: details
+  };
+};
+
+export const fetchEsslDevicesFailure = (error) => {
+  return {
+    type: GET_ESSL_DEVICES_FAILURE,
     payload: error,
   };
 };

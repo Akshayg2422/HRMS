@@ -13,7 +13,10 @@ import {
   POST_APP_CONFIG,
 
   SET_ESSL_CONFIG,
-  GET_ESSL_CONFIG
+  GET_ESSL_CONFIG,
+
+  ADD_ESSL_DEVICE,
+  GET_ESSL_DEVICES
 } from "./actionTypes";
 
 import {
@@ -42,7 +45,13 @@ import {
   postEsslConfigFailure,
 
   getEsslConfigSuccess,
-  getEsslConfigFailure
+  getEsslConfigFailure,
+
+  postAddEsslDeviceSuccess,
+  postAddEsslDeviceFailure,
+
+  fetchEsslDevicesSuccess,
+  fetchEsslDevicesFailure
 
 } from "./actions";
 
@@ -58,7 +67,10 @@ import {
   postAppConfigDetailsApi,
 
   setEsslConfigApi,
-  getEsslConfigApi
+  getEsslConfigApi,
+
+  addEsslDeviceApi,
+  getEsslDevicesApi
 } from "../../helpers/backend_helper";
 
 import {
@@ -389,6 +401,62 @@ function* fetchEsslConfigSaga(action) {
   }
 }
 
+//add essl device
+
+function* postAddEsslDeviceSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(addEsslDeviceApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(postAddEsslDeviceSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(postAddEsslDeviceFailure(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(postAddEsslDeviceFailure("Invalid Request"));
+
+  }
+}
+
+//get essl devices
+
+function* fetchEsslDevicesSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(getEsslDevicesApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(fetchEsslDevicesSuccess(response.details));
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(fetchEsslDevicesFailure(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(fetchEsslDevicesFailure("Invalid Request"));
+
+  }
+}
+
 
 
 ///watcher///
@@ -407,6 +475,9 @@ function* AuthSaga() {
 
   yield takeLatest(SET_ESSL_CONFIG, postEsslConfigSaga);
   yield takeLatest(GET_ESSL_CONFIG, fetchEsslConfigSaga);
+  yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
+  yield takeLatest(GET_ESSL_DEVICES, fetchEsslDevicesSaga);
+
 
 
 }

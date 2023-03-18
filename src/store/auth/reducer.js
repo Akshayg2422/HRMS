@@ -43,7 +43,15 @@ import {
 
   GET_ESSL_CONFIG,
   GET_ESSL_CONFIG_SUCCESS,
-  GET_ESSL_CONFIG_FAILURE
+  GET_ESSL_CONFIG_FAILURE,
+
+  ADD_ESSL_DEVICE,
+  ADD_ESSL_DEVICE_SUCCESS,
+  ADD_ESSL_DEVICE_FAILURE,
+
+  GET_ESSL_DEVICES,
+  GET_ESSL_DEVICES_SUCCESS,
+  GET_ESSL_DEVICES_FAILURE
 } from "./actionTypes";
 
 
@@ -105,7 +113,8 @@ const initialState = {
   ],
   appConfig: {},
   fcmToken: '',
-  esslConfigDataList: []
+  esslConfigDataList: [],
+  esslDevicesData: []
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -434,6 +443,53 @@ const AuthReducer = (state = initialState, action) => {
       };
       break;
     case GET_ESSL_CONFIG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+       /**
+  * add essl device
+  */
+    case ADD_ESSL_DEVICE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ADD_ESSL_DEVICE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case ADD_ESSL_DEVICE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+            /**
+  * GET essl device
+  */
+    case GET_ESSL_DEVICES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_ESSL_DEVICES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        esslDevicesData: action.payload
+      };
+      break;
+    case GET_ESSL_DEVICES_FAILURE:
       state = {
         ...state,
         error: action.payload,
