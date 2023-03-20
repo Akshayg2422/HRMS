@@ -10,7 +10,7 @@ function DashBoardCard() {
   const navigate = useNav();
   const dispatch = useDispatch();
 
-  const { userDetails} = useSelector(
+  const { userDetails } = useSelector(
     (state: any) => state.AuthReducer
   );
 
@@ -24,24 +24,50 @@ function DashBoardCard() {
   return (
     <Container flexDirection={"row"} >
       {NAV_ITEM.map((it, index) => {
-        return (
-          <>
-            {it.name !== "Dashboard" &&  <Container additionClass={"col-xl-3 col-md-6"}>
-              <Card
-                onClick={() => currentNav(it, index)}
-              >
-                <Container
-                  additionClass={"d-flex py-3"}
+
+        if (userDetails.is_admin === false) {
+          if (it.name !== 'ESSL Config') {
+            return (
+              <>
+                {it.name !== "Dashboard" && <Container additionClass={"col-xl-3 col-md-6"}>
+                  <Card
+                    onClick={() => currentNav(it, index)}
+                  >
+                    <Container
+                      additionClass={"d-flex py-3"}
+                    >
+                      <ImageView additionClass="mr-1" icon={it?.image} alt={it.name} height={50} width={50} />
+                      <h4 className="text-black m-auto font-weight-bold">
+                        {it.name}
+                      </h4>
+                    </Container>
+                  </Card>
+                </Container>}
+              </>
+            );
+          }
+        }
+        else {
+          return (
+            <>
+              {it.name !== "Dashboard" && <Container additionClass={"col-xl-3 col-md-6"}>
+                <Card
+                  onClick={() => currentNav(it, index)}
                 >
-                  <ImageView additionClass="mr-1" icon={it?.image} alt={it.name} height={50} width={50} />
-                  <h4 className="text-black m-auto font-weight-bold">
-                    {it.name}
-                  </h4>
-                </Container>
-              </Card>
-            </Container>}
-          </>
-        );
+                  <Container
+                    additionClass={"d-flex py-3"}
+                  >
+                    <ImageView additionClass="mr-1" icon={it?.image} alt={it.name} height={50} width={50} />
+                    <h4 className="text-black m-auto font-weight-bold">
+                      {it.name}
+                    </h4>
+                  </Container>
+                </Card>
+              </Container>}
+            </>
+          );
+        }
+
       })}
     </Container >
   );

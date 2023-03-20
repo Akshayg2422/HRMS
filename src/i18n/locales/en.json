@@ -470,6 +470,12 @@
     "AddEsslConfig":"Add ESSL Config",
     "EditEsslConfig":"Edit ESSL Config",
     "AddDevices":"Add Device",
-    "DeviceId":"Device Id"
+    "DeviceId":"Device Id",
+    "nameError":"Name input field cannot be empty",
+    "deviceError":"Device input field cannot be empty",
+    "deviceIdError":"Device ID should be 12-15 characters",
+    "invalidPassword":"Password field cannot be empty",
+    "invalidBaseurl":"Base URL field cannot be empty",
+    "editDevice":"Edit Device"
   }
 }

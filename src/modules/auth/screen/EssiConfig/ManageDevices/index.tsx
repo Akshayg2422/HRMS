@@ -77,27 +77,56 @@ function ManageDevices() {
         );
     }
 
+    const validatePostParams = () => {
 
+        if (!devicesDetails.name) {
+            showToast('error', t('nameError'))
+            return false
+        }
+        else if (!devicesDetails.device_id) {
+            showToast('error', t('deviceError'))
+            return false
+        }
+        else if (devicesDetails.device_id.length < 12) {
+            showToast('error', t('deviceIdError'))
+            return false
+        }
+        else if (devicesDetails.device_id.length > 15) {
+            showToast('error', t('deviceIdError'))
+            return false
+        }
+        else if (!devicesDetails.branch_id) {
+            showToast('error', t('invalidBranch'))
+            return false
+        }
+        
+        else {
+            return true
+        }
+    }
 
 
     const addDevices = () => {
 
-        const params = {
-            name: devicesDetails.name,
-            device_id: devicesDetails.device_id,
-            branch_id: devicesDetails.branch_id,
-            ...(esslDeviceDetails && { id: esslDeviceDetails?.id })
+        if (validatePostParams()) {
+            const params = {
+                name: devicesDetails.name,
+                device_id: devicesDetails.device_id,
+                branch_id: devicesDetails.branch_id,
+                ...(esslDeviceDetails && { id: esslDeviceDetails?.id })
+            }
+            dispatch(postAddEsslDevice({
+                params,
+                onSuccess: (success: any) => {
+                    showToast("success", success.message)
+                    goBack(navigation);
+                },
+                onError: (error: string) => {
+                    showToast("error", error)
+                },
+            }));
         }
-        dispatch(postAddEsslDevice({
-            params,
-            onSuccess: (success: any) => {
-                showToast("success", success.message)
-                goBack(navigation);
-            },
-            onError: (error: string) => {
-                showToast("error", error)
-            },
-        }));
+
 
     }
 
@@ -106,7 +135,7 @@ function ManageDevices() {
     };
 
     return (
-        <FormWrapper title={esslDeviceDetails ? 'Edit Device' : t('AddDevices')} buttonTittle={esslDeviceDetails ? t("update") : t("submit")} onClick={() => {
+        <FormWrapper title={esslDeviceDetails ? t('editDevice') : t('AddDevices')} buttonTittle={esslDeviceDetails ? t("update") : t("submit")} onClick={() => {
             addDevices()
         }}>
             <InputText
@@ -121,7 +150,6 @@ function ManageDevices() {
             <InputText
                 label={t('DeviceId')}
                 placeholder={t('DeviceId')}
-                validator={validateName}
                 value={devicesDetails.device_id}
                 name={"device_id"}
                 onChange={(event) => {
