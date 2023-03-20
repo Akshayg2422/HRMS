@@ -10,16 +10,11 @@ import {
 
 function Notifications() {
     const dispatch = useDispatch()
-    const navigate = useNav();
+    const navigation = useNav();
 
     const { currentPage, numOfPages, notificationsDataList } = useSelector(
         (state: any) => state.NotificationReducer
     );
-
-    const NOTIFICATION_ITEMS = [{ id: '1', name: 'Leave Request', value: 'LR', image: Icons.LeaveRequest, type: 'EmployeeLeaves' },
-    { id: '2', name: 'Attendance Request', value: 'AR', image: Icons.AttendanceRequest, type: 'ModifyLogs' },
-    { id: '3', name: 'Face re-Register', value: 'FR', image: Icons.FaceRegister, type: 'FaceReRegister' },
-    { id: '4', name: 'Shift Change', value: 'SC', image: Icons.ShiftRequest, type: 'ShiftRequest' }]
 
     const ROUTE_PATH = [{ route: ROUTE.ROUTE_LEAVE_REQUEST, type: 'EmployeeLeaves' },
     { route: ROUTE.ROUTE_MODIFY_LOGS, type: 'ModifyLogs' },
@@ -36,15 +31,29 @@ function Notifications() {
     const ROUTE_TYPE_NO_ACTION = 'NO_ACTION';
 
     const handleRoute = (item: any) => {
-        ROUTE_PATH.map((el: any) => {
-            if (el.type === item.type) {
-                navigate(el.route);
-            }
-        })
+        console.log("itemm--->",item?.extra?.route_type);
+        
+        if(item?.extra?.route_type === "BROADCAST_MESSAGE"){
+            goTo(navigation, ROUTE.ROUTE_BROADCAST);
+        }
+        else if(item?.extra?.route_type === "LEAVE_REQUEST"){
+            goTo(navigation, ROUTE.ROUTE_LEAVE_REQUEST);
+        }
+        else if(item?.extra?.route_type === "LEAVE_RESPONSE"){
+            goTo(navigation, ROUTE.ROUTE_MY_LEAVES);
+        }
+        else if(item?.extra?.route_type === "SHIFT_REQUEST"){
+            goTo(navigation, ROUTE.ROUTE_MY_LEAVES);
+        }
+        // ROUTE_PATH.map((el: any) => {
+        //     if (el.type === item.type) {
+        //         navigate(el.route);
+        //     }
+        // })
     }
 
     useEffect(() => {
-        getBroadcastMessagesList(currentPage)
+        // getBroadcastMessagesList(currentPage)
     }, [])
 
 
@@ -85,7 +94,10 @@ function Notifications() {
             {notificationsDataList && notificationsDataList?.length > 0 ? notificationsDataList?.map((el: any) => {
                 return (
                     <Container additionClass={"col"}>
-                        <Card>
+                        <Card onClick={()=>{
+                            console.log("card clicked");
+                            handleRoute(el)
+                        }}>
                             <Container additionClass={"d-flex justify-content-between"} >
                                 <Container>
                                     <div className="h1">
