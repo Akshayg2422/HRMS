@@ -1,19 +1,16 @@
-// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging-compat.js');
 
-importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-messaging-compat.js');
 
 // const firebaseConfig = {
-//   apiKey: 'api-key',
-//   authDomain: 'project-id.firebaseapp.com',
-//   databaseURL: 'https://project-id.firebaseio.com',
-//   projectId: 'project-id',
-//   storageBucket: 'project-id.appspot.com',
-//   messagingSenderId: 'sender-id',
-//   appId: 'app-id',
-//   measurementId: 'G-measurement-id',
-// }
+//   apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
+//   authDomain: "zenylog-a7515.firebaseapp.com",
+//   projectId: "zenylog-a7515",
+//   storageBucket: "zenylog-a7515.appspot.com",
+//   messagingSenderId: "220885026819",
+//   appId: "1:220885026819:web:e471e84513a5ab99542636",
+//   measurementId: "G-XEC0XF1H61"
+// };
 
 // firebase.initializeApp(firebaseConfig)
 
@@ -31,8 +28,12 @@ messaging.onBackgroundMessage((payload) => {
 })
 
 self.addEventListener('notificationclick', (event) => {
-  if (event.action) {
-    clients.openWindow(event.action)
-  }
-  event.notification.close()
+  const clickedNotification = event.notification;
+  console.log("clickedNotification", clickedNotification);
+  clickedNotification.close();
+  console.log("---------->", urlToOpen);
+  // Use the data stored in the notification to navigate to the specified URL
+  const urlToOpen = event.notification.data.url;
+  event.waitUntil(clients.openWindow(urlToOpen));
 })
+
