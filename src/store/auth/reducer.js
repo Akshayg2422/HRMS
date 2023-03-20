@@ -54,7 +54,11 @@ import {
   GET_ESSL_DEVICES_SUCCESS,
   GET_ESSL_DEVICES_FAILURE,
 
-  ESSL_DEVICE_DETAILS
+  ESSL_DEVICE_DETAILS,
+
+  SYNC_ESSL_DEVICE_USERS,
+  SYNC_ESSL_DEVICE_USERS_SUCCESS,
+  SYNC_ESSL_DEVICE_USERS_FAILURE
 } from "./actionTypes";
 
 
@@ -516,6 +520,29 @@ const AuthReducer = (state = initialState, action) => {
       state = {
         ...state,
         esslDeviceDetails: action.payload
+      };
+      break;
+
+    /**
+   * Sync essl device users
+   */
+    case SYNC_ESSL_DEVICE_USERS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case SYNC_ESSL_DEVICE_USERS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case SYNC_ESSL_DEVICE_USERS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
       };
       break;
 

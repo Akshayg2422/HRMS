@@ -16,7 +16,9 @@ import {
   GET_ESSL_CONFIG,
 
   ADD_ESSL_DEVICE,
-  GET_ESSL_DEVICES
+  GET_ESSL_DEVICES,
+
+  SYNC_ESSL_DEVICE_USERS
 } from "./actionTypes";
 
 import {
@@ -51,7 +53,10 @@ import {
   postAddEsslDeviceFailure,
 
   fetchEsslDevicesSuccess,
-  fetchEsslDevicesFailure
+  fetchEsslDevicesFailure,
+
+  syncEsslDeviceUsersSuccess,
+  syncEsslDeviceUsersFailure
 
 } from "./actions";
 
@@ -70,7 +75,9 @@ import {
   getEsslConfigApi,
 
   addEsslDeviceApi,
-  getEsslDevicesApi
+  getEsslDevicesApi,
+
+  syncEsslDeviceUsersApi
 } from "../../helpers/backend_helper";
 
 import {
@@ -465,6 +472,35 @@ function* fetchEsslDevicesSaga(action) {
   }
 }
 
+//sync essl device users
+
+function* syncEsslDeviceUsersSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(syncEsslDeviceUsersApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(syncEsslDeviceUsersSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
+    } else {
+      yield put(hideLoader());
+      yield put(syncEsslDeviceUsersFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(syncEsslDeviceUsersFailure("Invalid Request"));
+
+  }
+}
+
 ///watcher///
 
 function* AuthSaga() {
@@ -483,6 +519,8 @@ function* AuthSaga() {
   yield takeLatest(GET_ESSL_CONFIG, fetchEsslConfigSaga);
   yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
   yield takeLatest(GET_ESSL_DEVICES, fetchEsslDevicesSaga);
+  yield takeLatest(SYNC_ESSL_DEVICE_USERS, syncEsslDeviceUsersSaga);
+
 
 
 

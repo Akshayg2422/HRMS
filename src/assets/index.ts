@@ -104,6 +104,7 @@ export const Icons = {
   BroadCast:require('./icons/BroadCast/Broadcast.png'),
   EventNotification:require('./icons/EventNotification/EventNotification.png'),
   FaceRequest:require('./icons/FaceRequest/FaceRequest.png'),
+  Csv:require('./icons/Csv/csv .png')
 }
 
 

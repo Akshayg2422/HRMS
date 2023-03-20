@@ -184,3 +184,11 @@ export const ADD_ESSL_DEVICE = 'company/addESSLDevice'
 //get ESSL device
 
 export const GET_ESSL_DEVICES = 'company/getESSLDevices'
+
+//sync essl device users
+
+export const SYNC_ESSL_DEVICE_USERS = 'company/syncESSLDeviceUsers'
+
+//get notifications
+
+export const GET_NOTIFICATIONS = "messages/getNotifications"

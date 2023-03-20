@@ -55,7 +55,11 @@ import {
   GET_ESSL_DEVICES_SUCCESS,
   GET_ESSL_DEVICES_FAILURE,
 
-  ESSL_DEVICE_DETAILS
+  ESSL_DEVICE_DETAILS,
+
+  SYNC_ESSL_DEVICE_USERS,
+  SYNC_ESSL_DEVICE_USERS_SUCCESS,
+  SYNC_ESSL_DEVICE_USERS_FAILURE
 } from "./actionTypes";
 
 
@@ -463,3 +467,26 @@ export const esslDeviceDetails = (params) => ({
   type: ESSL_DEVICE_DETAILS,
   payload: params,
 });
+
+//sync essl device users
+
+export const syncEsslDeviceUsers = (params) => {
+  return {
+    type: SYNC_ESSL_DEVICE_USERS,
+    payload: params,
+  };
+};
+
+export const syncEsslDeviceUsersSuccess = (details) => {
+  return {
+    type: SYNC_ESSL_DEVICE_USERS_SUCCESS,
+    payload: details
+  };
+};
+
+export const syncEsslDeviceUsersFailure = (error) => {
+  return {
+    type: SYNC_ESSL_DEVICE_USERS_FAILURE,
+    payload: error,
+  };
+};
