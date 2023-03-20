@@ -1,6 +1,11 @@
-importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.2/firebase-messaging-compat.js');
+// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js%27);
+// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js%27);
 
+// eslint-disable-next-line no-undef
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js');
+
+// eslint-disable-next-line no-undef
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-messaging-compat.js');
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
@@ -12,8 +17,10 @@ const firebaseConfig = {
   measurementId: "G-XEC0XF1H61"
 };
 
+// eslint-disable-next-line no-undef
 firebase.initializeApp(firebaseConfig)
 
+// eslint-disable-next-line no-undef
 const messaging = firebase.messaging()
 
 messaging.onBackgroundMessage((payload) => {

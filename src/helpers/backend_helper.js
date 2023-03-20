@@ -204,4 +204,14 @@ export const addEsslDeviceApi = (payload) => post(url.ADD_ESSL_DEVICE, payload, 
 
 export const getEsslDevicesApi = (payload) => post(url.GET_ESSL_DEVICES, payload, {})
 
+//sync essl device users
+
+export const syncEsslDeviceUsersApi = (payload) => post(url.SYNC_ESSL_DEVICE_USERS, payload, {})
+
+//get notifications
+
+export const getNotificationsApi = (payload) => post(url.GET_NOTIFICATIONS, payload, {})
+
+
+
 
