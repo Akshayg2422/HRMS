@@ -1,9 +1,11 @@
-import { Card, CommonTable, Container, FormWrapper, InputText, NoRecordFound, Primary } from '@components'
+import { Card, CommonTable, Container, DropDown, FormWrapper, InputText, NoRecordFound, Primary } from '@components'
 import { editEsslConfig, esslDeviceDetails, fetchEsslDevices, getEsslConfig } from '../../../../../store/auth/actions';
 import { ROUTE, goTo, useNav } from '@utils';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { getAllBranchesList } from '../../../../../store/location/actions';
+
 
 function EsslConfig() {
 
@@ -15,9 +17,23 @@ function EsslConfig() {
     (state: any) => state.AuthReducer
   );
 
+  const {
+    branchesDropdownData,
+    isEdit,
+  } = useSelector((state: any) => state.EmployeeReducer);
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
+  const [companyBranchDropdownData, setCompanyBranchDropdownData] =
+    useState<any>();
+  const [branchId, setBranchId] = useState('')
+
   useEffect(() => {
     getEsslConfigDetails()
-    getEsslDevices()
+    getEsslDevices('')
+    getBranchList()
   }, [])
 
   const getEsslConfigDetails = () => {
@@ -25,11 +41,48 @@ function EsslConfig() {
     dispatch(getEsslConfig({ params }))
   }
 
-  const getEsslDevices = () => {
-    const params = {}
+  const getEsslDevices = (id:string) => {
+    const params = {
+      ...(id && { branch_id: id })
+    }
     dispatch(fetchEsslDevices({ params }))
   }
 
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    const branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) =>
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
+    getChild(branchList, parent_id);
+    return branchListFiltered;
+  };
+
+  const getBranchList = () => {
+    const params = {};
+    dispatch(
+      getAllBranchesList({
+        params,
+        onSuccess: (success: object) => {
+          const parentBranch = branchesDropdownData.find(
+            (it: any) => it.id === dashboardDetails.company_branch.id
+          );
+          setCompanyBranchDropdownData([
+            ...getAllSubBranches(
+              branchesDropdownData,
+              dashboardDetails.company_branch.id
+            ),
+            parentBranch,
+          ]);
+        },
+        onError: (error: string) => { },
+      })
+    );
+  }
 
   const normalizedDeviceList = (data: any) => {
     return (
@@ -84,37 +137,44 @@ function EsslConfig() {
           />
         </Container>
         {esslConfigDataList && Object?.keys(esslConfigDataList?.essl_config).length > 0 &&
-          <Container additionClass='mt-4 col-xl-6'>
-            <Container>
-              <Container textAlign={"text-left"}>
-                <span>
-                  {t('BaseUrl')}
-                  {":"}&nbsp;&nbsp;
-                  <span className="text-black">{esslConfigDataList?.essl_config?.baseurl}</span>
-                </span>
-                <br />
-                <span >
-                  {t("userName")}
-                  {":"}&nbsp;&nbsp;
-                  <span className="text-black">{esslConfigDataList?.essl_config?.username}</span>
-                </span>
-                <br />
-                <span>
-                  {t('Password')}
-                  {":"}&nbsp;&nbsp;
-                  <span className="text-black">
-                    {esslConfigDataList?.essl_config?.password ? '******' : ''}
-                  </span>
-                </span>
-              </Container>
-            </Container>
+          <Container additionClass='d-flex justify-content-between'>
+            <div className='col'>
+              <span className='text-black' >{t('BaseUrl')}</span>
+              <br />
+              <span >{esslConfigDataList?.essl_config?.baseurl}</span>
+            </div>
+            <div className='col'>
+              <span className='text-black'>{t("userName")}</span>
+              <br />
+              <span>{esslConfigDataList?.essl_config?.username}</span>
+            </div>
+            <div className='col'>
+              <span className='text-black'> {t('Password')}</span>
+              <br />
+              <span>{esslConfigDataList?.essl_config?.password ? '******' : ''}</span>
+            </div>
+
           </Container>}
       </Card>
       <Card>
+
         <Container additionClass='d-flex justify-content-between'>
-          <h3>{t('Devices')}</h3>
+          <h3 className='ml-3'>{t('Devices')}</h3>
           <Primary size='btn-sm' text={t('AddDevices')}
             onClick={() => manageDevice("")}
+          />
+        </Container>
+        <Container additionClass={'col-4'}>
+          <DropDown
+            // label={t("branch")}
+            placeholder={t("branch")}
+            data={companyBranchDropdownData}
+            name={"branch_id"}
+            value={branchId}
+            onChange={(event) => {
+              getEsslDevices(event.target.value)
+              setBranchId(event.target.value)
+            }}
           />
         </Container>
         {esslDevicesData && esslDevicesData?.length > 0 ? (

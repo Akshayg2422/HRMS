@@ -35,10 +35,10 @@ function ManageEsslConfig() {
             showToast("error", t("invalidName"));
             return false;
         } else if (validateDefault(esslConfig.baseUrl).status === false) {
-            showToast("error", t("invalidName"));
+            showToast("error", t("invalidBaseurl"));
             return false;
         } else if (validateDefault(esslConfig.password).status === false) {
-            showToast("error", t("invalidName"));
+            showToast("error", t("invalidPassword"));
             return false;
         }
          else {
