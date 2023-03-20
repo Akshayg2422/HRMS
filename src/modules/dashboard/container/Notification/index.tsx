@@ -5,8 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import {
     createBroadcastMessage,
-    getBroadcastMessage,
-    getNotifications
+    getBroadcastMessage
 } from "../../../../../src/store/notifications/actions";
 import { Icons } from '@assets';
 
@@ -20,12 +19,10 @@ function Notification() {
     const [deleteModel, setDeleteModel] = useState(false);
     const [selectedItemId, setSelectedItemId] = useState('')
 
-    
 
-    const { broadcastMessagesData, currentPage, numOfPages, notificationsDataList } = useSelector(
+    const { broadcastMessagesData, currentPage, numOfPages } = useSelector(
         (state: any) => state.NotificationReducer
     );
-    console.log("notificationsDataList",notificationsDataList);
 
     const sortData = [
         { id: 1, title: "All" },
@@ -33,17 +30,17 @@ function Notification() {
     ];
 
     useEffect(() => {
-        getNotificationsList(currentPage)
+        getBroadcastMessagesList(currentPage)
     }, [])
 
 
-    const getNotificationsList = (pageNumber: number) => {
+    const getBroadcastMessagesList = (pageNumber: number) => {
 
         const params = {
             ...(type === "by me" && { type: 'self' }),
             page_number: pageNumber,
         };
-        dispatch(getNotifications({
+        dispatch(getBroadcastMessage({
             params,
             onSuccess: (success: any) => {
             },
@@ -63,7 +60,7 @@ function Notification() {
                 : type === "prev"
                     ? currentPage - 1
                     : position;
-        getNotificationsList(page);
+        getBroadcastMessagesList(page);
     }
 
     return (
@@ -72,7 +69,7 @@ function Notification() {
                 <BackArrow />
             </div>
             <Container additionClass={" mx-1"}>
-                {notificationsDataList && notificationsDataList?.length > 0 ? notificationsDataList?.map((el: any) => {
+                {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
                     return (
                         <Container additionClass={"col"}>
                             <Card>
@@ -125,7 +122,7 @@ function Notification() {
                         </Container>
                     );
                 }) : <NoRecordFound />}
-                {notificationsDataList && notificationsDataList.length > 0 && (
+                {broadcastMessagesData && broadcastMessagesData.length > 0 && (
                     <Pagination currentPage={currentPage}
                         // additionalClass={'card-footer'}
                         noOfPage={numOfPages}

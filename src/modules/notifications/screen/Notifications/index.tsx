@@ -1,13 +1,20 @@
-import { Card, CommonTable, Container, ImageView } from '@components';
+import { BackArrow, Card, CommonTable, Container, ImageView, NoRecordFound, Pagination } from '@components';
 import { Icons } from '@assets';
-import { goTo, ROUTE, useNav } from '@utils';
-import React from 'react'
-import { useDispatch } from 'react-redux';
+import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
+import {
+    getNotifications
+} from "../../../../../src/store/notifications/actions";
 
 function Notifications() {
     const dispatch = useDispatch()
     const navigate = useNav();
+
+    const { currentPage, numOfPages, notificationsDataList } = useSelector(
+        (state: any) => state.NotificationReducer
+    );
 
     const NOTIFICATION_ITEMS = [{ id: '1', name: 'Leave Request', value: 'LR', image: Icons.LeaveRequest, type: 'EmployeeLeaves' },
     { id: '2', name: 'Attendance Request', value: 'AR', image: Icons.AttendanceRequest, type: 'ModifyLogs' },
@@ -18,18 +25,15 @@ function Notifications() {
     { route: ROUTE.ROUTE_MODIFY_LOGS, type: 'ModifyLogs' },
     { route: ROUTE.ROUTE_FACE_RE_REQUEST, type: 'FaceReRegister' },
     { route: ROUTE.ROUTE_SHIFT_REQUEST, type: 'ShiftRequest' }]
-
-    const normalizedNotificationList = (data: any) => {
-        return (
-            data &&
-            data.length > 0 &&
-            data.map((el: any) => {
-                return {
-                    "Type": el.name
-                };
-            })
-        );
-    };
+    
+    const ROUTE_TYPE_BROADCAST_MESSAGE = 'BROADCAST_MESSAGE';
+    const ROUTE_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST';
+    const ROUTE_TYPE_LEAVE_RESPONSE = 'LEAVE_RESPONSE';
+    const ROUTE_TYPE_SHIFT_REQUEST = 'SHIFT_REQUEST';
+    const ROUTE_TYPE_SHIFT_RESPONSE = 'SHIFT_RESPONSE';
+    const ROUTE_TYPE_FACE_RR_REQUEST = 'FACE_RR_REQUEST';
+    const ROUTE_TYPE_MODIFY_LOG_REQUEST = 'MODIFY_LOG_REQUEST';
+    const ROUTE_TYPE_NO_ACTION = 'NO_ACTION';
 
     const handleRoute = (item: any) => {
         ROUTE_PATH.map((el: any) => {
@@ -39,43 +43,93 @@ function Notifications() {
         })
     }
 
+    useEffect(() => {
+        getBroadcastMessagesList(currentPage)
+    }, [])
+
+
+    const getBroadcastMessagesList = (pageNumber: number) => {
+
+        const params = {
+            page_number: pageNumber,
+        };
+        dispatch(getNotifications({
+            params,
+            onSuccess: (success: any) => {
+            },
+            onError: (error: string) => {
+                showToast("error", error)
+            },
+        }));
+    };
+
+    function paginationHandler(
+        type: "next" | "prev" | "current",
+        position?: number
+    ) {
+        let page =
+            type === "next"
+                ? currentPage + 1
+                : type === "prev"
+                    ? currentPage - 1
+                    : position;
+        getBroadcastMessagesList(page);
+    }
+
     return (
-        <Container>
-            {/* {NOTIFICATION_ITEMS.map((it, index) => {
+        <>
+        <div className='ml-3 mb-3'>
+            <BackArrow />
+        </div>
+        <Container additionClass={" mx-1"}>
+            {notificationsDataList && notificationsDataList?.length > 0 ? notificationsDataList?.map((el: any) => {
                 return (
-                    <>
-                         <Container additionClass={"col-xl-3 col-md-6"}>
-                            <Card
-                                additionClass={"border"}
-                                style={{ border: "1px bg-gray" }}
-                                onClick={() => currentNav(it, index)}
-                            >
-                                <Container
-                                    additionClass={"row py-3"}
-                                    justifyContent={"justify-content-center"}
-                                >
-                                    <Container col={"col-auto"} alignItems={"align-items-center"}>
-                                        <ImageView additionClass={'m-0'} icon={it?.image} alt={it.name} height={50} width={50} />
-                                    </Container>
-                                    <div className="col">
-                                        <h5 className="text-black h4 mb-0 mt-2 font-weight-bold">
-                                            {it.name}
-                                        </h5>
+                    <Container additionClass={"col"}>
+                        <Card>
+                            <Container additionClass={"d-flex justify-content-between"} >
+                                <Container>
+                                    <div className="h1">
+                                        {el.title}
                                     </div>
                                 </Container>
-                            </Card>
-                        </Container>
-                    </>
+                                <Container additionClass='d-flex justify-content-between'>
+                                    <Container>
+                                        <span className='h6 float-right'>
+                                            {'Posted at'}
+                                        </span>
+                                        <br />
+                                        <span className='h5 float-right mt--2'>
+                                            {getDisplayDateTimeFromMoment(
+                                                getMomentObjFromServer(el.created_at)
+                                            )}
+                                        </span>
+                                    </Container>
+                              
+                                </Container>
+                            </Container>
+                            <Container additionClass={'h4 fw-normal'}>
+                                {el.message}
+                            </Container>
+                            
+                        </Card>
+                    </Container>
                 );
-            })} */}
-            <CommonTable
-                displayDataSet={normalizedNotificationList(NOTIFICATION_ITEMS)}
-                tableOnClick={(e, index, item) => {
-                    const current = NOTIFICATION_ITEMS[index]
-                    handleRoute(current)
-                }}
-            />
-        </Container >
+            }) : <NoRecordFound />}
+            {notificationsDataList && notificationsDataList.length > 0 && (
+                <Pagination currentPage={currentPage}
+                    // additionalClass={'card-footer'}
+                    noOfPage={numOfPages}
+                    totalPages={numOfPages}
+                    paginationNumberClick={(currentPage: number | undefined) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                />
+            )}
+        </Container>
+
+    </>
     )
 }
 
