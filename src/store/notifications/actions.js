@@ -9,7 +9,9 @@ import {
 
     FETCH_NOTIFICATIONS,
     FETCH_NOTIFICATIONS_SUCCESS,
-    FETCH_NOTIFICATIONS_FAILURE
+    FETCH_NOTIFICATIONS_FAILURE,
+
+    IS_SHOW_BACK
   } from "./actionTypes";
 
   /**
@@ -84,5 +86,15 @@ import {
     return {
       type: FETCH_NOTIFICATIONS_FAILURE,
       payload: error,
+    };
+  };
+
+  //is show back
+
+  export const setIsShowBack = (type) => {
+    console.log("typee----->",type);
+    return {
+      type: IS_SHOW_BACK,
+      payload: type,
     };
   };

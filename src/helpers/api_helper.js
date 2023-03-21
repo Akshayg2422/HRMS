@@ -7,7 +7,7 @@ const STAGING = 'http://43.204.233.45/';
 const LOCAL_DEV = 'http://192.168.251.204:8000';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
-const LOCAL_PROD = 'http://192.168.191.204:8000';
+const LOCAL_PROD = 'http://192.168.78.204:8000';
 
 const PRE_PROD = 'http://15.206.224.132'
 
