@@ -111,9 +111,10 @@ export const EMPLOYEE_TYPE = [
 ];
 
 export const REPORTS_TYPE = [
-  { id: 'attendance', name: 'AttendanceReport', value: 'attendance' },
-  { id: 'leave', name: 'LeaveReport', value: 'leave' },
-  { id: 'log', name: 'LogReport', value: 'log' },
+  { id: 'attendance', name: 'Attendance Report', value: 'attendance' },
+  { id: 'leave', name: 'Leave Report', value: 'leave' },
+  { id: 'log', name: 'Log Report', value: 'log' },
+  { id: 'shift', name: "Shift Report", value: "shift" }
 ];
 
 export const LEAVES_TYPE = [
@@ -121,8 +122,6 @@ export const LEAVES_TYPE = [
   { id: 'Pending Leave', name: 'Pending Leave', value: -1, },
   { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
   { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
-
-
 ];
 
 
