@@ -252,7 +252,7 @@ function EsslConfig() {
             onClick={() => manageDevice("")}
           />
         </Container>
-        <Container additionClass={'col-4'}>
+        <Container additionClass={'col-xl-4 col-sm-3'}>
           <DropDown
             // label={t("branch")}
             placeholder={t("branch")}
@@ -298,7 +298,7 @@ function EsslConfig() {
         }}
       >
 
-        <Container additionClass={"d-flex "}>
+        <Container additionClass={"d-flex"}>
           <Container additionClass='col'>
             <h3>{t('userInfo')}</h3>
             <Card
