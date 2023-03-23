@@ -1,4 +1,4 @@
-import { BackArrow, FormWrapper, InputText } from '@components'
+import { FormWrapper, InputText } from '@components'
 import { postEsslConfig } from '../../../../../store/auth/actions';
 import { goBack, showToast, useNav, validateDefault, validateName } from '@utils'
 import React, { useEffect, useState } from 'react'
@@ -55,7 +55,6 @@ function ManageEsslConfig() {
                     username: esslConfig.name
                 }
             }
-            console.log("params------->", params);
             dispatch(postEsslConfig({
                 params,
                 onSuccess: (success: any) => {

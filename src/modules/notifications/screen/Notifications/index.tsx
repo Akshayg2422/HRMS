@@ -51,7 +51,7 @@ function Notifications() {
             goTo(navigation, ROUTE.ROUTE_MODIFY_LOGS);
         }
         else {
-            goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
+            // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
     }
 

@@ -28,7 +28,6 @@ import { ManageBranches } from './dashboard/screen/Location/screen';
 import { DashboardStats, DashBoardAttendance } from './stats'
 import RequireAuth from './RequireAuth'
 import RequireAuthExist from './RequireAuthExist'
-import { Firebase } from './Firebase';
 
 
 import { AutoLogout } from './SessionTimeout'
@@ -93,7 +92,6 @@ export {
   AllowanceGroup,
   DeductionGroupList,
   CreateGroup,
-  Firebase,
   DashBoardOtp,
   MyBranches,
   Notifications,

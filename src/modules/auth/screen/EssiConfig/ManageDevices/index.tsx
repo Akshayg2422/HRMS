@@ -1,10 +1,10 @@
-import { BackArrow, DropDown, FormWrapper, InputText } from '@components'
-import { dropDownValueCheckByEvent, goBack, showToast, useNav, validateName } from '@utils'
+import { DropDown, FormWrapper, InputText } from '@components'
+import { goBack, showToast, useNav } from '@utils'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getAllBranchesList } from '../../../../../store/location/actions';
-import { postAddEsslDevice, postEsslConfig } from '../../../../../store/auth/actions';
+import { postAddEsslDevice } from '../../../../../store/auth/actions';
 
 
 function ManageDevices() {
@@ -14,7 +14,6 @@ function ManageDevices() {
     const navigation = useNav();
     const {
         branchesDropdownData,
-        isEdit,
     } = useSelector((state: any) => state.EmployeeReducer);
 
     const { dashboardDetails } = useSelector(

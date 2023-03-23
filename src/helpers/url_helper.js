@@ -192,3 +192,7 @@ export const SYNC_ESSL_DEVICE_USERS = 'company/syncESSLDeviceUsers'
 //get notifications
 
 export const GET_NOTIFICATIONS = "messages/getNotifications"
+
+//web push 
+
+export const WEB_PUSH_REGISTER_URL = "/api/v1/push/web/"

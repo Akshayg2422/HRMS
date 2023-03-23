@@ -23,7 +23,7 @@ import {
 import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 import { getAdminBranches } from "../../../../store/employee/actions";
-import { postAppConfig } from "../../../../store/auth/actions";
+import { postAppConfig, webPushRegister } from "../../../../store/auth/actions";
 
 
 function Dashboard() {
@@ -44,11 +44,31 @@ function Dashboard() {
     (state: any) => state.AuthReducer
   );
 
-  console.log("userDetails----->", userDetails);
+  const register = () => {
+    const params = {
+      "name": appConfig?.model,
+      "registration_id": "",
+      "active": true,
+      "p256dh": "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk",
+      "auth": "",
+      "browser": 'CHROME',
+      "application_id": "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk"
+    }
+    dispatch(webPushRegister({
+      params,
+      onSuccess: (response: any) => {
+        console.log("response---->", response);
+
+      },
+      onError: () => {
+      },
+    }))
+  }
 
 
   useEffect(() => {
     getPostAppConfig()
+    register()
   }, [fcmToken])
 
   useEffect(() => {
@@ -67,7 +87,7 @@ function Dashboard() {
       device_token: fcmToken
     }
     console.log('params------------->', params);
-    // dispatch(postAppConfig({ params }))
+    dispatch(postAppConfig({ params }))
   }
 
 
@@ -105,7 +125,7 @@ function Dashboard() {
       }))
     }
 
-  }, [dashboardDetails]);
+  }, []);
 
   return (
     <>

@@ -59,7 +59,11 @@ import {
 
   SYNC_ESSL_DEVICE_USERS,
   SYNC_ESSL_DEVICE_USERS_SUCCESS,
-  SYNC_ESSL_DEVICE_USERS_FAILURE
+  SYNC_ESSL_DEVICE_USERS_FAILURE,
+
+  WEB_PUSH_REGISTER,
+  WEB_PUSH_REGISTER_SUCCESS,
+  WEB_PUSH_REGISTER_FAILURE
 } from "./actionTypes";
 
 
@@ -487,6 +491,30 @@ export const syncEsslDeviceUsersSuccess = (details) => {
 export const syncEsslDeviceUsersFailure = (error) => {
   return {
     type: SYNC_ESSL_DEVICE_USERS_FAILURE,
+    payload: error,
+  };
+};
+
+
+//WEB push register
+
+export const webPushRegister = (params) => {
+  return {
+    type: WEB_PUSH_REGISTER,
+    payload: params,
+  };
+};
+
+export const webPushRegisterSuccess = (details) => {
+  return {
+    type: WEB_PUSH_REGISTER_SUCCESS,
+    payload: details
+  };
+};
+
+export const webPushRegisterFailure = (error) => {
+  return {
+    type: WEB_PUSH_REGISTER_FAILURE,
     payload: error,
   };
 };

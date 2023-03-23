@@ -481,6 +481,7 @@
     "userPersonalInfo": "Please select the user personal info file",
     "userInfo": "User info",
     "userAdditionalInfo": "User additional info",
-    "syncUsers":"Sync users"
+    "syncUsers":"Sync users",
+    "csvError": "Please upload .csv files only."
   }
 }

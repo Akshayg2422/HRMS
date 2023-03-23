@@ -18,7 +18,9 @@ import {
   ADD_ESSL_DEVICE,
   GET_ESSL_DEVICES,
 
-  SYNC_ESSL_DEVICE_USERS
+  SYNC_ESSL_DEVICE_USERS,
+
+  WEB_PUSH_REGISTER
 } from "./actionTypes";
 
 import {
@@ -56,7 +58,10 @@ import {
   fetchEsslDevicesFailure,
 
   syncEsslDeviceUsersSuccess,
-  syncEsslDeviceUsersFailure
+  syncEsslDeviceUsersFailure,
+
+  webPushRegisterSuccess,
+  webPushRegisterFailure
 
 } from "./actions";
 
@@ -77,7 +82,9 @@ import {
   addEsslDeviceApi,
   getEsslDevicesApi,
 
-  syncEsslDeviceUsersApi
+  syncEsslDeviceUsersApi,
+
+  webPushRegisterApi
 } from "../../helpers/backend_helper";
 
 import {
@@ -501,6 +508,35 @@ function* syncEsslDeviceUsersSaga(action) {
   }
 }
 
+//web push register
+
+function* webPushRegisterSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(webPushRegisterApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(webPushRegisterSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
+    } else {
+      yield put(hideLoader());
+      yield put(webPushRegisterFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(webPushRegisterFailure("Invalid Request"));
+
+  }
+}
+
 ///watcher///
 
 function* AuthSaga() {
@@ -520,6 +556,8 @@ function* AuthSaga() {
   yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
   yield takeLatest(GET_ESSL_DEVICES, fetchEsslDevicesSaga);
   yield takeLatest(SYNC_ESSL_DEVICE_USERS, syncEsslDeviceUsersSaga);
+  yield takeLatest(WEB_PUSH_REGISTER, webPushRegisterSaga);
+
 
 
 

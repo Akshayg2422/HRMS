@@ -212,6 +212,11 @@ export const syncEsslDeviceUsersApi = (payload) => post(url.SYNC_ESSL_DEVICE_USE
 
 export const getNotificationsApi = (payload) => post(url.GET_NOTIFICATIONS, payload, {})
 
+//web push
+
+export const webPushRegisterApi = (payload) => post(url.WEB_PUSH_REGISTER_URL, payload, {})
+
+
 
 
 

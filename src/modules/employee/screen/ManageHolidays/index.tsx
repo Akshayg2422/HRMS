@@ -9,6 +9,7 @@ import { Icons } from "@assets";
 import {
   getMomentObjFromServer,
   getServerDateFromMoment,
+  goBack,
   goTo,
   ROUTE,
   showToast,
@@ -92,9 +93,11 @@ const ManageHolidays = () => {
           params,
           onSuccess: (success: any) => {
             showToast('success', success.message)
-            goTo(navigation, ROUTE.ROUTE_CALENDAR);
+            goBack(navigation);
           },
-          onError: (error: string) => { },
+          onError: (error: any) => {
+            showToast('error', error.error_message)
+          },
         })
       );
     }

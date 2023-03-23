@@ -1,4 +1,4 @@
-import { Card, CommonTable, Container, DropDown, FormWrapper, ImageView, InputText, Modal, NoRecordFound, Primary, Secondary } from '@components'
+import { Card, CommonTable, Container, DropDown, ImageView, Modal, NoRecordFound, Primary, Secondary } from '@components'
 import { editEsslConfig, esslDeviceDetails, fetchEsslDevices, getEsslConfig, syncEsslDeviceUsers } from '../../../../../store/auth/actions';
 import { ROUTE, goTo, showToast, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
@@ -30,7 +30,6 @@ function EsslConfig() {
 
   const {
     branchesDropdownData,
-    isEdit,
   } = useSelector((state: any) => state.EmployeeReducer);
 
   const { dashboardDetails } = useSelector(
@@ -211,7 +210,7 @@ function EsslConfig() {
       }
     }
     else if (check != null) {
-      showToast("error", 'Please upload .csv files only.')
+      showToast("error", t('csvError'))
     }
   }
 
@@ -244,49 +243,51 @@ function EsslConfig() {
 
           </Container>}
       </Card>
-      <Card>
 
-        <Container additionClass='d-flex justify-content-between'>
-          <h3 className='ml-3'>{t('Devices')}</h3>
-          <Primary size='btn-sm' text={t('AddDevices')}
-            onClick={() => manageDevice("")}
-          />
-        </Container>
-        <Container additionClass={'col-xl-4 col-sm-3'}>
-          <DropDown
-            // label={t("branch")}
-            placeholder={t("branch")}
-            data={companyBranchDropdownData}
-            name={"branch_id"}
-            value={branchId}
-            onChange={(event) => {
-              getEsslDevices(event.target.value)
-              setBranchId(event.target.value)
-            }}
-          />
-        </Container>
-        {esslDevicesData && esslDevicesData?.length > 0 ? (
-          <div className='mt-5'>
-            <CommonTable
-              noHeader
-              additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
-              displayDataSet={normalizedDeviceList(esslDevicesData)}
-              tableValueOnClick={(e, index, item, elv) => {
-                const selectedItem = esslDevicesData[index]
-                if (elv === "Edit") {
-                  manageDevice(selectedItem)
-                }
+      {esslConfigDataList && Object?.keys(esslConfigDataList?.essl_config).length > 0 && (
+        <Card>
 
+          <Container additionClass='d-flex justify-content-between'>
+            <h3 className='ml-3'>{t('Devices')}</h3>
+            <Primary size='btn-sm' text={t('AddDevices')}
+              onClick={() => manageDevice("")}
+            />
+          </Container>
+          <Container additionClass={'col-xl-4 col-sm-3'}>
+            <DropDown
+              // label={t("branch")}
+              placeholder={t("branch")}
+              data={companyBranchDropdownData}
+              name={"branch_id"}
+              value={branchId}
+              onChange={(event) => {
+                getEsslDevices(event.target.value)
+                setBranchId(event.target.value)
               }}
             />
-          </div>
-        ) :
-          <Container additionClass='mt-4'>
-            <NoRecordFound />
           </Container>
-        }
-      </Card>
+          {esslDevicesData && esslDevicesData?.length > 0 ? (
+            <div className='mt-5'>
+              <CommonTable
+                noHeader
+                additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
+                displayDataSet={normalizedDeviceList(esslDevicesData)}
+                tableValueOnClick={(e, index, item, elv) => {
+                  const selectedItem = esslDevicesData[index]
+                  if (elv === "Edit") {
+                    manageDevice(selectedItem)
+                  }
 
+                }}
+              />
+            </div>
+          ) :
+            <Container additionClass='mt-4'>
+              <NoRecordFound />
+            </Container>
+          }
+        </Card>
+      )}
 
       <Modal
         title={t('syncUsers')}

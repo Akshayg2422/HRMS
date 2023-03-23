@@ -58,7 +58,13 @@ import {
 
   SYNC_ESSL_DEVICE_USERS,
   SYNC_ESSL_DEVICE_USERS_SUCCESS,
-  SYNC_ESSL_DEVICE_USERS_FAILURE
+  SYNC_ESSL_DEVICE_USERS_FAILURE,
+
+
+  WEB_PUSH_REGISTER,
+  WEB_PUSH_REGISTER_SUCCESS,
+  WEB_PUSH_REGISTER_FAILURE
+
 } from "./actionTypes";
 
 
@@ -539,6 +545,30 @@ const AuthReducer = (state = initialState, action) => {
       };
       break;
     case SYNC_ESSL_DEVICE_USERS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+
+       /**
+   * web push register
+   */
+    case WEB_PUSH_REGISTER:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case WEB_PUSH_REGISTER_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case WEB_PUSH_REGISTER_FAILURE:
       state = {
         ...state,
         error: action.payload,
