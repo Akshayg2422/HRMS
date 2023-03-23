@@ -1,13 +1,9 @@
-// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js%27);
-// importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js%27);
+import { goTo, ROUTE, useNav } from "@utils";
 
-// eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.1.3/firebase-messaging-compat.js');
 
-// eslint-disable-next-line no-undef
-importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-messaging-compat.js');
-
-const firebaseConfig = {
+firebase.initializeApp({
   apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
   authDomain: "zenylog-a7515.firebaseapp.com",
   projectId: "zenylog-a7515",
@@ -15,29 +11,60 @@ const firebaseConfig = {
   messagingSenderId: "220885026819",
   appId: "1:220885026819:web:e471e84513a5ab99542636",
   measurementId: "G-XEC0XF1H61"
-};
+});
 
-// eslint-disable-next-line no-undef
-firebase.initializeApp(firebaseConfig)
+importScripts('https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.1.3/firebase-messaging-compat.js');
 
-// eslint-disable-next-line no-undef
-const messaging = firebase.messaging()
+firebase.initializeApp({
+  // Your Firebase configuration
+});
 
-messaging.onBackgroundMessage((payload) => {
-  console.log('[firebase-messaging-sw.js] Received background message ', payload)
-  const notificationTitle = payload.notification.title
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: payload.notification.icon || payload.notification.image,
+const messaging = firebase.messaging();
+
+self.addEventListener('push', (event) => {
+  const payload = event.data ? event.data.json() : {};
+
+  // Handle background message
+  if (payload.notification === undefined) {
+    // Add your own code to handle the background message
+    console.log('Received background message:', payload);
+    return;
   }
 
-  self.registration.showNotification(notificationTitle, notificationOptions)
-})
+  // Handle notification
+  event.waitUntil(
+    self.registration.showNotification(payload.notification.title, {
+      body: payload.notification.body,
+      icon: payload.notification.icon,
+      image: payload.notification.image,
+      vibrate: payload.notification.vibrate,
+      data: payload.data,
+    })
+  );
+});
 
 self.addEventListener('notificationclick', (event) => {
-  const clickedNotification = event.notification;
-  console.log("clickedNotification", clickedNotification);
-  clickedNotification.close();
-  // Use the data stored in the notification to navigate to the specified URL
-})
+  event.notification.close();
 
+  const payload = event.notification.data;
+
+  // Handle notification click
+  if (payload && payload.screen) {
+    event.waitUntil(
+      clients.matchAll({ type: 'window' }).then((windowClients) => {
+        for (let i = 0; i < windowClients.length; i++) {
+          const client = windowClients[i];
+
+          if (client.url === payload.screen && 'focus' in client) {
+            return client.focus();
+          }
+        }
+
+        if (clients.openWindow) {
+          return clients.openWindow(payload.screen);
+        }
+      })
+    );
+  }
+});

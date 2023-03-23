@@ -21,7 +21,7 @@ import {
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
   ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
   ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches, EmployeeShiftRequest,
-  AvailableLeaves, LeaveTypes, ManageLeaveTypes
+  AvailableLeaves, LeaveTypes, ManageLeaveTypes,FaceReRegisterRequest
 } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
@@ -111,7 +111,8 @@ export {
   FaceReRequest,
   EsslConfig,
   ManageEsslConfig,
-  ManageDevices
+  ManageDevices,
+  FaceReRegisterRequest
 }
 
 

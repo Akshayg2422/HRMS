@@ -1,5 +1,5 @@
 import React from 'react'
-import {NoRecordFound, Table, Primary} from '@components'
+import { NoRecordFound, Table, Primary } from '@components'
 
 interface CommonTableProps {
   noRecordText?: string;
@@ -24,9 +24,8 @@ interface CommonTableProps {
   buttonText?: string;
   buttonOnClock?: () => void;
   tableChildren?: React.ReactNode;
-  custombutton?:string
-
-  
+  custombutton?: string
+  headerClass?: string
 }
 
 
@@ -47,33 +46,33 @@ interface GetPaginatorSetProps {
 
 
 
-  function index({tableTitle, displayDataSet,tableDataSet, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren,custombutton}: CommonTableProps) {
+function index({ tableTitle, displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton }: CommonTableProps) {
 
-  const CommonHeader = ({children}: CommonHeaderProps) => {
+  const CommonHeader = ({ children }: CommonHeaderProps) => {
     return (
       <div className='col'>
 
         {buttonText && <div className="col text-right mt-4 mb-4">
           <Primary size={'btn-sm'} text={buttonText} onClick={buttonOnClock} />
         </div>}
-        
+
         {!noHeader ?
-        <div className="card shadow">
-          <div className="card-header border-0">
-            <div className="row align-items-center">
-              <div className="col" >
-                <h3 className="mb-0" >{tableTitle}</h3>
+          <div className={`card shadow ${headerClass}`}>
+            <div className="card-header border-0">
+              <div className="row align-items-center">
+                <div className="col" >
+                  <h3 className="mb-0" >{tableTitle}</h3>
+                </div>
               </div>
             </div>
-          </div>
-          {children}
-        </div> : <div>{children}</div>
-      }
+            {children}
+          </div> : <div>{children}</div>
+        }
       </div>
     );
   }
 
-  const GetPaginatorSet = ({currentPage, totalPages}: GetPaginatorSetProps) => {
+  const GetPaginatorSet = ({ currentPage, totalPages }: GetPaginatorSetProps) => {
     if (currentPage && totalPages) {
 
       const children = [];
@@ -103,8 +102,8 @@ interface GetPaginatorSetProps {
 
         }
 
-        const ChildComponent = ({text}: ChildComponentProps) => {
-          return (<li className={`${currentPage + "" === text + "" ? 'active' : ''} page-item `} onClick={() => {if (paginationNumberClick) paginationNumberClick(text)}} ><a className="page-link" >{text}</a></li>);
+        const ChildComponent = ({ text }: ChildComponentProps) => {
+          return (<li className={`${currentPage + "" === text + "" ? 'active' : ''} page-item `} onClick={() => { if (paginationNumberClick) paginationNumberClick(text) }} ><a className="page-link" >{text}</a></li>);
         }
 
 

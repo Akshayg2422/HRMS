@@ -60,7 +60,8 @@ import {
   FaceReRequest,
   EsslConfig,
   ManageEsslConfig,
-  ManageDevices
+  ManageDevices,
+  FaceReRegisterRequest
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -280,7 +281,7 @@ function App() {
             element={<RequireAuth>{<CreateNewDesignationGroup />}</RequireAuth>}
           />
           <Route
-            path={ROUTE.ROUTE_FACE_APPROVAL}
+            path={ROUTE.ROUTE_LOG_APPROVAL}
             element={<RequireAuth>{<FaceApproval />}</RequireAuth>}
           />
           <Route
@@ -330,6 +331,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_MANAGE_ESSL_DEVICES}
             element={<RequireAuth>{<ManageDevices />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST}
+            element={<RequireAuth>{<FaceReRegisterRequest />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

@@ -212,6 +212,13 @@ export const syncEsslDeviceUsersApi = (payload) => post(url.SYNC_ESSL_DEVICE_USE
 
 export const getNotificationsApi = (payload) => post(url.GET_NOTIFICATIONS, payload, {})
 
+//face Re-register Employee Request 
 
+export const getEmployeeReRegisterRequestApi = (payload) => post(url.FACE_RE_REGISTER_EMPLOYEE_REQUEST, payload, {})
+
+//employee enable Face ReRegister
+
+
+export const employeeEnableFaceReRegisterApi = (payload) => post(url.EMPLOYEE_ENABLE_FACE_RE_REGISTER, payload, {})
 
 

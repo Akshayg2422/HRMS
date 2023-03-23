@@ -8,17 +8,19 @@ import {
   IS_LAUNCH,
   HIDE_OTP,
   LAUNCH_TIME,
-  TIMER
+  TIMER,
+  API_CONTROL
 } from "./actionsType"
 
 
 
 
-// export const showLoader = () => {
-//   return {
-//     type: SHOW_LOADER,
-//   };
-// };
+export const apiControl = (action) => {
+  return {
+    type: API_CONTROL,
+    payload: action
+  };
+};
 
 
 // export const hideLoader = () => {

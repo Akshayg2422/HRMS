@@ -8,9 +8,9 @@ import {
 } from "@components";
 import React, { useEffect } from "react";
 
-import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
+import { fetchDashboardDetails, Navbar, Header, DashBoardCard, Firebase } from "@modules";
 import { useDashboard } from "@contexts";
-import { goTo, ROUTE, useNav } from "@utils";
+import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
@@ -51,13 +51,6 @@ function Dashboard() {
     getPostAppConfig()
   }, [fcmToken])
 
-  useEffect(() => {
-    dispatch(currentNavIndex(0))
-    dispatch(getDashboard({}))
-  }, []);
-
-
-
 
   const getPostAppConfig = () => {
     const params = {
@@ -92,20 +85,35 @@ function Dashboard() {
 
 
   useEffect(() => {
-    if (dashboardDetails) {
-      const params = {}
-      dispatch(getListAllBranchesList({
-        params,
-        onSuccess: (response: Array<LocationProps>) => {
-          const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
-          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name }))
-        },
-        onError: () => {
-        },
-      }))
-    }
+    dispatch(currentNavIndex(0))
+    const params = {}
+    dispatch(getDashboard({
+      params,
+      onSuccess: (response: any) => {
+        if (response.success) {
+          getBranchDetails(response.details)
+        }
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
+  }, []);
 
-  }, [dashboardDetails]);
+
+  const getBranchDetails = (details: any) => {
+    const params = {}
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (response: Array<LocationProps>) => {
+        const childIds = getAllSubBranches(response, details.company_branch.id)
+        dispatch(setBranchHierarchical({ ids: { branch_id: details.company_branch.id, child_ids: childIds, include_child: false }, name: details.company_branch.name }))
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
+  }
 
   return (
     <>
