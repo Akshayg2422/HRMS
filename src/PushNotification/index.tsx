@@ -28,7 +28,17 @@ const PushNotification = () => {
         );
     };
 
-   
+    const register = () =>{
+        const params ={
+          "name": "",
+          "registration_id": "",
+          "active": false,
+          "p256dh": "",
+          "auth": "",
+          "browser": null,
+          "application_id": ""
+      }
+      }
 
     useEffect(() => {
         if (notification?.title) {

@@ -4,7 +4,7 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { useDispatch } from 'react-redux'
-import { getFcmToken } from '../../../src/store/auth/actions'
+import { getFcmToken, webPushRegister } from '../../../src/store/auth/actions'
 
 
 const firebaseConfig = {
@@ -15,33 +15,162 @@ const firebaseConfig = {
     messagingSenderId: "220885026819",
     appId: "1:220885026819:web:e471e84513a5ab99542636",
     measurementId: "G-XEC0XF1H61"
-  };
+};
 
 
 initializeApp(firebaseConfig);
 
 const messaging = getMessaging();
 
-export const requestForToken = () => {
+function urlBase64ToUint8Array(base64String: any) {
+    var padding = '='.repeat((4 - base64String.length % 4) % 4)
+    var base64 = (base64String + padding)
+        .replace(/\-/g, '+')
+        .replace(/_/g, '/')
+
+    var rawData = window.atob(base64)
+    var outputArray = new Uint8Array(rawData.length)
+
+    for (var i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i)
+    }
+    return outputArray;
+}
+
+function loadVersionBrowser() {
+    if ("userAgentData" in navigator) {
+        // navigator.userAgentData is not available in
+        // Firefox and Safari
+        const uaData: any = navigator.userAgentData;
+        // Outputs of navigator.userAgentData.brands[n].brand are e.g.
+        // Chrome: 'Google Chrome'
+        // Edge: 'Microsoft Edge'
+        // Opera: 'Opera'
+        let browsername;
+        let browserversion;
+        let chromeVersion = null;
+        for (var i = 0; i < uaData.brands.length; i++) {
+            let brand = uaData.brands[i].brand;
+            browserversion = uaData.brands[i].version;
+            if (brand.match(/opera|chrome|edge|safari|firefox|msie|trident/i) !== null) {
+                // If we have a chrome match, save the match, but try to find another match
+                // E.g. Edge can also produce a false Chrome match.
+                if (brand.match(/chrome/i) !== null) {
+                    chromeVersion = browserversion;
+                }
+                // If this is not a chrome match return immediately
+                else {
+                    browsername = brand.substr(brand.indexOf(' ') + 1);
+                    return {
+                        name: browsername,
+                        version: browserversion
+                    }
+                }
+            }
+        }
+        // No non-Chrome match was found. If we have a chrome match, return it.
+        if (chromeVersion !== null) {
+            return {
+                name: "chrome",
+                version: chromeVersion
+            }
+        }
+    }
+    // If no userAgentData is not present, or if no match via userAgentData was found,
+    // try to extract the browser name and version from userAgent
+    const userAgent = navigator.userAgent;
+    var ua = userAgent, tem, M = ua.match(/(opera|chrome|safari|firefox|msie|trident(?=\/))\/?\s*(\d+)/i) || [];
+    if (/trident/i.test(M[1])) {
+        tem = /\brv[ :]+(\d+)/g.exec(ua) || [];
+        return { name: 'IE', version: (tem[1] || '') };
+    }
+    if (M[1] === 'Chrome') {
+        tem = ua.match(/\bOPR\/(\d+)/);
+        if (tem != null) {
+            return { name: 'Opera', version: tem[1] };
+        }
+    }
+    M = M[2] ? [M[1], M[2]] : [navigator.appName, navigator.appVersion, '-?'];
+    if ((tem = ua.match(/version\/(\d+)/i)) != null) {
+        M.splice(1, 1, tem[1]);
+    }
+    return {
+        name: M[0],
+        version: M[1]
+    };
+};
+
+
+const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk"
+
+
+export const requestForToken = async () => {
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
 
-    return getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk" })
-        .then((currentToken) => {
-            if (currentToken) {
-                dispatch(getFcmToken(currentToken))
-                console.log(currentToken);
-                // Perform any other neccessary action with the token
-            } else {
-                // Show permission request UI
-                console.log('No registration token available. Request permission to generate one.');
-            }
-        })
-        .catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-        });
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+            .register("./firebase-messaging-sw.js")
+            .then(async function (registration) {
+
+                if (registration) {
+                    const browser = loadVersionBrowser();
+
+                    registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array(applicationServerKey)
+                    }).then(function (sub: any) {
+
+                        
+                        const key = sub.getKey("p256dh");
+                        const auth = sub.getKey("auth");
+                        const encryptKey: any = new Uint8Array(key)
+                        const encryptAuth: any = new Uint8Array(auth)
+
+                        var endpointParts = sub.endpoint.split('/');
+                        var registration_id = endpointParts[endpointParts.length - 1];
+                        const params = {
+                            'browser': browser.name.toUpperCase(),
+                            'p256dh': btoa(String.fromCharCode.apply(null, encryptKey)),
+                            'auth': btoa(String.fromCharCode.apply(null, encryptAuth)),
+                            'name': 'Muthu',
+                            'registration_id': registration_id,
+                            application_id: "1:220885026819:web:e471e84513a5ab99542636"
+                        };
+                        
+                        dispatch(webPushRegister({
+                            params,
+                            onSuccess: (response: any) => {
+                            },
+                            onError: () => {
+                            },
+                        }))
+
+                    })
+                        .catch(function (err: any) {
+                            console.log(':^(', err);
+                        });
+                }
+
+                // console.log("Registration successful, scope is:", registration.scope);
+                getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk", serviceWorkerRegistration: registration })
+                    .then((currentToken) => {
+                        if (currentToken) {
+                            console.log('current token for client: ', currentToken);
+                        } else {
+                            console.log('No registration token available. Request permission to generate one.');
+                        }
+                    }).catch((err) => {
+                        console.log('An error occurred while retrieving token. ', err);
+                    });
+            })
+            .catch(function (err) {
+                console.log("Service worker registration failed, error:", err);
+            });
+    }
 };
+
 
 // Handle incoming messages. Called when:
 // - a message is received while the app has focus
@@ -52,3 +181,5 @@ export const onMessageListener = () =>
             resolve(payload);
         });
     });
+
+
