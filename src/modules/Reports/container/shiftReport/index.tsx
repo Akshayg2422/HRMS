@@ -45,7 +45,7 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
             let updateObject = { name, emp_id, designation, shiftTime }
             if (key && key.length > 0) {
                 key.forEach((each: any) => {
-                    const index = days.findIndex((day: any) => day.date === each)
+                    const index = days && days.findIndex((day: any) => day?.date === each)
                     updateObject = { ...updateObject, [each]: index !== '-1' ? days[index] : {} }
                 })
             }

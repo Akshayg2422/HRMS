@@ -74,19 +74,21 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
-    if (initialRender) {
-      setShiftSelectedDesignation(shiftDesignationData[0]?.id)
-    }
+    // if (initialRender) {
+    //   setShiftSelectedDesignation(shiftDesignationData[0]?.id)
+    // }
     getReports(currentPage)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
 
   useEffect(() => {
     if (reportsType === 'shift' && selectedShift) {
-      getReports(currentPage) 
+      getReports(currentPage)
       setShiftName(getShiftName(selectedShift, shiftGroupData))
     }
   }, [selectedDepartment, reportsType, selectedAttendanceType, hierarchicalBranchIds, selectedShift, shiftSelectedDesignation])
+
+
 
   const getDepartments = (() => {
     const params = {}
@@ -110,6 +112,8 @@ function Reports() {
         let mergedDesignation = [...designationData, ...response]
         setDesignationData(mergedDesignation)
         setShiftDesignationData(response)
+        designationMatchShifts(response[0].id)
+        setShiftSelectedDesignation(response[0]?.id)
       },
       onError: (errorMessage: string) => {
       },
@@ -143,14 +147,11 @@ function Reports() {
     }));
   }
 
-
   const designationMatchShifts = (id: any) => {
     let shifts
     if (id !== "-1") {
       shifts = shiftGroupData && shiftGroupData.length > 0 && shiftGroupData.filter((el: any) => el?.weekly_shift?.designation_id === id)
-      shifts.length > 0 ? setSelectedShift(shifts[0].id) : showToast("info", t('noShift'))
-    } else {
-      shifts = shiftGroupData
+      shifts.length > 0 ? setSelectedShift(shifts[0].id) : showToast('info', t('noShift'))
     }
     setDesignationFilterShiftGroupData(shifts)
   }
@@ -211,6 +212,9 @@ function Reports() {
       return false;
     } else if (!selectedAttendanceType && reportsType === 'log') {
       showToast("error", t("inValidAttendance"));
+      return false;
+    } else if (reportsType === 'shift' && designationFilterShiftGroupData.length < 0) {
+      showToast("error", t("noShift"));
       return false;
     }
     else if (!selectedShift && reportsType === 'shift') {
@@ -301,7 +305,7 @@ function Reports() {
             value={shiftSelectedDesignation}
             onChange={(event) => {
               if (setShiftSelectedDesignation) {
-                setInitialRender(false)
+                // setInitialRender(false)
                 setSelectedShift('')
                 designationMatchShifts(event.target.value)
                 setShiftSelectedDesignation(event.target.value);

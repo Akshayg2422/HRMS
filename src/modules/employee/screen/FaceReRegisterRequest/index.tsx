@@ -72,6 +72,7 @@ function FaceReRegisterRequest() {
         onSuccess: (success: any) => {
           setApproveModel(!approveModel)
           showToast('success', success?.message)
+          getRequestDetails(currentPage)
         },
         onError: (error: string) => { },
       })
@@ -80,6 +81,7 @@ function FaceReRegisterRequest() {
 
   const handleModel = (item: any) => {
     setEmployeeDetails(item)
+    setApproveModel(!approveModel)
   }
 
   return (

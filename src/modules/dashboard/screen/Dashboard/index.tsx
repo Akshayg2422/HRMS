@@ -36,21 +36,17 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
-  const { userDetails, success, mobileNumber, error } = useSelector(
-    (state: any) => state.AuthReducer
-  );
-
   const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );
-
-  console.log("userDetails----->", userDetails);
-
 
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
 
+  useEffect(() => {
+    dispatch(getDashboard({}))
+  }, [])
 
   const getPostAppConfig = () => {
     const params = {
@@ -83,37 +79,21 @@ function Dashboard() {
     return branchListFiltered;
   };
 
-
   useEffect(() => {
-    dispatch(currentNavIndex(0))
-    const params = {}
-    dispatch(getDashboard({
-      params,
-      onSuccess: (response: any) => {
-        if (response.success) {
-          getBranchDetails(response.details)
-        }
-      },
-      onError: (error: string) => {
-        showToast('error', error)
-      },
-    }))
+    if (dashboardDetails) {
+      const params = {}
+      dispatch(getListAllBranchesList({
+        params,
+        onSuccess: (response: Array<LocationProps>) => {
+          const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
+          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name }))
+        },
+        onError: () => {
+        },
+      }))
+    }
+
   }, []);
-
-
-  const getBranchDetails = (details: any) => {
-    const params = {}
-    dispatch(getListAllBranchesList({
-      params,
-      onSuccess: (response: Array<LocationProps>) => {
-        const childIds = getAllSubBranches(response, details.company_branch.id)
-        dispatch(setBranchHierarchical({ ids: { branch_id: details.company_branch.id, child_ids: childIds, include_child: false }, name: details.company_branch.name }))
-      },
-      onError: (error: string) => {
-        showToast('error', error)
-      },
-    }))
-  }
 
   return (
     <>
