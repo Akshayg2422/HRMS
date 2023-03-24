@@ -112,7 +112,7 @@ function FaceReRegisterRequest() {
             additionClass={"mt-sm-3 mb-xl-3"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-          // onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
+            onClick={() => getRequestDetails(currentPage)}
           >
             <Icon type={"btn-primary"} icon={Icons.Search} />
           </Container>
