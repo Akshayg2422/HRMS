@@ -54,14 +54,20 @@ export const ROUTE = {
   ROUTE_MANAGE_REQUEST: '/manage-request',
   ROUTE_SHIFT_REQUEST: '/shift-request',
   ROUTE_EMPLOYEE_SHIFT_REQUEST: '/employee-shift-request',
-  ROUTE_FACE_APPROVAL: '/face-approval',
+  ROUTE_LOG_APPROVAL: '/log-approval',
   ROUTE_AVAILABLE_LEAVES: '/available-leaves',
   ROUTE_LEAVES_TYPES: '/leaves-types',
   ROUTE_MANAGE_LEAVE_TYPES: '/manage-leave-types',
   ROUTE_BROADCAST: '/broadcast',
   ROUTE_EVENT_NOTIFICATION: '/event-notification',
   ROUTE_MANAGE_BROADCAST: '/manage-broadcast',
-  ROUTE_MY_NOTIFICATION: '/my-notification'
+  ROUTE_MY_NOTIFICATION: '/my-notification',
+  ROUTE_FACE_RE_REQUEST: '/face-re-request',
+  ROUTE_FACE_RE_REGISTER_REQUEST: '/face-re-register-request',
+  ROUTE_ESSI_CONFIG: '/essi-Config',
+  ROUTE_MANAGE_ESSL_CONFIG: '/manage-essl-config',
+  ROUTE_MANAGE_ESSL_DEVICES: '/manage-essl-devices'
+
 }
 
 
@@ -106,9 +112,10 @@ export const EMPLOYEE_TYPE = [
 ];
 
 export const REPORTS_TYPE = [
-  { id: 'attendance', name: 'AttendanceReport', value: 'attendance' },
-  { id: 'leave', name: 'LeaveReport', value: 'leave' },
-  { id: 'log', name: 'LogReport', value: 'log' },
+  { id: 'attendance', name: 'Attendance Report', value: 'attendance' },
+  { id: 'leave', name: 'Leave Report', value: 'leave' },
+  { id: 'log', name: 'Log Report', value: 'log' },
+  { id: 'shift', name: "Shift Report", value: "shift" }
 ];
 
 export const LEAVES_TYPE = [
@@ -116,8 +123,6 @@ export const LEAVES_TYPE = [
   { id: 'Pending Leave', name: 'Pending Leave', value: -1, },
   { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
   { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
-
-
 ];
 
 
@@ -204,12 +209,14 @@ export const NAV_ITEM = [
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
   // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
-  { id: '17', name: 'Face Approval', value: 'FA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_FACE_APPROVAL },
-  { id: '18', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST },
+  { id: '17', name: 'Face Re-Register', value: 'FR', icon: 'ni ni-badge', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST },
+  { id: '18', name: 'Log Approval', value: 'LA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_LOG_APPROVAL },
+  { id: '19', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST },
+  { id: '20', name: 'Face Approval', value: 'FR', icon: 'ni ni-image', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REQUEST },
   // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
-
   { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
-  // { id: '18', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
+  // { id: '21', name: 'ESSL Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG },
+  { id: '22', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
 ];
 
 

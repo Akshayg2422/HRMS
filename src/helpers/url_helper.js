@@ -144,13 +144,13 @@ export const CHANGE_EMPLOYEE_FACE_VALIDATION = 'attendance/changeEmployeeFaceval
  */
 
 
-export const  POST_APP_CONFIG_DETAILS = 'authentication/v1/webAppConfig'
+export const POST_APP_CONFIG_DETAILS = 'authentication/v1/webAppConfig'
 
 /**
  * Update Leaves Type
  */
 
-export const  UPDATE_LEAVE_TYPE = 'attendance/updateLeaveTypes'
+export const UPDATE_LEAVE_TYPE = 'attendance/updateLeaveTypes'
 
 //Create broadcast message
 export const CREATE_BROADCAST_MESSAGE = 'messages/createBroadcastMessage'
@@ -160,3 +160,46 @@ export const FETCH_BROADCAST_MESSAGE = 'messages/getBroadcastMessages'
 
 //get Employee Checking logs Report
 export const GET_EMPLOYEE_CHECK_IN_LOGS_REPORT = 'attendance/getEmployeeCheckInLogs'
+
+//Face Re-Register Request
+
+export const FACE_RE_REGISTER_REQUEST = 'employee/web/v1/getEmployeesFaceRegisterRequestsWithFace'
+
+// Face Re-Register Change Status
+
+export const FACE_RE_REGISTER_REQUEST_CHANGE_STATUS = 'employee/web/v1/changeStatusEmployeesFaceRegisterRequestsWithFace'
+
+//set ESSL config
+
+export const SET_ESSL_CONFIG_URL = 'company/setESSLConfig'
+
+//get ESSL config
+
+export const GET_ESSL_CONFIG_URL = 'company/getESSLConfig'
+
+//add ESSL device
+
+export const ADD_ESSL_DEVICE = 'company/addESSLDevice'
+
+//get ESSL device
+
+export const GET_ESSL_DEVICES = 'company/getESSLDevices'
+
+//sync essl device users
+
+export const SYNC_ESSL_DEVICE_USERS = 'company/syncESSLDeviceUsers'
+
+//get notifications
+
+export const GET_NOTIFICATIONS = "messages/getNotifications"
+
+//web push 
+
+export const WEB_PUSH_REGISTER_URL = "/api/v1/push/web/"
+//face Re-register Employee Request 
+
+export const FACE_RE_REGISTER_EMPLOYEE_REQUEST = 'employee/v1/getEmployeesFaceRegisterRequests'
+
+//employee enable Face ReRegister
+
+export const EMPLOYEE_ENABLE_FACE_RE_REGISTER = 'employee/enableFaceReRegister'

@@ -163,7 +163,7 @@ const ApplyLeave = () => {
           params,
           onSuccess: (response: any) => {
             showToast("success", response?.message);
-            goTo(navigation, ROUTE.ROUTE_AVAILABLE_LEAVES);
+            goBack(navigation);
           },
           onError: (error: string) => {
             showToast("error", error);

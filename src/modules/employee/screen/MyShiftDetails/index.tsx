@@ -34,11 +34,6 @@ function MyShiftDetails() {
         getMyShiftsDetails()
     }, [])
 
-    // useEffect(() => {
-    //     if (enterPress) {
-    //     //   getEmployeeRequest(currentType, currentPage)
-    //     }
-    //   }, [enterPress])
 
     const getMyShiftsDetails = () => {
         const params = {}
@@ -64,7 +59,6 @@ function MyShiftDetails() {
                 showToast("error", error);
             },
         }));
-
     }
 
     const checkShiftExist = (id: any, response: any) => {

@@ -46,9 +46,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
-          console.log("getListAllBranchesList",response);
-          
-          setStructuredData(hierarchicalBranchIds);
+          // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
 
           if (parentBranch) {
@@ -67,7 +65,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
             } catch (e) {
               modifiedBranch = filteredBranch
             }
-
             setHierarchicalBranch({ child: modifiedBranch });
           }
         },
@@ -77,9 +74,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       })
     );
   }, [hierarchicalBranchName, hierarchicalBranchIds]);
-
-
-
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     let branchListFiltered: any = [];
@@ -92,6 +86,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           return it2;
         });
     };
+    
     getChild(branchList, parent_id);
 
     branchListFiltered = branchListFiltered.map((it: any) => {
@@ -221,7 +216,7 @@ const SubLevelComponent = ({
         className="card-header p-3"
         data-toggle="collapse"
         data-target={"#collapse" + item.id}
-        >
+      >
         <div className="row align-items-center mx-4">
           <div className="col-8">
             <h5 className="mb-0">{item.name}</h5>

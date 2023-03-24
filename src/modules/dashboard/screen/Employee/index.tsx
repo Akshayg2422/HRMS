@@ -91,13 +91,13 @@ function EmployeeScreen() {
 
 
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any, index: number) => {
+    return data.map((el: any, index: number) => { 
       return {
         id: el.employee_id,
         "":
           <span className='avatar avatar-sm rounded-circle' style={{ cursor: 'pointer' }} onClick={(e) => handleShowProfile(e, el)}>
             <ImageView
-              style={{ objectFit: 'contain' }}
+              style={{ objectFit: 'cover' }}
               height={'100%'}
               width={'100%'}
               alt='image placeholder'

@@ -10,7 +10,7 @@ import React, { useEffect } from "react";
 
 import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
 import { useDashboard } from "@contexts";
-import { goTo, ROUTE, useNav } from "@utils";
+import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
@@ -23,7 +23,7 @@ import {
 import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 import { getAdminBranches } from "../../../../store/employee/actions";
-import { postAppConfig } from "../../../../store/auth/actions";
+import { postAppConfig, webPushRegister } from "../../../../store/auth/actions";
 
 
 function Dashboard() {
@@ -36,24 +36,17 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
-
   const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );
-
-
 
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
 
   useEffect(() => {
-    dispatch(currentNavIndex(0))
     dispatch(getDashboard({}))
-  }, []);
-
-
-
+  }, [])
 
   const getPostAppConfig = () => {
     const params = {
@@ -86,7 +79,6 @@ function Dashboard() {
     return branchListFiltered;
   };
 
-
   useEffect(() => {
     if (dashboardDetails) {
       const params = {}
@@ -101,7 +93,7 @@ function Dashboard() {
       }))
     }
 
-  }, [dashboardDetails]);
+  }, []);
 
   return (
     <>

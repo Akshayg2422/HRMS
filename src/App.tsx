@@ -27,7 +27,6 @@ import {
   MyLog,
   MyWorkLog,
   MyLeaves,
-  Firebase,
   AutoLogout,
   ModifyLogs,
   Reports,
@@ -57,6 +56,11 @@ import {
   DeviceInfo,
   BroadCast,
   ManageBroadCast,
+  FaceReRequest,
+  EsslConfig,
+  ManageEsslConfig,
+  ManageDevices,
+  FaceReRegisterRequest
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -64,7 +68,6 @@ import { Notification } from "./modules/dashboard/container/Notification";
 
 import { ASYN_USER_AUTH, goTo, ROUTE, useNav } from "@utils";
 import { Routes, Route, Navigate } from "react-router-dom";
-// import {getToken} from "firebase/messaging"
 import { ToastContainer } from "react-toastify";
 import { AppLoader, PageNotFound, ScreenLoader } from "@components";
 import FenceAdmin from "./modules/fenceAdmin";
@@ -72,36 +75,37 @@ import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
-
-
+import { PushNotification } from './PushNotification'
 function App() {
 
-  return (
-    <>
-      {/* <AutoLogout /> */}
-      <Firebase />
-      <DeviceInfo />
-      <AppProvider >
-        <AppLoader />
-        <ScreenLoader />
-        <Routes>
-          <Route path={"/"} element={<ZenylogSite />} />
-          <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
-          <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
-          <Route
-            path={ROUTE.ROUTE_LOGIN}
-            element={<RequireAuthExist>{<Login />}</RequireAuthExist>}
-          />
-          <Route
-            path={ROUTE.ROUTE_OTP}
-            element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
-          />
-          {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
-          <Route
-            path={ROUTE.ROUTE_DASHBOARD}
-            element={<RequireAuth>{<Dashboard />}</RequireAuth>}
-          />
-          {/* <Route
+
+    return (
+      <>
+        {/* <AutoLogout /> */}
+        {/* <Firebase /> */}
+        <PushNotification />
+        <DeviceInfo />
+        <AppProvider >
+          <AppLoader />
+          <ScreenLoader />
+          <Routes>
+            <Route path={"/"} element={<ZenylogSite />} />
+            <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
+            <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
+            <Route
+              path={ROUTE.ROUTE_LOGIN}
+              element={<RequireAuthExist>{<Login />}</RequireAuthExist>}
+            />
+            <Route
+              path={ROUTE.ROUTE_OTP}
+              element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
+            />
+            {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
+            <Route
+              path={ROUTE.ROUTE_DASHBOARD}
+              element={<RequireAuth>{<Dashboard />}</RequireAuth>}
+            />
+            {/* <Route
           path={ROUTE.ROUTE_DASHBOARD_OTP}
           element={<RequireAuth>{<DashBoardOtp />}</RequireAuth>}
         /> */}
@@ -278,7 +282,7 @@ function App() {
             element={<RequireAuth>{<CreateNewDesignationGroup />}</RequireAuth>}
           />
           <Route
-            path={ROUTE.ROUTE_FACE_APPROVAL}
+            path={ROUTE.ROUTE_LOG_APPROVAL}
             element={<RequireAuth>{<FaceApproval />}</RequireAuth>}
           />
           <Route
@@ -310,6 +314,31 @@ function App() {
             element={<RequireAuth>{<Notification />}</RequireAuth>}
           />
 
+            <Route
+              path={ROUTE.ROUTE_FACE_RE_REQUEST}
+              element={<RequireAuth>{<FaceReRequest />}</RequireAuth>}
+            />
+
+            <Route
+              path={ROUTE.ROUTE_ESSI_CONFIG}
+              element={<RequireAuth>{<EsslConfig />}</RequireAuth>}
+            />
+
+            <Route
+              path={ROUTE.ROUTE_MANAGE_ESSL_CONFIG}
+              element={<RequireAuth>{<ManageEsslConfig />}</RequireAuth>}
+            />
+
+            <Route
+              path={ROUTE.ROUTE_MANAGE_ESSL_DEVICES}
+              element={<RequireAuth>{<ManageDevices />}</RequireAuth>}
+            />
+
+          <Route
+            path={ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST}
+            element={<RequireAuth>{<FaceReRegisterRequest />}</RequireAuth>}
+          />
+
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
         <ToastContainer />
@@ -318,4 +347,4 @@ function App() {
   );
 }
 
-export default App;
+  export default App;

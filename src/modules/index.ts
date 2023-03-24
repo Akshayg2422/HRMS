@@ -8,7 +8,10 @@ import {
   registerCompanyDocument,
   resendOtp,
   validateUser,
-  DeviceInfo
+  DeviceInfo,
+  EsslConfig,
+  ManageEsslConfig,
+  ManageDevices
 } from './auth';
 import { Report, Employee, Dashboard, Calendar, Location, getEmployeeDetails, fetchDashboardDetails, Navbar, DashBoardCard, Header, Profile, DashBoardOtp } from './dashboard';
 
@@ -18,14 +21,13 @@ import {
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
   ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
   ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches, EmployeeShiftRequest,
-  AvailableLeaves, LeaveTypes, ManageLeaveTypes
+  AvailableLeaves, LeaveTypes, ManageLeaveTypes,FaceReRegisterRequest
 } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
 import { DashboardStats, DashBoardAttendance } from './stats'
 import RequireAuth from './RequireAuth'
 import RequireAuthExist from './RequireAuthExist'
-import { Firebase } from './Firebase';
 
 
 import { AutoLogout } from './SessionTimeout'
@@ -38,6 +40,7 @@ import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGro
 import { FaceApproval } from './FaceApproval'
 import { BroadCast, ManageBroadCast } from './BroadCast'
 import { Notifications, ManageRequest } from './notifications'
+import { FaceReRequest } from './FaceReRegister'
 
 export {
   getDashboardDetails,
@@ -89,7 +92,6 @@ export {
   AllowanceGroup,
   DeductionGroupList,
   CreateGroup,
-  Firebase,
   DashBoardOtp,
   MyBranches,
   Notifications,
@@ -103,7 +105,12 @@ export {
   ManageLeaveTypes,
   DeviceInfo,
   BroadCast,
-  ManageBroadCast
+  ManageBroadCast,
+  FaceReRequest,
+  EsslConfig,
+  ManageEsslConfig,
+  ManageDevices,
+  FaceReRegisterRequest
 }
 
 
