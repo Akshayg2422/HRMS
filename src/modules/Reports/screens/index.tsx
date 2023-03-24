@@ -77,7 +77,7 @@ function Reports() {
     // if (initialRender) {
     //   setShiftSelectedDesignation(shiftDesignationData[0]?.id)
     // }
-    getReports(currentPage)
+    reportsType !== 'shift' && getReports(currentPage)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
 
@@ -175,7 +175,7 @@ function Reports() {
         ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
         ...(searchEmployee && { q: searchEmployee }),
         ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds?.branch_id] }),
-        ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
+        ...(reportsType === "log" || reportsType === "shift" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
         report_type: reportsType,
         department_id: selectedDepartment,
         designation_id: reportsType !== 'shift' ? selectedDesignation : shiftSelectedDesignation,
@@ -268,9 +268,10 @@ function Reports() {
             data={REPORTS_TYPE}
             onChange={(event) => {
               setReportsType(dropDownValueCheck(event.target.value, 'Select Report'))
+              setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
               dispatch(resetMisReportData([]))
             }} />
-          {reportsType === "log" && <div className="col-lg-3 col-md-12">
+          {reportsType === "log" || reportsType === 'shift' && <div className="col-lg-3 col-md-12">
             <DropDown
               label={t('attendanceType')}
               placeholder={"Select Attendance"}

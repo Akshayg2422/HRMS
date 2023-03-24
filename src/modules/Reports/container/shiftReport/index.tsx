@@ -74,7 +74,7 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
     const getReports = ((pageNumber: number) => {
         const params = {
             report_type: reportType,
-            ...(reportType === "log" ? { attendance_type: attendanceType } : { attendance_type: -1 }),
+            ...(reportType === "shift" ? { attendance_type: attendanceType } : { attendance_type: -1 }),
             ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
             designation_id: designation,
             department_id: department,
