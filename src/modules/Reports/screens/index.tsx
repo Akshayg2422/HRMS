@@ -86,8 +86,8 @@ function Reports() {
       getReports(currentPage)
       setShiftName(getShiftName(selectedShift, shiftGroupData))
     }
-    if (initialRender) {
-      designationMatchShifts(shiftDesignationData[0].id)
+    if (reportsType === 'shift' && initialRender) {
+      designationMatchShifts(shiftDesignationData[0]?.id)
     }
   }, [selectedDepartment, reportsType, selectedAttendanceType, hierarchicalBranchIds, selectedShift, shiftSelectedDesignation])
 
