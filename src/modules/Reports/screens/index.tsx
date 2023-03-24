@@ -86,6 +86,9 @@ function Reports() {
       getReports(currentPage)
       setShiftName(getShiftName(selectedShift, shiftGroupData))
     }
+    if (reportsType === 'shift' && initialRender) {
+      designationMatchShifts(shiftDesignationData[0]?.id)
+    }
   }, [selectedDepartment, reportsType, selectedAttendanceType, hierarchicalBranchIds, selectedShift, shiftSelectedDesignation])
 
 
@@ -112,7 +115,6 @@ function Reports() {
         let mergedDesignation = [...designationData, ...response]
         setDesignationData(mergedDesignation)
         setShiftDesignationData(response)
-        designationMatchShifts(response[0].id)
         setShiftSelectedDesignation(response[0]?.id)
       },
       onError: (errorMessage: string) => {
@@ -305,7 +307,7 @@ function Reports() {
             value={shiftSelectedDesignation}
             onChange={(event) => {
               if (setShiftSelectedDesignation) {
-                // setInitialRender(false)
+                setInitialRender(false)
                 setSelectedShift('')
                 designationMatchShifts(event.target.value)
                 setShiftSelectedDesignation(event.target.value);
