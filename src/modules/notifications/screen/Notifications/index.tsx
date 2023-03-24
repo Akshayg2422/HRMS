@@ -1,6 +1,6 @@
 import { BackArrow, Card, CommonTable, Container, ImageView, NoRecordFound, Pagination } from '@components';
 import { Icons } from '@assets';
-import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
+import { getDisplayDateTimeFromMoment, getMomentObjFromServer, getTimelineRelativeTimeFormat, goTo, ROUTE, showToast, useNav } from '@utils';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
@@ -29,7 +29,7 @@ function Notifications() {
     const NOTI_TYPE_NO_ACTION = 'NO_ACTION'
 
     const handleRoute = (item: any) => {
-        
+
         if (item?.extra?.route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -48,13 +48,13 @@ function Notifications() {
         else if (item?.extra?.route_type === NOTI_TYPE_FACE_RR_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST);
         }
-        else if(item?.extra?.route_type === NOTI_TYPE_FACE_APPROVAL_REQUEST_AD){
+        else if (item?.extra?.route_type === NOTI_TYPE_FACE_APPROVAL_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_FACE_RE_REQUEST);
         }
         else if (item?.extra?.route_type === NOTI_TYPE_MODIFY_LOG_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_MODIFY_LOGS);
         }
-       
+
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -122,9 +122,7 @@ function Notifications() {
                                             </span>
                                             <br />
                                             <span className='h5 float-right mt--2'>
-                                                {getDisplayDateTimeFromMoment(
-                                                    getMomentObjFromServer(el.created_at)
-                                                )}
+                                                {getTimelineRelativeTimeFormat(el.created_at)}
                                             </span>
                                         </Container>
                                     </Container>
