@@ -6,9 +6,15 @@ import {
     goTo,
     ROUTE,
 } from "@utils";
+import { useSelector } from 'react-redux';
 
 const PushNotification = () => {
     const navigation = useNav();
+
+    const { dashboardDetails } = useSelector(
+        (state: any) => state.DashboardReducer
+      );
+
 
     const [notification, setNotification] = useState({ title: '', body: '' });
     const notify = () => toast(<ToastDisplay />);
@@ -34,7 +40,7 @@ const PushNotification = () => {
         }
     }, [notification])
 
-    requestForToken();
+    requestForToken(dashboardDetails);
 
     onMessageListener()
         .then((payload: any) => {
