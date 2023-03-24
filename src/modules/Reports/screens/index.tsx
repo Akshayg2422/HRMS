@@ -77,7 +77,7 @@ function Reports() {
     // if (initialRender) {
     //   setShiftSelectedDesignation(shiftDesignationData[0]?.id)
     // }
-    getReports(currentPage)
+    reportsType !== 'shift' && getReports(currentPage)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
 
