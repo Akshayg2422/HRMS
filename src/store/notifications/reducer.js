@@ -99,7 +99,7 @@ const NotificationReducer = (state = initialState, action) => {
         loading: true,
         numOfPages: 0,
         currentPage: 1,
-        broadcastMessagesData: []
+        notificationsDataList: []
       };
       break;
     case FETCH_NOTIFICATIONS_SUCCESS:

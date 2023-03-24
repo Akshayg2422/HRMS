@@ -217,6 +217,13 @@ export const getNotificationsApi = (payload) => post(url.GET_NOTIFICATIONS, payl
 export const webPushRegisterApi = (payload) => post(url.WEB_PUSH_REGISTER_URL, payload, {})
 
 
+//face Re-register Employee Request 
 
+export const getEmployeeReRegisterRequestApi = (payload) => post(url.FACE_RE_REGISTER_EMPLOYEE_REQUEST, payload, {})
+
+//employee enable Face ReRegister
+
+
+export const employeeEnableFaceReRegisterApi = (payload) => post(url.EMPLOYEE_ENABLE_FACE_RE_REGISTER, payload, {})
 
 

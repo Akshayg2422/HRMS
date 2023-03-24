@@ -4,22 +4,14 @@ import {
   Container,
   Calender,
   Card,
-  Sort,
-  Modal,
-  Primary,
-  ChooseBranchFromHierarchical,
   CommonTable,
-  Secondary,
   NoRecordFound,
   BackArrow,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getLeaveFromDate,
   fetchCalendardetails,
-  getSelectedEventId,
-  deleteHoliday,
 } from "../../../../store/employee/actions";
 import { goTo, ROUTE, showToast, useNav } from "@utils";
 
@@ -28,7 +20,7 @@ function ManageLeaves() {
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
   const [recall, setRecall] = useState(false);
-  const [daysHoliday] = useState<any[]>([]);
+  const [daysHoliday,setDaysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
   const { calendarEvents, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
@@ -62,7 +54,7 @@ function ManageLeaves() {
 
   const geteventsdetails = () => {
     calendarEvents?.days_leave?.map((item: any) => {
-      daysHoliday.push({
+      let update={
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
@@ -72,7 +64,7 @@ function ManageLeaves() {
             : item.status_code === 0
               ? "red"
               : "gray",
-      });
+      }
     });
     calendarEvents?.days_absent?.map((item: any) => {
       daysHoliday.push({

@@ -3,9 +3,9 @@ import {
   TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST,
   MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE,
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
-  WEEK_DAY_LIST, REPORTS_TYPE,MAX_LENGTH_PAN_CARD,
+  WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT,CHILD_PATH
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -233,12 +233,16 @@ const base64ToImage = (base64: any) => {
 }
 
 const formatAMPM = (time: any) => {
-  let [hours, minutes, seconds] = time.split(':');
-  var ampm = hours >= 12 ? 'Pm' : 'Am';
-  hours = hours % 12;
-  hours = hours ? hours : 12;
-  let strTime = hours + ':' + minutes + ' ' + ampm;
-  return strTime;
+  if (time) {
+    let [hours, minutes, seconds] = time.split(':');
+    var ampm = hours >= 12 ? 'Pm' : 'Am';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  } else {
+    return ''
+  }
 }
 
 

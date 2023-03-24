@@ -122,7 +122,7 @@ export const requestForToken = async () => {
                         applicationServerKey: urlBase64ToUint8Array(applicationServerKey)
                     }).then(function (sub: any) {
 
-                        
+
                         const key = sub.getKey("p256dh");
                         const auth = sub.getKey("auth");
                         const encryptKey: any = new Uint8Array(key)
@@ -138,7 +138,8 @@ export const requestForToken = async () => {
                             'registration_id': registration_id,
                             application_id: "1:220885026819:web:e471e84513a5ab99542636"
                         };
-                        
+                        console.log("params00000000000", params);
+
                         dispatch(webPushRegister({
                             params,
                             onSuccess: (response: any) => {

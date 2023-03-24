@@ -28,7 +28,6 @@ function Notifications() {
     const NOTI_TYPE_NO_ACTION = 'NO_ACTION'
 
     const handleRoute = (item: any) => {
-
         if (item?.extra?.route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -57,15 +56,12 @@ function Notifications() {
 
     useEffect(() => {
         getNotificationsList(currentPage)
-
         return () => {
             dispatch(setIsShowBack(false))
         }
     }, [])
 
-
     const getNotificationsList = (pageNumber: number) => {
-
         const params = {
             page_number: pageNumber,
         };
@@ -125,13 +121,11 @@ function Notifications() {
                                                 )}
                                             </span>
                                         </Container>
-
                                     </Container>
                                 </Container>
                                 <Container additionClass={'h4 fw-normal'}>
                                     {el.message}
                                 </Container>
-
                             </Card>
                         </Container>
                     );

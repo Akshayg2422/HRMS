@@ -34,7 +34,13 @@ import {
   FACE_RE_REGISTER_REQUEST_FAIL,
   FACE_RE_REGISTER_CHANGE_STATUS,
   FACE_RE_REGISTER_CHANGE_STATUS_SUCCESS,
-  FACE_RE_REGISTER_CHANGE_STATUS_FAIL
+  FACE_RE_REGISTER_CHANGE_STATUS_FAIL,
+  EMPLOYEE_FACE_RE_REGISTER_REQUEST,
+  EMPLOYEE_FACE_RE_REGISTER_REQUEST_SUCCESS,
+  EMPLOYEE_FACE_RE_REGISTER_REQUEST_FAIL,
+  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION,
+  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_SUCCESS,
+  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL
 
 } from "./actionTypes";
 
@@ -333,6 +339,55 @@ export const faceReRegisterRequestChangeStatusSuccess = (response) => {
 export const faceReRegisterRequestChangeStatusFail = (error) => {
   return {
     type: FACE_RE_REGISTER_CHANGE_STATUS_FAIL,
+    payload: error,
+  };
+};
+
+//face Re-register Employee Request 
+
+export const employeeFaceReRegisterRequest = (params) => {
+  return {
+    type: EMPLOYEE_FACE_RE_REGISTER_REQUEST,
+    payload: params,
+
+  };
+};
+
+export const employeeFaceReRegisterRequestSuccess = (response) => {
+  return {
+    type: EMPLOYEE_FACE_RE_REGISTER_REQUEST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const employeeFaceReRegisterRequestFail = (error) => {
+  return {
+    type: EMPLOYEE_FACE_RE_REGISTER_REQUEST_FAIL,
+    payload: error,
+  };
+};
+
+//employee enable Face ReRegister
+
+
+export const employeeEnableFaceReRegister = (params) => {
+  return {
+    type: EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION,
+    payload: params,
+
+  };
+};
+
+export const employeeEnableFaceReRegisterSuccess = (response) => {
+  return {
+    type: EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_SUCCESS,
+    payload: response,
+  };
+};
+
+export const employeeEnableFaceReRegisterFail = (error) => {
+  return {
+    type: EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL,
     payload: error,
   };
 };

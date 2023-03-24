@@ -196,3 +196,10 @@ export const GET_NOTIFICATIONS = "messages/getNotifications"
 //web push 
 
 export const WEB_PUSH_REGISTER_URL = "/api/v1/push/web/"
+//face Re-register Employee Request 
+
+export const FACE_RE_REGISTER_EMPLOYEE_REQUEST = 'employee/v1/getEmployeesFaceRegisterRequests'
+
+//employee enable Face ReRegister
+
+export const EMPLOYEE_ENABLE_FACE_RE_REGISTER = 'employee/enableFaceReRegister'

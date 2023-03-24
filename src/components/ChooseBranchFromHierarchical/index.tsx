@@ -46,7 +46,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
-          setStructuredData(hierarchicalBranchIds);
+          // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
 
           if (parentBranch) {
@@ -65,7 +65,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
             } catch (e) {
               modifiedBranch = filteredBranch
             }
-
             setHierarchicalBranch({ child: modifiedBranch });
           }
         },
@@ -75,9 +74,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       })
     );
   }, [hierarchicalBranchName, hierarchicalBranchIds]);
-
-
-
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     let branchListFiltered: any = [];
@@ -90,6 +86,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           return it2;
         });
     };
+    
     getChild(branchList, parent_id);
 
     branchListFiltered = branchListFiltered.map((it: any) => {
