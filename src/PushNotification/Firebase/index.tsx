@@ -104,7 +104,8 @@ function loadVersionBrowser() {
 const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk"
 
 
-export const requestForToken = async () => {
+export const requestForToken = async (dashboardDetails: any) => {
+    console.log("dashboardDetails--->", dashboardDetails);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
@@ -113,6 +114,18 @@ export const requestForToken = async () => {
         navigator.serviceWorker
             .register("./firebase-messaging-sw.js")
             .then(async function (registration) {
+
+                // console.log("Registration successful, scope is:", registration.scope);
+                getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk", serviceWorkerRegistration: registration })
+                    .then((currentToken) => {
+                        if (currentToken) {
+                            console.log('current token for client: ', currentToken);
+                        } else {
+                            console.log('No registration token available. Request permission to generate one.');
+                        }
+                    }).catch((err) => {
+                        console.log('An error occurred while retrieving token. ', err);
+                    });
 
                 if (registration) {
                     const browser = loadVersionBrowser();
@@ -134,7 +147,7 @@ export const requestForToken = async () => {
                             'browser': browser.name.toUpperCase(),
                             'p256dh': btoa(String.fromCharCode.apply(null, encryptKey)),
                             'auth': btoa(String.fromCharCode.apply(null, encryptAuth)),
-                            'name': 'Muthu',
+                            'name': dashboardDetails?.user_details?.name,
                             'registration_id': registration_id,
                             application_id: "1:220885026819:web:e471e84513a5ab99542636"
                         };
@@ -154,17 +167,7 @@ export const requestForToken = async () => {
                         });
                 }
 
-                // console.log("Registration successful, scope is:", registration.scope);
-                getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk", serviceWorkerRegistration: registration })
-                    .then((currentToken) => {
-                        if (currentToken) {
-                            console.log('current token for client: ', currentToken);
-                        } else {
-                            console.log('No registration token available. Request permission to generate one.');
-                        }
-                    }).catch((err) => {
-                        console.log('An error occurred while retrieving token. ', err);
-                    });
+
             })
             .catch(function (err) {
                 console.log("Service worker registration failed, error:", err);

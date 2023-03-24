@@ -22,6 +22,7 @@ function Notifications() {
     const NOTI_TYPE_SHIFT_REQUEST = 'SHIFT_REQUEST'
     const NOTI_TYPE_SHIFT_REQUEST_AD = 'SHIFT_REQUEST_AD '
     // const NOTI_TYPE_FACE_RR_REQUEST = 'FACE_RR_REQUEST'
+    const NOTI_TYPE_FACE_APPROVAL_REQUEST_AD = 'FACE_APPROVAL_REQUEST_AD'
     const NOTI_TYPE_FACE_RR_REQUEST_AD = 'FACE_RR_REQUEST_AD'
     // const NOTI_TYPE_MODIFY_LOG_REQUEST = 'MODIFY_LOG_REQUEST'
     const NOTI_TYPE_MODIFY_LOG_REQUEST_AD = 'MODIFY_LOG_REQUEST_AD'
@@ -44,11 +45,15 @@ function Notifications() {
             goTo(navigation, ROUTE.ROUTE_SHIFT_REQUEST);
         }
         else if (item?.extra?.route_type === NOTI_TYPE_FACE_RR_REQUEST_AD) {
+            goTo(navigation, ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST);
+        }
+        else if(item?.extra?.route_type === NOTI_TYPE_FACE_APPROVAL_REQUEST_AD){
             goTo(navigation, ROUTE.ROUTE_FACE_RE_REQUEST);
         }
         else if (item?.extra?.route_type === NOTI_TYPE_MODIFY_LOG_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_MODIFY_LOGS);
         }
+       
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }

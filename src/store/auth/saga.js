@@ -513,25 +513,20 @@ function* syncEsslDeviceUsersSaga(action) {
 function* webPushRegisterSaga(action) {
   try {
 
-    yield put(showLoader());
-
     const response = yield call(webPushRegisterApi, action.payload.params);
 
     if (response.success) {
 
-      yield put(hideLoader());
       yield put(webPushRegisterSuccess(response.details));
       yield call(action.payload.onSuccess(response));
 
     } else {
-      yield put(hideLoader());
       yield put(webPushRegisterFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
 
-    yield put(hideLoader());
     yield put(webPushRegisterFailure("Invalid Request"));
 
   }
