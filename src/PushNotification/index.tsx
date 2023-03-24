@@ -48,7 +48,7 @@ const PushNotification = () => {
         }
     }, [notification])
 
-    requestForToken(dashboardDetails,userLoggedIn,isWebPushRegisterController);
+    // requestForToken(dashboardDetails,userLoggedIn);
 
     onMessageListener()
         .then((payload: any) => {

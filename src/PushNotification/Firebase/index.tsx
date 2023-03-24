@@ -4,7 +4,7 @@
 import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { useDispatch } from 'react-redux'
-import { getFcmToken, isWebPushRegister, webPushRegister } from '../../../src/store/auth/actions'
+import { getFcmToken, webPushRegister } from '../../../src/store/auth/actions'
 
 
 const firebaseConfig = {
@@ -104,7 +104,8 @@ function loadVersionBrowser() {
 const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk"
 
 
-export const requestForToken = async (dashboardDetails: any, userLoggedIn: boolean, isWebPushRegisterController: boolean) => {
+export const requestForToken = async (dashboardDetails: any, userLoggedIn: boolean) => {
+    console.log("dashboardDetails--->", dashboardDetails);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
@@ -143,16 +144,17 @@ export const requestForToken = async (dashboardDetails: any, userLoggedIn: boole
                                         application_id: "1:220885026819:web:e471e84513a5ab99542636"
                                     };
                                     // console.log("params00000000000", params);
-                                    if (userLoggedIn ) {
+                                    if (userLoggedIn) {
                                         dispatch(webPushRegister({
                                             params,
                                             onSuccess: (response: any) => {
-                                                // dispatch(isWebPushRegister(false))
                                             },
                                             onError: () => {
                                             },
                                         }))
                                     }
+
+
                                 })
                                     .catch(function (err: any) {
                                         console.log(':^(', err);
