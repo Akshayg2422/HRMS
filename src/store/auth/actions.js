@@ -63,7 +63,9 @@ import {
 
   WEB_PUSH_REGISTER,
   WEB_PUSH_REGISTER_SUCCESS,
-  WEB_PUSH_REGISTER_FAILURE
+  WEB_PUSH_REGISTER_FAILURE,
+
+  IS_WEB_PUSH_REGISTER
 } from "./actionTypes";
 
 
@@ -516,5 +518,15 @@ export const webPushRegisterFailure = (error) => {
   return {
     type: WEB_PUSH_REGISTER_FAILURE,
     payload: error,
+  };
+};
+
+
+//is web push register
+
+export const isWebPushRegister = (params) => {
+  return {
+    type: IS_WEB_PUSH_REGISTER,
+    payload: params,
   };
 };

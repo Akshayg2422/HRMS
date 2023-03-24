@@ -20,7 +20,7 @@ function Notifications() {
     const NOTI_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST'
     const NOTI_TYPE_LEAVE_REQUEST_AD = 'LEAVE_REQUEST_AD'
     const NOTI_TYPE_SHIFT_REQUEST = 'SHIFT_REQUEST'
-    const NOTI_TYPE_SHIFT_REQUEST_AD = 'SHIFT_REQUEST_AD '
+    const NOTI_TYPE_SHIFT_REQUEST_AD = 'SHIFT_REQUEST_AD'
     // const NOTI_TYPE_FACE_RR_REQUEST = 'FACE_RR_REQUEST'
     const NOTI_TYPE_FACE_APPROVAL_REQUEST_AD = 'FACE_APPROVAL_REQUEST_AD'
     const NOTI_TYPE_FACE_RR_REQUEST_AD = 'FACE_RR_REQUEST_AD'
@@ -29,6 +29,7 @@ function Notifications() {
     const NOTI_TYPE_NO_ACTION = 'NO_ACTION'
 
     const handleRoute = (item: any) => {
+        
         if (item?.extra?.route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }

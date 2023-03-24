@@ -18,6 +18,7 @@ import {
   getDropDownValueByID,
   getServerDateFromMoment,
   getMomentObjFromServer,
+  showToast,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -72,6 +73,9 @@ const ViewEmployeeDetails = () => {
 
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
+  const [deptExist, setDeptExist] = useState(false);
+  const [desigationExist, setDesigationExist] = useState(false);
+  const [branchesExist, setBranchesExist] = useState(false);
 
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
@@ -109,14 +113,15 @@ const ViewEmployeeDetails = () => {
   };
 
   useEffect(() => {
-    dispatch(getDepartmentData({}));
-    dispatch(getDesignationData({}));
+    getDepartmentDataList()
+    getDesignationDataList()
 
     const params = {};
     dispatch(
       getAllBranchesList({
         params,
         onSuccess: (success: object) => {
+          setBranchesExist(true)
           const parentBranch = branchesDropdownData.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
           );
@@ -134,9 +139,38 @@ const ViewEmployeeDetails = () => {
     );
   }, []);
 
+  const getDepartmentDataList = () => {
+    const params = {}
+
+    dispatch(
+      getDepartmentData({
+        params,
+        onSuccess: (success: object) => {
+          setDeptExist(true)
+        },
+        onError: (error: string) => { },
+      }))
+  }
+
+  const getDesignationDataList = () => {
+    const params = {}
+
+    dispatch(
+      getDesignationData({
+        params,
+        onSuccess: (success: object) => {
+          setDesigationExist(true)
+        },
+        onError: (error: string) => { },
+      }))
+  }
+
   useEffect(() => {
-    getEmployeeDetailsAPi();
-  }, [designationDropdownData, departmentDropdownData, branchesDropdownData]);
+    if (deptExist && desigationExist && branchesExist) {
+      getEmployeeDetailsAPi();
+    }
+
+  }, [deptExist, desigationExist, branchesExist]);
 
   const getEmployeeDetailsAPi = () => {
     const params = {
@@ -147,9 +181,11 @@ const ViewEmployeeDetails = () => {
       getEmployeeDetails({
         params,
         onSuccess: (response: EmployeeDetail) => {
+
           preFillEmployeeDetails(response);
         },
         onError: (error: string) => {
+          showToast('error', error)
           console.log("fail", error);
           // showToast('error', t('invalidUser'));
         },

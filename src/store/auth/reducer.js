@@ -63,7 +63,9 @@ import {
 
   WEB_PUSH_REGISTER,
   WEB_PUSH_REGISTER_SUCCESS,
-  WEB_PUSH_REGISTER_FAILURE
+  WEB_PUSH_REGISTER_FAILURE,
+
+  IS_WEB_PUSH_REGISTER
 
 } from "./actionTypes";
 
@@ -129,7 +131,8 @@ const initialState = {
   esslConfigDataList: '',
   editEsslConfigDetails: '',
   esslDevicesData: [],
-  esslDeviceDetails: undefined
+  esslDeviceDetails: undefined,
+  isWebPushRegisterController: true
 };
 
 const AuthReducer = (state = initialState, action) => {
@@ -553,9 +556,9 @@ const AuthReducer = (state = initialState, action) => {
       break;
 
 
-       /**
-   * web push register
-   */
+    /**
+* web push register
+*/
     case WEB_PUSH_REGISTER:
       state = {
         ...state,
@@ -576,6 +579,14 @@ const AuthReducer = (state = initialState, action) => {
       };
       break;
 
+    //is web push controller
+
+    case IS_WEB_PUSH_REGISTER:
+      state = {
+        ...state,
+        isWebPushRegisterController: action.payload
+      };
+      break;
 
     default:
       state = state;
