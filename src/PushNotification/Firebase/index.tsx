@@ -104,7 +104,8 @@ function loadVersionBrowser() {
 const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk"
 
 
-export const requestForToken = async (dashboardDetails: any) => {
+export const requestForToken = async (dashboardDetails: any, userLoggedIn: boolean) => {
+    console.log("dashboardDetails--->", dashboardDetails);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
@@ -143,14 +144,16 @@ export const requestForToken = async (dashboardDetails: any) => {
                                         application_id: "1:220885026819:web:e471e84513a5ab99542636"
                                     };
                                     // console.log("params00000000000", params);
+                                    if (userLoggedIn) {
+                                        dispatch(webPushRegister({
+                                            params,
+                                            onSuccess: (response: any) => {
+                                            },
+                                            onError: () => {
+                                            },
+                                        }))
+                                    }
 
-                                    dispatch(webPushRegister({
-                                        params,
-                                        onSuccess: (response: any) => {
-                                        },
-                                        onError: () => {
-                                        },
-                                    }))
 
                                 })
                                     .catch(function (err: any) {
