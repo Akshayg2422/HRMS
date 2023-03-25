@@ -83,17 +83,19 @@ function App() {
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('../public/firebase-messaging-sw.js')
+      .then(function (registration) {
+        console.log('Registration successful, scope is:', registration.scope);
+      }).catch(function (err) {
+        console.log('Service worker registration failed, error:', err);
+      });
+  }
 
   return (
     <>
-<<<<<<< HEAD
-      {/* <AutoLogout /> */}
-      {/* <Firebase /> */}
-      <PushNotification />
-=======
       <AutoLogout />
-      <Firebase />
->>>>>>> dd1cc2694f733e2a2186f24f9ee21b1795403f44
+      <PushNotification />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />
