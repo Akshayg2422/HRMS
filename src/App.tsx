@@ -77,44 +77,40 @@ import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
 import { PushNotification } from './PushNotification'
 import { useSelector } from "react-redux";
-import { requestForToken } from "./PushNotification/Firebase";
 
 function App() {
 
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-//  useEffect(()=>{
-//     requestForToken(dashboardDetails)
-//   },[])
  
-
-    return (
-      <>
-        {/* <AutoLogout /> */}
-        {/* <Firebase /> */}
-        <DeviceInfo />
-        <AppProvider >
-          <AppLoader />
-          <ScreenLoader />
-          <Routes>
-            <Route path={"/"} element={<ZenylogSite />} />
-            <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
-            <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
-            <Route
-              path={ROUTE.ROUTE_LOGIN}
-              element={<RequireAuthExist>{<Login />}</RequireAuthExist>}
-            />
-            <Route
-              path={ROUTE.ROUTE_OTP}
-              element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
-            />
-            {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
-            <Route
-              path={ROUTE.ROUTE_DASHBOARD}
-              element={<RequireAuth>{<Dashboard />}</RequireAuth>}
-            />
-            {/* <Route
+  return (
+    <>
+      {/* <AutoLogout /> */}
+      {/* <Firebase /> */}
+      <PushNotification />
+      <DeviceInfo />
+      <AppProvider >
+        <AppLoader />
+        <ScreenLoader />
+        <Routes>
+          <Route path={"/"} element={<ZenylogSite />} />
+          <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
+          <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
+          <Route
+            path={ROUTE.ROUTE_LOGIN}
+            element={<RequireAuthExist>{<Login />}</RequireAuthExist>}
+          />
+          <Route
+            path={ROUTE.ROUTE_OTP}
+            element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
+          />
+          {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
+          <Route
+            path={ROUTE.ROUTE_DASHBOARD}
+            element={<RequireAuth>{<Dashboard />}</RequireAuth>}
+          />
+          {/* <Route
           path={ROUTE.ROUTE_DASHBOARD_OTP}
           element={<RequireAuth>{<DashBoardOtp />}</RequireAuth>}
         /> */}
@@ -323,25 +319,25 @@ function App() {
             element={<RequireAuth>{<Notification />}</RequireAuth>}
           />
 
-            <Route
-              path={ROUTE.ROUTE_FACE_RE_REQUEST}
-              element={<RequireAuth>{<FaceReRequest />}</RequireAuth>}
-            />
+          <Route
+            path={ROUTE.ROUTE_FACE_RE_REQUEST}
+            element={<RequireAuth>{<FaceReRequest />}</RequireAuth>}
+          />
 
-            <Route
-              path={ROUTE.ROUTE_ESSI_CONFIG}
-              element={<RequireAuth>{<EsslConfig />}</RequireAuth>}
-            />
+          <Route
+            path={ROUTE.ROUTE_ESSI_CONFIG}
+            element={<RequireAuth>{<EsslConfig />}</RequireAuth>}
+          />
 
-            <Route
-              path={ROUTE.ROUTE_MANAGE_ESSL_CONFIG}
-              element={<RequireAuth>{<ManageEsslConfig />}</RequireAuth>}
-            />
+          <Route
+            path={ROUTE.ROUTE_MANAGE_ESSL_CONFIG}
+            element={<RequireAuth>{<ManageEsslConfig />}</RequireAuth>}
+          />
 
-            <Route
-              path={ROUTE.ROUTE_MANAGE_ESSL_DEVICES}
-              element={<RequireAuth>{<ManageDevices />}</RequireAuth>}
-            />
+          <Route
+            path={ROUTE.ROUTE_MANAGE_ESSL_DEVICES}
+            element={<RequireAuth>{<ManageDevices />}</RequireAuth>}
+          />
 
           <Route
             path={ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST}
@@ -356,4 +352,4 @@ function App() {
   );
 }
 
-  export default App;
+export default App;
