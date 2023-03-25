@@ -181,3 +181,49 @@ export const fetchBroadcastMessageApi = (payload) => post(url.FETCH_BROADCAST_ME
 
 export const getDownloadEmployeeCheckingLogReportApi = (payload) => postHeader(url.GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, payload, {}, BASE_URL_REPORTS_PROD)
 
+//Face Re-Register Request
+
+export const faceReRegisterRequestApi = (payload) => post(url.FACE_RE_REGISTER_REQUEST, payload, {})
+
+// Face Re-Register Change Status
+export const faceReRegisterRequestChangeStatusApi = (payload) => post(url.FACE_RE_REGISTER_REQUEST_CHANGE_STATUS, payload, {})
+
+//set ESSL config
+
+export const setEsslConfigApi = (payload) => post(url.SET_ESSL_CONFIG_URL, payload, {})
+
+//get ESSL config
+
+export const getEsslConfigApi = (payload) => post(url.GET_ESSL_CONFIG_URL, payload, {})
+
+//add ESSL device
+
+export const addEsslDeviceApi = (payload) => post(url.ADD_ESSL_DEVICE, payload, {})
+
+//get ESSL devices
+
+export const getEsslDevicesApi = (payload) => post(url.GET_ESSL_DEVICES, payload, {})
+
+//sync essl device users
+
+export const syncEsslDeviceUsersApi = (payload) => post(url.SYNC_ESSL_DEVICE_USERS, payload, {})
+
+//get notifications
+
+export const getNotificationsApi = (payload) => post(url.GET_NOTIFICATIONS, payload, {})
+
+//web push
+
+export const webPushRegisterApi = (payload) => post(url.WEB_PUSH_REGISTER_URL, payload, {})
+
+
+//face Re-register Employee Request 
+
+export const getEmployeeReRegisterRequestApi = (payload) => post(url.FACE_RE_REGISTER_EMPLOYEE_REQUEST, payload, {})
+
+//employee enable Face ReRegister
+
+
+export const employeeEnableFaceReRegisterApi = (payload) => post(url.EMPLOYEE_ENABLE_FACE_RE_REGISTER, payload, {})
+
+

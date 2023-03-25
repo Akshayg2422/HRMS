@@ -13,7 +13,7 @@ function Notification() {
     const navigation = useNav();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
-    const [leaveTypes, setLeaveTypes] = useState('')
+    
     const [type, setType] = useState<string>("all");
     const [activeSort, setActiveSort] = useState<number>(0);
     const [deleteModel, setDeleteModel] = useState(false);
@@ -24,10 +24,6 @@ function Notification() {
         (state: any) => state.NotificationReducer
     );
 
-    const sortData = [
-        { id: 1, title: "All" },
-        { id: 2, title: "By me" },
-    ];
 
     useEffect(() => {
         getBroadcastMessagesList(currentPage)
@@ -37,7 +33,6 @@ function Notification() {
     const getBroadcastMessagesList = (pageNumber: number) => {
 
         const params = {
-            ...(type === "by me" && { type: 'self' }),
             page_number: pageNumber,
         };
         dispatch(getBroadcastMessage({

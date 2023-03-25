@@ -28,11 +28,11 @@ function ApprovedRequest() {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el?.name}${' '}(${el.employee_id})`,
-          "Branch": el.branch_name,
-          "Shift": el.shift_details.name,
-          "Reason": el.reason,
-          "Status": el.status_text
+          name: `${el?.name}${' '}(${el?.employee_id})`,
+          "Branch": el?.branch_name,
+          "Shift": el?.shift_details?.name,
+          "Reason": el?.reason,
+          "Status": el?.status_text
         };
       })
     );

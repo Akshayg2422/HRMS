@@ -10,10 +10,11 @@ import React, { useEffect } from "react";
 
 import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
 import { useDashboard } from "@contexts";
-import { goTo, ROUTE, useNav } from "@utils";
+import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
+import { requestForToken } from "@src/PushNotification/Firebase";
 
 
 import {
@@ -23,7 +24,7 @@ import {
 import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 import { getAdminBranches } from "../../../../store/employee/actions";
-import { postAppConfig } from "../../../../store/auth/actions";
+import { isWebPushRegister, postAppConfig, webPushRegister } from "../../../../store/auth/actions";
 
 
 function Dashboard() {
@@ -36,23 +37,37 @@ function Dashboard() {
     (state: any) => state.DashboardReducer
   );
 
-
-  const { appConfig, fcmToken } = useSelector(
+  const { appConfig, fcmToken, isWebPushRegisterController } = useSelector(
     (state: any) => state.AuthReducer
   );
-
-
 
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
 
   useEffect(() => {
-    dispatch(currentNavIndex(0))
+    if (isWebPushRegisterController) {
+      registerDeviceDetails()
+    }
     dispatch(getDashboard({}))
-  }, []);
+  }, [])
+  console.log("isWebPushRegisterController",isWebPushRegisterController);
+  
 
+  const registerDeviceDetails = async () => {
 
+    let registrationDetails: any = await localStorage.getItem('registrationDetails')
+    const params = JSON.parse(registrationDetails)
+
+    dispatch(webPushRegister({
+      params,
+      onSuccess: (response: any) => {
+        dispatch(isWebPushRegister(false))
+      },
+      onError: () => {
+      },
+    }))
+  }
 
 
   const getPostAppConfig = () => {
@@ -86,7 +101,6 @@ function Dashboard() {
     return branchListFiltered;
   };
 
-
   useEffect(() => {
     if (dashboardDetails) {
       const params = {}
@@ -101,7 +115,7 @@ function Dashboard() {
       }))
     }
 
-  }, [dashboardDetails]);
+  }, []);
 
   return (
     <>

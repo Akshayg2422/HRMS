@@ -48,7 +48,7 @@ function FenceAdmin() {
         getAllBranchesListData()
     }, [])
 
-    const getAllBranchesListData = () =>{
+    const getAllBranchesListData = () => {
 
         const params = {};
         dispatch(
@@ -69,7 +69,7 @@ function FenceAdmin() {
             getRegisteredFenceAdmin(currentPage);
         }
         getRegisteredFenceAdmin(currentPage)
-    }, [enterPress,selectedBranchId])
+    }, [enterPress, selectedBranchId])
 
 
     const normalizedBranchList = (data: any) => {
@@ -85,7 +85,7 @@ function FenceAdmin() {
         const params = {
             ...(searchEmployee && { q: searchEmployee }),
             page_number: pageNumber,
-           ...(selectedBranchId && { branch_id: selectedBranchId.id})
+            ...(selectedBranchId && { branch_id: selectedBranchId.id })
         }
         dispatch(getEmployeesList({
             params,
@@ -110,8 +110,6 @@ function FenceAdmin() {
     //     dispatch(getEmployeesList({ params }))
     // }
 
-
-
     function paginationHandler(type: 'next' | 'prev' | 'current', position?: number) {
         let page = type === 'next' ? currentPage + 1 : type === 'prev' ? currentPage - 1 : position;
         getRegisteredFenceAdmin(page)
@@ -119,6 +117,7 @@ function FenceAdmin() {
 
     function addFenceAdminApiHandler(item: Employee) {
         const params = { branch_id: selectedBranchId.id, employee_id: item.id }
+
         dispatch(addFenceAdmin({
             params,
             onSuccess: (success: any) => {
@@ -126,7 +125,8 @@ function FenceAdmin() {
                 showToast("success", success.message);
                 setModel(!model)
             },
-            onError: () => {
+            onError: (error: string) => {
+                showToast("error", error);
             },
         }))
 
@@ -239,7 +239,7 @@ type EmployeeTableProps = {
 
 const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: EmployeeTableProps) => {
     return <div className='table-responsive'>
-        <table className='table align-items-center' style={{marginBottom:'0px'}}>
+        <table className='table align-items-center' style={{ marginBottom: '0px' }}>
             <thead className='thead-light'>
                 <tr>
                     <th scope='col'>{'Name'}</th>

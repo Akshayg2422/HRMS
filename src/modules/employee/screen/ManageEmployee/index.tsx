@@ -143,7 +143,9 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    getBranchShiftsList()
+    if (!isEdit) {
+      getBranchShiftsList()
+    }
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -670,7 +672,7 @@ const ManageEmployee = () => {
           <h5 className="mb-2">{t("startTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
-            icon={Icons.Calendar}
+            icon={Icons.Time}
             iconPosition={"append"}
             value={employeeDetails.attendanceStartTime}
             onChange={(time: any) =>
@@ -680,7 +682,7 @@ const ManageEmployee = () => {
           <h5 className="mb-2">{t("endTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
-            icon={Icons.Calendar}
+            icon={Icons.Time}
             iconPosition={"append"}
             value={employeeDetails.attendanceEndTime}
             onChange={(time: any) => {

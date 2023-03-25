@@ -36,7 +36,36 @@ import {
   POST_APP_CONFIG_SUCCESS,
   POST_APP_CONFIG_FAILURE,
   GET_APP_CONFIG_DATA,
-  GET_FCM_TOKEN
+  GET_FCM_TOKEN,
+
+  SET_ESSL_CONFIG,
+  SET_ESSL_CONFIG_SUCCESS,
+  SET_ESSL_CONFIG_FAILURE,
+
+  GET_ESSL_CONFIG,
+  GET_ESSL_CONFIG_SUCCESS,
+  GET_ESSL_CONFIG_FAILURE,
+  EDIT_ESSL_CONFIG_DETAILS,
+
+  ADD_ESSL_DEVICE,
+  ADD_ESSL_DEVICE_SUCCESS,
+  ADD_ESSL_DEVICE_FAILURE,
+
+  GET_ESSL_DEVICES,
+  GET_ESSL_DEVICES_SUCCESS,
+  GET_ESSL_DEVICES_FAILURE,
+
+  ESSL_DEVICE_DETAILS,
+
+  SYNC_ESSL_DEVICE_USERS,
+  SYNC_ESSL_DEVICE_USERS_SUCCESS,
+  SYNC_ESSL_DEVICE_USERS_FAILURE,
+
+  WEB_PUSH_REGISTER,
+  WEB_PUSH_REGISTER_SUCCESS,
+  WEB_PUSH_REGISTER_FAILURE,
+
+  IS_WEB_PUSH_REGISTER
 } from "./actionTypes";
 
 
@@ -334,5 +363,170 @@ export const getFcmToken = (token) => {
   return {
     type: GET_FCM_TOKEN,
     payload: token,
+  };
+};
+
+//set essl config
+
+export const postEsslConfig = (params) => {
+  return {
+    type: SET_ESSL_CONFIG,
+    payload: params,
+  };
+};
+
+export const postEsslConfigSuccess = (details) => {
+  return {
+    type: SET_ESSL_CONFIG_SUCCESS,
+    payload: details
+  };
+};
+
+export const postEsslConfigFailure = (error) => {
+  return {
+    type: SET_ESSL_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+//get essl config
+
+export const getEsslConfig = (params) => {
+  return {
+    type: GET_ESSL_CONFIG,
+    payload: params,
+  };
+};
+
+export const getEsslConfigSuccess = (details) => {
+  return {
+    type: GET_ESSL_CONFIG_SUCCESS,
+    payload: details
+  };
+};
+
+export const getEsslConfigFailure = (error) => {
+  return {
+    type: GET_ESSL_CONFIG_FAILURE,
+    payload: error,
+  };
+};
+
+
+export const editEsslConfig = (data) => {
+  return {
+    type: EDIT_ESSL_CONFIG_DETAILS,
+    payload: data,
+  };
+};
+//add essl device
+
+export const postAddEsslDevice = (params) => {
+  return {
+    type: ADD_ESSL_DEVICE,
+    payload: params,
+  };
+};
+
+export const postAddEsslDeviceSuccess = (details) => {
+  return {
+    type: ADD_ESSL_DEVICE_SUCCESS,
+    payload: details
+  };
+};
+
+export const postAddEsslDeviceFailure = (error) => {
+  return {
+    type: ADD_ESSL_DEVICE_FAILURE,
+    payload: error,
+  };
+};
+
+//add essl device
+
+export const fetchEsslDevices = (params) => {
+  return {
+    type: GET_ESSL_DEVICES,
+    payload: params,
+  };
+};
+
+export const fetchEsslDevicesSuccess = (details) => {
+  return {
+    type: GET_ESSL_DEVICES_SUCCESS,
+    payload: details
+  };
+};
+
+export const fetchEsslDevicesFailure = (error) => {
+  return {
+    type: GET_ESSL_DEVICES_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * ESSL device details
+ */
+
+export const esslDeviceDetails = (params) => ({
+  type: ESSL_DEVICE_DETAILS,
+  payload: params,
+});
+
+//sync essl device users
+
+export const syncEsslDeviceUsers = (params) => {
+  return {
+    type: SYNC_ESSL_DEVICE_USERS,
+    payload: params,
+  };
+};
+
+export const syncEsslDeviceUsersSuccess = (details) => {
+  return {
+    type: SYNC_ESSL_DEVICE_USERS_SUCCESS,
+    payload: details
+  };
+};
+
+export const syncEsslDeviceUsersFailure = (error) => {
+  return {
+    type: SYNC_ESSL_DEVICE_USERS_FAILURE,
+    payload: error,
+  };
+};
+
+
+//WEB push register
+
+export const webPushRegister = (params) => {
+  return {
+    type: WEB_PUSH_REGISTER,
+    payload: params,
+  };
+};
+
+export const webPushRegisterSuccess = (details) => {
+  return {
+    type: WEB_PUSH_REGISTER_SUCCESS,
+    payload: details
+  };
+};
+
+export const webPushRegisterFailure = (error) => {
+  return {
+    type: WEB_PUSH_REGISTER_FAILURE,
+    payload: error,
+  };
+};
+
+
+//is web push register
+
+export const isWebPushRegister = (params) => {
+  return {
+    type: IS_WEB_PUSH_REGISTER,
+    payload: params,
   };
 };

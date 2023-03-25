@@ -80,7 +80,7 @@ function* branchAddition(action) {
 
       yield put(hideLoader());
       yield put(branchAdditionFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError((response.error_message)));
 
     }
   } catch (error) {

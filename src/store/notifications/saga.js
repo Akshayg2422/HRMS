@@ -2,7 +2,8 @@ import { takeLatest, put, call } from "redux-saga/effects";
 
 import {
     CREATE_BROADCAST_MESSAGE,
-    FETCH_BROADCAST_MESSAGE
+    FETCH_BROADCAST_MESSAGE,
+    FETCH_NOTIFICATIONS
 } from "./actionTypes";
 
 import {
@@ -10,12 +11,16 @@ createBroadcastMessageSuccess,
 createBroadcastMessageFailure,
 
 getBroadcastMessageSuccess,
-getBroadcastMessageFailure
+getBroadcastMessageFailure,
+
+getNotificationsSuccess,
+getNotificationsFailure
 } from "./actions";
 
 import {
 createBroadcastMessageApi,
-fetchBroadcastMessageApi
+fetchBroadcastMessageApi,
+getNotificationsApi
 } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../loader/actions";
 
@@ -69,11 +74,38 @@ function* getBroadcastMessageSaga(action) {
     }
 }
 
+/**
+ * get broadcast message
+ */
+
+function* getNotificationsSaga(action) {
+    try {
+        yield put(showLoader());
+
+        const response = yield call(getNotificationsApi, action.payload.params);
+        console.log("response",response);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getNotificationsSuccess(response?.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(getNotificationsFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getNotificationsFailure("Invalid Request"));
+    }
+}
+
 //Watcher
 
 function* NotificationSaga() {
     yield takeLatest(CREATE_BROADCAST_MESSAGE, createBroadcastMessageSaga);
     yield takeLatest(FETCH_BROADCAST_MESSAGE, getBroadcastMessageSaga);
+    yield takeLatest(FETCH_NOTIFICATIONS, getNotificationsSaga);
+
 
 
 }

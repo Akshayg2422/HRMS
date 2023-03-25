@@ -210,7 +210,6 @@ function ManageAssignLocation() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-          <div>
             {listBranchesList.map((item: Branch, index: number) => {
               return (
                 <>
@@ -235,9 +234,9 @@ function ManageAssignLocation() {
                 </>
               );
             })}
-          </div>
+
           <Container
-            additionClass={'mt-4'}
+            additionClass={'mt-4 sticky-bottom'}
             justifyContent={"justify-content-end"}
             display={"d-flex"}
           >

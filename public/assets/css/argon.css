@@ -4138,6 +4138,7 @@
      padding: .5rem 1rem;
      text-align: inherit;
      white-space: nowrap;
+     justify-content: space-between;
      color: #212529;
      border: 0;
      background-color: transparent;
