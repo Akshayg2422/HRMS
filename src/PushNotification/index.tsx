@@ -48,7 +48,8 @@ const PushNotification = () => {
         }
     }, [notification])
 
-    // requestForToken(dashboardDetails,userLoggedIn);
+    requestForToken(dashboardDetails);
+    
 
     onMessageListener()
         .then((payload: any) => {

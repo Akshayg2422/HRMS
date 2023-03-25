@@ -76,8 +76,18 @@ import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
 import { PushNotification } from './PushNotification'
+import { useSelector } from "react-redux";
+import { requestForToken } from "./PushNotification/Firebase";
+
 function App() {
 
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+//  useEffect(()=>{
+//     requestForToken(dashboardDetails)
+//   },[])
+ 
 
     return (
       <>
