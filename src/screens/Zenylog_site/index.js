@@ -11,7 +11,7 @@ function ZenylogSite(props) {
 
     useEffect(() => {
         dispatch(hideLoader())
-    },[])
+    }, [])
 
     return (
         <div>
@@ -22,6 +22,7 @@ function ZenylogSite(props) {
             <Flowchart />
             <Contact />
             <Policy />
+            <h1>1</h1>
         </div >
     )
 }
