@@ -109,7 +109,7 @@ export const requestForToken = async (dashboardDetails: any) => {
 
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker
-            .register("/public/firebase-messaging-sw.js")
+            .register("./firebase-messaging-sw.js")
             .then(async function (registration) {
                 console.log("Registration successful, scope is:", registration.scope);
                 getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk", serviceWorkerRegistration: registration })
