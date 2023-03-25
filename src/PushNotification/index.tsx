@@ -15,6 +15,14 @@ const PushNotification = () => {
         (state: any) => state.DashboardReducer
       );
 
+      const { userLoggedIn } = useSelector(
+        (state: any) => state.AppReducer
+      );
+
+      const { isWebPushRegisterController } = useSelector(
+        (state: any) => state.AuthReducer
+      );
+
 
     const [notification, setNotification] = useState({ title: '', body: '' });
     const notify = () => toast(<ToastDisplay />);
@@ -41,6 +49,7 @@ const PushNotification = () => {
     }, [notification])
 
     requestForToken(dashboardDetails);
+    
 
     onMessageListener()
         .then((payload: any) => {

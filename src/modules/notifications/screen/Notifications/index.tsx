@@ -1,6 +1,6 @@
 import { BackArrow, Card, CommonTable, Container, ImageView, NoRecordFound, Pagination } from '@components';
 import { Icons } from '@assets';
-import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
+import { getDisplayDateTimeFromMoment, getMomentObjFromServer, getTimelineRelativeTimeFormat, goTo, ROUTE, showToast, useNav } from '@utils';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
@@ -20,15 +20,17 @@ function Notifications() {
     const NOTI_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST'
     const NOTI_TYPE_LEAVE_REQUEST_AD = 'LEAVE_REQUEST_AD'
     const NOTI_TYPE_SHIFT_REQUEST = 'SHIFT_REQUEST'
-    const NOTI_TYPE_SHIFT_REQUEST_AD = 'SHIFT_REQUEST_AD '
+    const NOTI_TYPE_SHIFT_REQUEST_AD = 'SHIFT_REQUEST_AD'
     // const NOTI_TYPE_FACE_RR_REQUEST = 'FACE_RR_REQUEST'
     const NOTI_TYPE_FACE_APPROVAL_REQUEST_AD = 'FACE_APPROVAL_REQUEST_AD'
     const NOTI_TYPE_FACE_RR_REQUEST_AD = 'FACE_RR_REQUEST_AD'
     // const NOTI_TYPE_MODIFY_LOG_REQUEST = 'MODIFY_LOG_REQUEST'
     const NOTI_TYPE_MODIFY_LOG_REQUEST_AD = 'MODIFY_LOG_REQUEST_AD'
+    const NOTI_TYPE_MY_SHIFTS = 'MY_SHIFTS'
     const NOTI_TYPE_NO_ACTION = 'NO_ACTION'
 
     const handleRoute = (item: any) => {
+
         if (item?.extra?.route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -47,13 +49,15 @@ function Notifications() {
         else if (item?.extra?.route_type === NOTI_TYPE_FACE_RR_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST);
         }
-        else if(item?.extra?.route_type === NOTI_TYPE_FACE_APPROVAL_REQUEST_AD){
+        else if (item?.extra?.route_type === NOTI_TYPE_FACE_APPROVAL_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_FACE_RE_REQUEST);
         }
         else if (item?.extra?.route_type === NOTI_TYPE_MODIFY_LOG_REQUEST_AD) {
             goTo(navigation, ROUTE.ROUTE_MODIFY_LOGS);
         }
-       
+        else if (item?.extra?.route_type === NOTI_TYPE_MY_SHIFTS) {
+            goTo(navigation, ROUTE.ROUTE_MY_SHIFTS_DETAILS);
+        }
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -121,9 +125,7 @@ function Notifications() {
                                             </span>
                                             <br />
                                             <span className='h5 float-right mt--2'>
-                                                {getDisplayDateTimeFromMoment(
-                                                    getMomentObjFromServer(el.created_at)
-                                                )}
+                                                {getTimelineRelativeTimeFormat(el.created_at)}
                                             </span>
                                         </Container>
                                     </Container>

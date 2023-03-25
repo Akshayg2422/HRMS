@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux'
 import { getFcmToken, webPushRegister } from '../../../src/store/auth/actions'
 
 
+
 const firebaseConfig = {
     apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
     authDomain: "zenylog-a7515.firebaseapp.com",
@@ -105,74 +106,59 @@ const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo
 
 
 export const requestForToken = async (dashboardDetails: any) => {
-    console.log("dashboardDetails--->", dashboardDetails);
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const dispatch = useDispatch()
 
     if ("serviceWorker" in navigator) {
         navigator.serviceWorker
             .register("./firebase-messaging-sw.js")
             .then(async function (registration) {
-
-                // console.log("Registration successful, scope is:", registration.scope);
+                console.log("Registration successful, scope is:", registration.scope);
                 getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk", serviceWorkerRegistration: registration })
                     .then((currentToken) => {
                         if (currentToken) {
                             console.log('current token for client: ', currentToken);
+
+                            if (registration) {
+                                const browser = loadVersionBrowser();
+
+                                registration.pushManager.subscribe({
+                                    userVisibleOnly: true,
+                                    applicationServerKey: urlBase64ToUint8Array(applicationServerKey)
+                                }).then(async function (sub: any) {
+
+                                    const key = sub.getKey("p256dh");
+                                    const auth = sub.getKey("auth");
+                                    const encryptKey: any = new Uint8Array(key)
+                                    const encryptAuth: any = new Uint8Array(auth)
+
+                                    var endpointParts = sub.endpoint.split('/');
+                                    var registration_id = endpointParts[endpointParts.length - 1];
+                                    const params = {
+                                        'browser': browser.name.toUpperCase(),
+                                        'p256dh': btoa(String.fromCharCode.apply(null, encryptKey)),
+                                        'auth': btoa(String.fromCharCode.apply(null, encryptAuth)),
+                                        'name': dashboardDetails?.user_details?.name,
+                                        'registration_id': currentToken,
+                                        application_id: "1:220885026819:web:e471e84513a5ab99542636"
+                                    };
+                                    await localStorage.setItem('registrationDetails', JSON.stringify(params));
+                                })
+                                    .catch(function (err: any) {
+                                        console.log(':^(', err);
+                                    });
+                            }
+
                         } else {
                             console.log('No registration token available. Request permission to generate one.');
                         }
                     }).catch((err) => {
                         console.log('An error occurred while retrieving token. ', err);
                     });
-
-                if (registration) {
-                    const browser = loadVersionBrowser();
-
-                    registration.pushManager.subscribe({
-                        userVisibleOnly: true,
-                        applicationServerKey: urlBase64ToUint8Array(applicationServerKey)
-                    }).then(function (sub: any) {
-
-
-                        const key = sub.getKey("p256dh");
-                        const auth = sub.getKey("auth");
-                        const encryptKey: any = new Uint8Array(key)
-                        const encryptAuth: any = new Uint8Array(auth)
-
-                        var endpointParts = sub.endpoint.split('/');
-                        var registration_id = endpointParts[endpointParts.length - 1];
-                        const params = {
-                            'browser': browser.name.toUpperCase(),
-                            'p256dh': btoa(String.fromCharCode.apply(null, encryptKey)),
-                            'auth': btoa(String.fromCharCode.apply(null, encryptAuth)),
-                            'name': dashboardDetails?.user_details?.name,
-                            'registration_id': registration_id,
-                            application_id: "1:220885026819:web:e471e84513a5ab99542636"
-                        };
-                        console.log("params00000000000", params);
-
-                        dispatch(webPushRegister({
-                            params,
-                            onSuccess: (response: any) => {
-                            },
-                            onError: () => {
-                            },
-                        }))
-
-                    })
-                        .catch(function (err: any) {
-                            console.log(':^(', err);
-                        });
-                }
-
-
             })
             .catch(function (err) {
                 console.log("Service worker registration failed, error:", err);
             });
     }
+
 };
 
 

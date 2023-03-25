@@ -143,7 +143,9 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    getBranchShiftsList()
+    if (!isEdit) {
+      getBranchShiftsList()
+    }
     const params = {};
     dispatch(
       getAllBranchesList({
