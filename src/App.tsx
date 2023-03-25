@@ -83,7 +83,6 @@ function App() {
       <>
         {/* <AutoLogout /> */}
         {/* <Firebase /> */}
-        <PushNotification />
         <DeviceInfo />
         <AppProvider >
           <AppLoader />

@@ -105,7 +105,6 @@ const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo
 
 
 export const requestForToken = async (dashboardDetails: any) => {
-    console.log("dashboardDetails--->", dashboardDetails);
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
