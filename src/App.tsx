@@ -83,7 +83,7 @@ function App() {
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
- 
+
   return (
     <>
       {/* <AutoLogout /> */}
