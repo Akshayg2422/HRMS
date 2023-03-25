@@ -19,7 +19,7 @@ const STAGING_WEB = 'https://staging.zenyq.com';
 
 
 
-export const REACT_APP_APP_URL = STAGING_WEB;
+export const REACT_APP_APP_URL = PROD_WEB;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
