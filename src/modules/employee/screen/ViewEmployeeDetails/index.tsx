@@ -18,6 +18,10 @@ import {
   getDropDownValueByID,
   getServerDateFromMoment,
   getMomentObjFromServer,
+  getDisplayTimeFromMoment,
+  HH_MM_SS,
+  toDate,
+  convertFrom24To12Format
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -243,6 +247,7 @@ const ViewEmployeeDetails = () => {
     setEmployeeDetails(employeeInitData);
   };
 
+  console.log(toDate(employeeDetails.attendanceEndTime, HH_MM_SS) + '====');
 
 
   return (
@@ -359,7 +364,7 @@ const ViewEmployeeDetails = () => {
         placeholder={t("startTime")}
         value={
           employeeDetails.attendanceStartTime
-            ? employeeDetails.attendanceStartTime
+            ? convertFrom24To12Format(employeeDetails.attendanceStartTime)
             : "-:-"
         }
         disabled={true}
@@ -371,7 +376,7 @@ const ViewEmployeeDetails = () => {
           placeholder={t("endTime")}
           value={
             employeeDetails.attendanceEndTime
-              ? employeeDetails.attendanceEndTime
+              ? convertFrom24To12Format(employeeDetails.attendanceEndTime)
               : "-:-"
           }
           disabled={true}

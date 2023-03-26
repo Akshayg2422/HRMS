@@ -3,9 +3,9 @@ import {
   TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST,
   MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE,
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
-  WEEK_DAY_LIST, REPORTS_TYPE,MAX_LENGTH_PAN_CARD,
+  WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT,CHILD_PATH
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -213,6 +213,34 @@ const inputAadharLength = (value: any, length: number) => value && value.slice(0
 const inputTextMaxLength = (value: any, length: number) => value && value.slice(0, length);
 
 
+export const HH_MM_SS = 'hh:mm:ss'
+export const HH_MM = 'hh:mm'
+
+
+export function toDate(dStr: any, format: string) {
+  var now = new Date();
+  if (format === HH_MM) {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  } else if (format === HH_MM_SS) {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  }
+  else
+    return "Invalid Format";
+}
+
+export const convertFrom24To12Format = (time24: any) => {
+  const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
+  const period = +sHours < 12 ? 'AM' : 'PM';
+  const hours = +sHours % 12 || 12;
+
+  return `${hours}:${minutes} ${period}`
+}
 
 
 const downloadFile = ((response: any) => {
@@ -315,3 +343,4 @@ export {
   MAX_LENGTH_PAN_CARD,
   CHILD_PATH
 }
+
