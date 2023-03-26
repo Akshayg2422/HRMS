@@ -108,6 +108,7 @@ const applicationServerKey = "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo
 export const requestForToken = async (dashboardDetails: any) => {
 
     if ("serviceWorker" in navigator) {
+
         navigator.serviceWorker
             .register("./firebase-messaging-sw.js")
             .then(async function (registration) {
@@ -119,10 +120,11 @@ export const requestForToken = async (dashboardDetails: any) => {
 
                             if (registration) {
                                 const browser = loadVersionBrowser();
-
                                 registration.pushManager.subscribe({
+
                                     userVisibleOnly: true,
                                     applicationServerKey: urlBase64ToUint8Array(applicationServerKey)
+
                                 }).then(async function (sub: any) {
 
                                     const key = sub.getKey("p256dh");
@@ -130,8 +132,14 @@ export const requestForToken = async (dashboardDetails: any) => {
                                     const encryptKey: any = new Uint8Array(key)
                                     const encryptAuth: any = new Uint8Array(auth)
 
-                                    var endpointParts = sub.endpoint.split('/');
-                                    var registration_id = endpointParts[endpointParts.length - 1];
+                                    // var endpointParts = sub.endpoint.split('/');
+                                    // var registration_id = endpointParts[endpointParts.length - 1];
+
+                                    // subscribeURL For the register Devices
+                                    const subscribeURL = sub.endpoint
+                                    console.log("------->",subscribeURL);
+
+
                                     const params = {
                                         'browser': browser.name.toUpperCase(),
                                         'p256dh': btoa(String.fromCharCode.apply(null, encryptKey)),

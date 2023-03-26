@@ -36,7 +36,8 @@ import {
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
   dropDownValueCheckByEvent,
-  MAX_LENGTH_AADHAR
+  MAX_LENGTH_AADHAR,
+  convertTo24Hour
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -110,7 +111,7 @@ const ManageEmployee = () => {
     kgid_No: "",
     employeeType: "",
     attendanceStartTime: "10:00",
-    attendanceEndTime: "06:00",
+    attendanceEndTime: "18:00",
     shift: ''
   });
   const [shiftGroup, setShiftGroup] = useState<any>()
@@ -263,58 +264,58 @@ const ManageEmployee = () => {
 
   const onSubmit = () => {
     if (validatePostParams()) {
-      const params = {
-        ...(isEdit && { id: isEdit }),
-        first_name: employeeDetails.firstName,
-        ...(employeeDetails.lastName && {
-          last_name: employeeDetails.lastName,
-        }),
-        mobile_number: employeeDetails.mobileNumber,
-        email: employeeDetails.e_Mail,
-        ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
-        ...(employeeDetails.aadharrNo && {
-          aadhar_number: employeeDetails.aadharrNo,
-        }),
-        designation_id: employeeDetails.designation,
-        department_id: employeeDetails.department,
-        branch_id: employeeDetails.branch,
-        gender: employeeDetails.gender,
-        ...(employeeDetails.bloodGroup && {
-          blood_group: employeeDetails.bloodGroup,
-        }),
-        employment_type: employeeDetails.employeeType,
-        attendance_settings: {
-          start_time: employeeDetails.attendanceStartTime,
-          end_time: employeeDetails.attendanceEndTime,
-          is_excempt_allowed: false,
-          associated_branch: [employeeDetails.branch],
-          ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
-        },
-        ...(employeeDetails.dateOfJoining && {
-          date_of_joining: getServerDateFromMoment(
-            getMomentObjFromServer(employeeDetails.dateOfJoining)
-          ),
-        }),
-        dob: getServerDateFromMoment(
-          getMomentObjFromServer(employeeDetails.dob)
+    const params = {
+      ...(isEdit && { id: isEdit }),
+      first_name: employeeDetails.firstName,
+      ...(employeeDetails.lastName && {
+        last_name: employeeDetails.lastName,
+      }),
+      mobile_number: employeeDetails.mobileNumber,
+      email: employeeDetails.e_Mail,
+      ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
+      ...(employeeDetails.aadharrNo && {
+        aadhar_number: employeeDetails.aadharrNo,
+      }),
+      designation_id: employeeDetails.designation,
+      department_id: employeeDetails.department,
+      branch_id: employeeDetails.branch,
+      gender: employeeDetails.gender,
+      ...(employeeDetails.bloodGroup && {
+        blood_group: employeeDetails.bloodGroup,
+      }),
+      employment_type: employeeDetails.employeeType,
+      attendance_settings: {
+        start_time: employeeDetails.attendanceStartTime,
+        end_time: employeeDetails.attendanceEndTime,
+        is_excempt_allowed: false,
+        associated_branch: [employeeDetails.branch],
+        ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
+      },
+      ...(employeeDetails.dateOfJoining && {
+        date_of_joining: getServerDateFromMoment(
+          getMomentObjFromServer(employeeDetails.dateOfJoining)
         ),
-        ...(employeeDetails.kgid_No && {
-          kgid_number: employeeDetails.kgid_No,
-        }),
-      };
-      console.log("paramss=====>", params);
-      dispatch(
-        employeeAddition({
-          params,
-          onSuccess: (success: any) => {
-            showToast("success", success.message);
-            goBack(navigation);
-          },
-          onError: (error: string) => {
-            showToast("error", error);
-          },
-        })
-      );
+      }),
+      dob: getServerDateFromMoment(
+        getMomentObjFromServer(employeeDetails.dob)
+      ),
+      ...(employeeDetails.kgid_No && {
+        kgid_number: employeeDetails.kgid_No,
+      }),
+    };
+    console.log("paramss=====>", params);
+    dispatch(
+      employeeAddition({
+        params,
+        onSuccess: (success: any) => {
+          showToast("success", success.message);
+          goBack(navigation);
+        },
+        onError: (error: string) => {
+          showToast("error", error);
+        },
+      })
+    );
     }
   };
 
@@ -407,6 +408,10 @@ const ManageEmployee = () => {
   const dateTimePickerHandler = (value: string, key: string) => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
+
+  const timePickerHandler = (value: string, key: string)=>{
+    setEmployeeDetails({ ...employeeDetails, [key]: convertTo24Hour(value).trim() });
+  }
 
   const mobileNumberHandler = (value: string, key: string) => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
@@ -675,9 +680,9 @@ const ManageEmployee = () => {
             icon={Icons.Time}
             iconPosition={"append"}
             value={employeeDetails.attendanceStartTime}
-            onChange={(time: any) =>
-              dateTimePickerHandler(time, "attendanceStartTime")
-            }
+            onChange={(time: any) => {
+              timePickerHandler(time, "attendanceStartTime")
+            }}
           />
           <h5 className="mb-2">{t("endTime")}</h5>
           <TimePicker
@@ -686,7 +691,7 @@ const ManageEmployee = () => {
             iconPosition={"append"}
             value={employeeDetails.attendanceEndTime}
             onChange={(time: any) => {
-              dateTimePickerHandler(time, "attendanceEndTime");
+              timePickerHandler(time, "attendanceEndTime");
             }}
           /></>}
       </FormWrapper>

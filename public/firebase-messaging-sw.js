@@ -3,17 +3,18 @@
 /* eslint-disable no-undef */
 
 // This a service worker file for receiving push notifitications.
-// See `Access registration token section` @ https://firebase.google.com/docs/cloud-messaging/js/client#retrieve-the-current-registration-token
+// See Access registration token section @ https://firebase.google.com/docs/cloud-messaging/js/client#retrieve-the-current-registration-token
 
 // Scripts for firebase and firebase messaging
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+
+
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-messaging-compat.js');
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
 
 // Initialize the Firebase app in the service worker by passing the generated config
-
 const firebaseConfig = {
   apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
   authDomain: "zenylog-a7515.firebaseapp.com",
@@ -30,6 +31,7 @@ firebase.initializeApp(firebaseConfig);
 // Retrieve firebase messaging
 const messaging = firebase.messaging();
 
+// Handle incoming messages while the app is not in focus (i.e in the background, hidden behind other tabs, or completely closed).
 messaging.onBackgroundMessage((payload) => {
   console.log(
     '[firebase-messaging-sw.js] Received background message ',
@@ -38,9 +40,9 @@ messaging.onBackgroundMessage((payload) => {
 
   // Schedule our own custom notification to show.
   setTimeout(() => {
-    const notificationTitle = payload.notification.title;
+    const notificationTitle = payload?.data?.title;
     const notificationOptions = {
-      body: payload.notification.body,
+      body: payload?.data?.message,
       icon: '/logo192.png', // This will only work when the webpage is opened. If you always want to show an image you should fetch it via URL.
       tag: 'custom-notification',
     };
@@ -70,6 +72,15 @@ messaging.onBackgroundMessage((payload) => {
     }, 30);
   });
 });
+
+// eslint-disable-next-line no-restricted-globals
+// self.addEventListener('notificationclick', function (event) {
+
+//   console.log(JSON.stringify(event)+"event click======");
+
+//   event.notification.close();
+
+// });
 
 // eslint-disable-next-line no-restricted-globals
 self.addEventListener('notificationclick', function (event) {

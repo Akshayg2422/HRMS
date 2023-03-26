@@ -29,13 +29,7 @@ const PushNotification = () => {
     function ToastDisplay() {
 
         return (
-            <div
-                // onClick={() => {
-                //     if (notification?.title === 'Title') {
-                //         goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEE);
-                //     }
-                // }}
-            >
+            <div>
                 <p><b>{notification?.title}</b></p>
                 <p>{notification?.body}</p>
             </div>
