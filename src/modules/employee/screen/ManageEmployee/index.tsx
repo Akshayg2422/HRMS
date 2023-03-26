@@ -36,7 +36,8 @@ import {
   MAX_LENGTH_MOBILE_NUMBER,
   Today,
   dropDownValueCheckByEvent,
-  MAX_LENGTH_AADHAR
+  MAX_LENGTH_AADHAR,
+  convertTo24Hour
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -110,7 +111,7 @@ const ManageEmployee = () => {
     kgid_No: "",
     employeeType: "",
     attendanceStartTime: "10:00",
-    attendanceEndTime: "06:00",
+    attendanceEndTime: "18:00",
     shift: ''
   });
   const [shiftGroup, setShiftGroup] = useState<any>()
@@ -300,7 +301,7 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-      console.log("paramss=====>", params);
+      console.log("paramss=====>", JSON.stringify(params));
       dispatch(
         employeeAddition({
           params,
@@ -313,6 +314,7 @@ const ManageEmployee = () => {
           },
         })
       );
+
     }
   };
 
@@ -405,6 +407,10 @@ const ManageEmployee = () => {
   const dateTimePickerHandler = (value: string, key: string) => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
+
+  const timePickerHandler = (value: string, key: string) => {
+    setEmployeeDetails({ ...employeeDetails, [key]: convertTo24Hour(value).trim() });
+  }
 
   const mobileNumberHandler = (value: string, key: string) => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
@@ -674,7 +680,7 @@ const ManageEmployee = () => {
             iconPosition={"append"}
             value={employeeDetails.attendanceStartTime}
             onChange={(time: any) =>
-              dateTimePickerHandler(time, "attendanceStartTime")
+              timePickerHandler(time, "attendanceStartTime")
             }
           />
           <h5 className="mb-2">{t("endTime")}</h5>
@@ -684,7 +690,7 @@ const ManageEmployee = () => {
             iconPosition={"append"}
             value={employeeDetails.attendanceEndTime}
             onChange={(time: any) => {
-              dateTimePickerHandler(time, "attendanceEndTime");
+              timePickerHandler(time, "attendanceEndTime");
             }}
           /></>}
       </FormWrapper>
