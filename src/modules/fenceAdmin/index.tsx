@@ -45,12 +45,18 @@ function FenceAdmin() {
 
 
     useEffect(() => {
+        if (enterPress) {
+            getAllBranchesListData()
+        }
         getAllBranchesListData()
-    }, [])
+
+    }, [enterPress])
 
     const getAllBranchesListData = () => {
 
-        const params = {};
+        const params = {
+            ...(searchBranches && { q: searchBranches })
+        };
         dispatch(
             getAllBranchesList({
                 params,
@@ -65,7 +71,7 @@ function FenceAdmin() {
 
 
     useEffect(() => {
-        if (enterPress) {
+        if (enterPress && model === true) {
             getRegisteredFenceAdmin(currentPage);
         }
         getRegisteredFenceAdmin(currentPage)

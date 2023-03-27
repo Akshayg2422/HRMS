@@ -1,56 +1,33 @@
-import { ImageView } from '@components';
-import { goTo, ROUTE, useNav } from '@utils';
 import React, { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
-import GetToken from './GetToken';
-import { onMessageListener } from './OnMessaging';
+import { requestForToken, onMessageListener } from './Firebase';
 import { Icons } from '@assets';
+import { goTo, ROUTE, useNav } from '@utils';
 
-const MAX_LENGTH = 70
 
-const PushNotification = () => {
+const PushConfig = () => {
+
     const navigation = useNav();
-    const [notification, setNotification] = useState<any>([]);
 
-    const notify = () => {
-        notification.forEach((message: any) => {
-            toast(<ToastDisplay data={message} />, {
-                position: 'top-right', duration: 3000,
-            });
-        });
-    };
-
-
-    function ToastDisplay({ data }: any) {
-        const MAX_LENGTH = 50;
-
-        const bodyContent = data?.body?.length <= MAX_LENGTH
-            ? data?.body
-            : data?.body?.slice(0, MAX_LENGTH) + '...';
-
+    const [notification, setNotification] = useState({ title: '', body: '' });
+    const notify = () => toast(<ToastDisplay />);
+    function ToastDisplay() {
         return (
-            <div onClick={() => {
-                goTo(navigation, data?.route);
-            }}>
-                <p><b>{data?.title}</b></p>
-                <div className='d-flex justify-content-center align-items-center'>
-                    {data.icon && <div>
-                        <ImageView
-                            icon={data.icon}
-                            style={{ height: '50px', width: '50px', borderRadius: "5px" }}
-                        />
-                    </div>}
-                    <div className={data.icon ? 'ml-3' : ''}>{bodyContent}</div>
-                </div>
+            <div >
+                <p><b>{notification?.title}</b></p>
+                <p>{notification?.body}</p>
             </div>
         );
     };
 
     useEffect(() => {
-        if (notification && notification.length > 0) {
+        if (notification?.title) {
             notify()
         }
     }, [notification])
+
+    requestForToken();
+
 
     const NOTI_TYPE_BROADCAST_MESSAGE = 'BROADCAST_MESSAGE'
     const NOTI_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST'
@@ -67,6 +44,7 @@ const PushNotification = () => {
 
     const routingHandler = (payload: any) => {
 
+        console.log("calledd");
         const route_type = JSON.parse( payload?.data?.extra_data.replace(/'/g, '"')).route_type
 
         if (route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
@@ -102,11 +80,10 @@ const PushNotification = () => {
         
     }
 
-
     onMessageListener()
         .then((payload: any) => {
-            console.log("foreground message",payload);
-            
+            console.log("-------->", JSON.stringify(payload));
+
             const title = payload?.data?.title;
             const options = {
                 body: payload?.data?.message,
@@ -114,16 +91,15 @@ const PushNotification = () => {
             };
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
+                // goTo(navigator, ROUTE.ROUTE_APPLY_LEAVE);
             });
         })
-        .catch((err: any) => console.log('failed: ', err));
+        .catch((err) => console.log('failed: ', err));
 
     return (
-        <>
-            {/* <Toaster /> */}
-            <GetToken />
-        </>
+        // <Toaster />
+        <></>
     )
 }
 
-export { PushNotification }
+export { PushConfig }

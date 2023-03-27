@@ -3,17 +3,18 @@
 /* eslint-disable no-undef */
 
 // This a service worker file for receiving push notifitications.
-// See `Access registration token section` @ https://firebase.google.com/docs/cloud-messaging/js/client#retrieve-the-current-registration-token
+// See Access registration token section @ https://firebase.google.com/docs/cloud-messaging/js/client#retrieve-the-current-registration-token
 
 // Scripts for firebase and firebase messaging
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+
+
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.1/firebase-messaging-compat.js');
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
 
 // Initialize the Firebase app in the service worker by passing the generated config
-
 const firebaseConfig = {
   apiKey: "AIzaSyAgoLwc3rSGERRzfh5hrZOpk6U_q6aPsuQ",
   authDomain: "zenylog-a7515.firebaseapp.com",
@@ -30,72 +31,93 @@ firebase.initializeApp(firebaseConfig);
 // Retrieve firebase messaging
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-  console.log(
-    '[firebase-messaging-sw.js] Received background message ',
-    payload,
-  );
+// messaging.onBackgroundMessage((payload) => {
+//   console.log('[firebase-messaging-sw.js] Received background message ', payload)
+//   const notificationTitle = payload.notification.title
+//   const notificationOptions = {
+//     body: payload.notification.body,
+//     icon: payload.notification.icon || payload.notification.image,
+//   }
+//  // eslint-disable-next-line no-restricted-globals
+//  self.registration.showNotification(notificationTitle, notificationOptions)
+// })
 
-  // Schedule our own custom notification to show.
-  setTimeout(() => {
-    const notificationTitle = payload.notification.title;
-    const notificationOptions = {
-      body: payload.notification.body,
-      icon: '/logo192.png', // This will only work when the webpage is opened. If you always want to show an image you should fetch it via URL.
-      tag: 'custom-notification',
-    };
+// Handle incoming messages while the app is not in focus (i.e in the background, hidden behind other tabs, or completely closed).
+// messaging.onBackgroundMessage((payload) => {
+//   console.log(
+//     '[firebase-messaging-sw.js] Received background message ',
+//     payload,
+//   );
 
-    // eslint-disable-next-line no-restricted-globals
-    self.registration.showNotification(
-      notificationTitle,
-      notificationOptions,
-    );
-  }, 30);
+//   // Schedule our own custom notification to show.
+//   setTimeout(() => {
+//     const notificationTitle = payload?.data?.title;
+//     const notificationOptions = {
+//       body: payload?.data?.message,
+//       icon: '/logo192.png', // This will only work when the webpage is opened. If you always want to show an image you should fetch it via URL.
+//       tag: 'custom-notification',
+//     };
 
-  // Schedule closing all notifications that are not our own.
-  // This is necessary because if we don't close the other notifications the
-  // default one will appear and we will have duplicate notifications.
-  return new Promise(function (resolve, reject) {
-    resolve();
+//     // eslint-disable-next-line no-restricted-globals
+//     // self.registration.showNotification(
+//     //   notificationTitle,
+//     //   notificationOptions,
+//     // );
+//   }, 30);
 
-    setTimeout(function () {
-    // eslint-disable-next-line no-restricted-globals
-      self.registration.getNotifications().then((notifications) => {
-        notifications.forEach((notification) => {
-          if (notification.tag !== 'custom-notification') {
-            notification.close();
-          }
-        });
-      });
-    }, 30);
-  });
-});
+//   // Schedule closing all notifications that are not our own.
+//   // This is necessary because if we don't close the other notifications the
+//   // default one will appear and we will have duplicate notifications.
+//   return new Promise(function (resolve, reject) {
+//     resolve();
+
+//     setTimeout(function () {
+//     // eslint-disable-next-line no-restricted-globals
+//       self.registration.getNotifications().then((notifications) => {
+//         notifications.forEach((notification) => {
+//           if (notification.tag !== 'custom-notification') {
+//             notification.close();
+//           }
+//         });
+//       });
+//     }, 30);
+//   });
+// });
 
 // eslint-disable-next-line no-restricted-globals
-self.addEventListener('notificationclick', function (event) {
-  console.log('On notification click: ', event);
-  event.notification.close();
+// self.addEventListener('notificationclick', function (event) {
 
-  event.waitUntil(
-    clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientsArr) => {
-      console.log('came');
-      console.log(clientsArr.length);
-      // If a Window tab matching the targeted URL already exists, focus that;
-      const hadWindowToFocus = clientsArr.some((windowClient) => {
-        console.log(windowClient.url + "====");
-        return windowClient.url === 'http://localhost:3000/dashboard'
-          ? (windowClient.focus(), true)
-          : false
-      });
-      // Otherwise, open a new tab to the applicable URL and focus it.
-      if (!hadWindowToFocus)
-        clients
-          .openWindow('http://localhost:3000/employee')
-          .then((windowClient) => (windowClient ? windowClient.focus() : null));
+//   console.log(JSON.stringify(event)+"event click======");
+
+//   event.notification.close();
+
+// });
+
+// eslint-disable-next-line no-restricted-globals
+// self.addEventListener('notificationclick', function (event) {
+//   console.log('On notification click: ', event);
+//   event.notification.close();
+
+//   // event.waitUntil(
+//   //   clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientsArr) => {
+//   //     console.log('came');
+//   //     console.log(clientsArr.length);
+//   //     // If a Window tab matching the targeted URL already exists, focus that;
+//   //     const hadWindowToFocus = clientsArr.some((windowClient) => {
+//   //       console.log(windowClient.url + "====");
+//   //       return windowClient.url === 'http://localhost:3000/dashboard'
+//   //         ? (windowClient.focus(), true)
+//   //         : false
+//   //     });
+//   //     // Otherwise, open a new tab to the applicable URL and focus it.
+//   //     if (!hadWindowToFocus)
+//   //       clients
+//   //         .openWindow('http://localhost:3000/employee')
+//   //         .then((windowClient) => (windowClient ? windowClient.focus() : null));
 
 
-    })
-  );
+//   //   })
+//   // );
 
 
-});
+// });

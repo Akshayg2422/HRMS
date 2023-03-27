@@ -279,6 +279,13 @@ const ViewEmployeeDetails = () => {
     setEmployeeDetails(employeeInitData);
   };
 
+  const convertFrom24To12Format = (time24:any) => {
+    const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
+    const period = +sHours < 12 ? 'AM' : 'PM';
+    const hours = +sHours % 12 || 12;
+  
+    return `${hours}:${minutes} ${period}`;
+  }
 
 
   return (
@@ -395,7 +402,7 @@ const ViewEmployeeDetails = () => {
         placeholder={t("startTime")}
         value={
           employeeDetails.attendanceStartTime
-            ? employeeDetails.attendanceStartTime
+            ? convertFrom24To12Format(employeeDetails.attendanceStartTime)
             : "-:-"
         }
         disabled={true}
@@ -407,7 +414,7 @@ const ViewEmployeeDetails = () => {
           placeholder={t("endTime")}
           value={
             employeeDetails.attendanceEndTime
-              ? employeeDetails.attendanceEndTime
+              ? convertFrom24To12Format(employeeDetails.attendanceEndTime)
               : "-:-"
           }
           disabled={true}

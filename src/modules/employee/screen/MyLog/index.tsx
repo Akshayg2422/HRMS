@@ -176,7 +176,7 @@ function MyLog() {
       getCheckInDetailedLogPerDay({
         params,
         onSuccess: (response: any) => {
-          setLogPerDayModel(!logPerDayModel); 
+          setLogPerDayModel(!logPerDayModel);
         },
         onError: (error: string) => {
 
@@ -317,7 +317,13 @@ function MyLog() {
       </Modal>
       <Modal
         showModel={markAsPresentModel}
-        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+        toggle={() => {
+          setMarkAsPresentModel(!markAsPresentModel)
+          setMarkAsPresentDetails({
+            ...markAsPresentDetails,
+            reason: '',
+          });
+        }}
       >
         <Container>
           <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
@@ -344,7 +350,13 @@ function MyLog() {
           <Container margin={"mt-5"} additionClass={"text-right"}>
             <Secondary
               text={t("cancel")}
-              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+              onClick={() => {
+                setMarkAsPresentModel(!markAsPresentModel)
+                setMarkAsPresentDetails({
+                  ...markAsPresentDetails,
+                  reason: '',
+                });
+              }}
             />
             <Primary text={t("request")} onClick={() => onRequestHandler()} />
           </Container>

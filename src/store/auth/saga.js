@@ -344,11 +344,15 @@ function* postAppConfigDetailsSaga(action) {
 
       yield put(hideLoader());
       yield put(postAppConfigSuccess(response.details));
+      // yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(postAppConfigFailure(response.error_message));
+      // yield call(action.payload.onError(response));
+
 
     }
   } catch (error) {

@@ -14,7 +14,6 @@ import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
-import { requestForToken } from "@src/PushNotification/Firebase";
 
 
 import {
@@ -42,7 +41,9 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    getPostAppConfig()
+    if (isWebPushRegisterController && fcmToken) {
+      getPostAppConfig()
+    }
   }, [fcmToken])
 
   useEffect(() => {
@@ -51,22 +52,22 @@ function Dashboard() {
     }
     dispatch(getDashboard({}))
   }, [])
-  console.log("isWebPushRegisterController",isWebPushRegisterController);
-  
+  // console.log("isWebPushRegisterController", isWebPushRegisterController);
+
 
   const registerDeviceDetails = async () => {
 
     let registrationDetails: any = await localStorage.getItem('registrationDetails')
     const params = JSON.parse(registrationDetails)
 
-    dispatch(webPushRegister({
-      params,
-      onSuccess: (response: any) => {
-        dispatch(isWebPushRegister(false))
-      },
-      onError: () => {
-      },
-    }))
+    // dispatch(webPushRegister({
+    //   params,
+    //   onSuccess: (response: any) => {
+    //     dispatch(isWebPushRegister(false))
+    //   },
+    //   onError: () => {
+    //   },
+    // }))
   }
 
 
@@ -79,6 +80,15 @@ function Dashboard() {
     }
     console.log('params------------->', params);
     // dispatch(postAppConfig({ params }))
+    dispatch(postAppConfig({
+      params,
+      onSuccess: (response: any) => {
+        console.log("web config success-->", response);
+        dispatch(isWebPushRegister(false))
+      },
+      onError: () => {
+      },
+    }))
   }
 
 

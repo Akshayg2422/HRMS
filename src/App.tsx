@@ -75,8 +75,9 @@ import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
-import { PushNotification } from './PushNotification'
+import { PushConfig } from './PushConfig'
 import { useSelector } from "react-redux";
+import { PushNotification } from "./PushNotification";
 
 function App() {
 
@@ -86,8 +87,7 @@ function App() {
  
   return (
     <>
-      {/* <AutoLogout /> */}
-      {/* <Firebase /> */}
+      <AutoLogout />
       <PushNotification />
       <DeviceInfo />
       <AppProvider >
