@@ -45,7 +45,7 @@ export const requestForToken = () => {
 export const onMessageListener = () =>
     new Promise((resolve) => {
         onMessage(messaging, (payload) => {
-            console.log('came');
+            console.log('came---------->',payload);
             resolve(payload);
         });
     });

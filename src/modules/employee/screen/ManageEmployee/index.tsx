@@ -94,6 +94,8 @@ const ManageEmployee = () => {
     (state: any) => state.DashboardReducer
   );
 
+  
+
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
     lastName: "",
@@ -127,6 +129,9 @@ const ManageEmployee = () => {
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
+  console.log("companyBranchDropdownData===>",companyBranchDropdownData);
+
+
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
     const getChild = (branchList: any, parent_id: string) =>
@@ -151,13 +156,15 @@ const ManageEmployee = () => {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (success: object) => {
-          const parentBranch = branchesDropdownData.find(
+        onSuccess: (success: any) => {
+          
+          const parentBranch = success.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
           );
+          
           setCompanyBranchDropdownData([
             ...getAllSubBranches(
-              branchesDropdownData,
+              success,
               dashboardDetails.company_branch.id
             ),
             parentBranch,
@@ -434,7 +441,9 @@ const ManageEmployee = () => {
             showToast('success', success?.message)
             setIsAdminRights(false);
           },
-          onError: () => { },
+          onError: (error:string) => {
+            showToast('error', error)
+           },
         })
       );
     }
@@ -456,7 +465,9 @@ const ManageEmployee = () => {
 
             showToast('success', success?.message)
           },
-          onError: () => { },
+          onError: (error:string) => {
+            showToast('error', error)
+           },
         })
       );
     }

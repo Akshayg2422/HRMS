@@ -14,7 +14,6 @@ import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
-import { requestForToken } from "@src/PushNotification/Firebase";
 
 
 import {

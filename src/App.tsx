@@ -77,6 +77,7 @@ import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
 import { useSelector } from "react-redux";
+import { PushNotification } from "./PushNotification";
 
 function App() {
 
@@ -87,7 +88,7 @@ function App() {
   return (
     <>
       {/* <AutoLogout /> */}
-      <PushConfig />
+      <PushNotification />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />
