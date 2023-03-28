@@ -5,7 +5,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
 import {
-    getNotifications, setIsShowBack
+    getNotifications, setIsShowBack, setNotificationCount
 } from "../../../../../src/store/notifications/actions";
 
 function Notifications() {
@@ -15,6 +15,8 @@ function Notifications() {
     const { currentPage, numOfPages, notificationsDataList, isShowBack } = useSelector(
         (state: any) => state.NotificationReducer
     );
+
+    
 
     const NOTI_TYPE_BROADCAST_MESSAGE = 'BROADCAST_MESSAGE'
     const NOTI_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST'
@@ -70,6 +72,10 @@ function Notifications() {
         }
     }, [])
 
+    useEffect(() => {
+        dispatch(setNotificationCount())
+    }, [])
+
     const getNotificationsList = (pageNumber: number) => {
         const params = {
             page_number: pageNumber,
@@ -109,7 +115,6 @@ function Notifications() {
                     return (
                         <Container additionClass={"col"}>
                             <Card onClick={() => {
-                                console.log("card clicked");
                                 handleRoute(el)
                             }}>
                                 <Container additionClass={"d-flex justify-content-between"} >

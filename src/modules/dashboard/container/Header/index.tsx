@@ -15,7 +15,7 @@ import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
 import { Notification } from '../Notification';
-import { setIsShowBack } from '../../../../store/notifications/actions';
+import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 
 const Header = () => {
   const [languageModel, setLanguageModel] = useState(false);
@@ -27,13 +27,15 @@ const Header = () => {
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
 
+  const [count, setCount] = useState(0)
+
   let dispatch = useDispatch();
 
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
-  const { broadcastMessagesData, notificationsDataList } = useSelector(
+  const { notificationsDataList, NotificationCount } = useSelector(
     (state: any) => state.NotificationReducer
   );
 
@@ -106,15 +108,18 @@ const Header = () => {
     }
   };
 
-  const checkLength = (data:any) =>{
 
-    if(data.length < 100){
-      return data.length
+  const checkLength = (data: any) => {
+
+    if (data < 100) {
+      return data
     }
-    else{
+    else {
       return '99+'
     }
   }
+
+
 
 
   return (
@@ -142,15 +147,15 @@ const Header = () => {
                 <a className="nav-link" onClick={() => {
                   goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
-                  <i className="ni ni-chat-round text-white" style={{cursor:'pointer'}}></i>
+                  <i className="ni ni-chat-round text-white" style={{ cursor: 'pointer' }}></i>
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
                   goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
                   dispatch(setIsShowBack(true))
                 }} >
-                  <i className="ni ni-bell-55 text-white" style={{cursor:'pointer'}}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(notificationsDataList)}</span> */}
+                  <i className="ni ni-bell-55 text-white" style={{ cursor: 'pointer' }} onClick={()=>dispatch(clearNotificationCount())}></i>
+                  {NotificationCount > 0 && <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(NotificationCount)}</span>}
                 </a>
               </div>
               <div className='media-body  d-none d-lg-block'>
