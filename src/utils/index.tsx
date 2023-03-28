@@ -213,6 +213,34 @@ const inputAadharLength = (value: any, length: number) => value && value.slice(0
 const inputTextMaxLength = (value: any, length: number) => value && value.slice(0, length);
 
 
+export const HH_MM_SS = 'hh:mm:ss'
+export const HH_MM = 'hh:mm'
+
+
+export function toDate(dStr: any, format: string) {
+  var now = new Date();
+  if (format === HH_MM) {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  } else if (format === HH_MM_SS) {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  }
+  else
+    return "Invalid Format";
+}
+
+export const convertFrom24To12Format = (time24: any) => {
+  const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
+  const period = +sHours < 12 ? 'AM' : 'PM';
+  const hours = +sHours % 12 || 12;
+
+  return `${hours}:${minutes} ${period}`
+}
 
 
 const downloadFile = ((response: any) => {
@@ -359,6 +387,12 @@ export {
   convertTo24Hour,
   base64ToImage,
   MAX_LENGTH_PAN_CARD,
+<<<<<<< HEAD
   CHILD_PATH,
   getTimelineRelativeTimeFormat
 }
+=======
+  CHILD_PATH
+}
+
+>>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49

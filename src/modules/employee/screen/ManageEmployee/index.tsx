@@ -302,6 +302,7 @@ const ManageEmployee = () => {
         date_of_joining: getServerDateFromMoment(
           getMomentObjFromServer(employeeDetails.dateOfJoining)
         ),
+<<<<<<< HEAD
       }),
       dob: getServerDateFromMoment(
         getMomentObjFromServer(employeeDetails.dob)
@@ -323,6 +324,26 @@ const ManageEmployee = () => {
         },
       })
     );
+=======
+        ...(employeeDetails.kgid_No && {
+          kgid_number: employeeDetails.kgid_No,
+        }),
+      };
+      console.log("paramss=====>", JSON.stringify(params));
+      dispatch(
+        employeeAddition({
+          params,
+          onSuccess: (success: any) => {
+            showToast("success", success.message);
+            goBack(navigation);
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+          },
+        })
+      );
+
+>>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
     }
   };
 
@@ -416,7 +437,11 @@ const ManageEmployee = () => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
+<<<<<<< HEAD
   const timePickerHandler = (value: string, key: string)=>{
+=======
+  const timePickerHandler = (value: string, key: string) => {
+>>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
     setEmployeeDetails({ ...employeeDetails, [key]: convertTo24Hour(value).trim() });
   }
 
@@ -691,9 +716,15 @@ const ManageEmployee = () => {
             icon={Icons.Time}
             iconPosition={"append"}
             value={employeeDetails.attendanceStartTime}
+<<<<<<< HEAD
             onChange={(time: any) => {
               timePickerHandler(time, "attendanceStartTime")
             }}
+=======
+            onChange={(time: any) =>
+              timePickerHandler(time, "attendanceStartTime")
+            }
+>>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
           />
           <h5 className="mb-2">{t("endTime")}</h5>
           <TimePicker

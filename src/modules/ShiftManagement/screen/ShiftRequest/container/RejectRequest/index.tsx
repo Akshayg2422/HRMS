@@ -3,14 +3,14 @@ import { getShiftRequestedEmployees } from '../../../../../../store/shiftManagem
 import { useDispatch, useSelector } from 'react-redux';
 
 function RejectRequest() {
-  let dispatch = useDispatch();
+    let dispatch = useDispatch();
 
     const { currentPage, numOfPages, shiftRequestedEmployees } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
     const { hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
-      );
+    );
 
     const getEmployeeRequest = (type: number, pageNumber: number) => {
         const params = {
