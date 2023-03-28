@@ -78,6 +78,7 @@ import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
 import { useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
+import GetToken from "./PushNotification/GetToken";
 
 function App() {
 
@@ -87,8 +88,9 @@ function App() {
  
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <PushNotification />
+      <GetToken />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />

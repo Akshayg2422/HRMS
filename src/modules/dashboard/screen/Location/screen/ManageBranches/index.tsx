@@ -66,17 +66,17 @@ const ManageBranches = () => {
       return false;
     }
     else if (validateDefault(branchDetails.city).status === false) {
-      showToast("error", t("invalidcity"));
+      showToast("error", t("invalidCity"));
       return false;
     }
     else if (validateDefault(branchDetails.district).status === false) {
-      showToast("error", t("invaliddistrict"));
+      showToast("error", t("invalidDistrict"));
       return false;
     } else if (validateDefault(branchDetails.state).status === false) {
-      showToast("error", t("invalidstate"));
+      showToast("error", t("invalidState"));
       return false;
     } else if (validatePincode(branchDetails.pincode).status === false) {
-      showToast("error", t("invalidpincode"));
+      showToast("error", t("invalidPincode"));
       return false;
     }
     else {

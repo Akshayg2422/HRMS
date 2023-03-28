@@ -115,6 +115,7 @@ const PushNotification = () => {
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
             });
+            
         })
         .catch((err: any) => console.log('failed: ', err));
 
