@@ -67,7 +67,7 @@ const PushNotification = () => {
 
     const routingHandler = (payload: any) => {
 
-        const route_type = JSON.parse( payload?.data?.extra_data.replace(/'/g, '"')).route_type
+        const route_type = JSON.parse(payload?.data?.extra_data.replace(/'/g, '"')).route_type
 
         if (route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
@@ -99,14 +99,14 @@ const PushNotification = () => {
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
-        
+
     }
 
 
     onMessageListener()
         .then((payload: any) => {
-            console.log("foreground message",payload);
-            
+            console.log("foreground message", payload);
+
             const title = payload?.data?.title;
             const options = {
                 body: payload?.data?.message,
@@ -114,7 +114,9 @@ const PushNotification = () => {
             };
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
+                this.close()
             });
+
         })
         .catch((err: any) => console.log('failed: ', err));
 

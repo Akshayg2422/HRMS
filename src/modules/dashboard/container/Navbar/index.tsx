@@ -166,7 +166,7 @@ const Navbar = ({ }) => {
               })}
             </ul>
           </div>
-          <small className={"text-white text-version"}>Version: 1.23</small>
+          <small className={"text-white text-version"}>Version: 1.26</small>
         </div>
       </div>
 
