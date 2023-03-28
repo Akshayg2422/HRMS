@@ -1,5 +1,5 @@
-import {getMessaging} from "firebase/messaging"
-import {initializeApp} from "firebase/app"
+import { getMessaging } from "firebase/messaging"
+import { initializeApp } from "firebase/app"
 
 
 const firebaseConfig = {
@@ -16,5 +16,3 @@ const firebaseConfig = {
 export const config = initializeApp(firebaseConfig)
 
 export const messaging = getMessaging(config)
-
-

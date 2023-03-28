@@ -18,8 +18,14 @@ const Navbar = ({ }) => {
   const navigate = useNav();
   const dispatch = useDispatch();
 
+
+  const { userDetails } = useSelector(
+    (state: any) => state.AuthReducer
+  );
+
   const { navIndex } = useSelector((state: any) => state.AppReducer);
   const pathname = window.location.pathname
+
 
   const currentNav = (it: any, index: any) => {
     navigate(it.route);
@@ -83,41 +89,84 @@ const Navbar = ({ }) => {
           <div className="collapse navbar-collapse" id="sidenav-collapse-main">
             <ul className="navbar-nav">
               {NAV_ITEM.map((it: any, index: number) => {
-                return (
-                  <li
-                    className="nav-item"
-                    onClick={() => currentNav(it, index)}
-                  >
-                    <a
-                      key={index}
-                      style={{ cursor: 'pointer' }}
-                      className={
-                        navIndex === index ? "nav-link active" : "nav-link"
-                      }
+                if (userDetails.is_admin === false) {
+                  if (it.name !== 'ESSL Config') {
+                    return (
+                      <li
+                        className="nav-item"
+                        onClick={() => {
+                          currentNav(it, index)
+                        }}
+                      >
+                        <a
+                          key={index}
+                          style={{ cursor: 'pointer' }}
+                          className={
+                            navIndex === index ? "nav-link active" : "nav-link"
+                          }
+                        >
+                          <i
+                            className={
+                              navIndex === index
+                                ? `${it.icon} text-primary`
+                                : `${it.icon} text-white`
+                            }
+                          ></i>
+                          <span
+                            className={
+                              navIndex === index
+                                ? "nav-link-text text-primary mt-2 ml-2"
+                                : "nav-link-text text-white mt-2 ml-2"
+                            }
+                          >
+                            {/* ESSL Config */}
+                            {it.name}
+                          </span>
+                        </a>
+                      </li>
+                    );
+                  }
+
+                } else {
+                  return (
+                    <li
+                      className="nav-item"
+                      onClick={() => {
+                        currentNav(it, index)
+                      }}
                     >
-                      <i
+                      <a
+                        key={index}
+                        style={{ cursor: 'pointer' }}
                         className={
-                          navIndex === index
-                            ? `${it.icon} text-primary`
-                            : `${it.icon} text-white`
-                        }
-                      ></i>
-                      <span
-                        className={
-                          navIndex === index
-                            ? "nav-link-text text-primary mt-2 ml-2"
-                            : "nav-link-text text-white mt-2 ml-2"
+                          navIndex === index ? "nav-link active" : "nav-link"
                         }
                       >
-                        {it.name}
-                      </span>
-                    </a>
-                  </li>
-                );
+                        <i
+                          className={
+                            navIndex === index
+                              ? `${it.icon} text-primary`
+                              : `${it.icon} text-white`
+                          }
+                        ></i>
+                        <span
+                          className={
+                            navIndex === index
+                              ? "nav-link-text text-primary mt-2 ml-2"
+                              : "nav-link-text text-white mt-2 ml-2"
+                          }
+                        >
+                          {/* ESSL Config */}
+                          {it.name}
+                        </span>
+                      </a>
+                    </li>
+                  );
+                }
               })}
             </ul>
           </div>
-          <small className={"text-white text-version"}>Version: 1.25</small>
+          <small className={"text-white text-version"}>Version: 1.26</small>
         </div>
       </div>
 

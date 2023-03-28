@@ -7,7 +7,8 @@ import {
   IS_LAUNCH,
   HIDE_OTP,
   LAUNCH_TIME,
-  TIMER
+  TIMER,
+  API_CONTROL
 } from "./actionsType";
 
 const initialState = {
@@ -19,14 +20,15 @@ const initialState = {
   navIndex: 0,
   setLaunch: false,
   timer: 40,
+  isLoad: true
 };
 
 const AppReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SHOW_LOADER:
-    state = {
+    case API_CONTROL:
+      state = {
         ...state,
-        loading: true,
+        isLoad: action.payload,
       };
       break;
     case HIDE_LOADER:

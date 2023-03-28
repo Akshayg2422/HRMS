@@ -20,10 +20,11 @@ import EmployeeShiftRequest from './EmployeeShiftRequest'
 import AvailableLeaves from './AvailableLeaves'
 import LeaveTypes from './LeaveTypes'
 import ManageLeaveTypes from './manageLeaveTypes'
+import FaceReRegisterRequest from './FaceReRegisterRequest'
 
 export {
     ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList,
     ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
     ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches,
-    EmployeeShiftRequest,AvailableLeaves,LeaveTypes,ManageLeaveTypes
+    EmployeeShiftRequest, AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest
 }

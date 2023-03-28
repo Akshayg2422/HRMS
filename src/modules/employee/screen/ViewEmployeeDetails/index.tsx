@@ -18,10 +18,7 @@ import {
   getDropDownValueByID,
   getServerDateFromMoment,
   getMomentObjFromServer,
-  getDisplayTimeFromMoment,
-  HH_MM_SS,
-  toDate,
-  convertFrom24To12Format
+  showToast,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -76,6 +73,9 @@ const ViewEmployeeDetails = () => {
 
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
+  const [deptExist, setDeptExist] = useState(false);
+  const [desigationExist, setDesigationExist] = useState(false);
+  const [branchesExist, setBranchesExist] = useState(false);
 
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
@@ -113,14 +113,15 @@ const ViewEmployeeDetails = () => {
   };
 
   useEffect(() => {
-    dispatch(getDepartmentData({}));
-    dispatch(getDesignationData({}));
+    getDepartmentDataList()
+    getDesignationDataList()
 
     const params = {};
     dispatch(
       getAllBranchesList({
         params,
         onSuccess: (success: object) => {
+          setBranchesExist(true)
           const parentBranch = branchesDropdownData.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
           );
@@ -138,9 +139,38 @@ const ViewEmployeeDetails = () => {
     );
   }, []);
 
+  const getDepartmentDataList = () => {
+    const params = {}
+
+    dispatch(
+      getDepartmentData({
+        params,
+        onSuccess: (success: object) => {
+          setDeptExist(true)
+        },
+        onError: (error: string) => { },
+      }))
+  }
+
+  const getDesignationDataList = () => {
+    const params = {}
+
+    dispatch(
+      getDesignationData({
+        params,
+        onSuccess: (success: object) => {
+          setDesigationExist(true)
+        },
+        onError: (error: string) => { },
+      }))
+  }
+
   useEffect(() => {
-    getEmployeeDetailsAPi();
-  }, [designationDropdownData, departmentDropdownData, branchesDropdownData]);
+    if (deptExist && desigationExist && branchesExist) {
+      getEmployeeDetailsAPi();
+    }
+
+  }, [deptExist, desigationExist, branchesExist]);
 
   const getEmployeeDetailsAPi = () => {
     const params = {
@@ -151,9 +181,11 @@ const ViewEmployeeDetails = () => {
       getEmployeeDetails({
         params,
         onSuccess: (response: EmployeeDetail) => {
+
           preFillEmployeeDetails(response);
         },
         onError: (error: string) => {
+          showToast('error', error)
           console.log("fail", error);
           // showToast('error', t('invalidUser'));
         },
@@ -247,7 +279,13 @@ const ViewEmployeeDetails = () => {
     setEmployeeDetails(employeeInitData);
   };
 
-  console.log(toDate(employeeDetails.attendanceEndTime, HH_MM_SS) + '====');
+  const convertFrom24To12Format = (time24: any) => {
+    const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
+    const period = +sHours < 12 ? 'AM' : 'PM';
+    const hours = +sHours % 12 || 12;
+
+    return `${hours}:${minutes} ${period}`;
+  }
 
 
   return (

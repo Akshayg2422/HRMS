@@ -94,6 +94,8 @@ const ManageEmployee = () => {
     (state: any) => state.DashboardReducer
   );
 
+
+
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
     lastName: "",
@@ -127,6 +129,9 @@ const ManageEmployee = () => {
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
+  console.log("companyBranchDropdownData===>", companyBranchDropdownData);
+
+
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
     const getChild = (branchList: any, parent_id: string) =>
@@ -144,18 +149,22 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    getBranchShiftsList()
+    if (!isEdit) {
+      getBranchShiftsList()
+    }
     const params = {};
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (success: object) => {
-          const parentBranch = branchesDropdownData.find(
+        onSuccess: (success: any) => {
+
+          const parentBranch = success.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
           );
+
           setCompanyBranchDropdownData([
             ...getAllSubBranches(
-              branchesDropdownData,
+              success,
               dashboardDetails.company_branch.id
             ),
             parentBranch,
@@ -301,7 +310,7 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-      console.log("paramss=====>", JSON.stringify(params));
+      console.log("paramss=====>", params);
       dispatch(
         employeeAddition({
           params,
@@ -314,7 +323,6 @@ const ManageEmployee = () => {
           },
         })
       );
-
     }
   };
 
@@ -433,7 +441,9 @@ const ManageEmployee = () => {
             showToast('success', success?.message)
             setIsAdminRights(false);
           },
-          onError: () => { },
+          onError: (error: string) => {
+            showToast('error', error)
+          },
         })
       );
     }
@@ -455,7 +465,9 @@ const ManageEmployee = () => {
 
             showToast('success', success?.message)
           },
-          onError: () => { },
+          onError: (error: string) => {
+            showToast('error', error)
+          },
         })
       );
     }
@@ -676,17 +688,17 @@ const ManageEmployee = () => {
           <h5 className="mb-2">{t("startTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
-            icon={Icons.Calendar}
+            icon={Icons.Time}
             iconPosition={"append"}
             value={employeeDetails.attendanceStartTime}
-            onChange={(time: any) =>
+            onChange={(time: any) => {
               timePickerHandler(time, "attendanceStartTime")
-            }
+            }}
           />
           <h5 className="mb-2">{t("endTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
-            icon={Icons.Calendar}
+            icon={Icons.Time}
             iconPosition={"append"}
             value={employeeDetails.attendanceEndTime}
             onChange={(time: any) => {

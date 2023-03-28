@@ -96,8 +96,6 @@ const ManageBranches = () => {
         pincode: branchDetails.pincode,
         parent: branchDetails.parentbranch
       };
-
-
       dispatch(
         branchAddition({
           params,
@@ -106,7 +104,7 @@ const ManageBranches = () => {
             goBack(navigation)
           },
           onError: (error: string) => {
-            showToast("error", t("invalidParams"));
+            showToast("error", error);
           },
         })
       );

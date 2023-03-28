@@ -440,7 +440,7 @@ function* addFenceAdmin(action) {
     } else {
       yield put(hideLoader());
       yield put(addFenceAdminFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
@@ -669,6 +669,7 @@ function* addHolidayEvents(action) {
     yield put(showLoader());
 
     const response = yield call(postAddHolidays, action.payload.params);
+    console.log("response------>",response);
     if (response.success) {
       yield put(hideLoader());
       yield put(addHolidaySuccess(response.details));
@@ -676,7 +677,7 @@ function* addHolidayEvents(action) {
     } else {
       yield put(hideLoader());
       yield put(addHolidayFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response));
     }
   } catch (error) {
     yield put(hideLoader());

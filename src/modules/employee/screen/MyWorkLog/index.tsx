@@ -165,21 +165,11 @@ function MyWorkLog() {
     setType(sortData[index].title.toLocaleLowerCase());
   };
 
-  function getEmployeeCheckInDetailedLogPerDay(index: number) {
-    const selectedDate = employeeCheckInLogs[index].date;
-    dispatch(
-      getCheckInDetailedLogPerDay({
-        date: selectedDate,
-      })
-    );
-    setLogPerDayModel(!logPerDayModel);
-  }
-
+ 
   return (
     <>
       <div className="row">
         <div className="col">
-          <></>
           <BackArrow additionClass={'m-3'}/>
           <div className="col text-right mb-3">
             <Sort
@@ -203,28 +193,6 @@ function MyWorkLog() {
             />
           </div>
         </div>
-        {/* <div className="col">
-          <div className="col text-right mb-3">
-            <Sort
-              sortData={employeeLogSort}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
-
-          <div className="ml--3">
-            <CommonTable
-              tableTitle={"My Log"}
-              displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
-              tableOnClick={(e, index, Item) => {
-                getEmployeeCheckInDetailedLogPerDay(index);
-              }}
-            />
-          </div>
-        </div> */}
       </div>
       <Modal
         title={"Attachment"}

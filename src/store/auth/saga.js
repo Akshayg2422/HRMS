@@ -10,7 +10,17 @@ import {
   NATURE_OF_BUSINESS,
   TYPE_OF_BUSINESS,
   ADMIN_VERIFICATION_OTP,
-  POST_APP_CONFIG
+  POST_APP_CONFIG,
+
+  SET_ESSL_CONFIG,
+  GET_ESSL_CONFIG,
+
+  ADD_ESSL_DEVICE,
+  GET_ESSL_DEVICES,
+
+  SYNC_ESSL_DEVICE_USERS,
+
+  WEB_PUSH_REGISTER
 } from "./actionTypes";
 
 import {
@@ -33,7 +43,25 @@ import {
   getAdminVerificationOtpSuccess,
   getAdminVerificationOtpFailure,
   postAppConfigSuccess,
-  postAppConfigFailure
+  postAppConfigFailure,
+
+  postEsslConfigSuccess,
+  postEsslConfigFailure,
+
+  getEsslConfigSuccess,
+  getEsslConfigFailure,
+
+  postAddEsslDeviceSuccess,
+  postAddEsslDeviceFailure,
+
+  fetchEsslDevicesSuccess,
+  fetchEsslDevicesFailure,
+
+  syncEsslDeviceUsersSuccess,
+  syncEsslDeviceUsersFailure,
+
+  webPushRegisterSuccess,
+  webPushRegisterFailure
 
 } from "./actions";
 
@@ -46,7 +74,17 @@ import {
   postUploadCompanyDocument,
   fetchNatureOfBusiness,
   fetchTypeOfBusiness,
-  postAppConfigDetailsApi
+  postAppConfigDetailsApi,
+
+  setEsslConfigApi,
+  getEsslConfigApi,
+
+  addEsslDeviceApi,
+  getEsslDevicesApi,
+
+  syncEsslDeviceUsersApi,
+
+  webPushRegisterApi
 } from "../../helpers/backend_helper";
 
 import {
@@ -306,11 +344,15 @@ function* postAppConfigDetailsSaga(action) {
 
       yield put(hideLoader());
       yield put(postAppConfigSuccess(response.details));
+      // yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(postAppConfigFailure(response.error_message));
+      // yield call(action.payload.onError(response));
+
 
     }
   } catch (error) {
@@ -321,7 +363,178 @@ function* postAppConfigDetailsSaga(action) {
   }
 }
 
+//set essl config
 
+function* postEsslConfigSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(setEsslConfigApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(postEsslConfigSuccess(response));
+      yield call(action.payload.onSuccess(response));
+
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(postEsslConfigFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(postEsslConfigFailure("Invalid Request"));
+
+  }
+}
+
+//set essl config
+
+function* fetchEsslConfigSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(getEsslConfigApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(getEsslConfigSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(getEsslConfigFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(getEsslConfigFailure("Invalid Request"));
+
+  }
+}
+
+//add essl device
+
+function* postAddEsslDeviceSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(addEsslDeviceApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(postAddEsslDeviceSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
+
+    } else {
+
+      yield put(hideLoader());
+      yield put(postAddEsslDeviceFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(postAddEsslDeviceFailure("Invalid Request"));
+
+  }
+}
+
+//get essl devices
+
+function* fetchEsslDevicesSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(getEsslDevicesApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(fetchEsslDevicesSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
+    } else {
+      yield put(hideLoader());
+      yield put(fetchEsslDevicesFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(fetchEsslDevicesFailure("Invalid Request"));
+
+  }
+}
+
+//sync essl device users
+
+function* syncEsslDeviceUsersSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(syncEsslDeviceUsersApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(hideLoader());
+      yield put(syncEsslDeviceUsersSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
+    } else {
+      yield put(hideLoader());
+      yield put(syncEsslDeviceUsersFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(hideLoader());
+    yield put(syncEsslDeviceUsersFailure("Invalid Request"));
+
+  }
+}
+
+//web push register
+
+function* webPushRegisterSaga(action) {
+  try {
+
+    const response = yield call(webPushRegisterApi, action.payload.params);
+
+    if (response.success) {
+
+      yield put(webPushRegisterSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
+    } else {
+      yield put(webPushRegisterFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+
+    yield put(webPushRegisterFailure("Invalid Request"));
+
+  }
+}
 
 ///watcher///
 
@@ -336,6 +549,17 @@ function* AuthSaga() {
   yield takeLatest(TYPE_OF_BUSINESS, getTypeOfBusiness);
   yield takeLatest(ADMIN_VERIFICATION_OTP, adminVerificationOtp);
   yield takeLatest(POST_APP_CONFIG, postAppConfigDetailsSaga);
+
+  yield takeLatest(SET_ESSL_CONFIG, postEsslConfigSaga);
+  yield takeLatest(GET_ESSL_CONFIG, fetchEsslConfigSaga);
+  yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
+  yield takeLatest(GET_ESSL_DEVICES, fetchEsslDevicesSaga);
+  yield takeLatest(SYNC_ESSL_DEVICE_USERS, syncEsslDeviceUsersSaga);
+  yield takeLatest(WEB_PUSH_REGISTER, webPushRegisterSaga);
+
+
+
+
 
 }
 

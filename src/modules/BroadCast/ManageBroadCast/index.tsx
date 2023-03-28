@@ -58,14 +58,14 @@ function ManageBroadCast() {
             showToast('error', 'The message field cannot be empty')
             return false
         }
-        else if (!broadCast.department) {
-            showToast('error', t("invalidDepartment"))
-            return false
-        }
-        else if (!broadCast.designation) {
-            showToast('error', t("invalidDesignation"))
-            return false
-        }
+        // else if (!broadCast.department) {
+        //     showToast('error', t("invalidDepartment"))
+        //     return false
+        // }
+        // else if (!broadCast.designation) {
+        //     showToast('error', t("invalidDesignation"))
+        //     return false
+        // }
         else {
             return true
         }
@@ -77,8 +77,8 @@ function ManageBroadCast() {
             title: broadCast.title,
             message: broadCast.description,
             applicable_branches: getHierarchicalBranchIds(hierarchicalBranchIds),
-            applicable_departments: broadCast.department,
-            applicable_designations: broadCast.designation
+            ...(broadCast.department && { applicable_departments: broadCast.department }),
+            ...(broadCast.designation && { applicable_designations: broadCast.designation })
         }
         console.log("params-->", params);
 
@@ -89,13 +89,13 @@ function ManageBroadCast() {
                     console.log("successsssss", success);
                     goBack(navigation);
                     showToast("success", success.status)
-                    setBroadCast({title: '', description: '', department: '', designation: '' })
+                    setBroadCast({ title: '', description: '', department: '', designation: '' })
                 },
                 onError: (error: string) => {
                     showToast("error", error)
                 },
             }));
-        } 
+        }
     }
 
     return (
@@ -110,7 +110,7 @@ function ManageBroadCast() {
                 <InputText
                     label={t("title")}
                     placeholder={t("enterTitle")}
-                    validator={validateName}
+                    // validator={validateName}
                     value={broadCast.title}
                     name={"title"}
                     onChange={(event) => {
@@ -120,7 +120,7 @@ function ManageBroadCast() {
                 <InputText
                     label={t("description")}
                     placeholder={t("description")}
-                    validator={validateName}
+                    // validator={validateName}
                     value={broadCast.description}
                     name={"description"}
                     onChange={(event) => {

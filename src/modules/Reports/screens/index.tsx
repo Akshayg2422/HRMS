@@ -5,8 +5,9 @@ import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServ
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
-import { AttendanceReport, LeaveReports, LogReports } from '../container';
+import { AttendanceReport, LeaveReports, LogReports, ShiftReports } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
+import { getBranchShifts } from '../../../store/shiftManagement/actions';
 
 
 function Reports() {
@@ -16,7 +17,8 @@ function Reports() {
     currentPage,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  const { hierarchicalBranchIds, hierarchicalAllBranchIds, multiSelectHierarchicalBranch } = useSelector(
+
+  const { hierarchicalBranchIds, hierarchicalAllBranchIds, multiSelectHierarchicalBranch, dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
   const enterPress = useKeyPress("Enter");
@@ -32,9 +34,21 @@ function Reports() {
     id: "-1",
     name: "All"
   }])
+
+  const [shiftGroupData, setShiftGroupData] = useState<any>([])
+  const [shiftName, setShiftName] = useState<any>([])
+  const [designationFilterShiftGroupData, setDesignationFilterShiftGroupData] = useState<any>([])
+
+
+  const [shiftDesignationData, setShiftDesignationData] = useState<any>([])
   const [selectedDepartment, setSelectedDepartment] = useState(departmentsData[0].id);
+  const [selectedShift, setSelectedShift] = useState<any>();
   const [selectedDesignation, setSelectedDesignation] = useState<any>(designationData[0].id);
+  const [shiftSelectedDesignation, setShiftSelectedDesignation] = useState<any>(shiftDesignationData[0]?.id);
   const [selectedAttendanceType, setSelectedAttendanceType] = useState(ATTENDANCE_TYPE[0].type)
+  const [initialRender, setInitialRender] = useState(true)
+
+
   const [customRange, setCustomRange] = useState({
     dateFrom: Today,
     dataTo: Today,
@@ -47,6 +61,7 @@ function Reports() {
   useEffect(() => {
     getDepartments()
     getDesignation()
+    getBranchShiftsList()
     return () => {
       dispatch(multiSelectBranch([]))
     };
@@ -59,8 +74,24 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
-    getReports(currentPage)
+    // if (initialRender) {
+    //   setShiftSelectedDesignation(shiftDesignationData[0]?.id)
+    // }
+    reportsType !== 'shift' && getReports(currentPage)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
+
+
+  useEffect(() => {
+    if (reportsType === 'shift' && selectedShift) {
+      getReports(currentPage)
+      setShiftName(getShiftName(selectedShift, shiftGroupData))
+    }
+    if (reportsType === 'shift' && initialRender) {
+      designationMatchShifts(shiftDesignationData[0]?.id)
+    }
+  }, [selectedDepartment, reportsType, selectedAttendanceType, hierarchicalBranchIds, selectedShift, shiftSelectedDesignation])
+
+
 
   const getDepartments = (() => {
     const params = {}
@@ -75,20 +106,22 @@ function Reports() {
     }));
   })
 
+
   const getDesignation = (() => {
     const params = {}
     dispatch(getDesignationData({
       params,
       onSuccess: (response: any) => {
-        let mergeddesignation = [...designationData, ...response]
-        setDesignationData(mergeddesignation)
+        let mergedDesignation = [...designationData, ...response]
+        setDesignationData(mergedDesignation)
+        setShiftDesignationData(response)
+        setShiftSelectedDesignation(response[0]?.id)
       },
       onError: (errorMessage: string) => {
       },
     }));
-
-
   })
+
 
   useEffect(() => {
     const toSeverDate = new Date(
@@ -103,6 +136,37 @@ function Reports() {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
+  const getBranchShiftsList = () => {
+    const params = { branch_id: dashboardDetails?.company_branch?.id }
+    dispatch(getBranchShifts({
+      params,
+      onSuccess: (success: object) => {
+        setShiftGroupData(success)
+      },
+      onError: (error: string) => {
+        showToast("error", error);
+      },
+    }));
+  }
+
+  const designationMatchShifts = (id: any) => {
+    let shifts
+    if (id !== "-1") {
+      shifts = shiftGroupData && shiftGroupData.length > 0 && shiftGroupData.filter((el: any) => el?.weekly_shift?.designation_id === id)
+      shifts.length > 0 ? setSelectedShift(shifts[0].id) : showToast('info', t('noShift'))
+    }
+    setDesignationFilterShiftGroupData(shifts)
+  }
+
+  const getShiftName = (id: string, array: any) => {
+    let shiftName = ''
+    array && array.length > 0 && array.map((item: any) => {
+      if (item?.id === id) {
+        shiftName = item.name
+      }
+    })
+    return shiftName
+  }
 
   const getReports = ((pageNumber: number) => {
     if (validateParams()) {
@@ -111,10 +175,11 @@ function Reports() {
         ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
         ...(searchEmployee && { q: searchEmployee }),
         ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds?.branch_id] }),
-        ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
+        ...(reportsType === "log" || reportsType === "shift" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
         report_type: reportsType,
         department_id: selectedDepartment,
-        designation_id: selectedDesignation,
+        designation_id: reportsType !== 'shift' ? selectedDesignation : shiftSelectedDesignation,
+        ...(reportsType === 'shift' && { shift_id: selectedShift }),
         download: false,
         selected_date: customRange.dateFrom,
         selected_date_to: customRange.dataTo,
@@ -136,6 +201,7 @@ function Reports() {
   };
 
   const validateParams = () => {
+
     if (!reportsType) {
       showToast("error", t("inValidType"));
       return false;
@@ -149,7 +215,15 @@ function Reports() {
     } else if (!selectedAttendanceType && reportsType === 'log') {
       showToast("error", t("inValidAttendance"));
       return false;
+    } else if (reportsType === 'shift' && designationFilterShiftGroupData.length < 0) {
+      showToast("error", t("noShift"));
+      return false;
     }
+    else if (!selectedShift && reportsType === 'shift') {
+      showToast("error", t("invalidShift"));
+      return false;
+    }
+
     return true
   }
 
@@ -162,8 +236,9 @@ function Reports() {
         ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
         ...(searchEmployee && { q: searchEmployee }),
         department_id: selectedDepartment,
-        designation_id: selectedDesignation,
+        designation_id: reportsType !== 'shift' ? selectedDesignation : shiftSelectedDesignation,
         ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
+        ...(reportsType === 'shift' && { shift_id: selectedShift }),
         selected_date: customRange.dateFrom,
         selected_date_to: customRange.dataTo,
         page_number: currentPage,
@@ -173,11 +248,8 @@ function Reports() {
         params,
         onSuccess: (response: any) => {
           downloadFile(response);
-          // getReports(currentPage)
-          // setCustomRange({ ...customRange, dataTo: Today, dateFrom: Today });
         },
         onError: (error: string) => {
-          // getReports(currentPage)
         },
       }));
     }
@@ -196,9 +268,10 @@ function Reports() {
             data={REPORTS_TYPE}
             onChange={(event) => {
               setReportsType(dropDownValueCheck(event.target.value, 'Select Report'))
+              setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
               dispatch(resetMisReportData([]))
             }} />
-          {reportsType === "log" && <div className="col-lg-3 col-md-12">
+          {reportsType === "log" || reportsType === 'shift' && <div className="col-lg-3 col-md-12">
             <DropDown
               label={t('attendanceType')}
               placeholder={"Select Attendance"}
@@ -215,7 +288,7 @@ function Reports() {
             {/* <MultiselectHierarchical /> */}
             <ChooseBranchFromHierarchical />
           </Container>
-          <DropDown
+          {reportsType !== 'shift' && <DropDown
             additionClass={'col-lg-3 col-md-12'}
             label={t('designation')}
             placeholder={t('selectDesignation')}
@@ -226,7 +299,22 @@ function Reports() {
                 setSelectedDesignation(dropDownValueCheck(event.target.value, t('selectDesignation')));
               }
             }}
-          />
+          />}
+          {reportsType === 'shift' && <DropDown
+            additionClass={'col-lg-3 col-md-12'}
+            label={t('designation')}
+            placeholder={t('selectDesignation')}
+            data={shiftDesignationData}
+            value={shiftSelectedDesignation}
+            onChange={(event) => {
+              if (setShiftSelectedDesignation) {
+                setInitialRender(false)
+                setSelectedShift('')
+                designationMatchShifts(event.target.value)
+                setShiftSelectedDesignation(event.target.value);
+              }
+            }}
+          />}
           <DropDown
             additionClass={'col-lg-3 col-md-12'}
             label={"Department"}
@@ -239,6 +327,18 @@ function Reports() {
               }
             }}
           />
+          {reportsType === 'shift' && <DropDown
+            additionClass={'col-lg-3 col-md-12'}
+            label={"Shift"}
+            placeholder={"Select Shift"}
+            data={designationFilterShiftGroupData}
+            value={selectedShift}
+            onChange={(event) => {
+              if (setSelectedShift) {
+                setSelectedShift(event.target.value);
+              }
+            }}
+          />}
           <Container additionClass={'col-lg-3 col-md-12'}>
             <InputText
               placeholder={t("enterEmployeeName")}
@@ -290,6 +390,10 @@ function Reports() {
       }
       {reportsType === "log" &&
         <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+          : <NoRecordFound />}</>
+      }
+      {reportsType === "shift" &&
+        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
           : <NoRecordFound />}</>
       }
     </>

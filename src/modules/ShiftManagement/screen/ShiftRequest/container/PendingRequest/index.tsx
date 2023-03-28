@@ -41,7 +41,7 @@ function PendingRequest() {
           "Reason": el?.reason,
           "Status": el?.status_text,
           "Approve": <>
-            {el.status_code === -1 ? (
+            {el?.status_code === -1 ? (
               <span
                 className="h5 text-primary"
                 style={{ cursor: 'pointer' }}
@@ -56,7 +56,7 @@ function PendingRequest() {
             )}
           </>,
           "Reject": <>
-            {el.status_code === -1 ? (
+            {el?.status_code === -1 ? (
               <span
                 className="h5 text-primary"
                 style={{ cursor: 'pointer' }}

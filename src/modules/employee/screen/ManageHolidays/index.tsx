@@ -9,9 +9,11 @@ import { Icons } from "@assets";
 import {
   getMomentObjFromServer,
   getServerDateFromMoment,
+  goBack,
   goTo,
   ROUTE,
   showToast,
+  Today,
   useNav,
   validateName,
 } from "@utils";
@@ -91,9 +93,11 @@ const ManageHolidays = () => {
           params,
           onSuccess: (success: any) => {
             showToast('success', success.message)
-            goTo(navigation, ROUTE.ROUTE_CALENDAR);
+            goBack(navigation);
           },
-          onError: (error: string) => { },
+          onError: (error: any) => {
+            showToast('error', error.error_message)
+          },
         })
       );
     }
@@ -124,6 +128,7 @@ const ManageHolidays = () => {
           <DatePicker
             title={t("pleaseSelect")}
             icon={Icons.Calendar}
+            minDate={Today}
             iconPosition={"append"}
             value={holidayEvents.date}
             onChange={(date: string) => dateTimePickerHandler(date, "date")}
