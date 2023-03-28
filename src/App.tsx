@@ -88,11 +88,7 @@ function App() {
   return (
     <>
       <AutoLogout />
-<<<<<<< HEAD
       <PushNotification />
-=======
-      <Firebase />
->>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
       <DeviceInfo />
       <AppProvider >
         <AppLoader />

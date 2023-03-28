@@ -18,14 +18,7 @@ import {
   getDropDownValueByID,
   getServerDateFromMoment,
   getMomentObjFromServer,
-<<<<<<< HEAD
   showToast,
-=======
-  getDisplayTimeFromMoment,
-  HH_MM_SS,
-  toDate,
-  convertFrom24To12Format
->>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -286,17 +279,13 @@ const ViewEmployeeDetails = () => {
     setEmployeeDetails(employeeInitData);
   };
 
-<<<<<<< HEAD
-  const convertFrom24To12Format = (time24:any) => {
+  const convertFrom24To12Format = (time24: any) => {
     const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
     const period = +sHours < 12 ? 'AM' : 'PM';
     const hours = +sHours % 12 || 12;
-  
+
     return `${hours}:${minutes} ${period}`;
   }
-=======
-  console.log(toDate(employeeDetails.attendanceEndTime, HH_MM_SS) + '====');
->>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
 
 
   return (

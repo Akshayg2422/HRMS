@@ -387,12 +387,6 @@ export {
   convertTo24Hour,
   base64ToImage,
   MAX_LENGTH_PAN_CARD,
-<<<<<<< HEAD
   CHILD_PATH,
   getTimelineRelativeTimeFormat
 }
-=======
-  CHILD_PATH
-}
-
->>>>>>> dc071896d1981dda0d1c9ab389ed99357b1b2a49
