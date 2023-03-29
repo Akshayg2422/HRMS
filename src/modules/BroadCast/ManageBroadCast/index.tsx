@@ -87,7 +87,7 @@ function ManageBroadCast() {
                 params,
                 onSuccess: (success: any) => {
                     console.log("successsssss", success);
-                    // goBack(navigation);
+                    goBack(navigation);
                     showToast("success", success.status)
                     setBroadCast({ title: '', description: '', department: '', designation: '' })
                 },

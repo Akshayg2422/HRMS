@@ -40,6 +40,7 @@ const ManageHolidays = () => {
     (state: any) => state.EmployeeReducer
   );
 
+
   useEffect(() => {
     if (selectedEventId !== undefined) {
       getPrefilledEventDetails();
@@ -130,6 +131,7 @@ const ManageHolidays = () => {
             icon={Icons.Calendar}
             minDate={Today}
             iconPosition={"append"}
+            name={'date'}
             value={holidayEvents.date}
             onChange={(date: string) => dateTimePickerHandler(date, "date")}
           />

@@ -129,7 +129,6 @@ const ManageEmployee = () => {
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
-  console.log("companyBranchDropdownData===>",companyBranchDropdownData);
 
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {

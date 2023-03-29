@@ -76,19 +76,56 @@ import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
+import GetToken from "./PushNotification/GetToken";
+import { postAppConfig } from "./store/auth/actions";
+import { setInterval } from "timers";
 
 function App() {
 
-  const { dashboardDetails } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
- 
+  const dispatch = useDispatch()
+
+  // const { appConfig, fcmToken, isWebPushRegisterController } = useSelector(
+  //   (state: any) => state.AuthReducer
+  // );
+
+  // useEffect(() => {
+  //   if (fcmToken) {
+  //     setInterval(() => {
+  //       getPostAppConfig()
+  //     }, 1000)
+  //     //   setInterval(() => {
+  //     //     getPostAppConfig()
+  //     // }, 1800000)
+  //   }
+  // }, [])
+
+
+  // const getPostAppConfig = () => {
+  //   const params = {
+  //     device_model: appConfig?.model,
+  //     device_platform: appConfig?.platform,
+  //     device_brand: appConfig?.brand,
+  //     device_token: fcmToken
+  //   }
+  //   console.log('params------------->', params);
+  //   dispatch(postAppConfig({
+  //     params,
+  //     onSuccess: (response: any) => {
+  //       console.log("web config success-->", response);
+  //     },
+  //     onError: () => {
+  //     },
+  //   }))
+  // }
+  //1800000
+
   return (
     <>
       {/* <AutoLogout /> */}
       <PushNotification />
+      <GetToken />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />
