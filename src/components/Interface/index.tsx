@@ -382,6 +382,7 @@ export interface DatePickerProps {
   disabledDate?: any
   additionalClass?: string
   maxDate?: string
+  name?:string
 }
 
 export interface TableProps {

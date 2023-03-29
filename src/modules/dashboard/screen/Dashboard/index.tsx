@@ -41,34 +41,13 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    if (isWebPushRegisterController && fcmToken) {
       getPostAppConfig()
-    }
   }, [fcmToken])
 
   useEffect(() => {
-    if (isWebPushRegisterController) {
-      registerDeviceDetails()
-    }
     dispatch(getDashboard({}))
   }, [])
   // console.log("isWebPushRegisterController", isWebPushRegisterController);
-
-
-  const registerDeviceDetails = async () => {
-
-    let registrationDetails: any = await localStorage.getItem('registrationDetails')
-    const params = JSON.parse(registrationDetails)
-
-    // dispatch(webPushRegister({
-    //   params,
-    //   onSuccess: (response: any) => {
-    //     dispatch(isWebPushRegister(false))
-    //   },
-    //   onError: () => {
-    //   },
-    // }))
-  }
 
 
   const getPostAppConfig = () => {
@@ -79,7 +58,7 @@ function Dashboard() {
       device_token: fcmToken
     }
     console.log('params------------->', params);
-    // dispatch(postAppConfig({ params }))
+    
     dispatch(postAppConfig({
       params,
       onSuccess: (response: any) => {

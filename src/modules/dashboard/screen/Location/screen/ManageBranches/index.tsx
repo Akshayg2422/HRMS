@@ -52,12 +52,14 @@ const ManageBranches = () => {
     if (validateDefault(branchDetails.companyname).status === false) {
       showToast("error", t("invalidCompanyName"));
       return false;
-    } else if (
-      validateName(branchDetails.displaycompanyname).status === false
-    ) {
-      showToast("error", t("invalidDisplayCompanyName"));
-      return false;
-    } else if (branchDetails.parentbranch === "") {
+    }
+    //  else if (
+    //   validateName(branchDetails.displaycompanyname).status === false
+    // ) {
+    //   showToast("error", t("invalidDisplayCompanyName"));
+    //   return false;
+    // } 
+    else if (branchDetails.parentbranch === "") {
       showToast("error", t("Parent Branch should not be empty"))
     }
 
@@ -88,7 +90,7 @@ const ManageBranches = () => {
     if (validatePostParams()) {
       const params = {
         name: branchDetails.companyname,
-        display_name: branchDetails.displaycompanyname,
+        display_name: branchDetails.displaycompanyname ? branchDetails.displaycompanyname : branchDetails.companyname,
         communication_address: branchDetails.address,
         city: branchDetails.city,
         district: branchDetails.district,
