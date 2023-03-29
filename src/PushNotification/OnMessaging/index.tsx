@@ -10,7 +10,7 @@ export const OnMessageListener = () => {
   const dispatch = useDispatch()
   return new Promise((resolve) => {
     onMessage(messaging, async (payload) => {
-       dispatch(setNotificationCount())
+     dispatch(setNotificationCount())
       await resolve(payload);
     });
   });

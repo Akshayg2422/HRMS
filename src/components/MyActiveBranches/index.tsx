@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAdminBranches, getBranchAdmins, postAdminUpdateBranches } from "../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import { dropDownValueCheck, showToast } from "@utils";
-import { setBranchHierarchical } from "../../store/dashboard/actions";
+import { activeBranchTriggerHierarchical, setBranchHierarchical } from "../../store/dashboard/actions";
 
 
 type LocationProps = {
@@ -27,7 +27,7 @@ function MyActiveBranches() {
     const { RenderAdminBranch, adminCurrentPage } = useSelector((state: any) => state.EmployeeReducer);
     const [branchDropDownData, setBranchDropDownData] = useState<any>([])
     const [dropdownSelectedBranch, setDropdownSelectedBranch] = useState<any>()
-    const { dashboardDetails, hierarchicalBranchIds } = useSelector(
+    const { dashboardDetails, hierarchicalBranchIds, toTriggerHierarchical } = useSelector(
         (state: any) => state.DashboardReducer
     );
     const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
@@ -39,7 +39,7 @@ function MyActiveBranches() {
 
     useEffect(() => {
         branchAdmins(adminCurrentPage)
-    }, [hierarchicalBranchIds]);
+    }, []);
 
     const getAdminBranchesData = () => {
         const params = {}
@@ -80,6 +80,7 @@ function MyActiveBranches() {
     const setActiveBranch = (id: string, name: string) => {
         const childIds = getAllSubBranches(listBranchesList, id)
         dispatch(setBranchHierarchical({ ids: { branch_id: id, child_ids: childIds, include_child: false }, name: name }))
+        dispatch(activeBranchTriggerHierarchical(!toTriggerHierarchical))
     }
 
     const validateParams = (id: any) => {

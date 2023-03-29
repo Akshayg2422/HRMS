@@ -13,13 +13,12 @@ function LocationScreen() {
   const navigation = useNav();
   const { t } = useTranslation();
   const [branch, setBranch] = useState<any>([])
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
   const [model, setModel] = useState(false);
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
   const [modelData, setModelData] = useState<Location>();
   const [editModel, setEditModel] = useState<any>(false);
-  const [searchBranches, setsearchBranches] = useState<any>('')
+  const [searchBranches, setSearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
 
   const enterPress = useKeyPress("Enter");
@@ -28,7 +27,12 @@ function LocationScreen() {
   const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
 
   useEffect(() => {
-    const params = {};
+    getBranchList()
+  }, [isRefresh]);
+
+
+  const getBranchList = () => {
+    const params = { ...(searchBranches && { q: searchBranches }) };
     dispatch(
       getAllBranchesList({
         params,
@@ -40,13 +44,13 @@ function LocationScreen() {
         },
       })
     );
-  }, [isRefresh]);
+  }
 
 
 
   useEffect(() => {
     if (enterPress) {
-      SelectedBranchFilter()
+      getBranchList()
     }
   }, [enterPress])
 
@@ -99,19 +103,6 @@ function LocationScreen() {
       },
     }))
 
-  }
-
-  const SelectedBranchFilter = () => {
-    let filteredBranch = [...branch]
-    if (searchBranches !== "") {
-      filteredBranch = filteredBranch.filter((element: any) => {
-        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
-      })
-      setBranch(filteredBranch)
-    }
-    else {
-      setBranch(brancheslist)
-    }
   }
 
   const handleEdit = (item: any) => {
@@ -170,12 +161,12 @@ function LocationScreen() {
             col={'col'}
             placeholder={t("searchLocation")}
             onChange={(e) => {
-              setsearchBranches(e.target.value);
+              setSearchBranches(e.target.value);
             }}
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
             onClick={() => {
-              SelectedBranchFilter()
+              getBranchList()
             }}
           />
         </Container>

@@ -14,7 +14,6 @@ import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
-import { Notification } from '../Notification';
 import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 
 const Header = () => {
@@ -27,15 +26,13 @@ const Header = () => {
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
 
-  const [count, setCount] = useState(0)
-
   let dispatch = useDispatch();
 
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
-  const { notificationsDataList, NotificationCount } = useSelector(
+  const { NotificationCount } = useSelector(
     (state: any) => state.NotificationReducer
   );
 
@@ -63,6 +60,8 @@ const Header = () => {
         NAV_ITEM.filter((element: any) => {
           if (el.parent === element.route) {
             setHeaderTitle(element.name)
+          } else {
+            console.log('no heading');
           }
         })
       }
@@ -110,7 +109,6 @@ const Header = () => {
 
 
   const checkLength = (data: any) => {
-
     if (data < 100) {
       return data
     }
@@ -118,8 +116,6 @@ const Header = () => {
       return '99+'
     }
   }
-
-
 
 
   return (
@@ -151,11 +147,13 @@ const Header = () => {
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
-                  dispatch(setIsShowBack(true))
+                  if (pathname !== '/notifications') {
+                    goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
+                    dispatch(setIsShowBack(true))
+                  }
                 }} >
-                  <i className="ni ni-bell-55 text-white" style={{ cursor: 'pointer' }} onClick={()=>dispatch(clearNotificationCount())}></i>
-                  {NotificationCount > 0 && <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(NotificationCount)}</span>}
+                  <i className="ni ni-bell-55 text-white" style={{ cursor: 'pointer' }} onClick={() => dispatch(clearNotificationCount())}></i>
+                  {NotificationCount > 0 && <span  style={{ cursor: 'pointer' }} className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(NotificationCount)}</span>}
                 </a>
               </div>
               <div className='media-body  d-none d-lg-block'>

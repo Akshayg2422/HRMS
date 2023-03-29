@@ -8,9 +8,8 @@ import {
 } from "@components";
 import React, { useEffect } from "react";
 
-import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
-import { useDashboard } from "@contexts";
-import { goTo, ROUTE, showToast, useNav } from "@utils";
+import { DashBoardCard } from "@modules";
+import {useNav } from "@utils";
 import { useDispatch } from "react-redux";
 import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 import { useSelector } from "react-redux"; import { useTranslation } from "react-i18next";
@@ -21,9 +20,7 @@ import {
 } from '../../../../store/location/actions';
 
 import { LocationProps } from '../../../../components/Interface';
-import { currentNavIndex } from "../../../../store/app/actions";
-import { getAdminBranches } from "../../../../store/employee/actions";
-import { isWebPushRegister, postAppConfig, webPushRegister } from "../../../../store/auth/actions";
+import { isWebPushRegister, postAppConfig} from "../../../../store/auth/actions";
 
 
 function Dashboard() {

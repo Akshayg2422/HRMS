@@ -18,7 +18,7 @@ interface HierarchicalProps {
 function Hierarchical({ showCheckBox = true, showActiveBranch = true }: HierarchicalProps) {
   const { t } = useTranslation();
 
-  const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails } =
+  const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails,toTriggerHierarchical } =
     useSelector((state: any) => state.DashboardReducer);
 
   const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
@@ -27,9 +27,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   let dispatch = useDispatch();
 
   const [hierarchicalBranch, setHierarchicalBranch] = useState<any>({});
-  const [structuredData, setStructuredData] = useState<Array<LocationProps>>(
-    []
-  );
+
 
   function sortArray(arr: any) {
     return arr
@@ -41,14 +39,17 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   }
 
   useEffect(() => {
+    getBranchToSet()
+  }, [toTriggerHierarchical]);
+
+
+  const getBranchToSet = () => {
     const params = {};
     dispatch(
       getListAllBranchesList({
         params,
         onSuccess: async (response: Array<LocationProps>) => {
-          // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
-
           if (parentBranch) {
             const hierarchicalBranchArray = {
               ...parentBranch,
@@ -60,6 +61,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
             );
 
             let modifiedBranch = filteredBranch
+
             try {
               modifiedBranch = sortArray([filteredBranch])
             } catch (e) {
@@ -73,7 +75,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         },
       })
     );
-  }, [hierarchicalBranchName, hierarchicalBranchIds]);
+  }
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     let branchListFiltered: any = [];
@@ -86,7 +88,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           return it2;
         });
     };
-    
+
     getChild(branchList, parent_id);
 
     branchListFiltered = branchListFiltered.map((it: any) => {
@@ -134,6 +136,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         name: item.name,
       })
     );
+    getBranchToSet()
     setModel(!model);
   }
 
