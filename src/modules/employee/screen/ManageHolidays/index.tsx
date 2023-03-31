@@ -40,7 +40,7 @@ const ManageHolidays = () => {
     (state: any) => state.EmployeeReducer
   );
 
-
+    
   useEffect(() => {
     if (selectedEventId !== undefined) {
       getPrefilledEventDetails();

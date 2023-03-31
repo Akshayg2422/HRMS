@@ -138,7 +138,7 @@ function MyWorkLog() {
         Time: getDisplayDateTimeFromMoment(
           getMomentObjFromServer(it.time_stamp)
         ),
-        address: it.address?.address_text,
+        address: it.address?.address_text ? it.address?.address_text : "      -",
       };
     });
   };
@@ -148,7 +148,7 @@ function MyWorkLog() {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text,
+        address: it.address_text? it.address_text : "       -",
       };
     });
   };

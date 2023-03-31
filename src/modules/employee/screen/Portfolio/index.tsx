@@ -16,7 +16,7 @@ function PortFolio() {
     },
     {
       id: "2",
-      name: "My Log",
+      name: "My Log Book",
       value: "ML",
       route: ROUTE.ROUTE_MY_LOG,
       icon: Icons.MyLog,
