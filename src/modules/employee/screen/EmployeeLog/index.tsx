@@ -440,7 +440,7 @@ function EmployeeLog() {
                                           {item.type}
                                         </small>
                                         <small className="mb-0 col">
-                                          {item.address_text?item.address_text : "-"}
+                                          {item.address_text?item.address_text : "       -"}
                                         </small>
                                       </Container>
                                       <Divider />

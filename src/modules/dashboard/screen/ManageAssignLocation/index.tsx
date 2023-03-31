@@ -210,30 +210,32 @@ function ManageAssignLocation() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-            {listBranchesList.map((item: Branch, index: number) => {
-              return (
-                <>
-                  <div className="row mx-3 my-1"
-                    onClick={() => addSelectedBranch(item)}
-                  >
-                    <div className="col-8">
-                      <span className=" text-gray">{item.name}</span>
-                    </div>
-
-                    <div className="col-4 text-right">
-                      <ImageView
-                        icon={
-                          checkStatus(item.id!)
-                            ? Icons.TickActive
-                            : Icons.TickDefault
-                        }
-                      />
-                    </div>
+          {listBranchesList.map((item: Branch, index: number) => {
+            return (
+              <div
+                onClick={() => addSelectedBranch(item)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="row mx-3 my-1"
+                >
+                  <div className="col-8">
+                    <span className=" text-gray">{item.name}</span>
                   </div>
-                  {index !== listBranchesList.length - 1 && <Divider />}
-                </>
-              );
-            })}
+
+                  <div className="col-4 text-right">
+                    <ImageView
+                      icon={
+                        checkStatus(item.id!)
+                          ? Icons.TickActive
+                          : Icons.TickDefault
+                      }
+                    />
+                  </div>
+                </div>
+                {index !== listBranchesList.length - 1 && <Divider />}
+              </div>
+            );
+          })}
 
           <Container
             additionClass={'mt-4 sticky-bottom'}

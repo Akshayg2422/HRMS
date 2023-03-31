@@ -383,7 +383,7 @@ export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 
 
 export const LANGUAGE_LIST = [
-  { language: 'English', subtitle: '', key: 'en' },
+  { language: 'English', subtitle: '', key: 'en-US' },
   { language: 'हिंदी', subtitle: 'Hindi', key: 'hi' },
   { language: 'ಕನ್ನಡ', subtitle: 'kannada', key: 'ka' },
   { language: 'தமிழ்', subtitle: 'Tamil', key: 'ta' },
