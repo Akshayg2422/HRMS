@@ -21,7 +21,6 @@ import {
   ROUTE,
   showToast,
 } from "@utils";
-import { useDashboard } from "@contexts";
 import {
   employeeEdit,
   getEmployeesList,
@@ -64,6 +63,7 @@ function EmployeeScreen() {
     const params = {}
     dispatch(getListAllBranchesList({ params }))
   }, [])
+  
 
   useEffect(() => {
     if (enterPress) {

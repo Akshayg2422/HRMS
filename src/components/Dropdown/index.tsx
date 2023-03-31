@@ -39,22 +39,6 @@ const DropDown = (({
   const selectRef = useRef(null);
 
 
-  useEffect(() => {
-    const selectEl: any = selectRef.current;
-    const selectedOptionValue = selectEl.querySelector(`option[value="${value}"]`);
-
-    const selectedItem = data.find((item: any) => selectedOptionValue.value === item?.id || item?.type);
-
-    if (selectedItem && selectEl.offsetWidth < selectedItem.name.length * 8) {
-      requestAnimationFrame(() => {
-        selectEl.scrollLeft = Math.max(0, selectedItem.name.length * 8 - selectEl.offsetWidth);
-      });
-    } else {
-      selectEl.scrollLeft = 0;
-    }
-  }, [value, data]);
-
-
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
     if (selectedValue === placeholder) {

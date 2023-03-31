@@ -93,9 +93,9 @@ function MyWorkLog() {
     employeeEachUserSheets,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  useEffect(() => {
-    getUserCheckInLogs();
-  }, [startDate]);
+  // useEffect(() => {
+  //   getUserCheckInLogs();
+  // }, [startDate]);
 
   useEffect(() => {
     getEmployeeEachUserTimeSheetsApi();

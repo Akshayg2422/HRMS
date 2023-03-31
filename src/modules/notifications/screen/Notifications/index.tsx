@@ -65,16 +65,16 @@ function Notifications() {
         }
     }
 
-    useEffect(() => {
-        getNotificationsList(currentPage)
-        return () => {
-            dispatch(setIsShowBack(false))
-        }
-    }, [])
+    // useEffect(() => {
+    //     getNotificationsList(currentPage)
+    // }, [])
 
     useEffect(() => {
         dispatch(clearNotificationCount())
         getNotificationsList(currentPage)
+        return () => {
+            dispatch(setIsShowBack(false))
+        }
     }, [NotificationCount > 0])
 
     const getNotificationsList = (pageNumber: number) => {
