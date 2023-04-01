@@ -128,7 +128,16 @@ import {
   CURRENT_LEAVE_TYPE,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
-  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+  ENABLE_FIELD_CHECK_IN,
+  ENABLE_FIELD_CHECK_IN_SUCCESS,
+  ENABLE_FIELD_CHECK_IN_FAILURE,
+  ENABLE_OFFICE_CHECK_IN,
+  ENABLE_OFFICE_CHECK_IN_SUCCESS,
+  ENABLE_OFFICE_CHECK_IN_FAILURE,
+  POST_FACE_VALIDATION_STATUS,
+  POST_FACE_VALIDATION_STATUS_SUCCESS,
+  POST_FACE_VALIDATION_STATUS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -346,7 +355,7 @@ const EmployeeReducer = (state = initialState, action) => {
         ...state, loading: true,
         numOfPages: 0,
         currentPage: 1,
-        employeeTimeSheets:[]
+        employeeTimeSheets: []
       };
       break;
 
@@ -1214,6 +1223,75 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+    //enableFieldCheckIn
+
+    case ENABLE_FIELD_CHECK_IN:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ENABLE_FIELD_CHECK_IN_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case ENABLE_FIELD_CHECK_IN_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //enableOfficeCheckIn
+
+    case ENABLE_OFFICE_CHECK_IN:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ENABLE_OFFICE_CHECK_IN_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case ENABLE_OFFICE_CHECK_IN_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    //changeAttendanceSettings
+
+    case POST_FACE_VALIDATION_STATUS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case POST_FACE_VALIDATION_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case POST_FACE_VALIDATION_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
     /**
      * Default
      */

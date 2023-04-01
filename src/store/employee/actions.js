@@ -130,7 +130,16 @@ import {
   CURRENT_LEAVE_TYPE,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
-  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+  ENABLE_FIELD_CHECK_IN,
+  ENABLE_FIELD_CHECK_IN_SUCCESS,
+  ENABLE_FIELD_CHECK_IN_FAILURE,
+  ENABLE_OFFICE_CHECK_IN,
+  ENABLE_OFFICE_CHECK_IN_SUCCESS,
+  ENABLE_OFFICE_CHECK_IN_FAILURE,
+  POST_FACE_VALIDATION_STATUS,
+  POST_FACE_VALIDATION_STATUS_SUCCESS,
+  POST_FACE_VALIDATION_STATUS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1185,6 +1194,73 @@ export const getDownloadEmployeeCheckinLogsSuccess = (response) => {
 export const getDownloadEmployeeCheckinLogsFailure = (error) => {
   return {
     type: GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+    payload: error,
+  };
+};
+
+
+// enableFieldCheckIn
+
+export const postEnableFieldCheckIn = (params) => {
+  return {
+    type: ENABLE_FIELD_CHECK_IN,
+    payload: params,
+  };
+};
+
+export const postEnableFieldCheckInSuccess = (response) => {
+  return {
+    type: ENABLE_FIELD_CHECK_IN_SUCCESS,
+    payload: response,
+  };
+};
+export const postEnableFieldCheckInFailure = (error) => {
+  return {
+    type: ENABLE_FIELD_CHECK_IN_FAILURE,
+    payload: error,
+  };
+};
+
+//enableOfficeCheckIn
+
+export const postEnableOfficeCheckIn = (params) => {
+  return {
+    type: ENABLE_OFFICE_CHECK_IN,
+    payload: params,
+  };
+};
+
+export const postEnableOfficeCheckInSuccess = (response) => {
+  return {
+    type: ENABLE_OFFICE_CHECK_IN_SUCCESS,
+    payload: response,
+  };
+};
+export const postEnableOfficeCheckInFailure = (error) => {
+  return {
+    type: ENABLE_OFFICE_CHECK_IN_FAILURE,
+    payload: error,
+  };
+};
+
+// changeAttendanceSettings
+
+export const changeAttendanceSettings = (params) => {
+  return {
+    type: POST_FACE_VALIDATION_STATUS,
+    payload: params,
+  };
+};
+
+export const changeAttendanceSettingsSuccess = (response) => {
+  return {
+    type: POST_FACE_VALIDATION_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+export const changeAttendanceSettingsFailure = (error) => {
+  return {
+    type: POST_FACE_VALIDATION_STATUS_FAILURE,
     payload: error,
   };
 };
