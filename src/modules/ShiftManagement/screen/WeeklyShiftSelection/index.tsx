@@ -79,7 +79,22 @@ const WeeklyShiftSelection = () => {
         group_name: shiftName,
         weekly_group_details: weeklyData
       }
-      console.log('params', params)
+      console.log('params-->', params)
+
+      // let updatedWeek = weeklyData.map((el: any) => {
+      //   el.week_calendar.map((it: any,index:number) => {
+      //     if( it.time_breakdown.length > 1){
+      //       console.log("11111111111",it.time_breakdown[0]);
+            
+      //       it.time_breakdown.map((item: any,index:number) => {
+      //         // const breakdown = [{item}]
+      //         // console.log("itemmmm", item[index].start_time);
+      //       })
+      //     }
+         
+      //   })
+      // })
+
       dispatch(
         addWeeklyShift({
           params,
@@ -219,47 +234,6 @@ const WeeklyShiftSelection = () => {
 
         if (timeBreakdown && timeBreakdown.length > 0) {
 
-          // if (timeBreakdown.length < 3) {
-          //   const isExist = timeBreakdown.some((each: any) => {
-          //     return (
-          //       currentShift.start_time === each.startTime &&
-          //       currentShift.end_time === each.endTime
-          //     );
-          //   });
-
-          //   console.log("isExist---------->", isExist);
-
-          //   if (!isExist) {
-          //     console.log("timeBreakdown------->", timeBreakdown);
-          //     let is_add = true;
-          //     timeBreakdown.forEach((element: any) => {
-          //       const isOverLab = dateRangeOverlaps(
-          //         getDate(currentShift.start_time),
-          //         getDate(currentShift.end_time),
-          //         getDate(element.start_time),
-          //         getDate(element.end_time),
-          //       );
-          //       console.log("isOverLab--------->", isOverLab);
-
-          //       if (isOverLab) {
-          //         is_add = false;
-          //         return;
-          //       }
-          //     });
-
-          //     if (is_add) {
-          //       console.log("is_add--------------->", is_add);
-          //       changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
-          //     }
-          //     else {
-          //       showToast("error", t('alreadyShiftAllocated'))
-          //     }
-          //   }
-
-          // } else {
-          //   // Toast(I18n.t('overLimit'));
-          //   showToast("error", "overLimit")
-          // }
           if (timeBreakdown.length < 3) {
             const isMatching = timeBreakdown.some((el: { start_time: any; end_time: any; }) => el.start_time === currentShift.start_time && el.end_time === currentShift.end_time);
 
@@ -303,35 +277,50 @@ const WeeklyShiftSelection = () => {
   }
 
 
-  // const onShiftAdd = () => {
-  //   if (dateValidation()) {
-  //     let updatedWeek = [...weeklyData]
-  //     let selectedWeekPosition = isActiveWeek - 1
-  //     let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
-  //     const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
-  //     if (timeBreakdown.length === 0) {
-  //       let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-  //       changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
-  //     }
-  //     else if (timeBreakdown.length > 0) {
-  //       let isInRange = false
-  //       for (let i = 0; i < timeBreakdown.length; i++) {
-  //         if ((shiftsTime.inTime > timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
-  //           (shiftsTime.outTime > timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
-  //           showToast("error", t('alreadyShiftAllocated'))
-  //           isInRange = true
-  //         }
-  //       }
-  //       if (!isInRange && changedWeek[selectedDayIndex].time_breakdown.length < 3) {
-  //         let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-  //         changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
-  //       }
+  ///////////////////////////////Break time
 
+  // const onAddShiftTimeBreakdown = () => {
+
+  //   if (dateValidation()) {
+  //     if (shiftsTime.inTime && shiftsTime.outTime) {
+  //       let updatedWeek = [...weeklyData]
+  //       let selectedWeekPosition = isActiveWeek - 1
+  //       let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
+  //       const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
+
+  //       const currentShift = {
+  //         start_time: shiftsTime.inTime,
+  //         end_time: shiftsTime.outTime,
+  //       };
+  //       if (timeBreakdown.length < 2) {
+
+  //         if (timeBreakdown.length < 1) {
+  //           changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+  //         }
+
+  //         else {
+  //           if (currentShift.start_time >= timeBreakdown[0].start_time && currentShift.start_time <= timeBreakdown[0].end_time &&
+  //             currentShift.end_time >= timeBreakdown[0].start_time && currentShift.end_time <= timeBreakdown[0].end_time
+  //           ) {
+  //             changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+  //           }
+  //           else {
+  //             showToast("error", 'your selected break time is not in between selected shift time')
+
+  //           }
+
+  //         }
+
+  //       }
+  //       else {
+  //         showToast("error", 'Limit exceeds')
+  //       }
+  //       setWeeklyData(updatedWeek)
+  //       setOpenModel(!openModel)
+  //       shiftTimeReset()
   //     }
-  //     setWeeklyData(updatedWeek)
-  //     setOpenModel(!openModel)
-  //     shiftTimeReset()
   //   }
+
   //   else {
   //     showToast("error", t('timeCantbeempty'))
   //   }

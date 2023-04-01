@@ -208,7 +208,7 @@ export const NAV_ITEM = [
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP, is_admin : false },
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS, is_admin : false },
   { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST, is_admin : false },
-  // { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
+  { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, route: ROUTE.ROUTE_PAYROLL },
   { id: '17', name: 'Face Re-Register', value: 'FR', icon: 'ni ni-badge', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST, is_admin : false },
   { id: '18', name: 'Log Approval', value: 'LA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_LOG_APPROVAL, is_admin : false },
   { id: '19', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST, is_admin : false },

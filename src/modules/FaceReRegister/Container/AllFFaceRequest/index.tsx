@@ -120,7 +120,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
             <tbody>
                 {
                     tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: any, index: number) => {
-                        console.log("item?.checkin_time", item);
+                        // console.log("item?.checkin_time", item);
 
                         return <tr className=''>
                             <td className='' ><div>
