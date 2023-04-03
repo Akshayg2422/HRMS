@@ -180,9 +180,9 @@ function ManageAssignLocation() {
             additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={proceedSearchApi}
+
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Icon type={"btn-primary"} onClick={proceedSearchApi} icon={Icons.Search} />
           </Container>
         </Container>
       </Card>
@@ -210,30 +210,30 @@ function ManageAssignLocation() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-            {listBranchesList.map((item: Branch, index: number) => {
-              return (
-                <>
-                  <div className="row mx-3 my-1"
-                    onClick={() => addSelectedBranch(item)}
-                  >
-                    <div className="col-8">
-                      <span className=" text-gray">{item.name}</span>
-                    </div>
-
-                    <div className="col-4 text-right">
-                      <ImageView
-                        icon={
-                          checkStatus(item.id!)
-                            ? Icons.TickActive
-                            : Icons.TickDefault
-                        }
-                      />
-                    </div>
+          {listBranchesList.map((item: Branch, index: number) => {
+            return (
+              <>
+                <div className="row mx-3 my-1"
+                  onClick={() => addSelectedBranch(item)}
+                >
+                  <div className="col-8">
+                    <span className=" text-gray">{item.name}</span>
                   </div>
-                  {index !== listBranchesList.length - 1 && <Divider />}
-                </>
-              );
-            })}
+
+                  <div className="col-4 text-right">
+                    <ImageView
+                      icon={
+                        checkStatus(item.id!)
+                          ? Icons.TickActive
+                          : Icons.TickDefault
+                      }
+                    />
+                  </div>
+                </div>
+                {index !== listBranchesList.length - 1 && <Divider />}
+              </>
+            );
+          })}
 
           <Container
             additionClass={'mt-4 sticky-bottom'}
