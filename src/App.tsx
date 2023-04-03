@@ -78,6 +78,7 @@ import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
 import { useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
+import RefundPolicy from "./screens/RefundPolicy";
 
 function App() {
 
@@ -95,6 +96,7 @@ function App() {
         <ScreenLoader />
         <Routes>
           <Route path={"/"} element={<ZenylogSite />} />
+          <Route path={"/RefundPolicy"} element={<RefundPolicy />} />
           <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
           <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
           <Route

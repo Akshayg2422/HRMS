@@ -4,12 +4,12 @@ import * as url from "./url_helper";
 /***
  * Auth 
  */
-export const postValidateUser = (payload) => post(url.VALIDATE_USER, payload, {}, BASE_URL_AUTH_PROD)
+export const postValidateUser = (payload) => post(url.VALIDATE_USER, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const postRegisterCompany = (payload) => post(url.VALIDATE_COMPANY_DETAILS, payload, {}, BASE_URL_ONBOARD_PROD)
-export const postRegisterAdmin = (payload) => post(url.REGISTER_ADMIN, payload, {}, BASE_URL_ONBOARD_PROD)
+export const postRegisterAdmin = (payload) => post(url.REGISTER_ADMIN, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const postUploadCompanyDocument = (payload) => post(url.UPLOAD_COMPANY_DOCUMENT, payload, {}, BASE_URL_ONBOARD_PROD)
-export const postOtpLogin = (payload) => post(url.OTP_LOGIN, payload, {}, BASE_URL_VALIDATE_USER_PROD)
-export const postResendLoginOtp = (payload) => post(url.RESEND_LOGIN_OTP, payload, {})
+export const postOtpLogin = (payload) => post(url.OTP_LOGIN, payload, {}, BASE_URL_AUTH_PROD)
+export const postResendLoginOtp = (payload) => post(url.RESEND_LOGIN_OTP, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const fetchNatureOfBusiness = (payload) => post(url.FETCH_NATURE_OF_BUSINESS, payload, {})
 export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS, payload, {})
 /***
