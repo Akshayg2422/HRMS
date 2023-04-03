@@ -14,7 +14,7 @@ function Policy() {
                     </div>
                     <div class="col-lg-6">
                         <ul  class="nav nav-footer justify-content-center justify-content-lg-end">
-                        <li onClick={()=>{navigate('/RefundPolicy')}} data-toggle="modal" data-target="#exampleModal" class="nav-item">
+                        <li onClick={()=>{navigate('/RefundPolicy')}} data-toggle="modal" data-target="#exampleModal" class="nav-item ">
                                 <a class="nav-link" >Refund Policy</a>
                             </li>
                             <li onClick={()=>{navigate('/PrivacyPolicy')}} data-toggle="modal" data-target="#exampleModal" class="nav-item">
