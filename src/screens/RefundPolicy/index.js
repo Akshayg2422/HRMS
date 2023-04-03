@@ -86,7 +86,7 @@ const RefundPolicy = () => {
                     </p>
                 </div>
 
-                <div>
+                <div  className="text-justify ml-4">
                     <h4> address:</h4>
                     <h4>ZENYQ</h4>
                     <h4> A digital unit of MAPLEBELL PRIVATE LIMITED</h4>
