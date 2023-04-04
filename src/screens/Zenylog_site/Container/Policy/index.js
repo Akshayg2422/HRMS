@@ -13,15 +13,10 @@ function Policy() {
                         </div>
                     </div>
                     <div class="col-lg-6">
-<<<<<<< HEAD
                         <ul class="nav nav-footer justify-content-center justify-content-lg-end">
                             <li style={{
                                 cursor: 'pointer'
                             }} onClick={() => { navigate('/RefundPolicy') }} data-toggle="modal" data-target="#exampleModal" class="nav-item">
-=======
-                        <ul  class="nav nav-footer justify-content-center justify-content-lg-end">
-                        <li onClick={()=>{navigate('/RefundPolicy')}} data-toggle="modal" data-target="#exampleModal" class="nav-item ">
->>>>>>> d165b903ddd51d41076ecee4f93bf540e9d30cd1
                                 <a class="nav-link" >Refund Policy</a>
                             </li>
                             <li style={{
