@@ -93,18 +93,12 @@ function MyWorkLog() {
     employeeEachUserSheets,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  useEffect(() => {
-    getUserCheckInLogs();
-  }, [startDate]);
+ 
 
   useEffect(() => {
     getEmployeeEachUserTimeSheetsApi();
   }, [type]);
 
-  function getUserCheckInLogs() {
-    const params = { start_time: startDate, end_time: endDate };
-    dispatch(getEmployeesCheckInLogs({ params }));
-  }
 
   function getEmployeeEachUserTimeSheetsApi() {
     dispatch(
@@ -116,20 +110,6 @@ function MyWorkLog() {
     console.log(JSON.stringify(employeeEachUserSheets) + "======");
   }
 
-  const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: CheckInLog) => {
-      return {
-        date: el.date,
-        in: el.start_time
-          ? getDisplayTimeFromMoment(getMomentObjFromServer(el.start_time))
-          : "-",
-        out: el.end_time
-          ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
-          : "-",
-        remark: el.day_status,
-      };
-    });
-  };
 
   const normalizedTimeSheet = (timesheet1: any) => {
     return timesheet1.map((it: TimeSheetResponse) => {
@@ -153,13 +133,6 @@ function MyWorkLog() {
     });
   };
 
-  const onTabChange = (index: number) => {
-    if (index === 0) {
-      setStartDate(moment().add(-3, "month").format("yyyy-MM-DD"));
-    } else {
-      setStartDate(moment().startOf("month").format("yyyy-MM-DD"));
-    }
-  };
 
   const onTabChangeWorkBook = (index: number) => {
     setType(sortData[index].title.toLocaleLowerCase());

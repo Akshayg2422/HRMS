@@ -35,6 +35,10 @@ function ELocker() {
         }
     }, [enterPress])
 
+    useEffect(() => {
+        fetchEmployeeDocuments()
+    }, [])
+
 
 
     const Upload = () => {
@@ -170,7 +174,7 @@ function ELocker() {
                         additionClass={"col"}
                         alignItems={"align-items-center"}
                     >
-                        <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+                        <Container col={"col-xl-3 col-md-6 col-sm-12 ml--2"}>
                             <InputText
                                 placeholder={t("search")}
                                 onChange={(e) => {

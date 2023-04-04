@@ -45,12 +45,14 @@ function FenceAdmin() {
 
 
     useEffect(() => {
-        if (enterPress) {
+        if (enterPress && model === false) {
             getAllBranchesListData()
         }
-        getAllBranchesListData()
-
     }, [enterPress])
+
+    useEffect(() => {
+        getAllBranchesListData()
+    }, [])
 
     const getAllBranchesListData = () => {
 
@@ -71,11 +73,17 @@ function FenceAdmin() {
 
 
     useEffect(() => {
+
         if (enterPress && model === true) {
             getRegisteredFenceAdmin(currentPage);
         }
-        getRegisteredFenceAdmin(currentPage)
-    }, [enterPress, selectedBranchId])
+    }, [enterPress])
+
+    useEffect(() => {
+        if (selectedBranchId) {
+            getRegisteredFenceAdmin(currentPage)
+        }
+    }, [selectedBranchId])
 
 
     const normalizedBranchList = (data: any) => {
@@ -141,7 +149,7 @@ function FenceAdmin() {
     function proceedModelHandler(selectedBranch: any) {
         setSelectedBranchId(selectedBranch);
         setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
-        getRegisteredFenceAdmin(currentPage)
+        // getRegisteredFenceAdmin(currentPage)
         setModel(!model)
     }
 
