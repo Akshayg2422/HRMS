@@ -1,6 +1,4 @@
 import {
-  DatePicker,
-  DropDown,
   InputDefault,
   InputMail,
   InputNumber,
@@ -10,14 +8,12 @@ import {
   Icon,
   Modal,
   CheckBox,
+  Container,
 } from "@components";
-import { Icons } from "@assets";
 import {
   GENDER_LIST,
   getObjectFromArrayByKey,
   getDropDownValueByID,
-  getServerDateFromMoment,
-  getMomentObjFromServer,
   showToast,
 } from "@utils";
 import { useTranslation } from "react-i18next";
@@ -25,11 +21,13 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getAllBranchesList } from '../../../../store/location/actions'
 import {
+  changeAttendanceSettings,
   getDepartmentData,
   getDesignationData,
   getEmployeeDetails,
+  postEnableFieldCheckIn,
+  postEnableOfficeCheckIn,
 } from "../../../../store/employee/actions";
-import { log } from "console";
 
 type EmployeeDetail = {
   id?: string;
@@ -46,14 +44,19 @@ type EmployeeDetail = {
   blood_group?: string;
   employment_type?: string;
   attendance_settings?: {
+    id: string;
     start_time: string;
     end_time: string;
     is_excempt_allowed: boolean;
+    can_field_checkin: boolean;
+    can_office_checkin: boolean;
+    face_validation_required: boolean;
   };
   date_of_joining?: string;
   dob?: string;
   kgid_number?: string;
   shift?: { name: string };
+
 };
 
 const ViewEmployeeDetails = () => {
@@ -76,8 +79,11 @@ const ViewEmployeeDetails = () => {
   const [deptExist, setDeptExist] = useState(false);
   const [desigationExist, setDesigationExist] = useState(false);
   const [branchesExist, setBranchesExist] = useState(false);
+  const [showEnableContainers, setShowEnableContainers] = useState(false);
+
 
   const [employeeDetails, setEmployeeDetails] = useState({
+    id: '',
     firstName: "",
     lastName: "",
     mobileNumber: "",
@@ -95,7 +101,10 @@ const ViewEmployeeDetails = () => {
     employeeType: "",
     attendanceStartTime: "",
     attendanceEndTime: "",
-    shift: ""
+    shift: "",
+    faceRegisterEnable: false,
+    canFieldCheckIn: false,
+    canOfficeCheckIn: false
   });
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -141,7 +150,6 @@ const ViewEmployeeDetails = () => {
 
   const getDepartmentDataList = () => {
     const params = {}
-
     dispatch(
       getDepartmentData({
         params,
@@ -176,22 +184,68 @@ const ViewEmployeeDetails = () => {
     const params = {
       user_id: selectedEmployeeId,
     };
-
     dispatch(
       getEmployeeDetails({
         params,
         onSuccess: (response: EmployeeDetail) => {
-
           preFillEmployeeDetails(response);
+          setShowEnableContainers(true)
         },
         onError: (error: string) => {
           showToast('error', error)
-          console.log("fail", error);
-          // showToast('error', t('invalidUser'));
         },
       })
     );
   };
+
+  const fieldCheckInHandler = (value: boolean) => {
+    const params = {
+      can_field_checkin: value,
+      id: employeeDetails.id
+    }
+    dispatch(postEnableFieldCheckIn({
+      params, onSuccess: (success: any) => {
+        setEmployeeDetails({ ...employeeDetails, canFieldCheckIn: value })
+        showToast('success', success.message)
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
+  }
+
+  const officeCheckInHandler = (value: boolean) => {
+    const params = {
+      can_office_checkin: value,
+      id: employeeDetails.id
+    }
+    dispatch(postEnableOfficeCheckIn({
+      params, onSuccess: (success: any) => {
+        setEmployeeDetails({ ...employeeDetails, canOfficeCheckIn: value })
+        showToast('success', success.message)
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
+  }
+
+  const faceValidationHandler = (value: boolean) => {
+    const params = {
+      face_validation_required: value,
+      id: employeeDetails.id
+    }
+    dispatch(changeAttendanceSettings({
+      params, onSuccess: (success: any) => {
+        setEmployeeDetails({ ...employeeDetails, faceRegisterEnable: value })
+        showToast('success', success.message)
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
+
+  }
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
     let employeeInitData = { ...employeeDetails };
@@ -199,6 +253,17 @@ const ViewEmployeeDetails = () => {
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
         employeeInitData.firstName = editEmployeeDetails.first_name;
+
+      // if (editEmployeeDetails.id)
+      //   employeeInitData.id = editEmployeeDetails.id;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.id
+      )
+        employeeInitData.id =
+          editEmployeeDetails.attendance_settings?.id;
+
 
       if (editEmployeeDetails.last_name)
         employeeInitData.lastName = editEmployeeDetails.last_name;
@@ -275,21 +340,68 @@ const ViewEmployeeDetails = () => {
       )
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.can_field_checkin
+      )
+        employeeInitData.canFieldCheckIn =
+          editEmployeeDetails.attendance_settings?.can_field_checkin;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.can_office_checkin
+      )
+        employeeInitData.canOfficeCheckIn =
+          editEmployeeDetails.attendance_settings?.can_office_checkin;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.face_validation_required
+      )
+        employeeInitData.faceRegisterEnable =
+          editEmployeeDetails.attendance_settings?.face_validation_required;
     }
+    console.log("employeeInitData", employeeInitData);
     setEmployeeDetails(employeeInitData);
   };
 
-  const convertFrom24To12Format = (time24:any) => {
+  const convertFrom24To12Format = (time24: any) => {
     const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
     const period = +sHours < 12 ? 'AM' : 'PM';
     const hours = +sHours % 12 || 12;
-  
     return `${hours}:${minutes} ${period}`;
   }
 
 
   return (
     <FormWrapper hideFooter title={t("viewEmployeeDetails")}>
+      {showEnableContainers && <Container additionClass="mb-4">
+        <CheckBox
+          id={'1'}
+          text={t("enableOfficeCheckIn")}
+          checked={employeeDetails.canOfficeCheckIn}
+          onChange={(e) => {
+            officeCheckInHandler(e.target.checked)
+          }}
+        />
+        <CheckBox
+          id={'2'}
+          text={t('enableFieldCheckIn')}
+          checked={employeeDetails.canFieldCheckIn}
+          onChange={(e) => {
+            fieldCheckInHandler(e.target.checked)
+          }}
+        />
+        <CheckBox
+          id={'3'}
+          text={t('enableFaceValidation')}
+          checked={employeeDetails.faceRegisterEnable}
+          onChange={(e) => {
+            faceValidationHandler(e.target.checked)
+          }}
+        />
+      </Container>}
       <InputText
         label={t("fullName")}
         placeholder={t("fullName")}

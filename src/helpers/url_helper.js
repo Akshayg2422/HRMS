@@ -203,3 +203,15 @@ export const FACE_RE_REGISTER_EMPLOYEE_REQUEST = 'employee/v1/getEmployeesFaceRe
 //employee enable Face ReRegister
 
 export const EMPLOYEE_ENABLE_FACE_RE_REGISTER = 'employee/enableFaceReRegister'
+
+//enableFieldCheckIn
+
+export const POST_ENABLE_FIELD_CHECK_IN = '/attendance/enableFieldCheckIn'
+
+//enableOfficeCheckIn
+
+export const POST_ENABLE_OFFICE_CHECK_IN = '/attendance/enableOfficeCheckIn';
+
+//changeAttendanceSettings
+
+export const FACE_VALIDATION_STATUS = '/attendance/changeAttendanceSettings';

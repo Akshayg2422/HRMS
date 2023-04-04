@@ -13,6 +13,7 @@ const BackArrow = ({ additionClass, col }: BackArrowProps) => {
   const navigation = useNav();
   return (
     <div
+      style={{ cursor: 'pointer' }}
       className={`${isExist(additionClass)} ${isExist(col)}`}
 
     >

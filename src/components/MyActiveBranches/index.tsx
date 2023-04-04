@@ -114,7 +114,7 @@ function MyActiveBranches() {
     const branchAdmins = (pageNumber: number) => {
         const params = {
             page_number: pageNumber,
-            child_ids: hierarchicalBranchIds?.child_ids
+            child_ids: hierarchicalBranchIds?.child_ids ? hierarchicalBranchIds?.child_ids : []
         }
         dispatch(getBranchAdmins({ params }));
     }

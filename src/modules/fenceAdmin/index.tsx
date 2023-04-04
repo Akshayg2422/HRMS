@@ -255,7 +255,9 @@ const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: Emp
             <tbody>
                 {
                     tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
-                        return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
+                        return <tr className='align-items-center'
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
                             <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
                         </tr>

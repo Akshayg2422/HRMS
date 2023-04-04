@@ -115,9 +115,12 @@ function Notifications() {
                 {notificationsDataList && notificationsDataList?.length > 0 ? notificationsDataList?.map((el: any) => {
                     return (
                         <Container additionClass={"col"}>
-                            <Card onClick={() => {
-                                handleRoute(el)
-                            }}>
+                            <Card
+                                style={{ cursor: 'pointer' }}
+                                onClick={() => {
+                                    console.log("card clicked");
+                                    handleRoute(el)
+                                }}>
                                 <Container additionClass={"d-flex justify-content-between"} >
                                     <Container>
                                         <div className="h1">

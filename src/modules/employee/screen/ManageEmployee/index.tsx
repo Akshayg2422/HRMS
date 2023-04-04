@@ -94,7 +94,7 @@ const ManageEmployee = () => {
     (state: any) => state.DashboardReducer
   );
 
-  
+
 
   const [employeeDetails, setEmployeeDetails] = useState({
     firstName: "",
@@ -129,7 +129,7 @@ const ManageEmployee = () => {
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
-
+  const [isBranchShiftDataExist, setIsBranchShiftExist] = useState(false)
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -156,11 +156,11 @@ const ManageEmployee = () => {
       getAllBranchesList({
         params,
         onSuccess: (success: any) => {
-          
+
           const parentBranch = success.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
           );
-          
+
           setCompanyBranchDropdownData([
             ...getAllSubBranches(
               success,
@@ -173,12 +173,19 @@ const ManageEmployee = () => {
       })
     );
     setDesignationNote('')
+
+  }, [isRefresh]);
+
+  useEffect(() => {
     if (isEdit) {
-      getEmployeeDetailsAPi(isEdit);
       getBranchShiftsList()
+
+      if (isBranchShiftDataExist) {
+        getEmployeeDetailsAPi(isEdit);
+      }
       setDesignationNote("* Changing Designation Will Impact in Shift")
     }
-  }, [isRefresh]);
+  }, [isRefresh, isBranchShiftDataExist])
 
   const getEmployeeDetailsAPi = (id: any) => {
     const params = {
@@ -212,6 +219,7 @@ const ManageEmployee = () => {
     dispatch(getBranchShifts({
       params,
       onSuccess: async (success: any) => {
+        setIsBranchShiftExist(true)
         await setShiftGroup(success)
       },
       onError: (error: string) => {
@@ -244,10 +252,16 @@ const ManageEmployee = () => {
     ) {
       showToast("error", t("invalidNumber"));
       return false;
-    } else if (validateEmail(employeeDetails.e_Mail).status === false) {
+    }
+    else if (validateEmail(employeeDetails.e_Mail).status === false || employeeDetails.e_Mail === "") {
       showToast("error", t("invalidEmail"));
       return false;
-    } else if (Object.keys(employeeDetails.designation).length === 0) {
+    } 
+    else if (employeeDetails.gender === "") {
+      showToast("error", t("invalidGender"));
+      return false;
+    } 
+    else if (Object.keys(employeeDetails.designation).length === 0) {
       showToast("error", t("invalidDesignation"));
       return false;
     } else if (Object.keys(employeeDetails.department).length === 0) {
@@ -256,11 +270,13 @@ const ManageEmployee = () => {
     } else if (Object.keys(employeeDetails.branch).length === 0) {
       showToast("error", t("invalidBranch"));
       return false;
-    } else if (!employeeDetails.dob) {
-      showToast("error", t("invalidDOB"));
-      return false;
-    } else if (!employeeDetails.employeeType) {
+    }
+    else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
+      return false;
+    }
+    else if (!employeeDetails.dob) {
+      showToast("error", t("invalidDOB"));
       return false;
     }
     else {
@@ -270,58 +286,58 @@ const ManageEmployee = () => {
 
   const onSubmit = () => {
     if (validatePostParams()) {
-    const params = {
-      ...(isEdit && { id: isEdit }),
-      first_name: employeeDetails.firstName,
-      ...(employeeDetails.lastName && {
-        last_name: employeeDetails.lastName,
-      }),
-      mobile_number: employeeDetails.mobileNumber,
-      email: employeeDetails.e_Mail,
-      ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
-      ...(employeeDetails.aadharrNo && {
-        aadhar_number: employeeDetails.aadharrNo,
-      }),
-      designation_id: employeeDetails.designation,
-      department_id: employeeDetails.department,
-      branch_id: employeeDetails.branch,
-      gender: employeeDetails.gender,
-      ...(employeeDetails.bloodGroup && {
-        blood_group: employeeDetails.bloodGroup,
-      }),
-      employment_type: employeeDetails.employeeType,
-      attendance_settings: {
-        start_time: employeeDetails.attendanceStartTime,
-        end_time: employeeDetails.attendanceEndTime,
-        is_excempt_allowed: false,
-        associated_branch: [employeeDetails.branch],
-        ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
-      },
-      ...(employeeDetails.dateOfJoining && {
-        date_of_joining: getServerDateFromMoment(
-          getMomentObjFromServer(employeeDetails.dateOfJoining)
+      const params = {
+        ...(isEdit && { id: isEdit }),
+        first_name: employeeDetails.firstName,
+        ...(employeeDetails.lastName && {
+          last_name: employeeDetails.lastName,
+        }),
+        mobile_number: employeeDetails.mobileNumber,
+        email: employeeDetails.e_Mail,
+        ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
+        ...(employeeDetails.aadharrNo && {
+          aadhar_number: employeeDetails.aadharrNo,
+        }),
+        designation_id: employeeDetails.designation,
+        department_id: employeeDetails.department,
+        branch_id: employeeDetails.branch,
+        gender: employeeDetails.gender,
+        ...(employeeDetails.bloodGroup && {
+          blood_group: employeeDetails.bloodGroup,
+        }),
+        employment_type: employeeDetails.employeeType,
+        attendance_settings: {
+          start_time: employeeDetails.attendanceStartTime,
+          end_time: employeeDetails.attendanceEndTime,
+          is_excempt_allowed: false,
+          associated_branch: [employeeDetails.branch],
+          ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
+        },
+        ...(employeeDetails.dateOfJoining && {
+          date_of_joining: getServerDateFromMoment(
+            getMomentObjFromServer(employeeDetails.dateOfJoining)
+          ),
+        }),
+        dob: getServerDateFromMoment(
+          getMomentObjFromServer(employeeDetails.dob)
         ),
-      }),
-      dob: getServerDateFromMoment(
-        getMomentObjFromServer(employeeDetails.dob)
-      ),
-      ...(employeeDetails.kgid_No && {
-        kgid_number: employeeDetails.kgid_No,
-      }),
-    };
-    console.log("paramss=====>", params);
-    dispatch(
-      employeeAddition({
-        params,
-        onSuccess: (success: any) => {
-          showToast("success", success.message);
-          goBack(navigation);
-        },
-        onError: (error: string) => {
-          showToast("error", error);
-        },
-      })
-    );
+        ...(employeeDetails.kgid_No && {
+          kgid_number: employeeDetails.kgid_No,
+        }),
+      };
+      console.log("paramss=====>", params);
+      dispatch(
+        employeeAddition({
+          params,
+          onSuccess: (success: any) => {
+            showToast("success", success.message);
+            goBack(navigation);
+          },
+          onError: (error: string) => {
+            showToast("error", error);
+          },
+        })
+      );
     }
   };
 
@@ -401,6 +417,9 @@ const ManageEmployee = () => {
           editEmployeeDetails.shift?.id
 
       }
+
+      setShiftsDropdownData(designationMatchShifts(editEmployeeDetails.designation_id))
+
     }
     setEmployeeDetails(employeeInitData);
   };
@@ -415,7 +434,7 @@ const ManageEmployee = () => {
     setEmployeeDetails({ ...employeeDetails, [key]: value });
   };
 
-  const timePickerHandler = (value: string, key: string)=>{
+  const timePickerHandler = (value: string, key: string) => {
     setEmployeeDetails({ ...employeeDetails, [key]: convertTo24Hour(value).trim() });
   }
 
@@ -440,9 +459,9 @@ const ManageEmployee = () => {
             showToast('success', success?.message)
             setIsAdminRights(false);
           },
-          onError: (error:string) => {
+          onError: (error: string) => {
             showToast('error', error)
-           },
+          },
         })
       );
     }
@@ -464,9 +483,9 @@ const ManageEmployee = () => {
 
             showToast('success', success?.message)
           },
-          onError: (error:string) => {
+          onError: (error: string) => {
             showToast('error', error)
-           },
+          },
         })
       );
     }

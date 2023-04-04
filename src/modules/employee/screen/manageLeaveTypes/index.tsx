@@ -157,6 +157,7 @@ function ManageLeaveTypes() {
         <div>
             <FormWrapper
                 title={editLeaveTypesDetails ? t('editType') : t('addType')}
+                buttonTittle={t('update')}
                 onClick={onsubmit}
             >
                 <InputText

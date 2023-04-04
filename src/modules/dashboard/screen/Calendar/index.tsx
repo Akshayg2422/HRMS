@@ -66,7 +66,7 @@ function Calendar() {
   }
 
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any) => {
+    return data?.map((el: any) => {
       return {
         day: el.day,
         title: el.title,
@@ -76,7 +76,7 @@ function Calendar() {
   };
 
   const geteventsdetails = (data: any) => {
-    return data && data.length > 0 && data.map((item: any) => {
+    return data && data?.length > 0 && data?.map((item: any) => {
       let filteredlist = {};
       filteredlist = {
         title: item.title,
@@ -101,17 +101,17 @@ function Calendar() {
   };
 
   const handleDateClick = (arg: any) => {
-    let Range = geteventsdetails(calendarEvents?.data.days_holiday).map(
+    let Range = geteventsdetails(calendarEvents?.data?.days_holiday)?.map(
       (item: any) => {
-        if (item.end)
-          return getDatesListBetweenStartEndDates(item.start, item.end);
+        if (item?.end)
+          return getDatesListBetweenStartEndDates(item?.start, item?.end);
       }
     );
-    let match = Range.some((date: any) => date === arg.dateStr);
+    let match = Range?.some((date: any) => date === arg?.dateStr);
     if (match) {
-      onEventClickHandler(arg.dateStr);
+      onEventClickHandler(arg?.dateStr);
     } else {
-      dispatch(getLeaveFromDate(arg.dateStr));
+      dispatch(getLeaveFromDate(arg?.dateStr));
       dispatch(getSelectedEventId(undefined));
       goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS);
     }
@@ -154,7 +154,7 @@ function Calendar() {
   };
 
   const onEventClickHandler = (date: string) => {
-    return calendarEvents?.days_holiday.find((element: { day: string }) => {
+    return calendarEvents?.days_holiday?.find((element: { day: string }) => {
       if (element.day === date) {
         dispatch(getSelectedEventId(element));
         setOnEventClickModel(!onEventClickModel);
@@ -191,7 +191,7 @@ function Calendar() {
             </Container>
           </Container>
           <Calender
-            dateClick={handleDateClick}
+            // dateClick={handleDateClick}
             events={geteventsdetails(calendarEvents?.days_holiday)}
           />
         </Card>

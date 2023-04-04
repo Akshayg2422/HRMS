@@ -160,7 +160,6 @@ function EmployeeLog() {
       getCheckInDetailedLogPerDay({
         params,
         onSuccess: (response: any) => {
-          console.log('----------------->');
         },
         onError: (error: string) => {
         },
@@ -441,7 +440,7 @@ function EmployeeLog() {
                                           {item.type}
                                         </small>
                                         <small className="mb-0 col">
-                                          {item.address_text}
+                                          {item.address_text?item.address_text : "       -"}
                                         </small>
                                       </Container>
                                       <Divider />

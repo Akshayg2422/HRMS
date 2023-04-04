@@ -4,6 +4,7 @@ import {
   Container,
   Icon,
   InputText,
+  useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -19,6 +20,8 @@ import { Icons } from "@assets";
 const LeaveRequest = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const enterPress = useKeyPress("Enter");
+
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -41,7 +44,12 @@ const LeaveRequest = () => {
   }, [hierarchicalBranchIds]);
 
 
-  
+  useEffect(() => {
+    if (enterPress) {
+      fetchPendingDetail(currentPage, currentStatusId);
+    }
+  }, [enterPress])
+
   const fetchPendingDetail = (pageNumber: number, statusId: number) => {
     setCurrentStatusId(statusId);
     const params = {
