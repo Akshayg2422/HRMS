@@ -49,17 +49,20 @@ const CreateShiftGroup = () => {
     const [selectedEmployeesIds, setSelectedEmployeesIds] = useState([])
     const [searchSelectedEmployee, setSearchSelectedEmployee] = useState('')
     const [filteredEmployees, setFilteredEmployees] = useState([])
+    const [registeredEmployees, setRegisteredEmployees] = useState<any>([])
 
 
-    const [departmentId, setDepartmentId] = useState('')
-    const [designationId, setDesignationId] = useState('')
-
-    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
-    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
     const [departmentsData, setDepartmentsData] = useState([{
         id: "-1",
         name: "All"
     }])
+
+    const [departmentId, setDepartmentId] = useState(departmentsData[0].id)
+    const [designationId, setDesignationId] = useState('')
+
+    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState(departmentsData[0].id)
+    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
+
 
 
     useEffect(() => {
@@ -69,7 +72,6 @@ const CreateShiftGroup = () => {
         dispatch(getDesignationData({}));
         return () => {
             setSelectedEmployeesList([])
-            setSelectedEmpListDepartmentId("")
             setSelectedEmpListDesignationId("")
             dispatch(getDesignationGroup(undefined))
         };
@@ -128,13 +130,15 @@ const CreateShiftGroup = () => {
             branch_id: dashboardDetails?.company_branch?.id,      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             ...(designationId && { designation_id: designationId }),
-            ...(departmentId && { department_id: departmentId }),
+            ...(departmentId && departmentId !== '-1' && { department_id: departmentId }),
             ...(searchEmployee && { q: searchEmployee }),
         };
 
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => {
+                setRegisteredEmployees([...registeredEmployees, ...success.data])
+                // setRegisteredEmployees
                 // if (selectedShiftGroupDetails) {
                 //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
                 // }
@@ -280,27 +284,30 @@ const CreateShiftGroup = () => {
 
         let updateFilteredData: any = [...selectedEmployeesList]
         updateFilteredData = updateFilteredData.filter((item: any) => {
+            if (selectedEmpListDepartmentId !== '-1') {
+                if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
+                    if (selectedEmpListDepartmentId === item.department_id) {
+                        return item
 
-            if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
-                if (selectedEmpListDepartmentId === item.department_id) {
-                    return item
+                    }
+                }
+                else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
+                    if (selectedEmpListDesignationId === item.designation_id) {
+                        return item
 
+                    }
                 }
-            }
-            else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
-                if (selectedEmpListDesignationId === item.designation_id) {
-                    return item
-
+                else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
+                    if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
+                        return item
+                    }
                 }
-            }
-            else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
-                if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
-                    return item
-                }
+            } else {
+                return item
             }
         }
         )
-        setFilteredEmployees(updateFilteredData as never)
+        setFilteredEmployees(updateFilteredData as never)   
     }
 
 
@@ -396,7 +403,7 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('department')}
                                 placeholder={t('selectDepartment')}
-                                data={departmentDropdownData}
+                                data={departmentsData}
                                 value={departmentId}
                                 onChange={(event) => {
                                     setDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
@@ -465,7 +472,7 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('department')}
                                 placeholder={t('selectDepartment')}
-                                data={departmentDropdownData}
+                                data={departmentsData}
                                 value={selectedEmpListDepartmentId}
                                 onChange={(event) => {
                                     setSelectedEmpListDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
@@ -495,7 +502,7 @@ const CreateShiftGroup = () => {
                                 onRevertClick={(item) =>
                                     onRevertSelectedEmployees(item)
                                 }
-                                employeeListDataSet={registeredEmployeesList}
+                                employeeListDataSet={registeredEmployees}
                             />
                         }
                     /> : <NoRecordFound />}

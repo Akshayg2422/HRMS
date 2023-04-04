@@ -180,9 +180,9 @@ function ManageAssignLocation() {
             additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={proceedSearchApi}
+
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Icon type={"btn-primary"} onClick={proceedSearchApi} icon={Icons.Search} />
           </Container>
         </Container>
       </Card>
