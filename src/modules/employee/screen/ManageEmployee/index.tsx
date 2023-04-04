@@ -148,9 +148,9 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    if (!isEdit) {
-      getBranchShiftsList()
-    }
+    getBranchShiftsList()
+
+
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -178,7 +178,6 @@ const ManageEmployee = () => {
 
   useEffect(() => {
     if (isEdit) {
-      getBranchShiftsList()
 
       if (isBranchShiftDataExist) {
         getEmployeeDetailsAPi(isEdit);
@@ -256,11 +255,11 @@ const ManageEmployee = () => {
     else if (validateEmail(employeeDetails.e_Mail).status === false || employeeDetails.e_Mail === "") {
       showToast("error", t("invalidEmail"));
       return false;
-    } 
+    }
     else if (employeeDetails.gender === "") {
       showToast("error", t("invalidGender"));
       return false;
-    } 
+    }
     else if (Object.keys(employeeDetails.designation).length === 0) {
       showToast("error", t("invalidDesignation"));
       return false;

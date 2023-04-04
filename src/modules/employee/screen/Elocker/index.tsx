@@ -21,6 +21,7 @@ function ELocker() {
     const [previewModel, setPreviewModel] = useState(false)
     const [title, setTitle] = useState('')
     const [documents, setDocuments] = useState<any>([])
+    const [documentListData, setDocumentListData] = useState<any>([])
     let enterPress = useKeyPress("Enter");
 
 
@@ -31,7 +32,7 @@ function ELocker() {
 
     useEffect(() => {
         if (enterPress) {
-            fetchEmployeeDocuments()
+            SelectedBranchFilter()
         }
     }, [enterPress])
 
@@ -70,8 +71,16 @@ function ELocker() {
         const params = {
             ...(search && { q: search })
         };
+        console.log("asdsdsd");
+
         dispatch(getEmployeeDocument({
             params,
+            onSuccess: (success: any) => {
+                setDocumentListData(success.details)
+            },
+            onError: (error: string) => {
+
+            },
         }));
     };
 
@@ -163,6 +172,20 @@ function ELocker() {
         resetAttachment()
     }
 
+    const SelectedBranchFilter = () => {
+
+        let filteredDocument = [...documentListData]
+        if (search !== "") {
+            filteredDocument = filteredDocument.filter((element: any) => {
+                return element.name.replace(/\s/g, '').toLowerCase().includes(search.replace(/\s/g, '').toLowerCase())
+            })
+            setDocumentListData(filteredDocument)
+        }
+        else {
+            setDocumentListData(employeeDocuments?.details)
+        }
+    }
+
     return (
         <div>
             <Card>
@@ -181,7 +204,13 @@ function ELocker() {
                                     setSearch(e.target.value);
                                 }}
                             />
+
                         </Container>
+                        <Icon type={"btn-primary"} additionClass={'mt--3'} icon={Icons.Search}
+                            onClick={() => {
+                                SelectedBranchFilter()
+                            }}
+                        />
                         <Container
                             col={"col"}
                             additionClass={"mb-3"}
@@ -198,11 +227,11 @@ function ELocker() {
                 </Container>
             </Card>
             <Container additionClass='mx--3'>
-                {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
+                {documentListData && documentListData?.length > 0 ? <CommonTable
                     tableTitle={"Documents List"}
-                    displayDataSet={documentsList(employeeDocuments.details)}
+                    displayDataSet={documentsList(documentListData)}
                     tableOnClick={(e, index, item) => {
-                        let current = employeeDocuments.details[index]
+                        let current = documentListData[index]
                         viewUserDocument(current)
                     }}
                 /> :
