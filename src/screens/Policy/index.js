@@ -10,6 +10,8 @@ const PolicyScr = () => {
                 </div>
 
             </div>
+            <h4>Effective Date: _____</h4>
+            <h4>  Last updated on: _____</h4>
             <h3> Background:</h3>
             <div className=" text-black  text-justify ml-4">
 
@@ -55,8 +57,9 @@ const PolicyScr = () => {
                         <li>  What are your rights?</li>
                         <li>   Depending on where you are located geographically, the applicable privacy law may mean you have certain rights regarding your personal information. You have the option to withdraw your consent that you have already provided by writing to us at the contact information provided below.</li>
                         <li> How do I exercise my rights?</li>
-                        <li> The easiest way to exercise your rights is by sending an email to us at: maplebell.official@gmail.com, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.</li>
                     </ul>
+                    <p> The easiest way to exercise your rights is by sending an email to us at: maplebell.official@gmail.com, or by contacting us. We will consider and act upon any request in accordance with applicable data protection laws.</p>
+
                 </div>
                 <div className="mt-5">
                     <h3> OVERVIEW of the Policy</h3>
@@ -218,20 +221,18 @@ const PolicyScr = () => {
                     <div className=" text-justify ">
 
                         <h4> Use of Cookies/Advertising</h4>
-                        <ul className="ml-4">
+                        <p className="ml-4">Cookies are small text files that are stored on browsers or devices by websites, apps, online media, and advertisements. ZENYLOG uses cookies and similar technologies for purposes such as:</p>
 
-                            <li>Cookies are small text files that are stored on browsers or devices by websites, apps, online media, and advertisements. ZENYLOG uses cookies and similar technologies for purposes such as:
-                                <ol type="i">
-                                    <li>authenticating users</li>
-                                    <li>remembering user preferences and settings</li>
-                                    <li>determining the popularity of content</li>
-                                    <li>delivering and measuring the effectiveness of advertising campaigns</li>
-                                    <li>analyzing site traffic and trends, and generally understanding the online behaviors and interests of people who interact with our services</li>
-                                </ol>
-                            </li>
-                            <li>Our App and Website may use "cookies" to enhance the User experience. Users' web browser places cookies on their hard drive for record-keeping purposes and sometimes to track information about them. Users may choose to set their web browser to refuse cookies, or to alert you when cookies are being sent. If they do so, note that some parts of the App and Website may not function properly.</li>
-                            <li> Additionally, we may use third-party software to serve ads on the Application or on the Website, implement email marketing campaigns, and manage other interactive marketing initiatives. This their-party software may use cookies or similar tracking technology to help manage and optimize your online experience with us. You can prevent the storage of cookies by choosing a “disable cookies” option in your browser settings. But this can limit the functionality of our Services.</li>
+
+                        <ul className="ml-4">
+                            <li>authenticating users</li>
+                            <li>remembering user preferences and settings</li>
+                            <li> determining the popularity of content</li>
+                            <li> delivering and measuring the effectiveness of advertising campaigns</li>
+                            <li> analyzing site traffic and trends, and generally understanding the online behaviors and interests of people who interact with our services</li>
                         </ul>
+                        <p className="ml-4">Our App and Website may use "cookies" to enhance the User experience. Users' web browser places cookies on their hard drive for record-keeping purposes and sometimes to track information about them. Users may choose to set their web browser to refuse cookies, or to alert you when cookies are being sent. If they do so, note that some parts of the App and Website may not function properly.</p>
+                        <p className="ml-4"> Additionally, we may use third-party software to serve ads on the Application or on the Website, implement email marketing campaigns, and manage other interactive marketing initiatives. This their-party software may use cookies or similar tracking technology to help manage and optimize your online experience with us. You can prevent the storage of cookies by choosing a “disable cookies” option in your browser settings. But this can limit the functionality of our Services.</p>
                     </div>
                     <div className=" text-justify ">
 
@@ -245,35 +246,38 @@ const PolicyScr = () => {
                     <div className=" text-justify">
 
                         <h4>Options Regarding your Information</h4>
-                        <ul className="ml-4">
-                            <li>
+                        <div className="ml-4">
+                            <p>
                                 You may at any time review or change the information in your account or terminate your account by:
-                                <ol type="i">
+                            </p>
 
-                                    <li>Logging into your account settings and updating your account</li>
-                                    <li>Contacting us using the contact information provided below.</li>
-                                    <li>By any other means, if provided.</li>
-                                </ol>
-                            </li>
-                            <li> Upon your request to terminate your account, we will deactivate or delete your account and information from our active databases. However, some information may be retained in our files to prevent fraud, troubleshoot problems, assist with any investigation, enforce our Terms of Use and/or to comply with legal requirements.</li>
-                        </ul>
+                            <ul type="i">
+
+                                <li>Logging into your account settings and updating your account</li>
+                                <li>Contacting us using the contact information provided below.</li>
+                                <li>By any other means, if provided.</li>
+                            </ul>
+                            <p> Upon your request to terminate your account, we will deactivate or delete your account and information from our active databases. However, some information may be retained in our files to prevent fraud, troubleshoot problems, assist with any investigation, enforce our Terms of Use and/or to comply with legal requirements.</p>
+                        </div>
                     </div>
                     <div className=" text-justify ">
 
                         <h4> Emails and Communications</h4>
-                        <ul className="ml-4">
-                            <li>
+                        <div className="ml-4">
+                            <p>
 
                                 If you no longer wish to receive correspondence, emails, or other communications from us, you may opt-out any time by:
-                                <ol type="i">
-                                    <li>
-                                        Noting your preference at the time you register your account with the Application</li>
-                                    <li>Login into your account setting and updating your preferences</li>
-                                    <li>Contacting us using the contact information provided below</li>
-                                </ol>
-                            </li>
-                            And if you no longer wish to receive correspondence, emails, or other communications from third parties, you are responsible for contacting the third party directly.
-                        </ul>
+                            </p>
+                            <ul>
+                                <li>
+                                    Noting your preference at the time you register your account with the Application</li>
+                                <li>Login into your account setting and updating your preferences</li>
+                                <li>Contacting us using the contact information provided below</li>
+                            </ul>
+                            <p>
+                                And if you no longer wish to receive correspondence, emails, or other communications from third parties, you are responsible for contacting the third party directly.
+                            </p>
+                        </div>
                     </div>
                     <div className=" text-justify ">
 
@@ -286,21 +290,17 @@ const PolicyScr = () => {
 
                         <h4>Choice and Transparency</h4>
                         <div className="ml-4">
-                            <p>
-                                ZENYLOG enables users to access and/or control data that ZENYLOG collects, including through:</p>
-                        </div>
-                    </div>
-                    <div className=" text-justify">
-
-                        <h4>Privacy Settings</h4>
-                        <div className="ml-4">
+                            <p className="mb-0">
+                                ZENYLOG enables users to access and/or control data that ZENYLOG collects, including </p>
+                            <p>through:</p>
+                            <h5>Privacy Settings</h5>
                             <p>The Settings or Privacy menu in the ZENYLOG allows Users to set or update their preferences regarding location data collection and sharing, emergency data sharing, and notifications.</p>
                             <p> Users can enable/disable ZENYLOG to collect location data from their mobile devices through their device settings, which can be accessed via the Settings - Privacy - Location menu.</p>
                             <p> Users can enable/disable ZENYLOG to share their real-time location data from their mobile devices with their drivers through their device settings, which can be accessed via the Settings</p>
                             <p> Privacy - Location menu.</p>
                         </div>
                     </div>
-                    <div className=" text-justify ml-4">
+                    <div className=" text-justify ">
 
                         <h4> Device Permissions</h4>
                         <div className="ml-4">
@@ -344,7 +344,7 @@ const PolicyScr = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </div >
     )
 }

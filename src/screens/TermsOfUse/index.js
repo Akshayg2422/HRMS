@@ -11,10 +11,10 @@ const TermsOfUse = () => {
                 </div>
             </div>
             <div className="text-black text-justify">
-                <h3> Last Updated On:</h3>
+                <h3> Last Updated On:_____</h3>
                 <div class="  ml-4">
                     <p >
-                        _____ Thank you for using ZENYLOG. Our mission is to deepen the engagement and help the
+                         Thank you for using ZENYLOG. Our mission is to deepen the engagement and help the
                         Clients/Companies/Organizations by providing a revolutionary real time Attendance
                         management system to reinvent and ease the Day-to-day HR Management. We are helping
                         Clients/Companies/Organizations to power their Human Resource Management with Contactless
