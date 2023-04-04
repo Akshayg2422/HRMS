@@ -1,4 +1,4 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress } from '@components'
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,15 +21,20 @@ function ELocker() {
     const [previewModel, setPreviewModel] = useState(false)
     const [title, setTitle] = useState('')
     const [documents, setDocuments] = useState<any>([])
+    let enterPress = useKeyPress("Enter");
 
 
 
     const { employeeDocuments } =
         useSelector((state: any) => state.EmployeeReducer);
 
+
     useEffect(() => {
-        fetchEmployeeDocuments()
-    }, [search])
+        if (enterPress) {
+            fetchEmployeeDocuments()
+        }
+    }, [enterPress])
+
 
 
     const Upload = () => {
@@ -59,12 +64,15 @@ function ELocker() {
 
     const fetchEmployeeDocuments = () => {
         const params = {
-            q: search
+            ...(search && { q: search })
         };
         dispatch(getEmployeeDocument({
             params,
         }));
     };
+
+
+
 
 
     const resetAttachment = () => {
@@ -176,7 +184,6 @@ function ELocker() {
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
                             onClick={() => setUploadModel(!uploadModel)}
-
                         >
                             <Icon
                                 text={t('add') + " " + "+"}
