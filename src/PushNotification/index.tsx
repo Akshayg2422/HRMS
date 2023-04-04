@@ -97,6 +97,7 @@ const PushNotification = () => {
             };
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
+                this.close()
             });
             setNotification({ titile: payload?.data?.title, body: payload?.data?.message })
 

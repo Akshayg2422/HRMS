@@ -79,47 +79,10 @@ import { PushConfig } from './PushConfig'
 import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
 import GetToken from "./PushNotification/GetToken";
-import { postAppConfig } from "./store/auth/actions";
-import { setInterval } from "timers";
+
+import RefundPolicy from "./screens/RefundPolicy";
 
 function App() {
-
-  const dispatch = useDispatch()
-
-  // const { appConfig, fcmToken, isWebPushRegisterController } = useSelector(
-  //   (state: any) => state.AuthReducer
-  // );
-
-  // useEffect(() => {
-  //   if (fcmToken) {
-  //     setInterval(() => {
-  //       getPostAppConfig()
-  //     }, 1000)
-  //     //   setInterval(() => {
-  //     //     getPostAppConfig()
-  //     // }, 1800000)
-  //   }
-  // }, [])
-
-
-  // const getPostAppConfig = () => {
-  //   const params = {
-  //     device_model: appConfig?.model,
-  //     device_platform: appConfig?.platform,
-  //     device_brand: appConfig?.brand,
-  //     device_token: fcmToken
-  //   }
-  //   console.log('params------------->', params);
-  //   dispatch(postAppConfig({
-  //     params,
-  //     onSuccess: (response: any) => {
-  //       console.log("web config success-->", response);
-  //     },
-  //     onError: () => {
-  //     },
-  //   }))
-  // }
-  //1800000
 
   return (
     <>
@@ -132,6 +95,7 @@ function App() {
         <ScreenLoader />
         <Routes>
           <Route path={"/"} element={<ZenylogSite />} />
+          <Route path={"/RefundPolicy"} element={<RefundPolicy />} />
           <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
           <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
           <Route

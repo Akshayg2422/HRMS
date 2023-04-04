@@ -131,8 +131,6 @@ const ManageEmployee = () => {
 
   const [isBranchShiftDataExist, setIsBranchShiftExist] = useState(false)
 
-
-
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
     const getChild = (branchList: any, parent_id: string) =>
