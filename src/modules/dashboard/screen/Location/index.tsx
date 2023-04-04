@@ -25,7 +25,7 @@ function LocationScreen() {
   const enterPress = useKeyPress("Enter");
   const inputRef = useRef<HTMLInputElement>();
 
-  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 500, 1000];
 
   useEffect(() => {
     getAllBranchesListData()

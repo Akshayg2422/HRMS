@@ -24,7 +24,7 @@ const PushNotification = () => {
     function ToastDisplay({ data }: any) {
         const MAX_LENGTH = 50;
         return (
-            <div >
+            <div>
             </div>
         );
     };
@@ -98,7 +98,7 @@ const PushNotification = () => {
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
             });
-            // setNotification({ titile: payload?.data?.title, body: payload?.data?.message })
+            setNotification({ titile: payload?.data?.title, body: payload?.data?.message })
 
         })
         .catch((err: any) => console.log('failed: ', err));
