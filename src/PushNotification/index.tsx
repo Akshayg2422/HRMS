@@ -3,7 +3,7 @@ import { goTo, ROUTE, useNav } from '@utils';
 import React, { useState, useEffect } from 'react'
 import toast, { Toaster } from 'react-hot-toast';
 import GetToken from './GetToken';
-import { OnMessageListener } from './OnMessaging';
+import { onMessageListener } from './OnMessaging';
 import { Icons } from '@assets';
 
 const MAX_LENGTH = 70
@@ -82,14 +82,12 @@ const PushNotification = () => {
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
-
     }
 
 
-    OnMessageListener()
+    onMessageListener()
         .then((payload: any) => {
             console.log("foreground message----->", payload);
-
             const title = payload?.data?.title;
             const options = {
                 body: payload?.data?.message,

@@ -48,8 +48,6 @@ function FenceAdmin() {
         if (enterPress) {
             getAllBranchesListData()
         }
-        getAllBranchesListData()
-
     }, [enterPress])
 
     const getAllBranchesListData = () => {

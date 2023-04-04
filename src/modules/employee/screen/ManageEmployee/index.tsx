@@ -148,9 +148,7 @@ const ManageEmployee = () => {
   useEffect(() => {
     dispatch(getDepartmentData({}));
     dispatch(getDesignationData({}));
-    if (!isEdit) {
-      getBranchShiftsList()
-    }
+    getBranchShiftsList()
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -178,8 +176,6 @@ const ManageEmployee = () => {
 
   useEffect(() => {
     if (isEdit) {
-      getBranchShiftsList()
-
       if (isBranchShiftDataExist) {
         getEmployeeDetailsAPi(isEdit);
       }
@@ -205,13 +201,9 @@ const ManageEmployee = () => {
 
   };
 
-
-
   useEffect(() => {
     setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
   }, [shiftGroup])
-
-
 
 
   const getBranchShiftsList = () => {

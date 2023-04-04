@@ -80,7 +80,7 @@ function MyActiveBranches() {
     const setActiveBranch = (id: string, name: string) => {
         const childIds = getAllSubBranches(listBranchesList, id)
         dispatch(setBranchHierarchical({ ids: { branch_id: id, child_ids: childIds, include_child: false }, name: name }))
-        dispatch(activeBranchTriggerHierarchical(!toTriggerHierarchical))
+        // dispatch(activeBranchTriggerHierarchical(!toTriggerHierarchical))
     }
 
     const validateParams = (id: any) => {

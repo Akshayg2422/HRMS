@@ -3,7 +3,6 @@ import moment from 'moment';
 import { Route } from 'react-router-dom';
 
 
-
 export const ROUTE = {
   ROUTE_DASHBOARD: '/dashboard',
   ROUTE_EMPLOYEE: '/employee',

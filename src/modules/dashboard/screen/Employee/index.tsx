@@ -59,11 +59,6 @@ function EmployeeScreen() {
   }, [hierarchicalBranchIds]);
 
 
-  useEffect(() => {
-    const params = {}
-    dispatch(getListAllBranchesList({ params }))
-  }, [])
-  
 
   useEffect(() => {
     if (enterPress) {
@@ -91,7 +86,7 @@ function EmployeeScreen() {
 
 
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any, index: number) => { 
+    return data.map((el: any, index: number) => {
       return {
         id: el.employee_id,
         "":
@@ -192,9 +187,8 @@ function EmployeeScreen() {
               additionClass={"mt-sm-3 mt-xl--2"}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
-              onClick={proceedSearchApi}
             >
-              <Icon type={"btn-primary"} icon={Icons.Search} />
+              <Icon type={"btn-primary"} icon={Icons.Search} onClick={proceedSearchApi} />
             </Container>
           </Container>
 
@@ -245,6 +239,7 @@ function EmployeeScreen() {
               }}
             />
           ) : <NoRecordFound />}
+
           <Modal
             title={t("deleteUser")}
             showModel={deleteModel}
