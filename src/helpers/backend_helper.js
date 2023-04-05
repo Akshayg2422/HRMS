@@ -227,3 +227,14 @@ export const getEmployeeReRegisterRequestApi = (payload) => post(url.FACE_RE_REG
 export const employeeEnableFaceReRegisterApi = (payload) => post(url.EMPLOYEE_ENABLE_FACE_RE_REGISTER, payload, {})
 
 
+//enableFieldCheckIn
+
+export const enableFieldCheckInApi = (payload) => post(url.POST_ENABLE_FIELD_CHECK_IN, payload, {})
+
+// enableOfficeCheckIn
+
+export const enableOfficeCheckInApi = (payload) => post(url.POST_ENABLE_OFFICE_CHECK_IN, payload, {})
+
+//changeAttendanceSettings  
+
+export const changeAttendanceSettingsApi = (payload) => post(url.FACE_VALIDATION_STATUS, payload, {})

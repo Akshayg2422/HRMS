@@ -160,7 +160,6 @@ function EmployeeLog() {
       getCheckInDetailedLogPerDay({
         params,
         onSuccess: (response: any) => {
-          console.log('----------------->');
         },
         onError: (error: string) => {
         },
@@ -270,38 +269,40 @@ function EmployeeLog() {
 
   return (
     <>
-      <Container additionClass={"row mx-2 my-3"}>
-        <Container col={"col-xl-5"}>
-          <ChooseBranchFromHierarchical />
-        </Container>
-        <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
-          <InputText
-            value={searchEmployee}
-            col={'col'}
-            placeholder={t("enterEmployeeName")}
-            onChange={(e) => {
-              setSearchEmployee(e.target.value);
-            }}
-          />
-          <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
-            onClick={() => {
-              getEmployeeLogs(currentPage);
-            }}
-          />
-        </Container>
+      <Card additionClass={'mx-3'}>
+        <Container additionClass={"row"}>
+          <Container col={"col-xl-5"}>
+            <ChooseBranchFromHierarchical />
+          </Container>
+          <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
+            <InputText
+              value={searchEmployee}
+              col={'col'}
+              placeholder={t("enterEmployeeName")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
+              onClick={() => {
+                getEmployeeLogs(currentPage);
+              }}
+            />
+          </Container>
 
-        <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
-          <Sort
-            sortData={employeeLogSort}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
-            }}
-          />
-        </div>
+          <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
+            <Sort
+              sortData={employeeLogSort}
+              activeIndex={activeSort}
+              onClick={(index) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
 
-      </Container>
+        </Container>
+      </Card>
 
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
@@ -439,7 +440,7 @@ function EmployeeLog() {
                                           {item.type}
                                         </small>
                                         <small className="mb-0 col">
-                                          {item.address_text}
+                                          {item.address_text?item.address_text : "       -"}
                                         </small>
                                       </Container>
                                       <Divider />

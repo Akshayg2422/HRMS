@@ -77,6 +77,11 @@ function CreateGroup() {
         setSelectAddAllowanceModel(!selectAllowanceModel)
     }
 
+    const ALLOWANCE_TYPE = [
+        { id: 1, name: "%", value: "%" },
+        { id: 2, name: '₹', value: '₹' }
+    ]
+
     return (
         <>
             <FormWrapper
@@ -105,7 +110,13 @@ function CreateGroup() {
                                 </Container>
                                 <Container additionClass={'col-xl-3 col col-sm-0'}>
                                     <Container additionClass='row mt-4'>
-                                        <h3 className='col-xl col col-sm-0 mt-3 ml--3'>{"%"}</h3>
+                                        <Container additionClass='col-xl-7'>
+                                            <DropDown
+                                                placeholder={'Type'}
+                                                data={ALLOWANCE_TYPE}
+                                            />
+                                        </Container>
+                                        {/* <h3 className='col-xl col col-sm-0 mt-3 ml--3'>{"%"}</h3> */}
                                         <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
                                             onDeleteAllowence(el)
                                         }} /></td>

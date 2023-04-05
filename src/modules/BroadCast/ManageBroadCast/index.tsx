@@ -33,7 +33,7 @@ function ManageBroadCast() {
     useEffect(() => {
         dispatch(getDepartmentData({}));
         dispatch(getDesignationData({}));
-    }, [hierarchicalBranchIds])
+    }, [])
 
     const onChangeHandler = (e: any) => {
         setBroadCast({ ...broadCast, [e.target?.name]: e.target?.value });
@@ -58,14 +58,6 @@ function ManageBroadCast() {
             showToast('error', 'The message field cannot be empty')
             return false
         }
-        // else if (!broadCast.department) {
-        //     showToast('error', t("invalidDepartment"))
-        //     return false
-        // }
-        // else if (!broadCast.designation) {
-        //     showToast('error', t("invalidDesignation"))
-        //     return false
-        // }
         else {
             return true
         }

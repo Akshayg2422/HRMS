@@ -25,10 +25,16 @@ function LocationScreen() {
   const enterPress = useKeyPress("Enter");
   const inputRef = useRef<HTMLInputElement>();
 
-  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 500, 1000];
 
   useEffect(() => {
-    const params = {};
+    getAllBranchesListData()
+  }, [isRefresh]);
+
+  const getAllBranchesListData = () => {
+    const params = {
+      ...(searchBranches && { q: searchBranches })
+    };
     dispatch(
       getAllBranchesList({
         params,
@@ -40,13 +46,13 @@ function LocationScreen() {
         },
       })
     );
-  }, [isRefresh]);
+  }
 
 
 
   useEffect(() => {
     if (enterPress) {
-      SelectedBranchFilter()
+      getAllBranchesListData()
     }
   }, [enterPress])
 
@@ -175,7 +181,7 @@ function LocationScreen() {
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
             onClick={() => {
-              SelectedBranchFilter()
+              // SelectedBranchFilter()
             }}
           />
         </Container>

@@ -4,8 +4,8 @@ const messaging = getMessaging();
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
-    onMessage(messaging, (payload) => {
-      console.log("payload", payload)
-      resolve(payload);
+    onMessage(messaging,async (payload) => {
+      console.log("payload------->", payload)
+     await resolve(payload);
     });
   });
