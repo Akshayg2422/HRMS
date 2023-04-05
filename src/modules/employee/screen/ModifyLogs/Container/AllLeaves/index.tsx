@@ -14,7 +14,7 @@ import {
   getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { LEAVE_STATUS_UPDATE, convertToUpperCase, showToast } from "@utils";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -346,7 +346,7 @@ const LocationTable = ({
             tableDataSet.map((item: Location, index: number) => {
               return (
                 <tr className="align-items-center">
-                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${
+                  <td style={{ whiteSpace: "pre-wrap" }}>{`${convertToUpperCase(item.name)}${" "}(${
                     item.employee_id
                   })`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>

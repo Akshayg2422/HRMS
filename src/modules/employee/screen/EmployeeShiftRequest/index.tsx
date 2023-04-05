@@ -49,7 +49,7 @@ function EmployeeShiftRequest() {
             data.length > 0 &&
             data.map((el: any) => {
                 return {
-                    name: `${el?.name}${' '}(${el.employee_id})`,
+                    'name': `${el?.name}${' '}(${el.employee_id})`,
                     "Branch": el?.branch_name,
                     "Shift": el?.shift_details?.name,
                     "Status": el?.status_text
