@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast } from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast ,goBack} from '@utils';
 import { useTranslation } from 'react-i18next';
-import { ImageView, Modal, Container, Secondary, Primary, Divider, } from '@components';
+import { ImageView, Modal, Container, BackArrow, Secondary, Primary, Divider } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getImageUri } from '@utils';
 import { Icons } from '@assets';
@@ -26,6 +26,7 @@ const Header = () => {
   const navigation = useNav();
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const [isParent,setIsParent]= useState(false)
 
   let dispatch = useDispatch();
 
@@ -49,6 +50,7 @@ const Header = () => {
     NAV_ITEM.filter((el: any) => {
       if (pathname === el.route) {
         setHeaderTitle(el.name)
+        setIsParent(false)
       } else {
         dynamicChildHeader()
       }
@@ -61,11 +63,13 @@ const Header = () => {
         NAV_ITEM.filter((element: any) => {
           if (el.parent === element.route) {
             setHeaderTitle(element.name)
+            setIsParent(true)
           }
         })
       }
     })
   }
+
 
   const DropdownHandler = (item: any) => {
     if (item.value === 'CL') {
@@ -106,12 +110,14 @@ const Header = () => {
     }
   };
 
-  const checkLength = (data:any) =>{
 
-    if(data.length < 100){
+
+  const checkLength = (data: any) => {
+
+    if (data.length < 100) {
       return data.length
     }
-    else{
+    else {
       return '99+'
     }
   }
@@ -119,7 +125,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className='navbar navbar-top navbar-expand  bg-primary '>
+      <nav className='navbar navbar-top navbar-expand'>
         <div className='container-fluid'>
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <a className='nav-item d-xl-none'>
@@ -135,27 +141,40 @@ const Header = () => {
                 </div>
               </div>
             </a>
-            <h6 className='h2 text-white d-inline-block mb-0'>{headerTitle}</h6>
+            <BackArrow additionClass={'mr--1 '} />
+            <div className='col'>
+              <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
+              { isParent && <div className='small'>
+                
+                <span style={{cursor:"pointer"}} onClick={() =>{ goBack(navigation)}}>{headerTitle} </span> 
+                <span> {" "} {pathname}</span>
+
+
+                </div>
+}
+                
+            </div>
+
             <ul className='navbar-nav align-items-center  ml-md-auto '>
               {/* <Notification /> */}
               <div className='mr-3 d-flex'>
                 <a className="nav-link" onClick={() => {
                   goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
-                  <i className="ni ni-chat-round text-white" style={{cursor:'pointer'}}></i>
+                  <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
                   goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
                   dispatch(setIsShowBack(true))
                 }} >
-                  <i className="ni ni-bell-55 text-white" style={{cursor:'pointer'}}></i>
+                  <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }}></i>
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(notificationsDataList)}</span> */}
                 </a>
               </div>
               <div className='media-body  d-none d-lg-block'>
                 {dashboardDetails && dashboardDetails.user_details && (
-                  <span className='mb-0 text-white  font-weight-bold'>
+                  <span className='mb-0 text-primary  font-weight-bold'>
                     {dashboardDetails.user_details.name}
                   </span>
                 )}
@@ -179,7 +198,7 @@ const Header = () => {
                         icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
                       />
                     </span>
-                    <div className='media-body  ml-2 text-white d-none d-lg-block dropdown-toggle'></div>
+                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'></div>
                   </div>
                 </a>
                 <div className='dropdown-menu dropdown-menu-right'>
@@ -200,6 +219,8 @@ const Header = () => {
           </div>
         </div>
       </nav >
+
+
 
       <Modal
         title={'Select Language'}
