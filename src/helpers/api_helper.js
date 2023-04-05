@@ -26,7 +26,7 @@ export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
 
 export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
 
-export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuser.zenyq.com'; ////
+export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuserweb.zenyq.com'; ////
 
 export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
 

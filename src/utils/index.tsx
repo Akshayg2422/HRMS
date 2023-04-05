@@ -263,7 +263,7 @@ const base64ToImage = (base64: any) => {
 const formatAMPM = (time: any) => {
   if (time) {
     let [hours, minutes, seconds] = time.split(':');
-    var ampm = hours >= 12 ? 'Pm' : 'Am';
+    var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12;
     let strTime = hours + ':' + minutes + ' ' + ampm;

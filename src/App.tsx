@@ -36,7 +36,7 @@ import {
   ShiftGroup,
   ShiftListing,
   CreateShiftGroup,
-  MyShiftDetails,
+  ShiftMonthlyView,
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
@@ -60,7 +60,8 @@ import {
   EsslConfig,
   ManageEsslConfig,
   ManageDevices,
-  FaceReRegisterRequest
+  FaceReRegisterRequest,
+  ShiftDetailsPerDay
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -88,7 +89,7 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <PushNotification />
       <DeviceInfo />
       <AppProvider >
@@ -237,8 +238,12 @@ function App() {
             element={<RequireAuth>{<CreateShiftGroup />}</RequireAuth>}
           />
           <Route
-            path={ROUTE.ROUTE_MY_SHIFTS_DETAILS}
-            element={<RequireAuth>{<MyShiftDetails />}</RequireAuth>}
+            path={ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY}
+            element={<RequireAuth>{<ShiftMonthlyView />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_MY_SHIFTS_DETAILS_DAILY}
+            element={<RequireAuth>{<ShiftDetailsPerDay />}</RequireAuth>}
           />
           <Route
             path={ROUTE.ROUTE_EMPLOYEES_SHIFTS}

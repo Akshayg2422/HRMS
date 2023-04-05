@@ -41,7 +41,8 @@ export const ROUTE = {
   ROUTE_SHIFT_SET: '/shift-set',
   ROUTE_SHIFT_LISTING: '/shift-listing',
   ROUTE_CREATE_SHIFT_GROUP: '/create-shift-group',
-  ROUTE_MY_SHIFTS_DETAILS: '/my-shifts-details',
+  ROUTE_MY_SHIFTS_DETAILS_MONTHLY: '/my-shifts-details-monthly',
+  ROUTE_MY_SHIFTS_DETAILS_DAILY: '/my-shifts-details-daily',
   ROUTE_EMPLOYEES_SHIFTS: '/employees-shifts',
   ROUTE_PAYROLL: '/payroll',
   ROUTE_SALARY_BREAK_DOWN: '/salary-break-down',
@@ -224,7 +225,7 @@ export const MY_PORTFOLIO_ITEM = [
   { id: '1', name: 'MY Work Book', value: 'MB', route: ROUTE.ROUTE_MY_WORK_BOOK },
   { id: '2', name: 'MY Log', value: 'ML', route: ROUTE.ROUTE_MY_LOG },
   { id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES },
-  { id: '4', name: 'My Shifts', value: 'MS', route: ROUTE.ROUTE_MY_SHIFTS_DETAILS }
+  { id: '4', name: 'My Shifts', value: 'MS', route: ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY }
 
 ]
 

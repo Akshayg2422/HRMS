@@ -20,8 +20,8 @@ import {
   ManageEmployee, EmployeeLog, EmployeeWorkBook,
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
   ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
-  ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches, EmployeeShiftRequest,
-  AvailableLeaves, LeaveTypes, ManageLeaveTypes,FaceReRegisterRequest
+  ELocker, ElockerUpload, ShiftMonthlyView, EmployeeShifts, MyBranches, EmployeeShiftRequest,
+  AvailableLeaves, LeaveTypes, ManageLeaveTypes,FaceReRegisterRequest,ShiftDetailsPerDay
 } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
@@ -85,7 +85,7 @@ export {
   ShiftGroup,
   ShiftListing,
   CreateShiftGroup,
-  MyShiftDetails,
+  ShiftMonthlyView,
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
@@ -110,7 +110,8 @@ export {
   EsslConfig,
   ManageEsslConfig,
   ManageDevices,
-  FaceReRegisterRequest
+  FaceReRegisterRequest,
+  ShiftDetailsPerDay
 }
 
 

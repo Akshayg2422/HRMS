@@ -47,7 +47,7 @@ function PortFolio() {
       id: "6",
       name: "My Shift",
       value: "MS",
-      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
+      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS_DAILY,
       icon: Icons.ShiftChange,
     },
     {
