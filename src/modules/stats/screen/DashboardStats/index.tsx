@@ -69,8 +69,9 @@ const DashboardStats = () => {
       ...hierarchicalBranchIds,
       selected_date: selectedDate,
     };
-
-    dispatch(getEmployeeAttendanceStats(params));
+    if (Object.keys(hierarchicalBranchIds).length > 0) {
+      dispatch(getEmployeeAttendanceStats(params));
+    }
   }, [selectedDate, hierarchicalBranchIds]);
 
   const proceedNext = (
