@@ -138,6 +138,8 @@ function LocationScreen() {
       dispatch(editBranchName({
         params,
         onSuccess: (success: any) => () => {
+      console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000",success)
+
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)

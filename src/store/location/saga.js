@@ -196,7 +196,7 @@ function* updateEmployeeCheckinAssociations(action) {
 
       yield put(hideLoader());
       yield put(updateEmployeeCheckinAssociationsSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
 
     } else {
 
@@ -223,7 +223,7 @@ function* updatedBranchName(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(editBranchNameSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(editBranchNameFailure(response.error_message));
