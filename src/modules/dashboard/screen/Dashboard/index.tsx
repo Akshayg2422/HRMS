@@ -8,7 +8,7 @@ import {
 } from "@components";
 import React, { useEffect } from "react";
 
-import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
+import { fetchDashboardDetails, Navbar, Header, DashBoardCard, DashboardStats } from "@modules";
 import { useDashboard } from "@contexts";
 import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
@@ -130,7 +130,7 @@ function Dashboard() {
   return (
     <>
       <div className='my-5'>
-        <DashBoardCard />
+        <DashboardStats />
       </div>
     </>
   );

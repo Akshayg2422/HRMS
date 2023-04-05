@@ -160,24 +160,20 @@ function index({ tableTitle, displayDataSet, tableDataSet, headerClass, addition
 
   const renderTable = () => {
 
-    if (displayDataSet && displayDataSet.length <= 0) {
-      return (<CommonHeader><div className='p-5'><NoRecordFound text={noRecordText} /></div></CommonHeader>);
-    }
-
     return (
-      <CommonHeader>
+      <>
         {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />}
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
-      </CommonHeader>
+      </>
     );
 
 
   }
 
   return (
-    <div >
+    <CommonHeader >
       {renderTable()}
-    </div>
+    </CommonHeader>
 
   );
 }

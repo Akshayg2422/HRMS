@@ -13,6 +13,9 @@ import {
   Container,
   Secondary,
   Primary,
+  ScreenContainer,
+  ScreenTitle,
+  Divider,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -498,13 +501,296 @@ const ManageEmployee = () => {
 
 
   return (
-    <>
+    <ScreenContainer additionClass={'mb--4'}>
       <FormWrapper
+        isTitle
         title={isEdit ? t("editEmployee") : t("newEmployee")}
         onClick={onSubmit}
         buttonTittle={isEdit ? t("update") : t("submit")}
       >
-        <InputText
+
+
+        <ScreenTitle title={'Basic Information'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputText
+              label={t("fullName")}
+              placeholder={t("typeYourName")}
+              validator={validateName}
+              value={employeeDetails.firstName}
+              name={"firstName"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputText
+              label={t("lastName")}
+              placeholder={t("typeLastName")}
+              validator={validateDefault}
+              value={employeeDetails.lastName}
+              name={"lastName"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputNumber
+              label={t("mobileNumber")}
+              placeholder={t("enterYourMobileNumber")}
+              validator={validateMobileNumber}
+              value={employeeDetails.mobileNumber}
+              name={"mobileNumber"}
+              onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputMail
+              label={t("email")}
+              placeholder={t("enterYourEmail")}
+              validator={validateEmail}
+              value={employeeDetails.e_Mail}
+              name={"e_Mail"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("gender")}
+              placeholder={t("selectYourGender")}
+              data={GENDER_LIST}
+              name={"gender"}
+              value={employeeDetails.gender}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("selectYourGender")));
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("bloodGroup")}
+              placeholder={t("enterBloodGroup")}
+              data={BLOOD_GROUP_LIST}
+              name={"bloodGroup"}
+              value={employeeDetails.bloodGroup}
+              onChange={(event) => {
+                // onChangeHandler(event);
+                onChangeHandler(dropDownValueCheckByEvent(event, t("enterBloodGroup")));
+
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          <div className="col-xl-6">
+            <h5>{t("dateofBirth")}</h5>
+            <DatePicker
+              placeholder={t("dateofBirth")}
+              icon={Icons.Calendar}
+              iconPosition={"append"}
+              maxDate={Today}
+              onChange={(date: string) => dateTimePickerHandler(date, "dob")}
+              value={employeeDetails.dob}
+            />
+          </div>
+
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Company Details'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <div className="row align-items-center">
+              <div className="col mt--2">
+                <DropDown
+                  label={t("designation")}
+                  placeholder={t("enterDesignation")}
+                  data={designationDropdownData}
+                  name={"designation"}
+                  value={employeeDetails.designation}
+                  onChange={(event) => {
+                    handleDesignationChange(event)
+                  }}
+                />
+              </div>
+              <Icon
+                text={"+"}
+                onClick={() => setDesignationModel(!designationModel)}
+              />
+            </div>
+          </div>
+          <div className="col-xl-6">
+            <div className="row align-items-center">
+              <div className="col mt--2">
+                <DropDown
+                  label={t("department")}
+                  placeholder={t("enterDepartment")}
+                  data={departmentDropdownData}
+                  value={employeeDetails.department}
+                  name={"department"}
+                  onChange={(event) =>
+                    onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
+                  }
+                />
+              </div>
+              <Icon
+                text={"+"}
+                onClick={() => setDepartmentModel(!departmentModel)}
+              />
+            </div>
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("branch")}
+              placeholder={t("branch")}
+              data={companyBranchDropdownData}
+              name={"branch"}
+              value={employeeDetails.branch}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("branch")))
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("category")}
+              placeholder={t("category")}
+              name={"employeeType"}
+              data={EMPLOYEE_TYPE}
+              value={employeeDetails.employeeType}
+              onChange={(event) =>
+                onChangeHandler(dropDownValueCheckByEvent(event, t("category")))
+              }
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <h5>{t("dataOfJoining")}</h5>
+            <DatePicker
+              title={t("pleaseSelect")}
+              icon={Icons.Calendar}
+              iconPosition={"append"}
+              value={employeeDetails.dateOfJoining}
+              onChange={(date: string) =>
+                dateTimePickerHandler(date, "dateOfJoining")
+              }
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputDefault
+              label={t("kgid")}
+              placeholder={t("kgid")}
+              maxLength={10}
+              validator={validateDefault}
+              value={employeeDetails.kgid_No}
+              name={"kgid_No"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Attendance Details'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          {employeeDetails.shift || shiftsDropdownData.length > 0 ?
+            <div className="col-xl-6">
+              <DropDown
+                label={t("shiftss")}
+                placeholder={t("SelectShift")}
+                data={shiftsDropdownData}
+                name={"shift"}
+                value={employeeDetails.shift}
+                onChange={(event) =>
+                  onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
+                }
+              />
+            </div> : <></>
+          }
+          {!employeeDetails.shift &&
+            <>
+              <div className="col-xl-6">
+                <h5 className="mb-2">{t("startTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  value={employeeDetails.attendanceStartTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceStartTime")
+                  }}
+                />
+              </div>
+              <div className="col-xl-6">
+                <h5 className="mb-2">{t("endTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  value={employeeDetails.attendanceEndTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceEndTime");
+                  }}
+                />
+              </div>
+            </>
+          }
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Document information'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputDefault
+              label={t("aadhar")}
+              placeholder={t("typeypurAadharNo")}
+              validator={validateAadhar}
+              value={employeeDetails.aadharrNo}
+              name={"aadharrNo"}
+              onChange={(event) => {
+                mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputDefault
+              label={t("pan")}
+              placeholder={t("enterPanNUmber")}
+              maxLength={10}
+              validator={validatePAN}
+              value={employeeDetails.panNo}
+              name={"panNo"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+        {/* <InputText
           label={t("fullName")}
           placeholder={t("typeYourName")}
           validator={validateName}
@@ -672,8 +958,8 @@ const ManageEmployee = () => {
             onChangeHandler(event);
           }}
         />
-        <h4 className="mb-4">{t("attendanceDetails")}</h4>
-        {employeeDetails.shift || shiftsDropdownData.length > 0 ? (
+        <h4 className="mb-4">{t("attendanceDetails")}</h4> */}
+        {/* {employeeDetails.shift || shiftsDropdownData.length > 0 ? (
           <DropDown
             label={t("shiftss")}
             placeholder={t("SelectShift")}
@@ -683,8 +969,8 @@ const ManageEmployee = () => {
             onChange={(event) =>
               onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
             }
-          />) : <></>}
-        {!employeeDetails.shift && <>
+          />) : <></>} */}
+        {/* {!employeeDetails.shift && <>
           <h5 className="mb-2">{t("startTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
@@ -704,7 +990,7 @@ const ManageEmployee = () => {
             onChange={(time: any) => {
               timePickerHandler(time, "attendanceEndTime");
             }}
-          /></>}
+          /></>} */}
       </FormWrapper>
       <Modal
         title={t("department")}
@@ -774,7 +1060,7 @@ const ManageEmployee = () => {
           </Container>
         }
       </Modal>
-    </>
+    </ScreenContainer>
   );
 };
 

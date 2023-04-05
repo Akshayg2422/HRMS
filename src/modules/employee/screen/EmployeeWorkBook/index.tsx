@@ -143,6 +143,7 @@ function EmployeeTimeSheets() {
         </Container>
         <div className="text-right">
           <Sort
+            size={'btn-sm'}
             sortData={sortData}
             activeIndex={activeSort}
             onClick={(index) => {

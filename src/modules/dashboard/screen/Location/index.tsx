@@ -1,4 +1,4 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound } from '@components';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu } from '@components';
 import React, { useEffect, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,14 @@ import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, ed
 import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
+
+export const DROPDOWN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '3', name: 'Enable refence', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
+
+]
 
 function LocationScreen() {
 
@@ -62,6 +70,15 @@ function LocationScreen() {
     return data.map((el: any) => {
       return {
         name: el.name,
+        'Address': el?.address ? el?.address : '-',
+        'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.TickActive} /> : <></>,
+        'Fencing Radius': el.fencing_radius,
+        "": <CommonDropdownMenu
+          data={DROPDOWN_MENU}
+          onItemClick={(e, item) => {
+            e.stopPropagation();
+          }}
+        />
       };
     });
   };
@@ -190,18 +207,18 @@ function LocationScreen() {
       {branch && branch.length > 0 ? (
         <CommonTable
           displayDataSet={normalizedEmployeeLog(branch)}
-          tableChildren={
-            <LocationTable
-              tableDataSet={branch}
-              resetRadiusOnchange={(item) => {
-                setModelData(item)
-                setModel(!model)
-              }}
-              enableReFetch={enableReFetchApi}
-              onEditClick={(item) => {
-                handleEdit(item)
-              }}
-            />}
+        // tableChildren={
+        //   <LocationTable
+        //     tableDataSet={branch}
+        //     resetRadiusOnchange={(item) => {
+        //       setModelData(item)
+        //       setModel(!model)
+        //     }}
+        //     enableReFetch={enableReFetchApi}
+        //     onEditClick={(item) => {
+        //       handleEdit(item)
+        //     }}
+        //   />}
         />
       ) : <Card additionClass='mx-3'><NoRecordFound /></Card>}
       <Modal
