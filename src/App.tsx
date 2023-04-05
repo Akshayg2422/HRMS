@@ -88,7 +88,7 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <PushNotification />
       <DeviceInfo />
       <AppProvider >

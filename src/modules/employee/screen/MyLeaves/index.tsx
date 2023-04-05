@@ -49,7 +49,15 @@ function MyLeaves() {
       status: type,
       page_number: pageNumber,
     };
-    dispatch(getLeavesByTypes({ params }));
+    dispatch(getLeavesByTypes({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   function paginationHandler(

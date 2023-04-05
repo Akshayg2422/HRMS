@@ -18,7 +18,7 @@ function EmployeeShiftRequest() {
         (state: any) => state.DashboardReducer
     );
     const [requestTypes, setRequestTypes] = useState(REQUEST_TYPE_SUBSET[0].name);
-   
+
 
     useEffect(() => {
         getRequestList(getRequestType(requestTypes), currentPage);
@@ -38,11 +38,19 @@ function EmployeeShiftRequest() {
                 status: type,
                 page_number: pageNumber,
             }
-            dispatch(getShiftRequestedStatus({ params }));
+            dispatch(getShiftRequestedStatus({
+                params,
+                onSuccess: (success: any) => () => {
+
+                },
+                onError: (error: any) => () => {
+
+                }
+            }));
         }
     }
 
-  
+
     const normalizedRequestList = (data: any) => {
         return (
             data &&
@@ -111,7 +119,7 @@ function EmployeeShiftRequest() {
                     )}
                 </Card>
             </Container>
-           
+
         </div>
     )
 }

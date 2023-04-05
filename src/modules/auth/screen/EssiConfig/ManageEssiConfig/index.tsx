@@ -41,7 +41,7 @@ function ManageEsslConfig() {
             showToast("error", t("invalidPassword"));
             return false;
         }
-         else {
+        else {
             return true;
         }
     }
@@ -57,11 +57,11 @@ function ManageEsslConfig() {
             }
             dispatch(postEsslConfig({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     showToast("success", success.message)
                     goBack(navigation);
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));

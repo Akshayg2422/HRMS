@@ -26,7 +26,15 @@ function PendingRequest() {
       page_number: pageNumber,
       ...hierarchicalBranchIds
     }
-    dispatch(getShiftRequestedEmployees({ params }));
+    dispatch(getShiftRequestedEmployees({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedRequestList = (data: any) => {
@@ -92,7 +100,7 @@ function PendingRequest() {
     const params = { id: item.id, status: type }
     dispatch(postChangeShiftChange({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         getEmployeeRequest(-1, currentPage);
         if (type === 1) {
           showToast("success", success)
@@ -103,7 +111,7 @@ function PendingRequest() {
           setRejectModel(!rejectModel);
         }
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("error", error)
       }
     }));

@@ -35,7 +35,7 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
     dispatch(
       getListAllBranchesList({
         params,
-        onSuccess: async (response: Array<LocationProps>) => {
+        onSuccess: async (response: Array<LocationProps>) => () => {
           setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
           if (parentBranch) {
@@ -52,7 +52,7 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
             setHierarchicalBranch({ child: [filteredBranch] });
           }
         },
-        onError: () => {
+        onError: () => () => {
           console.log("=========error");
         },
       })
