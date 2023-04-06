@@ -58,7 +58,13 @@ function LeaveReports({ data, department, reportType, customrange, designation }
             page_number: pageNumber,
         };
         dispatch(getMisReport({
-            params
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
         }));
     })
 

@@ -26,6 +26,8 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   const [model, setModel] = useState(false);
   let dispatch = useDispatch();
 
+  console.log("hierarchicalBranchIds", hierarchicalBranchIds)
+
   const [hierarchicalBranch, setHierarchicalBranch] = useState<any>({});
   const [structuredData, setStructuredData] = useState<Array<LocationProps>>(
     []
@@ -45,7 +47,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     dispatch(
       getListAllBranchesList({
         params,
-        onSuccess: async (response: Array<LocationProps>) => {
+        onSuccess:  (response: Array<LocationProps>) => () => {
           // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
 
@@ -68,8 +70,8 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
             setHierarchicalBranch({ child: modifiedBranch });
           }
         },
-        onError: () => {
-          console.log("=========error");
+        onError: (error: any) => () => {
+          console.log("=========errorasasa"+error);
         },
       })
     );
@@ -86,7 +88,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           return it2;
         });
     };
-    
+
     getChild(branchList, parent_id);
 
     branchListFiltered = branchListFiltered.map((it: any) => {

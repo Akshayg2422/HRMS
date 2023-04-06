@@ -42,9 +42,9 @@ function EventNotification() {
         };
         dispatch(getBroadcastMessage({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error)
             },
         }));

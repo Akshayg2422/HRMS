@@ -83,7 +83,15 @@ const ApplyLeave = () => {
       ...hierarchicalBranchIds,
       pageNumber: pageNumber,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   const FilterDropdown = (data: any) => {
@@ -110,11 +118,11 @@ const ApplyLeave = () => {
     dispatch(
       getLeaveTypes({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setLeaveTypes(FilterDropdown(success.leave_types));
           setDropDownData(success.leave_types)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
@@ -161,11 +169,11 @@ const ApplyLeave = () => {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             showToast("success", response?.message);
             goBack(navigation);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
             setFormDetails({ ...fromDetails, dataTo: "", dateFrom: '', reason: '' });
           },

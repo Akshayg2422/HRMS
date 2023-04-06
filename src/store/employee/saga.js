@@ -176,12 +176,14 @@ function* getDesignation(action) {
       yield put(hideLoader());
     } else {
       yield put(getDesignationDataFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
       yield put(hideLoader());
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getDesignationDataFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -196,11 +198,13 @@ function* getDepartments(action) {
     } else {
       yield put(hideLoader());
       yield put(getDepartmentDataFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getDepartmentDataFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -241,6 +245,8 @@ function* getEmployeeDetails(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeDetailsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -262,6 +268,8 @@ function* getEmployeesList(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeesListFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -283,6 +291,8 @@ function* employeeAddition(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(employeeAdditionFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -294,14 +304,19 @@ function* getEmployeesTimeSheets(action) {
 
     if (response.success) {
       yield put(getEmployeesTimeSheetsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
       yield put(hideLoader());
     } else {
       yield put(hideLoader());
       yield put(getEmployeesTimeSheetsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeesTimeSheetsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -332,6 +347,8 @@ function* getEmployeeCheckInLogs(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeesCheckInLogsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -353,11 +370,13 @@ function* getCheckInDetailedLogPerDay(action) {
     } else {
       yield put(hideLoader());
       yield put(getCheckInDetailedLogPerDayFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getCheckInDetailedLogPerDayFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -373,13 +392,19 @@ function* getEmployeeEachUserTimeSheets(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getEmployeeEachUserTimeSheetsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
     } else {
       yield put(hideLoader());
       yield put(getEmployeeEachUserTimeSheetsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeEachUserTimeSheetsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -401,7 +426,7 @@ function* addDepartment(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(addDepartmentFailure("Invalid Request"));
-    yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -423,7 +448,7 @@ function* addDesignation(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(addDesignationFailure("Invalid Request"));
-    yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -445,6 +470,8 @@ function* addFenceAdmin(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(addFenceAdminFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -452,7 +479,7 @@ function* getEmployeeAttendanceStats(action) {
   try {
     yield put(showLoader());
 
-    const response = yield call(fetchEmployeeAttendanceStats, action.payload);
+    const response = yield call(fetchEmployeeAttendanceStats, action.payload.params);
 
     if (response.success) {
       yield put(hideLoader());
@@ -460,10 +487,14 @@ function* getEmployeeAttendanceStats(action) {
     } else {
       yield put(hideLoader());
       yield put(getEmployeeAttendanceStatsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeAttendanceStatsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -471,7 +502,7 @@ function* getEmployeeTodayStatus(action) {
   try {
     yield put(showLoader());
 
-    const response = yield call(fetchEmployeeTodayStatus, action.payload);
+    const response = yield call(fetchEmployeeTodayStatus, action.payload.params);
     if (response.success) {
       yield put(hideLoader());
       yield put(getEmployeeTodayStatusSuccess(response.details));
@@ -479,11 +510,13 @@ function* getEmployeeTodayStatus(action) {
     } else {
       yield put(hideLoader());
       yield put(getEmployeeTodayStatusFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeTodayStatusFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -506,7 +539,9 @@ function* getDownloadTodayStatus(action) {
     }
   } catch (error) {
     yield put(hideLoader());
-    yield put(getEmployeeTodayStatusFailure("Invalid Request"));
+    yield put(getDownloadTodayStatusFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -522,10 +557,12 @@ function* getCheckInDetailedLog(action) {
     } else {
       yield put(hideLoader());
       yield put(getCheckInDetailedLogFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getCheckInDetailedLogFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -550,6 +587,8 @@ function* getAttendanceConsolidatedCardsData(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getAttendanceConsolidatedCardsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -574,6 +613,8 @@ function* getUpdateEmployeeStatus(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getUpdateEmployeeStatusFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -595,6 +636,8 @@ function* getLeaveTypes(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getLeaveTypesFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -616,6 +659,8 @@ function* applyLeave(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(applyLeaveFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -627,13 +672,19 @@ function* FetchCalendardetails(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(fetchCalendardetailsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
     } else {
       yield put(hideLoader());
       yield put(fetchCalendardetailsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(fetchCalendardetailsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -652,11 +703,13 @@ function* changeSelectedEmployeeLeaveStatus(action) {
     } else {
       yield put(hideLoader());
       yield put(changeEmployeeLeaveStatusFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(changeEmployeeLeaveStatusFailure("Invalid Request"));
-    yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -669,7 +722,7 @@ function* addHolidayEvents(action) {
     yield put(showLoader());
 
     const response = yield call(postAddHolidays, action.payload.params);
-    console.log("response------>",response);
+    console.log("response------>", response);
     if (response.success) {
       yield put(hideLoader());
       yield put(addHolidaySuccess(response.details));
@@ -682,6 +735,8 @@ function* addHolidayEvents(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(addHolidayFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -700,11 +755,13 @@ function* deleteHolidayEvents(action) {
     } else {
       yield put(hideLoader());
       yield put(deleteHolidayFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(deleteHolidayFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -720,13 +777,19 @@ function* FetchLeaveByTypes(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getLeavesByTypesSuccess(response));
+      yield call(action.payload.onSuccess(response));
+
     } else {
       yield put(hideLoader());
       yield put(getLeavesByTypesFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getLeavesByTypesFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -745,12 +808,14 @@ function* FetchEmployeesLeaves(action) {
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
       yield put(getEmployeeLeavesFailure(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeLeavesFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -769,12 +834,14 @@ function* getModifyLogsSaga(action) {
       yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
       yield put(getModifyLogsFailure(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getModifyLogsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -799,6 +866,7 @@ function* getReportsSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getMisReportFailure("Invalid Request"));
+    yield put(getMisReportFailure(error));
   }
 }
 
@@ -822,6 +890,8 @@ function* getDownloadMisReport(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getDownloadMisReportFailure("Invalid Request"));
+    yield put(getMisReportFailure(error));
+
   }
 }
 
@@ -843,11 +913,13 @@ function* FetchUserDocument(action) {
     } else {
       yield put(hideLoader());
       yield call(action.payload.onError);
-      yield put(getEmployeeDocumentSuccess(response.error_message));
+      yield put(getEmployeeDocumentFailure(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getEmployeeDocumentFailure("Invalid Request"));
+    yield put(getMisReportFailure(error));
+
   }
 }
 
@@ -868,11 +940,13 @@ function* AttachUserDocument(action) {
     } else {
       yield put(hideLoader());
       yield call(action.payload.onError(response.error_message));
-      yield put(attachUserDocumentSuccess(response.error_message));
+      yield put(attachUserDocumentFailure(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(attachUserDocumentFailure("Invalid Request"));
+    yield put(attachUserDocumentFailure(error));
+
   }
 }
 /**
@@ -894,6 +968,8 @@ function* fetchAdminBranchSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getAdminBranchesFailure("Invalid Request"));
+    yield put(getAdminBranchesFailure(error));
+
   }
 }
 
@@ -917,6 +993,8 @@ function* postUpdateAdminBranchesSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(postAdminUpdateBranchesFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -930,12 +1008,15 @@ function* getBranchAdminsSaga(action) {
       yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(hideLoader());
-      yield call(action.payload.onError(response.error_message));
       yield put(getBranchAdminsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(getBranchAdminsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -960,6 +1041,8 @@ function* updateLeaveTypeSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(updateLeaveTypeFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -985,6 +1068,8 @@ function* getDownloadEmployeeCheckInLogsSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(getDownloadEmployeeCheckinLogsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 

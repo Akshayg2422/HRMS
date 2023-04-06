@@ -86,7 +86,13 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
             page_number: pageNumber,
         };
         dispatch(getMisReport({
-            params
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
         }));
     })
 
@@ -113,10 +119,10 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         }
         dispatch(getDownloadEmployeeCheckinLogs({
             params,
-            onSuccess: (response: any) => {
+            onSuccess: (response: any) => () => {
                 downloadFile(response);
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
             },
         }));
     }

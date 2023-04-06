@@ -8,7 +8,7 @@ import {
 } from "@components";
 import React, { useEffect } from "react";
 
-import { fetchDashboardDetails, Navbar, Header, DashBoardCard } from "@modules";
+import { fetchDashboardDetails, Navbar, Header, DashBoardCard, DashboardStats } from "@modules";
 import { useDashboard } from "@contexts";
 import { goTo, ROUTE, showToast, useNav } from "@utils";
 import { useDispatch } from "react-redux";
@@ -50,7 +50,16 @@ function Dashboard() {
     if (isWebPushRegisterController) {
       registerDeviceDetails()
     }
-    dispatch(getDashboard({}))
+    const params = {}
+    dispatch(getDashboard({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   }, [])
   // console.log("isWebPushRegisterController", isWebPushRegisterController);
 
@@ -82,11 +91,20 @@ function Dashboard() {
     // dispatch(postAppConfig({ params }))
     dispatch(postAppConfig({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         console.log("web config success-->", response);
-        dispatch(isWebPushRegister(false))
+        const param = false
+        dispatch(isWebPushRegister({
+          param,
+          onSuccess: (success: any) => () => {
+
+          },
+          onError: (error: any) => () => {
+
+          }
+        }))
       },
-      onError: () => {
+      onError: () => () => {
       },
     }))
   }
@@ -116,11 +134,11 @@ function Dashboard() {
       const params = {}
       dispatch(getListAllBranchesList({
         params,
-        onSuccess: (response: Array<LocationProps>) => {
+        onSuccess: (response: Array<LocationProps>) => () => {
           const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
           dispatch(setBranchHierarchical({ ids: { branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name }))
         },
-        onError: () => {
+        onError: () => () => {
         },
       }))
     }
@@ -130,7 +148,7 @@ function Dashboard() {
   return (
     <>
       <div className='my-5'>
-        <DashBoardCard />
+        <DashboardStats />
       </div>
     </>
   );

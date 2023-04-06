@@ -73,6 +73,7 @@ const WeeklyShiftSelection = () => {
   }
 
   const onSubmit = () => {
+
     if (validatePostParams()) {
       const params = {
         ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
@@ -83,13 +84,13 @@ const WeeklyShiftSelection = () => {
       dispatch(
         addWeeklyShift({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast("success", success.status);
             selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
             goBack(navigation);
             // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })
@@ -99,49 +100,57 @@ const WeeklyShiftSelection = () => {
 
   //muthu validation
 
-  // const shiftTimeValidation = () => {
-  //   let output = { status: false, error: '' }
-  //   let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
-  //   if (WeekEnable) {
-  //     console.log("weekly shoift on");
-  //     weeklyData.map((element: any) => {
-  //       if (element.is_working) {
-  //         const isDayEnable = element.week_calendar.some((element2: any) => element2.is_working)
+  const shiftTimeValidation = () => {
 
-  //         if (isDayEnable) {
-  //           console.log("is day enable");
+    let proceed = false
+    let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
+    if (WeekEnable) {
 
-  //           weeklyData.map((element3: any) => {
+      weeklyData.map((element: any) => {
+        if (element.is_working) {
+          const isDayEnable = element.week_calendar.some((element2: any) => element2.is_working)
 
-  //             if (element3.is_working) {
+          if (isDayEnable) {
 
-  //               element3.week_calendar.map((element4: any) => {
+            weeklyData.map((element3: any) => {
 
-  //                 if (element4.is_working) {
+              if (element3.is_working) {
 
-  //                   if (element4.time_breakdown.length > 0) {
-  //                     console.log("shift time assigned for the selected day");
-  //                   }
-  //                   else {
-  //                     console.log("please assign shift time for the selected day");
+                element3.week_calendar.map((element4: any) => {
 
-  //                   }
-  //                 }
-  //               })
-  //             }
-  //           })
-  //         }
-  //         else {
-  //           console.log("please atleast enable one day to add shift")
-  //         }
-  //       }
-  //     })
-  //   }
-  //   else {
-  //     output = { status: false, error: `Can't Create Shift Please Enable At least one Week` }
-  //   }
-  //   return output
-  // }
+                  if (element4.is_working) {
+
+                    if (element4.time_breakdown.length > 0) {
+                      // showToast('error', "shift time assigned for the selected day")
+                      proceed = true
+                    }
+                    else {
+                      showToast('error', "please assign shift time for the selected day")
+                      console.log("please assign shift time for the selected day");
+                      proceed = false
+                      return
+                    }
+                  }
+                })
+              }
+            })
+          }
+          else {
+            showToast('error', "please atleast enable one day to add shift")
+            console.log("please atleast enable one day to add shift")
+            proceed = false
+            return
+          }
+        }
+      })
+    }
+    else {
+      showToast('error', `Can't Create Shift Please Enable At least one Week`)
+      proceed = false
+      return
+    }
+    return proceed
+  }
 
 
   // const shiftTimeValidation = () => {
@@ -373,10 +382,10 @@ const WeeklyShiftSelection = () => {
     const params = { id: selectedWeeklyShiftId }
     dispatch(getWeeklyShiftDetails({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         setWeeklyData(success.weekly_group_details)
       },
-      onError: (error: string) => { },
+      onError: (error: string) => () => { },
     }))
   }
 

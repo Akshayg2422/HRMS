@@ -85,6 +85,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
     draggable: true,
     progress: undefined,
     theme: "colored"
+    
   }
 
   let toastElement = null;
@@ -100,6 +101,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
       break;
     default:
       toastElement = toast(message, style)
+      
       break;
   }
 
@@ -204,6 +206,17 @@ function convertTo24Hour(s: any) {
     convertedTime[0] = (convertedTime[0] % 12) + 12
   }
   return convertedTime.join(":");
+}
+
+const convertToUpperCase = (data: string) =>{
+  if(data){
+    let toUpperCase = data?.charAt(0)?.toUpperCase() + data?.slice(1);
+    return toUpperCase
+  }
+  else{
+    return data
+  }
+ 
 }
 
 
@@ -388,5 +401,6 @@ export {
   base64ToImage,
   MAX_LENGTH_PAN_CARD,
   CHILD_PATH,
-  getTimelineRelativeTimeFormat
+  getTimelineRelativeTimeFormat,
+  convertToUpperCase
 }

@@ -72,15 +72,15 @@ const DashBoardAttendance = ({ }) => {
   })
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState(
-    routeParams.departmentId
+    routeParams.params.departmentId
   );
   const [selectedAttendance, setSelectedAttendance] = useState(
-    routeParams.attendanceType
+    routeParams.params.attendanceType
   );
 
   const [selectedDateRange, setSelectedDateRange] = useState(DOWNLOAD_RANGE[0].value);
   const [customselectedDate, setCustomSelectedDateRange] = useState(
-    getServerDateFromMoment(getMomentObjFromServer(routeParams.selectedDate))
+    getServerDateFromMoment(getMomentObjFromServer(routeParams.params.selectedDate))
   );
   const [customRange, setCustomRange] = useState({
     dateFrom: "",
@@ -92,6 +92,8 @@ const DashBoardAttendance = ({ }) => {
   useEffect(() => {
     getTodayStats(currentPage);
   }, [selectedAttendance, selectedDepartment, customselectedDate]);
+
+  console.log("routeParams", routeParams)
 
 
   useEffect(() => {
@@ -138,7 +140,15 @@ const DashBoardAttendance = ({ }) => {
         ...(searchEmployee && { q: searchEmployee }),
       };
 
-      dispatch(getEmployeeTodayStatus(params));
+      dispatch(getEmployeeTodayStatus({
+        params,
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
+      }));
     }
   };
 
@@ -254,7 +264,13 @@ const DashBoardAttendance = ({ }) => {
     if (selectedUser.per_day_details && selectedUser.id) {
       dispatch(
         getCheckInDetailedLogPerDay({
-          params
+          params,
+          onSuccess: (success: any) => () => {
+
+          },
+          onError: (error: any) => () => {
+
+          }
         })
       );
     }
@@ -298,12 +314,12 @@ const DashBoardAttendance = ({ }) => {
     dispatch(
       getDownloadTodayStatus({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           setDownloadModel(false)
           downloadFile(response);
           customRangeReset()
         },
-        onError: (errorMessage: string) => {
+        onError: (errorMessage: string) => () => {
           showToast("error", errorMessage);
           setDownloadModel(false)
           customRangeReset()
@@ -395,13 +411,13 @@ const DashBoardAttendance = ({ }) => {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             showToast("success", response?.message);
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
             getTodayStats(currentPage);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
           },

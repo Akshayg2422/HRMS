@@ -39,8 +39,8 @@ const Approved = () => {
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: any) => {},
-        onError: (error: string) => {},
+        onSuccess: (success: any) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -53,8 +53,8 @@ const Approved = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchApprovedLeaves(page);
   }
 

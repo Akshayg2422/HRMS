@@ -20,7 +20,7 @@ function ManageLeaves() {
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
   const [recall, setRecall] = useState(false);
-  const [daysHoliday,setDaysHoliday] = useState<any[]>([]);
+  const [daysHoliday, setDaysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
   const { calendarEvents, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
@@ -39,7 +39,15 @@ function ManageLeaves() {
       ...hierarchicalBranchIds,
       pageNumber: pageNumber,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   const normalizedEmployeeLog = (data: any) => {
@@ -54,7 +62,7 @@ function ManageLeaves() {
 
   const geteventsdetails = () => {
     calendarEvents?.days_leave?.map((item: any) => {
-      let update={
+      let update = {
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
