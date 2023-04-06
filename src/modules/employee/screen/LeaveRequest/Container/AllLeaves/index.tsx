@@ -353,7 +353,7 @@ const LocationTable = ({
                   <td style={{ whiteSpace: "pre-wrap" }} >
                     {item.status_code === -1 ? (
                       <span
-                        className="h5 text-primary"
+                        className="h5 text-primary "
                         style={{ cursor: 'pointer' }}
 
                         onClick={() => {
@@ -390,7 +390,7 @@ const LocationTable = ({
                     {item.status_code === -1 ? (
                       <span
                         style={{ cursor: 'pointer' }}
-                        className="h5 text-primary"
+                        className="h5 text-danger"
                         onClick={() => {
                           if (onRejectClick) onRejectClick(item);
                         }}

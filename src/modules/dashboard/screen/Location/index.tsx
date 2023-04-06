@@ -184,7 +184,7 @@ function LocationScreen() {
       return {
         name: el.name,
         'Address': el?.address ? el?.address : '-',
-        'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.TickActive} /> : <></>,
+        'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.Tick} /> : <></>,
         'Fencing Radius': el.fencing_radius + ' m',
         "": <CommonDropdownMenu
           data={el.has_location && el.has_location && !el.can_update_location ? DROPDOWN_MENU : el.has_location && el.has_location && el.can_update_location ? DROPDOWN_MENU_2 : DROPDOWN_MENU_1}

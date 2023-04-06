@@ -16,6 +16,7 @@ interface TableProps {
   tableContentType?: number;
   comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>;
   custombutton?: string
+  customButtonColor?:string
 
 }
 
@@ -25,7 +26,7 @@ interface Element {
   elh: string
 }
 
-function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet }: TableProps) {
+function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet,customButtonColor="primary" }: TableProps) {
 
   const renderTableHeader = () => {
     if (displayDataSet) {
@@ -42,10 +43,10 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
     })
   }
 
- 
+
 
   function getValueElement(key: string, item: object) {
-    let element = <span>{key == 'name' ||key == 'Name' ||key == 'NAME' ? convertToUpperCase(item[key as keyof object]) : item[key as keyof object]}</span>;
+    let element = <span>{key == 'name' || key == 'Name' || key == 'NAME' ? convertToUpperCase(item[key as keyof object]) : item[key as keyof object]}</span>;
     // switch (key) {
     //   case 'STATUS':
     //     element = <span className='text-primary'>{item[key]}</span>
@@ -77,7 +78,7 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
     let element = null;
     switch (item.elt) {
       case TABLE_ELEMENT_TEXT_BUTTON:
-        element = <span style={{ cursor: 'pointer' }} className={`text-primary ${custombutton}`}>{item.elv}</span>
+        element = <span style={{ cursor: 'pointer' }} className={`text-${item.elv == 'Reject' ? "danger" : "primary"} ${custombutton}`}>{item.elv}</span>
         break;
       case TABLE_ELEMENT_TEXT_IMAGE:
         element = <span className='text-primary'>{item.elv}</span>

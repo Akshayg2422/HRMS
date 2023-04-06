@@ -113,7 +113,6 @@ const ManageBranches = () => {
         branchAddition({
           params,
           onSuccess: (success: object) => () => {
-            console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
             showToast("success", t("branchAddedSuccessfully"));
             goBack(navigation)
           },

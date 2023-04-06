@@ -136,6 +136,7 @@ const Pending = () => {
                 manageRejectStatus(current);
               }
             }}
+            
             custombutton={"h5"}
           />
         ) : (

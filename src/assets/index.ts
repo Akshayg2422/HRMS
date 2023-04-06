@@ -105,7 +105,8 @@ export const Icons = {
   EventNotification:require('./icons/EventNotification/EventNotification.png'),
   FaceRequest:require('./icons/FaceRequest/FaceRequest.png'),
   Csv:require('./icons/Csv/csv .png'),
-  MenuDots:require('./icons/MenuDots/MenuDots.png')
+  MenuDots:require('./icons/MenuDots/MenuDots.png'),
+  Tick: require('./icons/Tick/tick.png')
 }
 
 

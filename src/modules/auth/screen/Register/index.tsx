@@ -225,6 +225,7 @@ function SignUp() {
     );
   };
 
+
   const validatePostParams = () => {
     const otpConvertor = registerOtp.otp1 + registerOtp.otp2 + registerOtp.otp3 + registerOtp.otp4;
 
