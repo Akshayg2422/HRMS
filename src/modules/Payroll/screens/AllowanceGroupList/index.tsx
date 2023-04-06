@@ -1,7 +1,7 @@
-import { Container, DropDown, FormWrapper, Icon, ImageView, InputText, Modal, Primary, Secondary } from '@components'
+import { Container, DropDown, FormWrapper, Icon, ImageView, InputText, Modal, Primary, ScreenContainer, Secondary, TableWrapper } from '@components'
 import { Icons } from '@assets';
 import { goTo, ROUTE, useNav } from '@utils'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { Route } from 'react-router-dom';
@@ -18,33 +18,32 @@ function AllowanceGroupList() {
         // setSelectAddAllowanceModel(!selectAllowanceModel)
     }, [])
 
+    const memoizedTable = useMemo(() => {
+        return <>
+
+        </>
+    }, [])
+
 
     return (
         <>
-            <FormWrapper
+            <TableWrapper
                 title={t('AllowanceGroupList')}
-                onClick={() => console.log('clicked')}>
-                <InputText
-                    label={t("DefaultGroupName")}
-                    onChange={(event) => {
-                        // onChangeHandler(event);
-                    }}
-                />
-                <Container additionClass="text-right">
+                buttonChildren={
                     <Primary
                         text={t("add")}
-                        additionClass={'col-5 col-sm-0'}
+                        additionClass={'col-sm-0 mr--4'}
                         onClick={() => {
                             dispatch(CreateGroup('Allowance'))
                             goTo(navigation, ROUTE.ROUTE_CREATE_GROUP)
                         }
                         }
-
-                        col={"col-xl-3"}
                         size={"btn-md"}
                     />
-                </Container>
-            </FormWrapper>
+                }
+            >
+                {memoizedTable}
+            </TableWrapper>
 
         </>
     )

@@ -13,8 +13,9 @@ import {
   Primary,
   useKeyPress,
   ImageView,
+  TableWrapper,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   getEmployeesList,
   getEmployeesCheckInLogs,
@@ -284,89 +285,11 @@ function EmployeeLog() {
     }
   }
 
-
-  return (
-    <>
-      <Card additionClass={'mx-3'}>
-        <Container additionClass={"row"}>
-          <Container col={"col-xl-5"}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              placeholder={t("enterEmployeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
-              onClick={() => {
-                getEmployeeLogs(currentPage);
-              }}
-            />
-          </Container>
-
-          <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
-            <Sort
-              sortData={employeeLogSort}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
-
-        </Container>
-      </Card>
-
+  const memoizedTable = useMemo(() => {
+    return <>
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
-          headerActionsClass={'mr--4'}
-          headerActions={
-            <div >
-              <Sort
-                size={'btn-sm'}
-                sortData={employeeLogSort}
-                activeIndex={activeSort}
-                onClick={(index) => {
-                  setActiveSort(index);
-                  onTabChange(index);
-                }}
-              />
-            </div>
-          }
-
-
-          headerChildrenClass={'ml--2'}
-          // headerChildren={
-          //   <>
-          //     <Container>
-          //       <ChooseBranchFromHierarchical />
-          //     </Container>
-
-          //     <Container additionClass={"col-xl-4 col-md-6 col-sm-12 row"}>
-          //       <InputText
-          //         value={searchEmployee}
-          //         col={'col'}
-          //         placeholder={t("enterEmployeeName")}
-          //         onChange={(e) => {
-          //           setSearchEmployee(e.target.value);
-          //         }}
-          //       />
-          //       {/* <i className="bi bi-search"></i> */}
-          //       <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
-          //         onClick={() => {
-          //           getEmployeeLogs(currentPage);
-          //         }}
-          //       />
-          //     </Container>
-          //   </>
-          // }
-
-          title={t("employeeLog")}
+          card={false}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
@@ -385,7 +308,54 @@ function EmployeeLog() {
             getEmployeeLogs(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card additionClass={"mx-4"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [registeredEmployeesList])
+
+  return (
+    <>
+      <TableWrapper
+        buttonChildren={
+          <div className="mr--4">
+            <Sort
+              size={'btn-sm'}
+              sortData={employeeLogSort}
+              activeIndex={activeSort}
+              onClick={(index) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
+        }
+        filterChildren={
+          <Container additionClass={"row"}>
+            <Container col={"col-xl-5"}>
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
+              <InputText
+                value={searchEmployee}
+                col={'col'}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
+                onClick={() => {
+                  getEmployeeLogs(currentPage);
+                }}
+              />
+            </Container>
+
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
+
+
       <Modal
         showModel={model}
         title={`${selectedEmployeeDetails?.name}'s ${t('log')}`}
@@ -500,7 +470,7 @@ function EmployeeLog() {
                                           {item.type}
                                         </small>
                                         <small className="mb-0 col">
-                                          {item.address_text?item.address_text : "       -"}
+                                          {item.address_text ? item.address_text : "       -"}
                                         </small>
                                       </Container>
                                       <Divider />
@@ -528,6 +498,7 @@ function EmployeeLog() {
           <NoRecordFound />
         )}
       </Modal>
+
       <Modal
         showModel={markAsPresentModel}
         toggle={() => {
@@ -575,6 +546,7 @@ function EmployeeLog() {
           </Container>
         </Container>
       </Modal>
+
       <Modal showModel={presentModifiedModel} title={t('markAsPresent')}
         toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
         <Container additionClass={'ml-3'}><span>

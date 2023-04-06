@@ -1,5 +1,5 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu } from '@components';
-import React, { useEffect, useRef, useState } from 'react';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu, TableWrapper } from '@components';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName } from '../../../../store/location/actions';
@@ -25,6 +25,8 @@ const DROPDOWN_MENU_2 = [
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
+
+
 type Employee = {
   id?: string;
   name?: string;
@@ -41,6 +43,11 @@ function LocationScreen() {
   const dispatch = useDispatch();
   const navigation = useNav();
   const { t } = useTranslation();
+
+  const CARD_DROPDOWN_ITEM = [
+    { id: '1', name: 'My branches', value: 'CL', icon: 'ni ni-active-40' },
+  ]
+
   const [branch, setBranch] = useState<any>([])
   const { brancheslist } = useSelector((state: any) => state.LocationReducer);
 
@@ -97,10 +104,10 @@ function LocationScreen() {
 
   useEffect(() => {
     if (enterPress && model === true) {
-        getRegisteredFenceAdmin(currentPage);
+      getRegisteredFenceAdmin(currentPage);
     }
     getRegisteredFenceAdmin(currentPage)
-}, [enterPress, selectedBranchId])
+  }, [enterPress, selectedBranchId])
 
   useEffect(() => {
     if (inputRef.current) {
@@ -164,18 +171,18 @@ function LocationScreen() {
     const params = { branch_id: selectedBranchId.id, employee_id: item.id }
 
     dispatch(addFenceAdmin({
-        params,
-        onSuccess: (success: any) => () => {
-            getAllBranchesListData()
-            showToast("success", success.message);
-            setIsOpenFenceModal(!isOpenFenceModal)
-        },
-        onError: (error: string) => () => {
-            showToast("error", error);
-        },
+      params,
+      onSuccess: (success: any) => () => {
+        getAllBranchesListData()
+        showToast("success", success.message);
+        setIsOpenFenceModal(!isOpenFenceModal)
+      },
+      onError: (error: string) => () => {
+        showToast("error", error);
+      },
     }))
 
-}
+  }
 
 
 
@@ -286,12 +293,65 @@ function LocationScreen() {
   function paginationHandler(type: 'next' | 'prev' | 'current', position?: number) {
     let page = type === 'next' ? currentPage + 1 : type === 'prev' ? currentPage - 1 : position;
     getRegisteredFenceAdmin(page)
-}
+  }
+
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {branch && branch.length > 0 ? (
+        <CommonTable
+        card={false}
+          displayDataSet={normalizedEmployeeLog(branch)}
+        />
+      ) :<NoRecordFound />}
+    </>
+  }, [branch])
 
 
   return (
     <>
-      <Card additionClass='mx-3 row'>
+
+      <TableWrapper
+        title={t('allRegisteredLocation')}
+        buttonChildren={
+         
+
+          <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
+             <Primary
+            text={t("AddBranch")}
+            onClick={() => manageBranchesHandler(undefined)}
+            size={"btn-sm"}
+          />
+            <CommonDropdownMenu
+              data={CARD_DROPDOWN_ITEM}
+              onItemClick={(e, item) => {
+                e.stopPropagation();
+                goTo(navigation, ROUTE.ROUTE_MY_BRANCHES)
+              }}
+            />
+          </Container>
+        }
+        filterChildren={
+          <Container additionClass={"col-xl-4 row ml--4"}>
+          <InputText
+            value={searchBranches}
+            col={'col'}
+            placeholder={t("searchLocation")}
+            onChange={(e) => {
+              setsearchBranches(e.target.value);
+            }}
+          />
+          <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+            onClick={() => {
+              // SelectedBranchFilter()
+            }}
+          />
+        </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
+      {/* <Card additionClass='mx-3 row'>
         <h2 className='mb-3'>{t('allRegisteredLocation')}</h2>
         <Container additionClass={"col-xl-4 row ml--4"}>
           <InputText
@@ -315,24 +375,13 @@ function LocationScreen() {
             size={"btn-sm"}
           />
         </Container>
-      </Card>
-      {branch && branch.length > 0 ? (
+      </Card> */}
+      {/* {branch && branch.length > 0 ? (
         <CommonTable
           displayDataSet={normalizedEmployeeLog(branch)}
-        // tableChildren={
-        //   <LocationTable
-        //     tableDataSet={branch}
-        //     resetRadiusOnchange={(item) => {
-        //       setModelData(item)
-        //       setModel(!model)
-        //     }}
-        //     enableReFetch={enableReFetchApi}
-        //     onEditClick={(item) => {
-        //       handleEdit(item)
-        //     }}
-        //   />}
         />
-      ) : <Card additionClass='mx-3'><NoRecordFound /></Card>}
+      ) : <Card additionClass='mx-3'><NoRecordFound /></Card>} */}
+
       <Modal
         title={'Select Radius'}
         showModel={model}
@@ -356,6 +405,7 @@ function LocationScreen() {
         })}
 
       </Modal>
+
       <Modal title={t('editBranch')}
         showModel={editModel}
         toggle={() => setEditModel(!editModel)}>
@@ -385,46 +435,46 @@ function LocationScreen() {
       </Modal>
 
       {
-                <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={isOpenFenceModal} toggle={() => {
-                    setIsOpenFenceModal(!isOpenFenceModal)
-                    setSearchEmployee("")
-                }}>
-                    <Container additionClass={"col-xl-6 row"}>
-                        <InputText
-                            value={searchEmployee}
-                            col={'col'}
-                            placeholder={t("searchEmployee")}
-                            onChange={(e) => {
-                                setSearchEmployee(e.target.value);
-                            }}
-                        />
-                        <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-                            onClick={() => {
-                                getRegisteredFenceAdmin(currentPage)
-                            }}
-                        />
-                    </Container>
-                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-                        <CommonTable
-                            noHeader
-                            isPagination
-                            currentPage={currentPage}
-                            noOfPage={numOfPages}
-                            paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }}
-                            previousClick={() => paginationHandler('prev')}
-                            nextClick={() => paginationHandler('next')}
-                            tableChildren={
-                                <EmployeeTable
-                                    employeeFenceId={selectedEmployeeFenceId}
-                                    tableDataSet={registeredEmployeesList}
-                                    proceedFenceAdmin={(item) => addFenceAdminApiHandler(item)}
-                                />}
-                        />
-                    ) :
-                        <NoRecordFound />
-                    }
-                </Modal>
-            }
+        <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={isOpenFenceModal} toggle={() => {
+          setIsOpenFenceModal(!isOpenFenceModal)
+          setSearchEmployee("")
+        }}>
+          <Container additionClass={"col-xl-6 row"}>
+            <InputText
+              value={searchEmployee}
+              col={'col'}
+              placeholder={t("searchEmployee")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+              onClick={() => {
+                getRegisteredFenceAdmin(currentPage)
+              }}
+            />
+          </Container>
+          {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+            <CommonTable
+              noHeader
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }}
+              previousClick={() => paginationHandler('prev')}
+              nextClick={() => paginationHandler('next')}
+              tableChildren={
+                <EmployeeTable
+                  employeeFenceId={selectedEmployeeFenceId}
+                  tableDataSet={registeredEmployeesList}
+                  proceedFenceAdmin={(item) => addFenceAdminApiHandler(item)}
+                />}
+            />
+          ) :
+            <NoRecordFound />
+          }
+        </Modal>
+      }
     </>
   );
 }
@@ -439,24 +489,24 @@ type EmployeeTableProps = {
 
 const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: EmployeeTableProps) => {
   return <div className='table-responsive'>
-      <table className='table align-items-center' style={{ marginBottom: '0px' }}>
-          <thead className='thead-light'>
-              <tr>
-                  <th scope='col'>{'Name'}</th>
-                  <th scope='col'>{''}</th>
-              </tr>
-          </thead>
-          <tbody>
-              {
-                  tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
-                      return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
-                          <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
-                          <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
-                      </tr>
-                  })
-              }
-          </tbody>
-      </table>
+    <table className='table align-items-center' style={{ marginBottom: '0px' }}>
+      <thead className='thead-light'>
+        <tr>
+          <th scope='col'>{'Name'}</th>
+          <th scope='col'>{''}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
+            return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
+              <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
+              <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
+            </tr>
+          })
+        }
+      </tbody>
+    </table>
   </div>
 }
 

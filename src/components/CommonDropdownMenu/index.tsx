@@ -42,8 +42,6 @@ function CommonDropdownMenu({ data, onAddClick, onDeleteClick, onAssignCourse, i
 
                                         if (onItemClick) {
                                             onItemClick(e,item)
-
-
                                         }
                                     }}
                                 >
