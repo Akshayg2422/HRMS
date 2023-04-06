@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
+import { Card, CommonDropdownMenu, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
 import {
     goTo,
     useNav,
@@ -18,6 +18,10 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Icons } from '@assets';
 import { getDesignationData } from '../../../../store/employee/actions';
+
+export const DROPDOWN_MENU = [
+    { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+]
 
 const ShiftGroup = () => {
     const navigation = useNav();
@@ -77,11 +81,23 @@ const ShiftGroup = () => {
 
 
     const normalizedBranchShifts = (branchShift: any) => {
-        return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
+        return branchShift && branchShift.length > 0 && branchShift.map((element: any, index: number) => {
             return {
                 "Shift Name": element.name,
                 "Designation": getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id) ? getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id).name : <>{'-'}</>,
                 " Total Employees": element.employee_count,
+                "Manage employee": <span className={'text-primary'} style={{ cursor: 'pointer' }} onClick={() => {
+                    const current = shiftGroup[index];
+                    handleAddEmployeeToGroup(current)
+                }}>Manage Employee</span>,
+                "": <CommonDropdownMenu
+                    data={DROPDOWN_MENU}
+                    onItemClick={(e, item) => {
+                        const current = shiftGroup[index];
+                        e.stopPropagation();
+                        manageShiftGroupHandler(current)
+                    }}
+                />
             };
         });
     };
@@ -154,7 +170,7 @@ const ShiftGroup = () => {
                     <Container>
                         <CommonTable
                             displayDataSet={normalizedBranchShifts(shiftGroup)}
-                            additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
+                            // additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
                             tableOnClick={(e: any) => {
                             }}
                             tableValueOnClick={(e, index, item, elv) => {

@@ -5,6 +5,7 @@ import {
   CardCalendar,
   LineCharts,
   Primary,
+  CommonDropdownMenu,
 } from "@components";
 import React, { useEffect } from "react";
 
@@ -24,6 +25,7 @@ import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 import { getAdminBranches } from "../../../../store/employee/actions";
 import { isWebPushRegister, postAppConfig, webPushRegister } from "../../../../store/auth/actions";
+import { Icons } from "@assets";
 
 
 function Dashboard() {
@@ -41,15 +43,11 @@ function Dashboard() {
   );
 
   useEffect(() => {
-    if (isWebPushRegisterController && fcmToken) {
       getPostAppConfig()
-    }
   }, [fcmToken])
 
   useEffect(() => {
-    if (isWebPushRegisterController) {
-      registerDeviceDetails()
-    }
+
     const params = {}
     dispatch(getDashboard({
       params,
@@ -64,22 +62,6 @@ function Dashboard() {
   // console.log("isWebPushRegisterController", isWebPushRegisterController);
 
 
-  const registerDeviceDetails = async () => {
-
-    let registrationDetails: any = await localStorage.getItem('registrationDetails')
-    const params = JSON.parse(registrationDetails)
-
-    // dispatch(webPushRegister({
-    //   params,
-    //   onSuccess: (response: any) => {
-    //     dispatch(isWebPushRegister(false))
-    //   },
-    //   onError: () => {
-    //   },
-    // }))
-  }
-
-
   const getPostAppConfig = () => {
     const params = {
       device_model: appConfig?.model,
@@ -88,7 +70,7 @@ function Dashboard() {
       device_token: fcmToken
     }
     console.log('params------------->', params);
-    // dispatch(postAppConfig({ params }))
+    
     dispatch(postAppConfig({
       params,
       onSuccess: (response: any) => () => {
@@ -144,6 +126,16 @@ function Dashboard() {
     }
 
   }, []);
+
+  const menuSet = [{
+    name: 'Edit',
+    elv: 'Edit',
+    icon: Icons.Edit
+  }, {
+    name: 'Delete',
+    elv: 'Delete',
+    icon: ''
+  }]
 
   return (
     <>

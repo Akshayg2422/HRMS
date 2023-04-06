@@ -106,7 +106,7 @@ function* updateLocationRadius(action) {
 
       yield put(hideLoader());
       yield put(updateBranchLocationRadiusSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
 
     } else {
 

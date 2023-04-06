@@ -3,72 +3,66 @@ import { Icons } from "@assets";
 import { Card, Container, ImageView } from "@components";
 import { ROUTE, useNav } from "@utils";
 
-function PortFolio() {
+function Approvals() {
   const navigate = useNav();
 
-  const MY_PORTFOLIO_ITEM = [
+  const APPROVALS_ITEM = [
     {
       id: "1",
-      name: "My Time Sheet",
+      name: "Employees Leaves",
       value: "MB",
-      route: ROUTE.ROUTE_MY_WORK_BOOK,
-      icon: Icons.myLogBook,
+      route:  ROUTE.ROUTE_LEAVE_REQUEST,
+      icon: Icons.EMPLOYEELEAVES,
     },
     {
       id: "2",
-      name: "My Log Book",
+      name: "Modify logs",
       value: "ML",
-      route: ROUTE.ROUTE_MY_LOG,
-      icon: Icons.MyLog,
+      route: ROUTE.ROUTE_MODIFY_LOGS,
+      icon: Icons.Modify_Logs,
     },
 
     {
       id: "3",
-      name: "Calendar",
+      name: "Employees shifts",
       value: "CA",
-      route: ROUTE.ROUTE_MANAGE_LEAVES,
-      icon: Icons.CalendarSecondary,
+      route: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
+      icon: Icons.EMPLOYEESHIFTS,
     },
     {
-      id: "4",
-      name: "My Leaves",
-      value: "ML",
-      route: ROUTE.ROUTE_MY_LEAVES,
-      icon: Icons.myLeaves,
-    },
+        id: "4",
+        name: "Shift Request",
+        value: "CA",
+        route: ROUTE.ROUTE_SHIFT_REQUEST,
+        icon: Icons.ShiftRequest,
+      },
     {
       id: "5",
-      name: "E-Locker",
-      value: "EL",
-      route: ROUTE.ROUTE_E_LOCKER,
-      icon: Icons.E_Locker,
+      name: "Face Re-register",
+      value: "ML",
+      route: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
+      icon: Icons.FaceRequest,
     },
     {
       id: "6",
-      name: "My Shift",
-      value: "MS",
-      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
-      icon: Icons.ShiftChange,
+      name: "Log Approval",
+      value: "EL",
+      route: ROUTE.ROUTE_LOG_APPROVAL,
+      icon: Icons.FaceApproval,
     },
     {
       id: "7",
-      name: "Shift Request History",
-      value: "SC",
-      route: ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST,
-      icon: Icons.MY_SHIFTS,
+      name: "Face Approval",
+      value: "MS",
+      route: ROUTE.ROUTE_FACE_RE_REQUEST,
+      icon: Icons.FaceRequest,
     },
-    {
-      id: "8",
-      name: "Apply Leave",
-      value: "AL",
-      route: ROUTE.ROUTE_AVAILABLE_LEAVES,
-      icon: Icons.ApplyLeave,
-    }
+   
   ];
 
   return (
     <Container flexDirection={"row"} margin={"mt-3"} style={{ cursor: 'pointer' }}>
-      {MY_PORTFOLIO_ITEM.map((it, index) => {
+      {APPROVALS_ITEM.map((it, index) => {
         return (
           <Container additionClass={"col-xl-3 col-md-6"}>
             {/* <Card
@@ -120,4 +114,4 @@ function PortFolio() {
   );
 }
 
-export default PortFolio;
+export default Approvals;

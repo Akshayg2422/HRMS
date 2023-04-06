@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast ,goBack} from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast, goBack } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, BackArrow, Secondary, Primary, Divider } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,6 +17,8 @@ import { resetShiftManagement } from '../../../../store/shiftManagement/actions'
 import { Notification } from '../Notification';
 import { setIsShowBack } from '../../../../store/notifications/actions';
 
+//ROUTE_PORTFOLIO
+
 const Header = () => {
   const [languageModel, setLanguageModel] = useState(false);
   const [model, setModel] = useState(false);
@@ -26,7 +28,7 @@ const Header = () => {
   const navigation = useNav();
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
-  const [isParent,setIsParent]= useState(false)
+  const [isParent, setIsParent] = useState(false)
 
   let dispatch = useDispatch();
 
@@ -81,6 +83,10 @@ const Header = () => {
 
     else if (item.value === 'LG') {
       setModel(!model)
+    }
+    else {
+      goTo(navigate, ROUTE.ROUTE_PORTFOLIO);
+
     }
 
   };
@@ -144,15 +150,15 @@ const Header = () => {
             <BackArrow additionClass={'mr--1'} />
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
-              { isParent && <div className='small'>
-                
-                <span style={{cursor:"pointer"}} onClick={() =>{ goBack(navigation)}}>{headerTitle} </span> 
+              {isParent && <div className='small'>
+
+                <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigation) }}>{headerTitle} </span>
                 <span> {" "} {pathname}</span>
 
 
-                </div>
-}
-                
+              </div>
+              }
+
             </div>
 
             <ul className='navbar-nav align-items-center  ml-md-auto '>

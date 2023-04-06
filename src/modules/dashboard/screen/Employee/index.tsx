@@ -27,10 +27,13 @@ import {
 } from "@utils";
 import { useDashboard } from "@contexts";
 import {
+  changeAttendanceSettings,
   employeeEdit,
   getEmployeesList,
   getSelectedEmployeeId,
   getUpdateEmployeeStatus,
+  postEnableFieldCheckIn,
+  postEnableOfficeCheckIn,
 
   // changeAttendanceSettings,
   // postEnableFieldCheckIn,
@@ -66,9 +69,9 @@ export const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-button-power' },
-  { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
-  { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
-  { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 function EmployeeScreen() {
@@ -258,9 +261,27 @@ function EmployeeScreen() {
    */
 
   function getEmployeeAssociationBranch(id: string | undefined) {
-    dispatch(getEmployeeCheckinAssociations({ user_id: id }));
-    dispatch(getListAllBranchesList({}));
+    dispatch(getEmployeeCheckinAssociations({
+      user_id: id,
+      onSuccess: (success: any) => () => {
+      },
+      onError: (error: string) => () => { },
+    }));
+    
+    getAllBranchesListData()
+
     setModel(!model);
+  }
+
+  const getAllBranchesListData = () => {
+
+    const params = {}
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (success: any) => () => {
+      },
+      onError: (error: string) => () => { },
+    }));
   }
 
   const checkStatus = (id: string) =>
@@ -292,14 +313,16 @@ function EmployeeScreen() {
       associated_branch: [...branchIds, defaultBranchId],
     };
 
+    console.log("calleddd--->");
+
     dispatch(
       updateEmployeeCheckinAssociations({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           showToast("success", success.status);
           setModel(!model);
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -313,14 +336,14 @@ function EmployeeScreen() {
       can_field_checkin: value,
       // id: employeeDetails.id
     }
-    // dispatch(postEnableFieldCheckIn({
-    //   params, onSuccess: (success: any) => {
-    //     showToast('success', success.message)
-    //   },
-    //   onError: (error: string) => {
-    //     showToast('error', error)
-    //   },
-    // }))
+    dispatch(postEnableFieldCheckIn({
+      params, onSuccess: (success: any) => () => {
+        showToast('success', success.message)
+      },
+      onError: (error: string) => () => {
+        showToast('error', error)
+      },
+    }))
   }
 
   const officeCheckInHandler = (value: boolean) => {
@@ -328,13 +351,13 @@ function EmployeeScreen() {
       can_office_checkin: value,
       // id: employeeDetails.id
     }
-    // dispatch(postEnableOfficeCheckIn({
-    //   params, onSuccess: (success: any) => {
-    //   },
-    //   onError: (error: string) => {
-    //     showToast('error', error)
-    //   },
-    // }))
+    dispatch(postEnableOfficeCheckIn({
+      params, onSuccess: (success: any) => () => {
+      },
+      onError: (error: string) => () => {
+        showToast('error', error)
+      },
+    }))
   }
 
   const faceValidationHandler = (value: boolean) => {
@@ -342,14 +365,14 @@ function EmployeeScreen() {
       face_validation_required: value,
       // id: employeeDetails.id
     }
-    // dispatch(changeAttendanceSettings({
-    //   params, onSuccess: (success: any) => {
-    //     showToast('success', success.message)
-    //   },
-    //   onError: (error: string) => {
-    //     showToast('error', error)
-    //   },
-    // }))
+    dispatch(changeAttendanceSettings({
+      params, onSuccess: (success: any) => () => {
+        showToast('success', success.message)
+      },
+      onError: (error: string) => () => {
+        showToast('error', error)
+      },
+    }))
 
   }
 

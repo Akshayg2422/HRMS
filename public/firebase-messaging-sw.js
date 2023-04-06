@@ -27,8 +27,9 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
+
 // Retrieve firebase messaging
-const messaging = firebase.messaging();
+// const messaging = firebase.messaging();
 
 // navigator.serviceWorker.register('/public/firebase-messaging-sw.js')
 //           .then(function (registration) {

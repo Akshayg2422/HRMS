@@ -47,7 +47,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     dispatch(
       getListAllBranchesList({
         params,
-        onSuccess:  (response: Array<LocationProps>) => () => {
+        onSuccess: (response: Array<LocationProps>) => () => {
           // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
 
@@ -71,7 +71,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           }
         },
         onError: (error: any) => () => {
-          console.log("=========errorasasa"+error);
+          console.log("=========errorasasa" + error);
         },
       })
     );
@@ -124,7 +124,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     return selectedNode;
   };
 
-  function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
+  async function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
     const childIds = getAllSubBranches(allBranch, item.id);
     dispatch(
       setBranchHierarchical({

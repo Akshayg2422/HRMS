@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, FormWrapper } from '@components'
+import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, FormWrapper, ScreenContainer } from '@components'
 import {
     useNav,
     showToast,
@@ -113,8 +113,8 @@ const CreateNewDesignationGroup = () => {
 
 
     return (
-        <>
-            <FormWrapper title={t('createShift')} onClick={() => onSubmitAddShift()}>
+        <ScreenContainer>
+            <FormWrapper isTitle title={t('createShift')} onClick={() => onSubmitAddShift()}>
                 <Container
                     margin={'mt-4'}
                     alignItems={"align-items-center"}
@@ -148,7 +148,7 @@ const CreateNewDesignationGroup = () => {
                     />
                 </Container>
             </FormWrapper>
-        </>
+        </ScreenContainer>
     )
 }
 
