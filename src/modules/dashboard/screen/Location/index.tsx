@@ -7,12 +7,20 @@ import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
 
-export const DROPDOWN_MENU = [
+const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
   { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
-
+]
+const DROPDOWN_MENU_1 = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
+]
+const DROPDOWN_MENU_2 = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 function LocationScreen() {
@@ -87,6 +95,16 @@ function LocationScreen() {
     }
   }
 
+  const filteredDropdownActionItem = (item: any) => {
+    if (item?.has_location && !item.has_location && item.can_update_location) {
+      let itemWithRadius = DROPDOWN_MENU.filter((el) => el.name !== 'Enable refench')
+      return itemWithRadius
+    }
+    if (item?.has_location && item.has_location && !item.can_update_location) {
+      return DROPDOWN_MENU
+    }
+  }
+
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
@@ -95,7 +113,7 @@ function LocationScreen() {
         'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.TickActive} /> : <></>,
         'Fencing Radius': el.fencing_radius,
         "": <CommonDropdownMenu
-          data={DROPDOWN_MENU}
+          data={el.has_location && el.has_location && !el.can_update_location ? DROPDOWN_MENU : el.has_location && el.has_location && el.can_update_location ? DROPDOWN_MENU_2 : DROPDOWN_MENU_1}
           onItemClick={(e, item) => {
             if (item.name === 'Reset radius') {
               setModelData(data)
@@ -113,15 +131,16 @@ function LocationScreen() {
   };
 
   function resetRadiusApi(radius: number) {
+
     const params = { id: modelData?.geo_location_id, fencing_radius: radius }
     dispatch(updateBranchLocationRadius({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
         setModel(!model)
       },
-      onError: () => {
+      onError: () => () => {
       },
     }))
 
@@ -181,7 +200,7 @@ function LocationScreen() {
       dispatch(editBranchName({
         params,
         onSuccess: (success: any) => () => {
-      console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000",success)
+          console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000", success)
 
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
@@ -257,7 +276,11 @@ function LocationScreen() {
           return (
             <div
               className='row align-items-center mx-4'
-              onClick={() => resetRadiusApi(el)}>
+              onClick={() => {
+                console.log("ellll", el);
+
+                resetRadiusApi(el)
+              }}>
               <div className='row align-items-center'>
                 <span className='col text-xl text-gray'>{el}</span>
                 {modelData && modelData?.fencing_radius === el && <div className='col-2 text-right'><ImageView icon={Icons.TickActive} /></div>}

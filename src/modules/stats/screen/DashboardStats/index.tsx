@@ -41,6 +41,8 @@ const DashboardStats = () => {
     (state: any) => state.DashboardReducer
   );
 
+  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
+
   const [model, setModel] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
   const [selectedDepartmentName, setSelectedDepartmentName] = useState("");
@@ -69,16 +71,19 @@ const DashboardStats = () => {
       ...hierarchicalBranchIds,
       selected_date: selectedDate,
     };
+    if (Object.keys(hierarchicalBranchIds).length > 0 ) {
+      dispatch(getEmployeeAttendanceStats({
+        params,
+        onSuccess: (success: any) => () => {
 
-    dispatch(getEmployeeAttendanceStats({
-      params,
-      onSuccess: (success: any) => () => {
+        },
+        onError: (error: any) => () => {
 
-      },
-      onError: (error: any) => () => {
+        }
+      }));
+    }
 
-      }
-    }));
+
   }, [selectedDate, hierarchicalBranchIds]);
 
   const proceedNext = (
