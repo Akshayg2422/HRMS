@@ -505,7 +505,7 @@ const CreateShiftGroup = () => {
 
                     {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
                         noHeader
-                        tableTitle={t('selectedEmployeesList')}
+                        title={t('selectedEmployeesList')}
                         tableChildren={
                             <SelectedEmployeeListTable
                                 tableDataSet={filteredEmployees}

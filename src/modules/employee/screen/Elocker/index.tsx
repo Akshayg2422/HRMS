@@ -194,7 +194,7 @@ function ELocker() {
             </Card>
             <Container additionClass='mx--3'>
                 {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
-                    tableTitle={"Documents List"}
+                    title={"Documents List"}
                     displayDataSet={documentsList(employeeDocuments.details)}
                     tableOnClick={(e, index, item) => {
                         let current = employeeDocuments.details[index]

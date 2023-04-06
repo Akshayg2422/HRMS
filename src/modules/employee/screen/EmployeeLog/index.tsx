@@ -364,7 +364,7 @@ function EmployeeLog() {
           //   </>
           // }
 
-          tableTitle={t("employeeLog")}
+          title={t("employeeLog")}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}

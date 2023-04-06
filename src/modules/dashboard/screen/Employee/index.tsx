@@ -12,9 +12,11 @@ import {
   useKeyPress,
   ImageView,
   CommonDropdownMenu,
-  Divider
+  Divider,
+  TableWrapper
+
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Icons } from "@assets";
 import {
   EMPLOYEE_ADDITIONAL_DATA,
@@ -29,7 +31,7 @@ import {
   getEmployeesList,
   getSelectedEmployeeId,
   getUpdateEmployeeStatus,
-  
+
   // changeAttendanceSettings,
   // postEnableFieldCheckIn,
   // postEnableOfficeCheckIn
@@ -44,6 +46,7 @@ import {
   updateEmployeeCheckinAssociations,
   getListAllBranchesList,
 } from "../../../../store/location/actions";
+import { log } from "console";
 
 
 
@@ -350,199 +353,48 @@ function EmployeeScreen() {
 
   }
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+        <CommonTable
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+          tableOnClick={(e, index, item) => {
+            const selectedId = registeredEmployeesList[index].id;
+            dispatch(getSelectedEmployeeId(selectedId));
+            goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+          }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [registeredEmployeesList])
 
   return (
-    <>
-      <Card margin={"m-4"}>
-        <Container>
-          <h2>{t('allRegisteredEmployee')}</h2>
-        </Container>
-        <Container flexDirection={"row"} alignItems={"align-items-center"}>
-          <Container
-            flexDirection={"row"}
-            additionClass={"col"}
-            alignItems={"align-items-center"}
-          >
-            <Container col={"col-xl-3 col-md-6 col-sm-12"}>
-              <InputText
-                placeholder={t("searchEmployee")}
-                label={t("employeeName")}
-                onChange={(e) => {
-                  setSearchEmployee(e.target.value);
-                }}
-              />
-            </Container>
-            <Container
-              col={"col-xl-5 col-md-6 col-sm-12"}
-              additionClass={"mt-xl-4"}
-            >
-              <ChooseBranchFromHierarchical />
-            </Container>
-            <Container
-              col={"col"}
-              additionClass={"mt-sm-3 mt-xl--2"}
-              justifyContent={"justify-content-center"}
-              alignItems={"align-items-center"}
-              onClick={proceedSearchApi}
-            >
-              <Icon type={"btn-primary"} icon={Icons.Search} />
-            </Container>
-          </Container>
-
-          <Container
-            margin={"my-3"}
-            display={"d-flex"}
-            justifyContent={"justify-content-end"}
-          >
-            <Primary
-              text={t("addEmployee")}
-              onClick={() => manageEmployeeHandler(undefined)}
-              size={"btn-sm"}
-            />
-            <Primary
-              text={t("deletedUser")}
-              onClick={() =>
-                goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
-              }
-              size={"btn-sm"}
-            />
-          </Container>
-          {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-            <CommonTable
-              noHeader
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
-              displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-              // additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
-              tableOnClick={(e, index, item) => {
-                const selectedId = registeredEmployeesList[index].id;
-                dispatch(getSelectedEmployeeId(selectedId));
-                goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-              }}
-              tableValueOnClick={(e, index, item, elv) => {
-                const current = registeredEmployeesList[index];
-                // if (elv === "Edit") {
-                //   manageEmployeeHandler(current.id);
-                // }
-                // if (elv === "Delete") {
-                //   manageDeleteHandler(current.id);
-                // }
-              }}
-            />
-          ) : <NoRecordFound />}
-          <Modal
-            title={t("deleteUser")}
-            showModel={deleteModel}
-            toggle={() => setDeleteModel(!deleteModel)}
-          >
-            <Container>
-              <span className="ml-3">{t("deleteWarningMessage")}</span>
-              <Container
-                margin={"m-5"}
-                justifyContent={"justify-content-end"}
-                display={"d-flex"}
-              >
-                <Secondary
-                  text={t("cancel")}
-                  onClick={() => setDeleteModel(!deleteModel)}
-                />
-                <Primary
-                  text={t("proceed")}
-                  onClick={() => manageProceedHandler()}
-                />
-              </Container>
-            </Container>
-          </Modal>
-          <Modal
-            title={showEmployeeProfile?.name}
-            showModel={ProfilePictureModel}
-            size={'modal-sm'}
-            toggle={() => setProfilePictureModel(!ProfilePictureModel)}
-          >
-            <Container>
-              {showEmployeeProfile.face_photo ? <ImageView
-                style={{ objectFit: 'cover' }}
-                width={'100%'}
-                height={'100%'}
-                alt='Image placeholder'
-                icon={showEmployeeProfile?.face_photo}
-              /> : <NoRecordFound />}
-              {/* <Container
-                margin={"m-5"}
-                justifyContent={"justify-content-end"}
-                display={"d-flex"}
-              >
-                <Secondary
-                  text={t("cancel")}
-                  onClick={() => setProfilePictureModel(!ProfilePictureModel)}
-                />
-                <Primary
-                  text={t("proceed")}
-                  onClick={() => manageProceedHandler()}
-                />
-              </Container> */}
-            </Container>
-          </Modal>
-        </Container>
-      </Card>
-      <div className='dropdown-menu dropdown-menu-right dropdown-toggle'>
-        hello
-      </div>
-
-      {listBranchesList && listBranchesList.length > 0 && (
-        <Modal
-          title={"All Registered Branches"}
-          showModel={model}
-          toggle={() => setModel(!model)}
-        >
-          {listBranchesList.map((item: Branch, index: number) => {
-            return (
-              <>
-                <div className="row mx-3 my-1"
-                  onClick={() => addSelectedBranch(item)}
-                >
-                  <div className="col-8">
-                    <span className=" text-gray">{item.name}</span>
-                  </div>
-
-                  <div className="col-4 text-right">
-                    <ImageView
-                      icon={
-                        checkStatus(item.id!)
-                          ? Icons.TickActive
-                          : Icons.TickDefault
-                      }
-                    />
-                  </div>
-                </div>
-                {index !== listBranchesList.length - 1 && <Divider />}
-              </>
-            );
-          })}
-
-          <Container
-            additionClass={'mt-4 sticky-bottom'}
-            justifyContent={"justify-content-end"}
-            display={"d-flex"}
-          >
-            <Secondary
-              text={t("cancel")}
-              onClick={() => setModel(!model)}
-            />
-            <Primary
-              text={t("submit")}
-              onClick={() => updateEmployeeCheckInAssociationApi()}
-            />
-          </Container>
-        </Modal>
-      )}
-    </>
+    <TableWrapper title={'Employee Log'}
+      buttonChildren={
+        <Primary size={'btn-sm'} text={'Add'} onClick={() => { }} />
+      }
+      filterChildren={
+        <InputText
+          placeholder={t("searchEmployee")}
+          label={t("employeeName")}
+          onChange={(e) => {
+            setSearchEmployee(e.target.value);
+          }}
+        />
+      }>
+      {
+        memoizedTable
+      }
+    </TableWrapper>
   );
 }
 

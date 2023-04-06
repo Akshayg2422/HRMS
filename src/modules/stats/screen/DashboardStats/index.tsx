@@ -188,7 +188,7 @@ const DashboardStats = () => {
           {employeeattendancedatalog &&
             employeeattendancedatalog.departments_types && (
               <CommonTable
-                tableTitle={t(t("departments"))}
+                title={t(t("departments"))}
                 displayDataSet={normalizedEmployeeAttendanceLog(
                   employeeattendancedatalog
                 )}
