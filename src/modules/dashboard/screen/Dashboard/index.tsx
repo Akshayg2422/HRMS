@@ -5,6 +5,7 @@ import {
   CardCalendar,
   LineCharts,
   Primary,
+  CommonDropdownMenu,
 } from "@components";
 import React, { useEffect } from "react";
 
@@ -24,6 +25,7 @@ import { LocationProps } from '../../../../components/Interface';
 import { currentNavIndex } from "../../../../store/app/actions";
 import { getAdminBranches } from "../../../../store/employee/actions";
 import { isWebPushRegister, postAppConfig, webPushRegister } from "../../../../store/auth/actions";
+import { Icons } from "@assets";
 
 
 function Dashboard() {
@@ -127,9 +129,24 @@ function Dashboard() {
 
   }, []);
 
+  const menuSet = [{
+    name: 'Edit',
+    elv: 'Edit',
+    icon: Icons.Edit
+  }, {
+    name: 'Delete',
+    elv: 'Delete',
+    icon: ''
+  }]
+
   return (
     <>
       <div className='my-5'>
+        <div className="">
+          <CommonDropdownMenu dataSet={menuSet} menuValueOnClick={(e, index, item, element) => {
+            console.log("--------->", element);
+          }} />
+        </div>
         <DashBoardCard />
       </div>
     </>
