@@ -21,43 +21,20 @@ import {
 } from '../../../../store/location/actions';
 
 import { LocationProps } from '../../../../components/Interface';
-import { isWebPushRegister, postAppConfig} from "../../../../store/auth/actions";
+import { isWebPushRegister, postAppConfig } from "../../../../store/auth/actions";
 
 
 function Dashboard() {
-  const { t } = useTranslation();
-  const navigation = useNav();
   const dispatch = useDispatch()
 
 
-  const { dashboardDetails } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
-
-  const { appConfig, fcmToken, isWebPushRegisterController } = useSelector(
+  const { appConfig, fcmToken} = useSelector(
     (state: any) => state.AuthReducer
   );
 
   useEffect(() => {
-      getPostAppConfig()
+    getPostAppConfig()
   }, [fcmToken])
-
-  useEffect(() => {
-    if (isWebPushRegisterController) {
-      // registerDeviceDetails()
-    }
-    const params = {}
-    dispatch(getDashboard({
-      params,
-      onSuccess: (success: any) => () => {
-
-      },
-      onError: (error: any) => () => {
-
-      }
-    }))
-  }, [])
-  // console.log("isWebPushRegisterController", isWebPushRegisterController);
 
 
   const getPostAppConfig = () => {
@@ -67,8 +44,7 @@ function Dashboard() {
       device_brand: appConfig?.brand,
       device_token: fcmToken
     }
-    console.log('params------------->', params);
-    
+
     dispatch(postAppConfig({
       params,
       onSuccess: (response: any) => () => {
@@ -88,42 +64,6 @@ function Dashboard() {
       },
     }))
   }
-
-
-  const getAllSubBranches = (branchList: any, parent_id: string) => {
-    let branchListFiltered: any = [];
-    const getChild = (branchList: any, parent_id: string) => {
-      branchList
-        .filter((it: any) => it.parent_id === parent_id)
-        .map((it2: any) => {
-          branchListFiltered.push(it2);
-          getChild(branchList, it2.id);
-          return it2;
-        });
-    };
-    getChild(branchList, parent_id);
-
-    branchListFiltered = branchListFiltered.map((it: any) => {
-      return it.id;
-    });
-    return branchListFiltered;
-  };
-
-  useEffect(() => {
-    if (dashboardDetails) {
-      const params = {}
-      dispatch(getListAllBranchesList({
-        params,
-        onSuccess: (response: Array<LocationProps>) => () => {
-          const childIds = getAllSubBranches(response, dashboardDetails.company_branch.id)
-          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardDetails.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardDetails.company_branch.name }))
-        },
-        onError: () => () => {
-        },
-      }))
-    }
-
-  }, []);
 
   return (
     <>

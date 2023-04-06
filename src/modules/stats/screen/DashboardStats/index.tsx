@@ -27,6 +27,8 @@ import {
   getMomentObjFromServer,
 } from "@utils";
 import { Icons } from "@assets";
+import { getListAllBranchesList } from "../../../../store/location/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 
 const DashboardStats = () => {
   const { t } = useTranslation();
@@ -37,7 +39,7 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
-  const { hierarchicalBranchName, hierarchicalBranchIds } = useSelector(
+  const { hierarchicalBranchIds, dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -50,6 +52,8 @@ const DashboardStats = () => {
   const [selectedDate, setSelectedDate] = useState(
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
+
+  const [initialCall, setInitialCall] = useState(false)
 
   const normalizedEmployeeAttendanceLog = (data: any) => {
     return data?.departments_stats?.map((el: any) => {
@@ -64,22 +68,68 @@ const DashboardStats = () => {
     });
   };
 
+
   useEffect(() => {
+    const DashboardParams = {}
+    dispatch(getDashboard({
+      DashboardParams,
+      onSuccess: (success: any) => () => {
+        const params = {}
+        dispatch(getListAllBranchesList({
+          params,
+          onSuccess: (response: any) => () => {
+            const childIds = getAllSubBranches(response, success.company_branch.id)
+            getStatsDetails({ branch_id: success.company_branch.id, child_ids: childIds, include_child: false })
+            dispatch(setBranchHierarchical({ ids: { branch_id: success.company_branch.id, child_ids: childIds, include_child: false }, name: success.company_branch.name }))
+          },
+          onError: () => () => {
+          },
+        }))
+      },
+      onError: (error: any) => () => {
+      }
+    }))
+  }, []);
+
+  useEffect(() => {
+    initialCall && getStatsDetails({...hierarchicalBranchIds})
+  }, [selectedDate, hierarchicalBranchIds]);
+
+  const getStatsDetails = (obj: object) => {    
     const params = {
-      ...hierarchicalBranchIds,
+      ...obj,
       selected_date: selectedDate,
     };
 
     dispatch(getEmployeeAttendanceStats({
       params,
       onSuccess: (success: any) => () => {
-
+        setInitialCall(true)
       },
       onError: (error: any) => () => {
 
       }
     }));
-  }, [selectedDate, hierarchicalBranchIds]);
+  }
+
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    let branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) => {
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
+    };
+    getChild(branchList, parent_id);
+
+    branchListFiltered = branchListFiltered.map((it: any) => {
+      return it.id;
+    });
+    return branchListFiltered;
+  };
 
   const proceedNext = (
     attendanceType: number,
@@ -93,14 +143,13 @@ const DashboardStats = () => {
     dispatch(getSelectedCardType({
       params,
       onSuccess: (success: any) => () => {
-
+        goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
       },
       onError: (error: any) => () => {
 
       }
     }
     ));
-    goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
   };
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
@@ -124,6 +173,7 @@ const DashboardStats = () => {
     );
   };
 
+  console.log("hierarchicalBranchIds---->", hierarchicalBranchIds)
 
 
   return (

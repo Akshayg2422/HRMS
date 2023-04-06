@@ -248,8 +248,8 @@ function* getListAllBranches(action) {
     if (response.success) {
   
       yield put(hideLoader());
-      yield put(getListAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(getListAllBranchesListSuccess(response));
 
     } else {
     console.log('=====error22222');

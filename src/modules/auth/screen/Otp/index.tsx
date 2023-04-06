@@ -22,6 +22,7 @@ import {
 import {
   setUserLoginDetails
 } from '../../../../store/app/actions';
+import { getDashboard } from '../../../../store/dashboard/actions';
 
 
 type LoginResponse = {
@@ -42,6 +43,8 @@ function Otp() {
   const { userDetails, success, mobileNumber, error } = useSelector(
     (state: any) => state.AuthReducer
   );
+
+
 
   const [validOtp, setValidOtp] = useState('');
   const [counter, setCounter] = useState<number>(59);
@@ -101,6 +104,7 @@ function Otp() {
           dispatch(setUserLoginDetails(params))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
           goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
+      
         } else {
           showToast('error', t('invalidAdmin'));
         }

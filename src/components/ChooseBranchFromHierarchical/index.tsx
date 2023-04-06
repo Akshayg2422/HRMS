@@ -26,7 +26,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   const [model, setModel] = useState(false);
   let dispatch = useDispatch();
 
-  console.log("hierarchicalBranchIds", hierarchicalBranchIds)
 
   const [hierarchicalBranch, setHierarchicalBranch] = useState<any>({});
 

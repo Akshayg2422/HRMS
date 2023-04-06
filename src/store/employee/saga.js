@@ -496,6 +496,7 @@ function* getEmployeeAttendanceStats(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getEmployeeAttendanceStatsSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(getEmployeeAttendanceStatsFailure(response.error_message));
