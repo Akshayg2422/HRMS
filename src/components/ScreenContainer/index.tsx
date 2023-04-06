@@ -12,7 +12,7 @@ interface DivProps extends ContainerProps {
 
 function ScreenContainer({backgroundColor, children, justifyContent, alignItems, col, style, margin, padding, height, width, display, flexDirection, onClick, additionClass, position, }: DivProps) {
   return (
-    <div className={`m-4 ${isExist(additionClass)} ${isExist(position)} ${isExist(col)}  ${isExist(backgroundColor)} ${isExist(justifyContent)} ${isExist(alignItems)} ${isExist(height)} ${isExist(width)} ${isExist(display)} ${isExist(margin)} ${isExist(padding)} ${isExist(flexDirection)}`} style={style} onClick={onClick}>
+    <div className={`m-4 mb--4 ${isExist(additionClass)} ${isExist(position)} ${isExist(col)}  ${isExist(backgroundColor)} ${isExist(justifyContent)} ${isExist(alignItems)} ${isExist(height)} ${isExist(width)} ${isExist(display)} ${isExist(margin)} ${isExist(padding)} ${isExist(flexDirection)}`} style={style} onClick={onClick}>
       {
         children
       }

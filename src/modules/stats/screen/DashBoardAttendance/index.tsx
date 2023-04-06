@@ -282,7 +282,7 @@ const DashBoardAttendance = ({ }) => {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text,
+        address: it.address_text?it.address_text : "       -",
       };
     });
   };

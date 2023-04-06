@@ -77,9 +77,9 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     return data && data.length > 0 && data.map((el: any) => {
       return {
         name: el.name,
-        "": <>
+        "": <div style={{cursor:'pointer'}}>
           <ImageView height={20} width={20} icon={Icons.Download} onClick={() => { getEmployeeCheckInLogsReports(el?.emp_id) }} />
-        </>,
+        </div>,
         "Designation": el.designation,
         "Total Days": el.total,
         "Present Days": el.present,

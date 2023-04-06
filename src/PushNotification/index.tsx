@@ -23,25 +23,8 @@ const PushNotification = () => {
 
     function ToastDisplay({ data }: any) {
         const MAX_LENGTH = 50;
-
-        const bodyContent = data?.body?.length <= MAX_LENGTH
-            ? data?.body
-            : data?.body?.slice(0, MAX_LENGTH) + '...';
-
         return (
-            <div onClick={() => {
-                goTo(navigation, data?.route);
-            }}>
-                <p><b>{data?.title}</b></p>
-                <div className='d-flex justify-content-center align-items-center'>
-                    {data.icon && <div>
-                        <ImageView
-                            icon={data.icon}
-                            style={{ height: '50px', width: '50px', borderRadius: "5px" }}
-                        />
-                    </div>}
-                    <div className={data.icon ? 'ml-3' : ''}>{bodyContent}</div>
-                </div>
+            <div>
             </div>
         );
     };
@@ -105,17 +88,18 @@ const PushNotification = () => {
 
     onMessageListener()
         .then((payload: any) => {
-            console.log("foreground message", payload);
+            console.log("foreground message----->", payload);
 
             const title = payload?.data?.title;
             const options = {
-                body: payload?.data?.message,
+                body: payload?.notification?.body,
                 icon: Icons.LogoSmall
             };
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
                 this.close()
             });
+            setNotification({ titile: payload?.data?.title, body: payload?.data?.message })
 
         })
         .catch((err: any) => console.log('failed: ', err));

@@ -38,6 +38,9 @@ import {
   GET_BRANCHES_ADMIN,
   UPDATE_LEAVE_TYPE_DETAILS,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
+  ENABLE_FIELD_CHECK_IN,
+  ENABLE_OFFICE_CHECK_IN,
+  POST_FACE_VALIDATION_STATUS,
 
 } from "./actionTypes";
 
@@ -121,6 +124,12 @@ import {
   updateLeaveTypeFailure,
   getDownloadEmployeeCheckinLogsSuccess,
   getDownloadEmployeeCheckinLogsFailure,
+  postEnableFieldCheckInSuccess,
+  postEnableFieldCheckInFailure,
+  postEnableOfficeCheckInSuccess,
+  postEnableOfficeCheckInFailure,
+  changeAttendanceSettingsSuccess,
+  changeAttendanceSettingsFailure,
 
 } from "./actions";
 
@@ -161,7 +170,10 @@ import {
   PostUpdatedAdminBranches,
   getBranchAdminsApi,
   updateLeaveTypeApi,
-  getDownloadEmployeeCheckingLogReportApi
+  getDownloadEmployeeCheckingLogReportApi,
+  enableFieldCheckInApi,
+  enableOfficeCheckInApi,
+  changeAttendanceSettingsApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -1073,7 +1085,74 @@ function* getDownloadEmployeeCheckInLogsSaga(action) {
   }
 }
 
+//enableFieldCheckIn
 
+function* enableFieldCheckInSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(enableFieldCheckInApi, action.payload.params);
+    if (response.success) {
+      yield put(postEnableFieldCheckInSuccess(response));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+
+    } else {
+      yield put(postEnableFieldCheckInFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(postEnableFieldCheckInFailure("Invalid Request"));
+  }
+}
+
+// enableOfficeCheckIn
+
+function* enableOfficeCheckInSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(enableOfficeCheckInApi, action.payload.params);
+    if (response.success) {
+      yield put(postEnableOfficeCheckInSuccess(response));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+
+    } else {
+      yield put(postEnableOfficeCheckInFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(postEnableOfficeCheckInFailure("Invalid Request"));
+  }
+}
+
+// changeAttendanceSettings
+
+function* changeAttendanceSettingsSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(changeAttendanceSettingsApi, action.payload.params);
+    if (response.success) {
+      yield put(changeAttendanceSettingsSuccess(response));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+
+    } else {
+      yield put(changeAttendanceSettingsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(changeAttendanceSettingsFailure("Invalid Request"));
+  }
+}
 
 // *** WATCHER*** //
 
@@ -1127,6 +1206,9 @@ function* EmployeeSaga() {
   yield takeLatest(GET_BRANCHES_ADMIN, getBranchAdminsSaga);
   yield takeLatest(UPDATE_LEAVE_TYPE_DETAILS, updateLeaveTypeSaga);
   yield takeLatest(GET_EMPLOYEE_CHECK_IN_LOGS_REPORT, getDownloadEmployeeCheckInLogsSaga);
+  yield takeLatest(ENABLE_FIELD_CHECK_IN, enableFieldCheckInSaga);
+  yield takeLatest(ENABLE_OFFICE_CHECK_IN, enableOfficeCheckInSaga);
+  yield takeLatest(POST_FACE_VALIDATION_STATUS, changeAttendanceSettingsSaga);
 }
 
 export default EmployeeSaga;

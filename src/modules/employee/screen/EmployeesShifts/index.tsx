@@ -267,15 +267,17 @@ function EmployeeShifts() {
         title={t('shiftGroups')}
         size={"modal-sm"}
         toggle={() => setChangeShiftModelModel(!changeShiftModel)}>
-        <Container>
+        <Container style={{ cursor: 'pointer' }}>
           {shiftsList && shiftsList.length > 0 ? <Container>
             {shiftsList && shiftsList.length > 0 && shiftsList.map((el: any) => {
               return (
-                <Container additionClass="mx-2 p-2 row">
-                  <h4 className="col fw-normal">{el.name}</h4>
-                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                <Container additionClass="p-2 row"
+                  onClick={() => {
                     setCurrentEmployeeShiftId(el.id)
-                  }} /></td>
+                  }}
+                >
+                  <h4 className="col fw-normal">{el.name}</h4>
+                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} /></td>
 
                 </Container>
               )

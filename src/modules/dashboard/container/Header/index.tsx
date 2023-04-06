@@ -17,6 +17,8 @@ import { resetShiftManagement } from '../../../../store/shiftManagement/actions'
 import { Notification } from '../Notification';
 import { setIsShowBack } from '../../../../store/notifications/actions';
 
+//ROUTE_PORTFOLIO
+
 const Header = () => {
   const [languageModel, setLanguageModel] = useState(false);
   const [model, setModel] = useState(false);
@@ -26,7 +28,7 @@ const Header = () => {
   const navigation = useNav();
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
-  const [isParent, setIsParent] = useState(false)
+  const [isParent,  setIsParent]  = useState(false)
 
   let dispatch = useDispatch();
 
@@ -81,6 +83,10 @@ const Header = () => {
 
     else if (item.value === 'LG') {
       setModel(!model)
+    }
+    else {
+      goTo(navigate, ROUTE.ROUTE_PORTFOLIO);
+
     }
 
   };
@@ -152,70 +158,70 @@ const Header = () => {
 
             </div>
 
-            <ul className='navbar-nav align-items-center  ml-md-auto '>
-              {/* <Notification /> */}
-              <div className='mr-3 d-flex'>
-                <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
-                }} >
-                  <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
-                </a>
-                <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
-                  dispatch(setIsShowBack(true))
-                }} >
-                  <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(notificationsDataList)}</span> */}
-                </a>
-              </div>
-              <div className='media-body  d-none d-lg-block'>
-                {dashboardDetails && dashboardDetails.user_details && (
-                  <span className='mb-0 text-primary  font-weight-bold'>
-                    {dashboardDetails.user_details.name}
+          <ul className='navbar-nav align-items-center  ml-md-auto '>
+            {/* <Notification /> */}
+            <div className='mr-3 d-flex'>
+              <a className="nav-link" onClick={() => {
+                goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
+              }} >
+                <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
+                {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
+              </a>
+              <a className="nav-link" onClick={() => {
+                goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
+                dispatch(setIsShowBack(true))
+              }} >
+                <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }}></i>
+                {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(notificationsDataList)}</span> */}
+              </a>
+            </div>
+            <div className='media-body  d-none d-lg-block'>
+              {dashboardDetails && dashboardDetails.user_details && (
+                <span className='mb-0 text-primary  font-weight-bold'>
+                  {dashboardDetails.user_details.name}
+                </span>
+              )}
+            </div>
+          </ul>
+          <ul className='navbar-nav align-items-center  ml-auto ml-md-0 '>
+            <li className='nav-item dropdown '>
+              <a
+                className='nav-link pr-0'
+                href='#'
+                role='button'
+                data-toggle='dropdown'
+                aria-haspopup='true'
+                aria-expanded='false'
+              >
+                <div className='media align-items-center'>
+                  <span className='avatar avatar-sm rounded-circle'>
+                    <ImageView
+                      height={'38'}
+                      alt='Image placeholder'
+                      icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
+                    />
                   </span>
-                )}
-              </div>
-            </ul>
-            <ul className='navbar-nav align-items-center  ml-auto ml-md-0 '>
-              <li className='nav-item dropdown '>
-                <a
-                  className='nav-link pr-0'
-                  href='#'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                >
-                  <div className='media align-items-center'>
-                    <span className='avatar avatar-sm rounded-circle'>
-                      <ImageView
-                        height={'38'}
-                        alt='Image placeholder'
-                        icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
-                      />
-                    </span>
-                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'></div>
-                  </div>
-                </a>
-                <div className='dropdown-menu dropdown-menu-right'>
-                  {HEADER_MENU.map((item) => {
-                    return (
-                      <a
-                        className='dropdown-item'
-                        onClick={() => DropdownHandler(item)}
-                      >
-                        <i className={item.icon}></i>
-                        <span>{item.name}</span>
-                      </a>
-                    );
-                  })}
+                  <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'></div>
                 </div>
-              </li>
-            </ul>
-          </div>
+              </a>
+              <div className='dropdown-menu dropdown-menu-right'>
+                {HEADER_MENU.map((item) => {
+                  return (
+                    <a
+                      className='dropdown-item'
+                      onClick={() => DropdownHandler(item)}
+                    >
+                      <i className={item.icon}></i>
+                      <span>{item.name}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            </li>
+          </ul>
         </div>
-      </nav >
+      </div>
+    </nav >
 
 
 
@@ -242,29 +248,29 @@ const Header = () => {
       </Modal>
 
 
-      {
-        <Modal
-          title={t('logoutUser')}
-          showModel={model}
-          toggle={() => setModel(!model)}>
-          <Container>
-            <span className='ml-3'>{t('logoutMessage')}</span>
-            <Container
-              margin={'m-3'}
-              justifyContent={'justify-content-end'}
-              display={'d-flex'}>
-              <Secondary
-                text={t('cancel')}
-                onClick={() => setModel(!model)}
-              />
-              <Primary
-                text={t('proceed')}
-                onClick={proceedLogout}
-              />
-            </Container>
-          </Container>
-        </Modal>
-      }
+  {
+    <Modal
+      title={t('logoutUser')}
+      showModel={model}
+      toggle={() => setModel(!model)}>
+      <Container>
+        <span className='ml-3'>{t('logoutMessage')}</span>
+        <Container
+          margin={'m-3'}
+          justifyContent={'justify-content-end'}
+          display={'d-flex'}>
+          <Secondary
+            text={t('cancel')}
+            onClick={() => setModel(!model)}
+          />
+          <Primary
+            text={t('proceed')}
+            onClick={proceedLogout}
+          />
+        </Container>
+      </Container>
+    </Modal>
+  }
     </>
   );
 };

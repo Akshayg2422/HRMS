@@ -159,7 +159,7 @@ function MyLog() {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text,
+        address: it.address_text ? it.address_text : "       -",
       };
     });
   };
@@ -294,7 +294,7 @@ function MyLog() {
 
           <div className="ml--3">
             <CommonTable
-              tableTitle={"My Log"}
+              title={"My Log"}
               displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
               tableOnClick={(e, index, Item) => {
                 getEmployeeCheckInDetailedLogPerDay(Item);

@@ -206,7 +206,7 @@ function MyBranches() {
                 {adminId && (
                     <Card
                         additionClass="col-xl col-sm-3 col-0 mx-2"
-                        style={{ height: "100vh", overflowY: "scroll" }}
+                        style={{ height: "100vh", overflowY: "scroll",  cursor: 'pointer' }}
                     >
                         <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
                         <Divider />

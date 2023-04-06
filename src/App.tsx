@@ -60,7 +60,7 @@ import {
   EsslConfig,
   ManageEsslConfig,
   ManageDevices,
-  FaceReRegisterRequest
+  FaceReRegisterRequest,
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -76,20 +76,20 @@ import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
+import { Approvals } from "./modules/employee";
+import GetToken from "./PushNotification/GetToken";
+
 import RefundPolicy from "./screens/RefundPolicy";
 
 function App() {
-
-  const { dashboardDetails } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
 
   return (
     <>
       {/* <AutoLogout /> */}
       <PushNotification />
+      <GetToken />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />
@@ -344,6 +344,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST}
             element={<RequireAuth>{<FaceReRegisterRequest />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_APPROVALS}
+            element={<RequireAuth>{<Approvals />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

@@ -49,17 +49,20 @@ const CreateShiftGroup = () => {
     const [selectedEmployeesIds, setSelectedEmployeesIds] = useState([])
     const [searchSelectedEmployee, setSearchSelectedEmployee] = useState('')
     const [filteredEmployees, setFilteredEmployees] = useState([])
+    const [registeredEmployees, setRegisteredEmployees] = useState<any>([])
 
 
-    const [departmentId, setDepartmentId] = useState('')
-    const [designationId, setDesignationId] = useState('')
-
-    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
-    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
     const [departmentsData, setDepartmentsData] = useState([{
         id: "-1",
         name: "All"
     }])
+
+    const [departmentId, setDepartmentId] = useState(departmentsData[0].id)
+    const [designationId, setDesignationId] = useState('')
+
+    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState(departmentsData[0].id)
+    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
+
 
 
     useEffect(() => {
@@ -78,7 +81,6 @@ const CreateShiftGroup = () => {
         }));
         return () => {
             setSelectedEmployeesList([])
-            setSelectedEmpListDepartmentId("")
             setSelectedEmpListDesignationId("")
             dispatch(getDesignationGroup(undefined))
         };
@@ -145,13 +147,14 @@ const CreateShiftGroup = () => {
             branch_id: dashboardDetails?.company_branch?.id,      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             ...(designationId && { designation_id: designationId }),
-            ...(departmentId && { department_id: departmentId }),
+            ...(departmentId && departmentId !== '-1' && { department_id: departmentId }),
             ...(searchEmployee && { q: searchEmployee }),
         };
 
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => () => {
+                setRegisteredEmployees([...registeredEmployees, ...success.data])
                 // if (selectedShiftGroupDetails) {
                 //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
                 // }
@@ -297,27 +300,30 @@ const CreateShiftGroup = () => {
 
         let updateFilteredData: any = [...selectedEmployeesList]
         updateFilteredData = updateFilteredData.filter((item: any) => {
+            if (selectedEmpListDepartmentId !== '-1') {
+                if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
+                    if (selectedEmpListDepartmentId === item.department_id) {
+                        return item
 
-            if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
-                if (selectedEmpListDepartmentId === item.department_id) {
-                    return item
+                    }
+                }
+                else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
+                    if (selectedEmpListDesignationId === item.designation_id) {
+                        return item
 
+                    }
                 }
-            }
-            else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
-                if (selectedEmpListDesignationId === item.designation_id) {
-                    return item
-
+                else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
+                    if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
+                        return item
+                    }
                 }
-            }
-            else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
-                if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
-                    return item
-                }
+            } else {
+                return item
             }
         }
         )
-        setFilteredEmployees(updateFilteredData as never)
+        setFilteredEmployees(updateFilteredData as never)   
     }
 
 
@@ -413,7 +419,7 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('department')}
                                 placeholder={t('selectDepartment')}
-                                data={departmentDropdownData}
+                                data={departmentsData}
                                 value={departmentId}
                                 onChange={(event) => {
                                     setDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
@@ -482,7 +488,7 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('department')}
                                 placeholder={t('selectDepartment')}
-                                data={departmentDropdownData}
+                                data={departmentsData}
                                 value={selectedEmpListDepartmentId}
                                 onChange={(event) => {
                                     setSelectedEmpListDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
@@ -505,14 +511,14 @@ const CreateShiftGroup = () => {
 
                     {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
                         noHeader
-                        tableTitle={t('selectedEmployeesList')}
+                        title={t('selectedEmployeesList')}
                         tableChildren={
                             <SelectedEmployeeListTable
                                 tableDataSet={filteredEmployees}
                                 onRevertClick={(item) =>
                                     onRevertSelectedEmployees(item)
                                 }
-                                employeeListDataSet={registeredEmployeesList}
+                                employeeListDataSet={registeredEmployees}
                             />
                         }
                     /> : <NoRecordFound />}
@@ -570,11 +576,13 @@ const EmployeeSetTable = ({
                             let equal = selectedEmployeeData?.some((it) => it.employee_pk === item.id || it.id === item.id)
 
                             return (
-                                <tr className="align-items-center">
+                                <tr className="align-items-center" style={{ cursor: 'pointer' }}
+                                    onClick={() => { if (onStatusClick) onStatusClick(item) }}
+                                >
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item?.name}${" "}(${item.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.TickActive : Icons.TickDefault} /></td>
 
                                 </tr>
                             );
@@ -634,7 +642,7 @@ const SelectedEmployeeListTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap", cursor:"pointer" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );

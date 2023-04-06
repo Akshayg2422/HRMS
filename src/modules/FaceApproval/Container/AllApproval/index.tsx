@@ -120,7 +120,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
       <tbody>
         {
           tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: any, index: number) => {
-            console.log("item?.checkin_time", item?.checkin_time);
+            // console.log("item?.checkin_time", item?.checkin_time);
 
             return <tr className=''>
               <td className='' ><div><ImageView height={150} width={100} style={{ objectFit: "cover" }} icon={item?.employee_photos[0]} />
