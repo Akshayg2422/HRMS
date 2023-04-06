@@ -56,7 +56,13 @@ function ShiftRequest() {
       ...(searchEmployee && { q: searchEmployee })
     }
     dispatch(getShiftRequestedEmployees({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }))
   }
 

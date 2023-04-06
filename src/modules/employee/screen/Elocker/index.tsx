@@ -75,12 +75,12 @@ function ELocker() {
 
         dispatch(getEmployeeDocument({
             params,
-            onSuccess: (success: any) => {
-                setDocumentListData(success.details)
-            },
-            onError: (error: string) => {
+            onSuccess: (success: any) => () => {
 
             },
+            onError: (error: any) => () => {
+
+            }
         }));
     };
 
@@ -104,12 +104,12 @@ function ELocker() {
                 setUploadModel(!uploadModel)
                 dispatch(attachUserDocument({
                     params,
-                    onSuccess: (success: any) => {
+                    onSuccess: (success: any) => () => {
                         showToast("success", "uploaded");
                         fetchEmployeeDocuments()
                         resetAttachment()
                     },
-                    onError: (error: string) => {
+                    onError: (error: string) => () => {
                         showToast("error", error);
                         fetchEmployeeDocuments()
                         resetAttachment()

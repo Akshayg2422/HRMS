@@ -37,7 +37,15 @@ function FaceReRegisterRequest() {
       ...hierarchicalBranchIds,
       ...(searchEmployee && { q: searchEmployee }),
     }
-    dispatch(employeeFaceReRegisterRequest({ params }))
+    dispatch(employeeFaceReRegisterRequest({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   }
 
   function paginationHandler(
@@ -69,12 +77,12 @@ function FaceReRegisterRequest() {
     dispatch(
       employeeEnableFaceReRegister({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setApproveModel(!approveModel)
           showToast('success', success?.message)
           getRequestDetails(currentPage)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };

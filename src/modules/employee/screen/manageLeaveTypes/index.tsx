@@ -140,11 +140,11 @@ function ManageLeaveTypes() {
             dispatch(
                 updateLeaveType({
                     params,
-                    onSuccess: (success: any) => {
+                    onSuccess: (success: any) => () => {
                         showToast("success", success?.status);
                         goBack(navigation);
                     },
-                    onError: (error: string) => {
+                    onError: (error: string) => () => {
                         showToast("error", error);
                     },
                 })

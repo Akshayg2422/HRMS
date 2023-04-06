@@ -62,10 +62,10 @@ function FenceAdmin() {
         dispatch(
             getAllBranchesList({
                 params,
-                onSuccess: (response: any) => {
+                onSuccess: (response: any) => () => {
                     setBranch(response)
                 },
-                onError: () => {
+                onError: () => () => {
                 },
             })
         );
@@ -103,14 +103,14 @@ function FenceAdmin() {
         }
         dispatch(getEmployeesList({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 success && success?.data.length > 0 && success?.data.map((item: any) => {
                     if (item?.id == selectedBranchId?.fence_admin_id) {
                         setSelectedEmployeeFenceId(item.id)
                     }
                 })
             },
-            onError: () => {
+            onError: (error: any) => () => {
             },
         }))
     }
@@ -134,12 +134,12 @@ function FenceAdmin() {
 
         dispatch(addFenceAdmin({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 getAllBranchesListData()
                 showToast("success", success.message);
                 setModel(!model)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }))

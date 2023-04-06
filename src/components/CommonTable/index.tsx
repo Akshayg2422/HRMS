@@ -25,7 +25,12 @@ interface CommonTableProps {
   buttonOnClock?: () => void;
   tableChildren?: React.ReactNode;
   custombutton?: string
-  headerClass?: string
+  headerClass?: string,
+  headerChildren?: React.ReactNode;
+  headerActions?: React.ReactNode;
+  headerActionsClass?:string
+  headerChildrenClass?:string
+
 }
 
 
@@ -46,7 +51,7 @@ interface GetPaginatorSetProps {
 
 
 
-function index({ tableTitle, displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton }: CommonTableProps) {
+function index({ tableTitle, displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton, headerChildren, headerActions, headerActionsClass, headerChildrenClass }: CommonTableProps) {
 
   const CommonHeader = ({ children }: CommonHeaderProps) => {
     return (
@@ -60,8 +65,16 @@ function index({ tableTitle, displayDataSet, tableDataSet, headerClass, addition
           <div className={`card shadow ${headerClass}`}>
             <div className="card-header border-0">
               <div className="row align-items-center">
-                <div className="col" >
-                  <h3 className="mb-0" >{tableTitle}</h3>
+                <div className="row" >
+                  <div className='col mt--2'>
+                    <h3 className="mb-0" >{tableTitle}</h3>
+                  </div>
+                  <div className={`col text-right ${headerActionsClass}`}>
+                    {headerActions}
+                  </div>
+                </div>
+                <div className={headerChildrenClass}>
+                  {headerChildren}
                 </div>
               </div>
             </div>
@@ -147,24 +160,20 @@ function index({ tableTitle, displayDataSet, tableDataSet, headerClass, addition
 
   const renderTable = () => {
 
-    if (displayDataSet && displayDataSet.length <= 0) {
-      return (<CommonHeader><div className='p-5'><NoRecordFound text={noRecordText} /></div></CommonHeader>);
-    }
-
     return (
-      <CommonHeader>
+      <>
         {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />}
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
-      </CommonHeader>
+      </>
     );
 
 
   }
 
   return (
-    <div >
+    <CommonHeader >
       {renderTable()}
-    </div>
+    </CommonHeader>
 
   );
 }

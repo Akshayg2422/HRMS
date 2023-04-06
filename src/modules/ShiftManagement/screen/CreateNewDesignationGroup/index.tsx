@@ -24,15 +24,15 @@ const CreateNewDesignationGroup = () => {
     let dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { branchesWeeklyShifts} = useSelector(
+    const { branchesWeeklyShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
     );
-    const {dashboardDetails } = useSelector(
+    const { dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
     // hierarchicalBranchIds.branch_id
 
-    const {designationDropdownData} = useSelector(
+    const { designationDropdownData } = useSelector(
         (state: any) => state.EmployeeReducer
     );
 
@@ -43,13 +43,30 @@ const CreateNewDesignationGroup = () => {
 
     useEffect(() => {
         getBranchesWeeklyShiftsList()
-        dispatch(getDesignationData({}));
+        const params = {}
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }, []);
 
 
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchWeeklyShifts({ params }));
+        dispatch(getBranchWeeklyShifts({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
 
@@ -80,14 +97,14 @@ const CreateNewDesignationGroup = () => {
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 designation_id: designationId
-            }            
+            }
             dispatch(postAddShift({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     goBack(navigation);
                     showToast("success", success.status)
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));
@@ -117,7 +134,7 @@ const CreateNewDesignationGroup = () => {
                         data={branchesWeeklyShifts}
                         value={selectedShift}
                         onChange={(event) => {
-                            setSelectedShift(dropDownValueCheck(event.target.value,t('selectWeeklyShift')))
+                            setSelectedShift(dropDownValueCheck(event.target.value, t('selectWeeklyShift')))
                         }}
                     />
                     <DropDown

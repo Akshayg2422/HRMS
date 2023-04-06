@@ -37,8 +37,8 @@ const Approved = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {},
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -51,8 +51,8 @@ const Approved = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchApprovedLeaves(page);
   }
 
@@ -86,13 +86,13 @@ const Approved = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setRevertModel(!revertModel);
           fetchApprovedLeaves(currentPage);
-          showToast('success',success?.status)
+          showToast('success', success?.status)
 
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => { },
       })
     );
   };

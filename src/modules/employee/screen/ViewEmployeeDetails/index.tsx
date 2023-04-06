@@ -8,7 +8,11 @@ import {
   Icon,
   Modal,
   CheckBox,
+  ScreenContainer,
+  ScreenTitle,
+  FormTypography,
   Container,
+  Divider,
 } from "@components";
 import {
   GENDER_LIST,
@@ -129,7 +133,7 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           setBranchesExist(true)
           const parentBranch = branchesDropdownData.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
@@ -143,7 +147,7 @@ const ViewEmployeeDetails = () => {
           ]);
         },
 
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   }, []);
@@ -153,10 +157,10 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getDepartmentData({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           setDeptExist(true)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       }))
   }
 
@@ -166,10 +170,10 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getDesignationData({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           setDesigationExist(true)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       }))
   }
 
@@ -187,11 +191,12 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getEmployeeDetails({
         params,
-        onSuccess: (response: EmployeeDetail) => {
+        onSuccess: (response: EmployeeDetail) => () => {
+
           preFillEmployeeDetails(response);
           setShowEnableContainers(true)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast('error', error)
         },
       })
@@ -375,164 +380,242 @@ const ViewEmployeeDetails = () => {
 
 
   return (
-    <FormWrapper hideFooter title={t("viewEmployeeDetails")}>
-      {showEnableContainers && <Container additionClass="mb-4">
-        <CheckBox
-          id={'1'}
-          text={t("enableOfficeCheckIn")}
-          checked={employeeDetails.canOfficeCheckIn}
-          onChange={(e) => {
-            officeCheckInHandler(e.target.checked)
-          }}
+    <ScreenContainer additionClass={'mb--5'}>
+      <FormWrapper hideFooter title={t("viewEmployeeDetails")} isTitle>
+
+        <ScreenTitle title={'Basic Information'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("fullName")} subTitle={employeeDetails.firstName} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("lastName")} subTitle={employeeDetails.lastName ? employeeDetails.lastName : '-'} />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("mobileNumber")} subTitle={employeeDetails.mobileNumber} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("email")} subTitle={employeeDetails.e_Mail} />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("gender")} subTitle={employeeDetails.gender} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("bloodGroup")} subTitle={employeeDetails.bloodGroup ? employeeDetails.bloodGroup : "-"} />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("dateofBirth")} subTitle={employeeDetails.dob} />
+          </div>
+
+        </Container>
+        <Divider />
+
+        <ScreenTitle title={'Company Details'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3 '}>
+          <div className="col-xl-6">
+            <FormTypography title={t("designation")} subTitle={employeeDetails.designation} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("department")} subTitle={employeeDetails.department} />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("branch")} subTitle={employeeDetails.branch} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("category")} subTitle={employeeDetails.employeeType} />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("dataOfJoining")} subTitle={employeeDetails.dateOfJoining} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("kgid")} subTitle={employeeDetails.kgid_No ? employeeDetails.kgid_No : '-'} />
+          </div>
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Attendance Details'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          {employeeDetails.shift &&
+            <div className="col-xl-6">
+              <FormTypography title={"Shift"} subTitle={employeeDetails.shift} />
+            </div>
+          }
+          {!employeeDetails.shift &&
+            <>
+              <div className="col-xl-6">
+                <FormTypography title={t("startTime")} subTitle={employeeDetails.attendanceStartTime
+                  ? convertFrom24To12Format(employeeDetails.attendanceStartTime)
+                  : "-:-"} />
+              </div>
+              <div className="col-xl-6">
+                <FormTypography title={t("endTime")} subTitle={employeeDetails.attendanceEndTime
+                  ? convertFrom24To12Format(employeeDetails.attendanceEndTime)
+                  : "-:-"} />
+              </div>
+            </>
+          }
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Document information'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <FormTypography title={t("aadhar")} subTitle={employeeDetails.aadharrNo ? employeeDetails.aadharrNo : '-'} />
+          </div>
+          <div className="col-xl-6">
+            <FormTypography title={t("pan")} subTitle={employeeDetails.panNo ? employeeDetails.panNo : '-'} />
+          </div>
+        </Container>
+
+        {/* <InputText
+          label={t("fullName")}
+          placeholder={t("fullName")}
+          value={employeeDetails.firstName}
+          disabled={true}
         />
-        <CheckBox
-          id={'2'}
-          text={t('enableFieldCheckIn')}
-          checked={employeeDetails.canFieldCheckIn}
-          onChange={(e) => {
-            fieldCheckInHandler(e.target.checked)
-          }}
+        <InputText
+          label={t("lastName")}
+          placeholder={t("lastName")}
+          value={employeeDetails.lastName}
+          disabled={true}
         />
-        <CheckBox
-          id={'3'}
-          text={t('enableFaceValidation')}
-          checked={employeeDetails.faceRegisterEnable}
-          onChange={(e) => {
-            faceValidationHandler(e.target.checked)
-          }}
+        <InputNumber
+          label={t("mobileNumber")}
+          placeholder={t("mobileNumber")}
+          value={employeeDetails.mobileNumber}
+          disabled={true}
         />
-      </Container>}
-      <InputText
-        label={t("fullName")}
-        placeholder={t("fullName")}
-        value={employeeDetails.firstName}
-        disabled={true}
-      />
-      <InputText
-        label={t("lastName")}
-        placeholder={t("lastName")}
-        value={employeeDetails.lastName}
-        disabled={true}
-      />
-      <InputNumber
-        label={t("mobileNumber")}
-        placeholder={t("mobileNumber")}
-        value={employeeDetails.mobileNumber}
-        disabled={true}
-      />
-      <InputMail
-        label={t("email")}
-        placeholder={t("email")}
-        value={employeeDetails.e_Mail}
-        disabled={true}
-      />
-      <InputDefault
-        label={t("gender")}
-        placeholder={t("gender")}
-        value={employeeDetails.gender}
-        disabled={true}
-      />
+        <InputMail
+          label={t("email")}
+          placeholder={t("email")}
+          value={employeeDetails.e_Mail}
+          disabled={true}
+        />
+        <InputDefault
+          label={t("gender")}
+          placeholder={t("gender")}
+          value={employeeDetails.gender}
+          disabled={true}
+        />
 
-      <InputDefault
-        label={t("bloodGroup")}
-        placeholder={t("bloodGroup")}
-        value={employeeDetails.bloodGroup}
-        disabled={true}
-      />
+        <InputDefault
+          label={t("bloodGroup")}
+          placeholder={t("bloodGroup")}
+          value={employeeDetails.bloodGroup}
+          disabled={true}
+        />
 
-      <InputDefault
-        label={t("pan")}
-        placeholder={t("pan")}
-        value={employeeDetails.panNo}
-        disabled={true}
-      />
-      <InputDefault
-        label={t("aadhar")}
-        placeholder={t("aadhar")}
-        value={employeeDetails.aadharrNo}
-        disabled={true}
-      />
-      <InputText
-        label={t("designation")}
-        placeholder={t("designation")}
-        value={employeeDetails.designation}
-        disabled={true}
-      />
-
-      <InputText
-        label={t("department")}
-        placeholder={t("department")}
-        value={employeeDetails.department}
-        disabled={true}
-      />
-
-      <InputText
-        label={t("branch")}
-        placeholder={t("branch")}
-        value={employeeDetails.branch}
-        disabled={true}
-      />
-
-      <InputText
-        label={t("category")}
-        placeholder={t("category")}
-        value={employeeDetails.employeeType}
-        disabled={true}
-      />
-      {/* <h5>{t('dataOfJoining')}</h5> */}
-      <InputDefault
-        label={t("dataOfJoining")}
-        placeholder={t("dataOfJoining")}
-        value={employeeDetails.dateOfJoining}
-        disabled={true}
-      />
-      {/* <h5>{t('dateofBirth')}</h5> */}
-      <InputDefault
-        label={t("dateofBirth")}
-        placeholder={t("dateofBirth")}
-        value={employeeDetails.dob}
-        disabled={true}
-      />
-      <InputDefault
-        label={t("kgid")}
-        placeholder={t("kgid")}
-        value={employeeDetails.kgid_No}
-        disabled={true}
-      />
-      <h4 className="mb-4">{t("attendanceDetails")}</h4>
-
-      {employeeDetails.shift && <InputDefault
-        label={"Shift"}
-        placeholder={"Shift"}
-        value={employeeDetails.shift}
-        disabled={true}
-      />}
-
-
-      {!employeeDetails.shift && <> <InputText
-        label={t("startTime")}
-        placeholder={t("startTime")}
-        value={
-          employeeDetails.attendanceStartTime
-            ? convertFrom24To12Format(employeeDetails.attendanceStartTime)
-            : "-:-"
-        }
-        disabled={true}
-      // editable={false}
-      />
+        <InputDefault
+          label={t("pan")}
+          placeholder={t("pan")}
+          value={employeeDetails.panNo}
+          disabled={true}
+        />
+        <InputDefault
+          label={t("aadhar")}
+          placeholder={t("aadhar")}
+          value={employeeDetails.aadharrNo}
+          disabled={true}
+        />
+        <InputText
+          label={t("designation")}
+          placeholder={t("designation")}
+          value={employeeDetails.designation}
+          disabled={true}
+        />
 
         <InputText
-          label={t("endTime")}
-          placeholder={t("endTime")}
+          label={t("department")}
+          placeholder={t("department")}
+          value={employeeDetails.department}
+          disabled={true}
+        />
+
+        <InputText
+          label={t("branch")}
+          placeholder={t("branch")}
+          value={employeeDetails.branch}
+          disabled={true}
+        />
+
+        <InputText
+          label={t("category")}
+          placeholder={t("category")}
+          value={employeeDetails.employeeType}
+          disabled={true}
+        />
+        <InputDefault
+          label={t("dataOfJoining")}
+          placeholder={t("dataOfJoining")}
+          value={employeeDetails.dateOfJoining}
+          disabled={true}
+        />
+        <InputDefault
+          label={t("dateofBirth")}
+          placeholder={t("dateofBirth")}
+          value={employeeDetails.dob}
+          disabled={true}
+        />
+        <InputDefault
+          label={t("kgid")}
+          placeholder={t("kgid")}
+          value={employeeDetails.kgid_No}
+          disabled={true}
+        />
+        <h4 className="mb-4">{t("attendanceDetails")}</h4> */}
+
+        {/* {employeeDetails.shift && <InputDefault
+          label={"Shift"}
+          placeholder={"Shift"}
+          value={employeeDetails.shift}
+          disabled={true}
+        />} */}
+
+
+        {/* {!employeeDetails.shift && <> <InputText
+          label={t("startTime")}
+          placeholder={t("startTime")}
           value={
-            employeeDetails.attendanceEndTime
-              ? convertFrom24To12Format(employeeDetails.attendanceEndTime)
+            employeeDetails.attendanceStartTime
+              ? convertFrom24To12Format(employeeDetails.attendanceStartTime)
               : "-:-"
           }
           disabled={true}
-        // editable={false}
-        /></>}
-    </FormWrapper>
+        />
+
+          <InputText
+            label={t("endTime")}
+            placeholder={t("endTime")}
+            value={
+              employeeDetails.attendanceEndTime
+                ? convertFrom24To12Format(employeeDetails.attendanceEndTime)
+                : "-:-"
+            }
+            disabled={true}
+          /></>} */}
+      </FormWrapper>
+    </ScreenContainer>
   );
 };
 

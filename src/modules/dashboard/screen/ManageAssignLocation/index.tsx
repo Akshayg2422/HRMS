@@ -75,7 +75,15 @@ function ManageAssignLocation() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   function paginationHandler(
@@ -102,8 +110,25 @@ function ManageAssignLocation() {
 
   function getEmployeeAssociationBranch(index: number) {
     const employees = registeredEmployeesList[index];
-    dispatch(getEmployeeCheckinAssociations({ user_id: employees.id }));
-    dispatch(getListAllBranchesList({}));
+    dispatch(getEmployeeCheckinAssociations({
+      user_id: employees.id,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+    const params = {}
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
     setModel(!model);
   }
 
@@ -139,11 +164,11 @@ function ManageAssignLocation() {
     dispatch(
       updateEmployeeCheckinAssociations({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           showToast("success", success.status);
           setModel(!model);
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };

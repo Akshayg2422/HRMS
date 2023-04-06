@@ -92,11 +92,11 @@ const ManageHolidays = () => {
       dispatch(
         addHoliday({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast('success', success.message)
             goBack(navigation);
           },
-          onError: (error: any) => {
+          onError: (error: any) => () => {
             showToast('error', error.error_message)
           },
         })

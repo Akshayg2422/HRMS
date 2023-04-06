@@ -99,11 +99,29 @@ function MyWorkLog() {
     getEmployeeEachUserTimeSheetsApi();
   }, [type]);
 
+  function getUserCheckInLogs() {
+    const params = { start_time: startDate, end_time: endDate };
+    dispatch(getEmployeesCheckInLogs({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
 
   function getEmployeeEachUserTimeSheetsApi() {
     dispatch(
       getEmployeeEachUserTimeSheets({
         type,
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
       })
     );
 
@@ -138,12 +156,12 @@ function MyWorkLog() {
     setType(sortData[index].title.toLocaleLowerCase());
   };
 
- 
+
   return (
     <>
       <div className="row">
         <div className="col">
-          <BackArrow additionClass={'m-3'}/>
+          <BackArrow additionClass={'m-3'} />
           <div className="col text-right mb-3">
             <Sort
               sortData={sortData}
@@ -183,7 +201,7 @@ function MyWorkLog() {
         toggle={() => setLogPerDayModel(!logPerDayModel)}
       >
         {employeeCheckInDetailedLogPerDay &&
-        employeeCheckInDetailedLogPerDay.length > 0 ? (
+          employeeCheckInDetailedLogPerDay.length > 0 ? (
           <Table
             displayDataSet={normalizedPerDayData(
               employeeCheckInDetailedLogPerDay
@@ -193,7 +211,7 @@ function MyWorkLog() {
           <NoRecordFound />
         )}
       </Modal>
-      </>
+    </>
   );
 }
 

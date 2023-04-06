@@ -78,7 +78,13 @@ function LogReports({ data, department, reportType, customrange, designation, at
             page_number: pageNumber,
         };
         dispatch(getMisReport({
-            params
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
         }));
     })
 
@@ -108,10 +114,10 @@ function LogReports({ data, department, reportType, customrange, designation, at
         console.log("params----->", params);
         dispatch(getDownloadEmployeeCheckinLogs({
             params,
-            onSuccess: (response: any) => {
+            onSuccess: (response: any) => () => {
                 downloadFile(response);
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
             },
         }));
     }

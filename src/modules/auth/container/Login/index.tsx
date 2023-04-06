@@ -52,10 +52,10 @@ function Login() {
     dispatch(
       getValidateUser({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast('error', t('invalidUser'));
         },
       })

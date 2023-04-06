@@ -104,6 +104,7 @@ const WeeklyShiftSelection = () => {
 
 
   const onSubmit = () => {
+
     if (validatePostParams()) {
       const params = {
         ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
@@ -151,13 +152,13 @@ const WeeklyShiftSelection = () => {
       dispatch(
         addWeeklyShift({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast("success", success.status);
             selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
             goBack(navigation);
             // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })
@@ -285,10 +286,10 @@ const WeeklyShiftSelection = () => {
     const params = { id: selectedWeeklyShiftId }
     dispatch(getWeeklyShiftDetails({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         setWeeklyData(success.weekly_group_details)
       },
-      onError: (error: string) => { },
+      onError: (error: string) => () => { },
     }))
   }
 

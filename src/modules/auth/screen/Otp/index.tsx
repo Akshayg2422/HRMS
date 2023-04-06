@@ -81,14 +81,20 @@ function Otp() {
 
   const reSendOTP = (params: object) => {
     dispatch(getResendLoginOtp({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }));
   };
 
   const signInOTP = (params: object) => {
     dispatch(proceedSignIn({
       params,
-      onSuccess: async (response: LoginResponse) => {
+      onSuccess: (response: LoginResponse) => async () => {
 
         if (response.is_admin || response.is_branch_admin) {
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
@@ -99,7 +105,7 @@ function Otp() {
           showToast('error', t('invalidAdmin'));
         }
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast('error', error);
       },
     }));

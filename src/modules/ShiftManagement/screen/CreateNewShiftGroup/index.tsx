@@ -69,7 +69,16 @@ const CreateShiftGroup = () => {
         PreFilledDetails()
         getBranchesWeeklyShiftsList()
         getDepartments()
-        dispatch(getDesignationData({}));
+        const params = {}
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
         return () => {
             setSelectedEmployeesList([])
             setSelectedEmpListDesignationId("")
@@ -88,18 +97,26 @@ const CreateShiftGroup = () => {
 
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchWeeklyShifts({ params }));
+        dispatch(getBranchWeeklyShifts({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
     const getDepartments = (() => {
         const params = {}
         dispatch(getDepartmentData({
             params,
-            onSuccess: (response: any) => {
+            onSuccess: (response: any) => () => {
                 let mergedDepartments = [...departmentsData, ...response]
                 setDepartmentsData(mergedDepartments)
             },
-            onError: (errorMessage: string) => {
+            onError: (errorMessage: string) => () => {
             },
         }));
     })
@@ -136,9 +153,7 @@ const CreateShiftGroup = () => {
 
         dispatch(getEmployeesList({
             params,
-            onSuccess: (success: any) => {
-                setRegisteredEmployees([...registeredEmployees, ...success.data])
-                // setRegisteredEmployees
+            onSuccess: (success: any) => () => {
                 // if (selectedShiftGroupDetails) {
                 //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
                 // }
@@ -146,7 +161,7 @@ const CreateShiftGroup = () => {
                 //     getShiftEmployeesGroupDetails(designationShiftGroup.id)
                 // }
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
 
             },
         }));
@@ -188,12 +203,12 @@ const CreateShiftGroup = () => {
             }
             dispatch(postAddShift({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     setSelectedEmployeesIds([])
                     goBack(navigation);
                     showToast("success", success.status)
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));
@@ -227,11 +242,11 @@ const CreateShiftGroup = () => {
         }
         dispatch(getShiftEmployeesDetails({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 setSelectedEmployeesList(success)
                 setFilteredEmployees(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
             },
         }));
     }

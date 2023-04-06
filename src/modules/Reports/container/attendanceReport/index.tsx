@@ -44,7 +44,13 @@ function AttendanceReport({ data, department, reportType, customrange, designati
       page_number: pageNumber,
     };
     dispatch(getMisReport({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }));
   })
 
@@ -59,10 +65,10 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     console.log("params----->", params);
     dispatch(getDownloadEmployeeCheckinLogs({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         downloadFile(response);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
       },
     }));
   }

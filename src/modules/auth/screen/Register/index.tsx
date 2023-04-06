@@ -85,8 +85,8 @@ function SignUp() {
   };
 
   useEffect(() => {
-    dispatch(getNatureOfBusiness({}));
-    dispatch(getTypeOfBusiness({}));
+    natureOfBusiness()
+    typeOfBusiness()
   }, []);
 
 
@@ -95,6 +95,35 @@ function SignUp() {
       proceedNext()
     }
   }, [enterPress])
+
+  const natureOfBusiness = () => {
+    const params = {}
+
+    dispatch(getNatureOfBusiness({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+
+
+  }
+
+  const typeOfBusiness = () => {
+    const params = {}
+    dispatch(getTypeOfBusiness({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
 
 
   const validateUserDetailsParams = () => {
@@ -183,13 +212,13 @@ function SignUp() {
     dispatch(
       getAdminVerificationOtp({
         params,
-        onSuccess: async (response: any) => {
+        onSuccess: (response: any) => async () => {
           const value = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
           dispatch(setUserLoginDetails(value))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
           dispatch(registerOtpVerify({}))
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
@@ -237,10 +266,11 @@ function SignUp() {
         aadhar_number: registerAdminDetails.aadhaar,
       };
       dispatch(getRegisterAdmin({
-        params, onSuccess: (response: object) => {
+        params,
+        onSuccess: (response: object) => () => {
           dispatch(updateAdminInput({}))
         },
-        onError: (error: any) => {
+        onError: (error: any) => () => {
           showToast("error", error?.error_message ? error?.error_message : error?.error);
 
         },
@@ -267,7 +297,7 @@ function SignUp() {
       dispatch(
         getValidateCompanyDetails({
           params,
-          onSuccess: async (response: object) => {
+          onSuccess: (response: object) => async () => {
             let current = await localStorage.getItem(ASYN_USER_AUTH);
             if (current) {
               const jsonValue: object = JSON.parse(current);
@@ -279,7 +309,7 @@ function SignUp() {
             }
             dispatch(updateCompanyInput({}))
           },
-          onError: (error: string) => { },
+          onError: (error: string) => () => { },
         })
       );
     }
@@ -302,10 +332,10 @@ function SignUp() {
       dispatch(
         uploadCompanyDocuments({
           params,
-          onSuccess: (response: object) => {
+          onSuccess: (response: object) => () => {
             goTo(navigation, ROUTE.ROUTE_LOGIN);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })

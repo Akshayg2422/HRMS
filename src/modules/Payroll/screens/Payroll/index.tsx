@@ -45,7 +45,15 @@ function PayRoll() {
             page_number: pageNumber,
             // ...(searchEmployee && { q: searchEmployee }),
         };
-        dispatch(getEmployeesList({ params }));
+        dispatch(getEmployeesList({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
     const normalizedEmployeeLog = (data: any) => {

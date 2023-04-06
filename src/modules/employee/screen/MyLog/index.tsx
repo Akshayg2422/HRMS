@@ -105,13 +105,27 @@ function MyLog() {
 
   function getUserCheckInLogs() {
     const params = { start_time: startDate, end_time: endDate };
-    dispatch(getEmployeesCheckInLogs({ params }));
+    dispatch(getEmployeesCheckInLogs({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   function getEmployeeEachUserTimeSheetsApi() {
     dispatch(
       getEmployeeEachUserTimeSheets({
         type,
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
       })
     );
   }
@@ -175,10 +189,10 @@ function MyLog() {
     dispatch(
       getCheckInDetailedLogPerDay({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           setLogPerDayModel(!logPerDayModel);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
 
         },
       })
@@ -214,12 +228,12 @@ function MyLog() {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
             showToast("success", response?.message);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
             setMarkAsPresentModel(!markAsPresentModel);

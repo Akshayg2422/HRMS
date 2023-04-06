@@ -31,9 +31,26 @@ function ManageBroadCast() {
 
 
     useEffect(() => {
-        dispatch(getDepartmentData({}));
-        dispatch(getDesignationData({}));
-    }, [])
+        const params = {}
+        dispatch(getDepartmentData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
+    }, [hierarchicalBranchIds])
 
     const onChangeHandler = (e: any) => {
         setBroadCast({ ...broadCast, [e.target?.name]: e.target?.value });
@@ -77,13 +94,13 @@ function ManageBroadCast() {
         if (validatePostParams()) {
             dispatch(createBroadcastMessage({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     console.log("successsssss", success);
                     goBack(navigation);
                     showToast("success", success.status)
                     setBroadCast({ title: '', description: '', department: '', designation: '' })
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));
