@@ -5,16 +5,18 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
 import {
-    getNotifications, setIsShowBack
+    clearNotificationCount,
+    getNotifications, setIsShowBack, setNotificationCount
 } from "../../../../../src/store/notifications/actions";
 
 function Notifications() {
     const dispatch = useDispatch()
     const navigation = useNav();
 
-    const { currentPage, numOfPages, notificationsDataList, isShowBack } = useSelector(
+    const { currentPage, numOfPages, notificationsDataList, isShowBack, NotificationCount } = useSelector(
         (state: any) => state.NotificationReducer
     );
+
 
     const NOTI_TYPE_BROADCAST_MESSAGE = 'BROADCAST_MESSAGE'
     const NOTI_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST'
@@ -29,8 +31,8 @@ function Notifications() {
     const NOTI_TYPE_MY_SHIFTS = 'MY_SHIFTS'
     const NOTI_TYPE_NO_ACTION = 'NO_ACTION'
 
-    const handleRoute = (item: any) => {
 
+    const handleRoute = (item: any) => {
         if (item?.extra?.route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -63,12 +65,17 @@ function Notifications() {
         }
     }
 
+    // useEffect(() => {
+    //     getNotificationsList(currentPage)
+    // }, [])
+
     useEffect(() => {
+        dispatch(clearNotificationCount())
         getNotificationsList(currentPage)
         return () => {
             dispatch(setIsShowBack(false))
         }
-    }, [])
+    }, [NotificationCount > 0])
 
     const getNotificationsList = (pageNumber: number) => {
         const params = {

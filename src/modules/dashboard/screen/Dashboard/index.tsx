@@ -21,9 +21,7 @@ import {
 } from '../../../../store/location/actions';
 
 import { LocationProps } from '../../../../components/Interface';
-import { currentNavIndex } from "../../../../store/app/actions";
-import { getAdminBranches } from "../../../../store/employee/actions";
-import { isWebPushRegister, postAppConfig, webPushRegister } from "../../../../store/auth/actions";
+import { isWebPushRegister, postAppConfig} from "../../../../store/auth/actions";
 
 
 function Dashboard() {

@@ -21,13 +21,12 @@ function LocationScreen() {
   const navigation = useNav();
   const { t } = useTranslation();
   const [branch, setBranch] = useState<any>([])
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
   const [model, setModel] = useState(false);
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
   const [modelData, setModelData] = useState<Location | any>();
   const [editModel, setEditModel] = useState<any>(false);
-  const [searchBranches, setsearchBranches] = useState<any>('')
+  const [searchBranches, setSearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
 
   const enterPress = useKeyPress("Enter");
@@ -150,19 +149,6 @@ function LocationScreen() {
 
   }
 
-  const SelectedBranchFilter = () => {
-    let filteredBranch = [...branch]
-    if (searchBranches !== "") {
-      filteredBranch = filteredBranch.filter((element: any) => {
-        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
-      })
-      setBranch(filteredBranch)
-    }
-    else {
-      setBranch(brancheslist)
-    }
-  }
-
   const handleEdit = (item: any) => {
     setEditBranchDetails(item.name)
     setCurrentBranchDetails(item)
@@ -221,7 +207,7 @@ function LocationScreen() {
             col={'col'}
             placeholder={t("searchLocation")}
             onChange={(e) => {
-              setsearchBranches(e.target.value);
+              setSearchBranches(e.target.value);
             }}
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}

@@ -14,8 +14,7 @@ import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
-import { Notification } from '../Notification';
-import { setIsShowBack } from '../../../../store/notifications/actions';
+import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 
 const Header = () => {
   const [languageModel, setLanguageModel] = useState(false);
@@ -34,7 +33,7 @@ const Header = () => {
     (state: any) => state.DashboardReducer
   );
 
-  const { broadcastMessagesData, notificationsDataList } = useSelector(
+  const { NotificationCount } = useSelector(
     (state: any) => state.NotificationReducer
   );
 
@@ -165,11 +164,13 @@ const Header = () => {
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
-                  dispatch(setIsShowBack(true))
+                  if (pathname !== '/notifications') {
+                    goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
+                    dispatch(setIsShowBack(true))
+                  }
                 }} >
-                  <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(notificationsDataList)}</span> */}
+                  <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }} onClick={() => dispatch(clearNotificationCount())}></i>
+                  {NotificationCount > 0 && <span  style={{ cursor: 'pointer' }} className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(NotificationCount)}</span>}
                 </a>
               </div>
               <div className='media-body  d-none d-lg-block'>

@@ -23,7 +23,6 @@ import {
   ROUTE,
   showToast,
 } from "@utils";
-import { useDashboard } from "@contexts";
 import {
   employeeEdit,
   getEmployeesList,
@@ -383,9 +382,8 @@ function EmployeeScreen() {
               additionClass={"mt-sm-3 mt-xl--2"}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
-              onClick={proceedSearchApi}
             >
-              <Icon type={"btn-primary"} icon={Icons.Search} />
+              <Icon type={"btn-primary"} icon={Icons.Search} onClick={proceedSearchApi} />
             </Container>
           </Container>
 
@@ -436,6 +434,7 @@ function EmployeeScreen() {
               }}
             />
           ) : <NoRecordFound />}
+
           <Modal
             title={t("deleteUser")}
             showModel={deleteModel}
