@@ -1,59 +1,52 @@
+import { HEADER_MENU } from '@utils';
 import React from 'react'
-import { Icon, ImageView } from '@components'
-import { Icons } from '@assets';
+import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
+
 
 type CommonDropdownMenuProps = {
-    dataSet:
-    Array<{
-        name: string,
-        elv: string,
-        icon: string
-    }>
-    menuValueOnClick?: (event: any, index: number, item: object, elv: string) => void;
-    menuSize?: string
+    onAddClick?: (e: React.MouseEvent<HTMLElement>) => void;
+    onDeleteClick?: (e: React.MouseEvent<HTMLElement>) => void;
+    onAssignCourse?: (e: React.MouseEvent<HTMLElement>) => void;
+    isStudent?: boolean;
+    onAddChild?: (e: React.MouseEvent<HTMLElement>) => void;
+    isAddChild?: boolean
+    showEdit?: boolean
+    onAddRemark?: (e: React.MouseEvent<HTMLElement>) => void;
+    showDelete?: boolean
+    onItemClick?: (e: React.MouseEvent<HTMLElement>, item: any) => void;
+    data?: any
 }
 
-function CommonDropdownMenu({ dataSet, menuValueOnClick, menuSize = '35' }: CommonDropdownMenuProps) {
+function CommonDropdownMenu({ data, onAddClick, onDeleteClick, onAssignCourse, isStudent = false, showEdit = false, isAddChild = false, onAddChild, onAddRemark, showDelete = false, onItemClick }: CommonDropdownMenuProps) {
 
     return (
-        <li className='nav-item dropdown'>
-            <div className='media'
-                role='button'
-                data-toggle='dropdown'
-                aria-haspopup='true'
-                aria-expanded='false'>
-                <ImageView
-                    height={menuSize}
-                    alt='Menu'
-                    icon={Icons.MenuDots}
-                />
-            </div>
-            <div className='dropdown-menu dropdown-menu'>
-                {dataSet.map((item: any, index: number) => {
-                    return (
-                        <a className="dropdown-item" href="#"
-                            onClick={(e) => {
-                                if (menuValueOnClick) {
-                                    menuValueOnClick(e, index, item, item.elv)
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                }
-                            }}>
-                            {item.icon
-                                ? <ImageView
-                                    height={'18'}
-                                    alt='Menu Icon'
-                                    icon={item.icon}
-                                /> : <i className="fa fa-home"></i>}
-                            <span className='ml-2'>{item?.name}</span></a>
-                    );
-                })}
-            </div>
-        </li>
+        <div>
+            <UncontrolledDropdown>
+                <DropdownToggle
+                    color=""
+                    size="sm"
+                    className="btn-icon-only text-light shadow-none"
+                    onClick={(e) =>
+                        e.stopPropagation()
+                    }
+                >
+                    <i className="fas fa-ellipsis-v" />
+                </DropdownToggle>
+                <DropdownMenu className="dropdown-menu-arrow " right>
+                    {data && data?.map((item: any) => {
+                        return (
+                            <DropdownItem
+                                onClick={(e) => { if (onItemClick) { onItemClick(e, item) } }}
+                            >
+                                {item.name}
+                            </DropdownItem>
+                        );
+                    })}
+
+                </DropdownMenu>
+            </UncontrolledDropdown>
+        </div>
     )
 }
 
-export default CommonDropdownMenu
-
-
-
+export default CommonDropdownMenu 

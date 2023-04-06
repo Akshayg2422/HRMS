@@ -45,7 +45,7 @@ function MyActiveBranches() {
         const params = {}
         dispatch(getAdminBranches({
             params,
-            onSuccess: (response: any) => {
+            onSuccess: (response: any) => () => {
                 const { admin_branches } = response
                 const updatedData = admin_branches.length > 0 ? admin_branches : [{ name: dashboardDetails?.company_branch?.name, id: dashboardDetails?.company_branch?.id, is_active_branch: true }]
                 setBranchDropDownData(updatedData)
@@ -53,7 +53,7 @@ function MyActiveBranches() {
                 setDropdownSelectedBranch(updatedData[defaultBranch].id)
                 setActiveBranch(updatedData[defaultBranch].id, updatedData[defaultBranch].name)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("info", error);
             },
         }));
@@ -100,11 +100,11 @@ function MyActiveBranches() {
         }
         dispatch(postAdminUpdateBranches({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 showToast("success", success?.message);
                 getAdminBranchesData()
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }));
@@ -115,7 +115,15 @@ function MyActiveBranches() {
             page_number: pageNumber,
             child_ids: hierarchicalBranchIds?.child_ids
         }
-        dispatch(getBranchAdmins({ params }));
+        dispatch(getBranchAdmins({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
     return (

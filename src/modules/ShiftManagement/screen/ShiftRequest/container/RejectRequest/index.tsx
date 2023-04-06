@@ -18,7 +18,15 @@ function RejectRequest() {
             page_number: pageNumber,
             ...hierarchicalBranchIds
         }
-        dispatch(getShiftRequestedEmployees({ params }));
+        dispatch(getShiftRequestedEmployees({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
     const normalizedRequestList = (data: any) => {

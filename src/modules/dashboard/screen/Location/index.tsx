@@ -1,4 +1,4 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound } from '@components';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu } from '@components';
 import React, { useEffect, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,6 +6,14 @@ import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, ed
 import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
+
+export const DROPDOWN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
+
+]
 
 function LocationScreen() {
 
@@ -17,7 +25,7 @@ function LocationScreen() {
   const [model, setModel] = useState(false);
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
-  const [modelData, setModelData] = useState<Location>();
+  const [modelData, setModelData] = useState<Location | any>();
   const [editModel, setEditModel] = useState<any>(false);
   const [searchBranches, setsearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
@@ -32,10 +40,10 @@ function LocationScreen() {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           setBranch(response)
         },
-        onError: () => {
+        onError: () => () => {
           console.log("=========error");
         },
       })
@@ -58,10 +66,44 @@ function LocationScreen() {
     }
   }, [inputRef, editBranchDetails]);
 
+  const dropdownMenuItemActionHandler = (item: any, data?: string | undefined) => {
+
+    switch (item.name) {
+      case 'Edit':
+        handleEdit(data)
+        break;
+
+      case 'Reset radius':
+        setModelData(data)
+        setModel(!model)
+        break;
+
+      case 'Enable refench':
+        enableReFetchApi(data)
+        break;
+
+      case 'Assign fence admin':
+        break;
+    }
+  }
+
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
         name: el.name,
+        'Address': el?.address ? el?.address : '-',
+        'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.TickActive} /> : <></>,
+        'Fencing Radius': el.fencing_radius,
+        "": <CommonDropdownMenu
+          data={DROPDOWN_MENU}
+          onItemClick={(e, item) => {
+            if (item.name === 'Reset radius') {
+              setModelData(data)
+            }
+            e.stopPropagation();
+            dropdownMenuItemActionHandler(item, el)
+          }}
+        />
       };
     });
   };
@@ -85,17 +127,18 @@ function LocationScreen() {
 
   }
 
-  function enableReFetchApi(branchDetail: Location) {
+  function enableReFetchApi(branchDetail: Location | any) {
 
     const params = { id: branchDetail?.id }
+    console.log("branchDetail--->", branchDetail);
 
     dispatch(enableBranchRefence({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
       },
-      onError: () => {
+      onError: () => () => {
       },
     }))
 
@@ -137,12 +180,14 @@ function LocationScreen() {
       }
       dispatch(editBranchName({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
+      console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000",success)
+
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       }))
@@ -190,18 +235,18 @@ function LocationScreen() {
       {branch && branch.length > 0 ? (
         <CommonTable
           displayDataSet={normalizedEmployeeLog(branch)}
-          tableChildren={
-            <LocationTable
-              tableDataSet={branch}
-              resetRadiusOnchange={(item) => {
-                setModelData(item)
-                setModel(!model)
-              }}
-              enableReFetch={enableReFetchApi}
-              onEditClick={(item) => {
-                handleEdit(item)
-              }}
-            />}
+        // tableChildren={
+        //   <LocationTable
+        //     tableDataSet={branch}
+        //     resetRadiusOnchange={(item) => {
+        //       setModelData(item)
+        //       setModel(!model)
+        //     }}
+        //     enableReFetch={enableReFetchApi}
+        //     onEditClick={(item) => {
+        //       handleEdit(item)
+        //     }}
+        //   />}
         />
       ) : <Card additionClass='mx-3'><NoRecordFound /></Card>}
       <Modal

@@ -42,8 +42,8 @@ const Pending = () => {
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {},
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -56,8 +56,8 @@ const Pending = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
@@ -95,7 +95,7 @@ const Pending = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           if (el === 1) {
             setApproveModel(!approveModel);
             showToast("info", success.status);
@@ -106,7 +106,7 @@ const Pending = () => {
           }
           fetchPendingDetail(currentPage);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => { },
       })
     );
   };

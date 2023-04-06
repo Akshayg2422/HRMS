@@ -21,10 +21,10 @@ function AvailableLeaves() {
         dispatch(
             getLeaveTypes({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     setLeaveTypes(success.leave_types);
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error);
                 },
             })

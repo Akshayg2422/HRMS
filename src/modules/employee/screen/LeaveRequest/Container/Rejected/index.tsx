@@ -28,9 +28,9 @@ const Rejected = () => {
     };
     dispatch(getEmployeeLeaves({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         dispatch(getEmployeeLeavesSuccess(''))
       },
     }));
@@ -76,12 +76,12 @@ const Rejected = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setRevertModel(!revertModel)
           fetchRejectedLeaves(currentPage);
           showToast('success', success?.status)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
         },
       })
     );

@@ -31,7 +31,7 @@ const Pending = () => {
     (state: any) => state.DashboardReducer
   );
 
-  
+
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -41,8 +41,8 @@ const Pending = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => { },
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
       })
@@ -96,7 +96,7 @@ const Pending = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           if (el === 1) {
             setApproveModel(!approveModel);
           }
@@ -106,7 +106,7 @@ const Pending = () => {
           fetchPendingDetail(currentPage);
           showToast('success', success?.status)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };

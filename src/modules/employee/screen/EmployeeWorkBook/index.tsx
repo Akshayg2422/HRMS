@@ -87,7 +87,15 @@ function EmployeeTimeSheets() {
       ...(searchEmployee && { q: searchEmployee }),
 
     };
-    dispatch(getEmployeesTimeSheets({ params }));
+    dispatch(getEmployeesTimeSheets({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -109,6 +117,12 @@ function EmployeeTimeSheets() {
       getEmployeeEachUserTimeSheets({
         type,
         ...(userId && { user_id: userId }),
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
       })
     );
     setModel(!model);
@@ -143,6 +157,7 @@ function EmployeeTimeSheets() {
         </Container>
         <div className="text-right">
           <Sort
+            size={'btn-sm'}
             sortData={sortData}
             activeIndex={activeSort}
             onClick={(index) => {
