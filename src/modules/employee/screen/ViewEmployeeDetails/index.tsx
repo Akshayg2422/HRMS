@@ -380,7 +380,7 @@ const ViewEmployeeDetails = () => {
 
 
   return (
-    <ScreenContainer additionClass={'mb--5'}>
+    <ScreenContainer >
       <FormWrapper hideFooter title={t("viewEmployeeDetails")} isTitle>
 
         <ScreenTitle title={'Basic Information'} />

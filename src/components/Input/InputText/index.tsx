@@ -1,6 +1,6 @@
 import React from 'react'
 import Input from '../InputDefault'
-import {InputProps} from '../../Interface'
+import { InputProps } from '../../Interface'
 
 function InputText(props: InputProps) {
   return (

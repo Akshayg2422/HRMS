@@ -76,7 +76,7 @@ function ELocker() {
         dispatch(getEmployeeDocument({
             params,
             onSuccess: (success: any) => () => {
-
+                setDocumentListData(success.details)
             },
             onError: (error: any) => () => {
 
@@ -228,7 +228,7 @@ function ELocker() {
             </Card>
             <Container additionClass='mx--3'>
                 {documentListData && documentListData?.length > 0 ? <CommonTable
-                    tableTitle={"Documents List"}
+                    title={"Documents List"}
                     displayDataSet={documentsList(documentListData)}
                     tableOnClick={(e, index, item) => {
                         let current = documentListData[index]

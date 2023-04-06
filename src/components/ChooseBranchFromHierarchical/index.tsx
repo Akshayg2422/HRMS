@@ -12,10 +12,9 @@ import { useTranslation } from "react-i18next";
 
 interface HierarchicalProps {
   showCheckBox?: boolean;
-  showActiveBranch?: boolean
 }
 
-function Hierarchical({ showCheckBox = true, showActiveBranch = true }: HierarchicalProps) {
+function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
   const { t } = useTranslation();
 
   const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails,toTriggerHierarchical } =
@@ -49,7 +48,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     dispatch(
       getListAllBranchesList({
         params,
-        onSuccess:  (response: Array<LocationProps>) => () => {
+        onSuccess: (response: Array<LocationProps>) => () => {
           // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
           if (parentBranch) {
@@ -73,7 +72,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           }
         },
         onError: (error: any) => () => {
-          console.log("=========errorasasa"+error);
+          console.log("=========errorasasa" + error);
         },
       })
     );
@@ -126,7 +125,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
     return selectedNode;
   };
 
-  function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
+  async function saveChildIdHandler(allBranch: Array<LocationProps>, item: any) {
     const childIds = getAllSubBranches(allBranch, item.id);
     dispatch(
       setBranchHierarchical({
@@ -145,7 +144,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
 
 
   return (
-    <div className="row flex-row-reverse" >
+    <div>
       <div className="col-lg-6">
         <div className="form-group">
           <small className="form-control-label text-black">{t("MyBranches")}</small>
@@ -170,11 +169,6 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           )}
         </div>
       </div>
-      {showActiveBranch && <div className="col-lg-6">
-        <div className="form-group">
-          <MyActiveBranches />
-        </div>
-      </div>}
       <Modal showModel={model} toggle={() => setModel(!model)}>
         {listBranchesList &&
           hierarchicalBranch &&

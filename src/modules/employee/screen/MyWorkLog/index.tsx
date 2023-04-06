@@ -99,18 +99,6 @@ function MyWorkLog() {
     getEmployeeEachUserTimeSheetsApi();
   }, [type]);
 
-  function getUserCheckInLogs() {
-    const params = { start_time: startDate, end_time: endDate };
-    dispatch(getEmployeesCheckInLogs({
-      params,
-      onSuccess: (success: any) => () => {
-
-      },
-      onError: (error: any) => () => {
-
-      }
-    }));
-  }
 
   function getEmployeeEachUserTimeSheetsApi() {
     dispatch(
@@ -174,7 +162,7 @@ function MyWorkLog() {
           </div>
           <div className="mr--3">
             <CommonTable
-              tableTitle={"My Time Sheet"}
+              title={"My Time Sheet"}
               displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
               tableOnClick={(e, index, item) => {
                 const attachment = employeeEachUserSheets[index].attachments;

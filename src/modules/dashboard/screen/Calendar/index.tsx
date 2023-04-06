@@ -11,6 +11,7 @@ import {
   CommonTable,
   Secondary,
   NoRecordFound,
+  CommonDropdownMenu,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,11 @@ import {
   showToast,
   useNav,
 } from "@utils";
+
+export const DROPDOWN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+]
 
 function Calendar() {
   const navigation = useNav();
@@ -73,12 +79,33 @@ function Calendar() {
     getCalendarDetails(page);
   }
 
+  const dropdownMenuItemActionHandler = (item: any, data: any, index: number) => {
+    const current = calendarEvents.days_holiday[index];
+
+    switch (item.name) {
+      case 'Edit':
+        manageEventEditHandler(current)
+        break;
+
+      case 'Delete':
+        manageEventDeleteHandler(current)
+        break;
+    }
+  }
+
   const normalizedEmployeeLog = (data: any) => {
-    return data?.map((el: any) => {
+    return data?.map((el: any, index: number) => {
       return {
         day: el.day,
         title: el.title,
         description: el.description,
+        "": <CommonDropdownMenu
+          data={DROPDOWN_MENU}
+          onItemClick={(e, item) => {
+            e.stopPropagation();
+            dropdownMenuItemActionHandler(item, el, index)
+          }}
+        />
       };
     });
   };
@@ -131,12 +158,12 @@ function Calendar() {
     goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS);
   };
 
-  const manageEventEditHandler = (el: object) => {
+  const manageEventEditHandler = (el: any | undefined) => {
     dispatch(getSelectedEventId(el));
     goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS);
   };
 
-  const manageEventDeleteHandler = (el: object) => {
+  const manageEventDeleteHandler = (el: any | undefined) => {
     dispatch(getSelectedEventId(el));
     setDeleteModel(!deleteModel);
   };
@@ -211,16 +238,7 @@ function Calendar() {
               displayDataSet={normalizedEmployeeLog(
                 calendarEvents?.days_holiday
               )}
-              additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
-              tableValueOnClick={(e, index, item, elv) => {
-                const current = calendarEvents.days_holiday[index];
-                if (elv === "Edit") {
-                  manageEventEditHandler(current);
-                }
-                if (elv === "Delete") {
-                  manageEventDeleteHandler(current);
-                }
-              }}
+             
               custombutton={"h5"}
             />
           ) : <NoRecordFound />}

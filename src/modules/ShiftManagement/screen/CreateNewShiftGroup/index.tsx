@@ -154,6 +154,7 @@ const CreateShiftGroup = () => {
         dispatch(getEmployeesList({
             params,
             onSuccess: (success: any) => () => {
+                setRegisteredEmployees([...registeredEmployees, ...success.data])
                 // if (selectedShiftGroupDetails) {
                 //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
                 // }
@@ -510,7 +511,7 @@ const CreateShiftGroup = () => {
 
                     {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
                         noHeader
-                        tableTitle={t('selectedEmployeesList')}
+                        title={t('selectedEmployeesList')}
                         tableChildren={
                             <SelectedEmployeeListTable
                                 tableDataSet={filteredEmployees}

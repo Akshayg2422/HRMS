@@ -4,6 +4,7 @@ import {
   DatePicker,
   FormWrapper,
   InputText,
+  ScreenContainer,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -40,7 +41,7 @@ const ManageHolidays = () => {
     (state: any) => state.EmployeeReducer
   );
 
-    
+
   useEffect(() => {
     if (selectedEventId !== undefined) {
       getPrefilledEventDetails();
@@ -105,7 +106,7 @@ const ManageHolidays = () => {
   };
 
   return (
-    <div>
+    <ScreenContainer >
       <FormWrapper
         title={selectedEventId ? t("editHoliday") : t("addHoildays")}
         onClick={onSubmit}
@@ -114,6 +115,8 @@ const ManageHolidays = () => {
         <Container additionClass="col-xl-12">
           <ChooseBranchFromHierarchical showCheckBox={false} />
         </Container>
+
+        
         <InputText
           col="col-xl-12"
           label={t("title")}
@@ -147,7 +150,7 @@ const ManageHolidays = () => {
           }}
         />
       </FormWrapper>
-    </div>
+    </ScreenContainer>
   );
 };
 

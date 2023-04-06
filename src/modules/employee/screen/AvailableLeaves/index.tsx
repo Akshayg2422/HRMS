@@ -58,7 +58,7 @@ function AvailableLeaves() {
                 <Container additionClass='mt-5'>
                     {leaveTypes && leaveTypes?.length > 0 ? (
                         <CommonTable
-                            tableTitle={t("AvailableLeaves")}
+                            title={t("AvailableLeaves")}
                             displayDataSet={normalizedEmployeeLog(leaveTypes)}
                         />
                     ) : (

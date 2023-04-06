@@ -149,9 +149,11 @@ const ManageEmployee = () => {
   };
 
   useEffect(() => {
-    dispatch(getDepartmentData({}));
-    dispatch(getDesignationData({}));
+    departmentData()
+    designationData()
+
     getBranchShiftsList()
+
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -243,6 +245,7 @@ const ManageEmployee = () => {
     dispatch(getBranchShifts({
       params,
       onSuccess: (success: any) => async () => {
+        setIsBranchShiftExist(true)
         await setShiftGroup(success)
       },
       onError: (error: string) => () => {
@@ -539,7 +542,7 @@ const ManageEmployee = () => {
 
 
   return (
-    <ScreenContainer additionClass={'mb--4'}>
+    <ScreenContainer>
       <FormWrapper
         isTitle
         title={isEdit ? t("editEmployee") : t("newEmployee")}

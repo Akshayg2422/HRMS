@@ -308,16 +308,16 @@ function EmployeeLog() {
             />
           </Container>
 
-        {/* <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
-          <Sort
-            sortData={employeeLogSort}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
-            }}
-          />
-        </div> */}
+          <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
+            <Sort
+              sortData={employeeLogSort}
+              activeIndex={activeSort}
+              onClick={(index) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
 
         </Container>
       </Card>
@@ -366,7 +366,7 @@ function EmployeeLog() {
           //   </>
           // }
 
-          tableTitle={t("employeeLog")}
+          title={t("employeeLog")}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}

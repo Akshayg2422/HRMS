@@ -3,6 +3,8 @@ import {
   InputNumber,
   InputText,
   FormWrapper,
+  ScreenContainer,
+  Container,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -111,7 +113,6 @@ const ManageBranches = () => {
         branchAddition({
           params,
           onSuccess: (success: object) => () => {
-            console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
             showToast("success", t("branchAddedSuccessfully"));
             goBack(navigation)
           },
@@ -132,90 +133,123 @@ const ManageBranches = () => {
   };
 
   return (
-    <FormWrapper
-      title={t("addCompanyBranch")}
-      onClick={onSubmit}
-    >
-      <InputText
-        label={t("branchName")}
-        placeholder={t("branchName")}
-        validator={validateDefault}
-        value={branchDetails.companyname}
-        name={"companyname"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputText
-        label={t("displayCompanyName")}
-        placeholder={t("displayCompanyName")}
-        validator={validateName}
-        value={branchDetails.displaycompanyname}
-        name={"displaycompanyname"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <DropDown
-        label={t("Parent Branch")}
-        placeholder={t("Parent Branch")}
-        data={listBranchesList}
-        name={"parentbranch"}
-        value={branchDetails.parentbranch}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputText
-        label={t("Communication Address")}
-        placeholder={t("Communication Address")}
-        validator={validateAddress}
-        value={branchDetails.address}
-        name={"address"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
+    <ScreenContainer>
+      <FormWrapper
+        isTitle
+        title={t("addCompanyBranch")}
+        onClick={onSubmit}
+      >
 
-      <InputText
-        label={t("City")}
-        placeholder={t("City")}
-        validator={validateDefault}
-        value={branchDetails.city}
-        name={"city"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputText
-        label={t("District")}
-        placeholder={t("District")}
-        validator={validateDefault}
-        value={branchDetails.district}
-        name={"district"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputText
-        label={t("State")}
-        placeholder={t("State")}
-        validator={validateDefault}
-        value={branchDetails.state}
-        name={"state"}
-        onChange={(event) => {
-          onChangeHandler(event);
-        }}
-      />
-      <InputNumber
-        label={t("Pincode")}
-        placeholder={t("Pincode")}
-        validator={validatePincode}
-        name={"pincode"}
-        value={branchDetails.pincode}
-        onChange={(event) => NumberHandler(inputNumberMaxLength(event.target.value, 6), "pincode")}
-      />
-    </FormWrapper>
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputText
+              label={t("branchName")}
+              placeholder={t("branchName")}
+              validator={validateDefault}
+              value={branchDetails.companyname}
+              name={"companyname"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputText
+              label={t("displayCompanyName")}
+              placeholder={t("displayCompanyName")}
+              validator={validateName}
+              value={branchDetails.displaycompanyname}
+              name={"displaycompanyname"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("Parent Branch")}
+              placeholder={t("Parent Branch")}
+              data={listBranchesList}
+              name={"parentbranch"}
+              value={branchDetails.parentbranch}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputText
+              label={t("Communication Address")}
+              placeholder={t("Communication Address")}
+              validator={validateAddress}
+              value={branchDetails.address}
+              name={"address"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+
+            <InputText
+              label={t("City")}
+              placeholder={t("City")}
+              validator={validateDefault}
+              value={branchDetails.city}
+              name={"city"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputText
+              label={t("District")}
+              placeholder={t("District")}
+              validator={validateDefault}
+              value={branchDetails.district}
+              name={"district"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+
+            <InputText
+              label={t("State")}
+              placeholder={t("State")}
+              validator={validateDefault}
+              value={branchDetails.state}
+              name={"state"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+
+            <InputNumber
+              label={t("Pincode")}
+              placeholder={t("Pincode")}
+              validator={validatePincode}
+              name={"pincode"}
+              value={branchDetails.pincode}
+              onChange={(event) => NumberHandler(inputNumberMaxLength(event.target.value, 6), "pincode")}
+            />
+          </div>
+        </Container>
+      </FormWrapper>
+    </ScreenContainer>
   );
 };
 

@@ -12,6 +12,8 @@ const LOCAL_PROD = 'http://15.206.224.132:8001';
 const PRE_PROD = 'http://15.206.224.132'
 
 const SAMPLE_IP = 'http://3.109.244.227:8000';
+const STAGING_IP = 'http://103.118.188.135:8001';
+
 
 // const PROD = 'https://api.zenyq.com';
 const PROD_WEB = 'https://webapi.zenyq.com';

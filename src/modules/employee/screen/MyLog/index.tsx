@@ -294,7 +294,7 @@ function MyLog() {
 
           <div className="ml--3">
             <CommonTable
-              tableTitle={"My Log"}
+              title={"My Log"}
               displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
               tableOnClick={(e, index, Item) => {
                 getEmployeeCheckInDetailedLogPerDay(Item);

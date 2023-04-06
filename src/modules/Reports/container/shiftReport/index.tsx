@@ -133,7 +133,7 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
             <CommonTable
                 isPagination
                 headerClass='mx--3'
-                tableTitle={name}
+                title={name}
                 currentPage={currentPage}
                 noOfPage={numOfPages}
                 paginationNumberClick={(currentPage) => {
