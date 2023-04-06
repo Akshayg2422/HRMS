@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 export const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '3', name: 'Enable refence', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
   { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
 
 ]
@@ -25,7 +25,7 @@ function LocationScreen() {
   const [model, setModel] = useState(false);
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
-  const [modelData, setModelData] = useState<Location>();
+  const [modelData, setModelData] = useState<Location | any>();
   const [editModel, setEditModel] = useState<any>(false);
   const [searchBranches, setsearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
@@ -66,6 +66,27 @@ function LocationScreen() {
     }
   }, [inputRef, editBranchDetails]);
 
+  const dropdownMenuItemActionHandler = (item: any, data?: string | undefined) => {
+
+    switch (item.name) {
+      case 'Edit':
+        handleEdit(data)
+        break;
+
+      case 'Reset radius':
+        setModelData(data)
+        setModel(!model)
+        break;
+
+      case 'Enable refench':
+        enableReFetchApi(data)
+        break;
+
+      case 'Assign fence admin':
+        break;
+    }
+  }
+
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
@@ -76,7 +97,11 @@ function LocationScreen() {
         "": <CommonDropdownMenu
           data={DROPDOWN_MENU}
           onItemClick={(e, item) => {
+            if (item.name === 'Reset radius') {
+              setModelData(data)
+            }
             e.stopPropagation();
+            dropdownMenuItemActionHandler(item, el)
           }}
         />
       };
@@ -102,9 +127,10 @@ function LocationScreen() {
 
   }
 
-  function enableReFetchApi(branchDetail: Location) {
+  function enableReFetchApi(branchDetail: Location | any) {
 
     const params = { id: branchDetail?.id }
+    console.log("branchDetail--->", branchDetail);
 
     dispatch(enableBranchRefence({
       params,
