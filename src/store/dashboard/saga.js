@@ -25,18 +25,20 @@ function* getDashboard(action) {
 
     if (response.success) {
       yield put(getDashboardSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
       yield put(hideLoader());
 
     } else {
 
       yield put(getDashboardFail(response.error_message));
+      yield call(action.payload.onError(response.error_message));
       yield put(hideLoader());
 
     }
   } catch (error) {
 
     yield put(getDashboardFail("Invalid Request"));
+    yield call(action.payload.onError(error));
     yield put(hideLoader());
 
   }
@@ -53,20 +55,20 @@ function* checkInLog(action) {
 
       yield put(hideLoader());
       yield put(checkInDetailedLogSuccess(response));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
 
     } else {
 
       yield put(hideLoader());
       yield put(checkInDetailedLogFail(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(checkInDetailedLogFail("Invalid Request"));
-    // yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
 
   }
 }
@@ -78,16 +80,16 @@ function* checkIn(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(checkInUserSuccess(response));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(checkInUserFail(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(checkInUserFail("Invalid Request"));
-    // yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -98,16 +100,16 @@ function* dailyLog(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(dailyLogSuccess(response));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(dailyLogFail(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(dailyLogFail("Invalid Request"));
-    // yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -118,16 +120,16 @@ function* deleteAccount(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(deleteAccountUserSuccess(response));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(deleteAccountUserFail(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(deleteAccountUserFail("Invalid Request"));
-    // yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -138,16 +140,16 @@ function* editProfilePicture(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(editProfilePictureSuccess(response));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response));
     } else {
       yield put(hideLoader());
       yield put(editProfilePictureFail(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
     yield put(hideLoader());
     yield put(editProfilePictureFail("Invalid Request"));
-    // yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -171,7 +173,7 @@ function* getEmployeesLoginFaceFailureSaga(action) {
   } catch (error) {
     yield put(getEmployeesLoginFaceFailureActionFail("Invalid Request"));
     yield put(hideLoader());
-    // yield call(action.payload.onError);
+    yield call(action.payload.onError(error));
   }
 }
 
@@ -195,6 +197,8 @@ function* changeEmployeeFaceValidationRequestSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(changeEmployeeFaceValidationRequestActionFail("Invalid Request"));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -217,6 +221,8 @@ function* FaceReRegisterRequestSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(faceReRegisterRequestActionFail(error));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -238,6 +244,8 @@ function* FaceReRegisterRequestChangeStatusSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(faceReRegisterRequestChangeStatusFail(error));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -259,6 +267,8 @@ function* EmployeeFaceReRegisterRequestSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(employeeFaceReRegisterRequestFail(error));
+    yield call(action.payload.onError(error));
+
   }
 }
 
@@ -281,6 +291,8 @@ function* EmployeeEnableFaceRequestSaga(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(employeeEnableFaceReRegisterFail(error));
+    yield call(action.payload.onError(error));
+
   }
 }
 

@@ -77,7 +77,15 @@ function MyBranches() {
             page_number: pageNumber,
             child_ids: hierarchicalBranchIds?.child_ids
         }
-        dispatch(getBranchAdmins({ params }));
+        dispatch(getBranchAdmins({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
     const AdminSubBranches = () => {
@@ -112,11 +120,11 @@ function MyBranches() {
             }
             dispatch(postAdminUpdateBranches({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     showToast("success", success?.message);
                     dispatch(isRenderAdminBranches(!RenderAdminBranch))
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error);
                 },
             }));

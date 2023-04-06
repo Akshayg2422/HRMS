@@ -29,7 +29,7 @@ const Rejected = () => {
     (state: any) => state.DashboardReducer
   );
 
-  
+
   const fetchRejectedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -40,8 +40,8 @@ const Rejected = () => {
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
       })
@@ -56,8 +56,8 @@ const Rejected = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchRejectedLeaves(page);
   }
 
@@ -91,12 +91,12 @@ const Rejected = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setRevertModel(!revertModel);
           fetchRejectedLeaves(currentPage);
           showToast("info", success.status);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => { },
       })
     );
   };

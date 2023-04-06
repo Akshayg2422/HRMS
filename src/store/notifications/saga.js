@@ -7,20 +7,20 @@ import {
 } from "./actionTypes";
 
 import {
-createBroadcastMessageSuccess,
-createBroadcastMessageFailure,
+    createBroadcastMessageSuccess,
+    createBroadcastMessageFailure,
 
-getBroadcastMessageSuccess,
-getBroadcastMessageFailure,
+    getBroadcastMessageSuccess,
+    getBroadcastMessageFailure,
 
-getNotificationsSuccess,
-getNotificationsFailure
+    getNotificationsSuccess,
+    getNotificationsFailure
 } from "./actions";
 
 import {
-createBroadcastMessageApi,
-fetchBroadcastMessageApi,
-getNotificationsApi
+    createBroadcastMessageApi,
+    fetchBroadcastMessageApi,
+    getNotificationsApi
 } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../loader/actions";
 
@@ -37,7 +37,7 @@ function* createBroadcastMessageSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(createBroadcastMessageSuccess(response.details));
-            yield call(action.payload.onSuccess(response));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(createBroadcastMessageFailure(response.error_message));
@@ -46,6 +46,8 @@ function* createBroadcastMessageSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(createBroadcastMessageFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -58,11 +60,11 @@ function* getBroadcastMessageSaga(action) {
         yield put(showLoader());
 
         const response = yield call(fetchBroadcastMessageApi, action.payload.params);
-        console.log("response",response);
+        console.log("response", response);
         if (response.success) {
             yield put(hideLoader());
             yield put(getBroadcastMessageSuccess(response?.details));
-            yield call(action.payload.onSuccess(response));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getBroadcastMessageFailure(response.error_message));
@@ -71,6 +73,8 @@ function* getBroadcastMessageSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getBroadcastMessageFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -83,11 +87,11 @@ function* getNotificationsSaga(action) {
         yield put(showLoader());
 
         const response = yield call(getNotificationsApi, action.payload.params);
-        console.log("response",response);
+        console.log("response", response);
         if (response.success) {
             yield put(hideLoader());
             yield put(getNotificationsSuccess(response?.details));
-            yield call(action.payload.onSuccess(response));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getNotificationsFailure(response.error_message));
@@ -96,6 +100,8 @@ function* getNotificationsSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getNotificationsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 

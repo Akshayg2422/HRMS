@@ -49,7 +49,15 @@ function Calendar() {
     const params = {
       ...hierarchicalBranchIds,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   function paginationHandler(
@@ -141,11 +149,11 @@ function Calendar() {
     dispatch(
       deleteHoliday({
         params,
-        onSuccess: (success: any) => {
-          showToast("success",success.message)
+        onSuccess: (success: any) => () => {
+          showToast("success", success.message)
           getCalendarDetails(currentPage);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           setDeleteModel(!deleteModel);
           showToast("error", t("somethingWrong"));
         },

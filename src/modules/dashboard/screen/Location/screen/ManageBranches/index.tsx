@@ -44,7 +44,16 @@ const ManageBranches = () => {
   });
 
   useEffect(() => {
-    dispatch(getListAllBranchesList({}))
+    const params = {}
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   }, [])
 
 
@@ -99,11 +108,12 @@ const ManageBranches = () => {
       dispatch(
         branchAddition({
           params,
-          onSuccess: (success: object) => {
+          onSuccess: (success: object) => () => {
+            console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmmmmm")
             showToast("success", t("branchAddedSuccessfully"));
             goBack(navigation)
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })

@@ -70,7 +70,15 @@ const DashboardStats = () => {
       selected_date: selectedDate,
     };
 
-    dispatch(getEmployeeAttendanceStats(params));
+    dispatch(getEmployeeAttendanceStats({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }, [selectedDate, hierarchicalBranchIds]);
 
   const proceedNext = (
@@ -82,7 +90,16 @@ const DashboardStats = () => {
       departmentId: departmentId,
       selectedDate: selectedDate,
     };
-    dispatch(getSelectedCardType(params));
+    dispatch(getSelectedCardType({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }
+    ));
     goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
   };
 
@@ -96,13 +113,13 @@ const DashboardStats = () => {
     dispatch(
       getAttendanceConsolidatedCards({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           if (response && response.cards?.length > 0) {
             setAttendanceConsolidatedCardsData(response.cards);
             setModel(!model);
           }
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };

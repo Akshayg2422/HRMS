@@ -41,7 +41,7 @@ const LeaveRequest = () => {
   }, [hierarchicalBranchIds]);
 
 
-  
+
   const fetchPendingDetail = (pageNumber: number, statusId: number) => {
     setCurrentStatusId(statusId);
     const params = {
@@ -53,8 +53,8 @@ const LeaveRequest = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => { },
-        onError: (error: string) => { },
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };

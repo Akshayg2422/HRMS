@@ -40,10 +40,10 @@ function LocationScreen() {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           setBranch(response)
         },
-        onError: () => {
+        onError: () => () => {
           console.log("=========error");
         },
       })
@@ -134,11 +134,11 @@ function LocationScreen() {
 
     dispatch(enableBranchRefence({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
       },
-      onError: () => {
+      onError: () => () => {
       },
     }))
 
@@ -180,12 +180,14 @@ function LocationScreen() {
       }
       dispatch(editBranchName({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
+      console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000",success)
+
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       }))

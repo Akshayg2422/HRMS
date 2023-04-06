@@ -44,7 +44,16 @@ const ShiftGroup = () => {
 
     useEffect(() => {
         getBranchShiftsList()
-        dispatch(getDesignationData({}));
+        const params = {}
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }, []);
 
     useEffect(() => {
@@ -56,10 +65,10 @@ const ShiftGroup = () => {
     const getBranchShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchShifts({
-            params, onSuccess: (success: any) => {
+            params, onSuccess: (success: any) => () => {
                 setShiftGroup(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast('error', error)
             },
         }));

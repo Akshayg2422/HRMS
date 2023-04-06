@@ -125,7 +125,7 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           setBranchesExist(true)
           const parentBranch = branchesDropdownData.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
@@ -139,7 +139,7 @@ const ViewEmployeeDetails = () => {
           ]);
         },
 
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   }, []);
@@ -150,10 +150,10 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getDepartmentData({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           setDeptExist(true)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       }))
   }
 
@@ -163,10 +163,10 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getDesignationData({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           setDesigationExist(true)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       }))
   }
 
@@ -185,11 +185,11 @@ const ViewEmployeeDetails = () => {
     dispatch(
       getEmployeeDetails({
         params,
-        onSuccess: (response: EmployeeDetail) => {
+        onSuccess: (response: EmployeeDetail) => () => {
 
           preFillEmployeeDetails(response);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast('error', error)
           console.log("fail", error);
           // showToast('error', t('invalidUser'));

@@ -102,7 +102,15 @@ function EmployeeScreen() {
 
   useEffect(() => {
     const params = {}
-    dispatch(getListAllBranchesList({ params }))
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   }, [])
 
   useEffect(() => {
@@ -118,7 +126,15 @@ function EmployeeScreen() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const handleShowProfile = (e: any, item: any) => {
@@ -219,11 +235,11 @@ function EmployeeScreen() {
     dispatch(
       getUpdateEmployeeStatus({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           getEmployeesApi(currentPage);
           showToast("success", response?.message);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })

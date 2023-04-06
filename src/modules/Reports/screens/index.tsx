@@ -97,11 +97,11 @@ function Reports() {
     const params = {}
     dispatch(getDepartmentData({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         let mergedDepartments = [...departmentsData, ...response]
         setDepartmentsData(mergedDepartments)
       },
-      onError: (errorMessage: string) => {
+      onError: (errorMessage: string) => () => {
       },
     }));
   })
@@ -111,13 +111,13 @@ function Reports() {
     const params = {}
     dispatch(getDesignationData({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         let mergedDesignation = [...designationData, ...response]
         setDesignationData(mergedDesignation)
         setShiftDesignationData(response)
         setShiftSelectedDesignation(response[0]?.id)
       },
-      onError: (errorMessage: string) => {
+      onError: (errorMessage: string) => () => {
       },
     }));
   })
@@ -140,10 +140,10 @@ function Reports() {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
         setShiftGroupData(success)
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("error", error);
       },
     }));
@@ -187,9 +187,9 @@ function Reports() {
       };
       dispatch(getMisReport({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
         },
-        onError: (errorMessage: string) => {
+        onError: (errorMessage: string) => () => {
         },
       }));
     }
@@ -246,10 +246,10 @@ function Reports() {
       };
       dispatch(getDownloadMisReport({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           downloadFile(response);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
         },
       }));
     }
