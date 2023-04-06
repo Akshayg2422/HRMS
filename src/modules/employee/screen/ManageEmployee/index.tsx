@@ -547,7 +547,7 @@ const ManageEmployee = () => {
 
 
   return (
-    <ScreenContainer additionClass={'mb--4'}>
+    <ScreenContainer>
       <FormWrapper
         isTitle
         title={isEdit ? t("editEmployee") : t("newEmployee")}

@@ -106,7 +106,7 @@ const ManageHolidays = () => {
   };
 
   return (
-    <ScreenContainer additionClass={'mb--4'}>
+    <ScreenContainer >
       <FormWrapper
         title={selectedEventId ? t("editHoliday") : t("addHoildays")}
         onClick={onSubmit}

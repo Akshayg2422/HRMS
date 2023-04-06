@@ -1,4 +1,4 @@
-import { CheckBox, Container, FormWrapper, InputNumber, InputText } from '@components'
+import { CheckBox, Container, FormWrapper, InputNumber, InputText, ScreenContainer } from '@components'
 import { updateLeaveType } from '../../../../store/employee/actions';
 import { goBack, inputNumberMaxLength, showToast, useNav, validateDefault, validateMobileNumber, validateName } from '@utils';
 import React, { useEffect, useState } from 'react'
@@ -154,7 +154,7 @@ function ManageLeaveTypes() {
 
 
     return (
-        <div>
+        <ScreenContainer>
             <FormWrapper
                 title={editLeaveTypesDetails ? t('editType') : t('addType')}
                 buttonTittle={t('update')}
@@ -227,7 +227,7 @@ function ManageLeaveTypes() {
                     </Container>
                 }
             </FormWrapper>
-        </div>
+        </ScreenContainer>
     )
 }
 
