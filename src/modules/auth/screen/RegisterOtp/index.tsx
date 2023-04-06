@@ -45,6 +45,12 @@ function Otp() {
     dispatch(
       getResendLoginOtp({
         params,
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+  
+        }
       })
     );
   };

@@ -47,7 +47,7 @@ const ModifyLogs = () => {
     fetchPendingDetail(currentPage, currentLeaveType)
   }, [hierarchicalBranchIds]);
 
-  
+
   const fetchPendingDetail = (pageNumber: number, status: any) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -59,9 +59,9 @@ const ModifyLogs = () => {
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };

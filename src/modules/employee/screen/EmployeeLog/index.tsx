@@ -109,7 +109,15 @@ function EmployeeLog() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -141,10 +149,10 @@ function EmployeeLog() {
 
     dispatch(getEmployeesCheckInLogs({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
         setModel(!model);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("info", error);
       },
     }));
@@ -159,10 +167,10 @@ function EmployeeLog() {
     dispatch(
       getCheckInDetailedLogPerDay({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           console.log('----------------->');
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
         },
       })
     );
@@ -206,7 +214,7 @@ function EmployeeLog() {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             showToast("success", response?.message);
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
@@ -215,9 +223,17 @@ function EmployeeLog() {
               end_time: endDate,
               user_id: selectedEmployeeDetails.id,
             };
-            dispatch(getEmployeesCheckInLogs({ params }));
+            dispatch(getEmployeesCheckInLogs({
+              params,
+              onSuccess: (success: any) => () => {
+
+              },
+              onError: (error: any) => () => {
+
+              }
+            }));
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
           },

@@ -33,7 +33,7 @@ const AllLeaves = () => {
     (state: any) => state.DashboardReducer
   );
 
- 
+
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -44,8 +44,8 @@ const AllLeaves = () => {
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
       })
@@ -60,8 +60,8 @@ const AllLeaves = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
@@ -105,7 +105,7 @@ const AllLeaves = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           if (el === 1) {
             setApproveModel(!approveModel);
             showToast("info", success.status);
@@ -120,7 +120,7 @@ const AllLeaves = () => {
           }
           fetchPendingDetail(currentPage);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -346,9 +346,8 @@ const LocationTable = ({
             tableDataSet.map((item: Location, index: number) => {
               return (
                 <tr className="align-items-center">
-                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${
-                    item.employee_id
-                  })`}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item.employee_id
+                    })`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
@@ -358,7 +357,7 @@ const LocationTable = ({
                     {item.status_code === -1 ? (
                       <span
                         className="h5 text-primary"
-                        style={{cursor:'pointer'}}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (onApproveClick) onApproveClick(item);
                         }}
@@ -367,16 +366,16 @@ const LocationTable = ({
                       </span>
                     ) : item.status_code === 1 ? (
                       <span
-                        // onClick={() => {
-                        //   if (onRevertClick) onRevertClick(item);
-                        // }}
+                      // onClick={() => {
+                      //   if (onRevertClick) onRevertClick(item);
+                      // }}
                       >
                         {"-"}
                       </span>
                     ) : item.status_code === 0 ? (
                       <span
                         className="h5 text-primary"
-                        style={{cursor:'pointer'}}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (onRevertClick) onRevertClick(item);
                         }}
@@ -391,7 +390,7 @@ const LocationTable = ({
                     {item.status_code === -1 ? (
                       <span
                         className="h5 text-primary"
-                        style={{cursor:'pointer'}}
+                        style={{ cursor: 'pointer' }}
                         onClick={() => {
                           if (onRejectClick) onRejectClick(item);
                         }}

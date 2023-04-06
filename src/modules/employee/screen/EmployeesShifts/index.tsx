@@ -68,7 +68,15 @@ function EmployeeShifts() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee })
     };
-    dispatch(getEmployeeWithShift({ params }));
+    dispatch(getEmployeeWithShift({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
 
@@ -94,10 +102,10 @@ function EmployeeShifts() {
     }
     dispatch(getMyShifts({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         setModel(!model);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("info", error);
       },
     }));
@@ -130,11 +138,11 @@ function EmployeeShifts() {
     const params = { branch_id: hierarchicalBranchIds.branch_id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
         designationMatchShifts(selectedEmployeeDetails?.designation_id, success)
         setCurrentEmployeeShiftId(setDefaultShift(selectedEmployeeDetails?.shift?.id))
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("error", error);
       },
     }));
@@ -147,12 +155,12 @@ function EmployeeShifts() {
     }
     dispatch(postEmployeeShiftChange({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         setChangeShiftModelModel(!changeShiftModel)
         showToast("success", success);
         getEmployeeLogsWithShifts(currentPage);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         setChangeShiftModelModel(!changeShiftModel)
         showToast("error", error);
       },

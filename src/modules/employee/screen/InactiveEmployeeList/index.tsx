@@ -63,8 +63,8 @@ function InActiveEmployeeList() {
     dispatch(
       getEmployeesList({
         params,
-        onSuccess: (success: object) => { },
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
@@ -88,7 +88,15 @@ function InActiveEmployeeList() {
       page_number: pageNumber,
     };
 
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -123,12 +131,12 @@ function InActiveEmployeeList() {
     dispatch(
       getUpdateEmployeeStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           showToast("success", success?.message);
           setEnableUserModel(!enableUserModel);
           manageInactiveEmployeeList();
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })

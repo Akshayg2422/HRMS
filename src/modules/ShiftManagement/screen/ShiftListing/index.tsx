@@ -44,10 +44,10 @@ const ShiftListing = () => {
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchWeeklyShifts({
-            params, onSuccess: (success: any) => {
+            params, onSuccess: (success: any) => () => {
                 setShiftList(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }));
@@ -64,7 +64,7 @@ const ShiftListing = () => {
     const normalizedBranchWeeklyShifts = (branchesWeeklyShift: any) => {
         return branchesWeeklyShift && branchesWeeklyShift.length > 0 && branchesWeeklyShift.map((element: any) => {
             return {
-               "Shift Name": element.group_name,
+                "Shift Name": element.group_name,
             };
         });
     };

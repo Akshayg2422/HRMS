@@ -38,10 +38,10 @@ function MyShiftDetails() {
     const getMyShiftsDetails = () => {
         const params = {}
         dispatch(getMyShifts({
-            params, onSuccess: (success: object) => {
+            params, onSuccess: (success: object) => () => {
                 setError('')
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
                 setError(error)
             },
@@ -52,10 +52,10 @@ function MyShiftDetails() {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchShifts({
             params,
-            onSuccess: (success: object) => {
+            onSuccess: (success: object) => () => {
                 designationMatchShifts(dashboardDetails?.user_details?.designation_id, success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }));
@@ -108,12 +108,12 @@ function MyShiftDetails() {
             dispatch(
                 postRequestShiftChange({
                     params,
-                    onSuccess: (success: any) => {
+                    onSuccess: (success: any) => () => {
                         showToast('success', success)
                         setChangeShiftModel(!changeShiftModel)
                         setRequestDetails({ ...requestDetails, shiftId: '', reason: '' })
                     },
-                    onError: (error: string) => {
+                    onError: (error: string) => () => {
                         showToast('error', error)
                     },
                 })

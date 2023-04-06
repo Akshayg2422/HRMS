@@ -147,8 +147,9 @@ const ManageEmployee = () => {
   };
 
   useEffect(() => {
-    dispatch(getDepartmentData({}));
-    dispatch(getDesignationData({}));
+    departmentData()
+    designationData()
+
     if (!isEdit) {
       getBranchShiftsList()
     }
@@ -156,7 +157,7 @@ const ManageEmployee = () => {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
 
           const parentBranch = success.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
@@ -170,7 +171,7 @@ const ManageEmployee = () => {
             parentBranch,
           ]);
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
     setDesignationNote('')
@@ -181,6 +182,35 @@ const ManageEmployee = () => {
     }
   }, [isRefresh]);
 
+
+  const departmentData = () => {
+    const params = {}
+    dispatch(getDepartmentData({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+
+  }
+
+  const designationData = () => {
+    const params = {}
+
+    dispatch(getDesignationData({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
+
   const getEmployeeDetailsAPi = (id: any) => {
     const params = {
       user_id: id,
@@ -188,10 +218,10 @@ const ManageEmployee = () => {
     dispatch(
       getEmployeeDetails({
         params,
-        onSuccess: (response: EmployeeDetail) => {
+        onSuccess: (response: EmployeeDetail) => () => {
           preFillEmployeeDetails(response);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast('error', error);
         },
       })
@@ -212,10 +242,10 @@ const ManageEmployee = () => {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: async (success: any) => {
+      onSuccess: (success: any) => async () => {
         await setShiftGroup(success)
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast('error', error)
       },
 
@@ -314,11 +344,11 @@ const ManageEmployee = () => {
       dispatch(
         employeeAddition({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast("success", success.message);
             goBack(navigation);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })
@@ -434,14 +464,14 @@ const ManageEmployee = () => {
       dispatch(
         addDesignation({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             setDesignationModel(!designationModel);
             setIsRefresh(!isRefresh);
             setDesignation("");
             showToast('success', success?.message)
             setIsAdminRights(false);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast('error', error)
           },
         })
@@ -459,13 +489,13 @@ const ManageEmployee = () => {
       dispatch(
         addDepartment({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             setDepartmentModel(!departmentModel);
             setIsRefresh(!isRefresh);
 
             showToast('success', success?.message)
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast('error', error)
           },
         })
