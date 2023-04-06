@@ -791,7 +791,7 @@ const ManageEmployee = () => {
 
         <Divider />
 
-        <ScreenTitle title={'Document information'} additionclass={'mb-4'} />
+        <ScreenTitle title={'Document Information'} additionclass={'mb-4'} />
 
         <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">

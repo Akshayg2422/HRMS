@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast ,goBack} from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast, goBack } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, BackArrow, Secondary, Primary, Divider } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -26,7 +26,7 @@ const Header = () => {
   const navigation = useNav();
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
-  const [isParent,setIsParent]= useState(false)
+  const [isParent, setIsParent] = useState(false)
 
   let dispatch = useDispatch();
 
@@ -141,18 +141,15 @@ const Header = () => {
                 </div>
               </div>
             </a>
-            <BackArrow additionClass={'mr--1'} />
+            {isParent && <BackArrow additionClass={'mr--1 mt--3'} />}
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
-              { isParent && <div className='small'>
-                
-                <span style={{cursor:"pointer"}} onClick={() =>{ goBack(navigation)}}>{headerTitle} </span> 
+              {isParent && <div className='small'>
+                <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigation) }}>{headerTitle} </span>
                 <span> {" "} {pathname}</span>
+              </div>
+              }
 
-
-                </div>
-}
-                
             </div>
 
             <ul className='navbar-nav align-items-center  ml-md-auto '>

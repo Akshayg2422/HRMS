@@ -73,8 +73,8 @@ export const ROUTE = {
 
 export const CHILD_PATH = [
   { path: "/manage-employee", parent: '/employee'},
-  // {path:'/profile',parent:'/'}
-  { path: "/manage-branches", parent: '/location' },
+  {path:'/profile',parent:'/'},
+  { path: "/manage-branches", parent: '/location'},
   // { path: "/stats-attendance", parent: '/dashboard' }, 
   { path: "/manage-holidays", parent: '/calendar' },
   { path: "/leaves-types", parent: '/calendar' },
@@ -95,9 +95,7 @@ export const CHILD_PATH = [
   { path: "/manage-broadcast", parent: '/broadcast' },
   { path: "/view-employee", parent: '/employee' },
   { path: "/inactive-employee-list", parent: '/employee' },
-  { path: "/my-notification", parent: '/notifications' },
-  
-  
+  { path: "/my-notification", parent: '/notifications' }
 ]
 
 
