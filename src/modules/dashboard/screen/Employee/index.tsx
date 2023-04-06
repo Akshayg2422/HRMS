@@ -11,6 +11,8 @@ import {
   NoRecordFound,
   useKeyPress,
   ImageView,
+  CommonDropdownMenu,
+  Divider
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -27,22 +29,57 @@ import {
   getEmployeesList,
   getSelectedEmployeeId,
   getUpdateEmployeeStatus,
+  
+  // changeAttendanceSettings,
+  // postEnableFieldCheckIn,
+  // postEnableOfficeCheckIn
 } from "../../../../store/employee/actions";
 import { Navbar } from "@modules";
 import { useSelector, useDispatch } from "react-redux";
 import { Employee } from "@api";
 import { useTranslation } from "react-i18next";
-import { getListAllBranchesList } from "../../../../store/location/actions";
+import {
+  getEmployeeCheckinAssociations,
+  updateEmployeeCheckinAssociationsReducer,
+  updateEmployeeCheckinAssociations,
+  getListAllBranchesList,
+} from "../../../../store/location/actions";
+
+
+
+
+type Branch = {
+  id?: string;
+  name?: string;
+  parent_id?: string;
+  has_location?: boolean;
+  fencing_radius?: number;
+  can_update_location?: boolean;
+  geo_location_id?: string;
+  fence_admin_id?: string;
+};
+
+export const DROPDOWN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
+]
 
 function EmployeeScreen() {
   let dispatch = useDispatch();
   const { t } = useTranslation();
   const [deleteModel, setDeleteModel] = useState(false);
   const [deletedUserModel, setDeletedUserModel] = useState(false);
-  const [deleteUserId, setDeleteUserId] = useState("");
+  const [deleteUserId, setDeleteUserId] = useState<any>("");
   const [searchEmployee, setSearchEmployee] = useState("");
   const [showEmployeeProfile, setShowEmployeeProfile] = useState<any>('');
   const [ProfilePictureModel, setProfilePictureModel] = useState(false)
+  const [selectedEmployeeItem, setSelectedEmployeeItem] = useState<any>()
+  const [model, setModel] = useState(false);
+
 
   const navigation = useNav();
   const enterPress = useKeyPress("Enter");
@@ -50,6 +87,9 @@ function EmployeeScreen() {
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
   );
+
+  const { associatedBranch, associatedId, defaultBranchId, listBranchesList } =
+    useSelector((state: any) => state.LocationReducer);
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
@@ -105,6 +145,32 @@ function EmployeeScreen() {
     }
   }
 
+  const dropdownMenuItemActionHandler = (item: any, id?: string | undefined) => {
+
+    switch (item.name) {
+      case 'Edit':
+        manageEmployeeHandler(id)
+        break;
+
+      case 'Delete':
+        manageDeleteHandler(id);
+        break;
+
+      case 'Assign Location':
+        getEmployeeAssociationBranch(id)
+        break;
+
+      case 'Enable office checkIn':
+        break;
+
+      case 'Enable field checkIn':
+        break;
+
+      case 'Enable face validation':
+        break;
+    }
+  }
+
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any, index: number) => {
@@ -124,6 +190,15 @@ function EmployeeScreen() {
         name: el.name,
         "mobile number": el.mobile_number,
         branch: el.branch,
+        "  ":
+          <CommonDropdownMenu
+            data={DROPDOWN_MENU}
+            onItemClick={(e, item) => {
+              e.stopPropagation();
+              setSelectedEmployeeItem(el)
+              dropdownMenuItemActionHandler(item, el.id)
+            }}
+          />
       };
     });
   };
@@ -146,7 +221,7 @@ function EmployeeScreen() {
     goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEE);
   };
 
-  const manageDeleteHandler = (id: string) => {
+  const manageDeleteHandler = (id: string | undefined) => {
     setDeleteUserId(id);
     setDeleteModel(!deleteModel);
   };
@@ -173,6 +248,106 @@ function EmployeeScreen() {
 
   function proceedSearchApi() {
     getEmployeesApi(currentPage);
+  }
+
+  /**
+   * Assign location
+   */
+
+  function getEmployeeAssociationBranch(id: string | undefined) {
+    dispatch(getEmployeeCheckinAssociations({ user_id: id }));
+    dispatch(getListAllBranchesList({}));
+    setModel(!model);
+  }
+
+  const checkStatus = (id: string) =>
+    associatedBranch.some((branch: Branch) => branch.id === id);
+
+  const addSelectedBranch = (item: Branch) => {
+    let updateSelectedBranch = [...associatedBranch];
+    const branchExists = updateSelectedBranch.some(
+      (eachBranch) => eachBranch.id === item.id
+    );
+    if (branchExists) {
+      updateSelectedBranch = updateSelectedBranch.filter(
+        (eachItem) => eachItem.id !== item.id
+      );
+    } else {
+      updateSelectedBranch = [...updateSelectedBranch, item];
+    }
+
+    dispatch(updateEmployeeCheckinAssociationsReducer(updateSelectedBranch));
+  };
+
+  const updateEmployeeCheckInAssociationApi = () => {
+    const branchIds = associatedBranch.map((i: any) => {
+      return i.id;
+    });
+
+    const params = {
+      id: associatedId,
+      associated_branch: [...branchIds, defaultBranchId],
+    };
+
+    dispatch(
+      updateEmployeeCheckinAssociations({
+        params,
+        onSuccess: (success: any) => {
+          showToast("success", success.status);
+          setModel(!model);
+        },
+        onError: (error: string) => { },
+      })
+    );
+  };
+
+  /**
+   * Enable office checkIn
+   */
+
+  const fieldCheckInHandler = (value: boolean) => {
+    const params = {
+      can_field_checkin: value,
+      // id: employeeDetails.id
+    }
+    // dispatch(postEnableFieldCheckIn({
+    //   params, onSuccess: (success: any) => {
+    //     showToast('success', success.message)
+    //   },
+    //   onError: (error: string) => {
+    //     showToast('error', error)
+    //   },
+    // }))
+  }
+
+  const officeCheckInHandler = (value: boolean) => {
+    const params = {
+      can_office_checkin: value,
+      // id: employeeDetails.id
+    }
+    // dispatch(postEnableOfficeCheckIn({
+    //   params, onSuccess: (success: any) => {
+    //   },
+    //   onError: (error: string) => {
+    //     showToast('error', error)
+    //   },
+    // }))
+  }
+
+  const faceValidationHandler = (value: boolean) => {
+    const params = {
+      face_validation_required: value,
+      // id: employeeDetails.id
+    }
+    // dispatch(changeAttendanceSettings({
+    //   params, onSuccess: (success: any) => {
+    //     showToast('success', success.message)
+    //   },
+    //   onError: (error: string) => {
+    //     showToast('error', error)
+    //   },
+    // }))
+
   }
 
 
@@ -244,7 +419,7 @@ function EmployeeScreen() {
               previousClick={() => paginationHandler("prev")}
               nextClick={() => paginationHandler("next")}
               displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-              additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
+              // additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
               tableOnClick={(e, index, item) => {
                 const selectedId = registeredEmployeesList[index].id;
                 dispatch(getSelectedEmployeeId(selectedId));
@@ -252,12 +427,12 @@ function EmployeeScreen() {
               }}
               tableValueOnClick={(e, index, item, elv) => {
                 const current = registeredEmployeesList[index];
-                if (elv === "Edit") {
-                  manageEmployeeHandler(current.id);
-                }
-                if (elv === "Delete") {
-                  manageDeleteHandler(current.id);
-                }
+                // if (elv === "Edit") {
+                //   manageEmployeeHandler(current.id);
+                // }
+                // if (elv === "Delete") {
+                //   manageDeleteHandler(current.id);
+                // }
               }}
             />
           ) : <NoRecordFound />}
@@ -319,6 +494,54 @@ function EmployeeScreen() {
       <div className='dropdown-menu dropdown-menu-right dropdown-toggle'>
         hello
       </div>
+
+      {listBranchesList && listBranchesList.length > 0 && (
+        <Modal
+          title={"All Registered Branches"}
+          showModel={model}
+          toggle={() => setModel(!model)}
+        >
+          {listBranchesList.map((item: Branch, index: number) => {
+            return (
+              <>
+                <div className="row mx-3 my-1"
+                  onClick={() => addSelectedBranch(item)}
+                >
+                  <div className="col-8">
+                    <span className=" text-gray">{item.name}</span>
+                  </div>
+
+                  <div className="col-4 text-right">
+                    <ImageView
+                      icon={
+                        checkStatus(item.id!)
+                          ? Icons.TickActive
+                          : Icons.TickDefault
+                      }
+                    />
+                  </div>
+                </div>
+                {index !== listBranchesList.length - 1 && <Divider />}
+              </>
+            );
+          })}
+
+          <Container
+            additionClass={'mt-4 sticky-bottom'}
+            justifyContent={"justify-content-end"}
+            display={"d-flex"}
+          >
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setModel(!model)}
+            />
+            <Primary
+              text={t("submit")}
+              onClick={() => updateEmployeeCheckInAssociationApi()}
+            />
+          </Container>
+        </Modal>
+      )}
     </>
   );
 }

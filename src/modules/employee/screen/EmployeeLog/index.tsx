@@ -12,6 +12,7 @@ import {
   Secondary,
   Primary,
   useKeyPress,
+  ImageView,
 } from "@components";
 import React, { useEffect, useState } from "react";
 import {
@@ -306,7 +307,7 @@ function EmployeeLog() {
           />
         </Container>
 
-        <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
+        {/* <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
           <Sort
             sortData={employeeLogSort}
             activeIndex={activeSort}
@@ -315,12 +316,54 @@ function EmployeeLog() {
               onTabChange(index);
             }}
           />
-        </div>
+        </div> */}
 
       </Container>
 
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
+          headerActionsClass={'mr--4'}
+          headerActions={
+            <div >
+              <Sort
+                size={'btn-sm'}
+                sortData={employeeLogSort}
+                activeIndex={activeSort}
+                onClick={(index) => {
+                  setActiveSort(index);
+                  onTabChange(index);
+                }}
+              />
+            </div>
+          }
+
+
+          headerChildrenClass={'ml--2'}
+          // headerChildren={
+          //   <>
+          //     <Container>
+          //       <ChooseBranchFromHierarchical />
+          //     </Container>
+
+          //     <Container additionClass={"col-xl-4 col-md-6 col-sm-12 row"}>
+          //       <InputText
+          //         value={searchEmployee}
+          //         col={'col'}
+          //         placeholder={t("enterEmployeeName")}
+          //         onChange={(e) => {
+          //           setSearchEmployee(e.target.value);
+          //         }}
+          //       />
+          //       {/* <i className="bi bi-search"></i> */}
+          //       <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
+          //         onClick={() => {
+          //           getEmployeeLogs(currentPage);
+          //         }}
+          //       />
+          //     </Container>
+          //   </>
+          // }
+
           tableTitle={t("employeeLog")}
           isPagination
           currentPage={currentPage}

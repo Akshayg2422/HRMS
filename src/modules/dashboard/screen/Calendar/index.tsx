@@ -90,7 +90,7 @@ function Calendar() {
         title: item.title,
         start: item.day,
         end: item.day,
-        color: "green",
+        color: "#52307c",
       };
       return filteredlist;
     });

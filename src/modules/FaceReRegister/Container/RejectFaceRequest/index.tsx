@@ -37,7 +37,7 @@ const RejectFaceRequest = () => {
                         {/* <img className='ml-3' src={el?.employee_photos[3]} height={150} style={{ objectFit: "cover" }} width={100}></img> */}
                     </>,
                     "Re-register Photo": <img src={el?.log_photos_b64[0]} height={150} style={{ objectFit: "cover" }} width={100}></img>,
-                    name: `${el?.name}`,
+                    'name': `${el?.name}`,
                     "PhoneNo": el?.mobile_number,
                     "Location": el?.checkin_location,
                     "Time": el?.checkin_time ? getDisplayDateTimeFromMoment(getMomentObjFromServer(el?.checkin_time)) : '',

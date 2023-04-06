@@ -8,7 +8,7 @@ type ScreenTitleProps = {
 
 function ScreenTitle({title,additionclass}: ScreenTitleProps) {
   return (
-    <h1 className={`ct-title ${additionclass}`} >{title}</h1>
+    <h2 className={`ct-title ${additionclass}`} >{title}</h2>
   )
 }
 
