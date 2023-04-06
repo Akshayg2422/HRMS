@@ -97,20 +97,20 @@ function ShiftDetailsPerDay() {
                     <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
                     <Container additionClass='row'>
                         <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')}`}</h2>
-                        <Container additionClass="text-right">
+                        {filteredDetails() && filteredDetails().length > 0 && <Container additionClass="text-right">
                             <Primary
                                 text={'Detailed View'}
                                 onClick={() => { navigate(ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY) }}
                                 size={"btn-md"}
                                 additionClass={"mt-sm-0 mt-2"}
                             />
-                        </Container>
+                        </Container>}
                     </Container>
                 </Container>
             </Card>
 
             <Container flexDirection={"row"} margin={"mt-3"}>
-                {filteredDetails() && filteredDetails().length > 0 && filteredDetails().map((it: any) => {
+                {filteredDetails() && filteredDetails().length > 0 ? filteredDetails().map((it: any) => {
                     return (
                         <Container additionClass={"col-xl-3 col-md-6"}>
                             <Card
@@ -139,7 +139,7 @@ function ShiftDetailsPerDay() {
                             </Card>
                         </Container>
                     );
-                })}
+                }) : <NoRecordFound />}
             </Container>
         </div >
 
