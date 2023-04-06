@@ -141,7 +141,7 @@ const Header = () => {
                 </div>
               </div>
             </a>
-            <BackArrow additionClass={'mr--1 '} />
+            <BackArrow additionClass={'mr--1'} />
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
               { isParent && <div className='small'>
