@@ -1,4 +1,4 @@
-import { Container, DropDown, FormWrapper, Icon, InputDefault, InputText } from '@components'
+import { Container, DropDown, FormWrapper, Icon, InputDefault, InputText, ScreenContainer } from '@components'
 import { goTo, ROUTE, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -46,8 +46,9 @@ function SalaryBreakDown() {
 
 
   return (
-    <>
+    <ScreenContainer>
       <FormWrapper
+        isTitle
         title={t('SalaryCalculation')}
         onClick={() => console.log('clicked')}>
 
@@ -109,7 +110,7 @@ function SalaryBreakDown() {
           />
         </div>
       </FormWrapper>
-    </>
+    </ScreenContainer>
   )
 }
 

@@ -12,8 +12,9 @@ import {
   Icon,
   Card,
   useKeyPress,
+  TableWrapper,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   getEmployeeEachUserTimeSheets,
   getEmployeesTimeSheets,
@@ -132,43 +133,11 @@ function EmployeeTimeSheets() {
     setType(sortData[index].title.toLocaleLowerCase());
   };
 
-  return (
-    <>
-      <Card additionClass="mx-3">
-        <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-6"}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              placeholder={t("enterEmployeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-              onClick={() => {
-                getEmployeeTimeSheets(currentPage);
-              }}
-            />
-          </Container>
-        </Container>
-        <div className="text-right">
-          <Sort
-            size={'btn-sm'}
-            sortData={sortData}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
-            }}
-          />
-        </div>
-      </Card>
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeeTimeSheets && employeeTimeSheets.length > 0 ? (
         <CommonTable
+          card={false}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
@@ -188,7 +157,51 @@ function EmployeeTimeSheets() {
             getEmployeeTimeSheets(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeTimeSheets])
+
+  return (
+    <>
+      <TableWrapper
+        buttonChildren={
+          <div className="mr--4">
+            <Sort
+              size={'btn-sm'}
+              sortData={sortData}
+              activeIndex={activeSort}
+              onClick={(index) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
+        }
+        filterChildren={
+          <Container additionClass={"row"}>
+            <Container col={"col-xl-6"}>
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
+              <InputText
+                value={searchEmployee}
+                col={'col'}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+                onClick={() => {
+                  getEmployeeTimeSheets(currentPage);
+                }}
+              />
+            </Container>
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
 
       <Modal
         showModel={model}
