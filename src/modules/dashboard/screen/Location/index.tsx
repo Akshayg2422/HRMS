@@ -6,6 +6,8 @@ import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, ed
 import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
+import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/actions';
+
 
 const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
@@ -23,6 +25,17 @@ const DROPDOWN_MENU_2 = [
   { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
+type Employee = {
+  id?: string;
+  name?: string;
+  parent_id?: string;
+  has_location?: boolean;
+  fencing_radius?: number;
+  can_update_location?: boolean;
+  geo_location_id?: string;
+  fence_admin_id?: string
+}
+
 function LocationScreen() {
 
   const dispatch = useDispatch();
@@ -30,6 +43,12 @@ function LocationScreen() {
   const { t } = useTranslation();
   const [branch, setBranch] = useState<any>([])
   const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+
+
+  const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
+    (state: any) => state.EmployeeReducer
+  );
+
   const [model, setModel] = useState(false);
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
@@ -37,13 +56,22 @@ function LocationScreen() {
   const [editModel, setEditModel] = useState<any>(false);
   const [searchBranches, setsearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
+  const [isOpenFenceModal, setIsOpenFenceModal] = useState(false)
+
+  const [searchEmployee, setSearchEmployee] = useState<any>('')
+  const [selectedEmployeeFenceId, setSelectedEmployeeFenceId] = useState();
+  const [selectedBranchId, setSelectedBranchId] = useState<any>();
 
   const enterPress = useKeyPress("Enter");
   const inputRef = useRef<HTMLInputElement>();
 
-  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 500, 1000];
 
   useEffect(() => {
+    getAllBranchesListData()
+  }, [isRefresh]);
+
+  const getAllBranchesListData = () =>{
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -52,11 +80,10 @@ function LocationScreen() {
           setBranch(response)
         },
         onError: () => () => {
-          console.log("=========error");
         },
       })
     );
-  }, [isRefresh]);
+  }
 
 
 
@@ -65,6 +92,13 @@ function LocationScreen() {
       SelectedBranchFilter()
     }
   }, [enterPress])
+
+  useEffect(() => {
+    if (enterPress && model === true) {
+        getRegisteredFenceAdmin(currentPage);
+    }
+    getRegisteredFenceAdmin(currentPage)
+}, [enterPress, selectedBranchId])
 
   useEffect(() => {
     if (inputRef.current) {
@@ -91,19 +125,57 @@ function LocationScreen() {
         break;
 
       case 'Assign fence admin':
+        proceedModelHandler(data);
         break;
     }
   }
 
-  const filteredDropdownActionItem = (item: any) => {
-    if (item?.has_location && !item.has_location && item.can_update_location) {
-      let itemWithRadius = DROPDOWN_MENU.filter((el) => el.name !== 'Enable refench')
-      return itemWithRadius
-    }
-    if (item?.has_location && item.has_location && !item.can_update_location) {
-      return DROPDOWN_MENU
-    }
+  function proceedModelHandler(selectedBranch: any) {
+    setSelectedBranchId(selectedBranch);
+    setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
+    getRegisteredFenceAdmin(currentPage)
+    setIsOpenFenceModal(!isOpenFenceModal)
   }
+
+  function getRegisteredFenceAdmin(pageNumber: number) {
+    const params = {
+      ...(searchEmployee && { q: searchEmployee }),
+      page_number: pageNumber,
+      ...(selectedBranchId && { branch_id: selectedBranchId.id })
+    }
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+        success && success?.data.length > 0 && success?.data.map((item: any) => {
+          if (item?.id == selectedBranchId?.fence_admin_id) {
+            setSelectedEmployeeFenceId(item.id)
+          }
+        })
+      },
+      onError: (error: any) => () => {
+      },
+    }))
+  }
+
+  function addFenceAdminApiHandler(item: any) {
+
+    const params = { branch_id: selectedBranchId.id, employee_id: item.id }
+
+    dispatch(addFenceAdmin({
+        params,
+        onSuccess: (success: any) => () => {
+            getAllBranchesListData()
+            showToast("success", success.message);
+            setIsOpenFenceModal(!isOpenFenceModal)
+        },
+        onError: (error: string) => () => {
+            showToast("error", error);
+        },
+    }))
+
+}
+
+
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
@@ -111,7 +183,7 @@ function LocationScreen() {
         name: el.name,
         'Address': el?.address ? el?.address : '-',
         'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.TickActive} /> : <></>,
-        'Fencing Radius': el.fencing_radius,
+        'Fencing Radius': el.fencing_radius + ' m',
         "": <CommonDropdownMenu
           data={el.has_location && el.has_location && !el.can_update_location ? DROPDOWN_MENU : el.has_location && el.has_location && el.can_update_location ? DROPDOWN_MENU_2 : DROPDOWN_MENU_1}
           onItemClick={(e, item) => {
@@ -149,7 +221,6 @@ function LocationScreen() {
   function enableReFetchApi(branchDetail: Location | any) {
 
     const params = { id: branchDetail?.id }
-    console.log("branchDetail--->", branchDetail);
 
     dispatch(enableBranchRefence({
       params,
@@ -222,6 +293,11 @@ function LocationScreen() {
     })
     setBranch(updateBranch)
   }
+
+  function paginationHandler(type: 'next' | 'prev' | 'current', position?: number) {
+    let page = type === 'next' ? currentPage + 1 : type === 'prev' ? currentPage - 1 : position;
+    getRegisteredFenceAdmin(page)
+}
 
 
   return (
@@ -318,59 +394,84 @@ function LocationScreen() {
           </Container>
         </>
       </Modal>
+
+      {
+                <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={isOpenFenceModal} toggle={() => {
+                    setIsOpenFenceModal(!isOpenFenceModal)
+                    setSearchEmployee("")
+                }}>
+                    <Container additionClass={"col-xl-6 row"}>
+                        <InputText
+                            value={searchEmployee}
+                            col={'col'}
+                            placeholder={t("searchEmployee")}
+                            onChange={(e) => {
+                                setSearchEmployee(e.target.value);
+                            }}
+                        />
+                        <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+                            onClick={() => {
+                                getRegisteredFenceAdmin(currentPage)
+                            }}
+                        />
+                    </Container>
+                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+                        <CommonTable
+                            noHeader
+                            isPagination
+                            currentPage={currentPage}
+                            noOfPage={numOfPages}
+                            paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }}
+                            previousClick={() => paginationHandler('prev')}
+                            nextClick={() => paginationHandler('next')}
+                            tableChildren={
+                                <EmployeeTable
+                                    employeeFenceId={selectedEmployeeFenceId}
+                                    tableDataSet={registeredEmployeesList}
+                                    proceedFenceAdmin={(item) => addFenceAdminApiHandler(item)}
+                                />}
+                        />
+                    ) :
+                        <NoRecordFound />
+                    }
+                </Modal>
+            }
     </>
   );
 }
 
-type Location = {
-  name: string;
-  id: string;
-  has_location: boolean;
-  can_update_location: boolean;
-  parent_id: string;
-  fencing_radius: number;
-  geo_location_id: string;
-  fence_admin_id: string;
-}
+type EmployeeTableProps = {
+  tableDataSet?: Array<Employee>;
+  employeeFenceId?: any;
+  proceedFenceAdmin?: (item: Employee) => void;
 
-type LocationTableProps = {
-  tableDataSet?: Array<Location>
-  resetRadiusOnchange?: (item: Location) => void;
-  enableReFetch?: (item: Location) => void;
-  onEditClick?: (item: Location) => void;
 }
 
 
-const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch, onEditClick }: LocationTableProps) => {
+const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: EmployeeTableProps) => {
   return <div className='table-responsive'>
-    <table className='table align-items-center table-flush'>
-      <thead className='thead-light'>
-        <tr>
-          <th scope='col'>{'Name'}</th>
-          <th scope='col'>{'Fencing Radius'}</th>
-          <th scope='col'>{''}</th>
-          <th scope='col'>{''}</th>
-          <th scope='col'>{''}</th>
-          <th scope='col'>{'Edit'}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {
-          tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Location, index: number) => {
-            return <tr className='align-items-center'>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{item.fencing_radius}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{item.has_location ? <Primary text={'Reset Radius'} size={'btn-sm'} onClick={() => { if (resetRadiusOnchange) resetRadiusOnchange(item) }} /> : <></>}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{(item.has_location && !item.can_update_location) && <Primary text={'Enable Refetch'} size={'btn-sm'} onClick={() => { if (enableReFetch) enableReFetch(item) }} />}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{<ImageView height={20} width={20} icon={item.has_location ? Icons.Location : Icons.LocationGray} />}</td>
-              <td style={{ whiteSpace: 'pre-wrap', cursor: 'pointer' }} onClick={() => { if (onEditClick) onEditClick(item) }} >{"Edit"}</td>
-
-            </tr>
-          })
-        }
-      </tbody>
-    </table>
+      <table className='table align-items-center' style={{ marginBottom: '0px' }}>
+          <thead className='thead-light'>
+              <tr>
+                  <th scope='col'>{'Name'}</th>
+                  <th scope='col'>{''}</th>
+              </tr>
+          </thead>
+          <tbody>
+              {
+                  tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
+                      return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
+                          <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
+                          <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
+                      </tr>
+                  })
+              }
+          </tbody>
+      </table>
   </div>
 }
+
+
+
 
 export default LocationScreen;

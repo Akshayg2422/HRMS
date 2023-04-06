@@ -196,7 +196,7 @@ export const NAV_ITEM = [
   { id: '2', name: 'Employees Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, route: ROUTE.ROUTE_EMPLOYEE },
   { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', image: Icons.LocationSecondary, route: ROUTE.ROUTE_LOCATION },
   // { id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', image: Icons.AssignLocation, route: ROUTE.ROUTE_ASSIGN_LOCATION },
-  { id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', image: Icons.Admin, route: ROUTE.ROUTE_FENCE_ADMIN },
+  // { id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', image: Icons.Admin, route: ROUTE.ROUTE_FENCE_ADMIN },
   { id: '6', name: 'Logs', value: 'EL', icon: 'ni ni-book-bookmark', image: Icons.Employee, route: ROUTE.ROUTE_EMPLOYEE_LOG },
   { id: '7', name: 'Time Sheets', value: 'TS', icon: 'ni ni-single-copy-04', image: Icons.Department, route: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK },
   { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, route: ROUTE.ROUTE_DASHBOARD_STATS },
