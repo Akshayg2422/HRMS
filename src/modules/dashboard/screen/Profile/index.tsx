@@ -28,6 +28,7 @@ const Profile = () => {
           <ImageView
             style={{ objectFit: 'cover' }}
             width={'100%'}
+            height={'100px'}
             icon={
               dashboardDetails && dashboardDetails.user_details.profile_photo
                 ? getImageUri(dashboardDetails.user_details.profile_photo)

@@ -132,8 +132,7 @@ const ManageEmployee = () => {
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
-  console.log("companyBranchDropdownData===>", companyBranchDropdownData);
-
+  const [isBranchShiftDataExist, setIsBranchShiftExist] = useState(false)
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -153,9 +152,8 @@ const ManageEmployee = () => {
     departmentData()
     designationData()
 
-    if (!isEdit) {
-      getBranchShiftsList()
-    }
+    getBranchShiftsList()
+
     const params = {};
     dispatch(
       getAllBranchesList({
@@ -178,12 +176,18 @@ const ManageEmployee = () => {
       })
     );
     setDesignationNote('')
+
+  }, [isRefresh]);
+
+  useEffect(() => {
     if (isEdit) {
-      getEmployeeDetailsAPi(isEdit);
-      getBranchShiftsList()
+
+      if (isBranchShiftDataExist) {
+        getEmployeeDetailsAPi(isEdit);
+      }
       setDesignationNote("* Changing Designation Will Impact in Shift")
     }
-  }, [isRefresh]);
+  }, [isRefresh, isBranchShiftDataExist])
 
 
   const departmentData = () => {
@@ -246,6 +250,7 @@ const ManageEmployee = () => {
     dispatch(getBranchShifts({
       params,
       onSuccess: (success: any) => async () => {
+        setIsBranchShiftExist(true)
         await setShiftGroup(success)
       },
       onError: (error: string) => () => {
@@ -278,10 +283,16 @@ const ManageEmployee = () => {
     ) {
       showToast("error", t("invalidNumber"));
       return false;
-    } else if (validateEmail(employeeDetails.e_Mail).status === false) {
+    }
+    else if (validateEmail(employeeDetails.e_Mail).status === false || employeeDetails.e_Mail === "") {
       showToast("error", t("invalidEmail"));
       return false;
-    } else if (Object.keys(employeeDetails.designation).length === 0) {
+    }
+    else if (employeeDetails.gender === "") {
+      showToast("error", t("invalidGender"));
+      return false;
+    }
+    else if (Object.keys(employeeDetails.designation).length === 0) {
       showToast("error", t("invalidDesignation"));
       return false;
     } else if (Object.keys(employeeDetails.department).length === 0) {
@@ -290,11 +301,13 @@ const ManageEmployee = () => {
     } else if (Object.keys(employeeDetails.branch).length === 0) {
       showToast("error", t("invalidBranch"));
       return false;
-    } else if (!employeeDetails.dob) {
-      showToast("error", t("invalidDOB"));
-      return false;
-    } else if (!employeeDetails.employeeType) {
+    }
+    else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
+      return false;
+    }
+    else if (!employeeDetails.dob) {
+      showToast("error", t("invalidDOB"));
       return false;
     }
     else {
@@ -435,6 +448,9 @@ const ManageEmployee = () => {
           editEmployeeDetails.shift?.id
 
       }
+
+      setShiftsDropdownData(designationMatchShifts(editEmployeeDetails.designation_id))
+
     }
     setEmployeeDetails(employeeInitData);
   };

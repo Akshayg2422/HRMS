@@ -13,16 +13,16 @@ const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
-  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
 ]
 const DROPDOWN_MENU_1 = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
 ]
 const DROPDOWN_MENU_2 = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '4', name: 'Assign fence admin', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 type Employee = {
@@ -71,8 +71,10 @@ function LocationScreen() {
     getAllBranchesListData()
   }, [isRefresh]);
 
-  const getAllBranchesListData = () =>{
-    const params = {};
+  const getAllBranchesListData = () => {
+    const params = {
+      ...(searchBranches && { q: searchBranches })
+    };
     dispatch(
       getAllBranchesList({
         params,
@@ -89,7 +91,7 @@ function LocationScreen() {
 
   useEffect(() => {
     if (enterPress) {
-      SelectedBranchFilter()
+      getAllBranchesListData()
     }
   }, [enterPress])
 
@@ -124,7 +126,7 @@ function LocationScreen() {
         enableReFetchApi(data)
         break;
 
-      case 'Assign fence admin':
+      case 'Add manage fence admin':
         proceedModelHandler(data);
         break;
     }
@@ -315,7 +317,7 @@ function LocationScreen() {
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
             onClick={() => {
-              SelectedBranchFilter()
+              // SelectedBranchFilter()
             }}
           />
         </Container>

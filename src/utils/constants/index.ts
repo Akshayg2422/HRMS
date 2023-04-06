@@ -203,7 +203,6 @@ export const NAV_ITEM = [
   { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, route: ROUTE.ROUTE_CALENDAR },
   { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
   { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
-  { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', image: Icons.Clients, route: ROUTE.ROUTE_PORTFOLIO },
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, route: ROUTE.ROUTE_REPORTS },
   { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, route: ROUTE.ROUTE_SHIFT_GROUP },
   { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
@@ -214,9 +213,11 @@ export const NAV_ITEM = [
   { id: '19', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, route: ROUTE.ROUTE_BROADCAST },
   { id: '20', name: 'Face Approval', value: 'FR', icon: 'ni ni-image', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REQUEST },
   // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
-  { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES },
-  // { id: '21', name: 'ESSL Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG },
-  { id: '22', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS },
+  { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES, is_admin : false },
+  // { id: '21', name: 'ESSL Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG, is_admin : true },
+  { id: '22', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS, is_admin : false },
+  { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', image: Icons.Clients, route: ROUTE.ROUTE_PORTFOLIO },
+
 ];
 
 
@@ -332,11 +333,11 @@ export const EMPLOYEES_SHIFT_DATA_EDIT = [
     elv: 'Manage Employee',
     elh: 'Manage Employee',
   },
-  {
-    elt: TABLE_ELEMENT_TEXT_BUTTON,
-    elv: 'Edit',
-    elh: 'Edit',
-  },
+  // {
+  //   elt: TABLE_ELEMENT_TEXT_BUTTON,
+  //   elv: 'Edit',
+  //   elh: 'Edit',
+  // },
 
   // {
   //   elt: TABLE_ELEMENT_TEXT_IMAGE,
@@ -383,7 +384,7 @@ export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 
 
 export const LANGUAGE_LIST = [
-  { language: 'English', subtitle: '', key: 'en' },
+  { language: 'English', subtitle: '', key: 'en-US' },
   { language: 'हिंदी', subtitle: 'Hindi', key: 'hi' },
   { language: 'ಕನ್ನಡ', subtitle: 'kannada', key: 'ka' },
   { language: 'தமிழ்', subtitle: 'Tamil', key: 'ta' },

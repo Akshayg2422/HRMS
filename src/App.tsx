@@ -76,20 +76,19 @@ import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
+import GetToken from "./PushNotification/GetToken";
+
 import RefundPolicy from "./screens/RefundPolicy";
 
 function App() {
-
-  const { dashboardDetails } = useSelector(
-    (state: any) => state.DashboardReducer
-  );
 
   return (
     <>
       {/* <AutoLogout /> */}
       <PushNotification />
+      <GetToken />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />

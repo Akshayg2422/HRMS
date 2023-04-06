@@ -25,11 +25,14 @@ import {
 } from "@utils";
 import { useDashboard } from "@contexts";
 import {
+  changeAttendanceSettings,
   employeeEdit,
   getEmployeesList,
   getSelectedEmployeeId,
   getUpdateEmployeeStatus,
-  
+  postEnableFieldCheckIn,
+  postEnableOfficeCheckIn,
+
   // changeAttendanceSettings,
   // postEnableFieldCheckIn,
   // postEnableOfficeCheckIn
@@ -310,14 +313,14 @@ function EmployeeScreen() {
       can_field_checkin: value,
       // id: employeeDetails.id
     }
-    // dispatch(postEnableFieldCheckIn({
-    //   params, onSuccess: (success: any) => {
-    //     showToast('success', success.message)
-    //   },
-    //   onError: (error: string) => {
-    //     showToast('error', error)
-    //   },
-    // }))
+    dispatch(postEnableFieldCheckIn({
+      params, onSuccess: (success: any) => {
+        showToast('success', success.message)
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
   }
 
   const officeCheckInHandler = (value: boolean) => {
@@ -325,13 +328,13 @@ function EmployeeScreen() {
       can_office_checkin: value,
       // id: employeeDetails.id
     }
-    // dispatch(postEnableOfficeCheckIn({
-    //   params, onSuccess: (success: any) => {
-    //   },
-    //   onError: (error: string) => {
-    //     showToast('error', error)
-    //   },
-    // }))
+    dispatch(postEnableOfficeCheckIn({
+      params, onSuccess: (success: any) => {
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
   }
 
   const faceValidationHandler = (value: boolean) => {
@@ -339,14 +342,14 @@ function EmployeeScreen() {
       face_validation_required: value,
       // id: employeeDetails.id
     }
-    // dispatch(changeAttendanceSettings({
-    //   params, onSuccess: (success: any) => {
-    //     showToast('success', success.message)
-    //   },
-    //   onError: (error: string) => {
-    //     showToast('error', error)
-    //   },
-    // }))
+    dispatch(changeAttendanceSettings({
+      params, onSuccess: (success: any) => {
+        showToast('success', success.message)
+      },
+      onError: (error: string) => {
+        showToast('error', error)
+      },
+    }))
 
   }
 

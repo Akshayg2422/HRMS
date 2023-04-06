@@ -205,9 +205,9 @@ function ManageAssignLocation() {
             additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={proceedSearchApi}
+
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Icon type={"btn-primary"} onClick={proceedSearchApi} icon={Icons.Search} />
           </Container>
         </Container>
       </Card>
@@ -237,9 +237,11 @@ function ManageAssignLocation() {
         >
           {listBranchesList.map((item: Branch, index: number) => {
             return (
-              <>
+              <div
+                onClick={() => addSelectedBranch(item)}
+                style={{ cursor: 'pointer' }}
+              >
                 <div className="row mx-3 my-1"
-                  onClick={() => addSelectedBranch(item)}
                 >
                   <div className="col-8">
                     <span className=" text-gray">{item.name}</span>
@@ -256,7 +258,7 @@ function ManageAssignLocation() {
                   </div>
                 </div>
                 {index !== listBranchesList.length - 1 && <Divider />}
-              </>
+              </div>
             );
           })}
 

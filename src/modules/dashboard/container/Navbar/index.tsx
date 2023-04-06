@@ -88,9 +88,11 @@ const Navbar = ({ }) => {
         <div className="navbar-inner mt-5">
           <div className="collapse navbar-collapse" id="sidenav-collapse-main">
             <ul className="navbar-nav">
-              {NAV_ITEM.map((it: any, index: number) => {
-                if (userDetails.is_admin === false) {
-                  if (it.name !== 'ESSL Config') {
+
+              {
+                userDetails.is_admin ?
+                  NAV_ITEM.map((it, index) => {
+
                     return (
                       <li
                         className="nav-item"
@@ -125,45 +127,50 @@ const Navbar = ({ }) => {
                         </a>
                       </li>
                     );
-                  }
+                  })
+                  :
+                  userDetails.is_branch_admin ?
+                    NAV_ITEM && NAV_ITEM.map((it, index) => {
 
-                } else {
-                  return (
-                    <li
-                      className="nav-item"
-                      onClick={() => {
-                        currentNav(it, index)
-                      }}
-                    >
-                      <a
-                        key={index}
-                        style={{ cursor: 'pointer' }}
-                        className={
-                          navIndex === index ? "nav-link active" : "nav-link"
-                        }
-                      >
-                        <i
-                          className={
-                            navIndex === index
-                              ? `${it.icon} text-primary`
-                              : `${it.icon} text-white`
-                          }
-                        ></i>
-                        <span
-                          className={
-                            navIndex === index
-                              ? "nav-link-text text-primary mt-2 ml-2"
-                              : "nav-link-text text-white mt-2 ml-2"
-                          }
-                        >
-                          {/* ESSL Config */}
-                          {it.name}
-                        </span>
-                      </a>
-                    </li>
-                  );
-                }
-              })}
+                      if (it.is_admin === false) {
+                        return (
+                          <li
+                            className="nav-item"
+                            onClick={() => {
+                              currentNav(it, index)
+                            }}
+                          >
+                            <a
+                              key={index}
+                              style={{ cursor: 'pointer' }}
+                              className={
+                                navIndex === index ? "nav-link active" : "nav-link"
+                              }
+                            >
+                              <i
+                                className={
+                                  navIndex === index
+                                    ? `${it.icon} text-primary`
+                                    : `${it.icon} text-white`
+                                }
+                              ></i>
+                              <span
+                                className={
+                                  navIndex === index
+                                    ? "nav-link-text text-primary mt-2 ml-2"
+                                    : "nav-link-text text-white mt-2 ml-2"
+                                }
+                              >
+                                {/* ESSL Config */}
+                                {it.name}
+                              </span>
+                            </a>
+                          </li>
+                        );
+                      }
+                    }) : ""
+              }
+
             </ul>
           </div>
           <small className={"text-white text-version"}>Version: 1.27</small>

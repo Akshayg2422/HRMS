@@ -175,11 +175,13 @@ const LocationTable = ({
             if (isString)
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{key === 'emp_id' ? "" : eachObject[key as keyof object]}
                     {key === 'emp_id' && (
-                        <ImageView height={20} width={20} icon={Icons.Download} onClick={() => {
-                            if (employeeLogDownload) {
-                                employeeLogDownload(eachObject)
-                            }
-                        }} />
+                        <div style={{ cursor:'pointer'}}>
+                            <ImageView height={20} width={20} icon={Icons.Download} onClick={() => {
+                                if (employeeLogDownload) {
+                                    employeeLogDownload(eachObject)
+                                }
+                            }} />
+                        </div>
                     )}
                 </td>
             else {

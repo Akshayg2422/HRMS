@@ -1,4 +1,4 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress } from '@components'
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,15 +21,25 @@ function ELocker() {
     const [previewModel, setPreviewModel] = useState(false)
     const [title, setTitle] = useState('')
     const [documents, setDocuments] = useState<any>([])
+    const [documentListData, setDocumentListData] = useState<any>([])
+    let enterPress = useKeyPress("Enter");
 
 
 
     const { employeeDocuments } =
         useSelector((state: any) => state.EmployeeReducer);
 
+
+    useEffect(() => {
+        if (enterPress) {
+            SelectedBranchFilter()
+        }
+    }, [enterPress])
+
     useEffect(() => {
         fetchEmployeeDocuments()
-    }, [search])
+    }, [])
+
 
 
     const Upload = () => {
@@ -59,18 +69,23 @@ function ELocker() {
 
     const fetchEmployeeDocuments = () => {
         const params = {
-            q: search
+            ...(search && { q: search })
         };
+        console.log("asdsdsd");
+
         dispatch(getEmployeeDocument({
             params,
             onSuccess: (success: any) => () => {
-
+                setDocumentListData(success.details)
             },
             onError: (error: any) => () => {
 
             }
         }));
     };
+
+
+
 
 
     const resetAttachment = () => {
@@ -157,6 +172,20 @@ function ELocker() {
         resetAttachment()
     }
 
+    const SelectedBranchFilter = () => {
+
+        let filteredDocument = [...documentListData]
+        if (search !== "") {
+            filteredDocument = filteredDocument.filter((element: any) => {
+                return element.name.replace(/\s/g, '').toLowerCase().includes(search.replace(/\s/g, '').toLowerCase())
+            })
+            setDocumentListData(filteredDocument)
+        }
+        else {
+            setDocumentListData(employeeDocuments?.details)
+        }
+    }
+
     return (
         <div>
             <Card>
@@ -168,21 +197,26 @@ function ELocker() {
                         additionClass={"col"}
                         alignItems={"align-items-center"}
                     >
-                        <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+                        <Container col={"col-xl-3 col-md-6 col-sm-12 ml--2"}>
                             <InputText
                                 placeholder={t("search")}
                                 onChange={(e) => {
                                     setSearch(e.target.value);
                                 }}
                             />
+
                         </Container>
+                        <Icon type={"btn-primary"} additionClass={'mt--3'} icon={Icons.Search}
+                            onClick={() => {
+                                SelectedBranchFilter()
+                            }}
+                        />
                         <Container
                             col={"col"}
                             additionClass={"mb-3"}
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
                             onClick={() => setUploadModel(!uploadModel)}
-
                         >
                             <Icon
                                 text={t('add') + " " + "+"}
@@ -193,11 +227,11 @@ function ELocker() {
                 </Container>
             </Card>
             <Container additionClass='mx--3'>
-                {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
+                {documentListData && documentListData?.length > 0 ? <CommonTable
                     tableTitle={"Documents List"}
-                    displayDataSet={documentsList(employeeDocuments.details)}
+                    displayDataSet={documentsList(documentListData)}
                     tableOnClick={(e, index, item) => {
-                        let current = employeeDocuments.details[index]
+                        let current = documentListData[index]
                         viewUserDocument(current)
                     }}
                 /> :
