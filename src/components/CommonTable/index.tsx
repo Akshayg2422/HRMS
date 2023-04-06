@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import { NoRecordFound, Table, Primary } from '@components'
+import { log } from 'console';
 
 interface CommonTableProps {
+  card?: boolean;
   noRecordText?: string;
   displayDataSet?: Array<{}>;
   tableDataSet?: Array<{}>;
-  tableTitle?: string;
+  title?: string;
   additionalDataSet?: Array<{
     elt: number,
     elv: string,
@@ -28,9 +30,11 @@ interface CommonTableProps {
   headerClass?: string,
   headerChildren?: React.ReactNode;
   headerActions?: React.ReactNode;
-  headerActionsClass?:string
-  headerChildrenClass?:string
-
+  headerActionsClass?: string
+  headerChildrenClass?: string
+  filterChildren?: React.ReactNode
+  buttonChildren?: React.ReactNode,
+  header?: boolean
 }
 
 
@@ -47,41 +51,29 @@ interface GetPaginatorSetProps {
   currentPage?: number;
   totalPages?: number;
 }
-
-
-
-
-function index({ tableTitle, displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton, headerChildren, headerActions, headerActionsClass, headerChildrenClass }: CommonTableProps) {
+const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton, filterChildren, buttonChildren }: CommonTableProps) => {
 
   const CommonHeader = ({ children }: CommonHeaderProps) => {
     return (
-      <div className='col'>
-
-        {buttonText && <div className="col text-right mt-4 mb-4">
-          <Primary size={'btn-sm'} text={buttonText} onClick={buttonOnClock} />
-        </div>}
-
-        {!noHeader ?
-          <div className={`card shadow ${headerClass}`}>
-            <div className="card-header border-0">
+      <>
+        <div >
+          {card ? <div className={`card shadow ${headerClass}`}>
+            {title && <div className="card-header border-0">
               <div className="row align-items-center">
                 <div className="row" >
-                  <div className='col mt--2'>
-                    <h3 className="mb-0" >{tableTitle}</h3>
+                  <div className='col'>
+                    <h3 className="mb-0" >{title + '==='}</h3>
                   </div>
-                  <div className={`col text-right ${headerActionsClass}`}>
-                    {headerActions}
-                  </div>
-                </div>
-                <div className={headerChildrenClass}>
-                  {headerChildren}
                 </div>
               </div>
             </div>
+            }
             {children}
-          </div> : <div>{children}</div>
-        }
-      </div>
+          </div>
+            : <div>{children}</div>
+          }
+        </div>
+      </>
     );
   }
 
@@ -128,12 +120,7 @@ function index({ tableTitle, displayDataSet, tableDataSet, headerClass, addition
       }
 
       return (
-        <div className="card-footer">
-          <div className='col-1'>
-            {/* <span></span>
-            <InputNumber /> */}
-          </div>
-
+        <div className={"card-footer"}>
           <ul className="pagination col justify-content-end mb-0">
             <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
               <a className="page-link">
@@ -159,10 +146,9 @@ function index({ tableTitle, displayDataSet, tableDataSet, headerClass, addition
   }
 
   const renderTable = () => {
-
     return (
       <>
-        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />}
+        <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
       </>
     );
@@ -171,11 +157,11 @@ function index({ tableTitle, displayDataSet, tableDataSet, headerClass, addition
   }
 
   return (
-    <CommonHeader >
+    <CommonHeader>
       {renderTable()}
     </CommonHeader>
-
   );
+
 }
 
-export default index
+export default CommonTable

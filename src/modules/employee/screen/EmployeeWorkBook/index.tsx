@@ -172,7 +172,7 @@ function EmployeeTimeSheets() {
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
-          tableTitle={t("employeeTimeSheets")}
+          title={t("employeeTimeSheets")}
           displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
             setSelectedEmployeeDetails(employeeTimeSheets[index])
