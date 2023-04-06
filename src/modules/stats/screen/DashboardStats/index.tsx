@@ -103,112 +103,173 @@ const DashboardStats = () => {
       ...obj,
       selected_date: selectedDate,
     };
-      dispatch(getEmployeeAttendanceStats({
-        params,
-        onSuccess: (success: any) => () => {
-          setInitialCall(true)
-        },
-        onError: (error: any) => () => {
+    dispatch(getEmployeeAttendanceStats({
+      params,
+      onSuccess: (success: any) => () => {
+        setInitialCall(true)
+      },
+      onError: (error: any) => () => {
 
-        }
-      }));
+      }
+    }));
   }
 
-    const getAllSubBranches = (branchList: any, parent_id: string) => {
-      let branchListFiltered: any = [];
-      const getChild = (branchList: any, parent_id: string) => {
-        branchList
-          .filter((it: any) => it.parent_id === parent_id)
-          .map((it2: any) => {
-            branchListFiltered.push(it2);
-            getChild(branchList, it2.id);
-            return it2;
-          });
-      };
-      getChild(branchList, parent_id);
-
-      branchListFiltered = branchListFiltered.map((it: any) => {
-        return it.id;
-      });
-      return branchListFiltered;
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    let branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) => {
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
     };
+    getChild(branchList, parent_id);
 
-    const proceedNext = (
-      attendanceType: number,
-      departmentId: number | string
-    ) => {
-      const params = {
-        attendanceType: attendanceType,
-        departmentId: departmentId,
-        selectedDate: selectedDate,
-      };
-      dispatch(getSelectedCardType({
-        params,
-        onSuccess: (success: any) => () => {
-          goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
-        },
-        onError: (error: any) => () => {
+    branchListFiltered = branchListFiltered.map((it: any) => {
+      return it.id;
+    });
+    return branchListFiltered;
+  };
 
-        }
+  const proceedNext = (
+    attendanceType: number,
+    departmentId: number | string
+  ) => {
+    const params = {
+      attendanceType: attendanceType,
+      departmentId: departmentId,
+      selectedDate: selectedDate,
+    };
+    dispatch(getSelectedCardType({
+      params,
+      onSuccess: (success: any) => () => {
+        goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+      },
+      onError: (error: any) => () => {
+
       }
-      ));
+    }
+    ));
+  };
+
+  const getAttendanceConsolidatedData = (departmentId: string) => {
+    const params = {
+      ...hierarchicalBranchIds,
+      selected_date: selectedDate,
+      department_id: departmentId,
     };
 
-    const getAttendanceConsolidatedData = (departmentId: string) => {
-      const params = {
-        ...hierarchicalBranchIds,
-        selected_date: selectedDate,
-        department_id: departmentId,
-      };
-
-      dispatch(
-        getAttendanceConsolidatedCards({
-          params,
-          onSuccess: (response: any) => () => {
-            if (response && response.cards?.length > 0) {
-              setAttendanceConsolidatedCardsData(response.cards);
-              setModel(!model);
-            }
-          },
-          onError: (error: string) => () => { },
-        })
-      );
-    };
-
-    console.log("hierarchicalBranchIds---->", hierarchicalBranchIds)
+    dispatch(
+      getAttendanceConsolidatedCards({
+        params,
+        onSuccess: (response: any) => () => {
+          if (response && response.cards?.length > 0) {
+            setAttendanceConsolidatedCardsData(response.cards);
+            setModel(!model);
+          }
+        },
+        onError: (error: string) => () => { },
+      })
+    );
+  };
 
 
-    return (
-      <>
 
-        <Card additionClass={"row mx-2"}>
-          <div className="row mt-3">
-            <div className="col-lg-6 col-md-6">
-              <ChooseBranchFromHierarchical />
-            </div>
-            <div className="col-lg-3 col-md-6 mt-xl-4">
-              <DatePicker
-                additionalClass="mt-xl-2"
-                placeholder={"Select Date"}
-                icon={Icons.Calendar}
-                iconPosition={"prepend"}
-                value={selectedDate}
-                onChange={(date: string) => setSelectedDate(date)}
+  return (
+    <>
+      <Card>
+        <Container additionClass="row">
+          <Container additionClass="col-xl-3">
+            <ChooseBranchFromHierarchical />
+          </Container>
+          <Container additionClass="col-xl-3 mt-xl-2">
+            <DatePicker
+              additionalClass="mt-xl-4"
+              placeholder={"Select Date"}
+              icon={Icons.Calendar}
+              iconPosition={"prepend"}
+              value={selectedDate}
+              onChange={(date: string) => setSelectedDate(date)}
+            />
+          </Container>
+        </Container>
+      </Card>
+      <Container
+        additionClass={"row"}
+        justifyContent={"justify-content-around"}
+      >
+        <div className="row align-items-center mb-4">
+          <div className="col">
+            <h3 className="mb-0">{t("dashboardDetails")}</h3>
+          </div>
+        </div>
+        <Container additionClass={"row"}>
+          {employeeattendancedatalog && employeeattendancedatalog?.cards?.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
+            return (
+              <Container additionClass={"col-xl-4 col-md-6"}>
+                <Card>
+                  <Container
+                    justifyContent={"justify-content-between"}
+                    alignItems={"align-content-center"}
+                    flexDirection={"column"}
+                  >
+                    <Container>
+                      <div className="text-center h1 font-weight-300">
+                        {el.count}
+                      </div>
+                      <div className="text-center h2">{el.title}</div>
+                    </Container>
+
+                    <Primary
+                      additionClass={"btn-block"}
+                      text={t("Tap to View")}
+                      size={"btn-sm"}
+                      onClick={() => proceedNext(el.type, -1)}
+                    />
+                  </Container>
+                </Card>
+              </Container>
+            );
+          }) : <NoRecordFound />}
+        </Container>
+        <Container margin={"mx-6"}>
+          {employeeattendancedatalog &&
+            employeeattendancedatalog.departments_types && (
+              <CommonTable
+                title={t(t("departments"))}
+                displayDataSet={normalizedEmployeeAttendanceLog(
+                  employeeattendancedatalog
+                )}
+                tableOnClick={(e, index, item) => {
+                  // console.log(
+                  //   employeeattendancedatalog.departments_stats[index]
+                  //     .department_id + "====="
+                  // );
+
+                  setSelectedDepartmentName(
+                    employeeattendancedatalog.departments_stats[index].name
+                  );
+                  setSelectedDepartmentId(
+                    employeeattendancedatalog.departments_stats[index]
+                      .department_id
+                  );
+                  getAttendanceConsolidatedData(
+                    employeeattendancedatalog.departments_stats[index]
+                      .department_id
+                  );
+                }}
               />
-            </div>
-          </div>
-        </Card>
-        <Container
-          additionClass={"row"}
-          justifyContent={"justify-content-around"}
+            )}
+        </Container>
+        <Modal
+          title={selectedDepartmentName}
+          showModel={model}
+          toggle={() => setModel(!model)}
         >
-          <div className="row align-items-center mb-4">
-            <div className="col">
-              <h3 className="mb-0">{t("dashboardDetails")}</h3>
-            </div>
-          </div>
           <Container additionClass={"row"}>
-            {employeeattendancedatalog && employeeattendancedatalog?.cards?.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
+            {attendanceConsolidatedCardsData && attendanceConsolidatedCardsData.length > 0 ? attendanceConsolidatedCardsData.map((el: any, index: number) => {
               return (
                 <Container additionClass={"col-xl-4 col-md-6"}>
                   <Card>
@@ -228,7 +289,10 @@ const DashboardStats = () => {
                         additionClass={"btn-block"}
                         text={t("Tap to View")}
                         size={"btn-sm"}
-                        onClick={() => proceedNext(el.type, -1)}
+                        onClick={() => {
+                          setModel(!model);
+                          proceedNext(el.type, selectedDepartmentId);
+                        }}
                       />
                     </Container>
                   </Card>
@@ -236,76 +300,10 @@ const DashboardStats = () => {
               );
             }) : <NoRecordFound />}
           </Container>
-          <Container margin={"mx-6"}>
-            {employeeattendancedatalog &&
-              employeeattendancedatalog.departments_types && (
-                <CommonTable
-                  title={t(t("departments"))}
-                  displayDataSet={normalizedEmployeeAttendanceLog(
-                    employeeattendancedatalog
-                  )}
-                  tableOnClick={(e, index, item) => {
-                    // console.log(
-                    //   employeeattendancedatalog.departments_stats[index]
-                    //     .department_id + "====="
-                    // );
+        </Modal>
+      </Container>
+    </>
+  );
+};
 
-                    setSelectedDepartmentName(
-                      employeeattendancedatalog.departments_stats[index].name
-                    );
-                    setSelectedDepartmentId(
-                      employeeattendancedatalog.departments_stats[index]
-                        .department_id
-                    );
-                    getAttendanceConsolidatedData(
-                      employeeattendancedatalog.departments_stats[index]
-                        .department_id
-                    );
-                  }}
-                />
-              )}
-          </Container>
-          <Modal
-            title={selectedDepartmentName}
-            showModel={model}
-            toggle={() => setModel(!model)}
-          >
-            <Container additionClass={"row"}>
-              {attendanceConsolidatedCardsData && attendanceConsolidatedCardsData.length > 0 ? attendanceConsolidatedCardsData.map((el: any, index: number) => {
-                return (
-                  <Container additionClass={"col-xl-4 col-md-6"}>
-                    <Card>
-                      <Container
-                        justifyContent={"justify-content-between"}
-                        alignItems={"align-content-center"}
-                        flexDirection={"column"}
-                      >
-                        <Container>
-                          <div className="text-center h1 font-weight-300">
-                            {el.count}
-                          </div>
-                          <div className="text-center h2">{el.title}</div>
-                        </Container>
-
-                        <Primary
-                          additionClass={"btn-block"}
-                          text={t("Tap to View")}
-                          size={"btn-sm"}
-                          onClick={() => {
-                            setModel(!model);
-                            proceedNext(el.type, selectedDepartmentId);
-                          }}
-                        />
-                      </Container>
-                    </Card>
-                  </Container>
-                );
-              }) : <NoRecordFound />}
-            </Container>
-          </Modal>
-        </Container>
-      </>
-    );
-  };
-
-  export default DashboardStats;
+export default DashboardStats;

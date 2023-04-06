@@ -400,7 +400,7 @@ function EmployeeScreen() {
   }, [registeredEmployeesList])
 
   return (
-    <TableWrapper title={'Employee Log'}
+    <TableWrapper 
       buttonChildren={
         <Primary size={'btn-sm'} text={'Add'} onClick={() => { }} />
       }

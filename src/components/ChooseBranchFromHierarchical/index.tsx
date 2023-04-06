@@ -17,7 +17,7 @@ interface HierarchicalProps {
 function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
   const { t } = useTranslation();
 
-  const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails,toTriggerHierarchical } =
+  const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails, toTriggerHierarchical } =
     useSelector((state: any) => state.DashboardReducer);
 
   const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
@@ -145,29 +145,27 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
 
   return (
     <div>
-      <div className="col-lg-6">
-        <div className="form-group">
-          <small className="form-control-label text-black">{t("MyBranches")}</small>
-          <div onClick={() => setModel(!model)}>
-            <InputDefault disabled={true} value={hierarchicalBranchName} />
-          </div>
-          {hierarchicalBranchIds && showCheckBox && (
-            <div className="mt--3">
-              <CheckBox
-                id={'1'}
-                text={"Include Sub Branches"}
-                checked={hierarchicalBranchIds.include_child}
-                onChange={(e) => {
-                  dispatch(
-                    setBranchHierarchicalIncludeChild({
-                      checkBoxStatus: e.target.checked,
-                    })
-                  );
-                }}
-              />
-            </div>
-          )}
+      <div className="form-group">
+        <small className="form-control-label text-black">{t("MyBranches")}</small>
+        <div onClick={() => setModel(!model)}>
+          <InputDefault disabled={true} value={hierarchicalBranchName} />
         </div>
+        {hierarchicalBranchIds && showCheckBox && (
+          <div className="mt--3">
+            <CheckBox
+              id={'1'}
+              text={"Include Sub Branches"}
+              checked={hierarchicalBranchIds.include_child}
+              onChange={(e) => {
+                dispatch(
+                  setBranchHierarchicalIncludeChild({
+                    checkBoxStatus: e.target.checked,
+                  })
+                );
+              }}
+            />
+          </div>
+        )}
       </div>
       <Modal showModel={model} toggle={() => setModel(!model)}>
         {listBranchesList &&
