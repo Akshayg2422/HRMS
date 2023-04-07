@@ -15,7 +15,7 @@ import {
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -111,36 +111,46 @@ const Pending = () => {
     );
   };
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
+          additionalDataSet={LEAVE_STATUS_UPDATE}
+          tableValueOnClick={(e, index, item, elv) => {
+            const current = employeesModifyLeaves[index];
+            if (elv === "Approve") {
+              manageApproveStatus(current);
+            }
+            if (elv === "Reject") {
+              manageRejectStatus(current);
+            }
+          }}
+          custombutton={"h5"}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesModifyLeaves])
+
   return (
     <div>
       <div className="row">
-        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
-            additionalDataSet={LEAVE_STATUS_UPDATE}
-            tableValueOnClick={(e, index, item, elv) => {
-              const current = employeesModifyLeaves[index];
-              if (elv === "Approve") {
-                manageApproveStatus(current);
-              }
-              if (elv === "Reject") {
-                manageRejectStatus(current);
-              }
-            }}
-            custombutton={"h5"}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
+        <>
+          {
+            memoizedTable
+          }
+        </>
         <Modal
           title={t("approveLeave")}
           showModel={approveModel}

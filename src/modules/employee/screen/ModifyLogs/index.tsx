@@ -6,6 +6,7 @@ import {
   Icon,
   InputText,
   NoRecordFound,
+  TableWrapper,
   useKeyPress,
   WorkInProgress,
 } from "@components";
@@ -79,8 +80,8 @@ const ModifyLogs = () => {
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
+    <TableWrapper>
+      <div>
         <Container
           flexDirection={"row"}
           additionClass={"col"}
@@ -138,8 +139,7 @@ const ModifyLogs = () => {
             })}
           </ul>
         </div>
-      </Card>
-      <Card>
+      </div>
         <div className="tab-content" id="myTabContent">
           {LEAVE_TYPES.map((el) => {
             return (
@@ -154,8 +154,7 @@ const ModifyLogs = () => {
             )
           })}
         </div>
-      </Card>
-    </div>
+    </TableWrapper>
   );
 };
 

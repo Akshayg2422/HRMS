@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Card, CommonTable, Container, ImageView, Modal, NoRecordFound, Primary, Secondary } from '@components';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast, base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
@@ -58,36 +58,44 @@ const AllApproval = () => {
     }));
   }
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesLoginFaceFailureDetails && employeesLoginFaceFailureDetails.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          tableChildren={
+            <FaceTable
+              tableDataSet={employeesLoginFaceFailureDetails}
+              onApprovedClick={(item: any) => {
+                ChangeStatusHandler(item, 1)
+              }}
+              onRevertClick={(item: any) => {
+                ChangeStatusHandler(item, 0)
+
+              }}
+            />}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesLoginFaceFailureDetails])
+
   return (
     <div>
-      <Card>
-        {employeesLoginFaceFailureDetails && employeesLoginFaceFailureDetails?.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            tableChildren={
-              <FaceTable
-                tableDataSet={employeesLoginFaceFailureDetails}
-                onApprovedClick={(item: any) => {
-                  ChangeStatusHandler(item, 1)
-                }}
-                onRevertClick={(item: any) => {
-                  ChangeStatusHandler(item, 0)
-
-                }}
-              />}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-      </Card>
+      <div>
+        {
+          memoizedTable
+        }
+      </div>
     </div>
   )
 }

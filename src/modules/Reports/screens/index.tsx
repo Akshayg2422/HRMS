@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress } from '@components'
+import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress, TableWrapper } from '@components'
 import { Icons } from '@assets'
 import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -258,8 +258,8 @@ function Reports() {
 
 
   return (
-    <>
-      <Card>
+    <TableWrapper>
+      <div className='px-4 pb-4'>
         <Container flexDirection={'row'} display={'d-flex'} alignItems={'align-items-center'}>
           <DropDown
             additionClass={'col-lg-3 col-md-12'}
@@ -378,7 +378,7 @@ function Reports() {
             <Primary text={'Search'} col={'col-xl-2 col-md-3'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
-      </Card>
+      </div>
       {reportsType === "leave" &&
         <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
           : <NoRecordFound />}</>
@@ -396,7 +396,7 @@ function Reports() {
         <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
           : <NoRecordFound />}</>
       }
-    </>
+    </TableWrapper>
   )
 }
 

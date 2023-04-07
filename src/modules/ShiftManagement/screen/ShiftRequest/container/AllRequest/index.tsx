@@ -1,6 +1,6 @@
 import { Card, CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from '@components';
 import { getShiftRequestedEmployees, postChangeShiftChange } from '../../../../../../store/shiftManagement/actions';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '@utils';
 import { useTranslation } from 'react-i18next';
@@ -126,26 +126,35 @@ function AllRequest() {
     setRejectModel(!rejectModel)
   }
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {shiftRequestedEmployees && shiftRequestedEmployees.length > 0 ? (
+        <CommonTable
+          noHeader
+          isPagination
+          card={false}
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedRequestList(shiftRequestedEmployees)}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [shiftRequestedEmployees])
+
   return (
     <div>
-      <Card>
-        {shiftRequestedEmployees && shiftRequestedEmployees?.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedRequestList(shiftRequestedEmployees)}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-      </Card>
+      <div>
+        <>
+          {
+            memoizedTable
+          }
+        </>
+      </div>
       <Modal
         title={t("approveShift")}
         showModel={approveModel}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Sort,
   CommonTable,
@@ -8,6 +8,7 @@ import {
   NoRecordFound,
   Card,
   BackArrow,
+  TableWrapper,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -93,7 +94,7 @@ function MyWorkLog() {
     employeeEachUserSheets,
   } = useSelector((state: any) => state.EmployeeReducer);
 
- 
+
 
   useEffect(() => {
     getEmployeeEachUserTimeSheetsApi();
@@ -134,7 +135,7 @@ function MyWorkLog() {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text? it.address_text : "       -",
+        address: it.address_text ? it.address_text : "       -",
       };
     });
   };
@@ -145,34 +146,56 @@ function MyWorkLog() {
   };
 
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeeEachUserSheets && employeeEachUserSheets.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          title={"My Time Sheet"}
+          displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
+          tableOnClick={(e, index, item) => {
+            const attachment = employeeEachUserSheets[index].attachments;
+            setAttachment(attachment);
+            setAttachmentModel(!attachmentModel);
+          }}
+
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeEachUserSheets])
+
+
+
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <BackArrow additionClass={'m-3'} />
-          <div className="col text-right mb-3">
-            <Sort
-              sortData={sortData}
-              activeIndex={activeSortWorkBook}
-              onClick={(index) => {
-                setActiveSortWorkBook(index);
-                onTabChangeWorkBook(index);
-              }}
-            />
-          </div>
-          <div className="mr--3">
-            <CommonTable
-              title={"My Time Sheet"}
-              displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
-              tableOnClick={(e, index, item) => {
-                const attachment = employeeEachUserSheets[index].attachments;
-                setAttachment(attachment);
-                setAttachmentModel(!attachmentModel);
-              }}
-            />
+      <TableWrapper>
+        <div className="row">
+          <div className="col">
+            <div className="col text-right mb-3">
+              <Sort
+              size="btn-sm"
+                sortData={sortData}
+                activeIndex={activeSortWorkBook}
+                onClick={(index) => {
+                  setActiveSortWorkBook(index);
+                  onTabChangeWorkBook(index);
+                }}
+              />
+            </div>
+            <div className="">
+              {
+                memoizedTable
+              }
+            </div>
           </div>
         </div>
-      </div>
+      </TableWrapper>
       <Modal
         title={"Attachment"}
         showModel={attachmentModel}

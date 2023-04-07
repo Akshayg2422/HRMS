@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Sort,
   CommonTable,
@@ -11,6 +11,7 @@ import {
   Primary,
   InputText,
   BackArrow,
+  TableWrapper,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -276,33 +277,54 @@ function MyLog() {
     return color
   }
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeeCheckInLogs && employeeCheckInLogs.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          isPagination
+          displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
+          tableOnClick={(e, index, Item) => {
+            getEmployeeCheckInDetailedLogPerDay(Item);
+          }}
+
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeCheckInLogs])
+
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <BackArrow additionClass={"m-3"} />
-          <div className="col text-right mb-3">
-            <Sort
-              sortData={employeeLogSort}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
+      <TableWrapper>
+        <div className="row">
+          <div className="col">
+            <div className="col text-right mb-5">
+              <Sort
+                size="btn-sm"
+                sortData={employeeLogSort}
+                activeIndex={activeSort}
+                onClick={(index) => {
+                  setActiveSort(index);
+                  onTabChange(index);
+                }}
+              />
+            </div>
 
-          <div className="ml--3">
-            <CommonTable
-              title={"My Log"}
-              displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
-              tableOnClick={(e, index, Item) => {
-                getEmployeeCheckInDetailedLogPerDay(Item);
-              }}
-            />
+            <div className="">
+              {
+                memoizedTable
+              }
+            </div>
           </div>
         </div>
-      </div>
+      </TableWrapper>
       <Modal
         title={"Attachment"}
         showModel={attachmentModel}
