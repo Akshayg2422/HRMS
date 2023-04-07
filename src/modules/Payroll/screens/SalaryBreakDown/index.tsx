@@ -2,10 +2,11 @@ import { Container, DropDown, FormWrapper, Icon, InputDefault, InputText, Screen
 import { goTo, ROUTE, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   validateBasicSalary
 } from "@utils";
+import { getAllowanceGroups } from '../../../../store/Payroll/actions';
 
 function SalaryBreakDown() {
 
@@ -19,11 +20,29 @@ function SalaryBreakDown() {
   const [maximumAmount, setMaximumAmount] = useState<any>()
   const [color, setColor] = useState("")
 
-
+  const { allowanceGroupsList } = useSelector(
+    (state: any) => state.PayrollReducer
+  );
 
   useEffect(() => {
     isValidBasicSalary()
+    getAllowanceGroupList()
+
   }, [annualCTC, basicSalary])
+
+  const getAllowanceGroupList = () => {
+
+    const params = {}
+
+    dispatch(getAllowanceGroups({
+      params,
+      onSuccess: (success: any) => () => {
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
 
   const isValidBasicSalary = () => {
 
@@ -80,7 +99,8 @@ function SalaryBreakDown() {
           <div className="col mt--2">
             <DropDown
               label={t("AllowanceGroup")}
-              // data={}
+              placeholder={t("AllowanceGroup")}
+              data={allowanceGroupsList.data}
               name={"designation"}
             // onChange={() => }
 
@@ -97,6 +117,7 @@ function SalaryBreakDown() {
           <div className="col mt--2">
             <DropDown
               label={t("DeductionGroup")}
+              placeholder={t("DeductionGroup")}
               // data={}
               name={"designation"}
             // onChange={() => }

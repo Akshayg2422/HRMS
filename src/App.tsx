@@ -79,6 +79,7 @@ import { PushConfig } from './PushConfig'
 import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
 import { Approvals } from "./modules/employee";
+import { AddDeduction } from "./modules/Payroll";
 import GetToken from "./PushNotification/GetToken";
 
 import RefundPolicy from "./screens/RefundPolicy";
@@ -349,6 +350,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_APPROVALS}
             element={<RequireAuth>{<Approvals />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_ADD_DEDUCTION}
+            element={<RequireAuth>{<AddDeduction />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

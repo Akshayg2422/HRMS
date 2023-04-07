@@ -215,3 +215,35 @@ export const POST_ENABLE_OFFICE_CHECK_IN = '/attendance/enableOfficeCheckIn';
 //changeAttendanceSettings
 
 export const FACE_VALIDATION_STATUS = '/attendance/changeAttendanceSettings';
+
+/**
+ * payroll
+ */
+
+//create company allowance
+
+export const ADD_COMPANY_ALLOWANCE_URL = 'payroll/addCompanyAllowance'
+
+//Create company deduction
+
+export const ADD_COMPANY_DEDUCTION_URL = 'payroll/addCompanyDeduction'
+
+//Add allowance group
+
+export const ADD_ALLOWANCE_GROUP_URL = 'payroll/addAllowanceGroup'
+
+//Get allowance group
+
+export const FETCH_ALLOWANCE_GROUP_URL = 'payroll/getAllowanceGroups'
+
+//Get allowance group details
+
+export const FETCH_ALLOWANCE_GROUP_DETAILS_URL = 'payroll/getAllowanceGroupDetails'
+
+//Get company allowance
+
+export const FETCH_COMPANY_ALLOWANCE_URL = 'payroll/getCompanyAllowance'
+
+//get company deduction
+
+export const GET_COMPANY_DEDUCTIONS_URL = 'payroll/getCompanyDeductions'
