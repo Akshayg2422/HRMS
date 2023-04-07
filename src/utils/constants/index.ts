@@ -235,14 +235,14 @@ export const MY_PORTFOLIO_ITEM = [
   { id: '2', name: 'MY Log', value: 'ML', route: ROUTE.ROUTE_MY_LOG },
   { id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES },
   { id: '4', name: 'My Shifts', value: 'MS', route: ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY }
-
 ]
 
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '2', name: 'Select Language', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '3', name: 'My portfolio', value: 'MP', icon: 'ni ni-single-02' },
-  { id: '4', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '2', name: 'My portfolio', value: 'MP', icon: 'ni ni-single-02' },
+  { id: '3', name: 'My Active Branch', value: 'MA', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Select Language', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '5', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 

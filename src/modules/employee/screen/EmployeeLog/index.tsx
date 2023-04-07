@@ -330,7 +330,7 @@ function EmployeeLog() {
         }
         filterChildren={
           <Container additionClass={"row"}>
-            <Container col={"col-xl-5"}>
+            <Container col={"col-xl-3"}>
               <ChooseBranchFromHierarchical />
             </Container>
             <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>

@@ -267,8 +267,6 @@ function LocationScreen() {
       dispatch(editBranchName({
         params,
         onSuccess: (success: any) => () => {
-          console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000", success)
-
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
@@ -338,7 +336,7 @@ function LocationScreen() {
             col={'col'}
             placeholder={t("searchLocation")}
             onChange={(e) => {
-              setsearchBranches(e.target.value);
+              setSearchBranches(e.target.value);
             }}
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}

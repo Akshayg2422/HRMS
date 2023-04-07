@@ -177,7 +177,7 @@ function EmployeeShifts() {
     <>
       <Card additionClass={'mx-3'}>
         <Container additionClass={"row my-4"}>
-          <Container col={"col-xl-5"}>
+          <Container col={"col-xl-3"}>
             <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>
           <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>

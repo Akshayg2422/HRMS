@@ -96,7 +96,7 @@ const ModifyLogs = () => {
             />
           </Container>
           <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
+            col={"col-xl-3 col-md-6 col-sm-12"}
             additionClass={"mt-xl-4"}
           >
             <ChooseBranchFromHierarchical />

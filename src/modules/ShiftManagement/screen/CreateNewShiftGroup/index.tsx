@@ -155,12 +155,6 @@ const CreateShiftGroup = () => {
             params,
             onSuccess: (success: any) => () => {
                 setRegisteredEmployees([...registeredEmployees, ...success.data])
-                // if (selectedShiftGroupDetails) {
-                //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
-                // }
-                // if (designationShiftGroup) {
-                //     getShiftEmployeesGroupDetails(designationShiftGroup.id)
-                // }
             },
             onError: (error: string) => () => {
 
@@ -304,13 +298,11 @@ const CreateShiftGroup = () => {
                 if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
                     if (selectedEmpListDepartmentId === item.department_id) {
                         return item
-
                     }
                 }
                 else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
                     if (selectedEmpListDesignationId === item.designation_id) {
                         return item
-
                     }
                 }
                 else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {

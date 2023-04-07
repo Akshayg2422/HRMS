@@ -111,7 +111,6 @@ const WeeklyShiftSelection = () => {
         group_name: shiftName,
         weekly_group_details: weeklyData
       }
-      console.log('params-->', params)
 
 
       weeklyData.forEach((week: any) => {
@@ -141,7 +140,7 @@ const WeeklyShiftSelection = () => {
               });
               weekDay.api_breakdown = [...weekDay.api_breakdown, {
                 start_time: time_breakdown[maxLength - 1].end_time,
-                end_time: time_breakdown[0].start_time
+                end_time: time_breakdown[0].end_time
               }]
             }
           }
@@ -149,20 +148,23 @@ const WeeklyShiftSelection = () => {
 
       });
 
-      dispatch(
-        addWeeklyShift({
-          params,
-          onSuccess: (success: any) => () => {
-            showToast("success", success.status);
-            selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
-            goBack(navigation);
-            // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
-          },
-          onError: (error: string) => () => {
-            showToast("error", error);
-          },
-        })
-      );
+      console.log("--------->",params);
+      
+      
+      // dispatch(
+      //   addWeeklyShift({
+      //     params,
+      //     onSuccess: (success: any) => () => {
+      //       showToast("success", success.status);
+      //       selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
+      //       goBack(navigation);
+      //       // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
+      //     },
+      //     onError: (error: string) => () => {
+      //       showToast("error", error);
+      //     },
+      //   })
+      // );
     }
   }
 
@@ -212,7 +214,6 @@ const WeeklyShiftSelection = () => {
         };
 
         if (timeBreakdown && timeBreakdown.length > 0) {
-
           if (timeBreakdown.length < 3) {
             const isBetweenStartTime = isBetween(getDate(currentShift.start_time), getDate(timeBreakdown[0].start_time), getDate(timeBreakdown[0].end_time))
             const isBetweenEndTime = isBetween(getDate(currentShift.end_time), getDate(timeBreakdown[0].start_time), getDate(timeBreakdown[0].end_time))

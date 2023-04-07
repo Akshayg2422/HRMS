@@ -74,9 +74,6 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
-    // if (initialRender) {
-    //   setShiftSelectedDesignation(shiftDesignationData[0]?.id)
-    // }
     reportsType !== 'shift' && getReports(currentPage)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
@@ -284,8 +281,7 @@ function Reports() {
               }}
             />
           </div>}
-          <Container additionClass={'col-lg-6 mt-4'}>
-            {/* <MultiselectHierarchical /> */}
+          <Container additionClass={'col-lg-3 mt-4'}>
             <ChooseBranchFromHierarchical />
           </Container>
           {reportsType !== 'shift' && <DropDown
