@@ -204,22 +204,22 @@ function Calendar() {
 
   return (
     <>
-      <Container additionClass={"mt-5 main-contain"}>
+      <Container additionClass={"main-contain"}>
         <Card>
           <h1 className="mb-3">{t('Calendar')}</h1>
           <Container additionClass={"row"}>
-            <Container additionClass="col">
+            <Container additionClass="col-xl-3">
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
 
             <Container additionClass="text-right col mt-4">
               <Primary
-                additionClass='col col-md-4'
+                additionClass='col-xl-2 col-md-4'
                 text={t("addHoildays")}
                 onClick={handleAddHolidays}
               />
               <Primary
-                additionClass='col mt-sm-0 mt-3 col-md-6'
+                additionClass='col-xl-3 mt-sm-0 mt-3 col-md-6'
                 text={t('manageLeaveTypes')}
                 onClick={() => { goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES) }}
               />

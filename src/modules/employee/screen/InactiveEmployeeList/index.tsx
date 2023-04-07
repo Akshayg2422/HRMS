@@ -53,11 +53,11 @@ function InActiveEmployeeList() {
     (state: any) => state.DashboardReducer
   );
 
-  const manageInactiveEmployeeList = () => {
+  const manageInactiveEmployeeList = (pageNumber: number) => {
     const params: object = {
       ...hierarchicalBranchIds,
       ...(searchEmployee && { q: searchEmployee }),
-      page_number: currentPage,
+      page_number: pageNumber,
       is_active: false,
     };
     dispatch(
@@ -72,13 +72,13 @@ function InActiveEmployeeList() {
   };
 
   useEffect(() => {
-    manageInactiveEmployeeList();
+    manageInactiveEmployeeList(currentPage);
   }, [hierarchicalBranchIds]);
 
 
   useEffect(() => {
     if (enterPress) {
-      manageInactiveEmployeeList();
+      manageInactiveEmployeeList(currentPage);
     }
   }, [enterPress])
 
@@ -120,7 +120,7 @@ function InActiveEmployeeList() {
         : type === "prev"
           ? currentPage - 1
           : position;
-    getEmployeesApi(page);
+    manageInactiveEmployeeList(currentPage);
   }
 
   const manageEmployeeStatus = () => {
@@ -134,7 +134,7 @@ function InActiveEmployeeList() {
         onSuccess: (success: any) => () => {
           showToast("success", success?.message);
           setEnableUserModel(!enableUserModel);
-          manageInactiveEmployeeList();
+          manageInactiveEmployeeList(currentPage);
         },
         onError: (error: string) => () => {
           showToast("error", error);
@@ -170,7 +170,7 @@ function InActiveEmployeeList() {
             <Container additionClass={'col-xl-2 mt-xl-2'}>
               <Icon type={"btn-primary"} additionClass={'mt-xl-4 mt-2 mt-sm-0'} icon={Icons.Search}
                 onClick={() => {
-                  manageInactiveEmployeeList()
+                  manageInactiveEmployeeList(currentPage)
                 }}
               />
             </Container>

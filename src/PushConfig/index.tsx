@@ -72,7 +72,7 @@ const PushConfig = () => {
             goTo(navigation, ROUTE.ROUTE_MODIFY_LOGS);
         }
         else if (route_type === NOTI_TYPE_MY_SHIFTS) {
-            goTo(navigation, ROUTE.ROUTE_MY_SHIFTS_DETAILS);
+            goTo(navigation, ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY);
         }
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);

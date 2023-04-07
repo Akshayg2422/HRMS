@@ -181,7 +181,6 @@ const ManageEmployee = () => {
 
   useEffect(() => {
     if (isEdit) {
-
       if (isBranchShiftDataExist) {
         getEmployeeDetailsAPi(isEdit);
       }
@@ -236,13 +235,9 @@ const ManageEmployee = () => {
 
   };
 
-
-
   useEffect(() => {
     setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
   }, [shiftGroup])
-
-
 
 
   const getBranchShiftsList = () => {

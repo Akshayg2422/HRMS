@@ -90,7 +90,6 @@ function MyBranches() {
 
     const AdminSubBranches = () => {
         let subBranches: any[] = []
-        console.log(' hierarchicalBranchIds.child_ids', hierarchicalBranchIds.child_ids, "--------->", listBranchesList);
         listBranchesList.map((branch: any) => {
             hierarchicalBranchIds?.child_ids.map((ids: any) => {
                 if (branch.id === ids) {

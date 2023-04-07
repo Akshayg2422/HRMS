@@ -1,4 +1,4 @@
-import { Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, Secondary } from '@components'
+import { Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer, Secondary } from '@components'
 import { Icons } from '@assets';
 import { goTo, ROUTE, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
@@ -27,9 +27,7 @@ function CreateGroup() {
     );
 
     useEffect(() => {
-        if (selectedAllowances.length === 0) {
-            setSelectAddAllowanceModel(!selectAllowanceModel)
-        }
+      
         onTotalCalculator()
     }, [selectedAllowances])
 
@@ -83,77 +81,21 @@ function CreateGroup() {
     ]
 
     return (
-        <>
+        <ScreenContainer>
             <FormWrapper
+            isTitle
                 title={groupFor === 'Allowance' ? t('CreateAllowanceGroup') : t('CreateDeductionGroup')}
                 buttonDisable={remaining !== 0 && true}
                 onClick={() => console.log('clicked')}>
                 <InputText
-                    label={t("GroupName")}
+                    label={t('name')}
+                    placeholder=''
                     value={groupName}
                     onChange={(event) => {
                         setGroupName(event.target.value);
                     }}
                 />
-                <Container>
-                    {selectedAllowances && selectedAllowances.length > 0 && selectedAllowances.map((el: any, i: number) => {
-                        return (
-                            <Container additionClass='row'>
-                                <Container additionClass={'col-xl-5 col col-sm-0'}>
-                                    <InputNumber
-                                        label={el.name}
-                                        additionClass={'col-xl-2'}
-                                        onChange={(event: any) => {
-                                            onPercentageChangeHandler(i, event);
-                                        }}
-                                    />
-                                </Container>
-                                <Container additionClass={'col-xl-3 col col-sm-0'}>
-                                    <Container additionClass='row mt-4'>
-                                        <Container additionClass='col-xl-7'>
-                                            <DropDown
-                                                placeholder={'Type'}
-                                                data={ALLOWANCE_TYPE}
-                                            />
-                                        </Container>
-                                        {/* <h3 className='col-xl col col-sm-0 mt-3 ml--3'>{"%"}</h3> */}
-                                        <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
-                                            onDeleteAllowence(el)
-                                        }} /></td>
-                                    </Container>
-                                </Container>
-                            </Container>
-                        )
-                    })}
-                    {selectedAllowances.length > 0 &&
-                        <>
-                            <Container additionClass='row'>
-                                <Container additionClass={'col-xl-5 col col-sm-0'}>
-                                    <InputNumber
-                                        disabled
-                                        label='Total'
-                                        additionClass={'col-xl-2'}
-                                        value={total}
-                                    />
-                                </Container>
-                                <Container additionClass='col mt-4'>
-                                    <h3 className='col-xl col col-sm-0 mt-3 ml--4'>{"%"}</h3>
-                                </Container>
-                            </Container>
-                            <Container additionClass='my-xl-4 my-3 my-sm-0 row'>
-                                <h3 style={{ color: remaining === 0 ? "#000000" : "#FF5733" }}>{`Remaining ${" "} ${remaining} %`}</h3>
-                            </Container>
-                        </>
-                    }
-                </Container>
-                <Container additionClass="text-right">
-                    <Primary
-                        text={t("AddAnother")}
-                        onClick={() => setSelectAddAllowanceModel(!selectAllowanceModel)}
-                        col={"col-xl-2 col-5 col-sm-0"}
-                        size={"btn-sm"}
-                    />
-                </Container>
+                
             </FormWrapper>
             <Modal
                 title={groupFor === 'Allowance' ? t("SelectAllowance") : t('SelectDeduction')}
@@ -234,7 +176,7 @@ function CreateGroup() {
                     </Container>
                 </Container>
             </Modal>
-        </>
+        </ScreenContainer>
     )
 }
 

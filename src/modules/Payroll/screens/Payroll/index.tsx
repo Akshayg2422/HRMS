@@ -6,8 +6,9 @@ import {
     CommonTable,
     ChooseBranchFromHierarchical,
     NoRecordFound,
+    TableWrapper,
 } from "@components";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { Icons } from "@assets";
 import {
     goTo,
@@ -80,51 +81,60 @@ function PayRoll() {
         getEmployeesApi(page);
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+                <CommonTable
+                    card={false}
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+                    tableOnClick={(e, index, item) => {
+                        const selectedId = registeredEmployeesList[index].id;
+                        goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
+                    }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [registeredEmployeesList])
+
     return (
         <>
-            <Card>
-                <Container
-                    additionClass={" row my-4"}
-                >
-                    <Container col={"col-xl-3 col-md-6"}>
-                        <InputText
-                            placeholder={t("enterEmployeeName")}
-                            label={t("employeeName")}
-                            onChange={(e) => {
-                                // setSearchEmployee(e.target.value);
-                            }}
-                        />
-                    </Container>
+            <TableWrapper
+                filterChildren={
                     <Container
-                        col={"col-xl-5"}
+                        additionClass={" row my-4"}
                     >
-                        <ChooseBranchFromHierarchical />
+                        <Container col={"col-xl-3 col-md-6"}>
+                            <InputText
+                                placeholder={t("enterEmployeeName")}
+                                label={t("employeeName")}
+                                onChange={(e) => {
+                                    // setSearchEmployee(e.target.value);
+                                }}
+                            />
+                        </Container>
+                        <Container
+                            col={"col-xl-3"}
+                        >
+                            <ChooseBranchFromHierarchical />
+                        </Container>
+                        <Container
+                            additionClass={"col mt-4"}
+                        >
+                            <Icon icon={Icons.Search} />
+                        </Container>
                     </Container>
-                    <Container
-                        additionClass={"col mt-4"}
-                    >
-                        <Icon icon={Icons.Search} />
-                    </Container>
-                </Container>
-                {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-                        tableOnClick={(e, index, item) => {
-                            const selectedId = registeredEmployeesList[index].id;
-                            goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
-                        }}
-                    />
-                ) : <NoRecordFound />}
-            </Card>
+                }
+            >
+                {memoizedTable}
+            </TableWrapper>
         </>
     );
 }
