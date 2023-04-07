@@ -66,10 +66,11 @@ const WeeklyShiftSelection = () => {
     if (shiftName === "") {
       showToast("error", t('theShiftNameCantBeEmpty'));
       return false;
-    } else if (ValidationShift().status) {
-      showToast('error', ValidationShift().errorMessage)
-      return false
     }
+    // else if (ValidationShift().status) {
+    //   showToast('error', ValidationShift().errorMessage)
+    //   return false
+    // }
     else {
       return true;
     }
@@ -105,12 +106,13 @@ const WeeklyShiftSelection = () => {
 
   const onSubmit = () => {
 
-    if (validatePostParams()) {
+    if (validatePostParams() || true) {
       const params = {
         ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
         group_name: shiftName,
         weekly_group_details: weeklyData
       }
+
 
 
       weeklyData.forEach((week: any) => {
@@ -145,11 +147,26 @@ const WeeklyShiftSelection = () => {
             }
           }
         });
+      });
+
+      let updatedData = [...weeklyData]
+
+      updatedData = updatedData.map((week: any) => {
+        const updateWeek = { ...week }
+        updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+          let updateWeek = { ...weekDay }
+          updateWeek.time_breakdown = [...updateWeek.api_breakdown]
+          delete updateWeek.api_breakdown
+          weekDay = updateWeek
+          console.log(JSON.stringify(weekDay));
+          return weekDay
+        });
+        return updateWeek
 
       });
 
-      console.log("--------->", params);
 
+      console.log("--------->", JSON.stringify(updatedData));
 
       // dispatch(
       //   addWeeklyShift({
