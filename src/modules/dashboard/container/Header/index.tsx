@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast, goBack } from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast, goBack, COMMON_HEADER } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { ImageView, Modal, Container, BackArrow, Secondary, Primary, Divider, MyActiveBranches } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
@@ -15,6 +15,7 @@ import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
 import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 //ROUTE_PORTFOLIO
 
@@ -25,7 +26,6 @@ const Header = () => {
   const [headerTitle, setHeaderTitle] = useState('')
   const { t, i18n } = useTranslation();
   const navigate = useNav();
-  const navigation = useNav();
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const [isParent, setIsParent] = useState(false)
@@ -48,8 +48,10 @@ const Header = () => {
   }, [pathname])
 
 
+
   const dynamicHeaderTitle = () => {
     NAV_ITEM.filter((el: any) => {
+
       if (pathname === el.route) {
         setHeaderTitle(el.name)
         setIsParent(false)
@@ -68,8 +70,19 @@ const Header = () => {
             setIsParent(true)
           }
         })
+      } else {
+        commonParentHeader()
       }
     })
+  }
+
+  const commonParentHeader = () => {
+    COMMON_HEADER.map((el) => {
+      if (pathname === el.route) {
+        setHeaderTitle(el.name)
+      }
+    })
+
   }
 
 
@@ -131,7 +144,7 @@ const Header = () => {
 
   return (
     <>
-      <nav className='navbar navbar-top navbar-expand'>
+      <nav className='navbar navbar-top navbar-expand' style={{ background: '#f8f9ff' }}>
         <div className='container-fluid'>
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <a className='nav-item d-xl-none'>
@@ -151,7 +164,7 @@ const Header = () => {
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
               {isParent && <div className='small'>
-                <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigation) }}>{headerTitle} </span>
+                <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigate) }}>{headerTitle} </span>
                 <span> {" "} {pathname}</span>
               </div>
               }
@@ -162,13 +175,13 @@ const Header = () => {
               {/* <Notification /> */}
               <div className='mr-3 d-flex'>
                 <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
+                  goTo(navigate, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
                   <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
                   {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
+                  goTo(navigate, ROUTE.ROUTE_NOTIFICATIONS);
                   dispatch(setIsShowBack(true))
                 }} >
                   <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }} onClick={() => dispatch(clearNotificationCount())}></i>

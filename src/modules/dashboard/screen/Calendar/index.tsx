@@ -211,13 +211,10 @@ function Calendar() {
     <>
       <Container additionClass={"main-contain"}>
         <Card>
-          
-
           <Container additionClass="row ">
-          <div className=" col">
-            <h1 className="mb-3">{t('Calendar')}</h1>
-          </div>
-
+            <div className=" col">
+              <h1 className="mb-3">{t('Calendar')}</h1>
+            </div>
             <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4">
               <Primary
                 size="btn-sm"
@@ -247,18 +244,16 @@ function Calendar() {
           />
         </Card>
         <h1>{t("holidayList")}</h1>
-        <Card>
-          {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
-            <CommonTable
-              noHeader
-              displayDataSet={normalizedEmployeeLog(
-                calendarEvents?.days_holiday
-              )}
+        {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
+          <CommonTable
+            noHeader
+            displayDataSet={normalizedEmployeeLog(
+              calendarEvents?.days_holiday
+            )}
 
-              custombutton={"h5"}
-            />
-          ) : <NoRecordFound />}
-        </Card>
+            custombutton={"h5"}
+          />
+        ) : <NoRecordFound />}
         <Modal
           title={t("deleteHoliday")}
           showModel={deleteModel}
