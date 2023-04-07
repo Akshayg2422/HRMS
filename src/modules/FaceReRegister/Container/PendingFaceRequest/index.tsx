@@ -1,5 +1,5 @@
 import { Card, CommonTable, Container, ImageView, Modal, NoRecordFound, Primary, Secondary } from '@components';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer, showToast } from '@utils';
 import { useTranslation } from 'react-i18next';
@@ -56,36 +56,41 @@ const PendingFaceRequest = () => {
         }));
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {faceReRegisterRequestDetails && faceReRegisterRequestDetails.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    tableChildren={
+                        <FaceTable
+                            tableDataSet={faceReRegisterRequestDetails}
+                            onApprovedClick={(item: any) => {
+                                ChangeStatusHandler(item, 1)
+                            }}
+                            onRevertClick={(item: any) => {
+                                ChangeStatusHandler(item, 0)
+
+                            }}
+                        />}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [faceReRegisterRequestDetails])
+
     return (
         <div>
-            <Card>
-                {faceReRegisterRequestDetails && faceReRegisterRequestDetails?.length > 0 ? (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        tableChildren={
-                            <FaceTable
-                                tableDataSet={faceReRegisterRequestDetails}
-                                onApprovedClick={(item: any) => {
-                                    ChangeStatusHandler(item, 1)
-                                }}
-                                onRevertClick={(item: any) => {
-                                    ChangeStatusHandler(item, 0)
-
-                                }}
-                            />}
-                    />
-                ) : (
-                    <NoRecordFound />
-                )}
-            </Card>
+            {
+                memoizedTable
+            }
         </div>
     )
 

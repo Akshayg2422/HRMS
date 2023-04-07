@@ -3,6 +3,7 @@ import { Icons } from '@assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { faceReRegisterRequestAction } from '../../../../store/dashboard/actions';
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
+import { useMemo } from 'react';
 
 const RejectFaceRequest = () => {
     let dispatch = useDispatch();
@@ -60,27 +61,30 @@ const RejectFaceRequest = () => {
         getEmployeeRequest(0, page);
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {faceReRegisterRequestDetails && faceReRegisterRequestDetails.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    displayDataSet={normalizedRequestList(faceReRegisterRequestDetails)}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [faceReRegisterRequestDetails])
 
     return (
         <div>
-            <Card>
-                {faceReRegisterRequestDetails && faceReRegisterRequestDetails?.length > 0 ? (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        displayDataSet={normalizedRequestList(faceReRegisterRequestDetails)}
-                    />
-                ) : (
-                    <NoRecordFound />
-                )}
-            </Card>
+            {
+                memoizedTable
+            }
         </div>
     )
 }

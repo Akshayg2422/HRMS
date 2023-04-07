@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound } from '@components'
 import { Icons } from '@assets'
 import { getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -100,26 +100,40 @@ function LeaveReports({ data, department, reportType, customrange, designation }
         getReports(page)
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+          {data && data.length > 0 ? (
+            <CommonTable
+              // noHeader
+              card={false}
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              paginationNumberClick={(currentPage) => {
+                paginationHandler("current", currentPage);
+              }}
+              previousClick={() => paginationHandler("prev")}
+              nextClick={() => paginationHandler("next")}
+              displayDataSet={normalizedEmployee(data)}
+              custombutton={"h5"}
+
+              // tableOnClick={(e, index, item) => {
+              //   const selectedId = registeredEmployeesList[index].id;
+              //   dispatch(getSelectedEmployeeId(selectedId));
+              //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+              // }}
+            />
+          ) : <NoRecordFound />}
+        </>
+      }, [data])
+    
+
 
     return (
         <>
-            <Card>
-                {data && data.length > 0 && (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        displayDataSet={normalizedEmployee(data)}
-                        custombutton={"h5"}
-                    />
-                )}
-            </Card>
+            {
+                memoizedTable
+            }
         </>
     )
 }

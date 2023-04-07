@@ -15,7 +15,7 @@ import {
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_UPDATE, convertToUpperCase, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -125,38 +125,47 @@ const AllLeaves = () => {
     );
   };
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
+        <CommonTable
+          noHeader
+          isPagination
+          card={false}
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          // displayDataSet={normalizedEmployeeLog(employeesLeaves)}
+          tableChildren={
+            <LocationTable
+              tableDataSet={employeesModifyLeaves}
+              onRevertClick={(item) => manageRevertStatus(item)}
+              onApproveClick={(item) => {
+                manageApproveStatus(item);
+              }}
+              onRejectClick={(item) => {
+                manageRejectStatus(item);
+              }}
+            />
+          }
+          custombutton={"h5"}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesModifyLeaves])
+
   return (
     <div>
       <div className="row">
-        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            // displayDataSet={normalizedEmployeeLog(employeesLeaves)}
-            tableChildren={
-              <LocationTable
-                tableDataSet={employeesModifyLeaves}
-                onRevertClick={(item) => manageRevertStatus(item)}
-                onApproveClick={(item) => {
-                  manageApproveStatus(item);
-                }}
-                onRejectClick={(item) => {
-                  manageRejectStatus(item);
-                }}
-              />
-            }
-            custombutton={"h5"}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
+        <>
+          {
+            memoizedTable
+          }
+        </>
         <Modal
           title={t("approveLeave")}
           showModel={approveModel}
@@ -346,9 +355,8 @@ const LocationTable = ({
             tableDataSet.map((item: Location, index: number) => {
               return (
                 <tr className="align-items-center">
-                  <td style={{ whiteSpace: "pre-wrap" }}>{`${convertToUpperCase(item.name)}${" "}(${
-                    item.employee_id
-                  })`}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{`${convertToUpperCase(item.name)}${" "}(${item.employee_id
+                    })`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
