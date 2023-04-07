@@ -87,7 +87,7 @@ const WeeklyShiftSelection = () => {
             if (hasWorkingWeekDays) {
               if (item.is_working) {
                 if (item.time_breakdown.length === 0) {
-                  status = { status: true, errorMessage: `time_breakdown is empty`}
+                  status = { status: true, errorMessage: `time_breakdown is empty` }
                 }
               }
             } else {
@@ -148,9 +148,9 @@ const WeeklyShiftSelection = () => {
 
       });
 
-      console.log("--------->",params);
-      
-      
+      console.log("--------->", params);
+
+
       // dispatch(
       //   addWeeklyShift({
       //     params,
@@ -293,8 +293,6 @@ const WeeklyShiftSelection = () => {
       onError: (error: string) => () => { },
     }))
   }
-
-
 
   return (
     <>
