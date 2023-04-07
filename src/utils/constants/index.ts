@@ -76,8 +76,8 @@ export const CHILD_PATH = [
   { path: "/manage-employee", parent: '/employee' },
   { path: '/profile', parent: '/' },
   { path: "/manage-branches", parent: '/location' },
-  // { path: "/stats-attendance", parent: '/dashboard' }, 
   { path: "/manage-holidays", parent: '/calendar' },
+  { path: "/my-branches", parent: '/location' },
   { path: "/leaves-types", parent: '/calendar' },
   { path: "/manage-leave-types", parent: '/calendar' },
   { path: "/shift-set", parent: '/shift-group' },
@@ -104,7 +104,6 @@ export const CHILD_PATH = [
   { path: "/face-re-register-request", parent: '/approvals' },
   { path: "/log-approval", parent: '/approvals' },
   { path: "/face-re-request", parent: '/approvals' }
-
 ]
 
 export const COMMON_HEADER = [
@@ -218,7 +217,6 @@ export const NAV_ITEM = [
   { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, route: ROUTE.ROUTE_DASHBOARD_STATS },
   { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, route: ROUTE.ROUTE_CALENDAR },
   { id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_APPROVALS, is_admin: false },
-
   // { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
   // { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, route: ROUTE.ROUTE_REPORTS },
