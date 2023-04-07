@@ -1,4 +1,4 @@
-import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, useKeyPress } from '@components';
+import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, TableWrapper, useKeyPress } from '@components';
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -67,8 +67,8 @@ function ShiftRequest() {
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
+    <TableWrapper>
+      <div >
         <Container
           flexDirection={"row"}
           additionClass={"col"}
@@ -126,7 +126,7 @@ function ShiftRequest() {
             })}
           </ul>
         </div>
-      </Card>
+      </div>
       <div className="tab-content" id="myTabContent">
         {REQUEST_TYPE.map((el) => {
           return (
@@ -141,7 +141,7 @@ function ShiftRequest() {
           )
         })}
       </div>
-    </div>
+    </TableWrapper>
   )
 
 }

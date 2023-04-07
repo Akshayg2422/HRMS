@@ -11,7 +11,7 @@ function Approvals() {
       id: "1",
       name: "Employees Leaves",
       value: "MB",
-      route:  ROUTE.ROUTE_LEAVE_REQUEST,
+      route: ROUTE.ROUTE_LEAVE_REQUEST,
       icon: Icons.EMPLOYEELEAVES,
     },
     {
@@ -30,12 +30,12 @@ function Approvals() {
       icon: Icons.EMPLOYEESHIFTS,
     },
     {
-        id: "4",
-        name: "Shift Request",
-        value: "CA",
-        route: ROUTE.ROUTE_SHIFT_REQUEST,
-        icon: Icons.ShiftRequest,
-      },
+      id: "4",
+      name: "Shift Request",
+      value: "CA",
+      route: ROUTE.ROUTE_SHIFT_REQUEST,
+      icon: Icons.ShiftRequest,
+    },
     {
       id: "5",
       name: "Face Re-register",
@@ -57,15 +57,16 @@ function Approvals() {
       route: ROUTE.ROUTE_FACE_RE_REQUEST,
       icon: Icons.FaceRequest,
     },
-   
+
   ];
 
   return (
-    <Container flexDirection={"row"} margin={"mt-3"} style={{ cursor: 'pointer' }}>
-      {APPROVALS_ITEM.map((it, index) => {
-        return (
-          <Container additionClass={"col-xl-3 col-md-6"}>
-            {/* <Card
+    <div className="main-content">
+      <Container flexDirection={"row"} margin={"mt-3"} style={{ cursor: 'pointer' }}>
+        {APPROVALS_ITEM.map((it, index) => {
+          return (
+            <Container additionClass={"col-xl-3 col-md-6"}>
+              {/* <Card
               additionClass={"border"}
               style={{ border: "1px bg-gray" }}
               onClick={() => navigate(it.route)}
@@ -94,23 +95,24 @@ function Approvals() {
                 </div>
               </Container>
             </Card> */}
-            <Card
-              additionClass={"d-flex"}
-              onClick={() => navigate(it.route)}
-            >
-              <Container
-                additionClass={"d-flex py-3"}
+              <Card
+                additionClass={"d-flex"}
+                onClick={() => navigate(it.route)}
               >
-                <ImageView icon={it?.icon} alt={it.name} height={50} width={50} />
-                <h4 className="text-black m-auto font-weight-bold">
-                  {it.name}
-                </h4>
-              </Container>
-            </Card>
-          </Container>
-        );
-      })}
-    </Container>
+                <Container
+                  additionClass={"d-flex py-3"}
+                >
+                  <ImageView icon={it?.icon} alt={it.name} height={50} width={50} />
+                  <h4 className="text-black m-auto font-weight-bold">
+                    {it.name}
+                  </h4>
+                </Container>
+              </Card>
+            </Container>
+          );
+        })}
+      </Container>
+    </div>
   );
 }
 

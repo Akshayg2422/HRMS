@@ -13,7 +13,7 @@ import {
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -97,12 +97,14 @@ const Approved = () => {
     );
   };
 
-  return (
-    <div>
+
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeesLeaves && employeesLeaves.length > 0 ? (
         <CommonTable
           noHeader
           isPagination
+          card={false}
           currentPage={currentPage}
           noOfPage={numOfPages}
           paginationNumberClick={(currentPage) => {
@@ -120,9 +122,17 @@ const Approved = () => {
           }}
           custombutton={"h5"}
         />
-      ) : (
-        <NoRecordFound />
-      )}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesLeaves])
+
+  return (
+    <div>
+      <>
+        {
+          memoizedTable
+        }
+      </>
       <Modal
         title={t("revertStatus")}
         showModel={revertModel}

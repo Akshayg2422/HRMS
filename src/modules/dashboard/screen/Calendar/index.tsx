@@ -28,10 +28,15 @@ import {
   showToast,
   useNav,
 } from "@utils";
+import { t } from "i18next";
 
 export const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+]
+
+const CARD_DROPDOWN_ITEM = [
+  { id: '1', name: `${t("manageLeaveTypes")}`, value: 'CL', icon: 'ni ni-active-40' },
 ]
 
 function Calendar() {
@@ -206,24 +211,35 @@ function Calendar() {
     <>
       <Container additionClass={"main-contain"}>
         <Card>
-          <h1 className="mb-3">{t('Calendar')}</h1>
+          
+
+          <Container additionClass="row ">
+          <div className=" col">
+            <h1 className="mb-3">{t('Calendar')}</h1>
+          </div>
+
+            <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4">
+              <Primary
+                size="btn-sm"
+                additionClass=''
+                text={t("addHoildays")}
+                onClick={handleAddHolidays}
+              />
+
+              <CommonDropdownMenu
+                data={CARD_DROPDOWN_ITEM}
+                onItemClick={(e, item) => {
+                  e.stopPropagation();
+                  goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+                }}
+              />
+            </div>
+          </Container>
           <Container additionClass={"row"}>
             <Container additionClass="col-xl-3">
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
 
-            <Container additionClass="text-right col mt-4">
-              <Primary
-                additionClass='col-xl-2 col-md-4'
-                text={t("addHoildays")}
-                onClick={handleAddHolidays}
-              />
-              <Primary
-                additionClass='col-xl-3 mt-sm-0 mt-3 col-md-6'
-                text={t('manageLeaveTypes')}
-                onClick={() => { goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES) }}
-              />
-            </Container>
           </Container>
           <Calender
             // dateClick={handleDateClick}
@@ -238,7 +254,7 @@ function Calendar() {
               displayDataSet={normalizedEmployeeLog(
                 calendarEvents?.days_holiday
               )}
-             
+
               custombutton={"h5"}
             />
           ) : <NoRecordFound />}

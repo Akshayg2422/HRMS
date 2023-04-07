@@ -3,6 +3,7 @@ import { Icons } from '@assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
+import { useMemo } from 'react';
 
 const RejectApproval = () => {
     let dispatch = useDispatch();
@@ -60,26 +61,31 @@ const RejectApproval = () => {
     }
 
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {employeesLoginFaceFailureDetails && employeesLoginFaceFailureDetails.length > 0 ? (
+                <CommonTable
+                    card={false}
+                    noHeader
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    displayDataSet={normalizedRequestList(employeesLoginFaceFailureDetails)}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [employeesLoginFaceFailureDetails])
+
     return (
         <div>
-            <Card>
-                {employeesLoginFaceFailureDetails && employeesLoginFaceFailureDetails?.length > 0 ? (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        displayDataSet={normalizedRequestList(employeesLoginFaceFailureDetails)}
-                    />
-                ) : (
-                    <NoRecordFound />
-                )}
-            </Card>
+            {
+                memoizedTable
+            }
         </div>
     )
 }

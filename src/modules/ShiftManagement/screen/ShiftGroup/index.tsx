@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Card, CommonDropdownMenu, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Card, CommonDropdownMenu, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, TableWrapper, useKeyPress } from '@components'
 import {
     goTo,
     useNav,
@@ -18,9 +18,14 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Icons } from '@assets';
 import { getDesignationData } from '../../../../store/employee/actions';
+import { t } from 'i18next';
 
 export const DROPDOWN_MENU = [
     { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+]
+
+const CARD_DROPDOWN_ITEM = [
+    { id: '1', name: `${t("manageWeeklyShifts")}`, value: 'CL', icon: 'ni ni-active-40' },
 ]
 
 const ShiftGroup = () => {
@@ -130,12 +135,64 @@ const ShiftGroup = () => {
         dispatch(getDesignationGroup(item))
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {shiftGroup && shiftGroup.length > 0 ? (
+                <CommonTable
+                    // noHeader
+                    card={false}
+                    isPagination
+                    displayDataSet={normalizedBranchShifts(shiftGroup)}
+                    // additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
+                    tableOnClick={(e: any) => {
+                    }}
+                    tableValueOnClick={(e, index, item, elv) => {
+                        const current = shiftGroup[index];
+                        if (elv === "Edit") {
+                            manageShiftGroupHandler(current)
+                        }
+                        if (elv === "Manage Employee") {
+                            handleAddEmployeeToGroup(current)
+                        }
+                    }}
+
+                // tableOnClick={(e, index, item) => {
+                //   const selectedId = registeredEmployeesList[index].id;
+                //   dispatch(getSelectedEmployeeId(selectedId));
+                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+                // }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [shiftGroup])
+
 
     return (
-        <>
-            <Container>
-                <Card additionClass='row mx-3'>
-                    <h2>{t('shiftss')}</h2>
+        <div className='mt-4'>
+            <TableWrapper>
+                <div className='px-4 pb-4 '>
+                    <Container additionClass="row mt--2">
+                        <div className=" col">
+                            <h2>{t('shiftss')}</h2>
+                        </div>
+
+                        <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4">
+                            <Primary
+                                size="btn-sm"
+                                additionClass=''
+                                text={t("addHoildays")}
+                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
+                            />
+
+                            <CommonDropdownMenu
+                                data={CARD_DROPDOWN_ITEM}
+                                onItemClick={(e, item) => {
+                                    e.stopPropagation();
+                                    goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+                                }}
+                            />
+                        </div>
+                    </Container>
                     <Container additionClass='row mt-xl-3'>
                         <InputText
                             col='col-xl-3 col-md-4'
@@ -152,41 +209,16 @@ const ShiftGroup = () => {
                         >
                             <Icon type={"btn-primary"} icon={Icons.Search} />
                         </Container>
-                        <Container additionClass="text-right col-md-5 mt-sm-0 mt-3">
-                            <Primary
-                                additionClass='col col-md-4'
-                                text={t('addNew')}
-                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
-                            />
-                            <Primary
-                                additionClass='col mt-sm-0 mt-3 col-md-6'
-                                text={t('manageWeeklyShifts')}
-                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
-                            />
-                        </Container>
+
                     </Container>
-                </Card>
-                {shiftGroup && shiftGroup.length > 0 ? (
-                    <Container>
-                        <CommonTable
-                            displayDataSet={normalizedBranchShifts(shiftGroup)}
-                            // additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
-                            tableOnClick={(e: any) => {
-                            }}
-                            tableValueOnClick={(e, index, item, elv) => {
-                                const current = shiftGroup[index];
-                                if (elv === "Edit") {
-                                    manageShiftGroupHandler(current)
-                                }
-                                if (elv === "Manage Employee") {
-                                    handleAddEmployeeToGroup(current)
-                                }
-                            }}
-                        />
-                    </Container>
-                ) : <Card additionClass='mt-3 mx-3'> <NoRecordFound /></Card>}
-            </Container>
-        </>
+                </div>
+                <>
+                    {
+                        memoizedTable
+                    }
+                </>
+            </TableWrapper>
+        </div>
     )
 }
 

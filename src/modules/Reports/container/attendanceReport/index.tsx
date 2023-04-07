@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, ImageView } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, ImageView, NoRecordFound } from '@components'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { downloadFile, getDisplayTimeFromMoment, getMomentObjFromServer } from '@utils';
@@ -105,10 +105,38 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     getReports(page)
   }
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {data && data.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployee(data)}
+          // tableOnClick={(e, index, item) => {
+          //   const selectedId = registeredEmployeesList[index].id;
+          //   dispatch(getSelectedEmployeeId(selectedId));
+          //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+          // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [data])
+
 
   return (
     <>
-      <Card>
+    {
+      memoizedTable
+    }
+      {/* <Card>
         <CommonTable
           noHeader
           isPagination
@@ -121,7 +149,7 @@ function AttendanceReport({ data, department, reportType, customrange, designati
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployee(data)}
         />
-      </Card>
+      </Card> */}
     </>
   )
 }
