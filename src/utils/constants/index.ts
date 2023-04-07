@@ -97,8 +97,14 @@ export const CHILD_PATH = [
   { path: "/view-employee", parent: '/employee' },
   { path: "/inactive-employee-list", parent: '/employee' },
   { path: "/my-notification", parent: '/notifications' },
-
-
+  { path: "/leave-request", parent: '/approvals' },
+  { path: "/modify-logs", parent: '/approvals' },
+  { path: "/employees-shifts", parent: '/approvals' },
+  { path: "/shift-request", parent: '/approvals' },
+  { path: "/face-re-register-request", parent: '/approvals' },
+  { path: "/log-approval", parent: '/approvals' },
+  { path: "/face-re-request", parent: '/approvals' }
+  
 ]
 
 
