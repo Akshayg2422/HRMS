@@ -54,7 +54,7 @@ function MyBranches() {
         return data.map((el: any) => {
             return {
                 "Name": el.name,
-                "MobileNumber": el.mobile_number,
+                "Mobile Number": el.mobile_number,
             };
         });
     };
