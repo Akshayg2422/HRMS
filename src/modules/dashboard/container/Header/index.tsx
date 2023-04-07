@@ -147,31 +147,29 @@ const Header = () => {
                 </div>
               </div>
             </a>
-            <BackArrow additionClass={'mr--1'} />
+            {isParent && <BackArrow additionClass={'mr--1 mt--3'} />}
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
               {isParent && <div className='small'>
-
                 <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigation) }}>{headerTitle} </span>
                 <span> {" "} {pathname}</span>
-
-
               </div>
               }
 
             </div>
+
             <ul className='navbar-nav align-items-center  ml-md-auto '>
+              {/* <Notification /> */}
               <div className='mr-3 d-flex'>
                 <a className="nav-link" onClick={() => {
                   goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
                   <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
+                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
-                  if (pathname !== '/notifications') {
-                    goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
-                    dispatch(setIsShowBack(true))
-                  }
+                  goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
+                  dispatch(setIsShowBack(true))
                 }} >
                   <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }} onClick={() => dispatch(clearNotificationCount())}></i>
                   {NotificationCount > 0 && <span style={{ cursor: 'pointer' }} className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(NotificationCount)}</span>}
