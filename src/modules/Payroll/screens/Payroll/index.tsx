@@ -121,7 +121,7 @@ function PayRoll() {
                             />
                         </Container>
                         <Container
-                            col={"col-xl-5"}
+                            col={"col-xl-3"}
                         >
                             <ChooseBranchFromHierarchical />
                         </Container>

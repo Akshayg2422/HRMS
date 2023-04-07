@@ -236,10 +236,9 @@ function Calendar() {
             </div>
           </Container>
           <Container additionClass={"row"}>
-            <Container additionClass="col">
+            <Container additionClass="col-xl-3">
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
-
 
           </Container>
           <Calender

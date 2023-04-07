@@ -3,7 +3,6 @@ import moment from 'moment';
 import { Route } from 'react-router-dom';
 
 
-
 export const ROUTE = {
   ROUTE_DASHBOARD: '/dashboard',
   ROUTE_EMPLOYEE: '/employee',
@@ -41,7 +40,8 @@ export const ROUTE = {
   ROUTE_SHIFT_SET: '/shift-set',
   ROUTE_SHIFT_LISTING: '/shift-listing',
   ROUTE_CREATE_SHIFT_GROUP: '/create-shift-group',
-  ROUTE_MY_SHIFTS_DETAILS: '/my-shifts-details',
+  ROUTE_MY_SHIFTS_DETAILS_MONTHLY: '/my-shifts-details-monthly',
+  ROUTE_MY_SHIFTS_DETAILS_DAILY: '/my-shifts-details-daily',
   ROUTE_EMPLOYEES_SHIFTS: '/employees-shifts',
   ROUTE_PAYROLL: '/payroll',
   ROUTE_SALARY_BREAK_DOWN: '/salary-break-down',
@@ -74,7 +74,7 @@ export const ROUTE = {
 
 export const CHILD_PATH = [
   { path: "/manage-employee", parent: '/employee' },
-  // {path:'/profile',parent:'/'}
+  {path:'/profile',parent:'/'},
   { path: "/manage-branches", parent: '/location' },
   // { path: "/stats-attendance", parent: '/dashboard' }, 
   { path: "/manage-holidays", parent: '/calendar' },
@@ -97,8 +97,14 @@ export const CHILD_PATH = [
   { path: "/view-employee", parent: '/employee' },
   { path: "/inactive-employee-list", parent: '/employee' },
   { path: "/my-notification", parent: '/notifications' },
-
-
+  { path: "/leave-request", parent: '/approvals' },
+  { path: "/modify-logs", parent: '/approvals' },
+  { path: "/employees-shifts", parent: '/approvals' },
+  { path: "/shift-request", parent: '/approvals' },
+  { path: "/face-re-register-request", parent: '/approvals' },
+  { path: "/log-approval", parent: '/approvals' },
+  { path: "/face-re-request", parent: '/approvals' }
+  
 ]
 
 
@@ -234,15 +240,15 @@ export const MY_PORTFOLIO_ITEM = [
   { id: '1', name: 'MY Work Book', value: 'MB', route: ROUTE.ROUTE_MY_WORK_BOOK },
   { id: '2', name: 'MY Log', value: 'ML', route: ROUTE.ROUTE_MY_LOG },
   { id: '3', name: 'Calendar', value: 'CA', route: ROUTE.ROUTE_MANAGE_LEAVES },
-  { id: '4', name: 'My Shifts', value: 'MS', route: ROUTE.ROUTE_MY_SHIFTS_DETAILS }
-
+  { id: '4', name: 'My Shifts', value: 'MS', route: ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY }
 ]
 
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '2', name: 'Select Language', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '3', name: 'My portfolio', value: 'MP', icon: 'ni ni-single-02' },
-  { id: '4', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '2', name: 'My portfolio', value: 'MP', icon: 'ni ni-single-02' },
+  { id: '3', name: 'My Active Branch', value: 'MA', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Select Language', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '5', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 

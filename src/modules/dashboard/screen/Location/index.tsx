@@ -61,7 +61,7 @@ function LocationScreen() {
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
   const [modelData, setModelData] = useState<Location | any>();
   const [editModel, setEditModel] = useState<any>(false);
-  const [searchBranches, setsearchBranches] = useState<any>('')
+  const [searchBranches, setSearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
   const [isOpenFenceModal, setIsOpenFenceModal] = useState(false)
 
@@ -243,19 +243,6 @@ function LocationScreen() {
 
   }
 
-  const SelectedBranchFilter = () => {
-    let filteredBranch = [...branch]
-    if (searchBranches !== "") {
-      filteredBranch = filteredBranch.filter((element: any) => {
-        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
-      })
-      setBranch(filteredBranch)
-    }
-    else {
-      setBranch(brancheslist)
-    }
-  }
-
   const handleEdit = (item: any) => {
     setEditBranchDetails(item.name)
     setCurrentBranchDetails(item)
@@ -280,8 +267,6 @@ function LocationScreen() {
       dispatch(editBranchName({
         params,
         onSuccess: (success: any) => () => {
-          console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000", success)
-
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
@@ -351,7 +336,7 @@ function LocationScreen() {
             col={'col'}
             placeholder={t("searchLocation")}
             onChange={(e) => {
-              setsearchBranches(e.target.value);
+              setSearchBranches(e.target.value);
             }}
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
@@ -372,7 +357,7 @@ function LocationScreen() {
             col={'col'}
             placeholder={t("searchLocation")}
             onChange={(e) => {
-              setsearchBranches(e.target.value);
+              setSearchBranches(e.target.value);
             }}
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}

@@ -2,7 +2,7 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import {
   fetchAllBranchesList, postBranchAddition, updateBranchLocationRadius, postEnableBranchRefence, fetchEmployeeCheckinAssociations,
   postEmployeeCheckinAssociations,
-  PostEditBranchNameApi,fetchListAllBranchesList
+  PostEditBranchNameApi, fetchListAllBranchesList
 } from "../../helpers/backend_helper";
 import {
   FETCH_ALL_BRANCHES_LIST, POST_BRANCH_ADDITION, UPDATE_BRANCH_LOCATION_RADIUS, ENABLE_BRANCH_REFENCE,
@@ -246,20 +246,19 @@ function* getListAllBranches(action) {
     const response = yield call(fetchListAllBranchesList, action.payload.params);
 
     if (response.success) {
-  
       yield put(hideLoader());
-      yield put(getListAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(getListAllBranchesListSuccess(response.details));
 
     } else {
-    console.log('=====error22222');
+      console.log('=====error22222');
 
       yield put(hideLoader());
       yield put(getListAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
-    console.log(error+'=====error');
+    console.log(error + '=====error');
 
     yield put(hideLoader());
     yield put(getListAllBranchesListFailure("Invalid Request"));

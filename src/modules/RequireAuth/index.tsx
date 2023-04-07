@@ -26,7 +26,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         <>
             <Navbar />
             <div className='main-content'>
-                {dashboardDetails && dashboardDetails.user_details && <div><Header /></div>}
+                {dashboardDetails && dashboardDetails.user_details && <div><Header/></div>}
                 <div className='mx-3 my-4'>
                     {children}
                 </div>

@@ -36,7 +36,8 @@ import {
   EMPLOYEE_FACE_RE_REGISTER_REQUEST_FAIL,
   EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION,
   EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_SUCCESS,
-  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL
+  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL,
+  TRIGGER_HIERARCHICAL
 } from "./actionTypes";
 
 const initialState = {
@@ -54,7 +55,8 @@ const initialState = {
   total_count: "",
   currentFaceType: -2,
   faceReRegisterRequestDetails: [],
-  employeeFaceReRequestDetails: []
+  employeeFaceReRequestDetails: [],
+  toTriggerHierarchical: false
 };
 
 const DashboardReducer = (state = initialState, action) => {
@@ -337,6 +339,12 @@ const DashboardReducer = (state = initialState, action) => {
       };
       break;
 
+    case TRIGGER_HIERARCHICAL:
+      state = {
+        ...state,
+        toTriggerHierarchical: action.payload,
+      };
+      break;
 
     case RESET_REDUCER:
       state = initialState;

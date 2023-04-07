@@ -13,7 +13,8 @@ import MyLeaves from './MyLeaves'
 import ModifyLogs from './ModifyLogs'
 import ELocker from './Elocker'
 import ElockerUpload from './ElockerUpload'
-import MyShiftDetails from './MyShiftDetails'
+import {ShiftMonthlyView} from './MyShiftDetails'
+import {ShiftDetailsPerDay} from './MyShiftDetails'
 import EmployeeShifts from './EmployeesShifts'
 import MyBranches from './MyBranches'
 import EmployeeShiftRequest from './EmployeeShiftRequest'
@@ -26,6 +27,6 @@ import Approvals from './Approvals'
 export {
     ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList,
     ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
-    ELocker, ElockerUpload, MyShiftDetails, EmployeeShifts, MyBranches,
+    ELocker, ElockerUpload, EmployeeShifts, MyBranches,ShiftMonthlyView,ShiftDetailsPerDay,
     EmployeeShiftRequest, AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, Approvals
 }

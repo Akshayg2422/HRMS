@@ -11,7 +11,9 @@ import {
   FETCH_NOTIFICATIONS_SUCCESS,
   FETCH_NOTIFICATIONS_FAILURE,
 
-  IS_SHOW_BACK
+  IS_SHOW_BACK,
+  NOTIFICATION_COUNT,
+  NOTIFICATION_COUNT_CLEAR
 } from "./actionTypes";
 
 const initialState = {
@@ -21,7 +23,8 @@ const initialState = {
   currentPage: 1,
   broadcastMessagesData: [],
   notificationsDataList: [],
-  isShowBack: false
+  isShowBack: false,
+  NotificationCount: 0
 };
 
 const NotificationReducer = (state = initialState, action) => {
@@ -127,14 +130,24 @@ const NotificationReducer = (state = initialState, action) => {
 
     /**
   * is show back
-  */
-
-    case IS_SHOW_BACK:
-    console.log("typee----->",action.payload);
-
+  */case IS_SHOW_BACK:
       state = {
         ...state,
         isShowBack: action.payload
+      };
+      break;
+
+    case NOTIFICATION_COUNT:
+      state = {
+        ...state,
+        NotificationCount: state.NotificationCount + 1
+      };
+      break;
+
+      case NOTIFICATION_COUNT_CLEAR:
+      state = {
+        ...state,
+        NotificationCount: 0
       };
       break;
 

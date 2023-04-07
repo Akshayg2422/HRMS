@@ -31,8 +31,11 @@ function ManageLeaves() {
 
   useEffect(() => {
     getCalendarDetails(currentPage);
+  }, []);
+
+  useEffect(() => {
     geteventsdetails();
-  }, [recall]);
+  }, [recall])
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
