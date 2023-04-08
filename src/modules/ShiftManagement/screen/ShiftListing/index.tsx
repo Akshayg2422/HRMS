@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
+import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, Search, useKeyPress } from '@components'
 import {
 
     goTo,
@@ -108,12 +108,12 @@ const ShiftListing = () => {
                         />
                         <Container
                             col={'col-xl'}
-                            additionClass={'mt-xl-2'}
+                            additionClass={'mt-xl-1'}
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
-                            onClick={() => { searchHandler() }}
                         >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+                            <Search variant="Icon" additionalClassName={''} onClick={() => { searchHandler() }} />
                         </Container>
                         <Container additionClass="text-right col">
                             <Primary

@@ -13,7 +13,8 @@ import {
   ImageView,
   CommonDropdownMenu,
   Divider,
-  TableWrapper
+  TableWrapper,
+  Search
 
 } from "@components";
 import React, { useEffect, useState, useMemo } from "react";
@@ -407,8 +408,8 @@ function EmployeeScreen() {
     </>
   }, [registeredEmployeesList])
 
-  console.log("modalllll",model);
-  
+  console.log("modalllll", model);
+
 
   return (
     <>
@@ -416,7 +417,9 @@ function EmployeeScreen() {
         title={t('allRegisteredEmployee')}
         buttonChildren={
           <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
-            <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => { }} />
+            <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => {
+              manageEmployeeHandler('')
+            }} />
             <CommonDropdownMenu
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
@@ -453,9 +456,9 @@ function EmployeeScreen() {
                 additionClass={"mt-sm-3 mt-xl--2"}
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
-                onClick={proceedSearchApi}
               >
-                <Icon type={"btn-primary"} icon={Icons.Search} />
+                {/* <Icon  icon={Icons.Search} /> */}
+                <Search variant="Icon" onClick={proceedSearchApi} />
               </Container>
             </Container>
           </Container>

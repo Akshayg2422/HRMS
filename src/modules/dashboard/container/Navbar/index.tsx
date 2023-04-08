@@ -29,7 +29,6 @@ const Navbar = ({ }) => {
 
   const currentNav = (it: any, index: any) => {
     navigate(it.route);
-    // dispatch(matchRouteName(it.id))
     dynamicActiveNav()
   };
 

@@ -107,9 +107,6 @@ function Notifications() {
     return (
         <>
             <div className='ml-3 mb-3'>
-                {/* {isShowBack && (
-                    <BackArrow />
-                )} */}
             </div>
             <Container additionClass={" mx-1"}>
                 {notificationsDataList && notificationsDataList?.length > 0 ? notificationsDataList?.map((el: any) => {

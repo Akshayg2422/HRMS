@@ -1,4 +1,4 @@
-import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, TableWrapper, useKeyPress } from '@components';
+import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, Search, TableWrapper, useKeyPress } from '@components';
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -87,12 +87,13 @@ function FaceApproval() {
           </Container>
           <Container
             col={"col"}
-            additionClass={"mt-sm-3 mb-xl-3"}
+            additionClass={"mt-sm-3 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
             onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">

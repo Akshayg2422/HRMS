@@ -10,7 +10,8 @@ import {
   NoRecordFound,
   ChooseBranchFromHierarchical,
   BackArrow,
-  useKeyPress
+  useKeyPress,
+  Search
 } from "@components";
 import React, { useEffect, useState } from "react";
 import { Icons } from "@assets";
@@ -151,29 +152,27 @@ function InActiveEmployeeList() {
   return (
     <>
       <Card margin={"m-4"}>
-        <BackArrow additionClass={'my-3'} />
         <h2>{t("deletedUserList")}</h2>
         <Container additionClass="row my-3">
-          <Container additionClass={'col-xl-6'}>
+          <Container additionClass={'col-xl-3'}>
             <ChooseBranchFromHierarchical />
           </Container>
-          <Container additionClass={"col-xl-4 row"}>
+          <Container additionClass={"col row mt-4"}>
             <InputText
               value={searchEmployee}
-              col={'col'}
-              label={t("employeeName")}
-              placeholder={t("searchEmployee")}
+              col={'col-xl-4'}
+              placeholder={t("searchLocation")}
               onChange={(e) => {
                 setSearchEmployee(e.target.value);
               }}
             />
-            <Container additionClass={'col-xl-2 mt-xl-2'}>
-              <Icon type={"btn-primary"} additionClass={'mt-xl-4 mt-2 mt-sm-0'} icon={Icons.Search}
-                onClick={() => {
-                  manageInactiveEmployeeList(currentPage)
-                }}
-              />
-            </Container>
+            {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+            onClick={() => {
+              // SelectedBranchFilter()
+            }}
+          /> */}
+            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { manageInactiveEmployeeList(currentPage) }} />
+
           </Container>
         </Container>
 

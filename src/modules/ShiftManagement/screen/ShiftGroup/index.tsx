@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { Card, CommonDropdownMenu, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, TableWrapper, useKeyPress } from '@components'
+import { Card, CommonDropdownMenu, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, Search, TableWrapper, useKeyPress } from '@components'
 import {
     goTo,
     useNav,
@@ -180,7 +180,7 @@ const ShiftGroup = () => {
                             <Primary
                                 size="btn-sm"
                                 additionClass=''
-                                text={t("addHoildays")}
+                                text={t("addNew")}
                                 onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
                             />
 
@@ -188,7 +188,7 @@ const ShiftGroup = () => {
                                 data={CARD_DROPDOWN_ITEM}
                                 onItemClick={(e, item) => {
                                     e.stopPropagation();
-                                    goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+                                    goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
                                 }}
                             />
                         </div>
@@ -202,12 +202,12 @@ const ShiftGroup = () => {
                             }}
                         />
                         <Container
-                            additionClass='col mt-xl-2 mt-md-2'
+                            additionClass='col mt-xl-1 mt-md-1'
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
-                            onClick={() => { searchHandler() }}
                         >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+                            <Search variant="Icon" additionalClassName={''}  onClick={() => { searchHandler() }} />
                         </Container>
 
                     </Container>
