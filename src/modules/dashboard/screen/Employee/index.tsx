@@ -65,7 +65,7 @@ type Branch = {
   fence_admin_id?: string;
 };
 
-export const DROPDOWN_MENU = [
+export const DROPDOWN_MENU_ADMIN = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-button-power' },
@@ -74,11 +74,21 @@ export const DROPDOWN_MENU = [
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
-
+export const DROPDOWN_MENU_BRANCH_ADMIN = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+  // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
+]
 
 function EmployeeScreen() {
   let dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const { userDetails } = useSelector(
+    (state: any) => state.AuthReducer
+  );
 
   const CARD_DROPDOWN_ITEM = [
     { id: '1', name: `${t("deletedUser")}`, value: 'CL', icon: 'ni ni-active-40' },
@@ -205,7 +215,7 @@ function EmployeeScreen() {
         branch: el.branch,
         "  ":
           <CommonDropdownMenu
-            data={DROPDOWN_MENU}
+            data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_BRANCH_ADMIN : []}
             onItemClick={(e, item) => {
               e.stopPropagation();
               setSelectedEmployeeItem(el)

@@ -91,49 +91,49 @@ const Navbar = ({ }) => {
               {
                 userDetails.is_admin ?
                   NAV_ITEM.map((it, index) => {
-
                     return (
-                      <li
-                        className="nav-item"
-                        onClick={() => {
-                          currentNav(it, index)
-                        }}
-                      >
-                        <a
-                          key={index}
-                          style={{ cursor: 'pointer' }}
-                          className={
-                            navIndex === index ? "nav-link active" : "nav-link"
-                          }
+                      <>
+                        {<li
+                          className="nav-item"
+                          onClick={() => {
+                            currentNav(it, index)
+                          }}
                         >
-                          <i
+                          <a
+                            key={index}
+                            style={{ cursor: 'pointer' }}
                             className={
-                              navIndex === index
-                                ? `${it.icon} text-primary`
-                                : `${it.icon} text-white`
-                            }
-                          ></i>
-                          <span
-                            className={
-                              navIndex === index
-                                ? "nav-link-text text-primary mt-2 ml-2"
-                                : "nav-link-text text-white mt-2 ml-2"
+                              navIndex === index ? "nav-link active" : "nav-link"
                             }
                           >
-                            {/* ESSL Config */}
-                            {it.name}
-                          </span>
-                        </a>
-                      </li>
+                            <i
+                              className={
+                                navIndex === index
+                                  ? `${it.icon} text-primary`
+                                  : `${it.icon} text-white`
+                              }
+                            ></i>
+                            <span
+                              className={
+                                navIndex === index
+                                  ? "nav-link-text text-primary mt-2 ml-2"
+                                  : "nav-link-text text-white mt-2 ml-2"
+                              }
+                            >
+                              {/* ESSL Config */}
+                              {it.name}
+                            </span>
+                          </a>
+                        </li>}
+                      </>
                     );
                   })
                   :
                   userDetails.is_branch_admin ?
                     NAV_ITEM && NAV_ITEM.map((it, index) => {
-
-                      if (it.is_admin === false) {
-                        return (
-                          <li
+                      return (
+                        <>
+                          {it.name !== 'Location Portfolio' && <li
                             className="nav-item"
                             onClick={() => {
                               currentNav(it, index)
@@ -164,12 +164,11 @@ const Navbar = ({ }) => {
                                 {it.name}
                               </span>
                             </a>
-                          </li>
-                        );
-                      }
+                          </li>}
+                        </>
+                      );
                     }) : ""
               }
-
             </ul>
           </div>
           <small className={"text-white text-version"}>Version: 1.27</small>
