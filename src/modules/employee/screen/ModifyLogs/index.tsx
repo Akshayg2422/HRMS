@@ -82,7 +82,7 @@ const ModifyLogs = () => {
 
   return (
     <TableWrapper>
-      <div>
+      <div className="mt--5">
         <Container
           flexDirection={"row"}
           additionClass={"col"}

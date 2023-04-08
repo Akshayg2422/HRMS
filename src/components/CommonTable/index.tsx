@@ -62,7 +62,7 @@ const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet,
               <div className="row align-items-center">
                 <div className="row" >
                   <div className='col'>
-                    <h3 className="mb-0" >{title + '==='}</h3>
+                    <h3 className="mb-0" >{title}</h3>
                   </div>
                 </div>
               </div>
