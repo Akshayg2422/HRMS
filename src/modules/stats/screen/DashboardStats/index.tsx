@@ -25,6 +25,7 @@ import {
   useNav,
   getServerDateFromMoment,
   getMomentObjFromServer,
+  showToast,
 } from "@utils";
 import { Icons } from "@assets";
 import { getListAllBranchesList } from "../../../../store/location/actions";
@@ -43,7 +44,6 @@ const DashboardStats = () => {
     (state: any) => state.DashboardReducer
   );
 
-  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
@@ -145,13 +145,14 @@ const DashboardStats = () => {
     dispatch(getSelectedCardType({
       params,
       onSuccess: (success: any) => () => {
-        goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
       },
       onError: (error: any) => () => {
-
+        showToast('error', error)
       }
     }
     ));
+    goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+
   };
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
@@ -176,14 +177,10 @@ const DashboardStats = () => {
   };
 
 
-  
-
-
-
   return (
     <>
-      <Card>
-        <Container additionClass="row">
+      <Card additionClass="mx-2">
+        <Container additionClass="row ">
           <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
           </Container>
@@ -237,35 +234,34 @@ const DashboardStats = () => {
             );
           }) : <NoRecordFound />}
         </Container>
-        <Container margin={"mx-6"}>
-          {employeeattendancedatalog &&
-            employeeattendancedatalog.departments_types && (
-              <CommonTable
-                title={t(t("departments"))}
-                displayDataSet={normalizedEmployeeAttendanceLog(
-                  employeeattendancedatalog
-                )}
-                tableOnClick={(e, index, item) => {
-                  // console.log(
-                  //   employeeattendancedatalog.departments_stats[index]
-                  //     .department_id + "====="
-                  // );
+        <div className="mx-5">
+          <Container additionClass="">
+            {employeeattendancedatalog &&
+              employeeattendancedatalog.departments_types && (
+                <CommonTable
+                  title={t(t("departments"))}
+                  displayDataSet={normalizedEmployeeAttendanceLog(
+                    employeeattendancedatalog
+                  )}
+                  tableOnClick={(e, index, item) => {
 
-                  setSelectedDepartmentName(
-                    employeeattendancedatalog.departments_stats[index].name
-                  );
-                  setSelectedDepartmentId(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                  getAttendanceConsolidatedData(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                }}
-              />
-            )}
-        </Container>
+
+                    setSelectedDepartmentName(
+                      employeeattendancedatalog.departments_stats[index].name
+                    );
+                    setSelectedDepartmentId(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                    getAttendanceConsolidatedData(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                  }}
+                />
+              )}
+          </Container>
+        </div>
         <Modal
           title={selectedDepartmentName}
           showModel={model}

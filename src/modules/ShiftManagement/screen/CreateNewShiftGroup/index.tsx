@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound, TableWrapper } from '@components'
 import {
     useNav,
     showToast,
@@ -315,18 +315,67 @@ const CreateShiftGroup = () => {
             }
         }
         )
-        setFilteredEmployees(updateFilteredData as never)   
+        setFilteredEmployees(updateFilteredData as never)
     }
+
+    const memoizedTable = useMemo(() => {
+        return <>
+            {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    tableChildren={
+                        <EmployeeSetTable
+                            tableDataSet={registeredEmployeesList}
+                            onStatusClick={(item) => {
+                                addAnSelectedEmployees(item)
+                            }}
+                            selectedEmployeeData={selectedEmployeesList}
+                        />
+                    }
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [registeredEmployeesList])
+
+    const memoizedFilteredEmployeesTable = useMemo(() => {
+        return <>
+            {filteredEmployees && filteredEmployees.length > 0 ? (
+                <CommonTable
+                noHeader
+                card={false}
+                title={t('selectedEmployeesList')}
+                tableChildren={
+                    <SelectedEmployeeListTable
+                        tableDataSet={filteredEmployees}
+                        onRevertClick={(item) =>
+                            onRevertSelectedEmployees(item)
+                        }
+                        employeeListDataSet={registeredEmployees}
+                    />
+                }
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [filteredEmployees])
+
 
 
 
     return (
-        <>
-            <Card additionClass='mx--2'>
+        <TableWrapper>
+            <div className='mx-2 mt--4'>
                 <Container additionClass={"mx-2 "}>
                     <Container additionClass='row'>
-                        <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
+                        <h2 className={"my-2  col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
                     </Container>
                     {designationShiftGroup && <Container additionClass={'float-right'}>
                         <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
@@ -386,14 +435,14 @@ const CreateShiftGroup = () => {
                     </Container>}
 
                 </Container>
-            </Card>
+            </div>
             <Container additionClass={'row '}>
 
                 {/**
                  * Employee List Table and search input
                  */}
 
-                <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
+                <div  className={'col-xl col-sm-3 mx-3  mt-4'}>
                     <h3>{t('allEmployees')}</h3>
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12 mt-xl-4"} >
@@ -432,37 +481,16 @@ const CreateShiftGroup = () => {
                         </Container>
                     </Container>
 
-
-                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-                        <CommonTable
-                            noHeader
-                            isPagination
-                            currentPage={currentPage}
-                            noOfPage={numOfPages}
-                            paginationNumberClick={(currentPage) => {
-                                paginationHandler("current", currentPage);
-                            }}
-                            previousClick={() => paginationHandler("prev")}
-                            nextClick={() => paginationHandler("next")}
-                            tableChildren={
-                                <EmployeeSetTable
-                                    tableDataSet={registeredEmployeesList}
-                                    onStatusClick={(item) => {
-                                        addAnSelectedEmployees(item)
-                                    }}
-                                    selectedEmployeeData={selectedEmployeesList}
-                                />
-                            }
-
-                        />
-                    ) : <NoRecordFound />}
-                </Card>
+                    {
+                        memoizedTable
+                    }
+                </div>
 
                 {/**
                  * Selected Employee List Table and search input
                  */}
 
-                <Card additionClass='col-xl col-sm-3 col-0 mt-4 mx-2 '>
+                <div className='col-xl col-sm-3 col-0 mt-4 mx-2 '>
                     <h3>{t('selectedEmployeesList')}</h3>
                     <Container additionClass={'row'}>
                         <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
@@ -501,23 +529,13 @@ const CreateShiftGroup = () => {
                         </Container>
                     </Container>
 
-                    {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
-                        noHeader
-                        title={t('selectedEmployeesList')}
-                        tableChildren={
-                            <SelectedEmployeeListTable
-                                tableDataSet={filteredEmployees}
-                                onRevertClick={(item) =>
-                                    onRevertSelectedEmployees(item)
-                                }
-                                employeeListDataSet={registeredEmployees}
-                            />
-                        }
-                    /> : <NoRecordFound />}
-                </Card>
+                   {
+                    memoizedFilteredEmployeesTable
+                   }
+                </div>
             </Container>
 
-        </>
+        </TableWrapper>
     )
 }
 
@@ -634,7 +652,7 @@ const SelectedEmployeeListTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap", cursor:"pointer" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap", cursor: "pointer" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );

@@ -6,6 +6,7 @@ import {
   Icon,
   InputText,
   NoRecordFound,
+  Search,
   TableWrapper,
   useKeyPress,
   WorkInProgress,
@@ -109,7 +110,8 @@ const ModifyLogs = () => {
             alignItems={"align-items-center"}
 
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} /> */}
+            <Search variant="Icon" onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -140,20 +142,20 @@ const ModifyLogs = () => {
           </ul>
         </div>
       </div>
-        <div className="tab-content" id="myTabContent">
-          {LEAVE_TYPES.map((el) => {
-            return (
-              <div
-                className={`tab-pane fade ${active === el.id && "show active"}`}
-                id={`tabs-icons-text-${el.id}`}
-                role="tabpanel"
-                aria-labelledby={`tabs-icons-text-${el.id}-tab`}
-              >
-                {el.component}
-              </div>
-            )
-          })}
-        </div>
+      <div className="tab-content" id="myTabContent">
+        {LEAVE_TYPES.map((el) => {
+          return (
+            <div
+              className={`tab-pane fade ${active === el.id && "show active"}`}
+              id={`tabs-icons-text-${el.id}`}
+              role="tabpanel"
+              aria-labelledby={`tabs-icons-text-${el.id}-tab`}
+            >
+              {el.component}
+            </div>
+          )
+        })}
+      </div>
     </TableWrapper>
   );
 };

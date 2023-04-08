@@ -1,16 +1,22 @@
 import React from 'react'
-import {ImageView} from '@components'
-import {Icons} from '@assets'
+import { ImageView } from '@components'
+import { Icons } from '@assets'
 
 interface SearchProps {
   backgroundColor?: string
+  variant: 'Button' | 'Icon'
+  additionalClassName?: string
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
-function index({backgroundColor}: SearchProps) {
+function index({ backgroundColor, variant = 'Button', additionalClassName, onClick }: SearchProps) {
   return (
-    <button type='button' className={`btn btn-icon-only ${backgroundColor || 'bg-primary'}`} >
-      <span className='btn-inner--icon'><ImageView icon={Icons.Search} /></span>
-    </button >
+    <>
+      {variant === 'Button' && <button type='button' className={`btn btn-icon-only ${backgroundColor || 'bg-primary'} ${additionalClassName}`} onClick={onClick} >
+        <span className='btn-inner--icon'><ImageView icon={Icons.Search} /></span>
+      </button >}
+      {variant === 'Icon' && <span className={`${additionalClassName}`}><ImageView additionClass='p-2' height={50} width={50} icon={Icons.SearchSecondary} style={{ cursor: 'pointer' }} onClick={onClick} /></span>}
+    </>
   )
 }
 

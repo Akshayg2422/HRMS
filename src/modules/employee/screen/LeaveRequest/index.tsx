@@ -4,6 +4,7 @@ import {
   Container,
   Icon,
   InputText,
+  Search,
   TableWrapper,
   useKeyPress,
 } from "@components";
@@ -103,7 +104,9 @@ const LeaveRequest = () => {
             alignItems={"align-items-center"}
             onClick={proceedSearchApi}
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+            <Search variant="Icon" onClick={() => proceedSearchApi} />
+
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">

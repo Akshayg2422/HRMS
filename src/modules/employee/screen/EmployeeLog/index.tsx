@@ -14,6 +14,7 @@ import {
   useKeyPress,
   ImageView,
   TableWrapper,
+  Search,
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -343,11 +344,12 @@ function EmployeeLog() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
                 onClick={() => {
                   getEmployeeLogs(currentPage);
                 }}
-              />
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-1'} onClick={() => { getEmployeeLogs(currentPage); }} />
             </Container>
 
           </Container>

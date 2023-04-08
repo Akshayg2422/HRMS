@@ -11,6 +11,7 @@ import {
   ChooseBranchFromHierarchical,
   BackArrow,
   useKeyPress,
+  Search,
   TableWrapper
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
@@ -196,13 +197,7 @@ function InActiveEmployeeList() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Container additionClass={'col-xl-2 mt-xl-2'}>
-                <Icon type={"btn-primary"} additionClass={'mt-xl-4 mt-2 mt-sm-0'} icon={Icons.Search}
-                  onClick={() => {
-                    manageInactiveEmployeeList(currentPage)
-                  }}
-                />
-              </Container>
+              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { manageInactiveEmployeeList(currentPage) }} />
             </Container>
           </Container>
           </div>

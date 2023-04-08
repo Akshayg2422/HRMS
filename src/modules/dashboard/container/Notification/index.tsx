@@ -60,9 +60,6 @@ function Notification() {
 
     return (
         <>
-            <div className='ml-3 mb-3'>
-                <BackArrow />
-            </div>
             <Container additionClass={" mx-1"}>
                 {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
                     return (

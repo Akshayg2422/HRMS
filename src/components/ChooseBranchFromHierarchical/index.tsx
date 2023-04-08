@@ -9,6 +9,7 @@ import {
   setBranchHierarchicalIncludeChild,
 } from "../../store/dashboard/actions";
 import { useTranslation } from "react-i18next";
+import { showToast } from "@utils";
 
 interface HierarchicalProps {
   showCheckBox?: boolean;
@@ -38,9 +39,9 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
       .sort((a: any, b: any) => a.name.localeCompare(b.name))
   }
 
-  useEffect(() => {
-    getBranchToSet()
-  }, [toTriggerHierarchical]);
+  // useEffect(() => {
+  //   getBranchToSet()
+  // }, [toTriggerHierarchical]);
 
 
   const getBranchToSet = () => {
@@ -49,7 +50,6 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
       getListAllBranchesList({
         params,
         onSuccess: (response: Array<LocationProps>) => () => {
-          // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
           if (parentBranch) {
             const hierarchicalBranchArray = {
@@ -72,7 +72,7 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
           }
         },
         onError: (error: any) => () => {
-          console.log("=========errorasasa" + error);
+          showToast('error',error)
         },
       })
     );
@@ -142,12 +142,14 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
   }
 
 
-
   return (
     <div>
       <div className="form-group">
         <small className="form-control-label text-black">{t("MyBranches")}</small>
-        <div onClick={() => setModel(!model)}>
+        <div onClick={() => {
+          getBranchToSet()
+          setModel(!model)
+        }}>
           <InputDefault disabled={true} value={hierarchicalBranchName} />
         </div>
         {hierarchicalBranchIds && showCheckBox && (
@@ -168,7 +170,7 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
         )}
       </div>
       <Modal showModel={model} toggle={() => setModel(!model)}>
-        {listBranchesList &&
+        {
           hierarchicalBranch &&
           hierarchicalBranch?.child &&
           hierarchicalBranch?.child.length > 0 &&

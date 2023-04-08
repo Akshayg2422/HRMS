@@ -1,4 +1,4 @@
-import { InputText, Card, Container, useKeyPress, ChooseBranchFromHierarchical, Icon, NoRecordFound, CommonTable, Secondary, Primary, Modal, TableWrapper } from '@components';
+import { InputText, Card, Container, useKeyPress, ChooseBranchFromHierarchical, Icon, NoRecordFound, CommonTable, Secondary, Primary, Modal, TableWrapper, Search } from '@components';
 import { Icons } from '@assets';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -135,19 +135,20 @@ function FaceReRegisterRequest() {
               />
             </Container>
             <Container
-              col={"col-xl-5 col-md-6 col-sm-12"}
+              col={"col-xl-3 col-md-6 col-sm-12"}
               additionClass={"mt-xl-3"}
             >
               <ChooseBranchFromHierarchical />
             </Container>
             <Container
               col={"col"}
-              additionClass={"mt-sm-3 mb-xl-3"}
+              additionClass={"mt-sm-3 mt-xl--2"}
               justifyContent={"justify-content-center"}
               alignItems={"align-items-center"}
-              onClick={() => getRequestDetails(currentPage)}
+
             >
-              <Icon type={"btn-primary"} icon={Icons.Search} />
+              {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+              <Search variant="Icon" additionalClassName={''} onClick={() => getRequestDetails(currentPage)} />
             </Container>
           </Container>
           <div>
