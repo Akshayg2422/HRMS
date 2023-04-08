@@ -29,7 +29,7 @@ function Dashboard() {
   const dispatch = useDispatch()
 
 
-  const { appConfig, fcmToken} = useSelector(
+  const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );
 
@@ -49,7 +49,6 @@ function Dashboard() {
     dispatch(postAppConfig({
       params,
       onSuccess: (response: any) => () => {
-        console.log("web config success-->", response);
         const param = false
         dispatch(isWebPushRegister({
           param,

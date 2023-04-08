@@ -13,6 +13,7 @@ import {
   Card,
   useKeyPress,
   TableWrapper,
+  Search,
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -191,11 +192,12 @@ function EmployeeTimeSheets() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
                 onClick={() => {
                   getEmployeeTimeSheets(currentPage);
                 }}
-              />
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
             </Container>
           </Container>
         }

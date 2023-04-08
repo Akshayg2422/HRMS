@@ -43,6 +43,7 @@ const Header = () => {
   const pathname = window.location.pathname
 
 
+
   useEffect(() => {
     dynamicHeaderTitle()
   }, [pathname])

@@ -25,6 +25,7 @@ import {
   useNav,
   getServerDateFromMoment,
   getMomentObjFromServer,
+  showToast,
 } from "@utils";
 import { Icons } from "@assets";
 import { getListAllBranchesList } from "../../../../store/location/actions";
@@ -43,7 +44,6 @@ const DashboardStats = () => {
     (state: any) => state.DashboardReducer
   );
 
-  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
@@ -145,13 +145,14 @@ const DashboardStats = () => {
     dispatch(getSelectedCardType({
       params,
       onSuccess: (success: any) => () => {
-        goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
       },
       onError: (error: any) => () => {
-
+        showToast('error',error)
       }
     }
     ));
+    goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+
   };
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
@@ -174,10 +175,6 @@ const DashboardStats = () => {
       })
     );
   };
-
-
-  
-
 
 
   return (

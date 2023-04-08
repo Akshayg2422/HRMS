@@ -13,6 +13,7 @@ import {
   Icon,
   useKeyPress,
   TableWrapper,
+  Search,
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
@@ -201,23 +202,25 @@ function EmployeeShifts() {
       <TableWrapper>
         <div className={'mx-3'}>
           <Container additionClass={"row my-4"}>
-            <Container col={"col-xl-5"}>
+            <Container col={"col-xl-3"}>
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
-            <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>
+            <Container additionClass={"col-xl-3 col-md-6 row"}>
               <InputText
                 value={searchEmployee}
                 col={'col'}
+                label={t("employeeName")}
                 placeholder={t("enterEmployeeName")}
                 onChange={(e) => {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
                 onClick={() => {
                   getEmployeeLogsWithShifts(currentPage);
                 }}
-              />
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => {getEmployeeLogsWithShifts(currentPage); }} />
             </Container>
 
           </Container>
