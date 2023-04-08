@@ -147,7 +147,7 @@ const DashboardStats = () => {
       onSuccess: (success: any) => () => {
       },
       onError: (error: any) => () => {
-        showToast('error',error)
+        showToast('error', error)
       }
     }
     ));
@@ -179,8 +179,8 @@ const DashboardStats = () => {
 
   return (
     <>
-      <Card>
-        <Container additionClass="row">
+      <Card additionClass="mx-2">
+        <Container additionClass="row ">
           <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
           </Container>
@@ -234,35 +234,34 @@ const DashboardStats = () => {
             );
           }) : <NoRecordFound />}
         </Container>
-        <Container margin={"mx-6"}>
-          {employeeattendancedatalog &&
-            employeeattendancedatalog.departments_types && (
-              <CommonTable
-                title={t(t("departments"))}
-                displayDataSet={normalizedEmployeeAttendanceLog(
-                  employeeattendancedatalog
-                )}
-                tableOnClick={(e, index, item) => {
-                  // console.log(
-                  //   employeeattendancedatalog.departments_stats[index]
-                  //     .department_id + "====="
-                  // );
+        <div className="mx-5">
+          <Container additionClass="">
+            {employeeattendancedatalog &&
+              employeeattendancedatalog.departments_types && (
+                <CommonTable
+                  title={t(t("departments"))}
+                  displayDataSet={normalizedEmployeeAttendanceLog(
+                    employeeattendancedatalog
+                  )}
+                  tableOnClick={(e, index, item) => {
 
-                  setSelectedDepartmentName(
-                    employeeattendancedatalog.departments_stats[index].name
-                  );
-                  setSelectedDepartmentId(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                  getAttendanceConsolidatedData(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                }}
-              />
-            )}
-        </Container>
+
+                    setSelectedDepartmentName(
+                      employeeattendancedatalog.departments_stats[index].name
+                    );
+                    setSelectedDepartmentId(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                    getAttendanceConsolidatedData(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                  }}
+                />
+              )}
+          </Container>
+        </div>
         <Modal
           title={selectedDepartmentName}
           showModel={model}

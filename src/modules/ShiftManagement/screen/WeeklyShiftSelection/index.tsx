@@ -315,8 +315,14 @@ const WeeklyShiftSelection = () => {
     <>
       <Card>
         <Container additionClass='row'>
-          <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-          <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
+          <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
+          <Container additionClass='col mt-2 text-right '>
+            <Primary
+            size='btn-sm'
+              text={selectedWeeklyShiftId ? t('update') : t('submit')}
+              onClick={() => onSubmit()}
+            />
+          </Container>
         </Container>
         <Container col={"row"}>
           <InputText
@@ -329,12 +335,7 @@ const WeeklyShiftSelection = () => {
               setShiftName(event.target.value)
             }}
           />
-          <Container additionClass='col mt-xl-4 text-right'>
-            <Primary
-              text={selectedWeeklyShiftId ? t('update') : t('submit')}
-              onClick={() => onSubmit()}
-            />
-          </Container>
+          
         </Container>
 
         <Container>
@@ -386,10 +387,7 @@ const WeeklyShiftSelection = () => {
             })}
           </ul>
         </Container>
-
-      </Card>
-
-      <WeekDaysList
+        <WeekDaysList
         datesList={weeklyData[isActiveWeek - 1]}
         onAddClick={(index) => {
           setOpenModel(!openModel)
@@ -406,6 +404,10 @@ const WeeklyShiftSelection = () => {
 
       // onSubmit={() => { onSubmit() }}
       />
+
+      </Card>
+
+     
 
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={t('selectShiftTiming')}>
         <Container display={'d-flex'} additionClass={'ml-lg-2'}>

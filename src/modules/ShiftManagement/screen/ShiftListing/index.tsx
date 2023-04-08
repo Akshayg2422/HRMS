@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, Search, useKeyPress } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, Search, TableWrapper, useKeyPress } from '@components'
 import {
 
     goTo,
@@ -90,13 +90,46 @@ const ShiftListing = () => {
         }
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {shiftList && shiftList.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    displayDataSet={normalizedBranchWeeklyShifts(shiftList)}
+                    additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
+                    tableOnClick={(e: any) => {
+                    }}
+                    tableValueOnClick={(e, index, item, elv) => {
+                        const current = shiftList[index];
+                        if (elv === "Edit") {
+                            dispatch(selectedWeeklyShiftNameAction(current.group_name))
+                            manageWeeklyShiftSelectionHandler(current.id)
+                        }
+                        if (elv === "Delete") {
+                            deleteBranchShift()
+                        }
+                    }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [shiftList])
+
     return (
         <>
-            <Container>
-                <Card additionClass={'mx-3'}>
+            <TableWrapper>
+                <div className={'mx-3 mt--4'}>
                     <Container additionClass='row'>
-                        <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
+                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
+                        <Container additionClass="text-right col">
+                            <Primary
+                                size='btn-sm'
+                                text={t('addNew')}
+                                onClick={() => {
+                                    manageWeeklyShiftSelectionHandler(undefined)
+                                }}
+                            />
+                        </Container>
                     </Container>
                     <Container additionClass='row mt-xl-3'>
                         <InputText
@@ -115,37 +148,13 @@ const ShiftListing = () => {
                             {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
                             <Search variant="Icon" additionalClassName={''} onClick={() => { searchHandler() }} />
                         </Container>
-                        <Container additionClass="text-right col">
-                            <Primary
-                                text={t('addNew')}
-                                onClick={() => {
-                                    manageWeeklyShiftSelectionHandler(undefined)
-                                }}
-                            />
-                        </Container>
+
                     </Container>
-                </Card>
-                {shiftList && shiftList.length > 0 ? (
-                    <Container margin={'mt-4'} additionClass={'mx-0'}>
-                        <CommonTable
-                            displayDataSet={normalizedBranchWeeklyShifts(shiftList)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
-                            tableOnClick={(e: any) => {
-                            }}
-                            tableValueOnClick={(e, index, item, elv) => {
-                                const current = shiftList[index];
-                                if (elv === "Edit") {
-                                    dispatch(selectedWeeklyShiftNameAction(current.group_name))
-                                    manageWeeklyShiftSelectionHandler(current.id)
-                                }
-                                if (elv === "Delete") {
-                                    deleteBranchShift()
-                                }
-                            }}
-                        />
-                    </Container>
-                ) : <Container additionClass={'mx-3'}><NoRecordFound /></Container>}
-            </Container>
+                </div>
+                {
+                    memoizedTable
+                }
+            </TableWrapper>
         </>
     )
 }

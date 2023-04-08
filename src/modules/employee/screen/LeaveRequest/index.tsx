@@ -75,12 +75,12 @@ const LeaveRequest = () => {
 
   return (
     <TableWrapper>
-      <div className="mb-3 ">
+      <div className="mb-3 mt--5 ">
         <Container
           flexDirection={"row"}
           additionClass={"col"}
           alignItems={"align-items-center"}
-          padding={"pl-5"}
+          // padding={"pl-5"}
         >
           <Container col={"col-xl-3 col-md-6 col-sm-12"}>
             <InputText

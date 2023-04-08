@@ -36,7 +36,7 @@ export const DROPDOWN_MENU = [
 ]
 
 const CARD_DROPDOWN_ITEM = [
-  { id: '1', name: `${t("manageLeaveTypes")}`, value: 'CL', icon: 'ni ni-active-40' },
+  { id: '1', name: `manageLeaveTypes`, value: 'CL', icon: 'ni ni-active-40' },
 ]
 
 function Calendar() {

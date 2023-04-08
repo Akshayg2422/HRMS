@@ -6,9 +6,10 @@ import {
     Card,
     MyActiveBranches,
     CommonTable,
-    NoRecordFound
+    NoRecordFound,
+    TableWrapper
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getBranchAdmins, isRenderAdminBranches, postAdminUpdateBranches } from "../../../../store/employee/actions";
 import { Icons } from "@assets";
@@ -168,87 +169,98 @@ function MyBranches() {
         setRemoveAssociatedBranch(removeBranch)
     };
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {branchAdmins && branchAdmins.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    isPagination
+                    currentPage={adminCurrentPage}
+                    noOfPage={adminNumOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    displayDataSet={normalizedAdminDetails(
+                        branchAdmins
+                    )}
+                    tableOnClick={(e, index, item,) => {
+                        const current = branchAdmins[index];
+                        checkAdminBranches(current)
+                    }}
+                    custombutton={"h5"}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [branchAdmins])
+
 
     return (
         <>
-            <Card additionClass="mx--1">
-                <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
-                    <MyActiveBranches />
-                </Container>
-            </Card>
-            <Container additionClass="row">
-                <Card additionClass="col-xl col-sm-3 mx-2"
-                    style={{ height: "100vh", overflowY: "scroll" }}
-                >
-                    {branchAdmins && branchAdmins.length > 0 ? (
-                        <CommonTable
-                            noHeader
-                            isPagination
-                            currentPage={adminCurrentPage}
-                            noOfPage={adminNumOfPages}
-                            paginationNumberClick={(currentPage) => {
-                                paginationHandler("current", currentPage);
-                            }}
-                            previousClick={() => paginationHandler("prev")}
-                            nextClick={() => paginationHandler("next")}
-                            displayDataSet={normalizedAdminDetails(
-                                branchAdmins
-                            )}
-                            tableOnClick={(e, index, item,) => {
-                                const current = branchAdmins[index];
-                                checkAdminBranches(current)
-                            }}
-                            custombutton={"h5"}
-                        />
-                    ) : <NoRecordFound />}
-                </Card>
-                {adminId && (
-                    <Card
-                        additionClass="col-xl col-sm-3 col-0 mx-2"
-                        style={{ height: "100vh", overflowY: "scroll",  cursor: 'pointer' }}
+            <TableWrapper>
+                <div className="mx--1 mt--3">
+                    <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
+                        <MyActiveBranches />
+                    </Container>
+                </div>
+                <Container additionClass="row">
+                    <div className="col-xl col-sm-3 "
+                        style={{ height: "100vh", overflowY: "scroll" }}
                     >
-                        <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
-                        <Divider />
-                        <div className="my-4">
-                            {branchesListSet && branchesListSet.length > 0 ? branchesListSet.map((item: Branch, index: number) => {
-                                const isActive = associatedBranch && associatedBranch.length > 0 && associatedBranch.some((el: any) => el === item.id)
-                                return (
-                                    <div
-                                        className="row align-items-center mx-4"
-                                    >
-                                        <div className="col-8"
-                                            onClick={() => adminId && addSelectedBranch(item)}
-
+                        {
+                            memoizedTable
+                        }
+                    </div>
+                    {adminId && (
+                        <div
+                            className="col-xl col-sm-3 col-0 mx-2"
+                            style={{ height: "100vh", overflowY: "scroll", cursor: 'pointer' }}
+                        >
+                            <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
+                            <Divider />
+                            <div className="my-4">
+                                {branchesListSet && branchesListSet.length > 0 ? branchesListSet.map((item: Branch, index: number) => {
+                                    const isActive = associatedBranch && associatedBranch.length > 0 && associatedBranch.some((el: any) => el === item.id)
+                                    return (
+                                        <div
+                                            className="row align-items-center mx-4"
                                         >
-                                            <span className="text-xl text-gray">{item.name}</span>
+                                            <div className="col-8"
+                                                onClick={() => adminId && addSelectedBranch(item)}
+
+                                            >
+                                                <span className="text-xl text-gray">{item.name}</span>
+                                            </div>
+                                            {adminId ? <div className="col-4 text-right"
+                                                onClick={() => adminId && addSelectedBranch(item)}
+
+                                            >
+                                                <ImageView
+                                                    icon={
+                                                        isActive
+                                                            ? Icons.TickActive
+                                                            : Icons.TickDefault
+                                                    }
+                                                />
+                                            </div> : <></>}
+                                            {index !== branchesListSet.length - 1 && <Divider />}
+                                            <></>
                                         </div>
-                                        {adminId ? <div className="col-4 text-right"
-                                            onClick={() => adminId && addSelectedBranch(item)}
-
-                                        >
-                                            <ImageView
-                                                icon={
-                                                    isActive
-                                                        ? Icons.TickActive
-                                                        : Icons.TickDefault
-                                                }
-                                            />
-                                        </div> : <></>}
-                                        {index !== branchesListSet.length - 1 && <Divider />}
-                                        <></>
-                                    </div>
-                                );
-                            }) : <NoRecordFound />}
-                            {branchesListSet && branchesListSet.length > 0 ? <div className="row col-lg-4 ml-4 my-5 float-right">
-                                <Primary
-                                    text={"Submit"}
-                                    onClick={() => onSubmit()}
-                                />
-                            </div> : null}
+                                    );
+                                }) : <NoRecordFound />}
+                                {branchesListSet && branchesListSet.length > 0 ? <div className="row col-lg-4 ml-4 my-5 float-right">
+                                    <Primary
+                                        text={"Submit"}
+                                        onClick={() => onSubmit()}
+                                    />
+                                </div> : null}
+                            </div>
                         </div>
-                    </Card>
-                )}
-            </Container>
+                    )}
+                </Container>
+            </TableWrapper>
 
         </>
     );

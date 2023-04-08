@@ -336,6 +336,7 @@ function EmployeeLog() {
             </Container>
             <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
               <InputText
+                size="sm"
                 value={searchEmployee}
                 col={'col'}
                 placeholder={t("enterEmployeeName")}

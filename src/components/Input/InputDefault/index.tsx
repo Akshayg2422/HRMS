@@ -29,7 +29,7 @@ const Input = React.forwardRef(({
     <div className={`form-group w-100  ${col}`}>
       {label && <small className="form-control-label text-black">{label}</small>}
       <input
-        className={`form-control mt-2  ${formCustomClass}`}
+        className={`form-control mt-2 ${size}  ${formCustomClass}`}
         type={type}
         onFocus={onFocus}
         value={value}

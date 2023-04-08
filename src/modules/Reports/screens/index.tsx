@@ -256,7 +256,7 @@ function Reports() {
 
   return (
     <TableWrapper>
-      <div className='px-4 pb-4'>
+      <div className='px-4 pb-4 mt--5'>
         <Container flexDirection={'row'} display={'d-flex'} alignItems={'align-items-center'}>
           <DropDown
             additionClass={'col-lg-3 col-md-12'}
