@@ -43,8 +43,6 @@ function SalaryBreakDown() {
     (state: any) => state.PayrollReducer
   );
 
-  console.log("isEditSalary--->0", isEditSalary);
-
 
   useEffect(() => {
     isValidBasicSalary()
@@ -108,18 +106,29 @@ function SalaryBreakDown() {
   const getEmployeeSalaryDefinitionDetails = () => {
 
     //getEmployeeSalaryDefinition
-    const params = {}
+    const params = {
+      employee_id: selectedEmployeeDetails?.id
+    }
 
     dispatch(getEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
         console.log("success-->", success.details);
-
+        prefillSalaryDefinitions(success.details)
       },
       onError: (error: any) => () => {
 
       }
     }));
+  }
+
+  const prefillSalaryDefinitions = (salaryDetails: any) => {
+    console.log("salaryDetails---->", salaryDetails);
+
+    setAnnualCTC(salaryDetails.ctc)
+    setBasicSalary(salaryDetails.base_salary_percent)
+    setAllowanceGroup(salaryDetails.id)
+    setSelectedDeductions(salaryDetails.deductions_group)
   }
 
   const onTotalCalculator = () => {
@@ -273,6 +282,7 @@ function SalaryBreakDown() {
         <InputText
           label={t("CostOfTheCompany")}
           placeholder={t("CostOfTheCompany")}
+          value={annualCTC}
           onChange={(event: any) => {
 
             let annualCtc: any = event.target.value
@@ -288,6 +298,7 @@ function SalaryBreakDown() {
           <InputDefault
             label={t("BasicSalary")}
             placeholder={t("BasicSalary")}
+            value={basicSalary}
             onChange={(event: any) => {
               setBasicSalary(event.target.value)
             }}
