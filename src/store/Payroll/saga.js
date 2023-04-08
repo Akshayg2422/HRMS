@@ -8,7 +8,9 @@ import {
     GET_ALLOWANCE_GROUPS,
     GET_ALLOWANCE_GROUP_DETAILS,
     GET_COMPANY_ALLOWANCE,
-    GET_COMPANY_DEDUCTIONS
+    GET_COMPANY_DEDUCTIONS,
+    ADD_EMPLOYEE_SALARY_DEFINITION,
+    GET_EMPLOYEE_SALARY_DEFINITION
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -32,7 +34,13 @@ import {
     getCompanyAllowanceFailure,
 
     getCompanyDeductionsSuccess,
-    getCompanyDeductionsFailure
+    getCompanyDeductionsFailure,
+
+    addEmployeeSalaryDefinitionSuccess,
+    addEmployeeSalaryDefinitionFailure,
+
+    getEmployeeSalaryDefinitionSuccess,
+    getEmployeeSalaryDefinitionFailure
 } from "./actions";
 
 import {
@@ -46,7 +54,11 @@ import {
 
     fetchCompanyAllowanceApi,
 
-    fetchCompanyDeductionsApi
+    fetchCompanyDeductionsApi,
+
+    addEmployeeSalaryDefinitionApi,
+
+    getEmployeeSalaryDefinitionApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -226,6 +238,56 @@ function* getCompanyDeductionsApi(action) {
     }
 }
 
+//Add employee salary definition
+
+function* addEmployeeSalaryDefinitionSaga(action) {
+    try {
+        yield put(showLoader());
+
+        const response = yield call(addEmployeeSalaryDefinitionApi, action.payload.params);
+
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(addEmployeeSalaryDefinitionSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(addEmployeeSalaryDefinitionFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(addEmployeeSalaryDefinitionFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
+
+//get employee salary definition
+
+function* getEmployeeSalaryDefinitionSaga(action) {
+    try {
+        yield put(showLoader());
+
+        const response = yield call(getEmployeeSalaryDefinitionApi, action.payload.params);
+
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getEmployeeSalaryDefinitionSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(getEmployeeSalaryDefinitionFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getEmployeeSalaryDefinitionFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
+
 //Watcher
 
 
@@ -237,9 +299,8 @@ function* PayrollSaga() {
     yield takeLatest(GET_ALLOWANCE_GROUP_DETAILS, getAllowanceGroupDetailsSaga);
     yield takeLatest(GET_COMPANY_ALLOWANCE, getCompanyAllowanceApi);
     yield takeLatest(GET_COMPANY_DEDUCTIONS, getCompanyDeductionsApi);
-
-
-
+    yield takeLatest(ADD_EMPLOYEE_SALARY_DEFINITION, addEmployeeSalaryDefinitionSaga);
+    yield takeLatest(GET_EMPLOYEE_SALARY_DEFINITION, getEmployeeSalaryDefinitionSaga);
 
 }
 

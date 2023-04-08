@@ -41,8 +41,6 @@ function DeductionGroupList() {
         dispatch(getCompanyDeductions({
             params,
             onSuccess: (success: any) => () => {
-                console.log("success00--0-0", success);
-
             },
             onError: (error: any) => () => {
 
@@ -101,8 +99,7 @@ function DeductionGroupList() {
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedAllowanceList(companyDeductionsList?.data)}
                     tableOnClick={(e, index, item) => {
-                        // const current = companyDeductionsList?.data[index]
-                        // getAllowanceDetails(current)
+                       
                     }}
                 />
             ) : <NoRecordFound />}

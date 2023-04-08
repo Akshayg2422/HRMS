@@ -247,3 +247,11 @@ export const FETCH_COMPANY_ALLOWANCE_URL = 'payroll/getCompanyAllowance'
 //get company deduction
 
 export const GET_COMPANY_DEDUCTIONS_URL = 'payroll/getCompanyDeductions'
+
+//add employee salary definition
+
+export const ADD_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/addEmployeeSalaryDefinition'
+
+//get employee salary definition
+
+export const GET_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/getEmployeeSalaryDefinition'

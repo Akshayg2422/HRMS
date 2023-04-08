@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { addCompanyDeduction } from '../../../../store/Payroll/actions';
-import { goBack, useNav } from '@utils';
+import { goBack, showToast, useNav } from '@utils';
 
 
 function AddDeduction() {
@@ -33,37 +33,48 @@ function AddDeduction() {
         }
     }, [])
 
+    const validatePostParams = () => {
+
+        if (!name) {
+            showToast('error', 'The Deduction name should not be empty')
+            return false
+        }
+        else {
+            return true
+        }
+
+    }
+
 
     const onDeductionAdd = () => {
 
         const params = {
             name: name,
-            hint: hint,
+            hint: hint ? hint : name,
             calendar_year: calendarYear,
-            min_limit: minimumLimit,
+            min_limit: minimumLimit ? minimumLimit : -1,
             max_limit: maximumLimit ? maximumLimit : -1,
             ...(selectedDeductionDetails && selectedDeductionDetails && { id: selectedDeductionDetails?.id })
         }
 
+        if (validatePostParams()) {
+            dispatch(addCompanyDeduction({
+                params,
+                onSuccess: (success: any) => () => {
+                    goBack(navigation);
+                },
+                onError: (error: any) => () => {
 
-        dispatch(addCompanyDeduction({
-            params,
-            onSuccess: (success: any) => () => {
-                console.log("success--->", success);
-                goBack(navigation);
-            },
-            onError: (error: any) => () => {
-
-            }
-        }));
-
+                }
+            }));
+        }
 
     }
 
     return (
         <ScreenContainer>
             <Card additionClass='mx--3'>
-                <h3 className='mb-3'>{selectedDeductionDetails ? 'Edit deduction' : 'Add Deduction'}</h3>
+                <h3 className='mb-3'>{selectedDeductionDetails ? t('editDeduction') : t('AddDeduction')}</h3>
                 <InputText
                     label={t('name')}
                     placeholder={t('name')}
@@ -74,8 +85,8 @@ function AddDeduction() {
                 />
 
                 <InputText
-                    label={'Hint'}
-                    placeholder={'Hint'}
+                    label={t('hint')}
+                    placeholder={t('hint')}
                     value={hint}
                     onChange={(event) => {
                         setHint(event.target.value);
@@ -83,8 +94,8 @@ function AddDeduction() {
                 />
 
                 <InputText
-                    label={'Minimum limit'}
-                    placeholder={'Minimum limit'}
+                    label={t('minimumLimit')}
+                    placeholder={t('minimumLimit')}
                     value={minimumLimit}
                     onChange={(event) => {
                         setMinimumLimit(event.target.value);
@@ -92,8 +103,8 @@ function AddDeduction() {
                 />
 
                 <InputText
-                    label={'Maximum limit'}
-                    placeholder={'Maximum limit'}
+                    label={t('maximumLimit')}
+                    placeholder={t('maximumLimit')}
                     value={maximumLimit}
                     onChange={(event) => {
                         setMaximumLimit(event.target.value);

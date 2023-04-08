@@ -1,6 +1,6 @@
 import {
     ADD_ALLOWANCE_GROUPS, ADD_ALLOWANCE_GROUPS_FAILURE, ADD_ALLOWANCE_GROUPS_SUCCESS,
-    ADD_EMPLOYEE_SALARY, ADD_EMPLOYEE_SALARY_FAILURE, ADD_EMPLOYEE_SALARY_SUCCESS,
+
 
     ADD_COMPANY_ALLOWANCE,
     ADD_COMPANY_ALLOWANCE_FAILURE,
@@ -26,8 +26,24 @@ import {
 
     SETTING_SELECTED_DEDUCTION_DETAILS,
 
-    CREATE_GROUP, GET_ALLOWANCE_GROUPS, GET_ALLOWANCE_GROUPS_FAILURE, GET_ALLOWANCE_GROUPS_SUCCESS,
-    GET_EMPLOYEE_SALARY, GET_EMPLOYEE_SALARY_FAILURE, GET_EMPLOYEE_SALARY_SUCCESS,
+    ADD_EMPLOYEE_SALARY_DEFINITION,
+    ADD_EMPLOYEE_SALARY_DEFINITION_SUCCESS,
+    ADD_EMPLOYEE_SALARY_DEFINITION_FAILURE,
+
+    SETTING_SELECTED_EMPLOYEE_DETAILS,
+
+    CREATE_GROUP,
+
+    GET_ALLOWANCE_GROUPS,
+    GET_ALLOWANCE_GROUPS_FAILURE,
+    GET_ALLOWANCE_GROUPS_SUCCESS,
+
+    GET_EMPLOYEE_SALARY_DEFINITION,
+    GET_EMPLOYEE_SALARY_DEFINITION_FAILURE,
+    GET_EMPLOYEE_SALARY_DEFINITION_SUCCESS,
+
+    IS_EDIT_SALARY_DEFINITION,
+
     GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
     GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER
 } from './actionTypes'
@@ -43,7 +59,10 @@ const initialState = {
     companyAllowanceList: [],
     selectedAllowanceGroupDetails: undefined,
     companyDeductionsList: [],
-    selectedDeductionDetails: undefined
+    selectedDeductionDetails: undefined,
+    selectedEmployeeDetails: undefined,
+    employeeSalaryDefinition: undefined,
+    isEditSalary: false
 };
 
 
@@ -330,47 +349,69 @@ const PayrollReducer = (state = initialState, action) => {
         /**
 * add Employee Salary
 */
-        case ADD_EMPLOYEE_SALARY:
+        case ADD_EMPLOYEE_SALARY_DEFINITION:
             state = {
                 ...state,
                 loading: true,
             };
             break;
-        case ADD_EMPLOYEE_SALARY_SUCCESS:
+        case ADD_EMPLOYEE_SALARY_DEFINITION_SUCCESS:
             state = {
                 ...state,
                 loading: false,
-                // branchesWeeklyShifts: action.payload
             };
             break;
-        case ADD_EMPLOYEE_SALARY_FAILURE:
+        case ADD_EMPLOYEE_SALARY_DEFINITION_FAILURE:
             state = {
                 ...state,
                 error: action.payload,
                 loading: false,
             };
             break;
+
         /**
-* get Employee Salary
+         * setting selected employee details
+         */
+
+        case SETTING_SELECTED_EMPLOYEE_DETAILS:
+            state = {
+                ...state,
+                selectedEmployeeDetails: action.payload
+            };
+            break;
+
+        /**
+* get Employee Salary DEFINITION
 */
-        case GET_EMPLOYEE_SALARY:
+        case GET_EMPLOYEE_SALARY_DEFINITION:
             state = {
                 ...state,
                 loading: true,
             };
             break;
-        case GET_EMPLOYEE_SALARY_SUCCESS:
+        case GET_EMPLOYEE_SALARY_DEFINITION_SUCCESS:
             state = {
                 ...state,
                 loading: false,
-                // branchesWeeklyShifts: action.payload
+                employeeSalaryDefinition: action.payload
             };
             break;
-        case GET_EMPLOYEE_SALARY_FAILURE:
+        case GET_EMPLOYEE_SALARY_DEFINITION_FAILURE:
             state = {
                 ...state,
                 error: action.payload,
                 loading: false,
+            };
+            break;
+
+        /**
+         * is edit salary definition
+         */
+
+        case IS_EDIT_SALARY_DEFINITION:
+            state = {
+                ...state,
+                isEditSalary: action.payload
             };
             break;
 

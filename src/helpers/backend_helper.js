@@ -271,4 +271,14 @@ export const fetchCompanyAllowanceApi = (payload) => post(url.FETCH_COMPANY_ALLO
 
 export const fetchCompanyDeductionsApi = (payload) => post(url.GET_COMPANY_DEDUCTIONS_URL, payload, {})
 
+//add employee salary definition
+
+export const addEmployeeSalaryDefinitionApi = (payload) => post(url.ADD_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
+
+//get employee salary definition
+
+export const getEmployeeSalaryDefinitionApi = (payload) => post(url.GET_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
+
+
+
 

@@ -38,6 +38,8 @@ function CreateGroup() {
 
     const [isEditCompanyAllowance, setIsEditCompanyAllowance] = useState(false)
     const [editAllowanceItem, setEditAllowanceItem] = useState<any>()
+    const [isSumbitDisable, setIsSubmitDisable] = useState(false)
+    const [remaining, setRemaining] = useState(60)
 
     const { groupFor, companyAllowanceList, selectedAllowanceGroupDetails } = useSelector(
         (state: any) => state.PayrollReducer
@@ -50,6 +52,10 @@ function CreateGroup() {
 
     }, [])
 
+    useEffect(() => {
+        onTotalCalculator()
+    }, [selectedAllowances])
+
     const getAllowanceGroupDetailsData = () => {
 
         const params = {
@@ -59,6 +65,7 @@ function CreateGroup() {
             params,
             onSuccess: (success: any) => () => {
                 setGroupName(selectedAllowanceGroupDetails.name)
+                setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
                 setSelectedAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
             },
             onError: (error: any) => () => {
@@ -82,7 +89,7 @@ function CreateGroup() {
             );
         }
         else {
-            let addedKey = { ...item, allowance_id: item.id, percent: 0, amount: 0, is_percent: false, type: "1" }
+            let addedKey = { ...item, allowance_id: item.id, percent: 0, amount: 0, is_percent: false, type: "1", error: '' }
             updateSelectedAllowance = [...updateSelectedAllowance, addedKey];
         }
         setAllowances(updateSelectedAllowance)
@@ -109,17 +116,68 @@ function CreateGroup() {
 
     }
 
-    const onChangeHandler = ((index: number, event: any) => {
+    useEffect(() => {
+
+        const isError = selectedAllowances.some((item: any) => item.error)
+        if (isError) {
+            setIsSubmitDisable(true)
+        }
+        else {
+            setIsSubmitDisable(false)
+
+        }
+
+    }, [selectedAllowances])
+
+    const onTotalCalculator = () => {
+        const AllowancePercentage = selectedAllowances.map((el: any) => {
+            if (el.type == "1") {
+                const convert = parseInt(el.percent)
+                return +convert
+            }
+            else {
+                return +0
+            }
+        }).reduce(
+            (accumulator: any, currentValue: any) => accumulator + currentValue,
+            0
+        );
+
+
+        let remainingPercentage = AllowancePercentage > 0 ? 60 - AllowancePercentage : 60
+        setRemaining(remainingPercentage)
+    }
+
+    const onChangeHandler = ((index: number, event: any, limit: string | number) => {
 
         let updatePercentage = [...selectedAllowances]
         if (updatePercentage[index].type == "1") {
             updatePercentage[index].percent = event.target.value
             updatePercentage[index].amount = 0
+            if (updatePercentage[index].max_limit !== -1 && updatePercentage[index].type != "1") {
+                if (event.target.value > updatePercentage[index].max_limit) {
+                    updatePercentage[index].error = '* You have exceeded the maximum limit'
+                }
+                else {
+                    updatePercentage[index].error = ''
+                }
+            }
+
             setSelectedAllowances(updatePercentage)
         }
         else {
             updatePercentage[index].percent = 0
             updatePercentage[index].amount = event.target.value
+
+            if (updatePercentage[index].max_limit !== -1 && updatePercentage[index].type != "1") {
+                if (event.target.value > updatePercentage[index].max_limit) {
+                    updatePercentage[index].error = '* You have exceeded the maximum limit'
+                }
+                else {
+                    updatePercentage[index].error = ''
+                }
+            }
+
             setSelectedAllowances(updatePercentage)
         }
 
@@ -167,7 +225,7 @@ function CreateGroup() {
             const params = {
                 name: groupName,
                 calendar_year: calendarYear,
-                allowances_ids: { create_update: filteredApiKeys },
+                allowances_ids: filteredApiKeys,
                 ...(selectedAllowanceGroupDetails && { id: selectedAllowanceGroupDetails.id })
             }
 
@@ -187,32 +245,44 @@ function CreateGroup() {
 
     }
 
+    const validateAllowanceAddParams = () => {
+
+        if (!name) {
+            showToast('error', 'The Allowance name should not be empty')
+            return false
+        }
+        else {
+            return true
+        }
+    }
+
     const onAllowanceAdd = () => {
 
         const params = {
             name: name,
-            hint: hint,
+            hint: hint ? hint : name,
             calendar_year: calendarYear,
             is_taxable: isTaxable,
             max_limit: maximumLimit ? maximumLimit : -1,
             ...(isEditCompanyAllowance && editAllowanceItem && { id: editAllowanceItem?.id })
         }
 
-        dispatch(addCompanyAllowance({
-            params,
-            onSuccess: (success: any) => () => {
-                getCompanyAllowanceList()
-                setAddAllowanceModel(!addAllowanceModel)
-                // goBack(navigation);
-            },
-            onError: (error: any) => () => {
+        if (validateAllowanceAddParams()) {
+            dispatch(addCompanyAllowance({
+                params,
+                onSuccess: (success: any) => () => {
+                    getCompanyAllowanceList()
+                    setAddAllowanceModel(!addAllowanceModel)
+                },
+                onError: (error: any) => () => {
 
-            }
-        }));
-
+                }
+            }));
+        }
 
     }
 
+    const isPercentageExist = selectedAllowances.some((item: any) => item.type === "1")
 
     return (
 
@@ -220,12 +290,12 @@ function CreateGroup() {
             <Card additionClass='mx--3'>
                 <Container additionClass='d-flex justify-content-between'>
                     <Container additionClass='mb-4'>
-                        <h3>{!selectedAllowanceGroupDetails ? t('CreateAllowanceGroup') : 'Edit Allowance group'}</h3>
+                        <h3>{!selectedAllowanceGroupDetails ? t('CreateAllowanceGroup') : t('editAllowanceGroup')}</h3>
                     </Container>
 
                     <Container>
                         <Primary
-                            text={'Add Allowance'}
+                            text={t('AddAllowance')}
                             onClick={() => {
                                 getCompanyAllowanceList()
                                 setSelectAddAllowanceModel(!selectAllowanceModel)
@@ -236,7 +306,7 @@ function CreateGroup() {
                 </Container>
 
 
-                <Container additionClass='col-xl-5'>
+                <Container additionClass='col-xl-5 ml--3'>
                     <InputText
                         label={t("GroupName")}
                         placeholder={t("GroupName")}
@@ -259,16 +329,17 @@ function CreateGroup() {
                                         value={el.type == "1" ? el.percent : el.amount}
                                         additionClass={'col-xl-2'}
                                         onChange={(event: any) => {
-                                            onChangeHandler(i, event);
+                                            onChangeHandler(i, event, el.max_limit);
                                         }}
                                     />
+                                    <h6 className='text-danger mt--3'>{el.error}</h6>
                                 </Container>
                                 <Container additionClass={'col-xl-3 col col-sm-0'}>
                                     <Container additionClass='row mt-4'>
                                         <DropDown
-                                            additionClass='col-xl-6'
+                                            additionClass='col-xl-7'
                                             data={ALLOWANCE_TYPE}
-                                            placeholder={'Select Type'}
+                                            placeholder={t('selectType')}
                                             value={el.type}
                                             onChange={(e) => {
                                                 let updatePercentage = [...selectedAllowances]
@@ -278,7 +349,6 @@ function CreateGroup() {
                                                 setSelectedAllowances(updatePercentage)
                                             }}
                                         />
-                                        {/* <h3 className='col-xl col col-sm-0 mt-3 ml--3'>{"%"}</h3> */}
                                         <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
                                             onDeleteAllowence(el)
                                         }} /></td>
@@ -289,17 +359,25 @@ function CreateGroup() {
                     })}
                 </Container>
 
-                <Container margin={"mt-5"} additionClass={"text-right"}>
-                    <Primary
-                        text={t("submit")}
-                        onClick={() => onAllowanceGroupAdd()}
-                    />
-                </Container>
+                {isPercentageExist && (
+                    <h5 className=" mb--3 font-weight-light " style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
+                )}
+
+
+                {selectedAllowances && selectedAllowances.length > 0 && (
+                    <Container margin={"mt-5"} additionClass={"text-right"} >
+                        <Primary
+                            text={selectedAllowanceGroupDetails ? t('update') : t("submit")}
+                            disabled={isSumbitDisable || remaining < 0 ? true : false}
+                            onClick={() => onAllowanceGroupAdd()}
+                        />
+                    </Container>
+                )}
 
             </Card>
 
             <Modal
-                title={groupFor === 'Allowance' ? t("SelectAllowance") : t('SelectDeduction')}
+                title={t("SelectAllowance")}
                 showModel={selectAllowanceModel}
                 toggle={() => setSelectAddAllowanceModel(!selectAllowanceModel)}
             >
@@ -359,11 +437,15 @@ function CreateGroup() {
             </Modal>
 
             <Modal
-                title={!isEditCompanyAllowance ? t("AddAllowance") : 'Edit allowance'}
+                title={!isEditCompanyAllowance ? t("AddAllowance") : t('editAllowance')}
                 showModel={addAllowanceModel}
                 toggle={() => {
                     setIsEditCompanyAllowance(false)
                     setAddAllowanceModel(!addAllowanceModel)
+                    setName('')
+                    setHint('')
+                    setMaximumLimit('')
+                    setIsTaxable(false)
                 }}
             >
                 <InputText
@@ -376,43 +458,30 @@ function CreateGroup() {
                 />
 
                 <InputText
-                    label={'Hint'}
-                    placeholder={'Hint'}
+                    label={t('hint')}
+                    placeholder={t('hint')}
                     value={hint}
                     onChange={(event) => {
                         setHint(event.target.value);
                     }}
                 />
 
-                {groupFor === 'Deduction' && (
-                    <InputText
-                        label={'Minimum limit'}
-                        placeholder={'Minimum limit'}
-                        value={minimumLimit}
-                        onChange={(event) => {
-                            setMinimumLimit(event.target.value);
-                        }}
-                    />
-                )}
-
                 <InputText
-                    label={'Maximum limit'}
-                    placeholder={'Maximum limit'}
+                    label={t('maximumLimit')}
+                    placeholder={t('maximumLimit')}
                     value={maximumLimit}
                     onChange={(event) => {
                         setMaximumLimit(event.target.value);
                     }}
                 />
-                {groupFor === 'Allowance' && (
-                    <Container additionClass='text-right'>
-                        <CheckBox
-                            id={'2'}
-                            checked={isTaxable}
-                            text={"Is taxable"}
-                            onChange={(e) => { setIsTaxable(e.target.checked) }}
-                        />
-                    </Container>
-                )}
+                <Container additionClass='text-right'>
+                    <CheckBox
+                        id={'2'}
+                        checked={isTaxable}
+                        text={t('isTaxable')}
+                        onChange={(e) => { setIsTaxable(e.target.checked) }}
+                    />
+                </Container>
 
                 <Container margin={"mt-5"} additionClass={"text-right"}>
                     <Secondary
@@ -420,11 +489,14 @@ function CreateGroup() {
                         onClick={() => {
                             setIsEditCompanyAllowance(false)
                             setAddAllowanceModel(!addAllowanceModel)
-
+                            setName('')
+                            setHint('')
+                            setMaximumLimit('')
+                            setIsTaxable(false)
                         }}
                     />
                     <Primary
-                        text={t("submit")}
+                        text={isEditCompanyAllowance ? t('update') : t("submit")}
                         onClick={() => onAllowanceAdd()}
                     />
                 </Container>

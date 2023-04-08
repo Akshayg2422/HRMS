@@ -1,10 +1,5 @@
 import {
 
-
-  ADD_EMPLOYEE_SALARY,
-  ADD_EMPLOYEE_SALARY_FAILURE,
-  ADD_EMPLOYEE_SALARY_SUCCESS,
-
   ADD_COMPANY_ALLOWANCE,
   ADD_COMPANY_ALLOWANCE_FAILURE,
   ADD_COMPANY_ALLOWANCE_SUCCESS,
@@ -39,7 +34,18 @@ import {
 
   SETTING_SELECTED_DEDUCTION_DETAILS,
 
-  GET_EMPLOYEE_SALARY, GET_EMPLOYEE_SALARY_FAILURE, GET_EMPLOYEE_SALARY_SUCCESS,
+  ADD_EMPLOYEE_SALARY_DEFINITION,
+  ADD_EMPLOYEE_SALARY_DEFINITION_SUCCESS,
+  ADD_EMPLOYEE_SALARY_DEFINITION_FAILURE,
+
+  SETTING_SELECTED_EMPLOYEE_DETAILS,
+
+  GET_EMPLOYEE_SALARY_DEFINITION,
+  GET_EMPLOYEE_SALARY_DEFINITION_FAILURE,
+  GET_EMPLOYEE_SALARY_DEFINITION_SUCCESS,
+
+  IS_EDIT_SALARY_DEFINITION,
+
   GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
   GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER
 
@@ -318,51 +324,74 @@ export const getSalaryAllowanceFailure = (error) => {
 
 
 /**
- * add Employee Salary
+ * add Employee Salary definition
  */
 
-export const addEmployeeSalary = (type) => {
+export const addEmployeeSalaryDefinition = (type) => {
   return {
-    type: ADD_EMPLOYEE_SALARY,
+    type: ADD_EMPLOYEE_SALARY_DEFINITION,
     payload: type,
   };
 };
 
-export const addEmployeeSalarySuccess = (response) => {
+export const addEmployeeSalaryDefinitionSuccess = (response) => {
   return {
-    type: ADD_EMPLOYEE_SALARY_SUCCESS,
+    type: ADD_EMPLOYEE_SALARY_DEFINITION_SUCCESS,
     payload: response,
   };
 };
 
-export const addEmployeeSalaryFailure = (error) => {
+export const addEmployeeSalaryDefinitionFailure = (error) => {
   return {
-    type: ADD_EMPLOYEE_SALARY_FAILURE,
+    type: ADD_EMPLOYEE_SALARY_DEFINITION_FAILURE,
     payload: error,
   };
 };
 
 /**
- * get Employee Salary
+ * setting selected employee details
  */
 
-export const getEmployeeSalary = (type) => {
+export const settingSelectedEmployeeDetails = (type) => {
   return {
-    type: GET_EMPLOYEE_SALARY,
+    type: SETTING_SELECTED_EMPLOYEE_DETAILS,
     payload: type,
   };
 };
 
-export const getEmployeeSalarySuccess = (response) => {
+/**
+ * get Employee Salary definition
+ */
+
+export const getEmployeeSalaryDefinition = (type) => {
   return {
-    type: GET_EMPLOYEE_SALARY_SUCCESS,
+    type: GET_EMPLOYEE_SALARY_DEFINITION,
+    payload: type,
+  };
+};
+
+export const getEmployeeSalaryDefinitionSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_SALARY_DEFINITION_SUCCESS,
     payload: response,
   };
 };
 
-export const getEmployeeSalaryFailure = (error) => {
+export const getEmployeeSalaryDefinitionFailure = (error) => {
   return {
-    type: GET_EMPLOYEE_SALARY_FAILURE,
+    type: GET_EMPLOYEE_SALARY_DEFINITION_FAILURE,
     payload: error,
+  };
+};
+
+/**
+ * is edit Employee Salary definition
+ */
+
+export const isEditEmployeeSalaryDefinition = (type) => {
+  console.log("type",type);
+  return {
+    type: IS_EDIT_SALARY_DEFINITION,
+    payload: type,
   };
 };
