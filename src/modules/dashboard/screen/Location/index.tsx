@@ -330,8 +330,9 @@ function LocationScreen() {
           </Container>
         }
         filterChildren={
-          <Container additionClass={"col-xl-4 row ml--4"}>
+          <Container additionClass={"col-4 row  ml--4"}>
           <InputText
+          formCustomClass='ml--2'
             value={searchBranches}
             col={'col'}
             placeholder={t("searchLocation")}

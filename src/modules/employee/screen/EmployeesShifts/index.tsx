@@ -199,13 +199,14 @@ function EmployeeShifts() {
   return (
     <>
       <TableWrapper>
-        <div className={'mx-3'}>
-          <Container additionClass={"row my-4"}>
+        <div className={'mx-3 mt--4'}>
+          <Container additionClass={"row "}>
             <Container col={"col-xl-5"}>
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
             <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>
               <InputText
+              size="sm"
                 value={searchEmployee}
                 col={'col'}
                 placeholder={t("enterEmployeeName")}

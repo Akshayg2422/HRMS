@@ -119,7 +119,7 @@ function FaceReRegisterRequest() {
   return (
     <div>
       <TableWrapper >
-        <div className='mx-3'>
+        <div className='mt--4'>
           <Container
             flexDirection={"row"}
             additionClass={"col"}

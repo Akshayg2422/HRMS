@@ -68,7 +68,7 @@ function ShiftRequest() {
 
   return (
     <TableWrapper>
-      <div >
+      <div className='mt--4'>
         <Container
           flexDirection={"row"}
           additionClass={"col"}

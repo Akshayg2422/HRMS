@@ -109,7 +109,7 @@ function PayRoll() {
             <TableWrapper
                 filterChildren={
                     <Container
-                        additionClass={" row my-4"}
+                        additionClass={" row "}
                     >
                         <Container col={"col-xl-3 col-md-6"}>
                             <InputText

@@ -168,10 +168,10 @@ const ShiftGroup = () => {
 
 
     return (
-        <div className='mt-4'>
+        <div className=''>
             <TableWrapper>
-                <div className='px-4 pb-4 '>
-                    <Container additionClass="row mt--2">
+                <div className='px-4  mt--4 '>
+                    <Container additionClass="row ">
                         <div className=" col">
                             <h2>{t('shiftss')}</h2>
                         </div>
@@ -193,9 +193,9 @@ const ShiftGroup = () => {
                             />
                         </div>
                     </Container>
-                    <Container additionClass='row mt-xl-3'>
+                    <Container additionClass='row mt--3'>
                         <InputText
-                            col='col-xl-3 col-md-4'
+                            col='col-xl-3 col-md-4 ml--2'
                             placeholder={t('searchGroup')}
                             onChange={(e) => {
                                 setSearchGroup(e.target.value);
