@@ -1,6 +1,6 @@
-import { InputText, Card, Container, useKeyPress, ChooseBranchFromHierarchical, Icon, NoRecordFound, CommonTable, Secondary, Primary, Modal } from '@components';
+import { InputText, Card, Container, useKeyPress, ChooseBranchFromHierarchical, Icon, NoRecordFound, CommonTable, Secondary, Primary, Modal, TableWrapper, Search } from '@components';
 import { Icons } from '@assets';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { employeeEnableFaceReRegister, employeeFaceReRegisterRequest } from '../../../../store/dashboard/actions';
@@ -92,60 +92,74 @@ function FaceReRegisterRequest() {
     setApproveModel(!approveModel)
   }
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeeFaceReRequestDetails && employeeFaceReRequestDetails.length > 0 ? (
+        <CommonTable
+          noHeader
+          isPagination
+          card={false}
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage: number | undefined) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(employeeFaceReRequestDetails)}
+          tableOnClick={(e: any, index: string | number, item: any) => {
+            const currentDetails = employeeFaceReRequestDetails[index]
+            handleModel(currentDetails)
+          }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeFaceReRequestDetails])
+
   return (
     <div>
-      <Card additionClass="my-3">
-        <Container
-          flexDirection={"row"}
-          additionClass={"col"}
-          alignItems={"align-items-center"}
-        >
-          <Container col={"col-xl-3 col-md-6 col-sm-12 mt-xl--3"}>
-            <InputText
-              placeholder={t("enterEmployeeName")}
-              label={t("employeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-          </Container>
+      <TableWrapper >
+        <div className='mt--4'>
           <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
-            additionClass={"mt-xl-3"}
-          >
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container
-            col={"col"}
-            additionClass={"mt-sm-3 mb-xl-3"}
-            justifyContent={"justify-content-center"}
+            flexDirection={"row"}
+            additionClass={"col"}
             alignItems={"align-items-center"}
-            onClick={() => getRequestDetails(currentPage)}
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Container col={"col-xl-3 col-md-6 col-sm-12 mt-xl--3"}>
+              <InputText
+                placeholder={t("enterEmployeeName")}
+                label={t("employeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+            </Container>
+            <Container
+              col={"col-xl-3 col-md-6 col-sm-12"}
+              additionClass={"mt-xl-3"}
+            >
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container
+              col={"col"}
+              additionClass={"mt-sm-3 mt-xl--2"}
+              justifyContent={"justify-content-center"}
+              alignItems={"align-items-center"}
+
+            >
+              {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+              <Search variant="Icon" additionalClassName={''} onClick={() => getRequestDetails(currentPage)} />
+            </Container>
           </Container>
-        </Container>
-      </Card>
-      <Card>
-        {employeeFaceReRequestDetails && employeeFaceReRequestDetails.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage: number | undefined) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(employeeFaceReRequestDetails)}
-            tableOnClick={(e: any, index: string | number, item: any) => {
-              const currentDetails = employeeFaceReRequestDetails[index]
-              handleModel(currentDetails)
-            }}
-          />
-        ) : <NoRecordFound />}
-      </Card>
+          <div>
+            {
+              memoizedTable
+            }
+
+          </div>
+        </div>
+      </TableWrapper>
+
       <Modal
         title={t("enableStatus")}
         showModel={approveModel}

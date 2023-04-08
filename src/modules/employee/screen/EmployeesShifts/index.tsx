@@ -12,8 +12,10 @@ import {
   Primary,
   Icon,
   useKeyPress,
+  TableWrapper,
+  Search,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   paginationHandler,
@@ -173,34 +175,12 @@ function EmployeeShifts() {
     setChangeShiftModelModel(!changeShiftModel)
   }
 
-  return (
-    <>
-      <Card additionClass={'mx-3'}>
-        <Container additionClass={"row my-4"}>
-          <Container col={"col-xl-5"}>
-            <ChooseBranchFromHierarchical showCheckBox={false} />
-          </Container>
-          <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              placeholder={t("enterEmployeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
-              onClick={() => {
-                getEmployeeLogsWithShifts(currentPage);
-              }}
-            />
-          </Container>
-
-        </Container>
-      </Card>
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeeWithShifts && employeeWithShifts.length > 0 ? (
         <CommonTable
           isPagination
+          card={false}
           currentPage={currentPage}
           noOfPage={numOfPages}
           paginationNumberClick={(currentPage) => {
@@ -213,7 +193,46 @@ function EmployeeShifts() {
             getUserShifts(index);
           }}
         />
-      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeWithShifts])
+
+  return (
+    <>
+      <TableWrapper>
+        <div className={'mx-3 mt--4'}>
+          <Container additionClass={"row "}>
+            <Container col={"col-xl-5"}>
+              <ChooseBranchFromHierarchical showCheckBox={false} />
+            </Container>
+            <Container additionClass={"col-xl-3 col-md-6 row"}>
+              <InputText
+              size="sm"
+                value={searchEmployee}
+                col={'col'}
+                label={t("employeeName")}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
+                onClick={() => {
+                  getEmployeeLogsWithShifts(currentPage);
+                }}
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => {getEmployeeLogsWithShifts(currentPage); }} />
+            </Container>
+
+          </Container>
+        </div>
+        <>
+          {
+            memoizedTable
+
+          }
+        </>
+      </TableWrapper>
       <Modal
         showModel={model}
         title={`${employeeName}'s ${t('shifts')}`}

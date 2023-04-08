@@ -1,7 +1,7 @@
-import { BackArrow, Card, CommonTable, Container, DropDown, InputText, Modal, NoRecordFound, Primary, Secondary, useKeyPress } from '@components'
+import { BackArrow, Card, CommonTable, Container, DropDown, InputText, Modal, NoRecordFound, Primary, Secondary, TableWrapper, useKeyPress } from '@components'
 import { getBranchShifts, getBranchWeeklyShifts, getShiftRequestedStatus, postRequestShiftChange } from '../../../../store/shiftManagement/actions';
 import { dropDownValueCheck, dropDownValueCheckByEvent, getRequestType, LEAVES_TYPE, REQUEST_TYPE, REQUEST_TYPE_SUBSET, showToast, useNav, validateDefault } from '@utils'
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -80,11 +80,30 @@ function EmployeeShiftRequest() {
         getRequestList(getRequestType(requestTypes), page);
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {requestList && requestList.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    displayDataSet={normalizedRequestList(requestList)}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [requestList])
+
     return (
-        <div>
-            <Container additionClass={"mt-5 main-contain"}>
-                <Card>
-                    <BackArrow />
+        <TableWrapper>
+            <Container additionClass={" main-contain mx-3"}>
+                <div>
                     <h2 className='mt-3'>{t("shiftRequestHistory")}</h2>
                     <Container additionClass={"text-right row mt-3"}>
                         <Container additionClass="col-xl-4">
@@ -98,29 +117,18 @@ function EmployeeShiftRequest() {
                             />
                         </Container>
                     </Container>
-                </Card>
-                <Card>
+                </div>
+                <div>
                     <h2>{t("requestList")}</h2>
-                    {requestList && requestList?.length > 0 ? (
-                        <CommonTable
-                            noHeader
-                            isPagination
-                            currentPage={currentPage}
-                            noOfPage={numOfPages}
-                            paginationNumberClick={(currentPage) => {
-                                paginationHandler("current", currentPage);
-                            }}
-                            previousClick={() => paginationHandler("prev")}
-                            nextClick={() => paginationHandler("next")}
-                            displayDataSet={normalizedRequestList(requestList)}
-                        />
-                    ) : (
-                        <NoRecordFound />
-                    )}
-                </Card>
+                    <>
+                        {
+                            memoizedTable
+                        }
+                    </>
+                </div>
             </Container>
 
-        </div>
+        </TableWrapper>
     )
 }
 

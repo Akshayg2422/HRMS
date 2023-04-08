@@ -1,4 +1,4 @@
-import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, useKeyPress } from '@components';
+import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, Search, TableWrapper, useKeyPress } from '@components';
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -63,8 +63,8 @@ function FaceReRequest() {
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
+    <TableWrapper>
+      <div className="mt--4">
         <Container
           flexDirection={"row"}
           additionClass={"col"}
@@ -80,19 +80,20 @@ function FaceReRequest() {
             />
           </Container>
           <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
+            col={"col-xl-3 col-md-6 col-sm-12"}
             additionClass={"mt-xl-3"}
           >
             <ChooseBranchFromHierarchical />
           </Container>
           <Container
             col={"col"}
-            additionClass={"mt-sm-3 mb-xl-3"}
+            additionClass={"mt-sm-3 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
 
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} /> */}
+            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -122,7 +123,7 @@ function FaceReRequest() {
             })}
           </ul>
         </div>
-      </Card>
+      </div>
       <div className="tab-content" id="myTabContent">
         {REQUEST_TYPE.map((el) => {
           return (
@@ -137,7 +138,7 @@ function FaceReRequest() {
           )
         })}
       </div>
-    </div>
+    </TableWrapper>
   )
 
 }

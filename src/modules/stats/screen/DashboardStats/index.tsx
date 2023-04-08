@@ -25,8 +25,11 @@ import {
   useNav,
   getServerDateFromMoment,
   getMomentObjFromServer,
+  showToast,
 } from "@utils";
 import { Icons } from "@assets";
+import { getListAllBranchesList } from "../../../../store/location/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 
 const DashboardStats = () => {
   const { t } = useTranslation();
@@ -37,11 +40,10 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
-  const { hierarchicalBranchName, hierarchicalBranchIds } = useSelector(
+  const { hierarchicalBranchIds, dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
-  const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
   const [model, setModel] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
@@ -52,6 +54,8 @@ const DashboardStats = () => {
   const [selectedDate, setSelectedDate] = useState(
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
+
+  const [initialCall, setInitialCall] = useState(false)
 
   const normalizedEmployeeAttendanceLog = (data: any) => {
     return data?.departments_stats?.map((el: any) => {
@@ -66,25 +70,68 @@ const DashboardStats = () => {
     });
   };
 
+
   useEffect(() => {
+    const DashboardParams = {}
+    dispatch(getDashboard({
+      DashboardParams,
+      onSuccess: (success: any) => () => {
+        const params = {}
+        dispatch(getListAllBranchesList({
+          params,
+          onSuccess: (response: any) => () => {
+            const childIds = getAllSubBranches(response, success.company_branch.id)
+            getStatsDetails({ branch_id: success.company_branch.id, child_ids: childIds, include_child: false })
+            dispatch(setBranchHierarchical({ ids: { branch_id: success.company_branch.id, child_ids: childIds, include_child: false }, name: success.company_branch.name }))
+          },
+          onError: () => () => {
+          },
+        }))
+      },
+      onError: (error: any) => () => {
+      }
+    }))
+  }, []);
+
+  useEffect(() => {
+    initialCall && getStatsDetails({ ...hierarchicalBranchIds })
+  }, [selectedDate, hierarchicalBranchIds]);
+
+
+  const getStatsDetails = (obj: object) => {
     const params = {
-      ...hierarchicalBranchIds,
+      ...obj,
       selected_date: selectedDate,
     };
-    if (Object.keys(hierarchicalBranchIds).length > 0 && 'branch_id' in hierarchicalBranchIds) {
-      dispatch(getEmployeeAttendanceStats({
-        params,
-        onSuccess: (success: any) => () => {
+    dispatch(getEmployeeAttendanceStats({
+      params,
+      onSuccess: (success: any) => () => {
+        setInitialCall(true)
+      },
+      onError: (error: any) => () => {
 
-        },
-        onError: (error: any) => () => {
+      }
+    }));
+  }
 
-        }
-      }));
-    }
+  const getAllSubBranches = (branchList: any, parent_id: string) => {
+    let branchListFiltered: any = [];
+    const getChild = (branchList: any, parent_id: string) => {
+      branchList
+        .filter((it: any) => it.parent_id === parent_id)
+        .map((it2: any) => {
+          branchListFiltered.push(it2);
+          getChild(branchList, it2.id);
+          return it2;
+        });
+    };
+    getChild(branchList, parent_id);
 
-
-  }, [selectedDate, hierarchicalBranchIds]);
+    branchListFiltered = branchListFiltered.map((it: any) => {
+      return it.id;
+    });
+    return branchListFiltered;
+  };
 
   const proceedNext = (
     attendanceType: number,
@@ -98,14 +145,14 @@ const DashboardStats = () => {
     dispatch(getSelectedCardType({
       params,
       onSuccess: (success: any) => () => {
-
       },
       onError: (error: any) => () => {
-
+        showToast('error', error)
       }
     }
     ));
     goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+
   };
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
@@ -130,26 +177,24 @@ const DashboardStats = () => {
   };
 
 
-
   return (
     <>
-
-      <Card additionClass={"row mx-2"}>
-        <div className="row mt-3">
-          <div className="col-lg-6 col-md-6">
+      <Card additionClass="mx-2">
+        <Container additionClass="row ">
+          <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
-          </div>
-          <div className="col-lg-3 col-md-6 mt-xl-4">
+          </Container>
+          <Container additionClass="col-xl-3 mt-xl-2">
             <DatePicker
-              additionalClass="mt-xl-2"
+              additionalClass="mt-xl-4"
               placeholder={"Select Date"}
               icon={Icons.Calendar}
               iconPosition={"prepend"}
               value={selectedDate}
               onChange={(date: string) => setSelectedDate(date)}
             />
-          </div>
-        </div>
+          </Container>
+        </Container>
       </Card>
       <Container
         additionClass={"row"}
@@ -189,35 +234,34 @@ const DashboardStats = () => {
             );
           }) : <NoRecordFound />}
         </Container>
-        <Container margin={"mx-6"}>
-          {employeeattendancedatalog &&
-            employeeattendancedatalog.departments_types && (
-              <CommonTable
-                title={t(t("departments"))}
-                displayDataSet={normalizedEmployeeAttendanceLog(
-                  employeeattendancedatalog
-                )}
-                tableOnClick={(e, index, item) => {
-                  // console.log(
-                  //   employeeattendancedatalog.departments_stats[index]
-                  //     .department_id + "====="
-                  // );
+        <div className="mx-5">
+          <Container additionClass="">
+            {employeeattendancedatalog &&
+              employeeattendancedatalog.departments_types && (
+                <CommonTable
+                  title={t(t("departments"))}
+                  displayDataSet={normalizedEmployeeAttendanceLog(
+                    employeeattendancedatalog
+                  )}
+                  tableOnClick={(e, index, item) => {
 
-                  setSelectedDepartmentName(
-                    employeeattendancedatalog.departments_stats[index].name
-                  );
-                  setSelectedDepartmentId(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                  getAttendanceConsolidatedData(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                }}
-              />
-            )}
-        </Container>
+
+                    setSelectedDepartmentName(
+                      employeeattendancedatalog.departments_stats[index].name
+                    );
+                    setSelectedDepartmentId(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                    getAttendanceConsolidatedData(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                  }}
+                />
+              )}
+          </Container>
+        </div>
         <Modal
           title={selectedDepartmentName}
           showModel={model}

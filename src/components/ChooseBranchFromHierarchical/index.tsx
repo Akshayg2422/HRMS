@@ -9,16 +9,16 @@ import {
   setBranchHierarchicalIncludeChild,
 } from "../../store/dashboard/actions";
 import { useTranslation } from "react-i18next";
+import { showToast } from "@utils";
 
 interface HierarchicalProps {
   showCheckBox?: boolean;
-  showActiveBranch?: boolean
 }
 
-function Hierarchical({ showCheckBox = true, showActiveBranch = true }: HierarchicalProps) {
+function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
   const { t } = useTranslation();
 
-  const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails } =
+  const { hierarchicalBranchName, hierarchicalBranchIds, dashboardDetails, toTriggerHierarchical } =
     useSelector((state: any) => state.DashboardReducer);
 
   const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
@@ -26,12 +26,9 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
   const [model, setModel] = useState(false);
   let dispatch = useDispatch();
 
-  console.log("hierarchicalBranchIds", hierarchicalBranchIds)
 
   const [hierarchicalBranch, setHierarchicalBranch] = useState<any>({});
-  const [structuredData, setStructuredData] = useState<Array<LocationProps>>(
-    []
-  );
+
 
   function sortArray(arr: any) {
     return arr
@@ -42,15 +39,18 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
       .sort((a: any, b: any) => a.name.localeCompare(b.name))
   }
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getBranchToSet()
+  // }, [toTriggerHierarchical]);
+
+
+  const getBranchToSet = () => {
     const params = {};
     dispatch(
       getListAllBranchesList({
         params,
         onSuccess: (response: Array<LocationProps>) => () => {
-          // setStructuredData(hierarchicalBranchIds);
           const parentBranch = response.find((it) => !it.parent_id);
-
           if (parentBranch) {
             const hierarchicalBranchArray = {
               ...parentBranch,
@@ -62,6 +62,7 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
             );
 
             let modifiedBranch = filteredBranch
+
             try {
               modifiedBranch = sortArray([filteredBranch])
             } catch (e) {
@@ -71,11 +72,11 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
           }
         },
         onError: (error: any) => () => {
-          console.log("=========errorasasa" + error);
+          showToast('error',error)
         },
       })
     );
-  }, [hierarchicalBranchName, hierarchicalBranchIds]);
+  }
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     let branchListFiltered: any = [];
@@ -136,44 +137,40 @@ function Hierarchical({ showCheckBox = true, showActiveBranch = true }: Hierarch
         name: item.name,
       })
     );
+    getBranchToSet()
     setModel(!model);
   }
 
 
-
   return (
-    <div className="row flex-row-reverse" >
-      <div className="col-lg-6">
-        <div className="form-group">
-          <small className="form-control-label text-black">{t("MyBranches")}</small>
-          <div onClick={() => setModel(!model)}>
-            <InputDefault disabled={true} value={hierarchicalBranchName} />
+    <div>
+      <div className="form-group">
+        <small className="form-control-label text-black">{t("MyBranches")}</small>
+        <div onClick={() => {
+          getBranchToSet()
+          setModel(!model)
+        }}>
+          <InputDefault disabled={true} value={hierarchicalBranchName} />
+        </div>
+        {hierarchicalBranchIds && showCheckBox && (
+          <div className="mt--3">
+            <CheckBox
+              id={'1'}
+              text={"Include Sub Branches"}
+              checked={hierarchicalBranchIds.include_child}
+              onChange={(e) => {
+                dispatch(
+                  setBranchHierarchicalIncludeChild({
+                    checkBoxStatus: e.target.checked,
+                  })
+                );
+              }}
+            />
           </div>
-          {hierarchicalBranchIds && showCheckBox && (
-            <div className="mt--3">
-              <CheckBox
-                id={'1'}
-                text={"Include Sub Branches"}
-                checked={hierarchicalBranchIds.include_child}
-                onChange={(e) => {
-                  dispatch(
-                    setBranchHierarchicalIncludeChild({
-                      checkBoxStatus: e.target.checked,
-                    })
-                  );
-                }}
-              />
-            </div>
-          )}
-        </div>
+        )}
       </div>
-      {showActiveBranch && <div className="col-lg-6">
-        <div className="form-group">
-          <MyActiveBranches />
-        </div>
-      </div>}
       <Modal showModel={model} toggle={() => setModel(!model)}>
-        {listBranchesList &&
+        {
           hierarchicalBranch &&
           hierarchicalBranch?.child &&
           hierarchicalBranch?.child.length > 0 &&

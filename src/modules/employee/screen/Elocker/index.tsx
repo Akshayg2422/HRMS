@@ -1,6 +1,6 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress, TableWrapper } from '@components'
 import { Icons } from '@assets';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { showToast, useNav, validateName } from '@utils';
@@ -186,11 +186,32 @@ function ELocker() {
         }
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {documentListData && documentListData.length > 0 ? (
+                <CommonTable
+                    // noHeader
+                    card={false}
+                    title={"Documents List"}
+                    displayDataSet={documentsList(documentListData)}
+                    tableOnClick={(e, index, item) => {
+                        let current = documentListData[index]
+                        viewUserDocument(current)
+                    }}
+                // tableOnClick={(e, index, item) => {
+                //   const selectedId = registeredEmployeesList[index].id;
+                //   dispatch(getSelectedEmployeeId(selectedId));
+                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+                // }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [documentListData])
+
     return (
         <div>
-            <Card>
-                <BackArrow />
-                <Container additionClass='mt-2'>
+            <TableWrapper>
+                <Container additionClass='mt-2 mx-4'>
                     <h1>{t("E_Locker")}</h1>
                     <Container
                         flexDirection={"row"}
@@ -225,19 +246,13 @@ function ELocker() {
                     </Container>
 
                 </Container>
-            </Card>
-            <Container additionClass='mx--3'>
-                {documentListData && documentListData?.length > 0 ? <CommonTable
-                    title={"Documents List"}
-                    displayDataSet={documentsList(documentListData)}
-                    tableOnClick={(e, index, item) => {
-                        let current = documentListData[index]
-                        viewUserDocument(current)
-                    }}
-                /> :
-                    <NoRecordFound />
-                }
-            </Container>
+                <Container additionClass='mx--3'>
+                    {
+                        memoizedTable
+                    }
+                </Container>
+            </TableWrapper>
+
 
             <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
                 {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {

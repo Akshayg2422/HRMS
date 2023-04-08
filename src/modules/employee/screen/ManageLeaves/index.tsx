@@ -31,8 +31,11 @@ function ManageLeaves() {
 
   useEffect(() => {
     getCalendarDetails(currentPage);
+  }, []);
+
+  useEffect(() => {
     geteventsdetails();
-  }, [recall]);
+  }, [recall])
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
@@ -98,7 +101,6 @@ function ManageLeaves() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
-          <BackArrow additionClass={"mb-3"} />
           <h1 className="mb-3">{t('Calendar')}</h1>
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>

@@ -13,7 +13,8 @@ import {
   ImageView,
   CommonDropdownMenu,
   Divider,
-  TableWrapper
+  TableWrapper,
+  Search
 
 } from "@components";
 import React, { useEffect, useState, useMemo } from "react";
@@ -25,7 +26,6 @@ import {
   ROUTE,
   showToast,
 } from "@utils";
-import { useDashboard } from "@contexts";
 import {
   changeAttendanceSettings,
   employeeEdit,
@@ -65,7 +65,7 @@ type Branch = {
   fence_admin_id?: string;
 };
 
-export const DROPDOWN_MENU = [
+export const DROPDOWN_MENU_ADMIN = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-button-power' },
@@ -74,11 +74,21 @@ export const DROPDOWN_MENU = [
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
-
+export const DROPDOWN_MENU_BRANCH_ADMIN = [
+  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+  // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
+  // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
+]
 
 function EmployeeScreen() {
   let dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const { userDetails } = useSelector(
+    (state: any) => state.AuthReducer
+  );
 
   const CARD_DROPDOWN_ITEM = [
     { id: '1', name: `${t("deletedUser")}`, value: 'CL', icon: 'ni ni-active-40' },
@@ -205,7 +215,7 @@ function EmployeeScreen() {
         branch: el.branch,
         "  ":
           <CommonDropdownMenu
-            data={DROPDOWN_MENU}
+            data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_BRANCH_ADMIN : []}
             onItemClick={(e, item) => {
               e.stopPropagation();
               setSelectedEmployeeItem(el)
@@ -408,8 +418,8 @@ function EmployeeScreen() {
     </>
   }, [registeredEmployeesList])
 
-  console.log("modalllll",model);
-  
+  console.log("modalllll", model);
+
 
   return (
     <>
@@ -417,7 +427,9 @@ function EmployeeScreen() {
         title={t('allRegisteredEmployee')}
         buttonChildren={
           <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
-            <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => { }} />
+            <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => {
+              manageEmployeeHandler('')
+            }} />
             <CommonDropdownMenu
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
@@ -444,7 +456,7 @@ function EmployeeScreen() {
                 />
               </Container>
               <Container
-                col={"col-xl-5 col-md-6 col-sm-12"}
+                col={"col-xl-3 col-md-6 col-sm-12"}
                 additionClass={"mt-xl-4"}
               >
                 <ChooseBranchFromHierarchical />
@@ -454,9 +466,9 @@ function EmployeeScreen() {
                 additionClass={"mt-sm-3 mt-xl--2"}
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
-                onClick={proceedSearchApi}
               >
-                <Icon type={"btn-primary"} icon={Icons.Search} />
+                {/* <Icon  icon={Icons.Search} /> */}
+                <Search variant="Icon" onClick={proceedSearchApi} />
               </Container>
             </Container>
           </Container>

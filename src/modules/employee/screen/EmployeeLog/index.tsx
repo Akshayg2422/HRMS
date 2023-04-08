@@ -14,6 +14,7 @@ import {
   useKeyPress,
   ImageView,
   TableWrapper,
+  Search,
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -330,11 +331,12 @@ function EmployeeLog() {
         }
         filterChildren={
           <Container additionClass={"row"}>
-            <Container col={"col-xl-5"}>
+            <Container col={"col-xl-3"}>
               <ChooseBranchFromHierarchical />
             </Container>
             <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
               <InputText
+                size="sm"
                 value={searchEmployee}
                 col={'col'}
                 placeholder={t("enterEmployeeName")}
@@ -342,11 +344,12 @@ function EmployeeLog() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
                 onClick={() => {
                   getEmployeeLogs(currentPage);
                 }}
-              />
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-1'} onClick={() => { getEmployeeLogs(currentPage); }} />
             </Container>
 
           </Container>

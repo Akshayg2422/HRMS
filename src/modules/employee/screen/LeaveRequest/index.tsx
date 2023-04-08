@@ -4,6 +4,8 @@ import {
   Container,
   Icon,
   InputText,
+  Search,
+  TableWrapper,
   useKeyPress,
 } from "@components";
 import React, { useEffect, useState } from "react";
@@ -72,12 +74,13 @@ const LeaveRequest = () => {
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
+    <TableWrapper>
+      <div className="mb-3 mt--5 ">
         <Container
           flexDirection={"row"}
           additionClass={"col"}
           alignItems={"align-items-center"}
+          // padding={"pl-5"}
         >
           <Container col={"col-xl-3 col-md-6 col-sm-12"}>
             <InputText
@@ -89,7 +92,7 @@ const LeaveRequest = () => {
             />
           </Container>
           <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
+            col={"col-xl-3 col-md-4 col-sm-12"}
             additionClass={"mt-xl-4"}
           >
             <ChooseBranchFromHierarchical />
@@ -101,7 +104,9 @@ const LeaveRequest = () => {
             alignItems={"align-items-center"}
             onClick={proceedSearchApi}
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+            <Search variant="Icon" onClick={() => proceedSearchApi} />
+
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -131,9 +136,9 @@ const LeaveRequest = () => {
             })}
           </ul>
         </div>
-      </Card>
+      </div>
 
-      <Card>
+      {/* <Card> */}
         <div className="tab-content" id="myTabContent">
           {LEAVE_TYPE.map((el) => {
             return (
@@ -148,8 +153,8 @@ const LeaveRequest = () => {
             )
           })}
         </div>
-      </Card >
-    </div >
+      {/* </Card > */}
+    </TableWrapper >
   );
 };
 

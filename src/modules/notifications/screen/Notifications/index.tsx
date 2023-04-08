@@ -5,16 +5,18 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
 import {
-    getNotifications, setIsShowBack
+    clearNotificationCount,
+    getNotifications, setIsShowBack, setNotificationCount
 } from "../../../../../src/store/notifications/actions";
 
 function Notifications() {
     const dispatch = useDispatch()
     const navigation = useNav();
 
-    const { currentPage, numOfPages, notificationsDataList, isShowBack } = useSelector(
+    const { currentPage, numOfPages, notificationsDataList, isShowBack, NotificationCount } = useSelector(
         (state: any) => state.NotificationReducer
     );
+
 
     const NOTI_TYPE_BROADCAST_MESSAGE = 'BROADCAST_MESSAGE'
     const NOTI_TYPE_LEAVE_REQUEST = 'LEAVE_REQUEST'
@@ -29,8 +31,8 @@ function Notifications() {
     const NOTI_TYPE_MY_SHIFTS = 'MY_SHIFTS'
     const NOTI_TYPE_NO_ACTION = 'NO_ACTION'
 
-    const handleRoute = (item: any) => {
 
+    const handleRoute = (item: any) => {
         if (item?.extra?.route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
             goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
@@ -56,19 +58,24 @@ function Notifications() {
             goTo(navigation, ROUTE.ROUTE_MODIFY_LOGS);
         }
         else if (item?.extra?.route_type === NOTI_TYPE_MY_SHIFTS) {
-            goTo(navigation, ROUTE.ROUTE_MY_SHIFTS_DETAILS);
+            goTo(navigation, ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY);
         }
         else {
             // goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
         }
     }
 
+    // useEffect(() => {
+    //     getNotificationsList(currentPage)
+    // }, [])
+
     useEffect(() => {
+        dispatch(clearNotificationCount())
         getNotificationsList(currentPage)
         return () => {
             dispatch(setIsShowBack(false))
         }
-    }, [])
+    }, [NotificationCount > 0])
 
     const getNotificationsList = (pageNumber: number) => {
         const params = {
@@ -100,9 +107,6 @@ function Notifications() {
     return (
         <>
             <div className='ml-3 mb-3'>
-                {/* {isShowBack && (
-                    <BackArrow />
-                )} */}
             </div>
             <Container additionClass={" mx-1"}>
                 {notificationsDataList && notificationsDataList?.length > 0 ? notificationsDataList?.map((el: any) => {

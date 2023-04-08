@@ -140,7 +140,7 @@ function PayRoll() {
             <TableWrapper
                 filterChildren={
                     <Container
-                        additionClass={" row my-4"}
+                        additionClass={" row "}
                     >
                         <Container col={"col-xl-3 col-md-6"}>
                             <InputText
@@ -152,7 +152,7 @@ function PayRoll() {
                             />
                         </Container>
                         <Container
-                            col={"col-xl-5"}
+                            col={"col-xl-3"}
                         >
                             <ChooseBranchFromHierarchical />
                         </Container>

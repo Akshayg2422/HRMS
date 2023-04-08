@@ -1,4 +1,4 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu, TableWrapper } from '@components';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu, TableWrapper, Search } from '@components';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
@@ -61,7 +61,7 @@ function LocationScreen() {
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
   const [modelData, setModelData] = useState<Location | any>();
   const [editModel, setEditModel] = useState<any>(false);
-  const [searchBranches, setsearchBranches] = useState<any>('')
+  const [searchBranches, setSearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
   const [isOpenFenceModal, setIsOpenFenceModal] = useState(false)
 
@@ -243,19 +243,6 @@ function LocationScreen() {
 
   }
 
-  const SelectedBranchFilter = () => {
-    let filteredBranch = [...branch]
-    if (searchBranches !== "") {
-      filteredBranch = filteredBranch.filter((element: any) => {
-        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
-      })
-      setBranch(filteredBranch)
-    }
-    else {
-      setBranch(brancheslist)
-    }
-  }
-
   const handleEdit = (item: any) => {
     setEditBranchDetails(item.name)
     setCurrentBranchDetails(item)
@@ -280,8 +267,6 @@ function LocationScreen() {
       dispatch(editBranchName({
         params,
         onSuccess: (success: any) => () => {
-          console.log("tammmmmmmmmmmmmmmmmmmmmmmmmmmm0000", success)
-
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
@@ -313,10 +298,10 @@ function LocationScreen() {
     return <>
       {branch && branch.length > 0 ? (
         <CommonTable
-        card={false}
+          card={false}
           displayDataSet={normalizedEmployeeLog(branch)}
         />
-      ) :<NoRecordFound />}
+      ) : <NoRecordFound />}
     </>
   }, [branch])
 
@@ -327,14 +312,14 @@ function LocationScreen() {
       <TableWrapper
         title={t('allRegisteredLocation')}
         buttonChildren={
-         
+
 
           <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
-             <Primary
-            text={t("AddBranch")}
-            onClick={() => manageBranchesHandler(undefined)}
-            size={"btn-sm"}
-          />
+            <Primary
+              text={t("AddBranch")}
+              onClick={() => manageBranchesHandler(undefined)}
+              size={"btn-sm"}
+            />
             <CommonDropdownMenu
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
@@ -346,20 +331,22 @@ function LocationScreen() {
         }
         filterChildren={
           <Container additionClass={"col-xl-4 row ml--4"}>
-          <InputText
-            value={searchBranches}
-            col={'col'}
-            placeholder={t("searchLocation")}
-            onChange={(e) => {
-              setsearchBranches(e.target.value);
-            }}
-          />
-          <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+            <InputText
+              value={searchBranches}
+              col={'col'}
+              placeholder={t("searchLocation")}
+              onChange={(e) => {
+                setSearchBranches(e.target.value);
+              }}
+            />
+            {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
             onClick={() => {
               // SelectedBranchFilter()
             }}
-          />
-        </Container>
+          /> */}
+            <Search variant="Icon"  additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={()=>{}} />
+
+          </Container>
         }
       >
         {memoizedTable}
@@ -372,7 +359,7 @@ function LocationScreen() {
             col={'col'}
             placeholder={t("searchLocation")}
             onChange={(e) => {
-              setsearchBranches(e.target.value);
+              setSearchBranches(e.target.value);
             }}
           />
           <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}

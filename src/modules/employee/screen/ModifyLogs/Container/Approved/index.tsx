@@ -13,7 +13,7 @@ import {
   getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -75,12 +75,14 @@ const Approved = () => {
     );
   };
 
-  return (
-    <div>
+
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
         <CommonTable
           noHeader
           isPagination
+          card={false}
           currentPage={currentPage}
           noOfPage={numOfPages}
           paginationNumberClick={(currentPage) => {
@@ -91,9 +93,15 @@ const Approved = () => {
           displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
           custombutton={"h5"}
         />
-      ) : (
-        <NoRecordFound />
-      )}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesModifyLeaves])
+
+  return (
+    <div>
+      {
+        memoizedTable
+      }
     </div>
   );
 };

@@ -62,7 +62,7 @@ const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet,
               <div className="row align-items-center">
                 <div className="row" >
                   <div className='col'>
-                    <h3 className="mb-0" >{title + '==='}</h3>
+                    <h3 className="mb-0" >{title}</h3>
                   </div>
                 </div>
               </div>
@@ -148,7 +148,7 @@ const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet,
   const renderTable = () => {
     return (
       <>
-        <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />
+        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />}
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
       </>
     );

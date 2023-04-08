@@ -6,6 +6,8 @@ import {
   Icon,
   InputText,
   NoRecordFound,
+  Search,
+  TableWrapper,
   useKeyPress,
   WorkInProgress,
 } from "@components";
@@ -79,8 +81,8 @@ const ModifyLogs = () => {
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
+    <TableWrapper>
+      <div className="mt--5">
         <Container
           flexDirection={"row"}
           additionClass={"col"}
@@ -96,7 +98,7 @@ const ModifyLogs = () => {
             />
           </Container>
           <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
+            col={"col-xl-3 col-md-6 col-sm-12"}
             additionClass={"mt-xl-4"}
           >
             <ChooseBranchFromHierarchical />
@@ -108,7 +110,8 @@ const ModifyLogs = () => {
             alignItems={"align-items-center"}
 
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} /> */}
+            <Search variant="Icon" onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -138,24 +141,22 @@ const ModifyLogs = () => {
             })}
           </ul>
         </div>
-      </Card>
-      <Card>
-        <div className="tab-content" id="myTabContent">
-          {LEAVE_TYPES.map((el) => {
-            return (
-              <div
-                className={`tab-pane fade ${active === el.id && "show active"}`}
-                id={`tabs-icons-text-${el.id}`}
-                role="tabpanel"
-                aria-labelledby={`tabs-icons-text-${el.id}-tab`}
-              >
-                {el.component}
-              </div>
-            )
-          })}
-        </div>
-      </Card>
-    </div>
+      </div>
+      <div className="tab-content" id="myTabContent">
+        {LEAVE_TYPES.map((el) => {
+          return (
+            <div
+              className={`tab-pane fade ${active === el.id && "show active"}`}
+              id={`tabs-icons-text-${el.id}`}
+              role="tabpanel"
+              aria-labelledby={`tabs-icons-text-${el.id}-tab`}
+            >
+              {el.component}
+            </div>
+          )
+        })}
+      </div>
+    </TableWrapper>
   );
 };
 

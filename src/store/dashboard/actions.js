@@ -40,7 +40,8 @@ import {
   EMPLOYEE_FACE_RE_REGISTER_REQUEST_FAIL,
   EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION,
   EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_SUCCESS,
-  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL
+  EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL,
+  TRIGGER_HIERARCHICAL
 
 } from "./actionTypes";
 
@@ -385,9 +386,18 @@ export const employeeEnableFaceReRegisterSuccess = (response) => {
   };
 };
 
+
 export const employeeEnableFaceReRegisterFail = (error) => {
   return {
     type: EMPLOYEE_ENABLE_FACE_RE_REGISTER_ACTION_FAIL,
     payload: error,
+  };
+};
+
+
+export const activeBranchTriggerHierarchical = (params) => {
+  return {
+    type: TRIGGER_HIERARCHICAL,
+    payload: params,
   };
 };

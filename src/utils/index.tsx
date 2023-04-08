@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH,COMMON_HEADER
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -276,7 +276,7 @@ const base64ToImage = (base64: any) => {
 const formatAMPM = (time: any) => {
   if (time) {
     let [hours, minutes, seconds] = time.split(':');
-    var ampm = hours >= 12 ? 'Pm' : 'Am';
+    var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12;
     let strTime = hours + ':' + minutes + ' ' + ampm;
@@ -402,5 +402,6 @@ export {
   MAX_LENGTH_PAN_CARD,
   CHILD_PATH,
   getTimelineRelativeTimeFormat,
-  convertToUpperCase
+  convertToUpperCase,
+  COMMON_HEADER
 }
