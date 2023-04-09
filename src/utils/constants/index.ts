@@ -68,7 +68,8 @@ export const ROUTE = {
   ROUTE_MANAGE_ESSL_CONFIG: '/manage-essl-config',
   ROUTE_MANAGE_ESSL_DEVICES: '/manage-essl-devices',
   ROUTE_APPROVALS: '/approvals',
-  ROUTE_ADD_DEDUCTION:'/add-deduction'
+  ROUTE_ADD_DEDUCTION:'/add-deduction',
+  ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION: '/view-employee-salary-definition'
 
 }
 

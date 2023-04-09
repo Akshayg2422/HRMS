@@ -1,4 +1,4 @@
-import { Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
+import { Card, Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
 import { goBack, goTo, ROUTE, showToast, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -35,12 +35,17 @@ function SalaryBreakDown() {
   const [remaining, setRemaining] = useState(60)
   const calendarYear = '2023-12-31'
   const [allowanceGroup, setAllowanceGroup] = useState('')
-
+  const [editSalaryDefinitionId, setEditSalaryDefinitionId] = useState("")
+  const [selectedDefinitionEditData, setSelectedDefinitionEditData] = useState<any>([])
 
 
 
   const { allowanceGroupsList, companyDeductionsList, selectedEmployeeDetails, isEditSalary } = useSelector(
     (state: any) => state.PayrollReducer
+  );
+
+  const { userDetails } = useSelector(
+    (state: any) => state.AuthReducer
   );
 
 
@@ -113,7 +118,6 @@ function SalaryBreakDown() {
     dispatch(getEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
-        console.log("success-->", success.details);
         prefillSalaryDefinitions(success.details)
       },
       onError: (error: any) => () => {
@@ -123,13 +127,25 @@ function SalaryBreakDown() {
   }
 
   const prefillSalaryDefinitions = (salaryDetails: any) => {
-    console.log("salaryDetails---->", salaryDetails);
 
+    setEditSalaryDefinitionId(salaryDetails.id)
     setAnnualCTC(salaryDetails.ctc)
+
+    let annualCtc: any = salaryDetails.ctc
+    let halfOfTheAnnual: any = 50 / 100 * annualCtc
+    let annualCtcPercentage = 1 * annualCtc
+    setMinimumAmount(halfOfTheAnnual)
+    setMaximumAmount(annualCtcPercentage)
+
     setBasicSalary(salaryDetails.base_salary_percent)
-    setAllowanceGroup(salaryDetails.id)
-    setSelectedDeductions(salaryDetails.deductions_group)
+    setAllowanceGroup(salaryDetails.allowance_break_down.id)
+    setSelectedDefinitionEditData(salaryDetails.deductions_group)
+    setSelectedDeductions(salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' })))
+
   }
+
+  console.log("seleccccc", selectedDefinitionEditData);
+
 
   const onTotalCalculator = () => {
     const AllowancePercentage = selectedDeductions.map((el: any) => {
@@ -236,7 +252,7 @@ function SalaryBreakDown() {
 
     const filteredApiKeys = selectedDeductions.map((el: any) => {
       return {
-        deduction_id: el.deduction_id,
+        ...(isEditSalary ? { id: el.deduction_id } : { deduction_id: el.deduction_id }),
         percent: el.percent,
         amount: el.amount,
         is_percent: el.type == "1" ? true : false
@@ -249,7 +265,8 @@ function SalaryBreakDown() {
       employee_id: selectedEmployeeDetails.id,
       calendar_year: calendarYear,
       allowance_break_down_group_id: allowanceGroup,
-      deductions_group_ids: filteredApiKeys
+      deductions_group_ids: filteredApiKeys,
+      ...(isEditSalary && { id: editSalaryDefinitionId })
     }
     console.log("cvcvvccvvcvc", params);
 
@@ -257,8 +274,7 @@ function SalaryBreakDown() {
     dispatch(addEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
-        console.log("success--->", success);
-        showToast('error', success.message)
+        showToast('success', success.message)
         goBack(navigation)
       },
       onError: (error: any) => () => {
@@ -273,11 +289,30 @@ function SalaryBreakDown() {
 
   return (
     <ScreenContainer>
-      <FormWrapper
-        isTitle
-        title={t('SalaryCalculation')}
-        buttonDisable={isSumbitDisable || remaining < 0 ? true : false}
-        onClick={() => onSubmit()}>
+      <Card>
+
+        <Container additionClass='d-flex justify-content-between mb-3'>
+
+          <h3>{isEditSalary ? 'Edit Employee salary definition' : 'Employee salary definition'}</h3>
+
+          {userDetails.is_admin && (
+            <Container >
+              <Primary
+                size={'btn-sm'}
+                text={t('AddAllowance')}
+                onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
+              />
+              <Primary
+                size={'btn-sm'}
+                text={t('AddDeduction')}
+                onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
+              />
+            </Container>
+          )}
+
+        </Container>
+
+
 
         <InputText
           label={t("CostOfTheCompany")}
@@ -317,32 +352,20 @@ function SalaryBreakDown() {
 
             />
           </div>
-          <Icon
+          {/* <Icon
             text={"+"}
             onClick={() => {
               goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)
             }}
-          />
+          /> */}
         </div>
-        <div className="text-right">
-
-          <Primary
-            size={'btn-sm'}
-            text={'Select deduction'}
-            onClick={() => {
-              setDeduction('')
-              setDeductionAddModal(!deductionAddModal)
-            }}
-          />
-          <Primary
-            size={'btn-sm'}
-            text={t('AddDeduction')}
-            onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
-          />
-
+        <div className="mb-3">
+          <h3>{'Deduction breakdown'}</h3>
         </div>
 
         {selectedDeductions && selectedDeductions.length > 0 && selectedDeductions.map((el: any, i: number) => {
+
+          const isEditData = selectedDefinitionEditData.some((item: any) => item.id !== el.id)
           return (
             <Container additionClass='row'>
               <Container additionClass={'col-xl-5 col col-sm-0'}>
@@ -371,9 +394,15 @@ function SalaryBreakDown() {
                       setSelectedDeductions(updatePercentage)
                     }}
                   />
-                  <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
-                    onDeleteAllowence(el)
-                  }} /></td>
+                  <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
+                    {isEditData ?
+                      <ImageView icon={Icons.Remove} onClick={() => {
+                        onDeleteAllowence(el)
+                      }} /> :
+                      <></>
+                    }
+
+                  </td>
                 </Container>
               </Container>
             </Container>
@@ -381,10 +410,25 @@ function SalaryBreakDown() {
         })}
 
         {isPercentageExist && (
-          <h5 className=" mb--3 font-weight-light mt-2" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
+          <h5 className="font-weight-light" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
         )}
 
-      </FormWrapper>
+        <Primary
+          size={'btn-sm'}
+          text={selectedDeductions.length > 0 ? 'Add another' : 'Add new'}
+          onClick={() => {
+            setDeduction('')
+            setDeductionAddModal(!deductionAddModal)
+          }}
+        />
+        <div className='text-right mt-3'>
+          <Primary
+            size={'btn-md'}
+            text={isEditSalary ? t('update') : t('submit')}
+            onClick={() => onSubmit()}
+          />
+        </div>
+      </Card>
       <Modal
         title={'Select deduction'}
         showModel={deductionAddModal}

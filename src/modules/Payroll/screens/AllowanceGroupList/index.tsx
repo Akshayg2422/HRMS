@@ -104,10 +104,10 @@ function AllowanceGroupList() {
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedAllowanceList(allowanceGroupsList?.data)}
-                    tableOnClick={(e, index, item) => {
-                        const current = allowanceGroupsList?.data[index]
-                        getAllowanceDetails(current)
-                    }}
+                    // tableOnClick={(e, index, item) => {
+                    //     const current = allowanceGroupsList?.data[index]
+                    //     getAllowanceDetails(current)
+                    // }}
                 />
             ) : <NoRecordFound />}
         </>

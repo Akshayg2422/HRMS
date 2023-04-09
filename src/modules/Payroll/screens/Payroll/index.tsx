@@ -75,6 +75,8 @@ function PayRoll() {
                 break;
 
             case 'View':
+                dispatch(settingSelectedEmployeeDetails(data))
+                goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION);
                 break;
         }
     }

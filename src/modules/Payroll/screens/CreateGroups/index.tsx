@@ -40,6 +40,7 @@ function CreateGroup() {
     const [editAllowanceItem, setEditAllowanceItem] = useState<any>()
     const [isSumbitDisable, setIsSubmitDisable] = useState(false)
     const [remaining, setRemaining] = useState(60)
+    const [selectedAllowanceEditData, setSelectedAllowanceEditData] = useState<any>([])
 
     const { groupFor, companyAllowanceList, selectedAllowanceGroupDetails } = useSelector(
         (state: any) => state.PayrollReducer
@@ -64,7 +65,10 @@ function CreateGroup() {
         dispatch(getAllowanceGroupDetails({
             params,
             onSuccess: (success: any) => () => {
+                console.log("success?.details", success?.details);
+
                 setGroupName(selectedAllowanceGroupDetails.name)
+                setSelectedAllowanceEditData(success?.details?.allowance_break_down?.allowance_items)
                 setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
                 setSelectedAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
             },
@@ -214,7 +218,7 @@ function CreateGroup() {
 
         const filteredApiKeys = selectedAllowances.map((el: any) => {
             return {
-                allowance_id: el.allowance_id,
+                ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el.id }),
                 percent: el.percent,
                 amount: el.amount,
                 is_percent: el.type == "1" ? true : false
@@ -225,7 +229,7 @@ function CreateGroup() {
             const params = {
                 name: groupName,
                 calendar_year: calendarYear,
-                allowances_ids: filteredApiKeys,
+                allowances_items: filteredApiKeys,
                 ...(selectedAllowanceGroupDetails && { id: selectedAllowanceGroupDetails.id })
             }
 
@@ -292,17 +296,6 @@ function CreateGroup() {
                     <Container additionClass='mb-4'>
                         <h3>{!selectedAllowanceGroupDetails ? t('CreateAllowanceGroup') : t('editAllowanceGroup')}</h3>
                     </Container>
-
-                    <Container>
-                        <Primary
-                            text={t('AddAllowance')}
-                            onClick={() => {
-                                getCompanyAllowanceList()
-                                setSelectAddAllowanceModel(!selectAllowanceModel)
-                            }}
-                            size={"btn-sm"}
-                        />
-                    </Container>
                 </Container>
 
 
@@ -317,9 +310,14 @@ function CreateGroup() {
                     />
                 </Container>
 
+                <Container additionClass='mb-3'>
+                    <h3>{'Allowance breakdown'}</h3>
+                </Container>
 
                 <Container>
                     {selectedAllowances && selectedAllowances.length > 0 && selectedAllowances.map((el: any, i: number) => {
+
+                        const isEditData = selectedAllowanceEditData.some((item: any) => item.id !== el.id)
 
                         return (
                             <Container additionClass='row'>
@@ -349,9 +347,12 @@ function CreateGroup() {
                                                 setSelectedAllowances(updatePercentage)
                                             }}
                                         />
-                                        <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}><ImageView icon={Icons.Remove} onClick={() => {
-                                            onDeleteAllowence(el)
-                                        }} /></td>
+                                        <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
+                                            {isEditData ?
+                                                <ImageView icon={Icons.Remove} onClick={() => {
+                                                    onDeleteAllowence(el)
+                                                }} /> : <></>}
+                                        </td>
                                     </Container>
                                 </Container>
                             </Container>
@@ -360,8 +361,19 @@ function CreateGroup() {
                 </Container>
 
                 {isPercentageExist && (
-                    <h5 className=" mb--3 font-weight-light " style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
+                    <h5 className="font-weight-light " style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
                 )}
+
+                <Container>
+                    <Primary
+                        text={selectedAllowances.length > 0 ? 'Add another' : 'Add new'}
+                        onClick={() => {
+                            getCompanyAllowanceList()
+                            setSelectAddAllowanceModel(!selectAllowanceModel)
+                        }}
+                        size={"btn-sm"}
+                    />
+                </Container>
 
 
                 {selectedAllowances && selectedAllowances.length > 0 && (
@@ -394,6 +406,10 @@ function CreateGroup() {
                         {companyAllowanceList.data && companyAllowanceList?.data?.map((el: any) => {
 
                             const isActive = allowances.some((item: any) => item.id === el.id)
+                            console.log("qqqqqqqqqqq", allowances);
+                            console.log("companyAllowanceList", companyAllowanceList);
+
+
                             return (
                                 <Container additionClass='d-flex justify-content-between my-4'>
                                     <Container additionClass='col-xl-6 col-sm-0 '>
