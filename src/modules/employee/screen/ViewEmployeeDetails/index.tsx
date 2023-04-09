@@ -23,7 +23,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllBranchesList } from '../../../../store/location/actions'
+import { getAllBranchesList, getListAllBranchesList } from '../../../../store/location/actions'
 import {
   changeAttendanceSettings,
   getDepartmentData,
@@ -128,10 +128,9 @@ const ViewEmployeeDetails = () => {
   useEffect(() => {
     getDepartmentDataList()
     getDesignationDataList()
-
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: (success: object) => () => {
           setBranchesExist(true)
@@ -258,9 +257,6 @@ const ViewEmployeeDetails = () => {
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
         employeeInitData.firstName = editEmployeeDetails.first_name;
-
-      // if (editEmployeeDetails.id)
-      //   employeeInitData.id = editEmployeeDetails.id;
 
       if (
         editEmployeeDetails &&

@@ -282,7 +282,7 @@ const DashBoardAttendance = ({ }) => {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text?it.address_text : "       -",
+        address: it.address_text ? it.address_text : "       -",
       };
     });
   };
@@ -430,7 +430,6 @@ const DashBoardAttendance = ({ }) => {
   return (
     <div className="mx-3">
       <Card>
-        <BackArrow additionClass={"my-3"} />
         <Container additionClass={"col"}>
           <div className="row">
             <Container additionClass={"row"}>

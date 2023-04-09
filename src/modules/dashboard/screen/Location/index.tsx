@@ -344,7 +344,7 @@ function LocationScreen() {
               // SelectedBranchFilter()
             }}
           /> */}
-            <Search variant="Icon"  additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={()=>{}} />
+            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData() }} />
 
           </Container>
         }
