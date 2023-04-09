@@ -128,6 +128,7 @@ const ViewEmployeeDetails = () => {
   useEffect(() => {
     getDepartmentDataList()
     getDesignationDataList()
+
     const params = {};
     dispatch(
       getListAllBranchesList({
@@ -258,6 +259,9 @@ const ViewEmployeeDetails = () => {
       if (editEmployeeDetails.first_name)
         employeeInitData.firstName = editEmployeeDetails.first_name;
 
+      // if (editEmployeeDetails.id)
+      //   employeeInitData.id = editEmployeeDetails.id;
+
       if (
         editEmployeeDetails &&
         editEmployeeDetails.attendance_settings?.id
@@ -363,7 +367,7 @@ const ViewEmployeeDetails = () => {
         employeeInitData.faceRegisterEnable =
           editEmployeeDetails.attendance_settings?.face_validation_required;
     }
-    console.log("employeeInitData", employeeInitData);
+    // console.log("employeeInitData", employeeInitData);
     setEmployeeDetails(employeeInitData);
   };
 
@@ -376,7 +380,7 @@ const ViewEmployeeDetails = () => {
 
 
   return (
-    <ScreenContainer >
+    <ScreenContainer additionClass={'mb--5'}>
       <FormWrapper hideFooter title={t("viewEmployeeDetails")} isTitle>
 
         <ScreenTitle title={'Basic Information'} />
