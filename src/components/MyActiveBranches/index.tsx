@@ -10,18 +10,10 @@ import { activeBranchTriggerHierarchical, setBranchHierarchical } from "../../st
 
 
 type LocationProps = {
-    name: string;
-    id: string;
-    has_location: boolean;
-    can_update_location: boolean;
-    parent_id: string;
-    fencing_radius: number;
-    geo_location_id: string;
-    fence_admin_id: string;
-    child?: any;
+    isReload?: boolean
 };
 
-function MyActiveBranches() {
+function MyActiveBranches({ isReload = false }: LocationProps) {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const { RenderAdminBranch, adminCurrentPage } = useSelector((state: any) => state.EmployeeReducer);
@@ -32,14 +24,20 @@ function MyActiveBranches() {
     );
     const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
 
+    console.log("isreloaddd", isReload);
+
 
     useEffect(() => {
-        getAdminBranchesData()
-    }, [RenderAdminBranch]);
+        if (isReload === true) {
+            getAdminBranchesData()
+        }
+    }, [RenderAdminBranch, isReload]);
 
     useEffect(() => {
-        branchAdmins(adminCurrentPage)
-    }, []);
+        if (isReload === true) {
+            branchAdmins(adminCurrentPage)
+        }
+    }, [isReload]);
 
     const getAdminBranchesData = () => {
         const params = {}

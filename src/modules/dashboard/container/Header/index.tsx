@@ -300,7 +300,7 @@ const Header = () => {
         showModel={activeBranchModel}
         toggle={() => setActiveBranchModel(!activeBranchModel)}>
         <Container additionClass='col-xl-5'>
-          <MyActiveBranches />
+          <MyActiveBranches isReload={activeBranchModel === true ? true : false} />
         </Container>
         <Container
           margin={'m-3'}
