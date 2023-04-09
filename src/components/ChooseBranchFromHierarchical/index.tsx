@@ -72,7 +72,7 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
           }
         },
         onError: (error: any) => () => {
-          showToast('error',error)
+          showToast('error', error)
         },
       })
     );
@@ -147,7 +147,9 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
       <div className="form-group">
         <small className="form-control-label text-black">{t("MyBranches")}</small>
         <div onClick={() => {
-          getBranchToSet()
+          if (Object.keys(hierarchicalBranch).length == 0) {
+            getBranchToSet()
+          }
           setModel(!model)
         }}>
           <InputDefault disabled={true} value={hierarchicalBranchName} />

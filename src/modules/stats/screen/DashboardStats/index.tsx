@@ -76,22 +76,31 @@ const DashboardStats = () => {
     dispatch(getDashboard({
       DashboardParams,
       onSuccess: (success: any) => () => {
-        const params = {}
-        dispatch(getListAllBranchesList({
-          params,
-          onSuccess: (response: any) => () => {
-            const childIds = getAllSubBranches(response, success.company_branch.id)
-            getStatsDetails({ branch_id: success.company_branch.id, child_ids: childIds, include_child: false })
-            dispatch(setBranchHierarchical({ ids: { branch_id: success.company_branch.id, child_ids: childIds, include_child: false }, name: success.company_branch.name }))
-          },
-          onError: () => () => {
-          },
-        }))
+        conditionalRendering(success)
       },
       onError: (error: any) => () => {
       }
     }))
   }, []);
+
+
+  const conditionalRendering = (dashboardResponse: any) => {
+    if (!hierarchicalBranchIds.branch_id) {
+      const params = {}
+      dispatch(getListAllBranchesList({
+        params,
+        onSuccess: (response: any) => () => {
+          const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
+          getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
+          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
+        },
+        onError: () => () => {
+        },
+      }))
+    } else {
+      getStatsDetails({...hierarchicalBranchIds})
+    }
+  }
 
   useEffect(() => {
     initialCall && getStatsDetails({ ...hierarchicalBranchIds })

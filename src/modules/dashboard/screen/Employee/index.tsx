@@ -270,6 +270,8 @@ function EmployeeScreen() {
   };
 
   function proceedSearchApi() {
+    console.log('========>', 'called');
+
     getEmployeesApi(currentPage);
   }
 
@@ -330,7 +332,6 @@ function EmployeeScreen() {
       associated_branch: [...branchIds, defaultBranchId],
     };
 
-    console.log("calleddd--->");
 
     dispatch(
       updateEmployeeCheckinAssociations({
@@ -468,7 +469,7 @@ function EmployeeScreen() {
                 alignItems={"align-items-center"}
               >
                 {/* <Icon  icon={Icons.Search} /> */}
-                <Search variant="Icon" onClick={proceedSearchApi} />
+                <Search variant="Icon" onClick={() => getEmployeesApi(currentPage)} />
               </Container>
             </Container>
           </Container>
@@ -526,6 +527,29 @@ function EmployeeScreen() {
           </Container>
         </Modal>
       )}
+      <Modal
+        title={t("deleteUser")}
+        showModel={deleteModel}
+        toggle={() => setDeleteModel(!deleteModel)}
+      >
+        <Container>
+          <span className="ml-3">{t("deleteWarningMessage")}</span>
+          <Container
+            margin={"m-5"}
+            justifyContent={"justify-content-end"}
+            display={"d-flex"}
+          >
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setDeleteModel(!deleteModel)}
+            />
+            <Primary
+              text={t("proceed")}
+              onClick={() => manageProceedHandler()}
+            />
+          </Container>
+        </Container>
+      </Modal>
     </>
   );
 }
