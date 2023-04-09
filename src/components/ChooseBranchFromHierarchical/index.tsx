@@ -137,7 +137,6 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
         name: item.name,
       })
     );
-    getBranchToSet()
     setModel(!model);
   }
 
