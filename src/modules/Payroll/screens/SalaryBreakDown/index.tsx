@@ -182,7 +182,6 @@ function SalaryBreakDown() {
       if (basicSalary >= minimumAmount && basicSalary <= maximumAmount) {
         setColor("#000000")
         setIsSubmitDisable(false)
-
       }
       else {
         setIsSubmitDisable(true)
