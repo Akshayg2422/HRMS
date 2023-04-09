@@ -13,16 +13,16 @@ const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
-  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 const DROPDOWN_MENU_1 = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 const DROPDOWN_MENU_2 = [
   { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 
 
@@ -97,17 +97,23 @@ function LocationScreen() {
 
 
   useEffect(() => {
-    if (enterPress) {
+    if (enterPress && isOpenFenceModal === false) {
       getAllBranchesListData()
     }
   }, [enterPress])
 
   useEffect(() => {
-    if (enterPress && model === true) {
+
+    if (selectedBranchId) {
+      getRegisteredFenceAdmin(currentPage)
+    }
+  }, [selectedBranchId])
+
+  useEffect(() => {
+    if (enterPress && isOpenFenceModal === true) {
       getRegisteredFenceAdmin(currentPage);
     }
-    getRegisteredFenceAdmin(currentPage)
-  }, [enterPress, selectedBranchId])
+  }, [enterPress])
 
   useEffect(() => {
     if (inputRef.current) {
@@ -142,8 +148,9 @@ function LocationScreen() {
   function proceedModelHandler(selectedBranch: any) {
     setSelectedBranchId(selectedBranch);
     setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
-    getRegisteredFenceAdmin(currentPage)
     setIsOpenFenceModal(!isOpenFenceModal)
+
+    getRegisteredFenceAdmin(currentPage)
   }
 
   function getRegisteredFenceAdmin(pageNumber: number) {
@@ -456,6 +463,7 @@ function LocationScreen() {
           </Container>
           {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
             <CommonTable
+              card={false}
               noHeader
               isPagination
               currentPage={currentPage}

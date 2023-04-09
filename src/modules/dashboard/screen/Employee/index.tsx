@@ -66,9 +66,9 @@ type Branch = {
 };
 
 export const DROPDOWN_MENU_ADMIN = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '1', name: 'Edit', value: 'PF', icon: 'bi bi-pen-fill' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-pin-3' },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
@@ -125,15 +125,18 @@ function EmployeeScreen() {
 
   useEffect(() => {
     const params = {}
-    dispatch(getListAllBranchesList({
-      params,
-      onSuccess: (success: any) => () => {
+    // if (listBranchesList) {
+    //   dispatch(getListAllBranchesList({
+    //     params,
+    //     onSuccess: (success: any) => () => {
 
-      },
-      onError: (error: any) => () => {
+    //     },
+    //     onError: (error: any) => () => {
 
-      }
-    }))
+    //     }
+    //   }))
+    // }
+
   }, [])
 
   useEffect(() => {
@@ -181,15 +184,6 @@ function EmployeeScreen() {
 
       case 'Assign Location':
         getEmployeeAssociationBranch(id)
-        break;
-
-      case 'Enable office checkIn':
-        break;
-
-      case 'Enable field checkIn':
-        break;
-
-      case 'Enable face validation':
         break;
     }
   }
@@ -287,7 +281,9 @@ function EmployeeScreen() {
       onError: (error: string) => () => { },
     }));
 
-    getAllBranchesListData()
+    if(listBranchesList.length < 1){
+      getAllBranchesListData()
+    }
 
     setModel(!model);
   }

@@ -7,6 +7,7 @@ import {
     ChooseBranchFromHierarchical,
     NoRecordFound,
     TableWrapper,
+    CommonDropdownMenu,
 } from "@components";
 import React, { useEffect, useMemo } from "react";
 import { Icons } from "@assets";
@@ -21,13 +22,19 @@ import {
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
+import { isEditEmployeeSalaryDefinition, settingSelectedEmployeeDetails } from '../../../../store/Payroll/actions';
+
+export const DROPDOWN_MENU = [
+    { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+    { id: '2', name: 'View', value: 'CL', icon: 'ni ni-active-40' },
+]
 
 function PayRoll() {
     let dispatch = useDispatch();
     const { t } = useTranslation();
     const navigation = useNav();
 
-    const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
+    const { registeredEmployeesList, numOfPages, currentPage, isEditSalary } = useSelector(
         (state: any) => state.EmployeeReducer
     );
 
@@ -57,6 +64,23 @@ function PayRoll() {
         }));
     }
 
+    const dropdownMenuItemActionHandler = (item: any, data?: any) => {
+
+        switch (item.name) {
+            case 'Edit':
+                dispatch(settingSelectedEmployeeDetails(data))
+                dispatch(isEditEmployeeSalaryDefinition(!isEditSalary))
+                goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
+
+                break;
+
+            case 'View':
+                dispatch(settingSelectedEmployeeDetails(data))
+                goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION);
+                break;
+        }
+    }
+
     const normalizedEmployeeLog = (data: any) => {
         return data.map((el: any) => {
             return {
@@ -64,6 +88,14 @@ function PayRoll() {
                 name: el.name,
                 "mobile number": el.mobile_number,
                 branch: el.branch,
+                "  ":
+                    <CommonDropdownMenu
+                        data={DROPDOWN_MENU}
+                        onItemClick={(e, item) => {
+                            e.stopPropagation();
+                            dropdownMenuItemActionHandler(item, el)
+                        }}
+                    />
             };
         });
     };
@@ -96,7 +128,8 @@ function PayRoll() {
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
                     tableOnClick={(e, index, item) => {
-                        const selectedId = registeredEmployeesList[index].id;
+                        const selectedItem = registeredEmployeesList[index];
+                        dispatch(settingSelectedEmployeeDetails(selectedItem))
                         goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
                     }}
                 />

@@ -238,3 +238,47 @@ export const enableOfficeCheckInApi = (payload) => post(url.POST_ENABLE_OFFICE_C
 //changeAttendanceSettings  
 
 export const changeAttendanceSettingsApi = (payload) => post(url.FACE_VALIDATION_STATUS, payload, {})
+
+/**
+ * Payroll
+ */
+
+//Add company allowance
+
+export const addCompanyAllowanceApi = (payload) => post(url.ADD_COMPANY_ALLOWANCE_URL, payload, {})
+
+//Add company deduction
+
+export const addCompanyDeductionApi = (payload) => post(url.ADD_COMPANY_DEDUCTION_URL, payload, {})
+
+//Add allowance group
+
+export const addAllowanceGroupApi = (payload) => post(url.ADD_ALLOWANCE_GROUP_URL, payload, {})
+
+//Get allowance group
+
+export const fetchAllowanceGroupsApi = (payload) => post(url.FETCH_ALLOWANCE_GROUP_URL, payload, {})
+
+//Get allowance group details
+
+export const fetchAllowanceGroupDetailsApi = (payload) => post(url.FETCH_ALLOWANCE_GROUP_DETAILS_URL, payload, {})
+
+//Get company allowance
+
+export const fetchCompanyAllowanceApi = (payload) => post(url.FETCH_COMPANY_ALLOWANCE_URL, payload, {})
+
+//Get company deductions
+
+export const fetchCompanyDeductionsApi = (payload) => post(url.GET_COMPANY_DEDUCTIONS_URL, payload, {})
+
+//add employee salary definition
+
+export const addEmployeeSalaryDefinitionApi = (payload) => post(url.ADD_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
+
+//get employee salary definition
+
+export const getEmployeeSalaryDefinitionApi = (payload) => post(url.GET_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
+
+
+
+

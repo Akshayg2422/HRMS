@@ -54,7 +54,9 @@ import {
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
+
 import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
+import { getListAllBranchesList } from "../../../../store/location/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -96,6 +98,9 @@ const ManageEmployee = () => {
   const { dashboardDetails, hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
+
+  const { listBranchesList } =
+    useSelector((state: any) => state.LocationReducer);
 
 
 
@@ -154,27 +159,32 @@ const ManageEmployee = () => {
 
     getBranchShiftsList()
 
-    const params = {};
-    dispatch(
-      getAllBranchesList({
-        params,
-        onSuccess: (success: any) => () => {
+    if (listBranchesList.length === 0) {
+      const params = {};
 
-          const parentBranch = success.find(
-            (it: any) => it.id === dashboardDetails.company_branch.id
-          );
+      dispatch(
+        getListAllBranchesList({
+          params,
+          onSuccess: (success: any) => () => {
 
-          setCompanyBranchDropdownData([
-            ...getAllSubBranches(
-              success,
-              dashboardDetails.company_branch.id
-            ),
-            parentBranch,
-          ]);
-        },
-        onError: (error: string) => () => { },
-      })
-    );
+            const parentBranch = success.find(
+              (it: any) => it.id === dashboardDetails.company_branch.id
+            );
+
+            setCompanyBranchDropdownData([
+              ...getAllSubBranches(
+                success,
+                dashboardDetails.company_branch.id
+              ),
+              parentBranch,
+            ]);
+          },
+          onError: (error: string) => () => { },
+        })
+      );
+    }
+
+
     setDesignationNote('')
 
   }, [isRefresh]);
