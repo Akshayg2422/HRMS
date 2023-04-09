@@ -103,8 +103,15 @@ function Otp() {
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
           dispatch(setUserLoginDetails(params))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
-          goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
-      
+          const DashboardParams = {}
+          dispatch(getDashboard({
+            DashboardParams,
+            onSuccess: (success: any) => () => {
+              goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
+            },
+            onError: (error: any) => () => {
+            }
+          }))
         } else {
           showToast('error', t('invalidAdmin'));
         }

@@ -44,6 +44,9 @@ const DashboardStats = () => {
     (state: any) => state.DashboardReducer
   );
 
+  const { listBranchesList } = useSelector(
+    (state: any) => state.LocationReducer
+  );
 
   const [model, setModel] = useState(false);
   const [selectedDepartmentId, setSelectedDepartmentId] = useState("");
@@ -72,20 +75,24 @@ const DashboardStats = () => {
 
 
   useEffect(() => {
-    const DashboardParams = {}
-    dispatch(getDashboard({
-      DashboardParams,
-      onSuccess: (success: any) => () => {
-        conditionalRendering(success)
-      },
-      onError: (error: any) => () => {
-      }
-    }))
-  }, []);
+    // const DashboardParams = {}
+    // dispatch(getDashboard({
+    //   DashboardParams,
+    //   onSuccess: (success: any) => () => {
+    //     conditionalRendering(success)
+    //   },
+    //   onError: (error: any) => () => {
+    //   }
+    // }))
+    // if(dashboardDetails)
+    if(dashboardDetails){
+      conditionalRendering(dashboardDetails)
+    }
+  }, [dashboardDetails]);
 
 
   const conditionalRendering = (dashboardResponse: any) => {
-    if (!hierarchicalBranchIds.branch_id) {
+    if (listBranchesList.length == 0) {
       const params = {}
       dispatch(getListAllBranchesList({
         params,
@@ -98,7 +105,7 @@ const DashboardStats = () => {
         },
       }))
     } else {
-      getStatsDetails({...hierarchicalBranchIds})
+      getStatsDetails({ ...hierarchicalBranchIds })
     }
   }
 
