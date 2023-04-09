@@ -268,7 +268,7 @@ function Reports() {
               setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
               dispatch(resetMisReportData([]))
             }} />
-          {reportsType === "log" || reportsType === 'shift' && <div className="col-lg-3 col-md-12">
+          {(reportsType === "log") || (reportsType === 'shift') && <div className="col-lg-3 col-md-12">
             <DropDown
               label={t('attendanceType')}
               placeholder={"Select Attendance"}

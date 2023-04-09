@@ -37,20 +37,33 @@ const initialState = {
   error: "",
   associatedBranch: [],
   associatedId: '',
-  defaultBranchId: ''
+  defaultBranchId: '',
+  numOfPages: 0,
+  currentPage: 1,
 }
 
 const LocationReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case FETCH_ALL_BRANCHES_LIST:
-      state = { ...state, loading: true };
+      state = {
+        ...state, loading: true,
+        numOfPages: 0,
+        currentPage: 1,
+      };
+
       break;
     case FETCH_ALL_BRANCHES_LIST_SUCCESS:
+      const branches = action.payload;
       state = {
         ...state,
         loading: false,
-        brancheslist: action.payload
+        brancheslist: branches.data,
+        numOfPages: branches.num_pages,
+        currentPage:
+          branches.next_page === -1
+            ? branches.num_pages
+            : branches.next_page - 1,
       };
       break;
     case FETCH_ALL_BRANCHES_LIST_FAILURE:
@@ -196,24 +209,24 @@ const LocationReducer = (state = initialState, action) => {
       };
       break;
 
-      case FETCH_LIST_ALL_BRANCHES_LIST:
-        state = { ...state, loading: true };
-        break;
+    case FETCH_LIST_ALL_BRANCHES_LIST:
+      state = { ...state, loading: true };
+      break;
 
-      case FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-          listBranchesList: action.payload
-        };
-        break;
-      case FETCH_LIST_ALL_BRANCHES_LIST_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
+    case FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        listBranchesList: action.payload
+      };
+      break;
+    case FETCH_LIST_ALL_BRANCHES_LIST_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     case RESET_REDUCER:
       state = initialState;
