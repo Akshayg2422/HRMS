@@ -1,50 +1,20 @@
 import {
-  InputDefault,
-  InputMail,
-  InputNumber,
-  InputText,
-  FormWrapper,
-  TimePicker,
-  Icon,
-  Modal,
-  CheckBox,
   ScreenContainer,
-  ScreenTitle,
-  FormTypography,
-  Container,
-  Divider,
   Card,
 } from "@components";
-import {
-  GENDER_LIST,
-  getObjectFromArrayByKey,
-  getDropDownValueByID,
-  showToast,
-} from "@utils";
-import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { getAllBranchesList, getListAllBranchesList } from '../../../../store/location/actions'
-import {
-  changeAttendanceSettings,
-  getDepartmentData,
-  getDesignationData,
-  getEmployeeDetails,
-  postEnableFieldCheckIn,
-  postEnableOfficeCheckIn,
-} from "../../../../store/employee/actions";
 import { AttendanceView, BasicView, LogView, PayrollView } from "./Container";
 
 const EMPLOYEE_VIEW_TYPES = [
-  { id: 1, name: 'Basic', value: -1, component: <BasicView /> },
-  { id: 2, name: 'Attendance', value: -2, component: <AttendanceView /> },
-  { id: 3, name: 'Log', value: 1, component: <LogView /> },
-  { id: 4, name: 'Payroll', value: 0, component: <PayrollView /> },
+  { id: 1, name: 'Basic', value: 1 },
+  { id: 2, name: 'Attendance', value: 2 },
+  { id: 3, name: 'Log', value: 3 },
+  { id: 4, name: 'Payroll', value: 4 },
 ];
 
 
 const ViewEmployeeDetails = () => {
-  const [currentView, setCurrentView] = useState(-1)
+  const [currentView, setCurrentView] = useState(1)
 
   return (
     <ScreenContainer additionClass={'mb--5'}>
@@ -64,7 +34,12 @@ const ViewEmployeeDetails = () => {
           })}
         </ul>
       </Card>
-      
+      <div className="mx--3">
+        {currentView === 1 && <BasicView />}
+        {currentView === 2 && <AttendanceView />}
+        {currentView === 3 && <LogView />}
+        {currentView === 4 && <PayrollView />}
+      </div>
     </ScreenContainer>
   );
 };
