@@ -42,7 +42,7 @@ function* getAllBranches(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(getAllBranchesListSuccess(response));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
     } else {
       yield put(hideLoader());
       yield put(getAllBranchesListFailure(response.error_message));

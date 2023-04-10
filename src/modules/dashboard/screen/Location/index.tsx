@@ -49,7 +49,8 @@ function LocationScreen() {
   ]
 
   const [branch, setBranch] = useState<any>([])
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+  const { locationNumOfPages,
+    LocationCurrentPage } = useSelector((state: any) => state.LocationReducer);
 
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
@@ -75,18 +76,19 @@ function LocationScreen() {
   const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 500, 1000];
 
   useEffect(() => {
-    getAllBranchesListData()
+    getAllBranchesListData(LocationCurrentPage)
   }, [isRefresh]);
 
-  const getAllBranchesListData = () => {
+  const getAllBranchesListData = (pageNumber: number) => {
     const params = {
-      ...(searchBranches && { q: searchBranches })
+      ...(searchBranches && { q: searchBranches }),
+      page_number: pageNumber,
     };
     dispatch(
       getAllBranchesList({
         params,
         onSuccess: (response: any) => () => {
-          setBranch(response)
+          setBranch(response.data)
         },
         onError: () => () => {
         },
@@ -94,11 +96,9 @@ function LocationScreen() {
     );
   }
 
-  console.log("branch----->", branch);
-
   useEffect(() => {
     if (enterPress && isOpenFenceModal === false) {
-      getAllBranchesListData()
+      getAllBranchesListData(LocationCurrentPage)
     }
   }, [enterPress])
 
@@ -179,7 +179,7 @@ function LocationScreen() {
     dispatch(addFenceAdmin({
       params,
       onSuccess: (success: any) => () => {
-        getAllBranchesListData()
+        getAllBranchesListData(LocationCurrentPage)
         showToast("success", success.message);
         setIsOpenFenceModal(!isOpenFenceModal)
       },
@@ -299,11 +299,31 @@ function LocationScreen() {
     getRegisteredFenceAdmin(page)
   }
 
+  function branchPaginationHandler(
+    type: "next" | "prev" | "current",
+    position?: number
+  ) {
+    let page =
+      type === "next"
+        ? LocationCurrentPage + 1
+        : type === "prev"
+          ? LocationCurrentPage - 1
+          : position;
+    getAllBranchesListData(page)
+  }
 
   const memoizedTable = useMemo(() => {
     return <>
       {branch && branch.length > 0 ? (
         <CommonTable
+          isPagination
+          currentPage={LocationCurrentPage}
+          noOfPage={locationNumOfPages}
+          paginationNumberClick={(currentPage) => {
+            branchPaginationHandler("current", currentPage);
+          }}
+          previousClick={() => branchPaginationHandler("prev")}
+          nextClick={() => branchPaginationHandler("next")}
           card={false}
           displayDataSet={normalizedEmployeeLog(branch)}
         />
@@ -350,7 +370,7 @@ function LocationScreen() {
               // SelectedBranchFilter()
             }}
           /> */}
-            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData() }} />
+            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
 
           </Container>
         }

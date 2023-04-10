@@ -415,7 +415,6 @@ function EmployeeScreen() {
     </>
   }, [registeredEmployeesList])
 
-  console.log("modalllll", model);
 
 
   return (
