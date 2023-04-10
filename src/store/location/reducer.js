@@ -58,7 +58,7 @@ const LocationReducer = (state = initialState, action) => {
       state = {
         ...state,
         loading: false,
-        brancheslist: branches.data,
+        brancheslist: branches.data.details,
         numOfPages: branches.num_pages,
         currentPage:
           branches.next_page === -1
