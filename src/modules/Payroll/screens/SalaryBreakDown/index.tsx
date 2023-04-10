@@ -139,10 +139,12 @@ function SalaryBreakDown() {
 
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails.allowance_break_down.id)
-    setSelectedDefinitionEditData(salaryDetails.deductions_group)
-    setSelectedDeductions(salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' })))
+    const newKeyAddedArray = salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' }))
+    setSelectedDefinitionEditData(newKeyAddedArray)
+    setSelectedDeductions(newKeyAddedArray)
 
   }
+  console.log("wwwwwww", selectedDeductions);
 
   console.log("seleccccc", selectedDefinitionEditData);
 
@@ -294,21 +296,6 @@ function SalaryBreakDown() {
 
           <h3>{isEditSalary ? 'Edit Employee salary definition' : 'Employee salary definition'}</h3>
 
-          {userDetails.is_admin && (
-            <Container >
-              <Primary
-                size={'btn-sm'}
-                text={t('AddAllowance')}
-                onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
-              />
-              <Primary
-                size={'btn-sm'}
-                text={t('AddDeduction')}
-                onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
-              />
-            </Container>
-          )}
-
         </Container>
 
 
@@ -442,6 +429,8 @@ function SalaryBreakDown() {
             onChange={(e) => {
               setDeduction(e.target.value)
               setDeductionAddModal(!deductionAddModal)
+              console.log("111111111111", selectedDeductions);
+
               const isDeductionExist = selectedDeductions && selectedDeductions.length > 0 && selectedDeductions.some((item: any) => item.id === e.target.value)
               if (!isDeductionExist) {
                 onDeductionDropdownChangeHandler(e.target.value)

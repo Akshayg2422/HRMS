@@ -60,7 +60,7 @@ function ViewEmployeeSalaryDefinition() {
                     </div>
                 </Container>
 
-                <Container additionClass={'col-xl-12 row col-sm-3'}>
+                <Container additionClass={'col-xl-12 row col-sm-3 mb-3'}>
                     <div className="col-xl-6">
                         <FormTypography title={'Allowance group name'} subTitle={employeeSalaryDefinition?.allowance_break_down?.name} />
                     </div>

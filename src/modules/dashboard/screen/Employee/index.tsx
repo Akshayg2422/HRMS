@@ -192,7 +192,6 @@ function EmployeeScreen() {
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any, index: number) => {
       return {
-        id: el.employee_id,
         "":
           <span className='avatar avatar-sm rounded-circle' style={{ cursor: 'pointer' }} onClick={(e) => handleShowProfile(e, el)}>
             <ImageView
@@ -205,6 +204,7 @@ function EmployeeScreen() {
           </span>
         ,
         name: el.name,
+        Code: el.employee_id,
         "mobile number": el.mobile_number,
         branch: el.branch,
         "  ":
@@ -264,8 +264,6 @@ function EmployeeScreen() {
   };
 
   function proceedSearchApi() {
-    console.log('========>', 'called');
-
     getEmployeesApi(currentPage);
   }
 
@@ -281,7 +279,7 @@ function EmployeeScreen() {
       onError: (error: string) => () => { },
     }));
 
-    if(listBranchesList.length < 1){
+    if (listBranchesList.length < 1) {
       getAllBranchesListData()
     }
 
@@ -414,8 +412,6 @@ function EmployeeScreen() {
       ) : <NoRecordFound />}
     </>
   }, [registeredEmployeesList])
-
-  console.log("modalllll", model);
 
 
   return (

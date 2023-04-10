@@ -126,8 +126,8 @@ function EmployeeLog() {
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.employee_id,
         name: el.name,
+        Code: el.employee_id,
         "mobile number": el.mobile_number,
         branch: el.branch,
       };
