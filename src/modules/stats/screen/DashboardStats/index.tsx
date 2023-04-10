@@ -92,7 +92,7 @@ const DashboardStats = () => {
 
 
   const conditionalRendering = (dashboardResponse: any) => {
-    if (listBranchesList.length == 0) {
+    if (listBranchesList.length === 0) {
       const params = {}
       dispatch(getListAllBranchesList({
         params,

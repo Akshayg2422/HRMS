@@ -13,8 +13,9 @@ import {
   Primary,
   InputText,
   useKeyPress,
+  TableWrapper,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getEmployeeTodayStatus,
@@ -427,92 +428,102 @@ const DashBoardAttendance = ({ }) => {
   };
 
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeeAttendanceStats && employeeAttendanceStats.length > 0 ? (
+        <CommonTable
+          card={false}
+          noHeader
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          tableOnClick={(e, index, item) => {
+            getEmployeeCheckInDetailedLogPerDay(index);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployee(employeeAttendanceStats)}
+        />
+      ) : (
+        <NoRecordFound />
+      )}
+    </>
+  }, [employeeAttendanceStats])
+
   return (
-    <div className="mx-3">
-      <Card>
-        <Container additionClass={"col"}>
-          <div className="row">
-            <Container additionClass={"row"}>
-              <div className="col-lg-3 col-md-12">
-                <DropDown
-                  label={"Department"}
-                  placeholder={"Select Department"}
-                  data={employeeattendancedatalog.departments_types}
-                  value={selectedDepartment}
-                  onChange={(event) => {
-                    if (setSelectedDepartment) {
-                      setSelectedDepartment(dropDownValueCheck(event.target.value, "Select Department"));
+    <>
+      <TableWrapper
+        filterChildren={
+          <Container additionClass={"col"}>
+            <div className="row">
+              <Container additionClass={"row"}>
+                <div className="col-lg-3 col-md-12">
+                  <DropDown
+                    label={"Department"}
+                    placeholder={"Select Department"}
+                    data={employeeattendancedatalog.departments_types}
+                    value={selectedDepartment}
+                    onChange={(event) => {
+                      if (setSelectedDepartment) {
+                        setSelectedDepartment(dropDownValueCheck(event.target.value, "Select Department"));
+                      }
+                    }}
+                  />
+                </div>
+                <div className="col-lg-3 col-md-12">
+                  <DropDown
+                    label={"Attendance"}
+                    placeholder={"Select Attendance"}
+                    data={employeeattendancedatalog.attendance_types}
+                    value={selectedAttendance}
+                    onChange={(event) => {
+                      if (setSelectedAttendance) {
+                        setSelectedAttendance(event.target.value);
+                      }
+                    }}
+                  />
+                </div>
+                <div className="col-lg-3 col-md-12 mt-1">
+                  <h5>{t("selectedDate")}</h5>
+                  <DatePicker
+                    placeholder={"Select Date"}
+                    icon={Icons.Calendar}
+                    maxDate={Today}
+                    iconPosition={"prepend"}
+                    value={customselectedDate}
+                    onChange={(date: string) =>
+                      setCustomSelectedDateRange(
+                        getServerDateFromMoment(getMomentObjFromServer(date))
+                      )
                     }
-                  }}
-                />
-              </div>
-              <div className="col-lg-3 col-md-12">
-                <DropDown
-                  label={"Attendance"}
-                  placeholder={"Select Attendance"}
-                  data={employeeattendancedatalog.attendance_types}
-                  value={selectedAttendance}
-                  onChange={(event) => {
-                    if (setSelectedAttendance) {
-                      setSelectedAttendance(event.target.value);
-                    }
-                  }}
-                />
-              </div>
-              <div className="col-lg-3 col-md-12 mt-1">
-                <h5>{t("selectedDate")}</h5>
-                <DatePicker
-                  placeholder={"Select Date"}
-                  icon={Icons.Calendar}
-                  maxDate={Today}
-                  iconPosition={"prepend"}
-                  value={customselectedDate}
-                  onChange={(date: string) =>
-                    setCustomSelectedDateRange(
-                      getServerDateFromMoment(getMomentObjFromServer(date))
-                    )
-                  }
-                />
-              </div>
-              <Container additionClass={'col-lg-3 col-md-12'}>
-                <InputText
-                  placeholder={t("enterEmployeeName")}
-                  label={t("employeeName")}
-                  value={searchEmployee}
-                  onChange={(e) => {
-                    setSearchEmployee(e.target.value);
-                  }}
-                />
+                  />
+                </div>
+                <Container additionClass={'col-lg-3 col-md-12'}>
+                  <InputText
+                    placeholder={t("enterEmployeeName")}
+                    label={t("employeeName")}
+                    value={searchEmployee}
+                    onChange={(e) => {
+                      setSearchEmployee(e.target.value);
+                    }}
+                  />
+                </Container>
+                <Container additionClass={"col mb-4"}>
+                  <Primary text={'Search'} onClick={() => getTodayStats(currentPage)} />
+                  {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
+          <Icon icon={Icons.DownloadSecondary} />
+        </a> */}
+                </Container>
               </Container>
-              <Container additionClass={"col mb-4"}>
-                <Primary text={'Search'} onClick={() => getTodayStats(currentPage)} />
-                {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
-                  <Icon icon={Icons.DownloadSecondary} />
-                </a> */}
-              </Container>
-            </Container>
-          </div>
-        </Container>
-        {employeeAttendanceStats && employeeAttendanceStats.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            tableOnClick={(e, index, item) => {
-              getEmployeeCheckInDetailedLogPerDay(index);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployee(employeeAttendanceStats)}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-      </Card>
+            </div>
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
 
       <Modal showModel={model} toggle={() => setModel(!model)}>
         {employeeCheckInDetailedLogPerDay &&
@@ -634,7 +645,7 @@ const DashBoardAttendance = ({ }) => {
           </span>
         </Container>
       </Modal>
-    </div>
+    </>
   );
 };
 

@@ -254,6 +254,7 @@ const ViewEmployeeDetails = () => {
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
     let employeeInitData = { ...employeeDetails };
+console.log("1111111",editEmployeeDetails);
 
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
