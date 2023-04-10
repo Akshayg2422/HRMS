@@ -1,5 +1,5 @@
 import { BackArrow, Card, CheckBox, Container, DropDown, Input, InputText, Modal, NoRecordFound, Primary, Secondary, useKeyPress } from '@components';
-import { dropDownValueCheckByEvent, getWeekAndWeekDaysById, showToast, Today, validateDefault, WEEK_LIST } from '@utils';
+import { dropDownValueCheckByEvent, getWeekAndWeekDaysById, mergeTimeSlots, showToast, Today, validateDefault, WEEK_LIST } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,6 +19,7 @@ function ShiftMonthlyView() {
     );
 
     const enterPress = useKeyPress("Enter");
+    const [myShiftDetails, setMyShiftDetails] = useState<any>()
 
     const [isActiveWeek, setIsActiveWeek] = useState(1)
     const [changeShiftModel, setChangeShiftModel] = useState(false)
@@ -27,6 +28,7 @@ function ShiftMonthlyView() {
         shiftId: '',
         reason: ''
     })
+    const [weeklyData, setWeeklyData] = useState<any>()
 
     const [error, setError] = useState('')
 
@@ -38,10 +40,11 @@ function ShiftMonthlyView() {
     const getMyShiftsDetails = () => {
         const params = {}
         dispatch(getMyShifts({
-            params, onSuccess: (success: object) => {
+            params, onSuccess: (success: object) => () => {
                 setError('')
+                breakTimeConvertion(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
                 setError(error)
             },
@@ -52,10 +55,10 @@ function ShiftMonthlyView() {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchShifts({
             params,
-            onSuccess: (success: object) => {
+            onSuccess: (success: object) => () => {
                 designationMatchShifts(dashboardDetails?.user_details?.designation_id, success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }));
@@ -95,7 +98,6 @@ function ShiftMonthlyView() {
     const designationMatchShifts = (id: any, response: any) => {
         let shifts = response && response.length > 0 && response.filter((el: any) => el?.weekly_shift?.designation_id === id)
         setShiftList(shifts)
-        // setRequestDetails({ ...requestDetails, shiftId: id })
         checkShiftExist(dashboardDetails?.user_details?.designation_id, shifts)
     }
 
@@ -108,12 +110,12 @@ function ShiftMonthlyView() {
             dispatch(
                 postRequestShiftChange({
                     params,
-                    onSuccess: (success: any) => {
+                    onSuccess: (success: any) => () => {
                         showToast('success', success)
                         setChangeShiftModel(!changeShiftModel)
                         setRequestDetails({ ...requestDetails, shiftId: '', reason: '' })
                     },
-                    onError: (error: string) => {
+                    onError: (error: string) => () => {
                         showToast('error', error)
                     },
                 })
@@ -127,16 +129,27 @@ function ShiftMonthlyView() {
         setChangeShiftModel(!changeShiftModel)
     }
 
-  
-
+    const breakTimeConvertion = (data: any) => {
+        let updatedData = [...data.weekly_group_details]
+        updatedData = updatedData.map((week: any) => {
+            const updateWeek = { ...week }
+            updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+                let updateWeek = { ...weekDay }
+                updateWeek.time_breakdown = mergeTimeSlots(updateWeek.time_breakdown)
+                weekDay = updateWeek
+                return weekDay
+            });
+            return updateWeek
+        });
+        setWeeklyData(updatedData)
+    }
 
     return (
         <div>
             <Card>
                 <Container additionClass='row mb-4'>
-                    <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
                     {!error ? <Container additionClass='row'>
-                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')} (${myShifts && myShifts?.group_name})`}</h2>
+                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')} (${myShifts?.group_name})`}</h2>
                         <Container additionClass="text-right">
                             <Primary
                                 text={t("requestForShift")}
@@ -149,36 +162,38 @@ function ShiftMonthlyView() {
                     </Container> : <div className="text-muted text-center"><small>{error}</small></div>}
                 </Container>
             </Card>
-            {Object.keys(myShifts).length > 0 ? <Card>
+            {myShifts && myShifts?.weekly_group_details?.length > 0 ? <Card>
                 <ul
                     className="nav nav-pills nav-fill flex-row flex-md-row"
                     id="tabs-icons-text"
                     role="tablist"
                 >
-                    {myShifts && myShifts.weekly_group_details.length > 0 && myShifts.weekly_group_details.map((it: any, index: number) => {
+                    {myShifts && myShifts?.weekly_group_details.length > 0 && myShifts?.weekly_group_details.map((it: any, index: number) => {
                         return (
                             <>
                                 <li className="nav-item">
                                     <a
-                                        className={`nav-link  ml-0 ml-sm-2 align-content-center justify-content-center  ${it.week === isActiveWeek ? 'active' : ''}`}
-                                        id={`tabs-icons-text-${it.week}-tab`}
+                                        className={`nav-link  ml-0 ml-sm-2 align-content-center justify-content-center  ${it?.week === isActiveWeek ? 'active' : ''}`}
+                                        id={`tabs-icons-text-${it?.week}-tab`}
                                         data-toggle="tab"
-                                        href={`#tabs-icons-text-${it.week}`}
+                                        href={`#tabs-icons-text-${it?.week}`}
                                         role="tab"
-                                        aria-controls={`tabs-icons-text-${it.week}`}
+                                        aria-controls={`tabs-icons-text-${it?.week}`}
                                         aria-selected="true"
                                         onClick={() => {
-                                            setIsActiveWeek(it.week)
+                                            setIsActiveWeek(it?.week)
                                         }}
                                     >
-                                        {getWeekAndWeekDaysById(WEEK_LIST, 'id', it.week + '').name}
+                                        {getWeekAndWeekDaysById(WEEK_LIST, 'id', it?.week + '')?.name}
                                     </a>
                                 </li>
                             </>
                         );
                     })}
                 </ul>
-                <EmployeeShiftListing datesList={myShifts.weekly_group_details[isActiveWeek - 1]} />
+                {weeklyData && weeklyData.length > 0 &&
+                    <EmployeeShiftListing datesList={weeklyData[isActiveWeek - 1]} />
+                }
             </Card> : <NoRecordFound />}
             <Modal title={t("changeShift")} showModel={changeShiftModel} toggle={() => handleClose()}>
                 <Container >
@@ -190,7 +205,7 @@ function ShiftMonthlyView() {
                             label={t('selectShift')}
                             placeholder={t('selectShift')}
                             data={shiftList}
-                            value={requestDetails.shiftId}
+                            value={requestDetails?.shiftId}
                             name={"shiftId"}
                             onChange={(event) => {
                                 onChangeHandler(dropDownValueCheckByEvent(event, t('selectShift')))
