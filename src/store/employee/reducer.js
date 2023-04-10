@@ -137,7 +137,15 @@ import {
   ENABLE_OFFICE_CHECK_IN_FAILURE,
   POST_FACE_VALIDATION_STATUS,
   POST_FACE_VALIDATION_STATUS_SUCCESS,
-  POST_FACE_VALIDATION_STATUS_FAILURE
+  POST_FACE_VALIDATION_STATUS_FAILURE,
+
+  FETCH_EMPLOYEE_BASIC_INFO,
+  FETCH_EMPLOYEE_BASIC_INFO_SUCCESS,
+  FETCH_EMPLOYEE_BASIC_INFO_FAILURE,
+
+  FETCH_EMPLOYEE_ATTENDANCE_INFO,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -182,7 +190,8 @@ const initialState = {
   branchAdmins: [],
   leaveTypesDetails: {},
   editLeaveTypesDetails: '',
-  currentLeaveType: -2
+  currentLeaveType: -2,
+  getEmployeeBasicInfo: undefined
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1285,6 +1294,43 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case POST_FACE_VALIDATION_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //get employee basic info
+    case FETCH_EMPLOYEE_BASIC_INFO:
+      state = { ...state, loading: true };
+      break;
+    case FETCH_EMPLOYEE_BASIC_INFO_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        getEmployeeBasicInfo: action.payload,
+      };
+      break;
+    case FETCH_EMPLOYEE_BASIC_INFO_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //get employee attendance info
+    case FETCH_EMPLOYEE_ATTENDANCE_INFO:
+      state = { ...state, loading: true };
+      break;
+    case FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE:
       state = {
         ...state,
         error: action.payload,

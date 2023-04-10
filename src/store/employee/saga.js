@@ -41,6 +41,8 @@ import {
   ENABLE_FIELD_CHECK_IN,
   ENABLE_OFFICE_CHECK_IN,
   POST_FACE_VALIDATION_STATUS,
+  FETCH_EMPLOYEE_BASIC_INFO,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO
 
 } from "./actionTypes";
 
@@ -131,6 +133,12 @@ import {
   changeAttendanceSettingsSuccess,
   changeAttendanceSettingsFailure,
 
+  getEmployeeBasicInfoSuccess,
+  getEmployeeBasicInfoFailure,
+
+  getEmployeeAttendanceInfoSuccess,
+  getEmployeeAttendanceInfoFailure
+
 } from "./actions";
 
 import {
@@ -173,7 +181,11 @@ import {
   getDownloadEmployeeCheckingLogReportApi,
   enableFieldCheckInApi,
   enableOfficeCheckInApi,
-  changeAttendanceSettingsApi
+  changeAttendanceSettingsApi,
+
+  fetchEmployeeBasicInfoApi,
+
+  fetchEmployeeAttendanceInfoApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -1155,6 +1167,56 @@ function* changeAttendanceSettingsSaga(action) {
   }
 }
 
+//get employee basic info
+
+function* getEmployeeBasicInfo(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchEmployeeBasicInfoApi, action.payload.params);
+
+    if (response.success) {
+      yield put(getEmployeeBasicInfoSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(getEmployeeBasicInfoFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeBasicInfoFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+//get employee attendance info
+
+function* getEmployeeAttendanceInfo(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchEmployeeAttendanceInfoApi, action.payload.params);
+
+    if (response.success) {
+      yield put(getEmployeeAttendanceInfoSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(getEmployeeAttendanceInfoFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeAttendanceInfoFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
 // *** WATCHER*** //
 
 function* EmployeeSaga() {
@@ -1210,6 +1272,10 @@ function* EmployeeSaga() {
   yield takeLatest(ENABLE_FIELD_CHECK_IN, enableFieldCheckInSaga);
   yield takeLatest(ENABLE_OFFICE_CHECK_IN, enableOfficeCheckInSaga);
   yield takeLatest(POST_FACE_VALIDATION_STATUS, changeAttendanceSettingsSaga);
+  yield takeLatest(FETCH_EMPLOYEE_BASIC_INFO, getEmployeeBasicInfo);
+  yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_INFO, getEmployeeAttendanceInfo);
+
+
 }
 
 export default EmployeeSaga;

@@ -50,6 +50,7 @@ import {
   getListAllBranchesList,
 } from "../../../../store/location/actions";
 import { log } from "console";
+import { settingSelectedEmployeeDetails } from "../../../../store/Payroll/actions";
 
 
 
@@ -66,7 +67,7 @@ type Branch = {
 };
 
 export const DROPDOWN_MENU_ADMIN = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'bi bi-pen-fill' },
+  { id: '1', name: 'View', value: 'PF', icon: 'ni ni-active-40' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-pin-3' },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
@@ -75,7 +76,7 @@ export const DROPDOWN_MENU_ADMIN = [
 ]
 
 export const DROPDOWN_MENU_BRANCH_ADMIN = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '1', name: 'View', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
@@ -171,19 +172,22 @@ function EmployeeScreen() {
     }
   }
 
-  const dropdownMenuItemActionHandler = (item: any, id?: string | undefined) => {
+  const dropdownMenuItemActionHandler = (item: any, data?: any) => {
 
     switch (item.name) {
-      case 'Edit':
-        manageEmployeeHandler(id)
+      case 'View':
+        dispatch(getSelectedEmployeeId(data.id));
+        dispatch(settingSelectedEmployeeDetails(data))
+        dispatch(employeeEdit(data.id))
+        goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
         break;
 
       case 'Delete':
-        manageDeleteHandler(id);
+        manageDeleteHandler(data.id);
         break;
 
       case 'Assign Location':
-        getEmployeeAssociationBranch(id)
+        getEmployeeAssociationBranch(data.id)
         break;
     }
   }
@@ -213,7 +217,7 @@ function EmployeeScreen() {
             onItemClick={(e, item) => {
               e.stopPropagation();
               setSelectedEmployeeItem(el)
-              dropdownMenuItemActionHandler(item, el.id)
+              dropdownMenuItemActionHandler(item, el)
             }}
           />
       };
@@ -405,7 +409,10 @@ function EmployeeScreen() {
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
           tableOnClick={(e, index, item) => {
             const selectedId = registeredEmployeesList[index].id;
+            const selectedObject = registeredEmployeesList[index]
             dispatch(getSelectedEmployeeId(selectedId));
+            dispatch(settingSelectedEmployeeDetails(selectedObject))
+            dispatch(employeeEdit(selectedId))
             goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
           }}
         />

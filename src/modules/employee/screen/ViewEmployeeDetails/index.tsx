@@ -44,19 +44,48 @@ const EMPLOYEE_VIEW_TYPES = [
 
 
 const ViewEmployeeDetails = () => {
-  const [currentView, setCurrentView] = useState(-1)
+  const [currentView, setCurrentView] = useState(1)
+
+  const componentHandler = () => {
+    if (currentView === 1) {
+      return <BasicView />
+    }
+    else if (currentView === 2) {
+      return <AttendanceView />
+    }
+    else if (currentView === 3) {
+      return <LogView />
+    }
+    else {
+      return <PayrollView />
+    }
+  }
 
   return (
-    <ScreenContainer additionClass={'mb--5'}>
-      <Card>
+    // <ScreenContainer additionClass={'mb--5'}>
+    <>
+      <Card additionClass="mx-2">
         <ul
           className="nav nav-pills nav-fill text-center justify-content-between"
         >
           {EMPLOYEE_VIEW_TYPES.map((el: any, index: number) => {
             return (
-              <div className="col" >
-                <div className={`${currentView !== el.value ? `text-uppercase text-muted mb-sm-0 mb-2` : `text-uppercase text-primary fw-bold  mb-sm-0 mb-2`}`}
-                  style={{ cursor: 'pointer' }} onClick={() => { setCurrentView(el.value) }}>
+              <div className="col" onClick={() => {
+                if (el.id === 1) {
+                  setCurrentView(1)
+                }
+                else if (el.id === 2) {
+                  setCurrentView(2)
+                }
+                else if (el.id === 3) {
+                  setCurrentView(3)
+                }
+                else {
+                  setCurrentView(4)
+                }
+              }}>
+                <div className={`${currentView !== el.id ? `text-uppercase text-muted mb-sm-0 mb-2` : `text-uppercase text-primary fw-bold  mb-sm-0 mb-2`}`}
+                  style={{ cursor: 'pointer' }} onClick={() => {  }}>
                   {el.name}
                 </div>
               </div>
@@ -64,8 +93,9 @@ const ViewEmployeeDetails = () => {
           })}
         </ul>
       </Card>
-      
-    </ScreenContainer>
+      {componentHandler()}
+    </>
+    // </ScreenContainer>
   );
 };
 

@@ -29,6 +29,7 @@ export const FETCH_ALL_BRANCHES_LIST = '/company/v1/getAllBranches';
 export const FETCH_LIST_ALL_BRANCHES_LIST = '/company/getAllBranchesL';
 
 export const FETCH_EMPLOYEE_DETAILS = '/employee/getEmployeeDetails';
+export const FETCH_EMPLOYEE_BASIC_INFO = '/employee/getEmployeeBasicInfo';
 export const POST_EMPLOYEE_ADDITION_V1 = '/employee/v1/addEmployee';
 export const POST_BRANCH_ADDITION = '/company/addBranch';
 
@@ -257,3 +258,7 @@ export const ADD_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/addEmployeeSalaryDefi
 //get employee salary definition
 
 export const GET_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/getEmployeeSalaryDefinition'
+
+//get employee attendance info
+
+export const GET_EMPLOYEE_ATTENDANCE_INFO_URL = 'employee/getEmployeeAttendanceInfo'

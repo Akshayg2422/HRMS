@@ -139,7 +139,15 @@ import {
   ENABLE_OFFICE_CHECK_IN_FAILURE,
   POST_FACE_VALIDATION_STATUS,
   POST_FACE_VALIDATION_STATUS_SUCCESS,
-  POST_FACE_VALIDATION_STATUS_FAILURE
+  POST_FACE_VALIDATION_STATUS_FAILURE,
+
+  FETCH_EMPLOYEE_BASIC_INFO,
+  FETCH_EMPLOYEE_BASIC_INFO_SUCCESS,
+  FETCH_EMPLOYEE_BASIC_INFO_FAILURE,
+
+  FETCH_EMPLOYEE_ATTENDANCE_INFO,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1261,6 +1269,52 @@ export const changeAttendanceSettingsSuccess = (response) => {
 export const changeAttendanceSettingsFailure = (error) => {
   return {
     type: POST_FACE_VALIDATION_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+//get employee basic info
+
+export const getEmployeeBasicInfo = (params) => {
+  return {
+    type: FETCH_EMPLOYEE_BASIC_INFO,
+    payload: params,
+  };
+};
+
+export const getEmployeeBasicInfoSuccess = (response) => {
+  return {
+    type: FETCH_EMPLOYEE_BASIC_INFO_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeBasicInfoFailure = (error) => {
+  return {
+    type: FETCH_EMPLOYEE_BASIC_INFO_FAILURE,
+    payload: error,
+  };
+};
+
+//get employee Attendance info
+
+export const getEmployeeAttendanceInfo = (params) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_INFO,
+    payload: params,
+  };
+};
+
+export const getEmployeeAttendanceInfoSuccess = (response) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeAttendanceInfoFailure = (error) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
     payload: error,
   };
 };
