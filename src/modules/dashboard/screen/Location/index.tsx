@@ -94,7 +94,7 @@ function LocationScreen() {
     );
   }
 
-
+  console.log("branch----->", branch);
 
   useEffect(() => {
     if (enterPress && isOpenFenceModal === false) {
@@ -149,7 +149,6 @@ function LocationScreen() {
     setSelectedBranchId(selectedBranch);
     setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
     setIsOpenFenceModal(!isOpenFenceModal)
-
     getRegisteredFenceAdmin(currentPage)
   }
 

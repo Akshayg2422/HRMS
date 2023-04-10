@@ -38,18 +38,12 @@ function* getAllBranches(action) {
   try {
 
     yield put(showLoader());
-
     const response = yield call(fetchAllBranchesList, action.payload.params);
-
     if (response.success) {
-
       yield put(hideLoader());
-
-      yield put(getAllBranchesListSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
-
+      yield put(getAllBranchesListSuccess(response));
+      yield call(action.payload.onSuccess(response));
     } else {
-
       yield put(hideLoader());
       yield put(getAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));

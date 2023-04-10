@@ -23,7 +23,9 @@ export const EDIT_PROFILE_PICTURE = 'employee/updateEmployeeProfilePhoto';
 export const GET_EMPLOYEES_LIST = '/employee/web/v1/getEmployees';
 export const FETCH_DESIGNATION = '/employee/getDesignations';
 export const FETCH_DEPARTMENT = '/company/getDepartments';
-export const FETCH_ALL_BRANCHES_LIST = '/company/getAllBranches';
+// export const FETCH_ALL_BRANCHES_LIST = '/company/getAllBranches';
+export const FETCH_ALL_BRANCHES_LIST = '/company/v1/getAllBranches';
+
 export const FETCH_LIST_ALL_BRANCHES_LIST = '/company/getAllBranchesL';
 
 export const FETCH_EMPLOYEE_DETAILS = '/employee/getEmployeeDetails';
