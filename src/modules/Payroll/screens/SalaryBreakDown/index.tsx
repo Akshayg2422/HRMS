@@ -48,6 +48,8 @@ function SalaryBreakDown() {
     (state: any) => state.AuthReducer
   );
 
+console.log("companyDeductionsList-->",companyDeductionsList);
+
 
   useEffect(() => {
     isValidBasicSalary()
@@ -118,6 +120,8 @@ function SalaryBreakDown() {
     dispatch(getEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
+        console.log("11111111111",success.details);
+        
         prefillSalaryDefinitions(success.details)
       },
       onError: (error: any) => () => {
@@ -138,16 +142,12 @@ function SalaryBreakDown() {
     setMaximumAmount(annualCtcPercentage)
 
     setBasicSalary(salaryDetails.base_salary_percent)
-    setAllowanceGroup(salaryDetails.allowance_break_down.id)
+    setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
     const newKeyAddedArray = salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' }))
     setSelectedDefinitionEditData(newKeyAddedArray)
     setSelectedDeductions(newKeyAddedArray)
 
   }
-  console.log("wwwwwww", selectedDeductions);
-
-  console.log("seleccccc", selectedDefinitionEditData);
-
 
   const onTotalCalculator = () => {
     const AllowancePercentage = selectedDeductions.map((el: any) => {
@@ -284,7 +284,6 @@ function SalaryBreakDown() {
     }));
 
   }
-
   const isPercentageExist = selectedDeductions.some((item: any) => item.type === "1")
 
 
@@ -332,7 +331,6 @@ function SalaryBreakDown() {
               label={t("AllowanceGroup")}
               placeholder={t("AllowanceGroup")}
               data={allowanceGroupsList.data}
-              name={"designation"}
               value={allowanceGroup}
               onChange={(e) => setAllowanceGroup(e.target.value)}
 
