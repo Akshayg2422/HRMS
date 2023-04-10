@@ -279,6 +279,14 @@ export const addEmployeeSalaryDefinitionApi = (payload) => post(url.ADD_EMPLOYEE
 
 export const getEmployeeSalaryDefinitionApi = (payload) => post(url.GET_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
 
+//get employee basic info
+
+export const fetchEmployeeBasicInfoApi = (payload) => post(url.FETCH_EMPLOYEE_BASIC_INFO, payload, {})
+
+//get employee attendance info
+
+export const fetchEmployeeAttendanceInfoApi = (payload) => post(url.GET_EMPLOYEE_ATTENDANCE_INFO_URL, payload, {})
+
 
 
 

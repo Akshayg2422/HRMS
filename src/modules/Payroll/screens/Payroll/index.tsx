@@ -8,6 +8,7 @@ import {
     NoRecordFound,
     TableWrapper,
     CommonDropdownMenu,
+    Primary,
 } from "@components";
 import React, { useEffect, useMemo } from "react";
 import { Icons } from "@assets";
@@ -38,6 +39,10 @@ function PayRoll() {
         (state: any) => state.EmployeeReducer
     );
 
+
+    const { userDetails } = useSelector(
+        (state: any) => state.AuthReducer
+    );
 
     const { hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
@@ -140,6 +145,25 @@ function PayRoll() {
     return (
         <>
             <TableWrapper
+                buttonChildren={
+                    <Container additionClass="mr--4">
+                        {userDetails.is_admin && (
+                            <Container >
+                                <Primary
+                                    size={'btn-sm'}
+                                    text={t('AddAllowance')}
+                                    onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
+                                />
+                                <Primary
+                                    size={'btn-sm'}
+                                    text={t('AddDeduction')}
+                                    onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
+                                />
+                            </Container>
+                        )}
+                    </Container>
+                }
+
                 filterChildren={
                     <Container
                         additionClass={" row "}

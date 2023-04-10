@@ -149,7 +149,7 @@ function ShiftMonthlyView() {
             <Card>
                 <Container additionClass='row mb-4'>
                     {!error ? <Container additionClass='row'>
-                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')} (${myShifts?.group_name})`}</h2>
+                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')}  (${myShifts?.group_name})`}</h2>
                         <Container additionClass="text-right">
                             <Primary
                                 text={t("requestForShift")}

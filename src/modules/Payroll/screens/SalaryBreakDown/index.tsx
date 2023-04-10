@@ -48,6 +48,8 @@ function SalaryBreakDown() {
     (state: any) => state.AuthReducer
   );
 
+console.log("companyDeductionsList-->",companyDeductionsList);
+
 
   useEffect(() => {
     isValidBasicSalary()
@@ -118,6 +120,8 @@ function SalaryBreakDown() {
     dispatch(getEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
+        console.log("11111111111",success.details);
+        
         prefillSalaryDefinitions(success.details)
       },
       onError: (error: any) => () => {
@@ -138,14 +142,12 @@ function SalaryBreakDown() {
     setMaximumAmount(annualCtcPercentage)
 
     setBasicSalary(salaryDetails.base_salary_percent)
-    setAllowanceGroup(salaryDetails.allowance_break_down.id)
-    setSelectedDefinitionEditData(salaryDetails.deductions_group)
-    setSelectedDeductions(salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' })))
+    setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
+    const newKeyAddedArray = salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' }))
+    setSelectedDefinitionEditData(newKeyAddedArray)
+    setSelectedDeductions(newKeyAddedArray)
 
   }
-
-  console.log("seleccccc", selectedDefinitionEditData);
-
 
   const onTotalCalculator = () => {
     const AllowancePercentage = selectedDeductions.map((el: any) => {
@@ -282,7 +284,6 @@ function SalaryBreakDown() {
     }));
 
   }
-
   const isPercentageExist = selectedDeductions.some((item: any) => item.type === "1")
 
 
@@ -293,21 +294,6 @@ function SalaryBreakDown() {
         <Container additionClass='d-flex justify-content-between mb-3'>
 
           <h3>{isEditSalary ? 'Edit Employee salary definition' : 'Employee salary definition'}</h3>
-
-          {userDetails.is_admin && (
-            <Container >
-              <Primary
-                size={'btn-sm'}
-                text={t('AddAllowance')}
-                onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
-              />
-              <Primary
-                size={'btn-sm'}
-                text={t('AddDeduction')}
-                onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
-              />
-            </Container>
-          )}
 
         </Container>
 
@@ -345,7 +331,6 @@ function SalaryBreakDown() {
               label={t("AllowanceGroup")}
               placeholder={t("AllowanceGroup")}
               data={allowanceGroupsList.data}
-              name={"designation"}
               value={allowanceGroup}
               onChange={(e) => setAllowanceGroup(e.target.value)}
 
@@ -442,6 +427,8 @@ function SalaryBreakDown() {
             onChange={(e) => {
               setDeduction(e.target.value)
               setDeductionAddModal(!deductionAddModal)
+              console.log("111111111111", selectedDeductions);
+
               const isDeductionExist = selectedDeductions && selectedDeductions.length > 0 && selectedDeductions.some((item: any) => item.id === e.target.value)
               if (!isDeductionExist) {
                 onDeductionDropdownChangeHandler(e.target.value)
