@@ -98,13 +98,11 @@ function Otp() {
     dispatch(proceedSignIn({
       params,
       onSuccess: (response: LoginResponse) => async () => {
-
         if (response.is_admin || response.is_branch_admin) {
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
           dispatch(setUserLoginDetails(params))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
-          goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
-      
+          dashBoardApi()
         } else {
           showToast('error', t('invalidAdmin'));
         }
@@ -114,6 +112,19 @@ function Otp() {
       },
     }));
   };
+
+
+  const dashBoardApi = () => {
+    const DashboardParams = {}
+    dispatch(getDashboard({
+      DashboardParams,
+      onSuccess: (success: any) => () => {
+        goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
+      },
+      onError: (error: any) => () => {
+      }
+    }))
+  }
 
   const validatePostParams = () => {
     const otpConvertor = otp.field1 + otp.field2 + otp.field3 + otp.field4;

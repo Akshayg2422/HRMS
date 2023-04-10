@@ -66,9 +66,9 @@ type Branch = {
 };
 
 export const DROPDOWN_MENU_ADMIN = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '1', name: 'Edit', value: 'PF', icon: 'bi bi-pen-fill' },
   { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-pin-3' },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
@@ -125,15 +125,18 @@ function EmployeeScreen() {
 
   useEffect(() => {
     const params = {}
-    dispatch(getListAllBranchesList({
-      params,
-      onSuccess: (success: any) => () => {
+    // if (listBranchesList) {
+    //   dispatch(getListAllBranchesList({
+    //     params,
+    //     onSuccess: (success: any) => () => {
 
-      },
-      onError: (error: any) => () => {
+    //     },
+    //     onError: (error: any) => () => {
 
-      }
-    }))
+    //     }
+    //   }))
+    // }
+
   }, [])
 
   useEffect(() => {
@@ -181,15 +184,6 @@ function EmployeeScreen() {
 
       case 'Assign Location':
         getEmployeeAssociationBranch(id)
-        break;
-
-      case 'Enable office checkIn':
-        break;
-
-      case 'Enable field checkIn':
-        break;
-
-      case 'Enable face validation':
         break;
     }
   }
@@ -270,6 +264,8 @@ function EmployeeScreen() {
   };
 
   function proceedSearchApi() {
+    console.log('========>', 'called');
+
     getEmployeesApi(currentPage);
   }
 
@@ -285,7 +281,9 @@ function EmployeeScreen() {
       onError: (error: string) => () => { },
     }));
 
-    getAllBranchesListData()
+    if(listBranchesList.length < 1){
+      getAllBranchesListData()
+    }
 
     setModel(!model);
   }
@@ -330,7 +328,6 @@ function EmployeeScreen() {
       associated_branch: [...branchIds, defaultBranchId],
     };
 
-    console.log("calleddd--->");
 
     dispatch(
       updateEmployeeCheckinAssociations({
@@ -468,7 +465,7 @@ function EmployeeScreen() {
                 alignItems={"align-items-center"}
               >
                 {/* <Icon  icon={Icons.Search} /> */}
-                <Search variant="Icon" onClick={proceedSearchApi} />
+                <Search variant="Icon" onClick={() => getEmployeesApi(currentPage)} />
               </Container>
             </Container>
           </Container>
@@ -526,6 +523,29 @@ function EmployeeScreen() {
           </Container>
         </Modal>
       )}
+      <Modal
+        title={t("deleteUser")}
+        showModel={deleteModel}
+        toggle={() => setDeleteModel(!deleteModel)}
+      >
+        <Container>
+          <span className="ml-3">{t("deleteWarningMessage")}</span>
+          <Container
+            margin={"m-5"}
+            justifyContent={"justify-content-end"}
+            display={"d-flex"}
+          >
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setDeleteModel(!deleteModel)}
+            />
+            <Primary
+              text={t("proceed")}
+              onClick={() => manageProceedHandler()}
+            />
+          </Container>
+        </Container>
+      </Modal>
     </>
   );
 }

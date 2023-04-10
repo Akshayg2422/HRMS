@@ -106,15 +106,7 @@ const WeeklyShiftSelection = () => {
 
   const onSubmit = () => {
 
-    if (validatePostParams() || true) {
-      const params = {
-        ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
-        group_name: shiftName,
-        weekly_group_details: weeklyData
-      }
-
-
-
+    if (validatePostParams()) {
       weeklyData.forEach((week: any) => {
         const weekCalendar = week.week_calendar
         weekCalendar.forEach((weekDay: any) => {
@@ -150,7 +142,6 @@ const WeeklyShiftSelection = () => {
       });
 
       let updatedData = [...weeklyData]
-
       updatedData = updatedData.map((week: any) => {
         const updateWeek = { ...week }
         updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
@@ -158,30 +149,30 @@ const WeeklyShiftSelection = () => {
           updateWeek.time_breakdown = [...updateWeek.api_breakdown]
           delete updateWeek.api_breakdown
           weekDay = updateWeek
-          console.log(JSON.stringify(weekDay));
           return weekDay
         });
         return updateWeek
-
       });
 
+      const params = {
+        ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
+        group_name: shiftName,
+        weekly_group_details: updatedData
+      }
 
-      console.log("--------->", JSON.stringify(updatedData));
-
-      // dispatch(
-      //   addWeeklyShift({
-      //     params,
-      //     onSuccess: (success: any) => () => {
-      //       showToast("success", success.status);
-      //       selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
-      //       goBack(navigation);
-      //       // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
-      //     },
-      //     onError: (error: string) => () => {
-      //       showToast("error", error);
-      //     },
-      //   })
-      // );
+      dispatch(
+        addWeeklyShift({
+          params,
+          onSuccess: (success: any) => () => {
+            showToast("success", success.status);
+            selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
+            goBack(navigation);
+          },
+          onError: (error: string) => () => {
+            showToast("error", error);
+          },
+        })
+      );
     }
   }
 
@@ -300,12 +291,36 @@ const WeeklyShiftSelection = () => {
     setWeeklyData(updatedWeek)
   }
 
+  const mergeTimeSlots = (timeSlots: any) => {
+    let formattedData = []
+    if (timeSlots.length > 1) {
+      let lastElement = timeSlots[timeSlots.length - 1];
+      timeSlots[0].end_time = lastElement.end_time
+      timeSlots.splice(-1)
+      formattedData = timeSlots
+    } else {
+      formattedData = timeSlots
+    }
+    return [...formattedData]
+  }
+
   const fetchWeeklyShiftDetails = () => {
     const params = { id: selectedWeeklyShiftId }
     dispatch(getWeeklyShiftDetails({
       params,
       onSuccess: (success: any) => () => {
-        setWeeklyData(success.weekly_group_details)
+        let updatedData = [...success.weekly_group_details]
+        updatedData = updatedData.map((week: any) => {
+          const updateWeek = { ...week }
+          updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+            let updateWeek = { ...weekDay }
+            updateWeek.time_breakdown = mergeTimeSlots(updateWeek.time_breakdown)
+            weekDay = updateWeek
+            return weekDay
+          });
+          return updateWeek
+        });
+        setWeeklyData(updatedData)
       },
       onError: (error: string) => () => { },
     }))

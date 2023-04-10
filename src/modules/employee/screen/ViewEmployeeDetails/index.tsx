@@ -23,7 +23,7 @@ import {
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAllBranchesList } from '../../../../store/location/actions'
+import { getAllBranchesList, getListAllBranchesList } from '../../../../store/location/actions'
 import {
   changeAttendanceSettings,
   getDepartmentData,
@@ -131,7 +131,7 @@ const ViewEmployeeDetails = () => {
 
     const params = {};
     dispatch(
-      getAllBranchesList({
+      getListAllBranchesList({
         params,
         onSuccess: (success: object) => () => {
           setBranchesExist(true)
@@ -254,6 +254,7 @@ const ViewEmployeeDetails = () => {
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
     let employeeInitData = { ...employeeDetails };
+console.log("1111111",editEmployeeDetails);
 
     if (editEmployeeDetails) {
       if (editEmployeeDetails.first_name)
@@ -367,7 +368,7 @@ const ViewEmployeeDetails = () => {
         employeeInitData.faceRegisterEnable =
           editEmployeeDetails.attendance_settings?.face_validation_required;
     }
-    console.log("employeeInitData", employeeInitData);
+    // console.log("employeeInitData", employeeInitData);
     setEmployeeDetails(employeeInitData);
   };
 
@@ -380,7 +381,7 @@ const ViewEmployeeDetails = () => {
 
 
   return (
-    <ScreenContainer >
+    <ScreenContainer additionClass={'mb--5'}>
       <FormWrapper hideFooter title={t("viewEmployeeDetails")} isTitle>
 
         <ScreenTitle title={'Basic Information'} />

@@ -252,6 +252,7 @@ function Reports() {
     }
   };
 
+console.log("reportsType",reportsType);
 
 
   return (
@@ -268,7 +269,7 @@ function Reports() {
               setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
               dispatch(resetMisReportData([]))
             }} />
-          {reportsType === "log" || reportsType === 'shift' && <div className="col-lg-3 col-md-12">
+          {(reportsType === "log") || (reportsType === 'shift') ? <div className="col-lg-3 col-md-12">
             <DropDown
               label={t('attendanceType')}
               placeholder={"Select Attendance"}
@@ -280,7 +281,7 @@ function Reports() {
                 }
               }}
             />
-          </div>}
+          </div>:<></>}
           <Container additionClass={'col-lg-3 mt-4'}>
             <ChooseBranchFromHierarchical />
           </Container>
@@ -369,9 +370,9 @@ function Reports() {
               value={customRange.dataTo}
             />
           </Container>
-          <Container additionClass={'col-lg-6 col-md-6 row ml-1'}>
+          <Container additionClass={'row ml-1'}>
             <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-2 col-md-3'} onClick={() => getReports(currentPage)} />
+            <Primary text={'Search'} col={'col-xl-1'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </div>

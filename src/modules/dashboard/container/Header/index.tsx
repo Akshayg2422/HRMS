@@ -29,6 +29,9 @@ const Header = () => {
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
   const [isParent, setIsParent] = useState(false)
+  const [showArrow, setShowArrow] = useState(false)
+  const [commonChild, setCommonChild] = useState(false)
+
 
   let dispatch = useDispatch();
 
@@ -43,7 +46,6 @@ const Header = () => {
   const pathname = window.location.pathname
 
 
-
   useEffect(() => {
     dynamicHeaderTitle()
   }, [pathname])
@@ -52,9 +54,9 @@ const Header = () => {
 
   const dynamicHeaderTitle = () => {
     NAV_ITEM.filter((el: any) => {
-
       if (pathname === el.route) {
         setHeaderTitle(el.name)
+        setShowArrow(false)
         setIsParent(false)
       } else {
         dynamicChildHeader()
@@ -68,22 +70,35 @@ const Header = () => {
         NAV_ITEM.filter((element: any) => {
           if (el.parent === element.route) {
             setHeaderTitle(element.name)
-            setIsParent(true)
+            setShowArrow(el.showBack)
+            setIsParent(el.showBreadCrums)
+          } else {
+            CHILD_PATH.filter((item: any) => {
+              if (el.parent === item.path) {
+                COMMON_HEADER.filter((child: any) => {
+                  if (child.route === item.path) {
+                    setHeaderTitle(child.name)
+                    setShowArrow(el.showBack)
+                    setIsParent(el.showBreadCrums)
+                  }
+                })
+              }
+            })
           }
         })
-      } else {
-        commonParentHeader()
       }
     })
   }
 
-  const commonParentHeader = () => {
-    COMMON_HEADER.map((el) => {
-      if (pathname === el.route) {
-        setHeaderTitle(el.name)
+
+  const getNameFromPath = (pathname: string) => {
+    let name = ''
+    CHILD_PATH.filter((el: any) => {
+      if (pathname === el.path) {
+        name = el.name
       }
     })
-
+    return name
   }
 
 
@@ -130,8 +145,6 @@ const Header = () => {
     }
   };
 
-
-
   const checkLength = (data: any) => {
 
     if (data.length < 100) {
@@ -142,6 +155,7 @@ const Header = () => {
     }
   }
 
+  console.log("=======>", getImageUri(dashboardDetails.user_details.profile_photo), dashboardDetails.user_details.profile_photo);
 
   return (
     <>
@@ -161,12 +175,12 @@ const Header = () => {
                 </div>
               </div>
             </a>
-            {isParent && <BackArrow additionClass={'mr--1 mt--3'} />}
+            {showArrow && <BackArrow additionClass={`mr--1 ${isParent && 'mt--3 '}`} />}
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
               {isParent && <div className='small'>
                 <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigate) }}>{headerTitle} </span>
-                <span> {" "} {pathname}</span>
+                <span> {" / "} {getNameFromPath(pathname)}</span>
               </div>
               }
 
@@ -179,7 +193,6 @@ const Header = () => {
                   goTo(navigate, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
                   <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
                 </a>
                 <a className="nav-link" onClick={() => {
                   goTo(navigate, ROUTE.ROUTE_NOTIFICATIONS);
@@ -287,7 +300,7 @@ const Header = () => {
         showModel={activeBranchModel}
         toggle={() => setActiveBranchModel(!activeBranchModel)}>
         <Container additionClass='col-xl-5'>
-          <MyActiveBranches />
+          <MyActiveBranches isReload={activeBranchModel === true ? true : false} />
         </Container>
         <Container
           margin={'m-3'}

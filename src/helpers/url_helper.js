@@ -23,7 +23,9 @@ export const EDIT_PROFILE_PICTURE = 'employee/updateEmployeeProfilePhoto';
 export const GET_EMPLOYEES_LIST = '/employee/web/v1/getEmployees';
 export const FETCH_DESIGNATION = '/employee/getDesignations';
 export const FETCH_DEPARTMENT = '/company/getDepartments';
-export const FETCH_ALL_BRANCHES_LIST = '/company/getAllBranches';
+// export const FETCH_ALL_BRANCHES_LIST = '/company/getAllBranches';
+export const FETCH_ALL_BRANCHES_LIST = '/company/v1/getAllBranches';
+
 export const FETCH_LIST_ALL_BRANCHES_LIST = '/company/getAllBranchesL';
 
 export const FETCH_EMPLOYEE_DETAILS = '/employee/getEmployeeDetails';
@@ -215,3 +217,43 @@ export const POST_ENABLE_OFFICE_CHECK_IN = '/attendance/enableOfficeCheckIn';
 //changeAttendanceSettings
 
 export const FACE_VALIDATION_STATUS = '/attendance/changeAttendanceSettings';
+
+/**
+ * payroll
+ */
+
+//create company allowance
+
+export const ADD_COMPANY_ALLOWANCE_URL = 'payroll/addCompanyAllowance'
+
+//Create company deduction
+
+export const ADD_COMPANY_DEDUCTION_URL = 'payroll/addCompanyDeduction'
+
+//Add allowance group
+
+export const ADD_ALLOWANCE_GROUP_URL = 'payroll/addAllowanceGroup'
+
+//Get allowance group
+
+export const FETCH_ALLOWANCE_GROUP_URL = 'payroll/getAllowanceGroups'
+
+//Get allowance group details
+
+export const FETCH_ALLOWANCE_GROUP_DETAILS_URL = 'payroll/getAllowanceGroupDetails'
+
+//Get company allowance
+
+export const FETCH_COMPANY_ALLOWANCE_URL = 'payroll/getCompanyAllowance'
+
+//get company deduction
+
+export const GET_COMPANY_DEDUCTIONS_URL = 'payroll/getCompanyDeductions'
+
+//add employee salary definition
+
+export const ADD_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/addEmployeeSalaryDefinition'
+
+//get employee salary definition
+
+export const GET_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/getEmployeeSalaryDefinition'

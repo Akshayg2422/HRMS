@@ -26,7 +26,7 @@ function index({
         <div className="card">
           {!isTitle && (
             <>
-              <BackArrow additionClass={'mt-4 ml-4'} />
+              {/* <BackArrow additionClass={'mt-4 ml-4'} /> */}
               <div className="card-header">
                 <h3 className="mb-0">{title} </h3>
               </div>

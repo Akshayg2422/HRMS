@@ -21,10 +21,7 @@ const Profile = () => {
   return (
     <Container additionClass="row justify-content-center my-4">
       <Card additionClass={"col-lg-6 col-md-8"}>
-        <Container additionClass={"col text-center"}>
-          <Container additionClass={"text-center"}>
-            <h1 className="text-black">{t("personalData")}</h1>
-          </Container>
+        <Container additionClass={"col text-center mt-3"}>
           <ImageView
             style={{ objectFit: 'cover' }}
             width={'100%'}
