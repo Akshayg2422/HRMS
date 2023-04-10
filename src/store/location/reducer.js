@@ -38,8 +38,8 @@ const initialState = {
   associatedBranch: [],
   associatedId: '',
   defaultBranchId: '',
-  numOfPages: 0,
-  currentPage: 1,
+  locationNumOfPages: 0,
+  LocationCurrentPage: 1,
 }
 
 const LocationReducer = (state = initialState, action) => {
@@ -48,19 +48,19 @@ const LocationReducer = (state = initialState, action) => {
     case FETCH_ALL_BRANCHES_LIST:
       state = {
         ...state, loading: true,
-        numOfPages: 0,
-        currentPage: 1,
+        locationNumOfPages: 0,
+        LocationCurrentPage: 1,
       };
 
       break;
     case FETCH_ALL_BRANCHES_LIST_SUCCESS:
-      const branches = action.payload;
+      const branches = action.payload.details;
       state = {
         ...state,
         loading: false,
-        brancheslist: branches.data.details,
-        numOfPages: branches.num_pages,
-        currentPage:
+        brancheslist: branches.data,
+        locationNumOfPages: branches.num_pages,
+        LocationCurrentPage:
           branches.next_page === -1
             ? branches.num_pages
             : branches.next_page - 1,

@@ -155,7 +155,6 @@ const Header = () => {
     }
   }
 
-  console.log("=======>", getImageUri(dashboardDetails.user_details.profile_photo), dashboardDetails.user_details.profile_photo);
 
   return (
     <>
