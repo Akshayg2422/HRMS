@@ -188,7 +188,7 @@ function Calendar() {
         },
         onError: (error: string) => () => {
           setDeleteModel(!deleteModel);
-          showToast("error", t("somethingWrong"));
+          showToast("error",error);
         },
       })
     );

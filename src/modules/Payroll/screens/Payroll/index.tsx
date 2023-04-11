@@ -162,7 +162,7 @@ function PayRoll() {
                         {userDetails.is_admin && (
                             <Container additionClass="col">
                                 <Primary
-                                additionClass="mr-1 pr-1"
+                                    additionClass="mr-1 pr-1"
                                     size={'btn-sm'}
                                     text={'Allowances'}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
@@ -200,10 +200,11 @@ function PayRoll() {
                         <Container
                             additionClass={"col mt-4"}
                         >
-                            <Search variant="Icon" onClick={() => {
-                                getEmployeesApi(currentPage);
-                            }} />
-
+                            <Container additionClass="mt-2">
+                                <Search variant="Icon" onClick={() => {
+                                    getEmployeesApi(currentPage);
+                                }} />
+                            </Container>
                         </Container>
                     </Container>
                 }

@@ -356,7 +356,7 @@ console.log("reportsType",reportsType);
               onChange={(date: string) =>
                 dateTimePickerHandler(date, "dateFrom")
               }
-              value={customRange.dateFrom}
+              value={customRange.dateFrom}  
             />
           </Container>
           <Container additionClass={'col-lg-3'}>
@@ -372,7 +372,7 @@ console.log("reportsType",reportsType);
           </Container>
           <Container additionClass={'row ml-1'}>
             <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-1'} onClick={() => getReports(currentPage)} />
+            <Primary text={'Search'} col={'col-xl-1 p-auto'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
       </div>
