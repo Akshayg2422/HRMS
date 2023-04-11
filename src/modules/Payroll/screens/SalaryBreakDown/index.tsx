@@ -250,6 +250,40 @@ function SalaryBreakDown() {
 
   })
 
+  const validatePostParams = () => {
+
+    if (!annualCTC) {
+      showToast('error', 'Cost of the company field should not be empty')
+      return false
+    }
+    else if (!basicSalary) {
+      showToast('error', 'Basic salary field should not be empty')
+      return false
+    }
+    else if (!allowanceGroup) {
+      showToast('error', 'Please select Allowance group')
+      return false
+    }
+    else if (validateDeduction().status) {
+      showToast('error', validateDeduction().errorMessage)
+      return false
+    }
+    else {
+      return true
+    }
+  }
+
+  const validateDeduction = () => {
+    let status = { status: false, errorMessage: '' }
+    
+    selectedDeductions.map((item: any) => {
+        if ((item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
+            status = { status: true, errorMessage: `Deduction field should not be empty` }
+        }
+    })
+    return status
+}
+
   const onSubmit = () => {
 
     const filteredApiKeys = selectedDeductions.map((el: any) => {
@@ -267,22 +301,21 @@ function SalaryBreakDown() {
       employee_id: selectedEmployeeDetails.id,
       calendar_year: calendarYear,
       allowance_break_down_group_id: allowanceGroup,
-      deductions_group_ids: filteredApiKeys,
+      deductions_group_ids: filteredApiKeys ? filteredApiKeys : [],
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
-    console.log("cvcvvccvvcvc", params);
+    if (validatePostParams()) {
+      dispatch(addEmployeeSalaryDefinition({
+        params,
+        onSuccess: (success: any) => () => {
+          showToast('success', success.message)
+          goBack(navigation)
+        },
+        onError: (error: any) => () => {
 
-
-    dispatch(addEmployeeSalaryDefinition({
-      params,
-      onSuccess: (success: any) => () => {
-        showToast('success', success.message)
-        goBack(navigation)
-      },
-      onError: (error: any) => () => {
-
-      }
-    }));
+        }
+      }));
+    }
 
   }
   const isPercentageExist = selectedDeductions.some((item: any) => item.type === "1")

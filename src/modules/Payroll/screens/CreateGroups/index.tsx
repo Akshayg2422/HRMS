@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { log } from 'console';
 import { addAllowanceGroup, addCompanyAllowance, addCompanyDeduction, getAllowanceGroupDetails, getCompanyAllowance } from '../../../../store/Payroll/actions';
+import { logDOM } from '@testing-library/react';
 
 const ALLOWANCE_TYPE = [
     { id: "1", name: "Percentage", value: "Percentage" },
@@ -202,7 +203,7 @@ function CreateGroup() {
             showToast('error', "Group name should not be empty")
             return false
         }
-        else if (selectedAllowances) {
+        else if (validateAllowances().status) {
             showToast('error', validateAllowances().errorMessage)
             return false
         }
@@ -212,11 +213,14 @@ function CreateGroup() {
     }
 
     const validateAllowances = () => {
+        
         let status = { status: false, errorMessage: '' }
         selectedAllowances.map((item: any) => {
-            if ((item.percent == 0 || item.percent == '') || (item.amount == 0 || item.amount == '')) {
+            
+            if ((item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
                 status = { status: true, errorMessage: `Allowance field should not be empty` }
             }
+           
         })
         return status
     }
@@ -243,7 +247,7 @@ function CreateGroup() {
             dispatch(addAllowanceGroup({
                 params,
                 onSuccess: (success: any) => () => {
-                    showToast('success', success.message)
+                    showToast('success', success.status)
                     goBack(navigation)
 
                 },
