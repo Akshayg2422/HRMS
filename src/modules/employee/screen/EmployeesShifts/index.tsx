@@ -22,6 +22,7 @@ import {
   getWeekAndWeekDaysById,
   WEEK_LIST,
   showToast,
+  mergeTimeSlots,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { getBranchShifts, getEmployeeWithShift, getMyShifts, postEmployeeShiftChange } from "../../../../store/shiftManagement/actions";
@@ -39,6 +40,7 @@ function EmployeeShifts() {
   const [shiftsList, setShiftList] = useState<any>()
   const [defaultShiftId, setDefaultShiftId] = useState<any>()
 
+  const [weeklyData, setWeeklyData] = useState<any>()
 
   const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
   const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
@@ -105,6 +107,7 @@ function EmployeeShifts() {
     dispatch(getMyShifts({
       params,
       onSuccess: (success: any) => () => {
+        breakTimeConvertion(success)
         setModel(!model);
       },
       onError: (error: string) => () => {
@@ -197,6 +200,22 @@ function EmployeeShifts() {
     </>
   }, [employeeWithShifts])
 
+
+  const breakTimeConvertion = (data: any) => {
+    let updatedData = [...data.weekly_group_details]
+    updatedData = updatedData.map((week: any) => {
+      const updateWeek = { ...week }
+      updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+        let updateWeek = { ...weekDay }
+        updateWeek.time_breakdown = mergeTimeSlots(updateWeek.time_breakdown)
+        weekDay = updateWeek
+        return weekDay
+      });
+      return updateWeek
+    });
+    setWeeklyData(updatedData)
+  }
+
   return (
     <>
       <TableWrapper>
@@ -207,7 +226,7 @@ function EmployeeShifts() {
             </Container>
             <Container additionClass={"col-xl-3 col-md-6 row"}>
               <InputText
-              size="sm"
+                size="sm"
                 value={searchEmployee}
                 col={'col'}
                 label={t("employeeName")}
@@ -221,7 +240,7 @@ function EmployeeShifts() {
                   getEmployeeLogsWithShifts(currentPage);
                 }}
               /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => {getEmployeeLogsWithShifts(currentPage); }} />
+              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeLogsWithShifts(currentPage); }} />
             </Container>
 
           </Container>
@@ -278,7 +297,9 @@ function EmployeeShifts() {
                 );
               })}
             </ul>
-            <EmployeeShiftListing datesList={myShifts.weekly_group_details[isActiveWeek - 1]} />
+            {weeklyData && weeklyData.length > 0 &&
+              <EmployeeShiftListing datesList={weeklyData[isActiveWeek - 1]} />
+            }
           </Card> : <NoRecordFound />}
         </div>
       </Modal>

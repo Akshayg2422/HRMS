@@ -474,11 +474,14 @@ function LocationScreen() {
                 setSearchEmployee(e.target.value);
               }}
             />
-            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+            {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
               onClick={() => {
                 getRegisteredFenceAdmin(currentPage)
               }}
-            />
+            /> */}
+            <Search variant={'Icon'} additionalClassName='col-xl-3 mt-xl-2 mt-2 mt-sm-0' onClick={() => {
+              getRegisteredFenceAdmin(currentPage)
+            }} />
           </Container>
           {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
             <CommonTable

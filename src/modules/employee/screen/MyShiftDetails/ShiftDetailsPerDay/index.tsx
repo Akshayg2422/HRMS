@@ -115,7 +115,7 @@ function ShiftDetailsPerDay() {
                 {filteredDetails() && filteredDetails().length > 0 ? filteredDetails().map((it: any) => {
                     return (
                         <Container additionClass={"col-xl-3 col-md-6"}>
-                            <Card
+                            <Card style={{height:'25vh'}}
                             >
                                 <Container additionClass={"d-flex justify-content-between"} >
                                     <Container>

@@ -163,14 +163,14 @@ const Header = () => {
           <div className='collapse navbar-collapse' id='navbarSupportedContent'>
             <a className='nav-item d-xl-none'>
               <div
-                className='pr-3 sidenav-toggler sidenav-toggler-dark'
+                className='pr-3 sidenav-toggler sidenav-toggler-white'
                 data-action='sidenav-pin'
                 data-target='#sidenav-main'
               >
                 <div className='sidenav-toggler-inner'>
-                  <i className='sidenav-toggler-line'></i>
-                  <i className='sidenav-toggler-line'></i>
-                  <i className='sidenav-toggler-line'></i>
+                  <i className='sidenav-toggler-line '></i>
+                  <i className='sidenav-toggler-line '></i>
+                  <i className='sidenav-toggler-line '></i>
                 </div>
               </div>
             </a>
@@ -191,7 +191,7 @@ const Header = () => {
                 <a className="nav-link" onClick={() => {
                   goTo(navigate, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
-                  <i className="ni ni-chat-round text-primary" style={{ cursor: 'pointer' }}></i>
+                  <i className="ni ni-chat-round text-primary  " style={{ cursor: 'pointer' }}></i>
                 </a>
                 <a className="nav-link" onClick={() => {
                   goTo(navigate, ROUTE.ROUTE_NOTIFICATIONS);
