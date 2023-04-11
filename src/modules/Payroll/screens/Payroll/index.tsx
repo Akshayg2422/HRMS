@@ -139,7 +139,7 @@ function PayRoll() {
 
     const memoizedTable = useMemo(() => {
         return <>
-            {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+            {registeredEmployeesList && registeredEmployeesList?.length > 0 ? (
                 <CommonTable
                     card={false}
                     isPagination

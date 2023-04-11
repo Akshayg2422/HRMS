@@ -61,7 +61,7 @@ function CreateGroup() {
     const getAllowanceGroupDetailsData = () => {
 
         const params = {
-            id: selectedAllowanceGroupDetails.id
+            id: selectedAllowanceGroupDetails?.id
         }
         dispatch(getAllowanceGroupDetails({
             params,
@@ -85,12 +85,12 @@ function CreateGroup() {
     const addSelectedAllowance = (item: any) => {
         let updateSelectedAllowance = [...allowances];
 
-        const branchExists = updateSelectedAllowance.some(
+        const branchExists = updateSelectedAllowance?.some(
             (eachBranch) => eachBranch.id === item.id || eachBranch.allowance_id === item.id
         );
 
         if (branchExists) {
-            updateSelectedAllowance = updateSelectedAllowance.filter(
+            updateSelectedAllowance = updateSelectedAllowance?.filter(
                 (eachItem) => eachItem.id !== item.id || eachItem.allowance_id !== item.id
             );
         }
@@ -116,7 +116,7 @@ function CreateGroup() {
     }
 
     const onDeleteAllowence = (item: any) => {
-        const filteredPeople = selectedAllowances.filter((it: any) => it.id !== item.id)
+        const filteredPeople = selectedAllowances?.filter((it: any) => it.id !== item.id)
         setSelectedAllowances(filteredPeople)
         setAllowances(filteredPeople)
 
@@ -124,7 +124,7 @@ function CreateGroup() {
 
     useEffect(() => {
 
-        const isError = selectedAllowances.some((item: any) => item.error)
+        const isError = selectedAllowances?.some((item: any) => item.error)
         if (isError) {
             setIsSubmitDisable(true)
         }
@@ -136,7 +136,7 @@ function CreateGroup() {
     }, [selectedAllowances])
 
     const onTotalCalculator = () => {
-        const AllowancePercentage = selectedAllowances.map((el: any) => {
+        const AllowancePercentage = selectedAllowances?.map((el: any) => {
             if (el.type == "1") {
                 const convert = parseInt(el.percent)
                 return +convert
@@ -213,21 +213,21 @@ function CreateGroup() {
     }
 
     const validateAllowances = () => {
-        
+
         let status = { status: false, errorMessage: '' }
-        selectedAllowances.map((item: any) => {
-            
-            if ( item.amount == '' && (item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
+        selectedAllowances?.map((item: any) => {
+
+            if (item.amount == '' && (item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
                 status = { status: true, errorMessage: `Allowance field should not be empty` }
             }
-           
+
         })
         return status
     }
 
     const onAllowanceGroupAdd = () => {
 
-        const filteredApiKeys = selectedAllowances.map((el: any) => {
+        const filteredApiKeys = selectedAllowances?.map((el: any) => {
             return {
                 ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el.id }),
                 percent: el.percent,
@@ -325,7 +325,7 @@ function CreateGroup() {
                 </Container>
 
                 <Container>
-                    {selectedAllowances && selectedAllowances.length > 0 && selectedAllowances.map((el: any, i: number) => {
+                    {selectedAllowances && selectedAllowances?.length > 0 && selectedAllowances?.map((el: any, i: number) => {
 
                         const isEditData = selectedAllowanceEditData.some((item: any) => item.id !== el.id)
 
@@ -415,7 +415,7 @@ function CreateGroup() {
                     <Container>
                         {companyAllowanceList.data && companyAllowanceList?.data?.map((el: any) => {
 
-                            const isActive = allowances.some((item: any) => item.id === el.id)
+                            const isActive = allowances?.some((item: any) => item.id === el.id)
 
                             return (
                                 <Container additionClass='d-flex justify-content-between my-4'>
