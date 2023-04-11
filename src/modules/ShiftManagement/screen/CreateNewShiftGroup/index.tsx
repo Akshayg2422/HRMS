@@ -446,7 +446,9 @@ const CreateShiftGroup = () => {
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </Container>
-                    <h2>{'Assign shift Employees'}</h2>
+                        {isShowManageEmpOnEdit && (
+                            <h2>{'Assign shift Employees'}</h2>
+                        )}
 
                     </Container>}
 
