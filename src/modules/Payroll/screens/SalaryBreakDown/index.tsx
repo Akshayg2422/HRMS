@@ -49,8 +49,6 @@ function SalaryBreakDown() {
     (state: any) => state.AuthReducer
   );
 
-  console.log("companyDeductionsList-->", companyDeductionsList);
-
 
   useEffect(() => {
     isValidBasicSalary()
@@ -275,14 +273,14 @@ function SalaryBreakDown() {
 
   const validateDeduction = () => {
     let status = { status: false, errorMessage: '' }
-    
+
     selectedDeductions.map((item: any) => {
-        if ((item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
-            status = { status: true, errorMessage: `Deduction field should not be empty` }
-        }
+      if ((item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
+        status = { status: true, errorMessage: `Deduction field should not be empty` }
+      }
     })
     return status
-}
+  }
 
   const onSubmit = () => {
 
@@ -305,6 +303,7 @@ function SalaryBreakDown() {
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
     if (validatePostParams()) {
+
       dispatch(addEmployeeSalaryDefinition({
         params,
         onSuccess: (success: any) => () => {
@@ -337,6 +336,7 @@ function SalaryBreakDown() {
           label={t("CostOfTheCompany")}
           placeholder={t("CostOfTheCompany")}
           value={annualCTC}
+          type={'number'}
           onChange={(event: any) => {
 
             let annualCtc: any = event.target.value
@@ -353,6 +353,7 @@ function SalaryBreakDown() {
             label={t("BasicSalary")}
             placeholder={t("BasicSalary")}
             value={basicSalary}
+            type={'number'}
             onChange={(event: any) => {
               setBasicSalary(event.target.value)
             }}
@@ -442,6 +443,7 @@ function SalaryBreakDown() {
         <div className='text-right mt-3'>
           <Primary
             size={'btn-md'}
+            disabled={remaining < 0 || isSumbitDisable ? true : false}
             text={isEditSalary ? t('update') : t('submit')}
             onClick={() => onSubmit()}
           />
@@ -461,7 +463,6 @@ function SalaryBreakDown() {
             onChange={(e) => {
               setDeduction(e.target.value)
               setDeductionAddModal(!deductionAddModal)
-              console.log("111111111111", selectedDeductions);
 
               const isDeductionExist = selectedDeductions && selectedDeductions.length > 0 && selectedDeductions.some((item: any) => item.id === e.target.value)
               if (!isDeductionExist) {
