@@ -191,7 +191,7 @@ const Header = () => {
                 <a className="nav-link" onClick={() => {
                   goTo(navigate, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
-                  <i className="ni ni-chat-round text-  " style={{ cursor: 'pointer' }}></i>
+                  <i className="ni ni-chat-round text-primary  " style={{ cursor: 'pointer' }}></i>
                 </a>
                 <a className="nav-link" onClick={() => {
                   goTo(navigate, ROUTE.ROUTE_NOTIFICATIONS);
