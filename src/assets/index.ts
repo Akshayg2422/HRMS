@@ -35,6 +35,7 @@ export const Icons = {
   Search: require('./icons/Search/Search.png'),
   Calendar: require('./icons/Calendar/Calendar.png'),
   Download: require('./icons/DownLoad/Download.png'),
+  Portfolio: require('./icons/Portfolio/services-portfolio.png'),
   DownloadSecondary: require('./icons/DownLoadSecondary/Download.png'),
   Edit: require('./icons/Edit/Edit.png'),
   Pencil: require('./icons/Edit/pencil.png'),

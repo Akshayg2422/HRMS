@@ -263,9 +263,9 @@ export const MY_PORTFOLIO_ITEM = [
 
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '2', name: 'My portfolio', value: 'MP', icon: 'ni ni-single-02' },
-  { id: '3', name: 'My Active Branch', value: 'MA', icon: 'ni ni-button-power' },
-  { id: '4', name: 'Select Language', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '2', name: 'My portfolio', value: 'MP', icon: 'ni ni-badge' },
+  { id: '3', name: 'My Active Branch', value: 'MA', icon: 'fa-solid fa-diagram-project' },
+  { id: '4', name: 'Select Language', value: 'CL', icon: 'fa fa-language' },
   { id: '5', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
