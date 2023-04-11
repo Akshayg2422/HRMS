@@ -89,25 +89,12 @@ function ViewEmployeeSalaryDefinition() {
                             <Container additionClass=''>
                                 <CommonTable
                                     card={false}
-                                    displayDataSet={normalizedAllowanceList(employeeSalaryDefinition.deductions_group)}
+                                    displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.deductions_group)}
 
                                 />
                             </Container>
                         </Container>
                     }
-
-                    {/* {employeeSalaryDefinition?.deductions_group && employeeSalaryDefinition.deductions_group.length > 0 && employeeSalaryDefinition.deductions_group.map((el: any) => {
-                    return (
-                        <Container additionClass={'col-xl-12 row col-sm-3'}>
-                            <div className="col-xl-6">
-                                <FormTypography title={'Deduction name'} subTitle={el?.name} />
-                            </div>
-                            <div className="col-xl-6">
-                                <FormTypography title={el.is_percent ? 'Percent' : 'Amount'} subTitle={el.is_percent ? el.percent : el.amount} />
-                            </div>
-                        </Container>
-                    )
-                })} */}
 
                 </Card>) : <Card> <NoRecordFound /></Card>}
         </ScreenContainer>

@@ -57,7 +57,7 @@ function SalaryBreakDown() {
 
   useEffect(() => {
 
-    const isError = selectedDeductions.some((item: any) => item.error)
+    const isError = selectedDeductions?.some((item: any) => item.error)
     if (isError) {
       setIsSubmitDisable(true)
     }
@@ -119,7 +119,7 @@ function SalaryBreakDown() {
     dispatch(getEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
-        prefillSalaryDefinitions(success.details)
+        prefillSalaryDefinitions(success?.details)
       },
       onError: (error: any) => () => {
         if (!error.success) {
@@ -131,7 +131,7 @@ function SalaryBreakDown() {
 
   const prefillSalaryDefinitions = (salaryDetails: any) => {
 
-    setEditSalaryDefinitionId(salaryDetails.id)
+    setEditSalaryDefinitionId(salaryDetails?.id)
     setAnnualCTC(salaryDetails.ctc)
 
     let annualCtc: any = salaryDetails.ctc
@@ -142,14 +142,14 @@ function SalaryBreakDown() {
 
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
-    const newKeyAddedArray = salaryDetails.deductions_group.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' }))
+    const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' }))
     setSelectedDefinitionEditData(newKeyAddedArray)
     setSelectedDeductions(newKeyAddedArray)
 
   }
 
   const onTotalCalculator = () => {
-    const AllowancePercentage = selectedDeductions.map((el: any) => {
+    const AllowancePercentage = selectedDeductions?.map((el: any) => {
       if (el.type == "1") {
         const convert = parseInt(el.percent)
         return +convert
@@ -194,14 +194,14 @@ function SalaryBreakDown() {
   const onDeductionDropdownChangeHandler = (event: string) => {
 
     const filteredDeduction = companyDeductionsList?.data?.filter((item: any) => event === item.id)
-    const newArr = filteredDeduction.map((el: any) => ({ ...el, deduction_id: el.id, percent: 0, amount: 0, is_percent: false, type: "1", error: '' }))
+    const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: 0, amount: 0, is_percent: false, type: "1", error: '' }))
     setSelectedDeductions([...selectedDeductions, ...newArr])
 
   }
 
 
   const onDeleteAllowence = (item: any) => {
-    const filteredPeople = selectedDeductions.filter((it: any) => it.id !== item.id)
+    const filteredPeople = selectedDeductions?.filter((it: any) => it.id !== item.id)
     setSelectedDeductions(filteredPeople)
 
   }
@@ -275,7 +275,7 @@ function SalaryBreakDown() {
     let status = { status: false, errorMessage: '' }
 
     selectedDeductions.map((item: any) => {
-      if ( item.amount == '' && (item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
+      if (item.amount == '' && (item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
         status = { status: true, errorMessage: `Deduction field should not be empty` }
       }
     })
@@ -317,7 +317,7 @@ function SalaryBreakDown() {
     }
 
   }
-  const isPercentageExist = selectedDeductions.some((item: any) => item.type === "1")
+  const isPercentageExist = selectedDeductions && selectedDeductions?.some((item: any) => item.type === "1")
 
 
   return (
@@ -365,7 +365,7 @@ function SalaryBreakDown() {
             <DropDown
               label={t("AllowanceGroup")}
               placeholder={t("AllowanceGroup")}
-              data={allowanceGroupsList.data}
+              data={allowanceGroupsList?.data}
               value={allowanceGroup}
               onChange={(e) => setAllowanceGroup(e.target.value)}
 
@@ -382,9 +382,9 @@ function SalaryBreakDown() {
           <h3>{'Deduction breakdown'}</h3>
         </div>
 
-        {selectedDeductions && selectedDeductions.length > 0 && selectedDeductions.map((el: any, i: number) => {
+        {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
 
-          const isEditData = selectedDefinitionEditData.some((item: any) => item.id !== el.id)
+          const isEditData = selectedDefinitionEditData?.some((item: any) => item.id !== el.id)
           return (
             <Container additionClass='row'>
               <Container additionClass={'col-xl-5 col col-sm-0'}>
@@ -458,13 +458,13 @@ function SalaryBreakDown() {
           <DropDown
             label={t("DeductionGroup")}
             placeholder={t("DeductionGroup")}
-            data={companyDeductionsList.data}
+            data={companyDeductionsList?.data}
             value={deduction}
             onChange={(e) => {
               setDeduction(e.target.value)
               setDeductionAddModal(!deductionAddModal)
 
-              const isDeductionExist = selectedDeductions && selectedDeductions.length > 0 && selectedDeductions.some((item: any) => item.id === e.target.value)
+              const isDeductionExist = selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.some((item: any) => item.id === e.target.value)
               if (!isDeductionExist) {
                 onDeductionDropdownChangeHandler(e.target.value)
               }
