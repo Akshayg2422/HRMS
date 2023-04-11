@@ -217,7 +217,7 @@ function CreateGroup() {
         let status = { status: false, errorMessage: '' }
         selectedAllowances.map((item: any) => {
             
-            if ((item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
+            if ( item.amount == '' && (item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
                 status = { status: true, errorMessage: `Allowance field should not be empty` }
             }
            
