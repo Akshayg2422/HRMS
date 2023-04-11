@@ -200,8 +200,8 @@ function MyBranches() {
     return (
         <>
             <TableWrapper>
-                <div className="mx--1 mt--3">
-                    <Container additionClass={"col-xl-3 col-md-6 col-sm-12 "}>
+                <div className="ml-2 mt--3">
+                    <Container additionClass={"col-xl-3 col-md-6 col-sm-12 ml-2 "}>
                         <MyActiveBranches />
                     </Container>
                 </div>

@@ -10,17 +10,17 @@ import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/acti
 
 
 const DROPDOWN_MENU = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 const DROPDOWN_MENU_1 = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 const DROPDOWN_MENU_2 = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]

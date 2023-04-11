@@ -26,8 +26,8 @@ import { useTranslation } from "react-i18next";
 import { isEditEmployeeSalaryDefinition, settingSelectedEmployeeDetails } from '../../../../store/Payroll/actions';
 
 export const DROPDOWN_MENU = [
-    { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
-    { id: '2', name: 'View', value: 'CL', icon: 'ni ni-active-40' },
+    { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
+    { id: '2', name: 'View', value: 'CL', image: Icons.Delete_1 },
 ]
 
 function PayRoll() {
@@ -146,15 +146,17 @@ function PayRoll() {
         <>
             <TableWrapper
                 buttonChildren={
-                    <Container additionClass="mr--4">
+                    <Container additionClass=" mr--4">
                         {userDetails.is_admin && (
-                            <Container >
+                            <Container additionClass="col">
                                 <Primary
+                                additionClass="mr-1 pr-1"
                                     size={'btn-sm'}
                                     text={t('AddAllowance')}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
                                 />
                                 <Primary
+                                    additionClass="mt-2 mt-sm-0 mt-lg-0"
                                     size={'btn-sm'}
                                     text={t('AddDeduction')}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
@@ -166,7 +168,7 @@ function PayRoll() {
 
                 filterChildren={
                     <Container
-                        additionClass={" row "}
+                        additionClass={" row mt-4 mt-sm-0 mt-lg-0"}
                     >
                         <Container col={"col-xl-3 col-md-6"}>
                             <InputText
