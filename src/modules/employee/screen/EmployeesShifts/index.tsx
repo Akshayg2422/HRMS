@@ -202,7 +202,7 @@ function EmployeeShifts() {
       <TableWrapper>
         <div className={'mx-3 mt--4'}>
           <Container additionClass={"row "}>
-            <Container col={"col-xl-5"}>
+            <Container col={"col-xl-3"}>
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
             <Container additionClass={"col-xl-3 col-md-6 row"}>

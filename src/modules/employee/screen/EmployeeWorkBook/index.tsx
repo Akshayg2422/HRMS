@@ -103,8 +103,8 @@ function EmployeeTimeSheets() {
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.employee_id,
         name: el.name,
+        Code: el.employee_id,
         "mobile number": el.mobile_number,
         today: el.timesheet_entries_count,
         "this month": el.timesheet_entries_count_current_month,

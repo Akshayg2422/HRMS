@@ -127,7 +127,7 @@ function AllowanceGroupList() {
                             manageRouteHandler(undefined)
                         }
                         }
-                        size={"btn-md"}
+                        size={"btn-sm"}
                     />
                 }
             >

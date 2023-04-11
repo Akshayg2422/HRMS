@@ -66,23 +66,25 @@ const Navbar = ({ }) => {
       id="sidenav-main"
     >
       <div className="scrollbar-inner">
-        <div className="sidenav-header d-flex align-items-center">
-          <a className="navbar-brand d-none d-sm-block">
+        <div className="sidenav-header  align-items-center">
+          <a className="navbar-brand">
             <ImageView icon={Icons.LogoSmall} />
           </a>
-          <div
-            className="sidenav-toggler ml-xl-auto"
-            data-action="sidenav-unpin"
-            data-target="#sidenav-main"
-          >
-            <div className="sidenav-toggler-inner">
-              <i className="sidenav-toggler-line bg-white"></i>
-              <i className="sidenav-toggler-line bg-white"></i>
-              <i className="sidenav-toggler-line bg-white"></i>
+          <div className=" ml-auto">
+            <div
+              className="sidenav-toggler d-none d-sm-block"
+              data-action="sidenav-unpin"
+              data-target="#sidenav-main"
+            >
+              <div className="sidenav-toggler-inner">
+                <i className="sidenav-toggler-line bg-white"></i>
+                <i className="sidenav-toggler-line bg-white"></i>
+                <i className="sidenav-toggler-line bg-white"></i>
+              </div>
             </div>
           </div>
         </div>
-        <div className="navbar-inner">
+        <div className="navbar-inner mt-5">
           <div className="collapse navbar-collapse" id="sidenav-collapse-main">
             <ul className="navbar-nav">
 

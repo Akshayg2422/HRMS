@@ -1,5 +1,5 @@
 import { BackArrow, Card, CheckBox, Container, DropDown, ImageView, Input, InputText, Modal, NoRecordFound, Primary, Secondary, useKeyPress } from '@components';
-import { dropDownValueCheckByEvent, formatAMPM, getWeekAndWeekDaysById, ROUTE, showToast, useNav, validateDefault, WEEK_LIST } from '@utils';
+import { dropDownValueCheckByEvent, formatAMPM, getWeekAndWeekDaysById, mergeTimeSlots, ROUTE, showToast, useNav, validateDefault, WEEK_LIST } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,20 +12,23 @@ function ShiftDetailsPerDay() {
     const { t } = useTranslation();
     const navigate = useNav();
 
-    const { myShifts } = useSelector(
-        (state: any) => state.ShiftManagementReducer
-    );
+    // const { myShifts } = useSelector(
+    //     (state: any) => state.ShiftManagementReducer
+    // );
+    const [shiftData, setShiftData] = useState<any>([])
 
     useEffect(() => {
         getMyShiftsDetails()
     }, [])
 
+
     const getMyShiftsDetails = () => {
         const params = {}
         dispatch(getMyShifts({
-            params, onSuccess: (success: object) => {
+            params, onSuccess: (success: any) => () => {
+                setShiftData(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }));
@@ -65,19 +68,19 @@ function ShiftDetailsPerDay() {
 
     const filteredDetails = () => {
         let matchedData: any = []
-        myShifts && Object.keys(myShifts).length > 0 && myShifts?.weekly_group_details.forEach((item: { week: any; week_calendar: any[]; }) => {
+        shiftData && Object.keys(shiftData).length > 0 && shiftData?.weekly_group_details.forEach((item: { week: any; week_calendar: any[]; }) => {
             getCurrentMonthDates().forEach((el: any) => {
                 if (item.week === el.week) {
                     item?.week_calendar.forEach((element: any) => {
                         if (element.week_day === el.week_day) {
-                            matchedData.push({ time: element.time_breakdown, date: el.date, day: el.day })
-                            // console.log(el.week, '=======>', element.week_day, '--------->', el.week_day, '********', element.time_breakdown, '###', el.date, "$$", el.day);
+                            matchedData = [...matchedData,{ time: element.time_breakdown, date: el.date, day: el.day }]
                         }
                     })
                 }
             })
         });
         return matchedData
+
     }
 
 
@@ -94,7 +97,6 @@ function ShiftDetailsPerDay() {
         <div>
             <Card>
                 <Container additionClass='row mb-4'>
-                    <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
                     <Container additionClass='row'>
                         <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')}`}</h2>
                         {filteredDetails() && filteredDetails().length > 0 && <Container additionClass="text-right">
@@ -128,7 +130,7 @@ function ShiftDetailsPerDay() {
                                     </Container>
                                 </Container>
                                 <Container additionClass='py-3'>
-                                    {it.time && it.time.length > 0 ? it.time.map((el: any) => {
+                                    {it.time && it.time.length > 0 ? mergeTimeSlots(it.time).map((el: any) => {
                                         return (
                                             <Container>
                                                 {el.start_time && el.end_time ? <span>{`${formatAMPM(el.start_time)} - ${formatAMPM(el.end_time)}`}</span> : ''}

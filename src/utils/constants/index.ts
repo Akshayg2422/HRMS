@@ -111,6 +111,7 @@ export const CHILD_PATH = [
   { path: "/portfolio", parent: '/portfolio', name: 'My Portfolio', showBack: true, showBreadCrums: false },
   { path: "/my-work-book", parent: '/portfolio', name: 'My Time Sheet', showBack: true, showBreadCrums: true },
   { path: "/my-shifts-details-daily", parent: '/portfolio', name: 'My Shift', showBack: true, showBreadCrums: true },
+  { path: "/my-shifts-details-monthly", parent: '/portfolio', name: 'Shift Detailed View', showBack: true, showBreadCrums: true },
   { path: "/my-notification", parent: '/my-notification', name: 'Broadcast', showBack: true, showBreadCrums: false },
   { path: "/notifications", parent: '/notifications', name: 'Notifications', showBack: true, showBreadCrums: false },
   { path: "/salary-break-down", parent: '/payroll', name: 'Salary BreakDown', showBack: true, showBreadCrums: true },

@@ -67,10 +67,10 @@ const WeeklyShiftSelection = () => {
       showToast("error", t('theShiftNameCantBeEmpty'));
       return false;
     }
-    // else if (ValidationShift().status) {
-    //   showToast('error', ValidationShift().errorMessage)
-    //   return false
-    // }
+    else if (ValidationShift().status) {
+      showToast('error', ValidationShift().errorMessage)
+      return false
+    }
     else {
       return true;
     }
@@ -88,11 +88,11 @@ const WeeklyShiftSelection = () => {
             if (hasWorkingWeekDays) {
               if (item.is_working) {
                 if (item.time_breakdown.length === 0) {
-                  status = { status: true, errorMessage: `time_breakdown is empty` }
+                  status = { status: true, errorMessage: `Please assign time for enabled week days` }
                 }
               }
             } else {
-              status = { status: true, errorMessage: `None of the weekDay is true` }
+              status = { status: true, errorMessage: `None of the week Day is enabled` }
             }
           })
         }
@@ -103,9 +103,7 @@ const WeeklyShiftSelection = () => {
     return status
   }
 
-
   const onSubmit = () => {
-
     if (validatePostParams()) {
       weeklyData.forEach((week: any) => {
         const weekCalendar = week.week_calendar

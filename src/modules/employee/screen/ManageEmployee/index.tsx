@@ -183,6 +183,19 @@ const ManageEmployee = () => {
         })
       );
     }
+    else{
+      const parentBranch = listBranchesList.find(
+        (it: any) => it.id === dashboardDetails.company_branch.id
+      );
+
+      setCompanyBranchDropdownData([
+        ...getAllSubBranches(
+          listBranchesList,
+          dashboardDetails.company_branch.id
+        ),
+        parentBranch,
+      ]);
+    }
 
 
     setDesignationNote('')
