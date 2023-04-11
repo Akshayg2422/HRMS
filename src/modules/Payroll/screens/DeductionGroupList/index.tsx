@@ -25,7 +25,7 @@ function DeductionGroupList() {
     );
 
     const onDeleteAllowence = (item: any) => {
-        const filteredPeople = selectedAllowences.filter((it: any) => it.id !== item.id)
+        const filteredPeople = selectedAllowences?.filter((it: any) => it.id !== item.id)
         setSelectedAllowences(filteredPeople)
     }
 
@@ -104,7 +104,7 @@ function DeductionGroupList() {
                 />
             ) : <NoRecordFound />}
         </>
-    }, [companyDeductionsList.data])
+    }, [companyDeductionsList?.data])
 
 
     return (
