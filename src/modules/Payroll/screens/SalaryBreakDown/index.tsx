@@ -37,6 +37,7 @@ function SalaryBreakDown() {
   const [allowanceGroup, setAllowanceGroup] = useState('')
   const [editSalaryDefinitionId, setEditSalaryDefinitionId] = useState("")
   const [selectedDefinitionEditData, setSelectedDefinitionEditData] = useState<any>([])
+  const [isDisablePayrollView, setIsDisablePayrollView] = useState(false)
 
 
 
@@ -48,7 +49,7 @@ function SalaryBreakDown() {
     (state: any) => state.AuthReducer
   );
 
-console.log("companyDeductionsList-->",companyDeductionsList);
+  console.log("companyDeductionsList-->", companyDeductionsList);
 
 
   useEffect(() => {
@@ -120,12 +121,12 @@ console.log("companyDeductionsList-->",companyDeductionsList);
     dispatch(getEmployeeSalaryDefinition({
       params,
       onSuccess: (success: any) => () => {
-        console.log("11111111111",success.details);
-        
         prefillSalaryDefinitions(success.details)
       },
       onError: (error: any) => () => {
-
+        if (!error.success) {
+          setIsDisablePayrollView(true)
+        }
       }
     }));
   }
@@ -293,7 +294,7 @@ console.log("companyDeductionsList-->",companyDeductionsList);
 
         <Container additionClass='d-flex justify-content-between mb-3'>
 
-          <h3>{isEditSalary ? 'Edit Employee salary definition' : 'Employee salary definition'}</h3>
+          <h3>{isEditSalary && !isDisablePayrollView ? 'Edit Employee salary definition' : 'Employee salary definition'}</h3>
 
         </Container>
 
