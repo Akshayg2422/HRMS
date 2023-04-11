@@ -28,8 +28,9 @@ import { useTranslation } from "react-i18next";
 import { isEditEmployeeSalaryDefinition, settingSelectedEmployeeDetails } from '../../../../store/Payroll/actions';
 
 export const DROPDOWN_MENU = [
-    { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
-    { id: '2', name: 'View', value: 'CL', image: Icons.Delete_1 },
+    { id: '1', name: 'Add', value: 'CL', image: Icons.Add },
+    { id: '2', name: 'Edit', value: 'PF', image: Icons.Pencil },
+    { id: '3', name: 'View', value: 'CL', image: Icons.View },
 ]
 
 function PayRoll() {
@@ -84,6 +85,12 @@ function PayRoll() {
     const dropdownMenuItemActionHandler = (item: any, data?: any) => {
 
         switch (item.name) {
+
+            case 'Add':
+                dispatch(settingSelectedEmployeeDetails(data))
+                goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
+                break;
+
             case 'Edit':
                 dispatch(settingSelectedEmployeeDetails(data))
                 dispatch(isEditEmployeeSalaryDefinition(!isEditSalary))
