@@ -69,8 +69,17 @@ function CreateGroup() {
 
                 setGroupName(selectedAllowanceGroupDetails.name)
                 setSelectedAllowanceEditData(success?.details?.allowance_break_down?.allowance_items)
-                setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
-                setSelectedAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
+
+
+
+                success?.details?.allowance_break_down?.allowance_items.map((el: any) => {
+                    const filtered = companyAllowanceList?.data?.filter((item: any) => item.id === el.allowance_id).map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' }))
+                    setSelectedAllowances([...selectedAllowances, ...filtered])
+                    setAllowances([...allowances, ...filtered])
+                })
+
+                // setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
+                // setSelectedAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
             },
             onError: (error: any) => () => {
 
@@ -79,17 +88,16 @@ function CreateGroup() {
 
     }
 
-
     const addSelectedAllowance = (item: any) => {
         let updateSelectedAllowance = [...allowances];
 
         const branchExists = updateSelectedAllowance.some(
-            (eachBranch) => eachBranch.id === item.id
+            (eachBranch) => eachBranch.id === item.id || eachBranch.allowance_id === item.id
         );
 
         if (branchExists) {
             updateSelectedAllowance = updateSelectedAllowance.filter(
-                (eachItem) => eachItem.id !== item.id
+                (eachItem) => eachItem.id !== item.id || eachItem.allowance_id !== item.id
             );
         }
         else {
@@ -406,9 +414,6 @@ function CreateGroup() {
                         {companyAllowanceList.data && companyAllowanceList?.data?.map((el: any) => {
 
                             const isActive = allowances.some((item: any) => item.id === el.id)
-                            console.log("qqqqqqqqqqq", allowances);
-                            console.log("companyAllowanceList", companyAllowanceList);
-
 
                             return (
                                 <Container additionClass='d-flex justify-content-between my-4'>

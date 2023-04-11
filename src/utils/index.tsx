@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH,COMMON_HEADER
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -85,7 +85,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
     draggable: true,
     progress: undefined,
     theme: "colored"
-    
+
   }
 
   let toastElement = null;
@@ -101,7 +101,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
       break;
     default:
       toastElement = toast(message, style)
-      
+
       break;
   }
 
@@ -208,15 +208,15 @@ function convertTo24Hour(s: any) {
   return convertedTime.join(":");
 }
 
-const convertToUpperCase = (data: string) =>{
-  if(data){
+const convertToUpperCase = (data: string) => {
+  if (data) {
     let toUpperCase = data?.charAt(0)?.toUpperCase() + data?.slice(1);
     return toUpperCase
   }
-  else{
+  else {
     return data
   }
- 
+
 }
 
 
@@ -329,6 +329,19 @@ const getTimelineRelativeTimeFormat = (date: Date | null | undefined): string =>
 }
 
 
+const mergeTimeSlots = (timeSlots: any) => {
+  let formattedData = []
+  if (timeSlots.length > 1) {
+    let lastElement = timeSlots[timeSlots.length - 1];
+    timeSlots[0].end_time = lastElement.end_time
+    timeSlots.splice(-1)
+    formattedData = timeSlots
+  } else {
+    formattedData = timeSlots
+  }
+  return formattedData
+}
+
 
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
@@ -403,5 +416,6 @@ export {
   CHILD_PATH,
   getTimelineRelativeTimeFormat,
   convertToUpperCase,
-  COMMON_HEADER
+  COMMON_HEADER,
+  mergeTimeSlots
 }

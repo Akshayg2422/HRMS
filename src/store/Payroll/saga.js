@@ -278,7 +278,7 @@ function* getEmployeeSalaryDefinitionSaga(action) {
         } else {
             yield put(hideLoader());
             yield put(getEmployeeSalaryDefinitionFailure(response.error_message));
-            yield call(action.payload.onError(response.error_message));
+            yield call(action.payload.onError(response));
         }
     } catch (error) {
         yield put(hideLoader());

@@ -8,7 +8,7 @@ import { useEffect, useMemo } from 'react';
 import { downloadFile, formatAMPM } from '@utils';
 
 type LogReportsProps = {
-    data?: Array<any>;
+    data?: any;
     department: string;
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
@@ -26,6 +26,9 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         (state: any) => state.DashboardReducer
     );
 
+    console.log("data------>",data);
+    
+
     const {
         numOfPages,
         currentPage,
@@ -35,8 +38,8 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
     const { t } = useTranslation();
 
     const getConvertedTableData = (data: any) => {
-        let item = data.data
-        let shiftTime = data.shift_details
+        let item = data?.data
+        let shiftTime = data?.shift_details
         const updatedData = []
         let key = getDatesListBetweenStartEndDates(startDate, endDate)
         for (let i = 0; i < item.length; i++) {
@@ -130,8 +133,10 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
 
 
     const memoizedTable = useMemo(() => {
+        console.log("wwwwwwwwww",data);
+        
         return <>
-          {data && data.length > 0 ? (
+          {data?.data && data?.data?.length > 0 ? (
             <CommonTable
               // noHeader
               card={false}

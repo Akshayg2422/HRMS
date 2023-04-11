@@ -28,7 +28,6 @@ const DarkBackground = styled.div<{ disappear: boolean }>`
 
 function AppLoader() {
   const { loading } = useSelector((state: any) => state.LoaderReducer);
-  console.log("----------->", loading);
 
   return (
     <div>
