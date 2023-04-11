@@ -68,7 +68,7 @@ function CreateGroup() {
             onSuccess: (success: any) => () => {
                 console.log("success?.details", success?.details);
 
-                setGroupName(selectedAllowanceGroupDetails.name)
+                setGroupName(selectedAllowanceGroupDetails?.name)
                 setSelectedAllowanceEditData(success?.details?.allowance_break_down?.allowance_items)
 
                 setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
@@ -227,7 +227,7 @@ function CreateGroup() {
 
     const onAllowanceGroupAdd = () => {
 
-        const filteredApiKeys = selectedAllowances?.map((el: any) => {
+        const filteredApiKeys =selectedAllowances &&  selectedAllowances?.map((el: any) => {
             return {
                 ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el.id }),
                 percent: el.percent,
@@ -296,7 +296,7 @@ function CreateGroup() {
 
     }
 
-    const isPercentageExist = selectedAllowances.some((item: any) => item.type === "1")
+    const isPercentageExist = selectedAllowances?.some((item: any) => item.type === "1")
 
     return (
 
@@ -327,7 +327,7 @@ function CreateGroup() {
                 <Container>
                     {selectedAllowances && selectedAllowances?.length > 0 && selectedAllowances?.map((el: any, i: number) => {
 
-                        const isEditData = selectedAllowanceEditData.some((item: any) => item.id !== el.id)
+                        const isEditData = selectedAllowanceEditData?.some((item: any) => item.id !== el.id)
 
                         return (
                             <Container additionClass='row'>
@@ -386,7 +386,7 @@ function CreateGroup() {
                 </Container>
 
 
-                {selectedAllowances && selectedAllowances.length > 0 && (
+                {selectedAllowances && selectedAllowances?.length > 0 && (
                     <Container margin={"mt-5"} additionClass={"text-right"} >
                         <Primary
                             text={selectedAllowanceGroupDetails ? t('update') : t("submit")}
@@ -413,7 +413,7 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {companyAllowanceList.data && companyAllowanceList?.data?.map((el: any) => {
+                        {companyAllowanceList?.data && companyAllowanceList?.data?.map((el: any) => {
 
                             const isActive = allowances?.some((item: any) => item.id === el.id)
 

@@ -191,7 +191,8 @@ const initialState = {
   leaveTypesDetails: {},
   editLeaveTypesDetails: '',
   currentLeaveType: -2,
-  getEmployeeBasicInfo: undefined
+  getEmployeeBasicInfo: undefined,
+  employeeAttendanceInfoDetails: undefined
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1325,9 +1326,10 @@ const EmployeeReducer = (state = initialState, action) => {
       state = { ...state, loading: true };
       break;
     case FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS:
+      console.log("action.payload-->", action.payload);
       state = {
         ...state,
-        loading: false,
+        employeeAttendanceInfoDetails: action.payload
       };
       break;
     case FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE:

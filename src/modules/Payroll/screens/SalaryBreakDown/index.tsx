@@ -149,7 +149,7 @@ function SalaryBreakDown() {
   }
 
   const onTotalCalculator = () => {
-    const AllowancePercentage = selectedDeductions.map((el: any) => {
+    const AllowancePercentage = selectedDeductions?.map((el: any) => {
       if (el.type == "1") {
         const convert = parseInt(el.percent)
         return +convert
@@ -317,7 +317,7 @@ function SalaryBreakDown() {
     }
 
   }
-  const isPercentageExist = selectedDeductions?.some((item: any) => item.type === "1")
+  const isPercentageExist = selectedDeductions && selectedDeductions?.some((item: any) => item.type === "1")
 
 
   return (
