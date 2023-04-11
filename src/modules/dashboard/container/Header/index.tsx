@@ -168,9 +168,9 @@ const Header = () => {
                 data-target='#sidenav-main'
               >
                 <div className='sidenav-toggler-inner'>
-                  <i className='sidenav-toggler-line text-white'></i>
-                  <i className='sidenav-toggler-line text-primary'></i>
-                  <i className='sidenav-toggler-line text-primary'></i>
+                  <i className='sidenav-toggler-line '></i>
+                  <i className='sidenav-toggler-line '></i>
+                  <i className='sidenav-toggler-line '></i>
                 </div>
               </div>
             </a>
