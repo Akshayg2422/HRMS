@@ -19,7 +19,7 @@ const STAGING_IP = 'http://103.118.188.135:8001';
 const PROD_WEB = 'https://webapi.zenyq.com';
 
 
-export const REACT_APP_APP_URL = STAGING_IP;
+export const REACT_APP_APP_URL = STAGING;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
