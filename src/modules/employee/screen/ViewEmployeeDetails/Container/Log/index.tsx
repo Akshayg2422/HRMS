@@ -1,6 +1,6 @@
-import { CommonTable, Container, Modal, NoRecordFound, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
-import { getCheckInDetailedLogPerDay, getEmployeesCheckInLogs } from '../../../../../../store/employee/actions';
-import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showToast } from '@utils';
+import { CommonTable, Container, InputText, Modal, NoRecordFound, Primary, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
+import { applyLeave, getCheckInDetailedLogPerDay, getEmployeesCheckInLogs } from '../../../../../../store/employee/actions';
+import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showToast, validateDefault } from '@utils';
 import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -23,6 +23,13 @@ const LogView = () => {
     ];
     const [activeSort, setActiveSort] = useState<number>(1);
     const [logPerDayModel, setLogPerDayModel] = useState<boolean>(false);
+    const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
+    const [markAsPresentDetails, setMarkAsPresentDetails] = useState<any>({
+        date: "",
+        reason: "",
+        id: "",
+    });
+
 
 
     const [startDate, setStartDate] = useState(
@@ -112,7 +119,9 @@ const LogView = () => {
                 "Status": <><small className="mb-0 p-0 col" style={{
                     cursor: el.day_status_type === 10 ? 'pointer' : '', fontWeight: 'bold',
                     color: fontColor(el.day_status_type),
-                }} onClick={(e) => { handlePresentModified(e, el) }}>{el.day_status}</small></>,
+                }}
+                //  onClick={(e) => { handlePresentModified(e, el) }}
+                >{el.day_status}</small></>,
 
                 "": <>
                     {<small className="mb-0 col" >{showAdminModify(el?.day_status_type) ?
@@ -124,22 +133,22 @@ const LogView = () => {
         });
     };
 
-    const handlePresentModified = (e: any, type: any) => {
-        if (type?.day_status_type === 10) {
-            e.stopPropagation()
-            //   setPresentModifiedDetails(type)
-            //   setPresentModifiedModel(!presentModifiedModel)
-        }
-    }
+    // const handlePresentModified = (e: any, type: any) => {
+    //     if (type?.day_status_type === 10) {
+    //         e.stopPropagation()
+    //           setPresentModifiedDetails(type)
+    //           setPresentModifiedModel(!presentModifiedModel)
+    //     }
+    // }
 
     const onModify = (e: any, item: any) => {
         e.stopPropagation()
-        // setMarkAsPresentDetails({
-        //   ...markAsPresentDetails,
-        //   date: item.date,
-        //   day_status_id: item.id
-        // });
-        // setMarkAsPresentModel(!markAsPresentModel);
+        setMarkAsPresentDetails({
+            ...markAsPresentDetails,
+            date: item.date,
+            id: item?.id
+        });
+        setMarkAsPresentModel(!markAsPresentModel);
     }
 
     function getEmployeeCheckInDetailedLogPerDay(item: any) {
@@ -175,6 +184,13 @@ const LogView = () => {
         </>
     }, [employeeCheckInLogs])
 
+    const onChangeHandler = (event: any) => {
+        setMarkAsPresentDetails({
+            ...markAsPresentDetails,
+            [event.target.name]: event.target.value,
+        });
+    };
+
     const normalizedPerDayData = (data: any) => {
         return data.map((it: any) => {
             return {
@@ -183,6 +199,45 @@ const LogView = () => {
                 address: it.address_text ? it.address_text : "       -",
             };
         });
+    };
+
+    const validateOnSubmit = () => {
+        if (!validateDefault(markAsPresentDetails.reason).status) {
+            showToast("error", t("invalidReason"));
+            return false;
+        }
+        return true;
+    };
+
+    
+
+    const onRequestHandler = () => {
+        if (validateOnSubmit()) {
+            const params = {
+                day_status_id: markAsPresentDetails.id,
+                date_from: markAsPresentDetails.date,
+                date_to: markAsPresentDetails.date,
+                reason: markAsPresentDetails.reason,
+                is_approved: true,
+                employee_id: selectedEmployeeId,
+            };
+            
+            dispatch(
+                applyLeave({
+                    params,
+                    onSuccess: (response: any) => () => {
+                        setMarkAsPresentModel(!markAsPresentModel);
+                        setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+                        showToast("success", response?.message);
+                    },
+                    onError: (error: string) => () => {
+                        showToast("error", error);
+                        setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
+                        setMarkAsPresentModel(!markAsPresentModel);
+                    },
+                })
+            );
+        }
     };
 
     return (
@@ -215,6 +270,53 @@ const LogView = () => {
                 ) : (
                     <NoRecordFound />
                 )}
+            </Modal>
+            <Modal
+                showModel={markAsPresentModel}
+                toggle={() => {
+                    setMarkAsPresentModel(!markAsPresentModel)
+                    setMarkAsPresentDetails({
+                        ...markAsPresentDetails,
+                        reason: '',
+                    });
+                }}
+            >
+                <Container>
+                    <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
+                    <Container additionClass="col-6 my-4">
+                        <InputText
+                            disabled
+                            label={t("today")}
+                            value={markAsPresentDetails.date}
+                            name={"date"}
+                            onChange={(event) => {
+                                onChangeHandler(event);
+                            }}
+                        />
+                        <InputText
+                            label={t("reason")}
+                            validator={validateDefault}
+                            value={markAsPresentDetails.reason}
+                            name={"reason"}
+                            onChange={(event) => {
+                                onChangeHandler(event);
+                            }}
+                        />
+                    </Container>
+                    <Container margin={"mt-5"} additionClass={"text-right"}>
+                        <Secondary
+                            text={t("cancel")}
+                            onClick={() => {
+                                setMarkAsPresentModel(!markAsPresentModel)
+                                setMarkAsPresentDetails({
+                                    ...markAsPresentDetails,
+                                    reason: '',
+                                });
+                            }}
+                        />
+                        <Primary text={t("request")} onClick={() => onRequestHandler()} />
+                    </Container>
+                </Container>
             </Modal>
         </Container>
     )

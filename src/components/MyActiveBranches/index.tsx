@@ -23,7 +23,7 @@ function MyActiveBranches({ isReload = false }: LocationProps) {
         (state: any) => state.DashboardReducer
     );
     const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
-    
+
     useEffect(() => {
         if (isReload === true) {
             getAdminBranchesData()

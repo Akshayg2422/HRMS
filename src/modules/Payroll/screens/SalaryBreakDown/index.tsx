@@ -274,7 +274,7 @@ function SalaryBreakDown() {
   const validateDeduction = () => {
     let status = { status: false, errorMessage: '' }
 
-    selectedDeductions.map((item: any) => {
+    selectedDeductions?.map((item: any) => {
       if (item.amount == '' && (item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
         status = { status: true, errorMessage: `Deduction field should not be empty` }
       }
@@ -284,7 +284,7 @@ function SalaryBreakDown() {
 
   const onSubmit = () => {
 
-    const filteredApiKeys = selectedDeductions.map((el: any) => {
+    const filteredApiKeys = selectedDeductions?.map((el: any) => {
       return {
         ...(isEditSalary ? { id: el.deduction_id } : { deduction_id: el.deduction_id }),
         percent: el.percent,

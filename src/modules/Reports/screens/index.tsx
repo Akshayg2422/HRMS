@@ -252,7 +252,7 @@ function Reports() {
     }
   };
 
-console.log("reportsType",reportsType);
+  console.log("reportsType", reportsType);
 
 
   return (
@@ -281,7 +281,7 @@ console.log("reportsType",reportsType);
                 }
               }}
             />
-          </div>:<></>}
+          </div> : <></>}
           <Container additionClass={'col-lg-3 mt-4'}>
             <ChooseBranchFromHierarchical />
           </Container>
@@ -356,7 +356,7 @@ console.log("reportsType",reportsType);
               onChange={(date: string) =>
                 dateTimePickerHandler(date, "dateFrom")
               }
-              value={customRange.dateFrom}  
+              value={customRange.dateFrom}
             />
           </Container>
           <Container additionClass={'col-lg-3'}>

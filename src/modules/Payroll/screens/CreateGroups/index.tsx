@@ -61,7 +61,7 @@ function CreateGroup() {
     const getAllowanceGroupDetailsData = () => {
 
         const params = {
-            id: selectedAllowanceGroupDetails.id
+            id: selectedAllowanceGroupDetails?.id
         }
         dispatch(getAllowanceGroupDetails({
             params,
@@ -213,14 +213,14 @@ function CreateGroup() {
     }
 
     const validateAllowances = () => {
-        
+
         let status = { status: false, errorMessage: '' }
-        selectedAllowances.map((item: any) => {
-            
-            if ( item.amount == '' && (item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
+        selectedAllowances?.map((item: any) => {
+
+            if (item.amount == '' && (item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
                 status = { status: true, errorMessage: `Allowance field should not be empty` }
             }
-           
+
         })
         return status
     }
