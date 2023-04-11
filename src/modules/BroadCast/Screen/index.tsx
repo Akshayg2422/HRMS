@@ -42,9 +42,9 @@ function BroadCast() {
         };
         dispatch(getBroadcastMessage({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error)
             },
         }));
@@ -62,11 +62,11 @@ function BroadCast() {
         };
         dispatch(createBroadcastMessage({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 setDeleteModel(!deleteModel)
                 getBroadcastMessagesList(currentPage)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error)
             },
         }));

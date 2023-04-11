@@ -12,8 +12,10 @@ import {
   Icon,
   Card,
   useKeyPress,
+  TableWrapper,
+  Search,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   getEmployeeEachUserTimeSheets,
   getEmployeesTimeSheets,
@@ -87,14 +89,22 @@ function EmployeeTimeSheets() {
       ...(searchEmployee && { q: searchEmployee }),
 
     };
-    dispatch(getEmployeesTimeSheets({ params }));
+    dispatch(getEmployeesTimeSheets({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.employee_id,
         name: el.name,
+        Code: el.employee_id,
         "mobile number": el.mobile_number,
         today: el.timesheet_entries_count,
         "this month": el.timesheet_entries_count_current_month,
@@ -109,6 +119,12 @@ function EmployeeTimeSheets() {
       getEmployeeEachUserTimeSheets({
         type,
         ...(userId && { user_id: userId }),
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
       })
     );
     setModel(!model);
@@ -117,47 +133,17 @@ function EmployeeTimeSheets() {
   const onTabChange = (index: number) => {
     setType(sortData[index].title.toLocaleLowerCase());
   };
+  
 
-  return (
-    <>
-      <Card additionClass="mx-3">
-        <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-6"}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              placeholder={t("enterEmployeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-              onClick={() => {
-                getEmployeeTimeSheets(currentPage);
-              }}
-            />
-          </Container>
-        </Container>
-        <div className="text-right">
-          <Sort
-            sortData={sortData}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
-            }}
-          />
-        </div>
-      </Card>
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeeTimeSheets && employeeTimeSheets.length > 0 ? (
         <CommonTable
+          card={false}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
-          tableTitle={t("employeeTimeSheets")}
+          title={t("employeeTimeSheets")}
           displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
             setSelectedEmployeeDetails(employeeTimeSheets[index])
@@ -173,7 +159,52 @@ function EmployeeTimeSheets() {
             getEmployeeTimeSheets(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeTimeSheets])
+
+  return (
+    <>
+      <TableWrapper
+        buttonChildren={
+          <div className="mr--4">
+            <Sort
+              size={'btn-sm'}
+              sortData={sortData}
+              activeIndex={activeSort}
+              onClick={(index) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
+        }
+        filterChildren={
+          <Container additionClass={"row"}>
+            <Container col={"col-xl-3"}>
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
+              <InputText
+                value={searchEmployee}
+                col={'col'}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
+                onClick={() => {
+                  getEmployeeTimeSheets(currentPage);
+                }}
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
+            </Container>
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
 
       <Modal
         showModel={model}

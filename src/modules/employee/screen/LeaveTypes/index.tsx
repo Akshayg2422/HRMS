@@ -1,9 +1,9 @@
-import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary } from '@components';
+import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, TableWrapper } from '@components';
 import { getEditLeaveTypesDetails, getLeaveFromDate, getLeaveTypes, getLeaveTypesDetails } from '../../../../store/employee/actions';
 import { goTo, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function LeaveTypes() {
     const navigation = useNav();
@@ -21,10 +21,10 @@ function LeaveTypes() {
         dispatch(
             getLeaveTypes({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     setLeaveTypes(success.leave_types);
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", t("somethingWrong"));
                 },
             })
@@ -55,13 +55,25 @@ function LeaveTypes() {
 
     // getEditLeaveTypesDetails
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {leaveTypes && leaveTypes.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    isPagination
+                    displayDataSet={normalizedEmployeeLog(leaveTypes)}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [leaveTypes])
+
     return (
-        <>
+        <TableWrapper>
             <Container additionClass={"mt-2"}>
-                <Card additionClass='mx-3'>
+                <div className='mx-3'>
                     <Container additionClass='row'>
-                        <BackArrow additionClass='col-xl-1' />
-                        <h2 className={"col-xl-3 mt-sm-0 mt-3 ml-xl--5"}>{t('leaveTypes')}</h2>
+                        <h2 className={"col-xl-3  mt--4 mb-4 "}>{t('leaveTypes')}</h2>
                         {/* <Container additionClass="text-right col">
                             <Primary
                                 additionClass='col mt-sm-0 mt-3 col-md-2'
@@ -70,16 +82,12 @@ function LeaveTypes() {
                             />
                         </Container> */}
                     </Container>
-                </Card>
-                {leaveTypes && leaveTypes?.length > 0 ? (
-                    <CommonTable
-                        displayDataSet={normalizedEmployeeLog(leaveTypes)}
-                    />
-                ) : (
-                    <NoRecordFound />
-                )}
+                </div>
+                {
+                    memoizedTable
+                }
             </Container>
-        </>
+        </TableWrapper>
     )
 }
 

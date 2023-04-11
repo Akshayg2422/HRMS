@@ -12,14 +12,17 @@ import {
   Primary,
   Icon,
   useKeyPress,
+  TableWrapper,
+  Search,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   paginationHandler,
   getWeekAndWeekDaysById,
   WEEK_LIST,
   showToast,
+  mergeTimeSlots,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { getBranchShifts, getEmployeeWithShift, getMyShifts, postEmployeeShiftChange } from "../../../../store/shiftManagement/actions";
@@ -37,6 +40,7 @@ function EmployeeShifts() {
   const [shiftsList, setShiftList] = useState<any>()
   const [defaultShiftId, setDefaultShiftId] = useState<any>()
 
+  const [weeklyData, setWeeklyData] = useState<any>()
 
   const [employeeCurrentObject, setEmployeeCurrentObject] = useState<any>({})
   const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
@@ -68,7 +72,15 @@ function EmployeeShifts() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee })
     };
-    dispatch(getEmployeeWithShift({ params }));
+    dispatch(getEmployeeWithShift({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
 
@@ -94,10 +106,11 @@ function EmployeeShifts() {
     }
     dispatch(getMyShifts({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
+        breakTimeConvertion(success)
         setModel(!model);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("info", error);
       },
     }));
@@ -130,11 +143,11 @@ function EmployeeShifts() {
     const params = { branch_id: hierarchicalBranchIds.branch_id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
         designationMatchShifts(selectedEmployeeDetails?.designation_id, success)
         setCurrentEmployeeShiftId(setDefaultShift(selectedEmployeeDetails?.shift?.id))
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("error", error);
       },
     }));
@@ -147,12 +160,12 @@ function EmployeeShifts() {
     }
     dispatch(postEmployeeShiftChange({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         setChangeShiftModelModel(!changeShiftModel)
         showToast("success", success);
         getEmployeeLogsWithShifts(currentPage);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         setChangeShiftModelModel(!changeShiftModel)
         showToast("error", error);
       },
@@ -165,34 +178,12 @@ function EmployeeShifts() {
     setChangeShiftModelModel(!changeShiftModel)
   }
 
-  return (
-    <>
-      <Card additionClass={'mx-3'}>
-        <Container additionClass={"row my-4"}>
-          <Container col={"col-xl-5"}>
-            <ChooseBranchFromHierarchical showCheckBox={false} />
-          </Container>
-          <Container additionClass={"col-xl-4 col-md-6 mt-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              placeholder={t("enterEmployeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
-              onClick={() => {
-                getEmployeeLogsWithShifts(currentPage);
-              }}
-            />
-          </Container>
-
-        </Container>
-      </Card>
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeeWithShifts && employeeWithShifts.length > 0 ? (
         <CommonTable
           isPagination
+          card={false}
           currentPage={currentPage}
           noOfPage={numOfPages}
           paginationNumberClick={(currentPage) => {
@@ -205,7 +196,62 @@ function EmployeeShifts() {
             getUserShifts(index);
           }}
         />
-      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeWithShifts])
+
+
+  const breakTimeConvertion = (data: any) => {
+    let updatedData = [...data.weekly_group_details]
+    updatedData = updatedData.map((week: any) => {
+      const updateWeek = { ...week }
+      updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+        let updateWeek = { ...weekDay }
+        updateWeek.time_breakdown = mergeTimeSlots(updateWeek.time_breakdown)
+        weekDay = updateWeek
+        return weekDay
+      });
+      return updateWeek
+    });
+    setWeeklyData(updatedData)
+  }
+
+  return (
+    <>
+      <TableWrapper>
+        <div className={'mx-3 mt--4'}>
+          <Container additionClass={"row "}>
+            <Container col={"col-xl-3"}>
+              <ChooseBranchFromHierarchical showCheckBox={false} />
+            </Container>
+            <Container additionClass={"col-xl-3 col-md-6 row"}>
+              <InputText
+                size="sm"
+                value={searchEmployee}
+                col={'col'}
+                label={t("employeeName")}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
+                onClick={() => {
+                  getEmployeeLogsWithShifts(currentPage);
+                }}
+              /> */}
+              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeLogsWithShifts(currentPage); }} />
+            </Container>
+
+          </Container>
+        </div>
+        <>
+          {
+            memoizedTable
+
+          }
+        </>
+      </TableWrapper>
       <Modal
         showModel={model}
         title={`${employeeName}'s ${t('shifts')}`}
@@ -251,7 +297,9 @@ function EmployeeShifts() {
                 );
               })}
             </ul>
-            <EmployeeShiftListing datesList={myShifts.weekly_group_details[isActiveWeek - 1]} />
+            {weeklyData && weeklyData.length > 0 &&
+              <EmployeeShiftListing datesList={weeklyData[isActiveWeek - 1]} />
+            }
           </Card> : <NoRecordFound />}
         </div>
       </Modal>
@@ -259,15 +307,17 @@ function EmployeeShifts() {
         title={t('shiftGroups')}
         size={"modal-sm"}
         toggle={() => setChangeShiftModelModel(!changeShiftModel)}>
-        <Container>
+        <Container style={{ cursor: 'pointer' }}>
           {shiftsList && shiftsList.length > 0 ? <Container>
             {shiftsList && shiftsList.length > 0 && shiftsList.map((el: any) => {
               return (
-                <Container additionClass="mx-2 p-2 row">
-                  <h4 className="col fw-normal">{el.name}</h4>
-                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                <Container additionClass="p-2 row"
+                  onClick={() => {
                     setCurrentEmployeeShiftId(el.id)
-                  }} /></td>
+                  }}
+                >
+                  <h4 className="col fw-normal">{el.name}</h4>
+                  <td className="col-2" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={el.id === currentEmployeeShiftId ? Icons.TickActive : Icons.TickDefault} /></td>
 
                 </Container>
               )

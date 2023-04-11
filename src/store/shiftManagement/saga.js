@@ -49,7 +49,7 @@ import {
 import {
     postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi,
     fetchShiftEmployeesApi, fetchMyShiftsApi, fetchEmployeeWithShiftsApi, PostEmployeeWithChangeShiftApi,
-    getShiftRequestedEmployeesApi, getShiftRequestedStatusApi, postRequestShiftChangeApi,postChangeEmployeeShiftApi
+    getShiftRequestedEmployeesApi, getShiftRequestedStatusApi, postRequestShiftChangeApi, postChangeEmployeeShiftApi
 } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../loader/actions";
 
@@ -63,7 +63,7 @@ function* fetchAddWeeklyShiftSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(addWeeklyShiftSuccess(response.details));
-            yield call(action.payload.onSuccess(response));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(addWeeklyShiftFailure(response.error_message));
@@ -72,6 +72,8 @@ function* fetchAddWeeklyShiftSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(addWeeklyShiftFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -93,6 +95,8 @@ function* fetchBranchShiftsSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getBranchShiftsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -115,6 +119,8 @@ function* fetchBranchWeeklyShiftsSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getBranchWeeklyShiftsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -128,7 +134,7 @@ function* postAddShiftSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(postAddShiftSuccess(response.details));
-            yield call(action.payload.onSuccess(response));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(postAddShiftFailure(response.error_message));
@@ -137,6 +143,8 @@ function* postAddShiftSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(postAddShiftFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -154,11 +162,13 @@ function* fetchWeeklyShiftDetailsSaga(action) {
         } else {
             yield put(hideLoader());
             yield put(getWeeklyShiftDetailsFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());
         yield put(getWeeklyShiftDetailsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -176,11 +186,13 @@ function* fetchShiftEmployeesGroupDetailsSaga(action) {
         } else {
             yield put(hideLoader());
             yield put(getShiftEmployeesDetailsFailure(response.error_message));
-            yield call(action.payload.onError);
+            yield call(action.payload.onError(response.error_message));
         }
     } catch (error) {
         yield put(hideLoader());
         yield put(getShiftEmployeesDetailsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -194,7 +206,7 @@ function* fetchMyShiftsSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(getMyShiftsSuccess(response.details));
-            yield call(action.payload.onSuccess(response));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getMyShiftsFailure(response.error_message));
@@ -203,6 +215,8 @@ function* fetchMyShiftsSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getMyShiftsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -224,6 +238,8 @@ function* fetchEmployeeWithShiftsSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getEmployeeWithShiftFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -247,6 +263,8 @@ function* postEmployeeShiftChangeSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(postEmployeeShiftChangeFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -261,7 +279,7 @@ function* shiftRequestedEmployeesSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(getShiftRequestedEmployeesSuccess(response.details));
-            yield call(action.payload.onSuccess(response.status));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getShiftRequestedEmployeesFailure(response.error_message));
@@ -270,6 +288,8 @@ function* shiftRequestedEmployeesSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getShiftRequestedEmployeesFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -284,7 +304,7 @@ function* shiftRequestedStatusSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(getShiftRequestedStatusSuccess(response.details));
-            yield call(action.payload.onSuccess(response.status));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(getShiftRequestedStatusFailure(response.error_message));
@@ -293,6 +313,8 @@ function* shiftRequestedStatusSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getShiftRequestedStatusFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -306,7 +328,7 @@ function* shiftRequestShiftChangeSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(postRequestShiftChangeSuccess(response.details));
-            yield call(action.payload.onSuccess(response.status));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(postRequestShiftChangeFailure(response.error_message));
@@ -315,6 +337,8 @@ function* shiftRequestShiftChangeSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(postRequestShiftChangeFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 
@@ -329,7 +353,7 @@ function* changeShiftChangeSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(postChangeShiftChangeSuccess(response.details));
-            yield call(action.payload.onSuccess(response.status));
+            yield call(action.payload.onSuccess(response.details));
         } else {
             yield put(hideLoader());
             yield put(postChangeShiftChangeFailure(response.error_message));
@@ -338,6 +362,8 @@ function* changeShiftChangeSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(postChangeShiftChangeFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
     }
 }
 

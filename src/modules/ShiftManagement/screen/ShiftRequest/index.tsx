@@ -1,4 +1,4 @@
-import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, useKeyPress } from '@components';
+import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, Search, TableWrapper, useKeyPress } from '@components';
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -56,42 +56,41 @@ function ShiftRequest() {
       ...(searchEmployee && { q: searchEmployee })
     }
     dispatch(getShiftRequestedEmployees({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }))
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
-        <Container
-          flexDirection={"row"}
-          additionClass={"col"}
-          alignItems={"align-items-center"}
-        >
-          <Container col={"col-xl-3 col-md-6 col-sm-12 mt-xl--3"}>
+    <TableWrapper>
+      <div className='mt--4'>
+        <Container additionClass={"row mx-1"}>
+          <Container col={"col-xl-3"}>
+            <ChooseBranchFromHierarchical showCheckBox={false} />
+          </Container>
+          <Container additionClass={"col-xl-3 col-md-6 row"}>
             <InputText
-              placeholder={t("enterEmployeeName")}
+              value={searchEmployee}
+              col={'col'}
               label={t("employeeName")}
+              placeholder={t("enterEmployeeName")}
               onChange={(e) => {
                 setSearchEmployee(e.target.value);
               }}
             />
+            {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
+                onClick={() => {
+                  getEmployeeLogsWithShifts(currentPage);
+                }}
+              /> */}
+            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeRequest(currentType, currentPage) }} />
           </Container>
-          <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
-            additionClass={"mt-xl-3"}
-          >
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container
-            col={"col"}
-            additionClass={"mt-sm-3 mb-xl-3"}
-            justifyContent={"justify-content-center"}
-            alignItems={"align-items-center"}
-            onClick={() => getEmployeeRequest(currentType, currentPage)}
-          >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
-          </Container>
+
         </Container>
         <div className="nav-wrapper mx-xl-4">
           <ul
@@ -120,7 +119,7 @@ function ShiftRequest() {
             })}
           </ul>
         </div>
-      </Card>
+      </div>
       <div className="tab-content" id="myTabContent">
         {REQUEST_TYPE.map((el) => {
           return (
@@ -135,7 +134,7 @@ function ShiftRequest() {
           )
         })}
       </div>
-    </div>
+    </TableWrapper>
   )
 
 }

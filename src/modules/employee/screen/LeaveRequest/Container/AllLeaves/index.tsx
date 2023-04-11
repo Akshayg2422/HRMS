@@ -14,7 +14,7 @@ import {
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -32,7 +32,7 @@ const AllLeaves = () => {
     (state: any) => state.DashboardReducer
   );
 
- 
+
   const fetchPendingDetail = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -42,8 +42,8 @@ const AllLeaves = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => { },
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
       })
@@ -86,7 +86,7 @@ const AllLeaves = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           if (el === 1) {
             setApproveModel(!approveModel);
           }
@@ -97,44 +97,54 @@ const AllLeaves = () => {
             setRevertModel(!revertModel);
           }
           fetchPendingDetail(currentPage);
-          showToast('success',success?.status)
+          showToast('success', success?.status)
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesLeaves && employeesLeaves.length > 0 ? (
+        <CommonTable
+          noHeader
+          isPagination
+          card={false}
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          tableChildren={
+            <LocationTable
+              tableDataSet={employeesLeaves}
+              onRevertClick={(item) => manageRevertStatus(item)}
+              onApproveClick={(item) => {
+                manageApproveStatus(item);
+              }}
+              onRejectClick={(item) => {
+                manageRejectStatus(item);
+              }}
+            />
+          }
+          custombutton={"h5"}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesLeaves])
+
   return (
     <div>
       <div className="row">
-        {employeesLeaves && employeesLeaves.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            tableChildren={
-              <LocationTable
-                tableDataSet={employeesLeaves}
-                onRevertClick={(item) => manageRevertStatus(item)}
-                onApproveClick={(item) => {
-                  manageApproveStatus(item);
-                }}
-                onRejectClick={(item) => {
-                  manageRejectStatus(item);
-                }}
-              />
-            }
-            custombutton={"h5"}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
+        <>
+          {
+            memoizedTable
+          }
+        </>
         <Modal
           title={t("approveLeave")}
           showModel={approveModel}
@@ -353,7 +363,7 @@ const LocationTable = ({
                   <td style={{ whiteSpace: "pre-wrap" }} >
                     {item.status_code === -1 ? (
                       <span
-                        className="h5 text-primary"
+                        className="h5 text-primary "
                         style={{ cursor: 'pointer' }}
 
                         onClick={() => {
@@ -390,7 +400,7 @@ const LocationTable = ({
                     {item.status_code === -1 ? (
                       <span
                         style={{ cursor: 'pointer' }}
-                        className="h5 text-primary"
+                        className="h5 text-danger"
                         onClick={() => {
                           if (onRejectClick) onRejectClick(item);
                         }}

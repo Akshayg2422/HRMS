@@ -20,7 +20,7 @@ function ManageLeaves() {
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
   const [recall, setRecall] = useState(false);
-  const [daysHoliday,setDaysHoliday] = useState<any[]>([]);
+  const [daysHoliday, setDaysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
   const { calendarEvents, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
@@ -31,15 +31,26 @@ function ManageLeaves() {
 
   useEffect(() => {
     getCalendarDetails(currentPage);
+  }, []);
+
+  useEffect(() => {
     geteventsdetails();
-  }, [recall]);
+  }, [recall])
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
       pageNumber: pageNumber,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   const normalizedEmployeeLog = (data: any) => {
@@ -54,7 +65,7 @@ function ManageLeaves() {
 
   const geteventsdetails = () => {
     calendarEvents?.days_leave?.map((item: any) => {
-      let update={
+      let update = {
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
@@ -90,7 +101,6 @@ function ManageLeaves() {
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
-          <BackArrow additionClass={"mb-3"} />
           <h1 className="mb-3">{t('Calendar')}</h1>
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>

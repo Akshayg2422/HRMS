@@ -10,9 +10,11 @@ import {
   NoRecordFound,
   ChooseBranchFromHierarchical,
   BackArrow,
-  useKeyPress
+  useKeyPress,
+  Search,
+  TableWrapper
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Icons } from "@assets";
 import {
   ENABLE_EMPLOYEE_DATA,
@@ -24,14 +26,10 @@ import {
 } from "@utils";
 import { useDashboard } from "@contexts";
 import {
-  employeeEdit,
   getEmployeesList,
-  getSelectedEmployeeId,
   getUpdateEmployeeStatus,
 } from "../../../../store/employee/actions";
-import { Navbar } from "@modules";
 import { useSelector, useDispatch } from "react-redux";
-import { Employee } from "@api";
 import { useTranslation } from "react-i18next";
 
 function InActiveEmployeeList() {
@@ -53,18 +51,18 @@ function InActiveEmployeeList() {
     (state: any) => state.DashboardReducer
   );
 
-  const manageInactiveEmployeeList = () => {
+  const manageInactiveEmployeeList = (pageNumber: number) => {
     const params: object = {
       ...hierarchicalBranchIds,
       ...(searchEmployee && { q: searchEmployee }),
-      page_number: currentPage,
+      page_number: pageNumber,
       is_active: false,
     };
     dispatch(
       getEmployeesList({
         params,
-        onSuccess: (success: object) => { },
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
@@ -72,13 +70,13 @@ function InActiveEmployeeList() {
   };
 
   useEffect(() => {
-    manageInactiveEmployeeList();
+    manageInactiveEmployeeList(currentPage);
   }, [hierarchicalBranchIds]);
 
 
   useEffect(() => {
     if (enterPress) {
-      manageInactiveEmployeeList();
+      manageInactiveEmployeeList(currentPage);
     }
   }, [enterPress])
 
@@ -88,7 +86,15 @@ function InActiveEmployeeList() {
       page_number: pageNumber,
     };
 
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
@@ -112,7 +118,7 @@ function InActiveEmployeeList() {
         : type === "prev"
           ? currentPage - 1
           : position;
-    getEmployeesApi(page);
+    manageInactiveEmployeeList(currentPage);
   }
 
   const manageEmployeeStatus = () => {
@@ -123,12 +129,12 @@ function InActiveEmployeeList() {
     dispatch(
       getUpdateEmployeeStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           showToast("success", success?.message);
           setEnableUserModel(!enableUserModel);
-          manageInactiveEmployeeList();
+          manageInactiveEmployeeList(currentPage);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
@@ -140,82 +146,89 @@ function InActiveEmployeeList() {
     setEnableUserId(id);
   };
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          additionalDataSet={ENABLE_EMPLOYEE_DATA}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+          tableValueOnClick={(e, index, item, elv) => {
+            if (elv === "Enable") {
+              const current = registeredEmployeesList[index];
+              enableModelHandler(current.id);
+            }
+          }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [registeredEmployeesList])
+
   return (
     <>
-      <Card margin={"m-4"}>
-        <BackArrow additionClass={'my-3'} />
-        <h2>{t("deletedUserList")}</h2>
-        <Container additionClass="row my-3">
-          <Container additionClass={'col-xl-6'}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container additionClass={"col-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              label={t("employeeName")}
-              placeholder={t("searchEmployee")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Container additionClass={'col-xl-2 mt-xl-2'}>
-              <Icon type={"btn-primary"} additionClass={'mt-xl-4 mt-2 mt-sm-0'} icon={Icons.Search}
-                onClick={() => {
-                  manageInactiveEmployeeList()
+      <TableWrapper>
+        <div className={"mx-3 mt--3"}>
+          <h2>{t("deletedUserList")}</h2>
+          <Container additionClass="row my-3">
+            <Container additionClass={'col-xl-3'}>
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container additionClass={"col-xl-3 row"}>
+              <InputText
+                value={searchEmployee}
+                col={'col'}
+                label={t("employeeName")}
+                placeholder={t("searchEmployee")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
                 }}
               />
             </Container>
-          </Container>
-        </Container>
-
-        {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            additionalDataSet={ENABLE_EMPLOYEE_DATA}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-            tableValueOnClick={(e, index, item, elv) => {
-              if (elv === "Enable") {
-                const current = registeredEmployeesList[index];
-                enableModelHandler(current.id);
-              }
-            }}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-        <Modal
-          title={t("EnableUser")}
-          showModel={enableUserModel}
-          toggle={() => setEnableUserModel(!enableUserModel)}
-        >
-          <Container>
-            <span className="ml-3">{t("enableMessage")}</span>
-            <Container
-              margin={"m-5"}
-              justifyContent={"justify-content-end"}
-              display={"d-flex"}
-            >
-              <Secondary
-                text={t("cancel")}
-                onClick={() => setEnableUserModel(!enableUserModel)}
-              />
-              <Primary
-                text={t("proceed")}
-                onClick={() => manageEmployeeStatus()}
-              />
+            <Container additionClass="col-xl-1 mt-xl-4 text-center">
+              <Container additionClass="mt-1">
+                <Search variant="Icon" onClick={() => { manageInactiveEmployeeList(currentPage) }} />
+              </Container>
             </Container>
           </Container>
-        </Modal>
-      </Card>
+        </div>
+
+        {
+          memoizedTable
+        }
+      </TableWrapper>
+      <Modal
+        title={t("EnableUser")}
+        showModel={enableUserModel}
+        toggle={() => setEnableUserModel(!enableUserModel)}
+      >
+        <Container>
+          <span className="ml-3">{t("enableMessage")}</span>
+          <Container
+            margin={"m-5"}
+            justifyContent={"justify-content-end"}
+            display={"d-flex"}
+          >
+            <Secondary
+              text={t("cancel")}
+              onClick={() => setEnableUserModel(!enableUserModel)}
+            />
+            <Primary
+              text={t("proceed")}
+              onClick={() => manageEmployeeStatus()}
+            />
+          </Container>
+        </Container>
+      </Modal>
     </>
   );
 }

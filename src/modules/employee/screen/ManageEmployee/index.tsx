@@ -13,6 +13,9 @@ import {
   Container,
   Secondary,
   Primary,
+  ScreenContainer,
+  ScreenTitle,
+  Divider,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -51,7 +54,9 @@ import {
   addDesignation,
   employeeAddition,
 } from "../../../../store/employee/actions";
+
 import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
+import { getListAllBranchesList } from "../../../../store/location/actions";
 
 type EmployeeDetail = {
   id?: string;
@@ -94,6 +99,9 @@ const ManageEmployee = () => {
     (state: any) => state.DashboardReducer
   );
 
+  const { listBranchesList } =
+    useSelector((state: any) => state.LocationReducer);
+
 
 
   const [employeeDetails, setEmployeeDetails] = useState({
@@ -129,8 +137,7 @@ const ManageEmployee = () => {
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
-  console.log("companyBranchDropdownData===>", companyBranchDropdownData);
-
+  const [isBranchShiftDataExist, setIsBranchShiftExist] = useState(false)
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -147,39 +154,91 @@ const ManageEmployee = () => {
   };
 
   useEffect(() => {
-    dispatch(getDepartmentData({}));
-    dispatch(getDesignationData({}));
-    if (!isEdit) {
-      getBranchShiftsList()
+    departmentData()
+    designationData()
+
+    getBranchShiftsList()
+
+    if (listBranchesList.length === 0) {
+      const params = {};
+
+      dispatch(
+        getListAllBranchesList({
+          params,
+          onSuccess: (success: any) => () => {
+
+            const parentBranch = success.find(
+              (it: any) => it.id === dashboardDetails.company_branch.id
+            );
+
+            setCompanyBranchDropdownData([
+              ...getAllSubBranches(
+                success,
+                dashboardDetails.company_branch.id
+              ),
+              parentBranch,
+            ]);
+          },
+          onError: (error: string) => () => { },
+        })
+      );
     }
-    const params = {};
-    dispatch(
-      getAllBranchesList({
-        params,
-        onSuccess: (success: any) => {
+    else{
+      const parentBranch = listBranchesList.find(
+        (it: any) => it.id === dashboardDetails.company_branch.id
+      );
 
-          const parentBranch = success.find(
-            (it: any) => it.id === dashboardDetails.company_branch.id
-          );
+      setCompanyBranchDropdownData([
+        ...getAllSubBranches(
+          listBranchesList,
+          dashboardDetails.company_branch.id
+        ),
+        parentBranch,
+      ]);
+    }
 
-          setCompanyBranchDropdownData([
-            ...getAllSubBranches(
-              success,
-              dashboardDetails.company_branch.id
-            ),
-            parentBranch,
-          ]);
-        },
-        onError: (error: string) => { },
-      })
-    );
+
     setDesignationNote('')
+
+  }, [isRefresh]);
+
+  useEffect(() => {
     if (isEdit) {
-      getEmployeeDetailsAPi(isEdit);
-      getBranchShiftsList()
+      if (isBranchShiftDataExist) {
+        getEmployeeDetailsAPi(isEdit);
+      }
       setDesignationNote("* Changing Designation Will Impact in Shift")
     }
-  }, [isRefresh]);
+  }, [isRefresh, isBranchShiftDataExist])
+
+
+  const departmentData = () => {
+    const params = {}
+    dispatch(getDepartmentData({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+
+  }
+
+  const designationData = () => {
+    const params = {}
+
+    dispatch(getDesignationData({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
 
   const getEmployeeDetailsAPi = (id: any) => {
     const params = {
@@ -188,10 +247,10 @@ const ManageEmployee = () => {
     dispatch(
       getEmployeeDetails({
         params,
-        onSuccess: (response: EmployeeDetail) => {
+        onSuccess: (response: EmployeeDetail) => () => {
           preFillEmployeeDetails(response);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast('error', error);
         },
       })
@@ -199,23 +258,20 @@ const ManageEmployee = () => {
 
   };
 
-
-
   useEffect(() => {
     setShiftsDropdownData(designationMatchShifts(employeeDetails.designation))
   }, [shiftGroup])
-
-
 
 
   const getBranchShiftsList = () => {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: async (success: any) => {
+      onSuccess: (success: any) => async () => {
+        setIsBranchShiftExist(true)
         await setShiftGroup(success)
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast('error', error)
       },
 
@@ -245,10 +301,16 @@ const ManageEmployee = () => {
     ) {
       showToast("error", t("invalidNumber"));
       return false;
-    } else if (validateEmail(employeeDetails.e_Mail).status === false) {
+    }
+    else if (validateEmail(employeeDetails.e_Mail).status === false || employeeDetails.e_Mail === "") {
       showToast("error", t("invalidEmail"));
       return false;
-    } else if (Object.keys(employeeDetails.designation).length === 0) {
+    }
+    else if (employeeDetails.gender === "") {
+      showToast("error", t("invalidGender"));
+      return false;
+    }
+    else if (Object.keys(employeeDetails.designation).length === 0) {
       showToast("error", t("invalidDesignation"));
       return false;
     } else if (Object.keys(employeeDetails.department).length === 0) {
@@ -257,11 +319,13 @@ const ManageEmployee = () => {
     } else if (Object.keys(employeeDetails.branch).length === 0) {
       showToast("error", t("invalidBranch"));
       return false;
-    } else if (!employeeDetails.dob) {
-      showToast("error", t("invalidDOB"));
-      return false;
-    } else if (!employeeDetails.employeeType) {
+    }
+    else if (!employeeDetails.employeeType) {
       showToast("error", t("invalidCategory"));
+      return false;
+    }
+    else if (!employeeDetails.dob) {
+      showToast("error", t("invalidDOB"));
       return false;
     }
     else {
@@ -314,11 +378,11 @@ const ManageEmployee = () => {
       dispatch(
         employeeAddition({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast("success", success.message);
             goBack(navigation);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })
@@ -402,6 +466,9 @@ const ManageEmployee = () => {
           editEmployeeDetails.shift?.id
 
       }
+
+      setShiftsDropdownData(designationMatchShifts(editEmployeeDetails.designation_id))
+
     }
     setEmployeeDetails(employeeInitData);
   };
@@ -434,14 +501,14 @@ const ManageEmployee = () => {
       dispatch(
         addDesignation({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             setDesignationModel(!designationModel);
             setIsRefresh(!isRefresh);
             setDesignation("");
             showToast('success', success?.message)
             setIsAdminRights(false);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast('error', error)
           },
         })
@@ -459,13 +526,13 @@ const ManageEmployee = () => {
       dispatch(
         addDepartment({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             setDepartmentModel(!departmentModel);
             setIsRefresh(!isRefresh);
 
             showToast('success', success?.message)
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast('error', error)
           },
         })
@@ -498,13 +565,296 @@ const ManageEmployee = () => {
 
 
   return (
-    <>
+    <ScreenContainer>
       <FormWrapper
+        isTitle
         title={isEdit ? t("editEmployee") : t("newEmployee")}
         onClick={onSubmit}
         buttonTittle={isEdit ? t("update") : t("submit")}
       >
-        <InputText
+
+
+        <ScreenTitle title={'Basic Information'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputText
+              label={t("fullName")}
+              placeholder={t("typeYourName")}
+              validator={validateName}
+              value={employeeDetails.firstName}
+              name={"firstName"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputText
+              label={t("lastName")}
+              placeholder={t("typeLastName")}
+              validator={validateDefault}
+              value={employeeDetails.lastName}
+              name={"lastName"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputNumber
+              label={t("mobileNumber")}
+              placeholder={t("enterYourMobileNumber")}
+              validator={validateMobileNumber}
+              value={employeeDetails.mobileNumber}
+              name={"mobileNumber"}
+              onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputMail
+              label={t("email")}
+              placeholder={t("enterYourEmail")}
+              validator={validateEmail}
+              value={employeeDetails.e_Mail}
+              name={"e_Mail"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("gender")}
+              placeholder={t("selectYourGender")}
+              data={GENDER_LIST}
+              name={"gender"}
+              value={employeeDetails.gender}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("selectYourGender")));
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("bloodGroup")}
+              placeholder={t("enterBloodGroup")}
+              data={BLOOD_GROUP_LIST}
+              name={"bloodGroup"}
+              value={employeeDetails.bloodGroup}
+              onChange={(event) => {
+                // onChangeHandler(event);
+                onChangeHandler(dropDownValueCheckByEvent(event, t("enterBloodGroup")));
+
+              }}
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          <div className="col-xl-6">
+            <h5>{t("dateofBirth")}</h5>
+            <DatePicker
+              placeholder={t("dateofBirth")}
+              icon={Icons.Calendar}
+              iconPosition={"append"}
+              maxDate={Today}
+              onChange={(date: string) => dateTimePickerHandler(date, "dob")}
+              value={employeeDetails.dob}
+            />
+          </div>
+
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Company Details'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <div className="row align-items-center">
+              <div className="col mt--2">
+                <DropDown
+                  label={t("designation")}
+                  placeholder={t("enterDesignation")}
+                  data={designationDropdownData}
+                  name={"designation"}
+                  value={employeeDetails.designation}
+                  onChange={(event) => {
+                    handleDesignationChange(event)
+                  }}
+                />
+              </div>
+              <Icon
+                text={"+"}
+                onClick={() => setDesignationModel(!designationModel)}
+              />
+            </div>
+          </div>
+          <div className="col-xl-6">
+            <div className="row align-items-center">
+              <div className="col mt--2">
+                <DropDown
+                  label={t("department")}
+                  placeholder={t("enterDepartment")}
+                  data={departmentDropdownData}
+                  value={employeeDetails.department}
+                  name={"department"}
+                  onChange={(event) =>
+                    onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
+                  }
+                />
+              </div>
+              <Icon
+                text={"+"}
+                onClick={() => setDepartmentModel(!departmentModel)}
+              />
+            </div>
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("branch")}
+              placeholder={t("branch")}
+              data={companyBranchDropdownData}
+              name={"branch"}
+              value={employeeDetails.branch}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("branch")))
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("category")}
+              placeholder={t("category")}
+              name={"employeeType"}
+              data={EMPLOYEE_TYPE}
+              value={employeeDetails.employeeType}
+              onChange={(event) =>
+                onChangeHandler(dropDownValueCheckByEvent(event, t("category")))
+              }
+            />
+          </div>
+        </Container>
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <h5>{t("dataOfJoining")}</h5>
+            <DatePicker
+              title={t("pleaseSelect")}
+              icon={Icons.Calendar}
+              iconPosition={"append"}
+              value={employeeDetails.dateOfJoining}
+              onChange={(date: string) =>
+                dateTimePickerHandler(date, "dateOfJoining")
+              }
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputDefault
+              label={t("kgid")}
+              placeholder={t("kgid")}
+              maxLength={10}
+              validator={validateDefault}
+              value={employeeDetails.kgid_No}
+              name={"kgid_No"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Attendance Details'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          {employeeDetails.shift || shiftsDropdownData.length > 0 ?
+            <div className="col-xl-6">
+              <DropDown
+                label={t("shiftss")}
+                placeholder={t("SelectShift")}
+                data={shiftsDropdownData}
+                name={"shift"}
+                value={employeeDetails.shift}
+                onChange={(event) =>
+                  onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
+                }
+              />
+            </div> : <></>
+          }
+          {!employeeDetails.shift &&
+            <>
+              <div className="col-xl-6">
+                <h5 className="mb-2">{t("startTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  value={employeeDetails.attendanceStartTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceStartTime")
+                  }}
+                />
+              </div>
+              <div className="col-xl-6">
+                <h5 className="mb-2">{t("endTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  value={employeeDetails.attendanceEndTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceEndTime");
+                  }}
+                />
+              </div>
+            </>
+          }
+        </Container>
+
+        <Divider />
+
+        <ScreenTitle title={'Document Information'} additionclass={'mb-4'} />
+
+        <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <InputDefault
+              label={t("aadhar")}
+              placeholder={t("typeypurAadharNo")}
+              validator={validateAadhar}
+              value={employeeDetails.aadharrNo}
+              name={"aadharrNo"}
+              onChange={(event) => {
+                mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <InputDefault
+              label={t("pan")}
+              placeholder={t("enterPanNUmber")}
+              maxLength={10}
+              validator={validatePAN}
+              value={employeeDetails.panNo}
+              name={"panNo"}
+              onChange={(event) => {
+                onChangeHandler(event);
+              }}
+            />
+          </div>
+        </Container>
+        {/* <InputText
           label={t("fullName")}
           placeholder={t("typeYourName")}
           validator={validateName}
@@ -672,8 +1022,8 @@ const ManageEmployee = () => {
             onChangeHandler(event);
           }}
         />
-        <h4 className="mb-4">{t("attendanceDetails")}</h4>
-        {employeeDetails.shift || shiftsDropdownData.length > 0 ? (
+        <h4 className="mb-4">{t("attendanceDetails")}</h4> */}
+        {/* {employeeDetails.shift || shiftsDropdownData.length > 0 ? (
           <DropDown
             label={t("shiftss")}
             placeholder={t("SelectShift")}
@@ -683,8 +1033,8 @@ const ManageEmployee = () => {
             onChange={(event) =>
               onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
             }
-          />) : <></>}
-        {!employeeDetails.shift && <>
+          />) : <></>} */}
+        {/* {!employeeDetails.shift && <>
           <h5 className="mb-2">{t("startTime")}</h5>
           <TimePicker
             title={t("pleaseSelect")}
@@ -704,7 +1054,7 @@ const ManageEmployee = () => {
             onChange={(time: any) => {
               timePickerHandler(time, "attendanceEndTime");
             }}
-          /></>}
+          /></>} */}
       </FormWrapper>
       <Modal
         title={t("department")}
@@ -774,7 +1124,7 @@ const ManageEmployee = () => {
           </Container>
         }
       </Modal>
-    </>
+    </ScreenContainer>
   );
 };
 

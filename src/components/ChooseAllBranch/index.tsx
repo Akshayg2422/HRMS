@@ -44,10 +44,10 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
     dispatch(
       getListAllBranchesList({
         params,
-        onSuccess: async (response: Array<LocationProps>) => {
+        onSuccess: async (response: Array<LocationProps>) => () => {
 
         },
-        onError: () => {
+        onError: () => () => {
         },
       })
     );
@@ -179,7 +179,7 @@ function AllHierarchical({ showCheckBox = true, isValueExist }: HierarchicalProp
       })
       setAllBranches(filteredBranch)
     }
-    else {  
+    else {
       setAllBranches(defaultBranch)
     }
   }

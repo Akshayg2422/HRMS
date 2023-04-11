@@ -17,16 +17,16 @@ const EmployeeShiftListing = ({ datesList }: props) => {
     return (
       <Container additionClass='row align-items-center'>
         <Container additionClass={'col-xl-2'}>
-          <h4 className='fw-bold'>{getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it.week_day + '').name}</h4>
+          <h4 className='fw-bold'>{getWeekAndWeekDaysById(WEEK_DAY_LIST, 'id', it?.week_day + '').name}</h4>
         </Container>
-        {it.is_working ? <Container additionClass={'col-xl-4 align-items-center row'}>
-          {it?.time_breakdown && it.time_breakdown.length > 0 ? it.time_breakdown.map((el: any, index: number) => {
+        {it?.is_working ? <Container additionClass={'col-xl-4 align-items-center row'}>
+          {it?.time_breakdown && it?.time_breakdown.length > 0 ? it?.time_breakdown.map((el: any, index: number) => {
             return (
               <>
                 <Container additionClass='row ml-1'>
-                  <h4 className='col'>{formatAMPM(el.start_time)}</h4>
+                  <h4 className='col'>{formatAMPM(el?.start_time)}</h4>
                   <h4 className='col ml-xl--4'>{'To'}</h4>
-                  <h4 className='col ml-xl--6'>{formatAMPM(el.end_time)}</h4>
+                  <h4 className='col ml-xl--6'>{formatAMPM(el?.end_time)}</h4>
                 </Container>
               </>
             )
@@ -40,7 +40,7 @@ const EmployeeShiftListing = ({ datesList }: props) => {
   return (
     <>
           <Container additionClass='col-lg-12  mt-6 px-3'>
-            {datesList.week_calendar && datesList.week_calendar.length > 0 && datesList.week_calendar.map((it: any, index: number) => {
+            {datesList?.week_calendar && datesList?.week_calendar.length > 0 && datesList?.week_calendar.map((it: any, index: number) => {
               return listingWeekDays(it, index)
             })}
           </Container>

@@ -14,7 +14,7 @@ import {
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -29,7 +29,7 @@ const Rejected = () => {
     (state: any) => state.DashboardReducer
   );
 
-  
+
   const fetchRejectedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -40,8 +40,8 @@ const Rejected = () => {
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => {
           dispatch(getEmployeeLeavesSuccess(""));
         },
       })
@@ -56,8 +56,8 @@ const Rejected = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchRejectedLeaves(page);
   }
 
@@ -91,42 +91,52 @@ const Rejected = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setRevertModel(!revertModel);
           fetchRejectedLeaves(currentPage);
           showToast("info", success.status);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => { },
       })
     );
   };
+
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
+          additionalDataSet={LEAVE_STATUS_REVERT}
+          tableValueOnClick={(e, index, item, elv) => {
+            const current = employeesModifyLeaves[index];
+            if (elv === "Revert") {
+              RevertStatusHandler(current);
+            }
+          }}
+          custombutton={"h5"}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesModifyLeaves])
+
+
   return (
     <div>
       <div className="row">
-        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
-            additionalDataSet={LEAVE_STATUS_REVERT}
-            tableValueOnClick={(e, index, item, elv) => {
-              const current = employeesModifyLeaves[index];
-              if (elv === "Revert") {
-                RevertStatusHandler(current);
-              }
-            }}
-            custombutton={"h5"}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
+        {
+          memoizedTable
+        }
       </div>
       <Modal
         title={t("revertStatus")}

@@ -13,6 +13,7 @@ function DatePicker({
   disabledDate,
   additionalClass,
   maxDate,
+  name,
   ...props
 }: DatePickerProps) {
 
@@ -54,6 +55,7 @@ function DatePicker({
           }}
           className="form-control bg-white pl-2"
           value={value}
+          name={name}
           placeholder={placeholder}
         />
         {icon && iconPosition === "append" && (

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Sort,
   CommonTable,
@@ -8,6 +8,7 @@ import {
   NoRecordFound,
   Card,
   BackArrow,
+  TableWrapper,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -93,43 +94,29 @@ function MyWorkLog() {
     employeeEachUserSheets,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  useEffect(() => {
-    getUserCheckInLogs();
-  }, [startDate]);
+
 
   useEffect(() => {
     getEmployeeEachUserTimeSheetsApi();
   }, [type]);
 
-  function getUserCheckInLogs() {
-    const params = { start_time: startDate, end_time: endDate };
-    dispatch(getEmployeesCheckInLogs({ params }));
-  }
 
   function getEmployeeEachUserTimeSheetsApi() {
     dispatch(
       getEmployeeEachUserTimeSheets({
         type,
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
       })
     );
 
     console.log(JSON.stringify(employeeEachUserSheets) + "======");
   }
 
-  const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: CheckInLog) => {
-      return {
-        date: el.date,
-        in: el.start_time
-          ? getDisplayTimeFromMoment(getMomentObjFromServer(el.start_time))
-          : "-",
-        out: el.end_time
-          ? getDisplayTimeFromMoment(getMomentObjFromServer(el.end_time))
-          : "-",
-        remark: el.day_status,
-      };
-    });
-  };
 
   const normalizedTimeSheet = (timesheet1: any) => {
     return timesheet1.map((it: TimeSheetResponse) => {
@@ -138,7 +125,7 @@ function MyWorkLog() {
         Time: getDisplayDateTimeFromMoment(
           getMomentObjFromServer(it.time_stamp)
         ),
-        address: it.address?.address_text,
+        address: it.address?.address_text ? it.address?.address_text : "      -",
       };
     });
   };
@@ -148,52 +135,67 @@ function MyWorkLog() {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text,
+        address: it.address_text ? it.address_text : "       -",
       };
     });
   };
 
-  const onTabChange = (index: number) => {
-    if (index === 0) {
-      setStartDate(moment().add(-3, "month").format("yyyy-MM-DD"));
-    } else {
-      setStartDate(moment().startOf("month").format("yyyy-MM-DD"));
-    }
-  };
 
   const onTabChangeWorkBook = (index: number) => {
     setType(sortData[index].title.toLocaleLowerCase());
   };
 
- 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeeEachUserSheets && employeeEachUserSheets.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          title={"My Time Sheet"}
+          displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
+          tableOnClick={(e, index, item) => {
+            const attachment = employeeEachUserSheets[index].attachments;
+            setAttachment(attachment);
+            setAttachmentModel(!attachmentModel);
+          }}
+
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeEachUserSheets])
+
+
+
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <BackArrow additionClass={'m-3'}/>
-          <div className="col text-right mb-3">
-            <Sort
-              sortData={sortData}
-              activeIndex={activeSortWorkBook}
-              onClick={(index) => {
-                setActiveSortWorkBook(index);
-                onTabChangeWorkBook(index);
-              }}
-            />
-          </div>
-          <div className="mr--3">
-            <CommonTable
-              tableTitle={"My Time Sheet"}
-              displayDataSet={normalizedTimeSheet(employeeEachUserSheets)}
-              tableOnClick={(e, index, item) => {
-                const attachment = employeeEachUserSheets[index].attachments;
-                setAttachment(attachment);
-                setAttachmentModel(!attachmentModel);
-              }}
-            />
+      <TableWrapper>
+        <div className="row">
+          <div className="col">
+            <div className="col text-right mb-3">
+              <Sort
+              size="btn-sm"
+                sortData={sortData}
+                activeIndex={activeSortWorkBook}
+                onClick={(index) => {
+                  setActiveSortWorkBook(index);
+                  onTabChangeWorkBook(index);
+                }}
+              />
+            </div>
+            <div className="">
+              {
+                memoizedTable
+              }
+            </div>
           </div>
         </div>
-      </div>
+      </TableWrapper>
       <Modal
         title={"Attachment"}
         showModel={attachmentModel}
@@ -210,7 +212,7 @@ function MyWorkLog() {
         toggle={() => setLogPerDayModel(!logPerDayModel)}
       >
         {employeeCheckInDetailedLogPerDay &&
-        employeeCheckInDetailedLogPerDay.length > 0 ? (
+          employeeCheckInDetailedLogPerDay.length > 0 ? (
           <Table
             displayDataSet={normalizedPerDayData(
               employeeCheckInDetailedLogPerDay
@@ -220,7 +222,7 @@ function MyWorkLog() {
           <NoRecordFound />
         )}
       </Modal>
-      </>
+    </>
   );
 }
 

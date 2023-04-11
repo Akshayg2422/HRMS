@@ -16,7 +16,7 @@ function PortFolio() {
     },
     {
       id: "2",
-      name: "My Log",
+      name: "My Log Book",
       value: "ML",
       route: ROUTE.ROUTE_MY_LOG,
       icon: Icons.MyLog,
@@ -47,7 +47,7 @@ function PortFolio() {
       id: "6",
       name: "My Shift",
       value: "MS",
-      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS,
+      route: ROUTE.ROUTE_MY_SHIFTS_DETAILS_DAILY,
       icon: Icons.ShiftChange,
     },
     {
@@ -67,7 +67,7 @@ function PortFolio() {
   ];
 
   return (
-    <Container flexDirection={"row"} margin={"mt-3"}>
+    <Container flexDirection={"row"} margin={"mt-3"} style={{ cursor: 'pointer' }}>
       {MY_PORTFOLIO_ITEM.map((it, index) => {
         return (
           <Container additionClass={"col-xl-3 col-md-6"}>
@@ -101,18 +101,18 @@ function PortFolio() {
               </Container>
             </Card> */}
             <Card
-                additionClass={"d-flex"}
-                onClick={() => navigate(it.route)}
+              additionClass={"d-flex"}
+              onClick={() => navigate(it.route)}
+            >
+              <Container
+                additionClass={"d-flex py-3"}
               >
-                <Container
-                  additionClass={"d-flex py-3"}
-                >
-                  <ImageView  icon={it?.icon} alt={it.name} height={50} width={50} />
-                    <h4 className="text-black m-auto font-weight-bold">
-                      {it.name}
-                    </h4>
-                </Container>
-              </Card>
+                <ImageView icon={it?.icon} alt={it.name} height={50} width={50} />
+                <h4 className="text-black m-auto font-weight-bold">
+                  {it.name}
+                </h4>
+              </Container>
+            </Card>
           </Container>
         );
       })}

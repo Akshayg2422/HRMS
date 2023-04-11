@@ -37,20 +37,33 @@ const initialState = {
   error: "",
   associatedBranch: [],
   associatedId: '',
-  defaultBranchId: ''
+  defaultBranchId: '',
+  locationNumOfPages: 0,
+  LocationCurrentPage: 1,
 }
 
 const LocationReducer = (state = initialState, action) => {
 
   switch (action.type) {
     case FETCH_ALL_BRANCHES_LIST:
-      state = { ...state, loading: true };
+      state = {
+        ...state, loading: true,
+        locationNumOfPages: 0,
+        LocationCurrentPage: 1,
+      };
+
       break;
     case FETCH_ALL_BRANCHES_LIST_SUCCESS:
+      const branches = action.payload.details;
       state = {
         ...state,
         loading: false,
-        brancheslist: action.payload
+        brancheslist: branches.data,
+        locationNumOfPages: branches.num_pages,
+        LocationCurrentPage:
+          branches.next_page === -1
+            ? branches.num_pages
+            : branches.next_page - 1,
       };
       break;
     case FETCH_ALL_BRANCHES_LIST_FAILURE:
@@ -196,24 +209,24 @@ const LocationReducer = (state = initialState, action) => {
       };
       break;
 
-      case FETCH_LIST_ALL_BRANCHES_LIST:
-        state = { ...state, loading: true };
-        break;
+    case FETCH_LIST_ALL_BRANCHES_LIST:
+      state = { ...state, loading: true };
+      break;
 
-      case FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS:
-        state = {
-          ...state,
-          loading: false,
-          listBranchesList: action.payload
-        };
-        break;
-      case FETCH_LIST_ALL_BRANCHES_LIST_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
+    case FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        listBranchesList: action.payload
+      };
+      break;
+    case FETCH_LIST_ALL_BRANCHES_LIST_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     case RESET_REDUCER:
       state = initialState;

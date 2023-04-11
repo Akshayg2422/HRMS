@@ -7,7 +7,8 @@ interface FormWrapperProps {
   onClick?: () => void;
   hideFooter?: boolean;
   buttonTittle?: string;
-  buttonDisable?: boolean
+  buttonDisable?: boolean;
+  isTitle?:boolean
 }
 
 function index({
@@ -17,24 +18,28 @@ function index({
   buttonTittle,
   buttonDisable = false,
   hideFooter = false,
+  isTitle = false
 }: FormWrapperProps) {
   return (
-    <div className="container p-xl-5">
+    <div className="">
       <div className="row">
         <div className="card">
-          <BackArrow additionClass={'mt-4 ml-4'} />
-          <div className="card-header">
-            <h3 className="mb-0  p-2">{title} </h3>
-          </div>
-
+          {!isTitle && (
+            <>
+              {/* <BackArrow additionClass={'mt-4 ml-4'} /> */}
+              <div className="card-header">
+                <h3 className="mb-0">{title} </h3>
+              </div>
+            </>
+          )}
           <div className="card-body">
             <form id="create-form">
-              <div className="row justify-content-center">
-                <div className="col-xl-7 col-md-10 my-3">{children}</div>
+              <div className="row justify-content-left">
+                <div className="">{children}</div>
               </div>
             </form>
             {!hideFooter && (
-              <div className="row col-lg-4 ml-4 mt-4 mb-3 float-right">
+              <div className="row col-lg-2 ml-4 mt-4 mb-3 float-right">
                 <Primary
                   disabled={buttonDisable}
                   text={buttonTittle ? buttonTittle : "Submit"}

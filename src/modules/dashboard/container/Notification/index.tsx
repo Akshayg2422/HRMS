@@ -13,7 +13,7 @@ function Notification() {
     const navigation = useNav();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
-    
+
     const [type, setType] = useState<string>("all");
     const [activeSort, setActiveSort] = useState<number>(0);
     const [deleteModel, setDeleteModel] = useState(false);
@@ -37,9 +37,9 @@ function Notification() {
         };
         dispatch(getBroadcastMessage({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error)
             },
         }));
@@ -60,9 +60,6 @@ function Notification() {
 
     return (
         <>
-            <div className='ml-3 mb-3'>
-                <BackArrow />
-            </div>
             <Container additionClass={" mx-1"}>
                 {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
                     return (

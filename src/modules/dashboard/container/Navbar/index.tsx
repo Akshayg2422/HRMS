@@ -29,7 +29,6 @@ const Navbar = ({ }) => {
 
   const currentNav = (it: any, index: any) => {
     navigate(it.route);
-    // dispatch(matchRouteName(it.id))
     dynamicActiveNav()
   };
 
@@ -88,85 +87,91 @@ const Navbar = ({ }) => {
         <div className="navbar-inner mt-5">
           <div className="collapse navbar-collapse" id="sidenav-collapse-main">
             <ul className="navbar-nav">
-              {NAV_ITEM.map((it: any, index: number) => {
-                if (userDetails.is_admin === false) {
-                  if (it.name !== 'ESSL Config') {
+
+              {
+                userDetails.is_admin ?
+                  NAV_ITEM.map((it, index) => {
                     return (
-                      <li
-                        className="nav-item"
-                        onClick={() => {
-                          currentNav(it, index)
-                        }}
-                      >
-                        <a
-                          key={index}
-                          style={{ cursor: 'pointer' }}
-                          className={
-                            navIndex === index ? "nav-link active" : "nav-link"
-                          }
+                      <>
+                        {<li
+                          className="nav-item"
+                          onClick={() => {
+                            currentNav(it, index)
+                          }}
                         >
-                          <i
+                          <a
+                            key={index}
+                            style={{ cursor: 'pointer' }}
                             className={
-                              navIndex === index
-                                ? `${it.icon} text-primary`
-                                : `${it.icon} text-white`
-                            }
-                          ></i>
-                          <span
-                            className={
-                              navIndex === index
-                                ? "nav-link-text text-primary mt-2 ml-2"
-                                : "nav-link-text text-white mt-2 ml-2"
+                              navIndex === index ? "nav-link active" : "nav-link"
                             }
                           >
-                            {/* ESSL Config */}
-                            {it.name}
-                          </span>
-                        </a>
-                      </li>
+                            <i
+                              className={
+                                navIndex === index
+                                  ? `${it.icon} text-primary`
+                                  : `${it.icon} text-white`
+                              }
+                            ></i>
+                            <span
+                              className={
+                                navIndex === index
+                                  ? "nav-link-text text-primary mt-2 ml-2"
+                                  : "nav-link-text text-white mt-2 ml-2"
+                              }
+                            >
+                              {/* ESSL Config */}
+                              {it.name}
+                            </span>
+                          </a>
+                        </li>}
+                      </>
                     );
-                  }
-
-                } else {
-                  return (
-                    <li
-                      className="nav-item"
-                      onClick={() => {
-                        currentNav(it, index)
-                      }}
-                    >
-                      <a
-                        key={index}
-                        style={{ cursor: 'pointer' }}
-                        className={
-                          navIndex === index ? "nav-link active" : "nav-link"
-                        }
-                      >
-                        <i
-                          className={
-                            navIndex === index
-                              ? `${it.icon} text-primary`
-                              : `${it.icon} text-white`
-                          }
-                        ></i>
-                        <span
-                          className={
-                            navIndex === index
-                              ? "nav-link-text text-primary mt-2 ml-2"
-                              : "nav-link-text text-white mt-2 ml-2"
-                          }
-                        >
-                          {/* ESSL Config */}
-                          {it.name}
-                        </span>
-                      </a>
-                    </li>
-                  );
-                }
-              })}
+                  })
+                  :
+                  userDetails.is_branch_admin ?
+                    NAV_ITEM && NAV_ITEM.map((it, index) => {
+                      return (
+                        <>
+                          {it.name !== 'Location Portfolio' && <li
+                            className="nav-item"
+                            onClick={() => {
+                              currentNav(it, index)
+                            }}
+                          >
+                            <a
+                              key={index}
+                              style={{ cursor: 'pointer' }}
+                              className={
+                                navIndex === index ? "nav-link active" : "nav-link"
+                              }
+                            >
+                              <i
+                                className={
+                                  navIndex === index
+                                    ? `${it.icon} text-primary`
+                                    : `${it.icon} text-white`
+                                }
+                              ></i>
+                              <span
+                                className={
+                                  navIndex === index
+                                    ? "nav-link-text text-primary mt-2 ml-2"
+                                    : "nav-link-text text-white mt-2 ml-2"
+                                }
+                              >
+                                {/* ESSL Config */}
+                                {it.name}
+                              </span>
+                            </a>
+                          </li>}
+                        </>
+                      );
+                    }) : ""
+              }
             </ul>
           </div>
-          <small className={"text-white text-version"}>Version: 1.29</small>
+          <small className={"text-white text-version"}>Version: 1.30</small>
         </div>
       </div>
 

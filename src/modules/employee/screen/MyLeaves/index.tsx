@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import moment from "moment";
 import {
   Container,
@@ -13,6 +13,7 @@ import {
   DropDown,
   NoRecordFound,
   BackArrow,
+  TableWrapper,
 } from "@components";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -49,7 +50,15 @@ function MyLeaves() {
       status: type,
       page_number: pageNumber,
     };
-    dispatch(getLeavesByTypes({ params }));
+    dispatch(getLeavesByTypes({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   function paginationHandler(
@@ -81,11 +90,37 @@ function MyLeaves() {
   //   goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
   // };
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {myLeaves && myLeaves.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          noHeader
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(myLeaves)}
+
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [myLeaves])
+
   return (
-    <>
-      <Container additionClass={"mt-5 main-contain"}>
-        <Card>
-          <BackArrow />
+    <TableWrapper>
+      <Container additionClass={" main-contain "}>
+        <div className="mx-4">
           <Container additionClass={"text-right row my-4"}>
             <Container additionClass="col-xl-4">
               <DropDown
@@ -104,28 +139,15 @@ function MyLeaves() {
               />
             </Container> */}
           </Container>
-        </Card>
-        <h1>{t("leaveList")}</h1>
-        <Card>
-          {myLeaves && myLeaves?.length > 0 ? (
-            <CommonTable
-              noHeader
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
-              displayDataSet={normalizedEmployeeLog(myLeaves)}
-            />
-          ) : (
-            <NoRecordFound />
-          )}
-        </Card>
+        </div>
+        <h1 className="ml-4">{t("leaveList")}</h1>
+        <>
+         {
+          memoizedTable
+         }
+        </>
       </Container>
-    </>
+    </TableWrapper>
   );
 }
 

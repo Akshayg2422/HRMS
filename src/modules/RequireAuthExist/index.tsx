@@ -14,8 +14,13 @@ export const RequireAuthExist = ({ children }: RequireAuthExistProps) => {
     const { userLoggedIn } = useSelector(
         (state: any) => state.AppReducer
     );
+    
+    const {dashboardDetails} = useSelector(
+        (state: any) => state.DashboardReducer
+      );
 
-    if (userLoggedIn) {
+      
+    if (userLoggedIn && dashboardDetails?.user_details?.name) {
         return <Navigate to={ROUTE.ROUTE_DASHBOARD} state={{ path: location.pathname }} />
     }
 

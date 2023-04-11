@@ -75,7 +75,15 @@ function ManageAssignLocation() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   function paginationHandler(
@@ -102,8 +110,25 @@ function ManageAssignLocation() {
 
   function getEmployeeAssociationBranch(index: number) {
     const employees = registeredEmployeesList[index];
-    dispatch(getEmployeeCheckinAssociations({ user_id: employees.id }));
-    dispatch(getListAllBranchesList({}));
+    dispatch(getEmployeeCheckinAssociations({
+      user_id: employees.id,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+    const params = {}
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
     setModel(!model);
   }
 
@@ -139,11 +164,11 @@ function ManageAssignLocation() {
     dispatch(
       updateEmployeeCheckinAssociations({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           showToast("success", success.status);
           setModel(!model);
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -180,16 +205,16 @@ function ManageAssignLocation() {
             additionClass={"mt-sm-3 mb-3 mb-sm-0 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={proceedSearchApi}
+
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
+            <Icon type={"btn-primary"} onClick={proceedSearchApi} icon={Icons.Search} />
           </Container>
         </Container>
       </Card>
 
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
-          tableTitle={"Employee List"}
+          title={"Employee List"}
           displayDataSet={employeeList(registeredEmployeesList)}
           isPagination
           currentPage={currentPage}
@@ -210,30 +235,32 @@ function ManageAssignLocation() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-            {listBranchesList.map((item: Branch, index: number) => {
-              return (
-                <>
-                  <div className="row mx-3 my-1"
-                    onClick={() => addSelectedBranch(item)}
-                  >
-                    <div className="col-8">
-                      <span className=" text-gray">{item.name}</span>
-                    </div>
-
-                    <div className="col-4 text-right">
-                      <ImageView
-                        icon={
-                          checkStatus(item.id!)
-                            ? Icons.TickActive
-                            : Icons.TickDefault
-                        }
-                      />
-                    </div>
+          {listBranchesList.map((item: Branch, index: number) => {
+            return (
+              <div
+                onClick={() => addSelectedBranch(item)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="row mx-3 my-1"
+                >
+                  <div className="col-8">
+                    <span className=" text-gray">{item.name}</span>
                   </div>
-                  {index !== listBranchesList.length - 1 && <Divider />}
-                </>
-              );
-            })}
+
+                  <div className="col-4 text-right">
+                    <ImageView
+                      icon={
+                        checkStatus(item.id!)
+                          ? Icons.TickActive
+                          : Icons.TickDefault
+                      }
+                    />
+                  </div>
+                </div>
+                {index !== listBranchesList.length - 1 && <Divider />}
+              </div>
+            );
+          })}
 
           <Container
             additionClass={'mt-4 sticky-bottom'}

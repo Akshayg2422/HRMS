@@ -1,4 +1,4 @@
-import { CheckBox, ChooseBranchFromHierarchical, Container, DropDown, FormWrapper, InputNumber, InputText } from '@components'
+import { CheckBox, ChooseBranchFromHierarchical, Container, DropDown, FormWrapper, InputNumber, InputText, ScreenContainer } from '@components'
 import { getDepartmentData, getDesignationData } from '../../../store/employee/actions';
 import { dropDownValueCheckByEvent, goBack, inputNumberMaxLength, showToast, useNav, validateDefault, validateMobileNumber, validateName } from '@utils';
 import React, { useEffect, useState } from 'react'
@@ -31,8 +31,25 @@ function ManageBroadCast() {
 
 
     useEffect(() => {
-        dispatch(getDepartmentData({}));
-        dispatch(getDesignationData({}));
+        const params = {}
+        dispatch(getDepartmentData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }, [hierarchicalBranchIds])
 
     const onChangeHandler = (e: any) => {
@@ -58,14 +75,6 @@ function ManageBroadCast() {
             showToast('error', 'The message field cannot be empty')
             return false
         }
-        // else if (!broadCast.department) {
-        //     showToast('error', t("invalidDepartment"))
-        //     return false
-        // }
-        // else if (!broadCast.designation) {
-        //     showToast('error', t("invalidDesignation"))
-        //     return false
-        // }
         else {
             return true
         }
@@ -85,13 +94,13 @@ function ManageBroadCast() {
         if (validatePostParams()) {
             dispatch(createBroadcastMessage({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     console.log("successsssss", success);
                     goBack(navigation);
                     showToast("success", success.status)
                     setBroadCast({ title: '', description: '', department: '', designation: '' })
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));
@@ -99,58 +108,71 @@ function ManageBroadCast() {
     }
 
     return (
-        <div>
+        <ScreenContainer>
             <FormWrapper
+                isTitle
                 title={"Manage BroadCast"}
                 onClick={onsubmit}
             >
-                <Container>
+                <Container additionClass={'col-xl-12  col-sm-3'}>
                     <ChooseBranchFromHierarchical />
                 </Container>
-                <InputText
-                    label={t("title")}
-                    placeholder={t("enterTitle")}
-                    // validator={validateName}
-                    value={broadCast.title}
-                    name={"title"}
-                    onChange={(event) => {
-                        onChangeHandler(event);
-                    }}
-                />
-                <InputText
-                    label={t("description")}
-                    placeholder={t("description")}
-                    // validator={validateName}
-                    value={broadCast.description}
-                    name={"description"}
-                    onChange={(event) => {
-                        onChangeHandler(event);
-                    }}
-                />
-                <DropDown
-                    label={t("department")}
-                    placeholder={t("enterDepartment")}
-                    data={departmentDropdownData}
-                    value={broadCast.department}
-                    name={"department"}
-                    onChange={(event) =>
-                        onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
-                    }
-                />
-                <DropDown
-                    label={t("designation")}
-                    placeholder={t("enterDesignation")}
-                    data={designationDropdownData}
-                    name={"designation"}
-                    value={broadCast.designation}
-                    onChange={(event) => {
-                        onChangeHandler(dropDownValueCheckByEvent(event, t("enterDesignation")));
-                    }}
-                />
 
+                <Container additionClass={'col-xl-12 row col-sm-3'}>
+                    <div className="col-xl-6">
+                        <InputText
+                            label={t("title")}
+                            placeholder={t("enterTitle")}
+                            // validator={validateName}
+                            value={broadCast.title}
+                            name={"title"}
+                            onChange={(event) => {
+                                onChangeHandler(event);
+                            }}
+                        />
+                    </div>
+                    <div className="col-xl-6">
+                        <InputText
+                            label={'Message'}
+                            placeholder={'Message'}
+                            // validator={validateName}
+                            value={broadCast.description}
+                            name={"description"}
+                            onChange={(event) => {
+                                onChangeHandler(event);
+                            }}
+                        />
+                    </div>
+                </Container>
 
+                <Container additionClass={'col-xl-12 row col-sm-3'}>
+                    <div className="col-xl-6">
+                        <DropDown
+                            label={t("department")}
+                            placeholder={t("enterDepartment")}
+                            data={departmentDropdownData}
+                            value={broadCast.department}
+                            name={"department"}
+                            onChange={(event) =>
+                                onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
+                            }
+                        />
+                    </div>
+                    <div className="col-xl-6">
+                        <DropDown
+                            label={t("designation")}
+                            placeholder={t("enterDesignation")}
+                            data={designationDropdownData}
+                            name={"designation"}
+                            value={broadCast.designation}
+                            onChange={(event) => {
+                                onChangeHandler(dropDownValueCheckByEvent(event, t("enterDesignation")));
+                            }}
+                        />
+                    </div>
+                </Container>
             </FormWrapper>
-        </div>
+        </ScreenContainer>
     )
 }
 

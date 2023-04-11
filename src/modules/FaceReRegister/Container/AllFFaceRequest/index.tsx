@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { Card, CommonTable, Container, ImageView, Modal, NoRecordFound, Primary, Secondary } from '@components';
 import { useDispatch, useSelector } from 'react-redux';
-import { showToast, base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
+import { showToast, base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer, convertToUpperCase } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { faceReRegisterRequestAction, faceReRegisterRequestChangeStatus, } from '../../../../store/dashboard/actions';
 import { Icons } from '@assets';
@@ -58,36 +58,41 @@ const AllFFaceRequest = () => {
         }));
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {faceReRegisterRequestDetails && faceReRegisterRequestDetails.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    tableChildren={
+                        <FaceTable
+                            tableDataSet={faceReRegisterRequestDetails}
+                            onApprovedClick={(item: any) => {
+                                ChangeStatusHandler(item, 1)
+                            }}
+                            onRevertClick={(item: any) => {
+                                ChangeStatusHandler(item, 0)
+
+                            }}
+                        />}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [faceReRegisterRequestDetails])
+
     return (
         <div>
-            <Card>
-                {faceReRegisterRequestDetails && faceReRegisterRequestDetails?.length > 0 ? (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        tableChildren={
-                            <FaceTable
-                                tableDataSet={faceReRegisterRequestDetails}
-                                onApprovedClick={(item: any) => {
-                                    ChangeStatusHandler(item, 1)
-                                }}
-                                onRevertClick={(item: any) => {
-                                    ChangeStatusHandler(item, 0)
-
-                                }}
-                            />}
-                    />
-                ) : (
-                    <NoRecordFound />
-                )}
-            </Card>
+            {
+                memoizedTable
+            }
         </div>
     )
 }
@@ -120,7 +125,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
             <tbody>
                 {
                     tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: any, index: number) => {
-                        console.log("item?.checkin_time", item);
+                        // console.log("item?.checkin_time", item);
 
                         return <tr className=''>
                             <td className='' ><div>
@@ -128,7 +133,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
                                 {/* <ImageView additionClass='ml-3' height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[3]} /> */}
                             </div></td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  ><ImageView height={150} style={{ objectFit: "cover" }} width={100} icon={item?.log_photos_b64[0]} /></td>
-                            <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
+                            <td style={{ whiteSpace: 'pre-wrap' }}  >{convertToUpperCase(item.name)}</td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.mobile_number}</td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.checkin_location}</td>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.checkin_time ? getDisplayDateTimeFromMoment(getMomentObjFromServer(item?.checkin_time)) : ''}</td>

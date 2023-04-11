@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, ImageView } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, ImageView, NoRecordFound, CommonDropdownMenu } from '@components'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { downloadFile, getDisplayTimeFromMoment, getMomentObjFromServer } from '@utils';
@@ -15,6 +15,10 @@ type AttendanceReportProps = {
   customrange: { dateFrom: string, dataTo: string };
   designation: string
 };
+
+const ATTENDANCE_DROPDOWN_ITEM = [
+  { id: '1', name: 'Download detail checkIn logs', value: 'DL', icon: 'ni ni-cloud-download-95' },
+]
 
 function AttendanceReport({ data, department, reportType, customrange, designation }: AttendanceReportProps) {
 
@@ -44,7 +48,13 @@ function AttendanceReport({ data, department, reportType, customrange, designati
       page_number: pageNumber,
     };
     dispatch(getMisReport({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }));
   })
 
@@ -59,10 +69,10 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     console.log("params----->", params);
     dispatch(getDownloadEmployeeCheckinLogs({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         downloadFile(response);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
       },
     }));
   }
@@ -71,17 +81,24 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     return data && data.length > 0 && data.map((el: any) => {
       return {
         name: el.name,
-        "": <>
-          <ImageView height={20} width={20} icon={Icons.Download} onClick={() => { getEmployeeCheckInLogsReports(el?.emp_id) }} />
-        </>,
+        // "": <div style={{ cursor: 'pointer' }}>
+        //   <ImageView height={20} width={20} icon={Icons.Download} onClick={() => { getEmployeeCheckInLogsReports(el?.emp_id) }} />
+        // </div>,
         "Designation": el.designation,
-        "Total Days": el.total,
-        "Present Days": el.present,
-        "Leave Days": el.leave,
-        "Holidays": el.holiday,
-        "Absent": el.absent,
-        "Alert": el.alert,
-        "Billable Days": el?.billable_days
+        // "Total Days": el.total,
+        // "Present Days": el.present,
+        // "Leave Days": el.leave,
+        // "Holidays": el.holiday,
+        // "Absent": el.absent,
+        // "Alert": el.alert,
+        "Billable Days": el?.billable_days,
+        "  ": <CommonDropdownMenu
+          data={ATTENDANCE_DROPDOWN_ITEM}
+          onItemClick={(e, item) => {
+            e.stopPropagation()
+            getEmployeeCheckInLogsReports(el?.emp_id)
+          }}
+        />
       };
     });
   };
@@ -99,10 +116,38 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     getReports(page)
   }
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {data && data.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployee(data)}
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [data])
+
 
   return (
     <>
-      <Card>
+      {
+        memoizedTable
+      }
+      {/* <Card>
         <CommonTable
           noHeader
           isPagination
@@ -115,7 +160,7 @@ function AttendanceReport({ data, department, reportType, customrange, designati
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployee(data)}
         />
-      </Card>
+      </Card> */}
     </>
   )
 }

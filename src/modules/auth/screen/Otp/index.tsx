@@ -22,6 +22,7 @@ import {
 import {
   setUserLoginDetails
 } from '../../../../store/app/actions';
+import { getDashboard } from '../../../../store/dashboard/actions';
 
 
 type LoginResponse = {
@@ -42,6 +43,8 @@ function Otp() {
   const { userDetails, success, mobileNumber, error } = useSelector(
     (state: any) => state.AuthReducer
   );
+
+
 
   const [validOtp, setValidOtp] = useState('');
   const [counter, setCounter] = useState<number>(59);
@@ -81,29 +84,48 @@ function Otp() {
 
   const reSendOTP = (params: object) => {
     dispatch(getResendLoginOtp({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }));
   };
 
   const signInOTP = (params: object) => {
     dispatch(proceedSignIn({
       params,
-      onSuccess: async (response: LoginResponse) => {
-
+      onSuccess: (response: LoginResponse) => async () => {
+        
         if (response.is_admin || response.is_branch_admin) {
+          await localStorage.setItem(ASYN_USER_AUTH, response.token);
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
           dispatch(setUserLoginDetails(params))
-          await localStorage.setItem(ASYN_USER_AUTH, response.token);
-          goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
+          dashBoardApi()
         } else {
           showToast('error', t('invalidAdmin'));
         }
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast('error', error);
       },
     }));
   };
+
+
+  const dashBoardApi = () => {
+    const DashboardParams = {}
+    dispatch(getDashboard({
+      DashboardParams,
+      onSuccess: (success: any) => () => {
+        goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
+      },
+      onError: (error: any) => () => {
+      }
+    }))
+  }
 
   const validatePostParams = () => {
     const otpConvertor = otp.field1 + otp.field2 + otp.field3 + otp.field4;

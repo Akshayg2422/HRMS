@@ -1,10 +1,10 @@
 import { getDownloadEmployeeCheckinLogs, getMisReport } from '../../../../store/employee/actions';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, CommonTable, ImageView, Secondary } from '@components';
+import { Card, CommonTable, ImageView, NoRecordFound, Secondary } from '@components';
 import { Icons } from '@assets';
 import moment from 'moment';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { downloadFile } from '@utils';
 
 type LogReportsProps = {
@@ -78,7 +78,13 @@ function LogReports({ data, department, reportType, customrange, designation, at
             page_number: pageNumber,
         };
         dispatch(getMisReport({
-            params
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
         }));
     })
 
@@ -107,36 +113,55 @@ function LogReports({ data, department, reportType, customrange, designation, at
         }
         console.log("params----->", params);
         dispatch(getDownloadEmployeeCheckinLogs({
-          params,
-          onSuccess: (response: any) => {
-            downloadFile(response);
-          },
-          onError: (error: string) => {
-          },
+            params,
+            onSuccess: (response: any) => () => {
+                downloadFile(response);
+            },
+            onError: (error: string) => () => {
+            },
         }));
     }
+
+
+    const memoizedTable = useMemo(() => {
+        return <>
+          {data && data.length > 0 ? (
+            <CommonTable
+              // noHeader
+              card={false}
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              paginationNumberClick={(currentPage) => {
+                paginationHandler("current", currentPage);
+              }}
+              previousClick={() => paginationHandler("prev")}
+              nextClick={() => paginationHandler("next")}
+              tableChildren={
+                <LocationTable tableDataSet={getConvertedTableData(data)}
+                    employeeLogDownload={(item: any) => {
+                        getEmployeeCheckInLogsReports(item)
+                    }} />
+            }
+              custombutton={"h5"}
+
+              // tableOnClick={(e, index, item) => {
+              //   const selectedId = registeredEmployeesList[index].id;
+              //   dispatch(getSelectedEmployeeId(selectedId));
+              //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+              // }}
+            />
+          ) : <NoRecordFound />}
+        </>
+      }, [data])
+    
+
+      
     return (
         <>
-            <Card>
-                <CommonTable
-                    noHeader
-                    isPagination
-                    currentPage={currentPage}
-                    noOfPage={numOfPages}
-                    paginationNumberClick={(currentPage) => {
-                        paginationHandler("current", currentPage);
-                    }}
-                    previousClick={() => paginationHandler("prev")}
-                    nextClick={() => paginationHandler("next")}
-                    tableChildren={
-                        <LocationTable tableDataSet={getConvertedTableData(data)}
-                            employeeLogDownload={(item: any) => {
-                                getEmployeeCheckInLogsReports(item)
-                            }} />
-                    }
-                    custombutton={"h5"}
-                />
-            </Card>
+           {
+            memoizedTable
+           }
         </>
     )
 }
@@ -169,11 +194,13 @@ const LocationTable = ({
             if (isString)
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{key === 'emp_id' ? "" : eachObject[key as keyof object]}
                     {key === 'emp_id' && (
-                        <ImageView height={20} width={20} icon={Icons.Download} onClick={() => {
-                            if (employeeLogDownload) {
-                                employeeLogDownload(eachObject)
-                            }
-                        }} />
+                        <div style={{ cursor:'pointer'}}>
+                            <ImageView height={20} width={20} icon={Icons.Download} onClick={() => {
+                                if (employeeLogDownload) {
+                                    employeeLogDownload(eachObject)
+                                }
+                            }} />
+                        </div>
                     )}
                 </td>
             else {

@@ -2,16 +2,18 @@ import axios from "axios";
 import { ASYN_USER_AUTH } from '@utils'
 
 //apply base url for axios
-const STAGING = 'http://43.204.233.45/';
+const STAGING = 'http://3.7.59.39';
 
-const LOCAL_DEV = 'http://192.168.43.241:8001';
+const LOCAL_DEV = 'http://192.168.41.204:8001';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
-const LOCAL_PROD = 'http://15.206.224.132';
+const LOCAL_PROD = 'http://15.206.224.132:8001';
 
 const PRE_PROD = 'http://15.206.224.132'
 
 const SAMPLE_IP = 'http://3.109.244.227:8000';
+const STAGING_IP = 'http://103.118.188.135:8001';
+
 
 // const PROD = 'https://api.zenyq.com';
 const PROD_WEB = 'https://webapi.zenyq.com';

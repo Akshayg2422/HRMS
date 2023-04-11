@@ -35,10 +35,15 @@ export const Icons = {
   Search: require('./icons/Search/Search.png'),
   Calendar: require('./icons/Calendar/Calendar.png'),
   Download: require('./icons/DownLoad/Download.png'),
+  Portfolio: require('./icons/Portfolio/services-portfolio.png'),
   DownloadSecondary: require('./icons/DownLoadSecondary/Download.png'),
   Edit: require('./icons/Edit/Edit.png'),
+  Pencil: require('./icons/Edit/pencil.png'),
   Gallery: require('./icons/Gallery/Gallery.png'),
   Delete: require('./icons/Delete/Delete.png'),
+  Delete_1: require('./icons/Delete/DELETE-1.png'),
+  Location_Gray: require('./icons/LocationGray/location-gray.png'),
+  View: require('./icons/View/eye.png'),
   Eye: require('./icons/Eye/Eye.png'),
   Group1: require('./icons/Group1/Group1.png'),
   Group2: require('./icons/Group2/Group2.png'),
@@ -101,10 +106,14 @@ export const Icons = {
   FaceApproval: require('./icons/FaceApproval/FaceApproval.png'),
   ApplyLeave: require('./icons/ApplyLeave/ApplyLeave.png'),
   Time: require('./icons/Time/time.png'),
-  BroadCast:require('./icons/BroadCast/Broadcast.png'),
-  EventNotification:require('./icons/EventNotification/EventNotification.png'),
-  FaceRequest:require('./icons/FaceRequest/FaceRequest.png'),
-  Csv:require('./icons/Csv/csv .png')
+  BroadCast: require('./icons/BroadCast/Broadcast.png'),
+  EventNotification: require('./icons/EventNotification/EventNotification.png'),
+  FaceRequest: require('./icons/FaceRequest/FaceRequest.png'),
+  Csv: require('./icons/Csv/csv .png'),
+  MenuDots: require('./icons/MenuDots/MenuDots.png'),
+  Tick: require('./icons/Tick/tick.png'),
+  SearchSecondary: require('./icons/SearchSecondary/SearchSecondary.png'),
+  Add: require('./icons/Add/add.png')
 }
 
 

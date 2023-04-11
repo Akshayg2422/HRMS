@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress } from '@components'
+import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress, TableWrapper } from '@components'
 import { Icons } from '@assets'
 import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
@@ -74,9 +74,6 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
-    // if (initialRender) {
-    //   setShiftSelectedDesignation(shiftDesignationData[0]?.id)
-    // }
     reportsType !== 'shift' && getReports(currentPage)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
@@ -97,11 +94,11 @@ function Reports() {
     const params = {}
     dispatch(getDepartmentData({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         let mergedDepartments = [...departmentsData, ...response]
         setDepartmentsData(mergedDepartments)
       },
-      onError: (errorMessage: string) => {
+      onError: (errorMessage: string) => () => {
       },
     }));
   })
@@ -111,13 +108,13 @@ function Reports() {
     const params = {}
     dispatch(getDesignationData({
       params,
-      onSuccess: (response: any) => {
+      onSuccess: (response: any) => () => {
         let mergedDesignation = [...designationData, ...response]
         setDesignationData(mergedDesignation)
         setShiftDesignationData(response)
         setShiftSelectedDesignation(response[0]?.id)
       },
-      onError: (errorMessage: string) => {
+      onError: (errorMessage: string) => () => {
       },
     }));
   })
@@ -140,10 +137,10 @@ function Reports() {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
         setShiftGroupData(success)
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("error", error);
       },
     }));
@@ -187,9 +184,9 @@ function Reports() {
       };
       dispatch(getMisReport({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
         },
-        onError: (errorMessage: string) => {
+        onError: (errorMessage: string) => () => {
         },
       }));
     }
@@ -246,20 +243,21 @@ function Reports() {
       };
       dispatch(getDownloadMisReport({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           downloadFile(response);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
         },
       }));
     }
   };
 
+  console.log("reportsType", reportsType);
 
 
   return (
-    <>
-      <Card>
+    <TableWrapper>
+      <div className='px-4 pb-4 mt--5'>
         <Container flexDirection={'row'} display={'d-flex'} alignItems={'align-items-center'}>
           <DropDown
             additionClass={'col-lg-3 col-md-12'}
@@ -271,7 +269,7 @@ function Reports() {
               setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
               dispatch(resetMisReportData([]))
             }} />
-          {reportsType === "log" || reportsType === 'shift' ? <div className="col-lg-3 col-md-12">
+          {(reportsType === "log") || (reportsType === 'shift') ? <div className="col-lg-3 col-md-12">
             <DropDown
               label={t('attendanceType')}
               placeholder={"Select Attendance"}
@@ -284,8 +282,7 @@ function Reports() {
               }}
             />
           </div> : <></>}
-          <Container additionClass={'col-lg-6 mt-4'}>
-            {/* <MultiselectHierarchical /> */}
+          <Container additionClass={'col-lg-3 mt-4'}>
             <ChooseBranchFromHierarchical />
           </Container>
           {reportsType !== 'shift' && <DropDown
@@ -373,12 +370,12 @@ function Reports() {
               value={customRange.dataTo}
             />
           </Container>
-          <Container additionClass={'col-lg-6 col-md-6 row ml-1'}>
+          <Container additionClass={'row ml-1'}>
             <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-2 col-md-3'} onClick={() => getReports(currentPage)} />
+            <Primary text={'Search'} col={'col-xl-1 p-auto'} onClick={() => getReports(currentPage)} />
           </Container>
         </Container>
-      </Card>
+      </div>
       {reportsType === "leave" &&
         <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
           : <NoRecordFound />}</>
@@ -396,7 +393,7 @@ function Reports() {
         <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
           : <NoRecordFound />}</>
       }
-    </>
+    </TableWrapper>
   )
 }
 
