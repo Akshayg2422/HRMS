@@ -69,7 +69,7 @@ function ShiftRequest() {
   return (
     <TableWrapper>
       <div className='mt--4'>
-        <Container additionClass={"row m-3"}>
+        <Container additionClass={"row mx-1"}>
           <Container col={"col-xl-3"}>
             <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>

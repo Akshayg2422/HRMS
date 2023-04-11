@@ -138,7 +138,7 @@ const CreateShiftGroup = () => {
         } else {
             if (designationShiftGroup) {
                 setGroupName(designationShiftGroup.name)
-                setSelectedShift(designationShiftGroup.weekly_shift.id)
+                setSelectedShift(designationShiftGroup?.weekly_shift?.id)
                 setDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 setSelectedEmpListDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 selectedEmployeesDepartmentFilter()

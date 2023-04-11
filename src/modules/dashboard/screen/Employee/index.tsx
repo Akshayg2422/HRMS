@@ -67,17 +67,17 @@ type Branch = {
 };
 
 export const DROPDOWN_MENU_ADMIN = [
-  { id: '1', name: 'View', value: 'PF', icon: 'ni ni-active-40' },
-  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '3', name: 'Assign Location', value: 'LG', icon: 'ni ni-pin-3' },
+  { id: '1', name: 'View', value: 'PF', image: Icons.View },
+  { id: '2', name: 'Delete', value: 'CL', image:Icons.Delete_1 },
+  { id: '3', name: 'Assign Location', value: 'LG', image: Icons.Location_Gray },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 export const DROPDOWN_MENU_BRANCH_ADMIN = [
-  { id: '1', name: 'View', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '1', name: 'View', value: 'PF',  image: Icons.View },
+  { id: '2', name: 'Delete', value: 'CL', image:Icons.Delete_1  },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
@@ -92,7 +92,7 @@ function EmployeeScreen() {
   );
 
   const CARD_DROPDOWN_ITEM = [
-    { id: '1', name: `${t("deletedUser")}`, value: 'CL', icon: 'ni ni-active-40' },
+    { id: '1', name: `${t("deletedUser")}`, value: 'CL', image:Icons.Delete_1 },
   ]
 
   const [deleteModel, setDeleteModel] = useState(false);

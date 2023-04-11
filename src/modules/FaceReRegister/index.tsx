@@ -64,10 +64,10 @@ function FaceReRequest() {
 
   return (
     <TableWrapper>
-      <div className="mt--4">
+      <div className="mt--5">
         <Container
           flexDirection={"row"}
-          additionClass={"col"}
+          additionClass={"col mt-3"}
           alignItems={"align-items-center"}
         >
           <Container col={"col-xl-3 col-md-6 col-sm-12 mt-xl--3"}>
