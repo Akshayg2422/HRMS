@@ -110,6 +110,7 @@ const DashboardStats = () => {
       ...obj,
       selected_date: selectedDate,
     };
+<<<<<<< HEAD
     dispatch(getEmployeeAttendanceStats({
       params,
       onSuccess: (success: any) => () => {
@@ -139,6 +140,12 @@ const DashboardStats = () => {
     });
     return branchListFiltered;
   };
+=======
+    if (Object.keys(hierarchicalBranchIds).length > 0) {
+      dispatch(getEmployeeAttendanceStats(params));
+    }
+  }, [selectedDate, hierarchicalBranchIds]);
+>>>>>>> 8fb942522cfd67a7eba5dd6b5e4ce76b51548b8d
 
   const proceedNext = (
     attendanceType: number,
