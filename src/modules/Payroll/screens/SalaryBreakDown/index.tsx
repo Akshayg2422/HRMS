@@ -275,7 +275,7 @@ function SalaryBreakDown() {
     let status = { status: false, errorMessage: '' }
 
     selectedDeductions.map((item: any) => {
-      if ((item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
+      if ( item.amount == '' && (item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
         status = { status: true, errorMessage: `Deduction field should not be empty` }
       }
     })
