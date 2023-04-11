@@ -1,4 +1,4 @@
-import { CommonTable, NoRecordFound, ScreenContainer, Secondary, Sort, TableWrapper } from '@components';
+import { CommonTable, Modal, NoRecordFound, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
 import { getCheckInDetailedLogPerDay, getEmployeesCheckInLogs } from '../../../../../../store/employee/actions';
 import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showToast } from '@utils';
 import moment from 'moment';
@@ -12,6 +12,7 @@ const LogView = () => {
     const { t } = useTranslation();
 
     const {
+        selectedEmployeeId,
         employeeCheckInLogs,
         employeeCheckInDetailedLogPerDay,
     } = useSelector((state: any) => state.EmployeeReducer);
@@ -21,6 +22,8 @@ const LogView = () => {
         { id: 2, title: moment().format("MMMM") },
     ];
     const [activeSort, setActiveSort] = useState<number>(1);
+    const [logPerDayModel, setLogPerDayModel] = useState<boolean>(false);
+
 
     const [startDate, setStartDate] = useState(
         moment().startOf("month").format("yyyy-MM-DD")
@@ -45,7 +48,7 @@ const LogView = () => {
         const params = {
             start_time: startDate,
             end_time: endDate,
-            user_id: "8a50c345-dc86-4e4e-841b-6e2eca44c2ed",
+            user_id: selectedEmployeeId,
         };
 
         dispatch(getEmployeesCheckInLogs({
@@ -139,17 +142,17 @@ const LogView = () => {
         // setMarkAsPresentModel(!markAsPresentModel);
     }
 
-    function getEmployeeCheckInDetailedLogPerDay(item: any, index: number) {
+    function getEmployeeCheckInDetailedLogPerDay(item: any) {
         // setAccordion(index);
         const params = {
             date: item.date,
-            user_id: "8a50c345-dc86-4e4e-841b-6e2eca44c2ed",
+            user_id: selectedEmployeeId,
         }
         dispatch(
             getCheckInDetailedLogPerDay({
                 params,
                 onSuccess: (response: any) => () => {
-                    console.log('----------------->');
+                    setLogPerDayModel(!logPerDayModel)
                 },
                 onError: (error: string) => () => {
                 },
@@ -165,16 +168,25 @@ const LogView = () => {
                     displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
                     tableOnClick={(e, index, item) => {
                         const selectedEmployee = employeeCheckInLogs[index];
-                        getUserCheckInLogs(selectedEmployee);
+                        getEmployeeCheckInDetailedLogPerDay(selectedEmployee);
                     }}
                 />
             ) : <NoRecordFound />}
         </>
     }, [employeeCheckInLogs])
-    console.log("--------->employeeCheckInLogs", employeeCheckInLogs);
 
+    const normalizedPerDayData = (data: any) => {
+        return data.map((it: any) => {
+            return {
+                Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
+                Type: it.type,
+                address: it.address_text ? it.address_text : "       -",
+            };
+        });
+    };
 
     return (
+        <>
             <TableWrapper
                 buttonChildren={<div className="text-right">
                     <Sort
@@ -189,6 +201,22 @@ const LogView = () => {
                 </div>}>
                 {memoizedTable}
             </TableWrapper>
+            <Modal
+                showModel={logPerDayModel}
+                toggle={() => setLogPerDayModel(!logPerDayModel)}
+            >
+                {employeeCheckInDetailedLogPerDay &&
+                    employeeCheckInDetailedLogPerDay.length > 0 ? (
+                    <Table
+                        displayDataSet={normalizedPerDayData(
+                            employeeCheckInDetailedLogPerDay
+                        )}
+                    />
+                ) : (
+                    <NoRecordFound />
+                )}
+            </Modal>
+        </>
     )
 }
 
