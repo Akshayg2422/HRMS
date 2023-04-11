@@ -459,7 +459,9 @@ function EmployeeScreen() {
                 col={"col-xl-3 col-md-6 col-sm-12"}
                 additionClass={"mt-xl-4"}
               >
-                <ChooseBranchFromHierarchical />
+                <Container additionClass="mt-2">
+                  <ChooseBranchFromHierarchical />
+                </Container>
               </Container>
               <Container
                 col={"col"}

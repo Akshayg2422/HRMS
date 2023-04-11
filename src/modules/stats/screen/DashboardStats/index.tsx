@@ -26,6 +26,7 @@ import {
   getServerDateFromMoment,
   getMomentObjFromServer,
   showToast,
+  Today,
 } from "@utils";
 import { Icons } from "@assets";
 import { getListAllBranchesList } from "../../../../store/location/actions";
@@ -75,17 +76,7 @@ const DashboardStats = () => {
 
 
   useEffect(() => {
-    // const DashboardParams = {}
-    // dispatch(getDashboard({
-    //   DashboardParams,
-    //   onSuccess: (success: any) => () => {
-    //     conditionalRendering(success)
-    //   },
-    //   onError: (error: any) => () => {
-    //   }
-    // }))
-    // if(dashboardDetails)
-    if(dashboardDetails){
+    if (dashboardDetails) {
       conditionalRendering(dashboardDetails)
     }
   }, [dashboardDetails]);
@@ -206,6 +197,7 @@ const DashboardStats = () => {
               placeholder={"Select Date"}
               icon={Icons.Calendar}
               iconPosition={"prepend"}
+              maxDate={Today}
               value={selectedDate}
               onChange={(date: string) => setSelectedDate(date)}
             />

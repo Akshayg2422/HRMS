@@ -118,7 +118,8 @@ export const CHILD_PATH = [
   { path: "/allowance-group-List", parent: '/payroll', name: 'Allowance Groups', showBack: true, showBreadCrums: true },
   { path: "/create-group", parent: '/payroll', name: 'Manage Groups', showBack: true, showBreadCrums: true },
   { path: "/deduction-group-List", parent: '/payroll', name: 'Deduction Groups', showBack: true, showBreadCrums: true },
-]
+  { path: "/add-deduction", parent: '/payroll', name: 'Manage Deduction', showBack: true, showBreadCrums: true },
+]   
 
 export const COMMON_HEADER = [
   { id: '1', name: 'Profile', route: ROUTE.ROUTE_PROFILE },
@@ -264,13 +265,13 @@ export const MY_PORTFOLIO_ITEM = [
 export const HEADER_MENU = [
   { id: '1', name: 'Profile', value: 'PF', icon: 'ni ni-single-02' },
   { id: '2', name: 'My portfolio', value: 'MP', icon: 'ni ni-badge' },
-  { id: '3', name: 'My Active Branch', value: 'MA', icon: 'fa-solid fa-diagram-project' },
+  { id: '3', name: 'My Active Branch', value: 'MA', icon: 'ni ni-building' },
   { id: '4', name: 'Select Language', value: 'CL', icon: 'fa fa-language' },
   { id: '5', name: 'Logout', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 
-
+// ni ni-badge
 
 export const SORT_BUTTON = [
   { id: '1', name: 'Month', value: 'MH' },

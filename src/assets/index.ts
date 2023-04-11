@@ -113,6 +113,7 @@ export const Icons = {
   MenuDots: require('./icons/MenuDots/MenuDots.png'),
   Tick: require('./icons/Tick/tick.png'),
   SearchSecondary: require('./icons/SearchSecondary/SearchSecondary.png'),
+  Add: require('./icons/Add/add.png')
 }
 
 
