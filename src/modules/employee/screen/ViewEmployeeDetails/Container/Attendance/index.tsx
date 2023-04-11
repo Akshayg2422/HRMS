@@ -60,6 +60,7 @@ const AttendanceView = () => {
     return (
         <ScreenContainer>
             <FormWrapper hideFooter isTitle>
+                
                 <ScreenTitle title={'Attendance Details'} />
 
                 <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
