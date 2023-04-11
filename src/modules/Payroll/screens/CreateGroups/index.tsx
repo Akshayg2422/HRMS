@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { log } from 'console';
 import { addAllowanceGroup, addCompanyAllowance, addCompanyDeduction, getAllowanceGroupDetails, getCompanyAllowance } from '../../../../store/Payroll/actions';
+import { logDOM } from '@testing-library/react';
 
 const ALLOWANCE_TYPE = [
     { id: "1", name: "Percentage", value: "Percentage" },
@@ -70,16 +71,8 @@ function CreateGroup() {
                 setGroupName(selectedAllowanceGroupDetails.name)
                 setSelectedAllowanceEditData(success?.details?.allowance_break_down?.allowance_items)
 
-
-
-                success?.details?.allowance_break_down?.allowance_items.map((el: any) => {
-                    const filtered = companyAllowanceList?.data?.filter((item: any) => item.id === el.allowance_id).map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' }))
-                    setSelectedAllowances([...selectedAllowances, ...filtered])
-                    setAllowances([...allowances, ...filtered])
-                })
-
-                // setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
-                // setSelectedAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
+                setAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
+                setSelectedAllowances(success?.details?.allowance_break_down?.allowance_items.map((el: any) => ({ ...el, type: el.is_percent ? '1' : '2' })))
             },
             onError: (error: any) => () => {
 
@@ -87,6 +80,7 @@ function CreateGroup() {
         }));
 
     }
+
 
     const addSelectedAllowance = (item: any) => {
         let updateSelectedAllowance = [...allowances];
@@ -209,17 +203,26 @@ function CreateGroup() {
             showToast('error', "Group name should not be empty")
             return false
         }
-        // else if (selectedAllowances) {
-        //     selectedAllowances.map((item: any) => {
-        //         if ((item.percent == 0 || item.percent == '') || (item.amount == 0 || item.amount == '')) {
-        //             showToast('error', 'Allowance field should not be empty')
-        //             return false
-        //         }
-        //     })
-        // }
+        else if (validateAllowances().status) {
+            showToast('error', validateAllowances().errorMessage)
+            return false
+        }
         else {
             return true
         }
+    }
+
+    const validateAllowances = () => {
+        
+        let status = { status: false, errorMessage: '' }
+        selectedAllowances.map((item: any) => {
+            
+            if ((item.percent == 0 || item.percent == '') || (item.percent == '' && (item.amount == 0 || item.amount == ''))) {
+                status = { status: true, errorMessage: `Allowance field should not be empty` }
+            }
+           
+        })
+        return status
     }
 
     const onAllowanceGroupAdd = () => {
@@ -241,11 +244,10 @@ function CreateGroup() {
                 ...(selectedAllowanceGroupDetails && { id: selectedAllowanceGroupDetails.id })
             }
 
-
             dispatch(addAllowanceGroup({
                 params,
                 onSuccess: (success: any) => () => {
-                    showToast('success', success.message)
+                    showToast('success', success.status)
                     goBack(navigation)
 
                 },

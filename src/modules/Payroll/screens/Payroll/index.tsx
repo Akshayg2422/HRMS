@@ -9,8 +9,10 @@ import {
     TableWrapper,
     CommonDropdownMenu,
     Primary,
+    Search,
+    useKeyPress,
 } from "@components";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Icons } from "@assets";
 import {
     goTo,
@@ -34,6 +36,10 @@ function PayRoll() {
     let dispatch = useDispatch();
     const { t } = useTranslation();
     const navigation = useNav();
+    let enterPress = useKeyPress("Enter");
+
+
+    const [searchEmployee, setSearchEmployee] = useState('')
 
     const { registeredEmployeesList, numOfPages, currentPage, isEditSalary } = useSelector(
         (state: any) => state.EmployeeReducer
@@ -52,11 +58,17 @@ function PayRoll() {
         getEmployeesApi(currentPage);
     }, [hierarchicalBranchIds]);
 
+    useEffect(() => {
+        if (enterPress) {
+            getEmployeesApi(currentPage);
+        }
+    }, [enterPress])
+
     function getEmployeesApi(pageNumber: number) {
         const params: object = {
             ...hierarchicalBranchIds,
             page_number: pageNumber,
-            // ...(searchEmployee && { q: searchEmployee }),
+            ...(searchEmployee && { q: searchEmployee }),
         };
         dispatch(getEmployeesList({
             params,
@@ -174,8 +186,9 @@ function PayRoll() {
                             <InputText
                                 placeholder={t("enterEmployeeName")}
                                 label={t("employeeName")}
+                                value={searchEmployee}
                                 onChange={(e) => {
-                                    // setSearchEmployee(e.target.value);
+                                    setSearchEmployee(e.target.value);
                                 }}
                             />
                         </Container>
@@ -187,7 +200,10 @@ function PayRoll() {
                         <Container
                             additionClass={"col mt-4"}
                         >
-                            <Icon icon={Icons.Search} />
+                            <Search variant="Icon" onClick={() => {
+                                getEmployeesApi(currentPage);
+                            }} />
+
                         </Container>
                     </Container>
                 }

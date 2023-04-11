@@ -1,4 +1,4 @@
-import { CommonTable, Modal, NoRecordFound, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
+import { CommonTable, Container, Modal, NoRecordFound, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
 import { getCheckInDetailedLogPerDay, getEmployeesCheckInLogs } from '../../../../../../store/employee/actions';
 import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showToast } from '@utils';
 import moment from 'moment';
@@ -186,7 +186,7 @@ const LogView = () => {
     };
 
     return (
-        <>
+        <Container additionClass='mx--1'>
             <TableWrapper
                 buttonChildren={<div className="text-right">
                     <Sort
@@ -216,7 +216,7 @@ const LogView = () => {
                     <NoRecordFound />
                 )}
             </Modal>
-        </>
+        </Container>
     )
 }
 
