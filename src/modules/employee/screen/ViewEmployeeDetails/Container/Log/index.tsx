@@ -218,6 +218,8 @@ const LogView = () => {
                 date_from: markAsPresentDetails.date,
                 date_to: markAsPresentDetails.date,
                 reason: markAsPresentDetails.reason,
+                is_approved: true,
+                employee_id: selectedEmployeeId,
             };
             
             dispatch(
