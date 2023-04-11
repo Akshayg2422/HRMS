@@ -119,6 +119,8 @@ export const CHILD_PATH = [
   { path: "/create-group", parent: '/payroll', name: 'Manage Groups', showBack: true, showBreadCrums: true },
   { path: "/deduction-group-List", parent: '/payroll', name: 'Deduction Groups', showBack: true, showBreadCrums: true },
   { path: "/add-deduction", parent: '/payroll', name: 'Manage Deduction', showBack: true, showBreadCrums: true },
+  { path: "/view-employee-salary-definition", parent: '/payroll', name: 'Employee Salary Definition', showBack: true, showBreadCrums: true },
+
 ]   
 
 export const COMMON_HEADER = [
