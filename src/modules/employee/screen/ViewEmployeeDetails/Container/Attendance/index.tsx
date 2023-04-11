@@ -1,9 +1,14 @@
-import { Container, Divider, FormTypography, FormWrapper, ScreenContainer, ScreenTitle } from '@components'
-import { getEmployeeAttendanceInfo, getEmployeeDetails } from '../../../../../../store/employee/actions';
+import { CheckBox, Container, Divider, FormTypography, FormWrapper, ScreenContainer, ScreenTitle } from '@components'
+import {
+    getEmployeeAttendanceInfo, getEmployeeDetails, changeAttendanceSettings,
+    postEnableFieldCheckIn,
+    postEnableOfficeCheckIn,
+} from '../../../../../../store/employee/actions';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '@utils';
+
 
 const AttendanceView = () => {
 
@@ -19,9 +24,11 @@ const AttendanceView = () => {
         attendanceStartTime: "",
         attendanceEndTime: "",
         shift: "",
-
+        faceRegisterEnable: false,
+        canFieldCheckIn: false,
+        canOfficeCheckIn: false
     });
-
+    const [attendanceSettingsId, setAttendanceSettingsId] = useState('')
     useEffect(() => {
         getEmployeeDetailsAPi()
     }, [])
@@ -38,9 +45,21 @@ const AttendanceView = () => {
 
                     let employeeInitData = employeeDetails;
 
-                    employeeInitData.attendanceStartTime = response.basic_attendance?.start_time;
-                    employeeInitData.attendanceEndTime = response.basic_attendance?.end_time;
-                    employeeInitData.shift = response.shift_details?.name;
+                    employeeInitData.attendanceStartTime = response?.basic_attendance?.start_time;
+                    employeeInitData.attendanceEndTime = response?.basic_attendance?.end_time;
+                    employeeInitData.shift = response?.shift_details?.name;
+
+
+                    employeeInitData.canFieldCheckIn =
+                        response?.basic_attendance?.can_field_checkin;
+
+
+                    employeeInitData.canOfficeCheckIn =
+                        response?.basic_attendance?.can_office_checkin;
+
+                    employeeInitData.faceRegisterEnable =
+                        response?.basic_attendance?.face_validation_required;
+                        setAttendanceSettingsId(response?.basic_attendance?.id)
                     setEmployeeDetails(employeeInitData)
                 },
                 onError: (error: string) => () => {
@@ -57,11 +76,92 @@ const AttendanceView = () => {
         return `${hours}:${minutes} ${period}`;
     }
 
+    /**
+   * Enable office checkIn
+   */
+
+    const fieldCheckInHandler = (value: boolean) => {
+        const params = {
+            can_field_checkin: value,
+            id: attendanceSettingsId
+        }
+        dispatch(postEnableFieldCheckIn({
+            params, onSuccess: (success: any) => () => {
+                setEmployeeDetails({ ...employeeDetails, canFieldCheckIn: value })
+                showToast('success', success.message)
+            },
+            onError: (error: string) => () => {
+                showToast('error', error)
+            },
+        }))
+    }
+
+    const officeCheckInHandler = (value: boolean) => {
+        const params = {
+            can_office_checkin: value,
+            id: attendanceSettingsId
+        }
+        dispatch(postEnableOfficeCheckIn({
+            params, onSuccess: (success: any) => () => {
+                setEmployeeDetails({ ...employeeDetails, canOfficeCheckIn: value })
+                showToast('success', success.message)
+
+            },
+            onError: (error: string) => () => {
+                showToast('error', error)
+            },
+        }))
+    }
+
+    const faceValidationHandler = (value: boolean) => {
+        const params = {
+            face_validation_required: value,
+            id: attendanceSettingsId
+        }
+        dispatch(changeAttendanceSettings({
+            params, onSuccess: (success: any) => () => {
+                setEmployeeDetails({ ...employeeDetails, faceRegisterEnable: value })
+                showToast('success', success.message)
+            },
+            onError: (error: string) => () => {
+                showToast('error', error)
+            },
+        }))
+
+    }
+
     return (
         <ScreenContainer>
             <FormWrapper hideFooter isTitle>
-                
+
                 <ScreenTitle title={'Attendance Details'} />
+
+                <Container additionClass="mb-3 mt-4">
+                    <CheckBox
+                        id={'1'}
+                        text={t("enableOfficeCheckIn")}
+                        checked={employeeDetails.canOfficeCheckIn}
+                        onChange={(e) => {
+                            officeCheckInHandler(e.target.checked)
+                        }}
+                    />
+                    <CheckBox
+                        id={'2'}
+                        text={t('enableFieldCheckIn')}
+                        checked={employeeDetails.canFieldCheckIn}
+                        onChange={(e) => {
+                            fieldCheckInHandler(e.target.checked)
+                        }}
+                    />
+                    <CheckBox
+                        id={'3'}
+                        text={t('enableFaceValidation')}
+                        checked={employeeDetails.faceRegisterEnable}
+                        onChange={(e) => {
+                            faceValidationHandler(e.target.checked)
+                        }}
+                    />
+                </Container>
 
                 <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
                     {employeeDetails.shift &&
