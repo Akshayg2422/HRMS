@@ -164,13 +164,13 @@ function PayRoll() {
                                 <Primary
                                 additionClass="mr-1 pr-1"
                                     size={'btn-sm'}
-                                    text={t('AddAllowance')}
+                                    text={'Allowances'}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)}
                                 />
                                 <Primary
                                     additionClass="mt-2 mt-sm-0 mt-lg-0"
                                     size={'btn-sm'}
-                                    text={t('AddDeduction')}
+                                    text={'Deductions'}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
                                 />
                             </Container>
