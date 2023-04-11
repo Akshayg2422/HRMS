@@ -116,8 +116,8 @@ const WeeklyShiftSelection = () => {
               weekDay.api_breakdown = time_breakdown
             } else {
               time_breakdown.forEach((element: any, index: number) => {
-                let start_time = element.start_time
-                let end_time = index === 0 ? time_breakdown[index + 1].start_time : element.end_time
+                let start_time = index === 0 ? element.start_time : element.end_time
+                let end_time = time_breakdown[index + 1]?.start_time
                 if (end_time) {
                   weekDay.api_breakdown = [...weekDay.api_breakdown, {
                     start_time: start_time,
@@ -130,10 +130,7 @@ const WeeklyShiftSelection = () => {
                   }]
                 }
               });
-              weekDay.api_breakdown = [...weekDay.api_breakdown, {
-                start_time: time_breakdown[maxLength - 1].end_time,
-                end_time: time_breakdown[0].end_time
-              }]
+
             }
           }
         });
@@ -212,7 +209,6 @@ const WeeklyShiftSelection = () => {
         let selectedWeekPosition = isActiveWeek - 1
         let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
         const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
-        // const apiBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].api_breakdown
 
         const currentShift = {
           start_time: shiftsTime.inTime,
@@ -292,10 +288,14 @@ const WeeklyShiftSelection = () => {
   const mergeTimeSlots = (timeSlots: any) => {
     let formattedData = []
     if (timeSlots.length > 1) {
-      let lastElement = timeSlots[timeSlots.length - 1];
-      timeSlots[0].end_time = lastElement.end_time
-      timeSlots.splice(-1)
-      formattedData = timeSlots
+      formattedData = timeSlots.map((ele: any, index: number) => {
+        const start_time = index === 0 ? ele?.start_time : timeSlots[index - 1]?.end_time
+        const end_time = index === 0 ? timeSlots[timeSlots.length - 1].end_time : ele.start_time
+        return {
+          start_time,
+          end_time
+        }
+      })
     } else {
       formattedData = timeSlots
     }
@@ -331,7 +331,7 @@ const WeeklyShiftSelection = () => {
           <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
           <Container additionClass='col mt-2 text-right '>
             <Primary
-            size='btn-sm'
+              size='btn-sm'
               text={selectedWeeklyShiftId ? t('update') : t('submit')}
               onClick={() => onSubmit()}
             />
@@ -348,7 +348,7 @@ const WeeklyShiftSelection = () => {
               setShiftName(event.target.value)
             }}
           />
-          
+
         </Container>
 
         <Container>
@@ -401,26 +401,26 @@ const WeeklyShiftSelection = () => {
           </ul>
         </Container>
         <WeekDaysList
-        datesList={weeklyData[isActiveWeek - 1]}
-        onAddClick={(index) => {
-          setOpenModel(!openModel)
-          setSelectedDayIndex(index)
-        }}
+          datesList={weeklyData[isActiveWeek - 1]}
+          onAddClick={(index) => {
+            setOpenModel(!openModel)
+            setSelectedDayIndex(index)
+          }}
 
-        onCheckBoxClick={(index) => {
-          workingDayStatus(index)
-        }}
+          onCheckBoxClick={(index) => {
+            workingDayStatus(index)
+          }}
 
-        onDeleteClick={(el, index) => {
-          onDelete(el, index)
-        }}
+          onDeleteClick={(el, index) => {
+            onDelete(el, index)
+          }}
 
-      // onSubmit={() => { onSubmit() }}
-      />
+        // onSubmit={() => { onSubmit() }}
+        />
 
       </Card>
 
-     
+
 
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={t('selectShiftTiming')}>
         <Container display={'d-flex'} additionClass={'ml-lg-2'}>

@@ -45,11 +45,11 @@ function CommonDropdownMenu({ data, onAddClick, onDeleteClick, onAssignCourse, i
                                         }
                                     }}
                                 >
-                                    {!item.icon
+                                    {item.image
                                         ? <ImageView
                                             height={'18'}
                                             alt='Menu Icon'
-                                            icon={item.icon}
+                                            icon={item.image}
                                         /> : <i className={`${item.icon}`}></i>}
                                     <span className='ml-2'>{item?.name}</span></a>
                             </>

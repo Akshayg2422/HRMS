@@ -128,21 +128,21 @@ const CreateShiftGroup = () => {
 
     const PreFilledDetails = () => {
         if (selectedShiftGroupDetails) {
-            setGroupName(selectedShiftGroupDetails.name)
-            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
+            setGroupName(selectedShiftGroupDetails?.name)
+            setSelectedShift(selectedShiftGroupDetails?.weekly_shift?.id)
             setDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
             setSelectedEmpListDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
             selectedEmployeesDepartmentFilter()
-            getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
+            getShiftEmployeesGroupDetails(selectedShiftGroupDetails?.id)
             // getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
         } else {
             if (designationShiftGroup) {
-                setGroupName(designationShiftGroup.name)
-                setSelectedShift(designationShiftGroup.weekly_shift.id)
+                setGroupName(designationShiftGroup?.name)
+                setSelectedShift(designationShiftGroup?.weekly_shift?.id)
                 setDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 setSelectedEmpListDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 selectedEmployeesDepartmentFilter()
-                getShiftEmployeesGroupDetails(designationShiftGroup.id)
+                getShiftEmployeesGroupDetails(designationShiftGroup?.id)
             }
         }
     }
@@ -199,8 +199,8 @@ const CreateShiftGroup = () => {
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds,
-                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id }),
-                ...(designationShiftGroup && { id: designationShiftGroup.id }),
+                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails?.id }),
+                ...(designationShiftGroup && { id: designationShiftGroup?.id }),
                 designation_id: designationId
             }
             dispatch(postAddShift({
@@ -446,7 +446,9 @@ const CreateShiftGroup = () => {
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </Container>
-                    <h2>{'Assign shift Employees'}</h2>
+                        {isShowManageEmpOnEdit && (
+                            <h2>{'Assign shift Employees'}</h2>
+                        )}
 
                     </Container>}
 

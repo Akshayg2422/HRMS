@@ -133,8 +133,8 @@ function ManageBroadCast() {
                     </div>
                     <div className="col-xl-6">
                         <InputText
-                            label={t("description")}
-                            placeholder={t("description")}
+                            label={'Message'}
+                            placeholder={'Message'}
                             // validator={validateName}
                             value={broadCast.description}
                             name={"description"}

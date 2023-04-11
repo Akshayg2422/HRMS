@@ -21,7 +21,7 @@ import { getDesignationData } from '../../../../store/employee/actions';
 import { t } from 'i18next';
 
 export const DROPDOWN_MENU = [
-    { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
+    { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
 ]
 
 const CARD_DROPDOWN_ITEM = [

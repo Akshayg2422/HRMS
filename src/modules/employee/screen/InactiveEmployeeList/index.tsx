@@ -26,14 +26,10 @@ import {
 } from "@utils";
 import { useDashboard } from "@contexts";
 import {
-  employeeEdit,
   getEmployeesList,
-  getSelectedEmployeeId,
   getUpdateEmployeeStatus,
 } from "../../../../store/employee/actions";
-import { Navbar } from "@modules";
 import { useSelector, useDispatch } from "react-redux";
-import { Employee } from "@api";
 import { useTranslation } from "react-i18next";
 
 function InActiveEmployeeList() {
@@ -184,10 +180,10 @@ function InActiveEmployeeList() {
         <div className={"mx-3 mt--3"}>
           <h2>{t("deletedUserList")}</h2>
           <Container additionClass="row my-3">
-            <Container additionClass={'col-xl-6'}>
+            <Container additionClass={'col-xl-3'}>
               <ChooseBranchFromHierarchical />
             </Container>
-            <Container additionClass={"col-xl-4 row"}>
+            <Container additionClass={"col-xl-3 row"}>
               <InputText
                 value={searchEmployee}
                 col={'col'}
@@ -197,14 +193,18 @@ function InActiveEmployeeList() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { manageInactiveEmployeeList(currentPage) }} />
+            </Container>
+            <Container additionClass="col-xl-1 mt-xl-4 text-center">
+              <Container additionClass="mt-1">
+                <Search variant="Icon" onClick={() => { manageInactiveEmployeeList(currentPage) }} />
+              </Container>
             </Container>
           </Container>
-          </div>
+        </div>
 
-          {
-            memoizedTable
-          }
+        {
+          memoizedTable
+        }
       </TableWrapper>
       <Modal
         title={t("EnableUser")}

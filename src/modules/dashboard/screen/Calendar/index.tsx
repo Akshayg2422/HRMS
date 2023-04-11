@@ -13,6 +13,7 @@ import {
   NoRecordFound,
   CommonDropdownMenu,
 } from "@components";
+import { Icons } from "@assets";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -31,8 +32,8 @@ import {
 import { t } from "i18next";
 
 export const DROPDOWN_MENU = [
-  { id: '1', name: 'Edit', value: 'PF', icon: 'ni ni-single-02' },
-  { id: '2', name: 'Delete', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '1', name: 'Edit', value: 'PF', image:Icons.Pencil },
+  { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
 ]
 
 const CARD_DROPDOWN_ITEM = [
@@ -215,7 +216,7 @@ function Calendar() {
             <div className=" col">
               <h1 className="mb-3">{t('Calendar')}</h1>
             </div>
-            <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4">
+            <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4 ">
               <Primary
                 size="btn-sm"
                 additionClass=''
@@ -232,7 +233,7 @@ function Calendar() {
               />
             </div>
           </Container>
-          <Container additionClass={"row"}>
+          <Container additionClass={"row ml-1"}>
             <Container additionClass="col-xl-3">
               <ChooseBranchFromHierarchical showCheckBox={false} />
             </Container>
