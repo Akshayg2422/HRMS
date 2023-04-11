@@ -23,7 +23,7 @@ function MyActiveBranches({ isReload = false }: LocationProps) {
         (state: any) => state.DashboardReducer
     );
     const { listBranchesList } = useSelector((state: any) => state.LocationReducer);
-    
+
     useEffect(() => {
         if (isReload === true) {
             getAdminBranchesData()
@@ -109,11 +109,7 @@ function MyActiveBranches({ isReload = false }: LocationProps) {
     const branchAdmins = (pageNumber: number) => {
         const params = {
             page_number: pageNumber,
-<<<<<<< HEAD
             child_ids: hierarchicalBranchIds?.child_ids ? hierarchicalBranchIds?.child_ids : []
-=======
-            child_ids: hierarchicalBranchIds.child_ids ? hierarchicalBranchIds.child_ids : []
->>>>>>> 8fb942522cfd67a7eba5dd6b5e4ce76b51548b8d
         }
         dispatch(getBranchAdmins({
             params,

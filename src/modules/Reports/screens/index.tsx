@@ -252,7 +252,7 @@ function Reports() {
     }
   };
 
-console.log("reportsType",reportsType);
+  console.log("reportsType", reportsType);
 
 
   return (
@@ -269,11 +269,7 @@ console.log("reportsType",reportsType);
               setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
               dispatch(resetMisReportData([]))
             }} />
-<<<<<<< HEAD
           {(reportsType === "log") || (reportsType === 'shift') ? <div className="col-lg-3 col-md-12">
-=======
-          {reportsType === "log" || reportsType === 'shift' ? <div className="col-lg-3 col-md-12">
->>>>>>> 8fb942522cfd67a7eba5dd6b5e4ce76b51548b8d
             <DropDown
               label={t('attendanceType')}
               placeholder={"Select Attendance"}
@@ -285,14 +281,8 @@ console.log("reportsType",reportsType);
                 }
               }}
             />
-<<<<<<< HEAD
-          </div>:<></>}
-          <Container additionClass={'col-lg-3 mt-4'}>
-=======
           </div> : <></>}
-          <Container additionClass={'col-lg-6 mt-4'}>
-            {/* <MultiselectHierarchical /> */}
->>>>>>> 8fb942522cfd67a7eba5dd6b5e4ce76b51548b8d
+          <Container additionClass={'col-lg-3 mt-4'}>
             <ChooseBranchFromHierarchical />
           </Container>
           {reportsType !== 'shift' && <DropDown
@@ -366,7 +356,7 @@ console.log("reportsType",reportsType);
               onChange={(date: string) =>
                 dateTimePickerHandler(date, "dateFrom")
               }
-              value={customRange.dateFrom}  
+              value={customRange.dateFrom}
             />
           </Container>
           <Container additionClass={'col-lg-3'}>
