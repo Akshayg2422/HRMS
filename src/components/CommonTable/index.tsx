@@ -82,8 +82,6 @@ const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet,
 
       const children = [];
       if (currentPage && noOfPage) {
-
-
         let current_page = currentPage;
         let total_pages = noOfPage;
 
@@ -120,7 +118,7 @@ const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet,
       }
 
       return (
-        <div className={"card-footer"}>
+        <div className={"card-footer"} style={{ cursor: 'pointer' }}>
           <ul className="pagination col justify-content-end mb-0">
             <li className={`${currentPage === 1 ? 'disabled' : ''} page-item `} onClick={currentPage === 1 ? undefined : previousClick}>
               <a className="page-link">
