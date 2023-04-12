@@ -576,7 +576,7 @@ const ManageEmployee = () => {
 
         <ScreenTitle title={'Basic Information'} additionclass={'mb-4'} />
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
+        <Container additionClass={'row col-xl-12  col-sm-3'}>
           <div className="col-xl-6">
             <InputText
               label={t("fullName")}

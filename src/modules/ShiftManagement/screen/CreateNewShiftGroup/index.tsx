@@ -401,7 +401,7 @@ const CreateShiftGroup = () => {
                         margin={'mt-4'}
                     >
 
-                        <Container col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12`}>
+                        <Container col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 `}>
                             <InputText
                                 placeholder={t('enterTheGroupName')}
                                 label={t('groupName')}
@@ -412,8 +412,8 @@ const CreateShiftGroup = () => {
                             />
                         </Container>
                         <Container
-                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12`}
-                            additionClass={"xl-4"}
+                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 ml--2`}
+                            additionClass={"xl-4 mt--2"}
                         >
                             <DropDown
                                 label={t('selectWeeklyShift')}
@@ -427,8 +427,8 @@ const CreateShiftGroup = () => {
 
                         </Container>
                         <Container
-                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12`}
-                            additionClass={"xl-4"}
+                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 ml--2`}
+                            additionClass={"xl-4 mt--2"}
                         >
                             <DropDown
                                 label={t('designation')}
@@ -442,10 +442,12 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
-                        <Container additionClass={'float-right mb-3'}>
-                            <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
-                            ></Primary>
-                        </Container>
+                       
+                            <Container additionClass={' mx-3 '} style={{marginTop:"33px"}}>
+                                <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
+                                ></Primary>
+                            </Container>
+                      
                         {isShowManageEmpOnEdit && (
                             <h2>{'Assign shift Employees'}</h2>
                         )}
@@ -462,9 +464,9 @@ const CreateShiftGroup = () => {
 
                 {!selectedShiftGroupDetails || isShowManageEmpOnEdit ? (
                     <div className={'col-xl col-sm-3 mx-3  mt-4'}>
-                        <h3 className='mx-3'>{t('allEmployees')}</h3>
+                        <h3 className='mx-3 m-0'>{t('allEmployees')}</h3>
                         <Container additionClass={'row mx-0'}>
-                            <Container col={"col col-md-6 col-sm-12 mt-xl-4"} >
+                            <Container col={"col col-md-6 col-sm-12 mt-xl-4 m-0"} >
                                 <InputText
                                     placeholder={t('enterEmployeeName')}
                                     onChange={(e) => {
@@ -474,7 +476,7 @@ const CreateShiftGroup = () => {
                             </Container>
                             <Container
                                 col={"col-md-6 col-sm-12"}
-                                additionClass={"xl-4"}
+                                additionClass={"xl-4 mt--2"}
                             >
                                 <DropDown
                                     label={t('department')}
@@ -514,7 +516,7 @@ const CreateShiftGroup = () => {
                 {!selectedShiftGroupDetails || isShowManageEmpOnEdit ? (
 
                     <div className='col-xl col-sm-3 col-0 mt-4 mx-2 '>
-                        <h3>{t('selectedEmployeesList')}</h3>
+                        <h3 className='m-0'>{t('selectedEmployeesList')}</h3>
                         <Container additionClass={'row'}>
                             <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
                                 <InputText
@@ -527,6 +529,7 @@ const CreateShiftGroup = () => {
                             </Container>
                             <Container
                                 col={"col-md-6 col-sm-12"}
+                                additionClass={"mt--2"}
                             >
                                 <DropDown
                                     label={t('department')}
