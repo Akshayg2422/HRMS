@@ -1,7 +1,7 @@
 import { Line, Bar, Doughnut, Pie } from "react-chartjs-2";
 import { Chart, ArcElement, CategoryScale, registerables } from 'chart.js'
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { DashboardStats } from "@modules";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -15,7 +15,7 @@ var colors = {
   theme: {
     present: '#05dd7f',
     alert: '#ff481f',
-    yetToStart: '#808080',
+    yetToStart: '#b3b3b3',
     exempted: '#ce338b',
     absent: '#ff0f3f',
     leave: '#2445ff'
@@ -74,6 +74,7 @@ function Dashboard() {
   const { employeeattendancedatalog } = useSelector(
     (state: any) => state.EmployeeReducer
   );
+  const [barChart, setBarChart] = useState<any>()
 
   var mode = "light";
   var fonts = {
@@ -218,23 +219,61 @@ function Dashboard() {
   const chartRef = useRef<any>(null);
 
   useEffect(() => {
-
+    barChartData()
   }, []);
 
-  const chartExample6 = {
+  const barChartData = () => {
+    const barChartDataSet: any = { labels: [], dataset: [] }
+    employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.filter((el: any) => {
+      if (el.title !== "Total") {
+        barChartDataSet.labels.push(el?.title)
+        barChartDataSet.dataset.push(el?.count)
+      }
+    })
+    setBarChart(barChartDataSet)
+  }
+
+  function getTextColor(statusType: any) {
+    let color = ''
+    switch (statusType) {
+      case "Present":
+        color = colors.theme["present"]
+        break;
+      case "Alert":
+        color = colors.theme["alert"]
+        break;
+      case "Exempted":
+        color = colors.theme["exempted"]
+        break;
+      case "Yet To Start":
+        color = colors.theme["yetToStart"]
+        break;
+      case "Absent":
+        color = colors.theme["absent"]
+        break;
+      case "Leave":
+        color = colors.theme["leave"]
+        break;
+      default:
+        color = '#000000'
+    }
+    return color
+  }
+  const DynamicColor = (name: any) => {
+    let color: any = []
+    name.map((el: any) => {
+      color = [...color, getTextColor(el)]
+    })
+    return color
+  }
+
+  const chartExample6: any = {
     data: {
-      labels: ["Absent", "Alert", "Present", "Leave", "Yet To Start", 'Exempted'],
+      labels: barChart?.labels,
       datasets: [
         {
-          data: [100, 10, 50, 40, 60],
-          backgroundColor: [
-            colors.theme["absent"],
-            colors.theme["alert"],
-            colors.theme["present"],
-            colors.theme["leave"],
-            colors.theme["yetToStart"],
-            colors.theme["exempted"],
-          ],
+          data: barChart?.dataset,
+          backgroundColor: DynamicColor(barChart?.labels),
           label: "Dataset 1"
         }
       ]
@@ -242,7 +281,7 @@ function Dashboard() {
     options: {
       responsive: true,
       legend: {
-        position: "top"
+        display: false, // remove the legend
       },
       animation: {
         animateScale: true,
@@ -252,45 +291,45 @@ function Dashboard() {
   };
 
 
+
   return (
     <>
       <ScreenContainer>
-
+        <Row>
+          <Col xl="6">
+            <Card>
+              <CardHeader>
+                <h6 className="surtitle">Partners</h6>
+                <h5 className="h3 mb-0">Affiliate traffic</h5>
+              </CardHeader>
+              <CardBody>
+                <Pie
+                  style={{ padding: '50px' }}
+                  data={chartExample6.data}
+                  options={chartExample6.options}
+                />
+              </CardBody>
+            </Card>
+          </Col>
+          <Col xl="6">
+            <Card>
+              <CardHeader>
+                <h6 className="surtitle">Overview</h6>
+                <h5 className="h3 mb-0">Product comparison</h5>
+              </CardHeader>
+              <CardBody className="text-center">
+                <Bar
+                  data={data}
+                  options={options}
+                  className="chart-canvas"
+                  id="chart-bar-stacked"
+                />
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
       </ScreenContainer>
-      <Row>
-        <Col xl="6">
-          <Card>
-            <CardHeader>
-              <h6 className="surtitle">Partners</h6>
-              <h5 className="h3 mb-0">Affiliate traffic</h5>
-            </CardHeader>
-            <CardBody className="p-4">
-              <Pie
-                data={chartExample6.data}
-                options={chartExample6.options}
-                className="chart-canvas"
-                id="chart-pie"
-              />
-            </CardBody>
-          </Card>
-        </Col>
-        <Col xl="6">
-          <Card>
-            <CardHeader>
-              <h6 className="surtitle">Overview</h6>
-              <h5 className="h3 mb-0">Product comparison</h5>
-            </CardHeader>
-            <CardBody>
-              <Bar
-                data={data}
-                options={options}
-                className="chart-canvas"
-                id="chart-bar-stacked"
-              />
-            </CardBody>
-          </Card>
-        </Col>
-      </Row>
+
     </>
   );
 }
