@@ -317,7 +317,7 @@ function EmployeeLog() {
     <>
       <TableWrapper
         buttonChildren={
-          <div className="mr--4">
+          <div className="mr--1">
             <Sort
               size={'btn-sm'}
               sortData={employeeLogSort}
