@@ -426,7 +426,7 @@ function EmployeeScreen() {
       <TableWrapper
         title={t('allRegisteredEmployee')}
         buttonChildren={
-          <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
+          <Container additionClass={"row d-flex justify-content-end mr-xl--5"}>
             <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => {
               manageEmployeeHandler('')
             }} />

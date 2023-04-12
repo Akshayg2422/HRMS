@@ -227,10 +227,10 @@ const Header = () => {
                         icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
                       />
                     </span>
-                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'></div>
+                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'> </div>
                   </div>
                 </a>
-                <div className='dropdown-menu dropdown-menu-right'>
+               <div className='dropdown-menu dropdown-menu-right'>
                   {HEADER_MENU.map((item) => {
                     return (
                       <a
