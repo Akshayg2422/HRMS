@@ -54,7 +54,7 @@ const Header = () => {
 
   const dynamicHeaderTitle = () => {
     NAV_ITEM.filter((el: any) => {
-      if (pathname === el.route) {
+      if (pathname === el.path) {
         setHeaderTitle(el.name)
         setShowArrow(false)
         setIsParent(false)
@@ -68,7 +68,7 @@ const Header = () => {
     CHILD_PATH.filter((el: any) => {
       if (pathname === el.path) {
         NAV_ITEM.filter((element: any) => {
-          if (el.parent === element.route) {
+          if (el.parent === element.path) {
             setHeaderTitle(element.name)
             setShowArrow(el.showBack)
             setIsParent(el.showBreadCrums)
@@ -227,10 +227,10 @@ const Header = () => {
                         icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
                       />
                     </span>
-                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'></div>
+                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'> </div>
                   </div>
                 </a>
-                <div className='dropdown-menu dropdown-menu-right'>
+               <div className='dropdown-menu dropdown-menu-right'>
                   {HEADER_MENU.map((item) => {
                     return (
                       <a

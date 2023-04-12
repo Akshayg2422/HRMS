@@ -8,7 +8,6 @@ function TableWrapper({ title, children, buttonChildren, filterChildren }: Table
             <div className={'card shadow'}>
                 <div className="card-header border-0">
                     <div className="row align-items-center">
-                        <div className="row" >
                             {title && <div className='col'>
                                 <h3 className="mb-0" >{title}</h3>
                             </div>
@@ -18,7 +17,6 @@ function TableWrapper({ title, children, buttonChildren, filterChildren }: Table
                                     buttonChildren
                                 }
                             </div>
-                        </div>
                     </div>
                     <div>
                         {

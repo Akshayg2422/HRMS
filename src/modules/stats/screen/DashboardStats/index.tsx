@@ -186,8 +186,8 @@ const DashboardStats = () => {
 
   return (
     <>
-      <Card additionClass="mx-2">
-        <Container additionClass="row ">
+      <Card additionClass="mx-3">
+        <Container additionClass="row">
           <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
           </Container>
@@ -204,16 +204,13 @@ const DashboardStats = () => {
           </Container>
         </Container>
       </Card>
-      <Container
-        additionClass={"row"}
-        justifyContent={"justify-content-around"}
-      >
-        <div className="row align-items-center mb-4">
+      <Container>
+        <div className="row align-items-center mb-4 m-0 ">
           <div className="col">
             <h3 className="mb-0">{t("dashboardDetails")}</h3>
           </div>
         </div>
-        <Container additionClass={"row"}>
+        <Container additionClass={"row m-0"}>
           {employeeattendancedatalog && employeeattendancedatalog?.cards?.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
             return (
               <Container additionClass={"col-xl-4 col-md-6"}>
@@ -242,7 +239,7 @@ const DashboardStats = () => {
             );
           }) : <NoRecordFound />}
         </Container>
-        <div className="mx-5">
+        <div className="mx-3">
           <Container additionClass="">
             {employeeattendancedatalog &&
               employeeattendancedatalog.departments_types && (
