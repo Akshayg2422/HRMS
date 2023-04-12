@@ -80,7 +80,7 @@ $colors: map-merge((
 ), $colors);
 
 $default:       #172b4d !default;
-$primary:       #5e72e4 !default;
+$primary:       #52307c !default;
 $secondary:     #f7fafc !default;
 $success:       $green !default;
 $info:          $teal !default;
@@ -351,11 +351,11 @@ $transition-ease-in-out:        all $transition-base-time ease-in-out !default;
 
 // Font icons
 
-$icon-font-family:           NucleoIcons, sans-serif !default;
+$icon-font-family:           'Montserrat', sans-serif !default;
 
 // Fonts
 
-$font-family-sans-serif: Open Sans, sans-serif !default;
+$font-family-sans-serif:'Montserrat', sans-serif !default;
 $font-family-base: $font-family-sans-serif !default;
 
 $font-size-base:              1rem !default; // Assumes the browser default, typically `16px`

@@ -234,10 +234,13 @@
 
                     .navbar-nav .nav-link {
                         padding: $navbar-vertical-nav-link-padding-y $navbar-vertical-nav-link-padding-x;
+                        color: white;
+
                     }
 
                     .navbar-nav > .nav-item {
                         margin-top: 2px;
+
 
                         > .nav-link {
                             &.active {
@@ -247,6 +250,7 @@
                                 padding-left: 1rem;
                                 padding-right: 1rem;
                                 border-radius: $border-radius;
+                                color: #52307c;
                             }
                         }
                     }
@@ -398,6 +402,7 @@
         .nav-link-text{
           transition: 0.3s ease;
           opacity: 1;
+
         }
 
         .nav-item .sidenav-mini-icon{
@@ -503,7 +508,7 @@
 
 .sidenav-toggler-line {
     height: 2px;
-    background-color: theme-color("default");
+    background-color: white;
     display: block;
     position: relative;
 

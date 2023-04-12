@@ -206,10 +206,20 @@ import {
 } from "reactstrap";
 
 import { SidebarProps } from './interface';
+import { Icons } from "@assets";
 
-function Navbar({  routes = NAV_ITEM, logo, rtlActive = false }: SidebarProps) {
+function Navbar({
+  routes = NAV_ITEM,
+  logo = {
+    innerLink: '/',
+    imgSrc: Icons.LogoSmall,
+    imgAlt: '...',
+    text: '',
+  },
+  rtlActive = false
+ }: SidebarProps) {
 
-  console.log("o=============>",NAV_ITEM)
+  console.log("o=============>", NAV_ITEM)
   const [sideNavOpen, setSideNavOpen] = React.useState(true);
   const [state, setState] = React.useState<any>({});
   const location = useLocation();
@@ -393,8 +403,8 @@ function Navbar({  routes = NAV_ITEM, logo, rtlActive = false }: SidebarProps) {
             })}
             onClick={toggleSideNav}
           >
-            <div className="sidenav-toggler-inner">
-              <i className="sidenav-toggler-line" />
+            <div className="sidenav-toggler-inner ">
+              <i className="sidenav-toggler-line text-white" />
               <i className="sidenav-toggler-line" />
               <i className="sidenav-toggler-line" />
             </div>

@@ -13,4 +13,5 @@ export interface LogoItem {
     imgSrc?: string;
     imgAlt?: string;
     outterLink?: string;
+    text?:any
 }
