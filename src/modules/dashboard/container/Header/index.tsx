@@ -54,7 +54,7 @@ const Header = () => {
 
   const dynamicHeaderTitle = () => {
     NAV_ITEM.filter((el: any) => {
-      if (pathname === el.route) {
+      if (pathname === el.path) {
         setHeaderTitle(el.name)
         setShowArrow(false)
         setIsParent(false)
@@ -68,7 +68,7 @@ const Header = () => {
     CHILD_PATH.filter((el: any) => {
       if (pathname === el.path) {
         NAV_ITEM.filter((element: any) => {
-          if (el.parent === element.route) {
+          if (el.parent === element.path) {
             setHeaderTitle(element.name)
             setShowArrow(el.showBack)
             setIsParent(el.showBreadCrums)
