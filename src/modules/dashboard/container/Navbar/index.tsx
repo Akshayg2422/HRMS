@@ -207,6 +207,7 @@ import {
 
 import { SidebarProps } from './interface';
 import { Icons } from "@assets";
+import { useDispatch, useSelector } from "react-redux";
 
 function Navbar({
   routes = NAV_ITEM,
@@ -217,12 +218,18 @@ function Navbar({
     text: '',
   },
   rtlActive = false
- }: SidebarProps) {
+}: SidebarProps) {
 
   console.log("o=============>", NAV_ITEM)
   const [sideNavOpen, setSideNavOpen] = React.useState(true);
   const [state, setState] = React.useState<any>({});
   const location = useLocation();
+  const navigate = useNav();
+  const dispatch = useDispatch();
+
+  const { userDetails } = useSelector(
+        (state: any) => state.AuthReducer
+      );
 
   React.useEffect(() => {
     setState(getCollapseStates(routes));
