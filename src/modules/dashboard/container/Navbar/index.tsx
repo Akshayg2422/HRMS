@@ -330,52 +330,56 @@ function Navbar({
               href="#pablo"
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
-              className={classnames({
-                active: getCollapseInitialState(prop.views),
-              })}
+              // className={classnames({
+              //   // active: getCollapseInitialState(prop.views),
+              // })}
+              className="ml-2"
               onClick={(e) => {
                 e.preventDefault();
                 setState(st);
-                dispatch(currentNavIndex(prop));
+                dispatch(currentNavIndex(prop.name));
+                console.log("",)
               }}
             >
               {prop.icon ? (
                 <>
-                  <i className={prop.icon} />
-                  <span className="nav-link-text text-white">{prop.name}</span>
+                  <i className={`${prop.icon}  ${prop.name === navIndex ? "" : ''}`} />
+                  <span className={`  ${prop.name === navIndex ? "" : ''}`}>{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
-                  <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                  <span className="sidenav-normal"> {prop.name} </span>
+                  <span className={`sidenav-mini-icon ${prop.name === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.miniName} </span>
+                  <span className={`sidenav-normal ${prop.name === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.name} </span>
                 </>
               ) : null}
             </NavLink>
             <Collapse isOpen={state[prop.state]}>
               <Nav className="nav-sm flex-column">
                 {createLinks(prop.views)}
+
               </Nav>
             </Collapse>
           </NavItem>
         );
       }
       return (
-        <NavItem className={`${prop.name === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
+        <NavItem className={` ${prop.name === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
           <NavLink
             to={prop.layout + prop.path}
             className=""
             onClick={
               () => {
                 closeSideNav()
-                dispatch(currentNavIndex(prop))
+                dispatch(currentNavIndex(prop.name))
+                console.log("=================>", prop.name)
               }
             }
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
               <>
-                <i className={prop.icon} />
-                <span className="nav-link-text">{prop.name}</span>
+                <i className={`${prop.icon}  ${prop.name === navIndex ? "text-primary" : 'text-white'}`} />
+                <span className={`  ${prop.name === navIndex ? "sass-active-text" : 'sass-link-text'}`}>{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (
               <>
@@ -433,7 +437,10 @@ function Navbar({
       </div>
       <div className="navbar-inner">
         <Collapse navbar isOpen={true}>
-          <Nav navbar>{createLinks(routes)}</Nav>
+          <Nav navbar>
+            {createLinks(routes)}
+            <small className={"text-white text-version "}>Version: 1.30</small>
+          </Nav>
         </Collapse>
       </div>
     </div>
