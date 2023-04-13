@@ -208,6 +208,7 @@ import {
 import { SidebarProps } from './interface';
 import { Icons } from "@assets";
 import { useDispatch, useSelector } from "react-redux";
+import { currentNavIndex } from "../../../../store/app/actions";
 
 function Navbar({
   routes = NAV_ITEM,
@@ -228,8 +229,14 @@ function Navbar({
   const dispatch = useDispatch();
 
   const { userDetails } = useSelector(
-        (state: any) => state.AuthReducer
-      );
+    (state: any) => state.AuthReducer
+  );
+
+  const { navIndex } = useSelector(
+    (state: any) => state.AppReducer
+  );
+
+  console.log("navIndex", navIndex)
 
   React.useEffect(() => {
     setState(getCollapseStates(routes));
@@ -329,6 +336,7 @@ function Navbar({
               onClick={(e) => {
                 e.preventDefault();
                 setState(st);
+                dispatch(currentNavIndex(prop));
               }}
             >
               {prop.icon ? (
@@ -352,11 +360,16 @@ function Navbar({
         );
       }
       return (
-        <NavItem className={activeRoute(prop.layout + prop.path)} key={key}>
+        <NavItem className={`${prop.name === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
           <NavLink
             to={prop.layout + prop.path}
             className=""
-            onClick={closeSideNav}
+            onClick={
+              () => {
+                closeSideNav()
+                dispatch(currentNavIndex(prop))
+              }
+            }
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
@@ -373,7 +386,7 @@ function Navbar({
               prop.name
             )}
           </NavLink>
-        </NavItem>
+        </NavItem >
       );
     });
   };
@@ -411,7 +424,7 @@ function Navbar({
             onClick={toggleSideNav}
           >
             <div className="sidenav-toggler-inner ">
-              <i className="sidenav-toggler-line text-white" />
+              <i className="sidenav-toggler-line " />
               <i className="sidenav-toggler-line" />
               <i className="sidenav-toggler-line" />
             </div>
@@ -429,8 +442,8 @@ function Navbar({
   return (
     <SideNav
       className={
-        "sidenav navbar-vertical navbar-expand-xs navbar-light bg-primary " +
-        (rtlActive ? "" : "fixed-left overflow-hidden")
+        "sidenav navbar-vertical navbar-expand-xs navbar-light bg-primary overflow-auto scroll-hidden " +
+        (rtlActive ? "" : "fixed-left overflow-auto scroll-hidden")
       }
       onMouseEnter={onMouseEnterSideNav}
       onMouseLeave={onMouseLeaveSideNav}

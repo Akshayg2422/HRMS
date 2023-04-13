@@ -6,8 +6,9 @@ import {
   LineCharts,
   Primary,
   CommonDropdownMenu,
+  Card,
 } from "@components";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import { fetchDashboardDetails, Navbar, Header, DashBoardCard, DashboardStats } from "@modules";
 import { useDashboard } from "@contexts";
@@ -23,12 +24,14 @@ import {
 
 import { LocationProps } from '../../../../components/Interface';
 import { isWebPushRegister, postAppConfig } from "../../../../store/auth/actions";
+import { CardHeader, CardBody } from "reactstrap";
+import { Bar } from "recharts";
 
 
 function Dashboard() {
   const dispatch = useDispatch()
 
-
+const [chartExample7 , setChartExample7] = useState<any>()
   const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );
@@ -69,6 +72,22 @@ function Dashboard() {
     <>
       <div className='my-5'>
         <DashboardStats />
+        {/* <Card>
+              <CardHeader>
+                <h6 className="surtitle">Overview</h6>
+                <h5 className="h3 mb-0">Product comparison</h5>
+              </CardHeader>
+              <CardBody>
+                <div className="chart">
+                  <Bar
+                    data={chartExample7.data}
+                    options={chartExample7.options}
+                    className="chart-canvas"
+                    id="chart-bar-stacked"
+                  />
+                </div>
+              </CardBody>
+            </Card> */}
       </div>
     </>
   );

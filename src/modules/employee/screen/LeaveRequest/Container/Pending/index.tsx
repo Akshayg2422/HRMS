@@ -146,7 +146,7 @@ const Pending = () => {
 
   return (
     <div>
-      <div className="row">
+      <div className="">
         <>
           {
             memoizedTable

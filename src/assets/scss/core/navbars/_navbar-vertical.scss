@@ -131,7 +131,7 @@
         // Expanded
         &[aria-expanded="true"] {
             &:after {
-                color: theme-color("primary");
+                color:white;
                 transform: rotate(90deg);
             }
         }
