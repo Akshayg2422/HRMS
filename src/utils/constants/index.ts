@@ -293,7 +293,7 @@ export const NAV_ITEM = [
         {
           id:4,
           path: ROUTE.ROUTE_SHIFT_REQUEST,
-          name: "Employees shifts",
+          name: "Shift Request",
           miniName: "AC",
           layout: "",
           icon:'ni ni-bell-55 ml-sm-4'
@@ -302,7 +302,7 @@ export const NAV_ITEM = [
         {
           id:5,
           path: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
-          name: "Employees shifts",
+          name: "Face Re-register",
           miniName: "AC",
           layout: "",
           icon:'ni ni-bell-55 ml-sm-4'
@@ -311,7 +311,7 @@ export const NAV_ITEM = [
         {
           id:6,
           path:  ROUTE.ROUTE_LOG_APPROVAL,
-          name: "Employees shifts",
+          name: "Log Approval",
           miniName: "AC",
           layout: "",
           icon:'ni ni-bell-55 ml-sm-4'
@@ -319,8 +319,8 @@ export const NAV_ITEM = [
         },
         {
           id:7,
-          path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
-          name: "Employees shifts",
+          path:  ROUTE.ROUTE_FACE_RE_REQUEST,
+          name: "Face Approval",
           miniName: "AC",
           layout: "",
           icon:'ni ni-bell-55 ml-sm-4'
