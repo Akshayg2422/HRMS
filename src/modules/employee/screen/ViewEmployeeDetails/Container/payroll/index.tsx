@@ -83,7 +83,7 @@ function PayrollView() {
                     {employeeSalaryDefinition?.allowance_break_down?.allowances && employeeSalaryDefinition?.allowance_break_down?.allowances?.length > 0 &&
                         <Container additionClass=''>
                             <h5 className={'text-muted ml-3 mt-2'}>{'Allowances'}</h5>
-                            <Container additionClass=''>
+                            <Container additionClass='mx--4'>
                                 <CommonTable
                                     card={false}
                                     displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.allowance_break_down?.allowances)}
@@ -96,7 +96,7 @@ function PayrollView() {
                     {employeeSalaryDefinition?.deductions_group && employeeSalaryDefinition.deductions_group.length > 0 &&
                         <Container additionClass=''>
                             <h5 className={'text-muted ml-3 mt-4'}>{'Deductions'}</h5>
-                            <Container additionClass=''>
+                            <Container additionClass='mx--4'>
                                 <CommonTable
                                     card={false}
                                     displayDataSet={normalizedAllowanceList(employeeSalaryDefinition.deductions_group)}
