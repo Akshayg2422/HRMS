@@ -121,7 +121,7 @@ function AllowanceGroupList() {
                 buttonChildren={
                     <Primary
                         text={t("add")}
-                        additionClass={'col-sm-0 mr--4'}
+                        additionClass={'col-sm-0 mr--1'}
                         onClick={() => {
                             dispatch(CreateGroup('Allowance'))
                             manageRouteHandler(undefined)

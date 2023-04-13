@@ -370,10 +370,10 @@ function Reports() {
               value={customRange.dataTo}
             />
           </Container>
-          <Container additionClass={'row ml-1'}>
-            <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-1 p-auto'} onClick={() => getReports(currentPage)} />
-          </Container>
+        </Container>
+        <Container additionClass={'row m-0'}>
+          <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
+          <Primary text={'Search'} col={'col-xl-1 p-auto'} size={'btn-sm'} onClick={() => getReports(currentPage)} />
         </Container>
       </div>
       {reportsType === "leave" &&

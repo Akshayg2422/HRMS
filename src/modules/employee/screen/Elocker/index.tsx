@@ -227,7 +227,7 @@ function ELocker() {
                             />
 
                         </Container>
-                        <Icon type={"btn-primary"} additionClass={'mt--3'} icon={Icons.Search}
+                        <Icon type={"btn-primary"} additionClass={'mt--3'}  icon={Icons.Search}
                             onClick={() => {
                                 SelectedBranchFilter()
                             }}
