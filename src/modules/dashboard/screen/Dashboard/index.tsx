@@ -1,17 +1,27 @@
 import { Line, Bar, Doughnut, Pie } from "react-chartjs-2";
-import { Chart, ArcElement, CategoryScale, registerables } from 'chart.js'
+// import { Chart, ArcElement, CategoryScale, registerables, plugins } from 'chart.js'
 
 import React, { useEffect, useRef, useState } from "react";
 import { DashboardStats } from "@modules";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { isWebPushRegister, postAppConfig } from "../../../../store/auth/actions";
-import finalPropsSelectorFactory from "react-redux/es/connect/selectorFactory";
 import { Card, Container, ScreenContainer } from "@components";
 import { Row, Col, CardHeader, CardBody } from "reactstrap";
+import Charts from '../../container/Charts'
 
 var colors = {
-
+  gray: {
+    100: "#f6f9fc",
+    200: "#e9ecef",
+    300: "#dee2e6",
+    400: "#ced4da",
+    500: "#adb5bd",
+    600: "#8898aa",
+    700: "#525f7f",
+    800: "#32325d",
+    900: "#212529"
+  },
   theme: {
     present: '#05dd7f',
     alert: '#ff481f',
@@ -20,6 +30,9 @@ var colors = {
     absent: '#ff0f3f',
     leave: '#2445ff'
   },
+  black: "#12263F",
+  white: "#FFFFFF",
+  transparent: "transparent"
 };
 
 const data = {
@@ -71,6 +84,7 @@ const options: any = {
 }
 
 function Dashboard() {
+
   const { employeeattendancedatalog } = useSelector(
     (state: any) => state.EmployeeReducer
   );
@@ -81,8 +95,8 @@ function Dashboard() {
     base: "Open Sans"
   };
 
-  Chart.register(ArcElement);
-  Chart.register(...registerables);
+  // Chart.register(ArcElement);
+  // Chart.register(...registerables);
   const dispatch = useDispatch()
 
 
@@ -99,7 +113,6 @@ function Dashboard() {
       }
     }
   }
-
 
   // function chartOptions() {
   //   // Options
@@ -127,7 +140,7 @@ function Dashboard() {
   //           line: {
   //             tension: 0.4,
   //             borderWidth: 4,
-  //             borderColor: colors.theme["primary"],
+  //             borderColor: colors.theme["leave"],
   //             backgroundColor: colors.transparent,
   //             borderCapStyle: "rounded"
   //           },
@@ -158,7 +171,7 @@ function Dashboard() {
   //     ticks: {
   //       beginAtZero: true,
   //       padding: 10,
-  //       callback: function (value) {
+  //       callback: function (value: number) {
   //         if (!(value % 10)) {
   //           return value;
   //         }
@@ -233,7 +246,7 @@ function Dashboard() {
     setBarChart(barChartDataSet)
   }
 
-  function getTextColor(statusType: any) {
+  function getChartColor(statusType: any) {
     let color = ''
     switch (statusType) {
       case "Present":
@@ -261,8 +274,8 @@ function Dashboard() {
   }
   const DynamicColor = (name: any) => {
     let color: any = []
-    name.map((el: any) => {
-      color = [...color, getTextColor(el)]
+    name && name.length > 0 && name.map((el: any) => {
+      color = [...color, getChartColor(el)]
     })
     return color
   }
@@ -274,19 +287,9 @@ function Dashboard() {
         {
           data: barChart?.dataset,
           backgroundColor: DynamicColor(barChart?.labels),
-          label: "Dataset 1"
+          label: "Count"
         }
       ]
-    },
-    options: {
-      responsive: true,
-      legend: {
-        display: false, // remove the legend
-      },
-      animation: {
-        animateScale: true,
-        animateRotate: true
-      }
     }
   };
 
@@ -295,39 +298,7 @@ function Dashboard() {
   return (
     <>
       <ScreenContainer>
-        <Row>
-          <Col xl="6">
-            <Card>
-              <CardHeader>
-                <h6 className="surtitle">Partners</h6>
-                <h5 className="h3 mb-0">Affiliate traffic</h5>
-              </CardHeader>
-              <CardBody>
-                <Pie
-                  style={{ padding: '50px' }}
-                  data={chartExample6.data}
-                  options={chartExample6.options}
-                />
-              </CardBody>
-            </Card>
-          </Col>
-          <Col xl="6">
-            <Card>
-              <CardHeader>
-                <h6 className="surtitle">Overview</h6>
-                <h5 className="h3 mb-0">Product comparison</h5>
-              </CardHeader>
-              <CardBody className="text-center">
-                <Bar
-                  data={data}
-                  options={options}
-                  className="chart-canvas"
-                  id="chart-bar-stacked"
-                />
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
+       {/* <Charts/> */}
       </ScreenContainer>
 
     </>
