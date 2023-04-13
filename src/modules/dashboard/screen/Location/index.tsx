@@ -340,7 +340,7 @@ function LocationScreen() {
         buttonChildren={
 
 
-          <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
+          <Container additionClass={"d-flex justify-content-end mr-xl--4"}>
             <Primary
               text={t("AddBranch")}
               onClick={() => manageBranchesHandler(undefined)}

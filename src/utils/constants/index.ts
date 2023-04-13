@@ -224,9 +224,36 @@ export const BLOOD_GROUP_LIST = [
 // single-copy-04
 
 
+ // {
+  //   id:1,
+  //   collapse: true,
+  //   name: "Courses",
+  //   icon: "ni ni-ungroup text-orange",
+  //   state: "dashboardsCollapses",
+  //   views: [
+  //     {
+  //       id:1,
+  //       path: "/add-course",
+  //       name: "Add Course",
+  //       miniName: "JS",
+  //       component: <AddCourse />,
+  //       layout: "/dashboard",
+  //     },
+  //     {
+  //       id:2,
+  //       path: "/assign-course-students",
+  //       name: "Assign Course",
+  //       miniName: "AC",
+  //       component: <AssignCourseToStudents isCourseNotAssigned={true} />,
+  //       layout: "/dashboard",
+
+  //     },
+  //   ],
+  // },
+
 
 export const NAV_ITEM = [
-  { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", path: ROUTE.ROUTE_DASHBOARD ,layout:''},
+  { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", path: ROUTE.ROUTE_DASHBOARD ,layout:'',},
   { id: '2', name: 'Employees Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, path: ROUTE.ROUTE_EMPLOYEE,layout:'' },
   { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', image: Icons.LocationSecondary, path: ROUTE.ROUTE_LOCATION,layout:'' },
   // { id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', image: Icons.AssignLocation, route: ROUTE.ROUTE_ASSIGN_LOCATION },
@@ -235,7 +262,72 @@ export const NAV_ITEM = [
   { id: '7', name: 'Time Sheets', value: 'TS', icon: 'ni ni-single-copy-04', image: Icons.Department, path: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK ,layout:''},
   { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, path: ROUTE.ROUTE_DASHBOARD_STATS ,layout:''},
   { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, path: ROUTE.ROUTE_CALENDAR,layout:'' },
-  { id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-bell-55', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false,layout:'' },
+  { id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-bell-55', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false,layout:'' ,collapse: true,
+  views: [
+        {
+          id:1,
+          path: ROUTE.ROUTE_LEAVE_REQUEST,
+          name: "Employees Leaves",
+          miniName: "JS",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4' 
+        },
+        {
+          id:2,
+          path:  ROUTE.ROUTE_MODIFY_LOGS,
+          name: "Modify logs",
+          miniName: "AC",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4'
+  
+        },
+        {
+          id:3,
+          path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
+          name: "Employees shifts",
+          miniName: "AC",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4'
+  
+        },
+        {
+          id:4,
+          path: ROUTE.ROUTE_SHIFT_REQUEST,
+          name: "Employees shifts",
+          miniName: "AC",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4'
+  
+        },
+        {
+          id:5,
+          path: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
+          name: "Employees shifts",
+          miniName: "AC",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4'
+  
+        },
+        {
+          id:6,
+          path:  ROUTE.ROUTE_LOG_APPROVAL,
+          name: "Employees shifts",
+          miniName: "AC",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4'
+  
+        },
+        {
+          id:7,
+          path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
+          name: "Employees shifts",
+          miniName: "AC",
+          layout: "",
+          icon:'ni ni-bell-55 ml-sm-4'
+  
+        },
+      ],
+},
   // { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
   // { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
   { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, path: ROUTE.ROUTE_REPORTS ,layout:''},

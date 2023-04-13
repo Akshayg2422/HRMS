@@ -99,7 +99,7 @@ function Dashboard() {
   // Chart.register(...registerables);
   const dispatch = useDispatch()
 
-
+const [chartExample7 , setChartExample7] = useState<any>()
   const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );

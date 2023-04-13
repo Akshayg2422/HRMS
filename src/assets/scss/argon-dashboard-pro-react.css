@@ -18113,7 +18113,7 @@ textarea[resize=horizontal] {
   }
 }
 .navbar-vertical .navbar-nav .nav-link[data-toggle=collapse][aria-expanded=true]:after {
-  color: #52307c;
+  color: white;
   transform: rotate(90deg);
 }
 .navbar-vertical .navbar-nav .nav .nav-link {
