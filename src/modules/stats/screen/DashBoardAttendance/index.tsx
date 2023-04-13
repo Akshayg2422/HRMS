@@ -501,7 +501,7 @@ const DashBoardAttendance = ({ }) => {
                     }
                   />
                 </div>
-                <Container additionClass={'col-lg-3 col-md-12'} style={{marginTop:"9px"}}>
+                <Container additionClass={'col-lg-3 col-md-12'} style={{marginTop:"8px"}}>
                   <InputText
                     placeholder={t("enterEmployeeName")}
                     label={t("employeeName")}
