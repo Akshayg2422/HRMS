@@ -16,6 +16,7 @@ import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
 import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { DropdownItem, DropdownMenu, DropdownToggle, Media, Nav, UncontrolledDropdown } from 'reactstrap';
 
 //ROUTE_PORTFOLIO
 
@@ -209,42 +210,39 @@ const Header = () => {
                 )}
               </div>
             </ul>
-            <ul className='navbar-nav align-items-center  ml-auto ml-md-0 '>
-              <li className='nav-item dropdown '>
-                <a
-                  className='nav-link pr-0'
-                  href='#'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                >
-                  <div className='media align-items-center'>
-                    <span className='avatar avatar-sm rounded-circle'>
+            <Nav className="align-items-center ml-auto ml-md-0" navbar>
+              <UncontrolledDropdown nav>
+                <DropdownToggle className="nav-link pr-0" color="" tag="a">
+                  <Media className="align-items-center">
+                    <span className="avatar avatar-sm rounded-circle">
                       <ImageView
                         height={'38'}
                         alt='Image placeholder'
                         icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
                       />
                     </span>
-                    <div className='media-body  ml-2 text-primary d-none d-lg-block dropdown-toggle'> </div>
-                  </div>
-                </a>
-               <div className='dropdown-menu dropdown-menu-right'>
+                    <Media className="ml-2 d-none d-lg-block">
+                      <div className='media-body text-primary d-none d-lg-block dropdown-toggle'> </div>
+                    </Media>
+                  </Media>
+                </DropdownToggle>
+                <DropdownMenu right>
                   {HEADER_MENU.map((item) => {
                     return (
-                      <a
-                        className='dropdown-item'
-                        onClick={() => DropdownHandler(item)}
+                      <DropdownItem
+                        onClick={(e) => {
+                          e.preventDefault()
+                          DropdownHandler(item)
+                        }}
                       >
                         <i className={item.icon}></i>
                         <span>{item.name}</span>
-                      </a>
+                      </DropdownItem>
                     );
                   })}
-                </div>
-              </li>
-            </ul>
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
           </div>
         </div>
       </nav >
