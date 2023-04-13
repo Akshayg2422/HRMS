@@ -399,7 +399,7 @@ function SalaryBreakDown() {
                 <h6 className='text-danger mt--3'>{el.error}</h6>
               </Container>
               <Container additionClass={'col-xl-3 col col-sm-0'}>
-                <Container additionClass='row mt-3'>
+                <Container additionClass='row mt-4'>
                   <DropDown
                     additionClass='col-xl-7'
                     data={ALLOWANCE_TYPE}

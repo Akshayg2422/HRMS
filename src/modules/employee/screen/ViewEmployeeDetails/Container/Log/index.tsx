@@ -241,7 +241,7 @@ const LogView = () => {
     };
 
     return (
-        <Container additionClass='mx--1'>
+        <Container additionClass='mx--1 bg-primary'>
             <TableWrapper
                 buttonChildren={<div className="text-right">
                     <Sort

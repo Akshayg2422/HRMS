@@ -381,7 +381,7 @@ const CreateShiftGroup = () => {
     return (
         <TableWrapper>
             <div className='mx-2 mt--4'>
-                <Container additionClass={"mx-2 "}>
+                <Container additionClass={"mx-2"}>
                     <Container additionClass='d-flex justify-content-between'>
                         <h2 className={"col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
                         {!isShowManageEmpOnEdit && selectedShiftGroupDetails && (
@@ -389,7 +389,7 @@ const CreateShiftGroup = () => {
                             ></Primary>
                         )}
                     </Container>
-                    {designationShiftGroup && <Container additionClass={'float-right'}>
+                    {designationShiftGroup && <Container additionClass={'border border-dark'}>
                         <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                         ></Primary>
                     </Container>}
