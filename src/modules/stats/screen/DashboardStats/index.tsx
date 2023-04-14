@@ -41,12 +41,8 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
-  const { hierarchicalBranchIds, dashboardDetails } = useSelector(
+  const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
-  );
-
-  const { listBranchesList } = useSelector(
-    (state: any) => state.LocationReducer
   );
 
   const [model, setModel] = useState(false);
@@ -58,8 +54,6 @@ const DashboardStats = () => {
   const [selectedDate, setSelectedDate] = useState(
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
-
-  const [initialCall, setInitialCall] = useState(false)
 
   const normalizedEmployeeAttendanceLog = (data: any) => {
     return data?.departments_stats?.map((el: any) => {
@@ -75,45 +69,20 @@ const DashboardStats = () => {
   };
 
 
-  useEffect(() => {
-    if (dashboardDetails) {
-      conditionalRendering(dashboardDetails)
-    }
-  }, [dashboardDetails]);
-
-
-  const conditionalRendering = (dashboardResponse: any) => {
-    if (listBranchesList.length === 0) {
-      const params = {}
-      dispatch(getListAllBranchesList({
-        params,
-        onSuccess: (response: any) => () => {
-          const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-          getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
-          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
-        },
-        onError: () => () => {
-        },
-      }))
-    } else {
-      getStatsDetails({ ...hierarchicalBranchIds })
-    }
-  }
 
   useEffect(() => {
-    initialCall && getStatsDetails({ ...hierarchicalBranchIds })
+    getStatsDetails()
   }, [selectedDate, hierarchicalBranchIds]);
 
 
-  const getStatsDetails = (obj: object) => {
+  const getStatsDetails = () => {
     const params = {
-      ...obj,
+      ...hierarchicalBranchIds,
       selected_date: selectedDate,
     };
     dispatch(getEmployeeAttendanceStats({
       params,
       onSuccess: (success: any) => () => {
-        setInitialCall(true)
       },
       onError: (error: any) => () => {
 

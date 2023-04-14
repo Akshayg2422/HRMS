@@ -1500,6 +1500,49 @@ html.rtl {
   float: right !important;
 }
 
+.scroll-hidden {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.sass-nav {
+  font-weight: normal;
+  color: black;
+  letter-spacing: 0.8px;
+  font-size: 12px;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+.sass-nav-active {
+  background: #f6f9fc;
+  margin-right: 0.5rem;
+  margin-left: 0.5rem;
+  border-radius: 0.375rem;
+  color: #52307c;
+}
+
+.sass-link-text {
+  font-weight: normal;
+  color: white;
+  letter-spacing: 0.8px;
+  font-size: 12px;
+}
+
+.sass-active-text {
+  color: #52307c;
+}
+
+.text-version {
+  font-size: 0.45rem !important;
+  margin-left: 65px;
+  margin-top: 10px;
+}
+
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;
@@ -18191,7 +18234,6 @@ textarea[resize=horizontal] {
   margin-top: 2px;
 }
 .navbar-vertical.navbar-expand-xs .navbar-nav > .nav-item > .nav-link.active {
-  background: #f6f9fc;
   margin-right: 0.5rem;
   margin-left: 0.5rem;
   padding-left: 1rem;
@@ -18301,7 +18343,6 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-sm .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18418,7 +18459,6 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-md .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18535,7 +18575,6 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-lg .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
@@ -18652,7 +18691,6 @@ textarea[resize=horizontal] {
     margin-top: 2px;
   }
   .navbar-vertical.navbar-expand-xl .navbar-nav > .nav-item > .nav-link.active {
-    background: #f6f9fc;
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     padding-left: 1rem;
