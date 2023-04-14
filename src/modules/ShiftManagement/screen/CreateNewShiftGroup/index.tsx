@@ -381,7 +381,7 @@ const CreateShiftGroup = () => {
     return (
         <TableWrapper>
             <div className='mx-2 mt--4'>
-                <Container additionClass={"mx-2 "}>
+                <Container additionClass={"mx-2"}>
                     <Container additionClass='d-flex justify-content-between'>
                         <h2 className={"col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
                         {!isShowManageEmpOnEdit && selectedShiftGroupDetails && (
@@ -412,8 +412,8 @@ const CreateShiftGroup = () => {
                             />
                         </Container>
                         <Container
-                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 ml--2`}
-                            additionClass={"xl-4 mt--2"}
+                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12`}
+                            additionClass={"xl-4"}
                         >
                             <DropDown
                                 label={t('selectWeeklyShift')}
@@ -427,8 +427,8 @@ const CreateShiftGroup = () => {
 
                         </Container>
                         <Container
-                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 ml--2`}
-                            additionClass={"xl-4 mt--2"}
+                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 `}
+                            additionClass={"xl-4"} style={{marginTop:"1px"}}
                         >
                             <DropDown
                                 label={t('designation')}
@@ -442,12 +442,13 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
-                       
-                            <Container additionClass={' mx-3 '} style={{marginTop:"33px"}}>
-                                <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
-                                ></Primary>
-                            </Container>
-                      
+
+
+                        <div className='float-right mb-3 ml-3' style={{marginTop:"35px"}}>
+                            <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
+                            ></Primary>
+                        </div>
+
                         {isShowManageEmpOnEdit && (
                             <h2>{'Assign shift Employees'}</h2>
                         )}
@@ -468,6 +469,7 @@ const CreateShiftGroup = () => {
                         <Container additionClass={'row mx-0'}>
                             <Container col={"col col-md-6 col-sm-12 mt-xl-4 m-0"} >
                                 <InputText
+                                  label='Search'
                                     placeholder={t('enterEmployeeName')}
                                     onChange={(e) => {
                                         setSearchEmployee(e.target.value);
@@ -476,7 +478,7 @@ const CreateShiftGroup = () => {
                             </Container>
                             <Container
                                 col={"col-md-6 col-sm-12"}
-                                additionClass={"xl-4 mt--2"}
+                                additionClass={"xl-4 mt-4"}
                             >
                                 <DropDown
                                     label={t('department')}
@@ -520,6 +522,7 @@ const CreateShiftGroup = () => {
                         <Container additionClass={'row'}>
                             <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
                                 <InputText
+                                  label='Search'
                                     placeholder={t('enterEmployeeName')}
                                     value={searchSelectedEmployee}
                                     onChange={(e) => {
@@ -529,7 +532,7 @@ const CreateShiftGroup = () => {
                             </Container>
                             <Container
                                 col={"col-md-6 col-sm-12"}
-                                additionClass={"mt--2"}
+                                additionClass={"mt-4"}
                             >
                                 <DropDown
                                     label={t('department')}

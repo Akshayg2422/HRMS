@@ -31,7 +31,7 @@ const Profile = () => {
                 ? getImageUri(dashboardDetails.user_details.profile_photo)
                 : Icons.ProfilePlaceHolder
             }
-            additionClass={"rounded-circle col-lg-3  order-lg-2"}
+            additionClass={"rounded-circle  col-lg-3  order-lg-2"}
           ></ImageView>
           <Container additionClass={"text-center my-3"}>
             <h1 className="text-black">{dashboardDetails.user_details.name}</h1>

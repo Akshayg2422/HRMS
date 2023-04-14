@@ -459,13 +459,13 @@ function EmployeeScreen() {
                 col={"col-xl-3 col-md-6 col-sm-12"}
                 additionClass={"mt-xl-4"}
               >
-                <Container additionClass="mt-2">
+                <Container additionClass="">
                   <ChooseBranchFromHierarchical />
                 </Container>
               </Container>
               <Container
                 col={"col"}
-                additionClass={"mt-sm-3 mt-xl--2"}
+                additionClass={"mt-sm-3 mt-xl-2"}
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
               >

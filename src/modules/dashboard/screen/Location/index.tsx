@@ -364,7 +364,6 @@ function LocationScreen() {
               }}
             />
             <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
-
           </Container>
         }
       >

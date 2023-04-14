@@ -202,7 +202,7 @@ const ShiftGroup = () => {
                             }}
                         />
                         <Container
-                            additionClass='col mt-xl-1 mt-md-1'
+                            additionClass='col mt-xl-2 mt-md-2'
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
                         >

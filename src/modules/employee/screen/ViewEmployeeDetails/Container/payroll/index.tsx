@@ -60,10 +60,10 @@ function PayrollView() {
 
     return (
         // <ScreenContainer>
-        <Card additionClass='mx-2'>
+        <Card additionClass='mx-4'>
             {!isDisablePayrollView ? (
                 <>
-                    <h3>{`${selectedEmployeeDetails?.name} 's salary definition`}</h3>
+                    <h3>{`${selectedEmployeeDetails?.name} 'salary definition`}</h3>
 
                     <Container additionClass={'col-xl-12 row col-sm-3'}>
                         <div className="col-xl-6">
@@ -83,7 +83,7 @@ function PayrollView() {
                     {employeeSalaryDefinition?.allowance_break_down?.allowances && employeeSalaryDefinition?.allowance_break_down?.allowances?.length > 0 &&
                         <Container additionClass=''>
                             <h5 className={'text-muted ml-3 mt-2'}>{'Allowances'}</h5>
-                            <Container additionClass=''>
+                            <Container additionClass='mx--4'>
                                 <CommonTable
                                     card={false}
                                     displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.allowance_break_down?.allowances)}
@@ -96,7 +96,7 @@ function PayrollView() {
                     {employeeSalaryDefinition?.deductions_group && employeeSalaryDefinition.deductions_group.length > 0 &&
                         <Container additionClass=''>
                             <h5 className={'text-muted ml-3 mt-4'}>{'Deductions'}</h5>
-                            <Container additionClass=''>
+                            <Container additionClass='mx--4'>
                                 <CommonTable
                                     card={false}
                                     displayDataSet={normalizedAllowanceList(employeeSalaryDefinition.deductions_group)}

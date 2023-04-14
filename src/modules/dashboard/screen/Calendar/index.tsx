@@ -32,7 +32,7 @@ import {
 import { t } from "i18next";
 
 export const DROPDOWN_MENU = [
-  { id: '1', name: 'Edit', value: 'PF', image:Icons.Pencil },
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
 ]
 
@@ -188,7 +188,7 @@ function Calendar() {
         },
         onError: (error: any) => () => {
           setDeleteModel(!deleteModel);
-          showToast("error",error);
+          showToast("error", error);
         },
       })
     );
@@ -209,95 +209,125 @@ function Calendar() {
   };
 
   return (
+    // <>
+    //   <Container additionClass={"main-contain"}>
+    //     <Card>
+    //       <Container additionClass="row ">
+    //         <div className=" col">
+    //           <h1 className="mb-3">{t('Calendar')}</h1>
+    //         </div>
+    //         <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4 ">
+    //           <Primary
+    //             size="btn-sm"
+    //             additionClass=''
+    //             text={t("addHoildays")}
+    //             onClick={handleAddHolidays}
+    //           />
+
+    //           <CommonDropdownMenu
+    //             data={CARD_DROPDOWN_ITEM}
+    //             onItemClick={(e, item) => {
+    //               e.stopPropagation();
+    //               goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+    //             }}
+    //           />
+    //         </div>
+    //       </Container>
+    //       <Container additionClass={"row ml-1"}>
+    //         <Container additionClass="col-xl-3">
+    //           <ChooseBranchFromHierarchical showCheckBox={false} />
+    //         </Container>
+
+    //       </Container>
+    //       <Calender
+    //         // dateClick={handleDateClick}
+    //         events={geteventsdetails(calendarEvents?.days_holiday)}
+    //       />
+    //     </Card>
+    //     <h1>{t("holidayList")}</h1>
+    //     {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
+    //       <CommonTable
+    //         noHeader
+    //         displayDataSet={normalizedEmployeeLog(
+    //           calendarEvents?.days_holiday
+    //         )}
+
+    //         custombutton={"h5"}
+    //       />
+    //     ) : <NoRecordFound />}
+    //     <Modal
+    //       title={t("deleteHoliday")}
+    //       showModel={deleteModel}
+    //       toggle={() => setDeleteModel(!deleteModel)}
+    //     >
+    //       <Container>
+    //         <span className="ml-3">{t("eventDeleteWarningMessage")}</span>
+    //         <Container
+    //           margin={"m-5"}
+    //           justifyContent={"justify-content-end"}
+    //           display={"d-flex"}
+    //         >
+    //           <Secondary
+    //             text={t("cancel")}
+    //             onClick={() => setDeleteModel(!deleteModel)}
+    //           />
+    //           <Primary
+    //             text={t("proceed")}
+    //             onClick={() => manageProceedHandler()}
+    //           />
+    //         </Container>
+    //       </Container>
+    //     </Modal>
+    //     <Modal
+    //       title={t("Please Select")}
+    //       size={"modal-sm"}
+    //       showModel={onEventClickModel}
+    //       toggle={() => setOnEventClickModel(!onEventClickModel)}
+    //     >
+    //       <Container>
+    //         <Container display={"d-flex"}>
+    //           <Primary
+    //             text={t("edit")}
+    //             onClick={() => goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS)}
+    //           />
+    //           <Primary
+    //             text={t("delete")}
+    //             onClick={() => eventModelDeleteHandler()}
+    //           />
+    //         </Container>
+    //       </Container>
+    //     </Modal>
+    //   </Container>
+    // </>
     <>
-      <Container additionClass={"main-contain"}>
+      <div className="container-fluid">
         <Card>
-          <Container additionClass="row ">
-            <div className=" col">
+          <div className="row">
+            <div className="col">
               <h1 className="mb-3">{t('Calendar')}</h1>
-            </div>
-            <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4 ">
-              <Primary
-                size="btn-sm"
-                additionClass=''
-                text={t("addHoildays")}
-                onClick={handleAddHolidays}
-              />
+              <div className="">
+                <div className="text-right">
+                  <Primary
+                    size="btn-sm"
+                    additionClass=''
+                    text={t("addHoildays")}
+                    onClick={handleAddHolidays}
+                  />
 
-              <CommonDropdownMenu
-                data={CARD_DROPDOWN_ITEM}
-                onItemClick={(e, item) => {
-                  e.stopPropagation();
-                  goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
-                }}
-              />
+                  <CommonDropdownMenu
+                    data={CARD_DROPDOWN_ITEM}
+                    onItemClick={(e, item) => {
+                      e.stopPropagation();
+                      goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+                    }}
+                  />
+                </div>
+              </div>
             </div>
-          </Container>
-          <Container additionClass={"row ml-1"}>
-            <Container additionClass="col-xl-3">
-              <ChooseBranchFromHierarchical showCheckBox={false} />
-            </Container>
 
-          </Container>
-          <Calender
-            // dateClick={handleDateClick}
-            events={geteventsdetails(calendarEvents?.days_holiday)}
-          />
+          </div>
         </Card>
-        <h1>{t("holidayList")}</h1>
-        {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
-          <CommonTable
-            noHeader
-            displayDataSet={normalizedEmployeeLog(
-              calendarEvents?.days_holiday
-            )}
-
-            custombutton={"h5"}
-          />
-        ) : <NoRecordFound />}
-        <Modal
-          title={t("deleteHoliday")}
-          showModel={deleteModel}
-          toggle={() => setDeleteModel(!deleteModel)}
-        >
-          <Container>
-            <span className="ml-3">{t("eventDeleteWarningMessage")}</span>
-            <Container
-              margin={"m-5"}
-              justifyContent={"justify-content-end"}
-              display={"d-flex"}
-            >
-              <Secondary
-                text={t("cancel")}
-                onClick={() => setDeleteModel(!deleteModel)}
-              />
-              <Primary
-                text={t("proceed")}
-                onClick={() => manageProceedHandler()}
-              />
-            </Container>
-          </Container>
-        </Modal>
-        <Modal
-          title={t("Please Select")}
-          size={"modal-sm"}
-          showModel={onEventClickModel}
-          toggle={() => setOnEventClickModel(!onEventClickModel)}
-        >
-          <Container>
-            <Container display={"d-flex"}>
-              <Primary
-                text={t("edit")}
-                onClick={() => goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS)}
-              />
-              <Primary
-                text={t("delete")}
-                onClick={() => eventModelDeleteHandler()}
-              />
-            </Container>
-          </Container>
-        </Modal>
-      </Container>
+      </div>
     </>
   );
 }

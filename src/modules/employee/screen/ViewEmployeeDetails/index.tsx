@@ -34,7 +34,7 @@ const ViewEmployeeDetails = () => {
   return (
     // <ScreenContainer additionClass={'mb--5'}>
     <>
-      <Card additionClass="mx-2">
+      <Card additionClass="mx-4">
         <ul
           className="nav nav-pills nav-fill text-center justify-content-between"
         >
