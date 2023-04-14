@@ -60,10 +60,10 @@ function PayrollView() {
 
     return (
         // <ScreenContainer>
-        <Card additionClass='mx-2'>
+        <Card additionClass='mx-4'>
             {!isDisablePayrollView ? (
                 <>
-                    <h3>{`${selectedEmployeeDetails?.name} 's salary definition`}</h3>
+                    <h3>{`${selectedEmployeeDetails?.name} 'salary definition`}</h3>
 
                     <Container additionClass={'col-xl-12 row col-sm-3'}>
                         <div className="col-xl-6">

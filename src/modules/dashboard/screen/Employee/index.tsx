@@ -465,7 +465,7 @@ function EmployeeScreen() {
               </Container>
               <Container
                 col={"col"}
-                additionClass={"mt-sm-3 mt-xl--2"}
+                additionClass={"mt-sm-3 mt-xl-2"}
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
               >
