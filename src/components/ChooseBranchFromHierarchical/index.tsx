@@ -152,7 +152,9 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
           }
           setModel(!model)
         }}>
-          <InputDefault disabled={true} value={hierarchicalBranchName} />
+          <InputDefault formCustomClass="bg-white" disabled={true} value={hierarchicalBranchName} />
+          <span className="mr-4" style={{top:'32%',position:'absolute',right:'0px'}} ><i className="fa fa-angle-down " style={{fontSize:'12px'}}></i></span>
+          
         </div>
         {hierarchicalBranchIds && showCheckBox && (
           <div className="mt--3">
