@@ -391,7 +391,7 @@ function Reports() {
               />
             </div>
           </div>
-          <div className='row'>
+          <div className='row ml-xl-1'>
             <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
             <Primary text={'Search'} col={'col-xl-1 p-auto'} size={'btn-sm'} onClick={() => getReports(currentPage)} />
           </div>

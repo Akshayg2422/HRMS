@@ -12,33 +12,32 @@ import { setBranchHierarchical } from "../../../../store/dashboard/actions";
 
 
 function Dashboard() {
-
+  const { t } = useTranslation();
+  const navigation = useNav();
+  const dispatch = useDispatch()
   const { employeeattendancedatalog } = useSelector(
     (state: any) => state.EmployeeReducer
   );
   const { hierarchicalBranchIds, dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
-
-  const { t } = useTranslation();
-  const navigation = useNav();
-  const dispatch = useDispatch()
-
   const { appConfig, fcmToken } = useSelector(
     (state: any) => state.AuthReducer
   );
+  const { listBranchesList } = useSelector(
+    (state: any) => state.LocationReducer
+  );
+
+  const [selectedDate, setSelectedDate] = useState(
+    getServerDateFromMoment(getMomentObjFromServer(new Date()))
+  );
+
+  const [initialCall, setInitialCall] = useState(false)
+  const [reloadFlag, setReloadFlag] = useState(false);
 
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
-
-  useEffect(() => {
-    if (dashboardDetails) {
-      conditionalRendering(dashboardDetails)
-    }
-  }, [dashboardDetails]);
-
 
   const getPostAppConfig = () => {
     const params = {
@@ -67,24 +66,11 @@ function Dashboard() {
     }))
   }
 
-
-
-  const { listBranchesList } = useSelector(
-    (state: any) => state.LocationReducer
-  );
-
-  const [selectedDate, setSelectedDate] = useState(
-    getServerDateFromMoment(getMomentObjFromServer(new Date()))
-  );
-
-  const [initialCall, setInitialCall] = useState(false)
-
-
   useEffect(() => {
     if (dashboardDetails) {
       conditionalRendering(dashboardDetails)
     }
-  }, [dashboardDetails]);
+  }, [dashboardDetails, hierarchicalBranchIds]);
 
   const conditionalRendering = (dashboardResponse: any) => {
     if (listBranchesList.length === 0) {
@@ -93,21 +79,20 @@ function Dashboard() {
         params,
         onSuccess: (response: any) => () => {
           const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-          getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
+          if (employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0) {
+            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
+          }
           dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
         },
         onError: () => () => {
         },
       }))
     } else {
-      getStatsDetails({ ...hierarchicalBranchIds })
+      if (employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0) {
+        getStatsDetails({ ...hierarchicalBranchIds })
+      }
     }
   }
-
-  useEffect(() => {
-    initialCall && getStatsDetails({ ...hierarchicalBranchIds })
-  }, [hierarchicalBranchIds]);
-
 
   const getStatsDetails = (obj: object) => {
     const params = {
@@ -116,7 +101,7 @@ function Dashboard() {
     };
     dispatch(getEmployeeAttendanceStats({
       params,
-      onSuccess: (success: any) => () => {
+      onSuccess: (response: any) => () => {
         setInitialCall(true)
       },
       onError: (error: any) => () => {
@@ -147,8 +132,8 @@ function Dashboard() {
   return (
     <>
       <ScreenContainer>
-        <Container additionClass="col-xl-3">  
-          <ChooseBranchFromHierarchical  />
+        <Container additionClass="col-xl-3">
+          <ChooseBranchFromHierarchical />
         </Container>
         <Container>
           {employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.length > 0 ? <Charts /> : <></>}

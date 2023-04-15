@@ -1543,6 +1543,10 @@ html.rtl {
   margin-top: 10px;
 }
 
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;

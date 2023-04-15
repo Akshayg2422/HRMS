@@ -98,7 +98,7 @@ export const CHILD_PATH = [
   { path: "/view-employee", parent: '/employee', name: 'View Employee', showBack: true, showBreadCrums: true },
   { path: "/inactive-employee-list", parent: '/employee', name: 'Deleted Employees', showBack: true, showBreadCrums: true },
   { path: "/my-notification", parent: '/notifications', name: 'BroadCast', showBack: true, showBreadCrums: true },
-  { path: "/leave-request", parent: '/approvals', name: 'Leave Request', showBack: true, showBreadCrums: true },
+  { path: "/leave-request", parent: '/approvals', name: 'Employee Leaves', showBack: true, showBreadCrums: true },
   { path: "/modify-logs", parent: '/approvals', name: 'Modify Logs', showBack: true, showBreadCrums: true },
   { path: "/employees-shifts", parent: '/approvals', name: 'Employee Shifts', showBack: true, showBreadCrums: true },
   { path: "/shift-request", parent: '/approvals', name: 'Shift Request', showBack: true, showBreadCrums: true },

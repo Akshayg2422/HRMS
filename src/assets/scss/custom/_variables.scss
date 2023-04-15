@@ -1170,4 +1170,8 @@ $tag-box-shadow:                    0 1px 2px rgba(68,68,68,0.25);
   margin-top: 10px
 }
 
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
 @import "~bootstrap/scss/variables";
