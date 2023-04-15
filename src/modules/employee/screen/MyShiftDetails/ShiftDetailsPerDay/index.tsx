@@ -94,7 +94,7 @@ function ShiftDetailsPerDay() {
 
 
     return (
-        <div>
+        <div className='mx-3'>
             <Card>
                 <div className='mb-4'>
                     <div >
