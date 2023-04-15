@@ -105,7 +105,7 @@ function ManageLeaves() {
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>
-        <Card>
+        {/* <Card> */}
           {daysHoliday && daysHoliday.length > 0 ? (
             <CommonTable
               noHeader
@@ -116,7 +116,7 @@ function ManageLeaves() {
           ) : (
             <NoRecordFound />
           )}
-        </Card>
+        {/* </Card> */}
       </Container>
     </>
   );

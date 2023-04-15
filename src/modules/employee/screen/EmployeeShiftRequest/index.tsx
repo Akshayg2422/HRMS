@@ -118,15 +118,16 @@ function EmployeeShiftRequest() {
                         </Container>
                     </Container>
                 </div>
-                <div>
-                    <h2>{t("requestList")}</h2>
-                    <>
-                        {
-                            memoizedTable
-                        }
-                    </>
-                </div>
+
             </Container>
+            <div>
+                <h2 className='ml-3'>{t("requestList")}</h2>
+                <>
+                    {
+                        memoizedTable
+                    }
+                </>
+            </div>
 
         </TableWrapper>
     )
