@@ -101,7 +101,9 @@ function CreateGroup() {
 
     const getCompanyAllowanceList = () => {
 
-        const params = {}
+        const params = {
+            page_number: -1
+        }
 
         dispatch(getCompanyAllowance({
             params,
@@ -136,7 +138,7 @@ function CreateGroup() {
     const onTotalCalculator = () => {
         const AllowancePercentage = selectedAllowances?.map((el: any) => {
             if (el.type == "1") {
-                const checkIsEmpty:any = el.percent == '' ? 0 : el.percent
+                const checkIsEmpty: any = el.percent == '' ? 0 : el.percent
                 const convert = parseInt(checkIsEmpty)
                 return +convert
             }
@@ -415,7 +417,7 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {companyAllowanceList?.data && companyAllowanceList?.data?.map((el: any) => {
+                        {companyAllowanceList && companyAllowanceList?.map((el: any) => {
 
                             const isActive = allowances?.some((item: any) => item.id === el.id)
 
