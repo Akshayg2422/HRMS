@@ -101,12 +101,13 @@ function AllRequest() {
       params,
       onSuccess: (success: any) => () => {
         getEmployeeRequest(-2, currentPage);
+        
         if (type === 1) {
-          showToast("success", success)
+          showToast("success", success.status)
           setApproveModel(!approveModel);
         }
         if (type === 0) {
-          showToast("success", success)
+          showToast("success", success.status)
           setRejectModel(!rejectModel);
         }
       },

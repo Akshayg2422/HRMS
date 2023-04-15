@@ -4,6 +4,7 @@ import {
 } from "@components";
 import { useState, useEffect } from "react";
 import { AttendanceView, BasicView, LogView, PayrollView } from "./Container";
+import { useSelector } from "react-redux";
 
 const EMPLOYEE_VIEW_TYPES = [
   { id: 1, name: 'Basic', value: 1 },
@@ -15,6 +16,14 @@ const EMPLOYEE_VIEW_TYPES = [
 
 const ViewEmployeeDetails = () => {
   const [currentView, setCurrentView] = useState(1)
+
+  const {
+    employeeDetailsViewApiHandler
+  } = useSelector((state: any) => state.EmployeeReducer);
+
+  console.log("employeeDetailsViewApiHandler", employeeDetailsViewApiHandler);
+
+
 
   const componentHandler = () => {
     if (currentView === 1) {
@@ -55,7 +64,7 @@ const ViewEmployeeDetails = () => {
                 }
               }}>
                 <div className={`${currentView !== el.id ? `text-uppercase text-muted mb-sm-0 mb-2` : `text-uppercase text-primary fw-bold  mb-sm-0 mb-2`}`}
-                  style={{ cursor: 'pointer' }} onClick={() => {  }}>
+                  style={{ cursor: 'pointer' }} onClick={() => { }}>
                   {el.name}
                 </div>
               </div>

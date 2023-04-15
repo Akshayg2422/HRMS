@@ -353,7 +353,7 @@ function* changeShiftChangeSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(postChangeShiftChangeSuccess(response.details));
-            yield call(action.payload.onSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
         } else {
             yield put(hideLoader());
             yield put(postChangeShiftChangeFailure(response.error_message));

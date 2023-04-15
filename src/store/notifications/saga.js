@@ -37,7 +37,7 @@ function* createBroadcastMessageSaga(action) {
         if (response.success) {
             yield put(hideLoader());
             yield put(createBroadcastMessageSuccess(response.details));
-            yield call(action.payload.onSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
         } else {
             yield put(hideLoader());
             yield put(createBroadcastMessageFailure(response.error_message));

@@ -87,8 +87,8 @@ function EmployeeShifts() {
   const normalizedEmployeeDetails = (employeesDetails: any) => {
     return employeesDetails && employeesDetails.length > 0 && employeesDetails.map((element: any) => {
       return {
-        id: element.employee_id,
         name: element.name,
+        code: element.employee_id,
         'Shift Name': element.shift?.name ? element.shift?.name : <div className="ml-4">{'-'}</div>,
         "mobile number": element.mobile_number,
         "Change Shift": <> <span style={{ cursor: 'pointer' }} className={`text-primary h5`}

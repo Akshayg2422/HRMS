@@ -147,7 +147,9 @@ import {
 
   FETCH_EMPLOYEE_ATTENDANCE_INFO,
   FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
-  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
+
+  EMPLOYEE_VIEW_DETAILS_API_HANDLER
 } from "./actionTypes";
 
 // Delete Account
@@ -1317,5 +1319,16 @@ export const getEmployeeAttendanceInfoFailure = (error) => {
   return {
     type: FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
     payload: error,
+  };
+};
+
+
+//Employee View details api handler
+
+
+export const employeeViewDetailsApiHandler = (value) => {
+  return {
+    type: EMPLOYEE_VIEW_DETAILS_API_HANDLER,
+    payload: value,
   };
 };
