@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useLocation, NavLink as NavLinkRRD, Link } from "react-router-dom";
 import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
@@ -35,14 +35,62 @@ function Navbar({
   const location = useLocation();
   const navigate = useNav();
   const dispatch = useDispatch();
-
   const { userDetails } = useSelector(
     (state: any) => state.AuthReducer
   );
 
+
   const { navIndex } = useSelector(
     (state: any) => state.AppReducer
   );
+  const pathname = window.location.pathname
+
+  useEffect(() => {
+    dynamicActiveNav()
+  }, [pathname])
+
+
+  const dynamicActiveNav = () => {
+    NAV_ITEM.filter((el: any, index: number) => {
+      console.log("pathname", el.path)
+      if (pathname === el.path && pathname !== "/approvals") {
+        dispatch(currentNavIndex(el.path));
+      }
+      // else if (pathname === ) {
+      //   dispatch(currentNavIndex(el.views.path))
+      // }
+      else {
+
+        el?.views?.forEach((it: any, index: number) => {
+          if (it.path === pathname && pathname !== "/approvals") {
+            dispatch(currentNavIndex(it.path))
+          }
+          else {
+            childNav()
+
+          }
+        })
+      }
+    })
+  }
+
+  const childNav = () => {
+    CHILD_PATH.filter((el: any) => {
+      if (pathname === el.path) {
+        NAV_ITEM.filter((element: any, index: number) => {
+          if (el.parent === element.path) {
+            dispatch(currentNavIndex(el.parent));
+          }
+        })
+      }
+    })
+  }
+
+
+
+
+  console.log("===========>", pathname.substring(1), navIndex)
+
 
 
   React.useEffect(() => {
@@ -121,6 +169,7 @@ function Navbar({
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes: any) => {
     return routes.map((prop: any, key: any) => {
+      console.log("00000000000>", key)
       if (prop.redirect) {
         return null;
       }
@@ -133,25 +182,26 @@ function Navbar({
             <NavLink
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
-              // className={classnames({
-              //   // active: getCollapseInitialState(prop.views),
-              // })}
-              className="ml-2"
+              // className={` "ml-2" ${classnames({
+              //   active: getCollapseInitialState(prop.views),
+              // })}`}
+              className="ml-2 pointer"
               onClick={(e) => {
                 e.preventDefault();
                 setState(st);
-                prop.name !== 'Approvals' && dispatch(currentNavIndex(prop.name));
+                prop.name !== 'Approvals' && dispatch(currentNavIndex(prop.path));
+                console.log("===========>",navIndex)
               }}
             >
               {prop.icon ? (
                 <>
-                  <i className={`${prop.icon}  ${prop.name === navIndex ? "" : ''}`} />
-                  <span className={`  ${prop.name === navIndex ? "" : ''}`}>{prop.name}</span>
+                  <i className={`  ${prop.icon}  ${prop.path === navIndex ? "" : ''}`} />
+                  <span className={`  ${prop.path === navIndex ? "" : ''}`}>{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
-                  <span className={`sidenav-mini-icon ${prop.name === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.miniName} </span>
-                  <span className={`sidenav-normal ${prop.name === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.name} </span>
+                  <span className={`sidenav-mini-icon ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.miniName} </span>
+                  <span className={`sidenav-normal ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.name} </span>
                 </>
               ) : null}
             </NavLink>
@@ -164,22 +214,22 @@ function Navbar({
         );
       }
       return (
-        <NavItem className={` ${prop.name === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
+        <NavItem className={` ${prop.path === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
           <NavLink
             to={prop.layout + prop.path}
             className=""
             onClick={
               () => {
                 closeSideNav()
-                dispatch(currentNavIndex(prop.name))
+                dispatch(currentNavIndex(prop.path))
               }
             }
             tag={NavLinkRRD}
           >
             {prop.icon !== undefined ? (
               <>
-                <i className={`${prop.icon}  ${prop.name === navIndex ? "text-primary" : 'text-white'}`} />
-                <span className={`  ${prop.name === navIndex ? "sass-active-text" : 'sass-link-text'}`}>{prop.name}</span>
+                <i className={`${prop.icon}  ${prop.path === navIndex ? "text-primary" : 'text-white'}`} />
+                <span className={`  ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}>{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (
               <>
