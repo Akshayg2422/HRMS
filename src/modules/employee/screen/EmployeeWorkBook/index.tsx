@@ -167,7 +167,7 @@ function EmployeeTimeSheets() {
     <>
       <TableWrapper
         buttonChildren={
-          <div className="mr--4">
+          <div className="mr--1">
             <Sort
               size={'btn-sm'}
               sortData={sortData}
@@ -198,7 +198,7 @@ function EmployeeTimeSheets() {
                   getEmployeeTimeSheets(currentPage);
                 }}
               /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
             </Container>
           </Container>
         }

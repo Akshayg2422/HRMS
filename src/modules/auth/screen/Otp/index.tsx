@@ -250,8 +250,10 @@ function Otp() {
           justifyContent={'justify-content-center'}
           alignItems={'align-items-center'}
           margin={'mt-4'}
+         
         >
           <OtpInput
+          //formCustomClass='ml-2'
             name='field1'
             onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
             value={otp.field1}
@@ -264,6 +266,7 @@ function Otp() {
 
           />
           <OtpInput
+           formCustomClass='ml-4'
             name='field2'
             value={otp.field2}
             onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
@@ -276,6 +279,7 @@ function Otp() {
             }}
           />
           <OtpInput
+           formCustomClass='ml-4'
             name='field3'
             value={otp.field3}
             ref={inputRef3}
@@ -287,6 +291,7 @@ function Otp() {
             }}
           />
           <OtpInput
+           formCustomClass='ml-4'
             name='field4'
             value={otp.field4}
             ref={inputRef4}

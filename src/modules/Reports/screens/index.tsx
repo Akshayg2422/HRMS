@@ -277,144 +277,165 @@ function Reports() {
 
 
   return (
-    <TableWrapper>
-      <div className='px-4 pb-4 mt--5'>
-        <Container flexDirection={'row'} display={'d-flex'} alignItems={'align-items-center'}>
-          <DropDown
-            additionClass={'col-lg-3 col-md-12'}
-            placeholder={'Select Report'}
-            value={reportsType} label={t('misReport')}
-            data={REPORTS_TYPE}
-            onChange={(event) => {
-              setReportsType(dropDownValueCheck(event.target.value, 'Select Report'))
-              setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
-              dispatch(resetMisReportData([]))
-            }} />
-          {(reportsType === "log") || (reportsType === 'shift') ? <div className="col-lg-3 col-md-12">
-            <DropDown
-              label={t('attendanceType')}
-              placeholder={"Select Attendance"}
-              data={ATTENDANCE_TYPE}
-              value={selectedAttendanceType}
-              onChange={(event) => {
-                if (setSelectedAttendanceType) {
-                  setSelectedAttendanceType(dropDownValueCheck(event.target.value, "Select Attendance"));
+    <>
+      <TableWrapper>
+        <div className='container-fluid mb-3'>
+          <div className='row'>
+            <div className='col-sm-3'>
+              <DropDown
+                additionClass={''}
+                placeholder={'Select Report'}
+                value={reportsType} label={t('misReport')}
+                data={REPORTS_TYPE}
+                onChange={(event) => {
+                  setReportsType(dropDownValueCheck(event.target.value, 'Select Report'))
+                  setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
+                  dispatch(resetMisReportData([]))
+                }} />
+            </div>
+            {(reportsType === "log") || (reportsType === 'shift') ?
+              <div className="col-sm-3">
+                <DropDown
+                  label={t('attendanceType')}
+                  placeholder={"Select Attendance"}
+                  data={ATTENDANCE_TYPE}
+                  value={selectedAttendanceType}
+                  onChange={(event) => {
+                    if (setSelectedAttendanceType) {
+                      setSelectedAttendanceType(dropDownValueCheck(event.target.value, "Select Attendance"));
+                    }
+                  }}
+                />
+              </div> : <></>}
+            <div className='col-sm-3'>
+              <ChooseBranchFromHierarchical />
+            </div>
+
+            {reportsType !== 'shift' &&
+              <div className='col-sm-3'>
+                <DropDown
+                  additionClass={''}
+                  label={t('designation')}
+                  placeholder={t('selectDesignation')}
+                  data={designationData}
+                  value={selectedDesignation}
+                  onChange={(event) => {
+                    if (setSelectedDesignation) {
+                      setSelectedDesignation(dropDownValueCheck(event.target.value, t('selectDesignation')));
+                    }
+                  }}
+                />
+              </div>
+            }
+            {reportsType === 'shift' &&
+              <div className='col-sm-3'>
+                <DropDown
+                  additionClass={''}
+                  label={t('designation')}
+                  placeholder={t('selectDesignation')}
+                  data={shiftDesignationData}
+                  value={shiftSelectedDesignation}
+                  onChange={(event) => {
+                    if (setShiftSelectedDesignation) {
+                      setInitialRender(false)
+                      setSelectedShift('')
+                      designationMatchShifts(event.target.value)
+                      setShiftSelectedDesignation(event.target.value);
+                    }
+                  }}
+                />
+              </div>
+            }
+            <div className='col-sm-3'>
+              <DropDown
+                additionClass={''}
+                label={"Department"}
+                placeholder={"Select Department"}
+                data={departmentsData}
+                value={selectedDepartment}
+                onChange={(event) => {
+                  if (setSelectedDepartment) {
+                    setSelectedDepartment(dropDownValueCheck(event.target.value, "Select Department"));
+                  }
+                }}
+              />
+            </div>
+            {reportsType === 'shift' &&
+              <div className='col-sm-3'>
+                <DropDown
+                  additionClass={''}
+                  label={"Shift"}
+                  placeholder={"Select Shift"}
+                  data={designationFilterShiftGroupData}
+                  value={selectedShift}
+                  onChange={(event) => {
+                    if (setSelectedShift) {
+                      setSelectedShift(event.target.value);
+                    }
+                  }}
+                />
+              </div>}
+            <div className='col-sm-3'>
+              <InputText
+                placeholder={t("enterEmployeeName")}
+                label={t("employeeName")}
+                value={searchEmployee}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+            </div>
+            <div className='col-sm-3'>
+              <h5 className=''>{t("startDate")}</h5>
+              <DatePicker
+                additionalClass='pt-1'
+                placeholder={"Select Date"}
+                icon={Icons.Calendar}
+                maxDate={Today}
+                iconPosition={"prepend"}
+                onChange={(date: string) =>
+                  dateTimePickerHandler(date, "dateFrom")
                 }
-              }}
-            />
-          </div> : <></>}
-          <Container additionClass={'col-lg-3 mt-4'}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-          {reportsType !== 'shift' && <DropDown
-            additionClass={'col-lg-3 col-md-12'}
-            label={t('designation')}
-            placeholder={t('selectDesignation')}
-            data={designationData}
-            value={selectedDesignation}
-            onChange={(event) => {
-              if (setSelectedDesignation) {
-                setSelectedDesignation(dropDownValueCheck(event.target.value, t('selectDesignation')));
-              }
-            }}
-          />}
-          {reportsType === 'shift' && <DropDown
-            additionClass={'col-lg-3 col-md-12'}
-            label={t('designation')}
-            placeholder={t('selectDesignation')}
-            data={shiftDesignationData}
-            value={shiftSelectedDesignation}
-            onChange={(event) => {
-              if (setShiftSelectedDesignation) {
-                setInitialRender(false)
-                setSelectedShift('')
-                designationMatchShifts(event.target.value)
-                setShiftSelectedDesignation(event.target.value);
-              }
-            }}
-          />}
-          <DropDown
-            additionClass={'col-lg-3 col-md-12'}
-            label={"Department"}
-            placeholder={"Select Department"}
-            data={departmentsData}
-            value={selectedDepartment}
-            onChange={(event) => {
-              if (setSelectedDepartment) {
-                setSelectedDepartment(dropDownValueCheck(event.target.value, "Select Department"));
-              }
-            }}
-          />
-          {reportsType === 'shift' && <DropDown
-            additionClass={'col-lg-3 col-md-12'}
-            label={"Shift"}
-            placeholder={"Select Shift"}
-            data={designationFilterShiftGroupData}
-            value={selectedShift}
-            onChange={(event) => {
-              if (setSelectedShift) {
-                setSelectedShift(event.target.value);
-              }
-            }}
-          />}
-          <Container additionClass={'col-lg-3 col-md-12'}>
-            <InputText
-              placeholder={t("enterEmployeeName")}
-              label={t("employeeName")}
-              value={searchEmployee}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-          </Container>
-          <Container additionClass={'col-lg-3'}>
-            <h5>{t("startDate")}</h5>
-            <DatePicker
-              placeholder={"Select Date"}
-              icon={Icons.Calendar}
-              maxDate={Today}
-              iconPosition={"prepend"}
-              onChange={(date: string) =>
-                dateTimePickerHandler(date, "dateFrom")
-              }
-              value={customRange.dateFrom}
-            />
-          </Container>
-          <Container additionClass={'col-lg-3'}>
-            <h5>{t("endDate")}</h5>
-            <DatePicker
-              placeholder={"Select Date"}
-              icon={Icons.Calendar}
-              maxDate={Today}
-              iconPosition={"append"}
-              onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
-              value={customRange.dataTo}
-            />
-          </Container>
-          <Container additionClass={'row ml-1'}>
+                value={customRange.dateFrom}
+              />
+            </div>
+            <div className='col-sm-3'>
+              <h5>{t("endDate")}</h5>
+              <DatePicker
+                additionalClass='pt-1'
+                placeholder={"Select Date"}
+                icon={Icons.Calendar}
+                maxDate={Today}
+                iconPosition={"append"}
+                onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
+                value={customRange.dataTo}
+              />
+            </div>
+          </div>
+          <div className='row ml-xl-1'>
             <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-1 p-auto'} onClick={() => getReports(currentPage)} />
-          </Container>
-        </Container>
-      </div>
-      {reportsType === "leave" &&
-        <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
-          : <NoRecordFound />}</>
-      }
-      {reportsType === "attendance" && <>
-        {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
-          : <NoRecordFound />}
-      </>
-      }
-      {reportsType === "log" &&
-        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
-          : <NoRecordFound />}</>
-      }
-      {reportsType === "shift" &&
-        <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
-          : <NoRecordFound />}</>
-      }
-    </TableWrapper>
+            <Primary text={'Search'} col={'col-xl-1 p-auto'} size={'btn-sm'} onClick={() => getReports(currentPage)} />
+          </div>
+        </div>
+        {reportsType === "leave" &&
+          <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
+            : <NoRecordFound />}</>
+        }
+        {reportsType === "attendance" && <>
+          {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
+            : <NoRecordFound />}
+        </>
+        }
+        {reportsType === "log" &&
+          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+            : <NoRecordFound />}</>
+        }
+        {reportsType === "shift" &&
+          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+            : <NoRecordFound />}</>
+        }
+      </TableWrapper>
+    </>
   )
 }
 

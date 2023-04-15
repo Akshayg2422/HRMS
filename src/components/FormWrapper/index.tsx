@@ -22,7 +22,7 @@ function index({
 }: FormWrapperProps) {
   return (
     <div className="">
-      <div className="row">
+      <div className="">
         <div className="card">
           {!isTitle && (
             <>
@@ -34,12 +34,12 @@ function index({
           )}
           <div className="card-body">
             <form id="create-form">
-              <div className="row justify-content-left">
+              <div className=" justify-content-left">
                 <div className="">{children}</div>
               </div>
             </form>
             {!hideFooter && (
-              <div className="row col-lg-2 ml-4 mt-4 mb-3 float-right">
+              <div className="  mt-4 mb-3 mr-2 float-right">
                 <Primary
                   disabled={buttonDisable}
                   text={buttonTittle ? buttonTittle : "Submit"}

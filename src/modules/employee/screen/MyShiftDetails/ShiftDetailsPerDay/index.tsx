@@ -96,19 +96,19 @@ function ShiftDetailsPerDay() {
     return (
         <div>
             <Card>
-                <Container additionClass='row mb-4'>
-                    <Container additionClass='row'>
+                <div className='mb-4'>
+                    <div >
                         <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')}`}</h2>
-                        {filteredDetails() && filteredDetails().length > 0 && <Container additionClass="text-right">
+                        {filteredDetails() && filteredDetails().length > 0 && <div className="row m-0 d-flex justify-content-end">
                             <Primary
                                 text={'Detailed View'}
                                 onClick={() => { navigate(ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY) }}
                                 size={"btn-md"}
                                 additionClass={"mt-sm-0 mt-2"}
                             />
-                        </Container>}
-                    </Container>
-                </Container>
+                        </div>}
+                    </div>
+                </div>
             </Card>
 
             <Container flexDirection={"row"} margin={"mt-3"}>

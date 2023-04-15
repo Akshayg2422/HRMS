@@ -317,7 +317,7 @@ function EmployeeLog() {
     <>
       <TableWrapper
         buttonChildren={
-          <div className="mr--4">
+          <div className="mr--1">
             <Sort
               size={'btn-sm'}
               sortData={employeeLogSort}
@@ -349,7 +349,7 @@ function EmployeeLog() {
                   getEmployeeLogs(currentPage);
                 }}
               /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-1'} onClick={() => { getEmployeeLogs(currentPage); }} />
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-2'} onClick={() => { getEmployeeLogs(currentPage); }} />
             </Container>
 
           </Container>

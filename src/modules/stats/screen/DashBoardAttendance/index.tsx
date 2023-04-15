@@ -486,7 +486,7 @@ const DashBoardAttendance = ({ }) => {
                     }}
                   />
                 </div>
-                <div className="col-lg-3 col-md-12 mt-1">
+                <div className="col-lg-3 col-md-12 " style={{marginTop:"4px"}}>
                   <h5>{t("selectedDate")}</h5>
                   <DatePicker
                     placeholder={"Select Date"}
@@ -501,7 +501,7 @@ const DashBoardAttendance = ({ }) => {
                     }
                   />
                 </div>
-                <Container additionClass={'col-lg-3 col-md-12'}>
+                <Container additionClass={'col-lg-3 col-md-12'} >
                   <InputText
                     placeholder={t("enterEmployeeName")}
                     label={t("employeeName")}

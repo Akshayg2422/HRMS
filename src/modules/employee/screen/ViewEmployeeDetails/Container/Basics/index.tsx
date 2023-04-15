@@ -15,6 +15,7 @@ import {
     Divider,
     Primary,
     ImageView,
+    Card,
 } from "@components";
 import {
     GENDER_LIST,
@@ -248,7 +249,6 @@ const BasicView = () => {
     return (
         <ScreenContainer>
             <FormWrapper hideFooter title={t("viewEmployeeDetails")} isTitle>
-
                 <Container additionClass={'text-right'}>
                     <ImageView icon={Icons.Edit} onClick={() => {
                         goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEE);

@@ -15,7 +15,7 @@ interface OTPprops {
 
 const OtpInput = React.forwardRef(({ onChange, name, value, formCustomClass,onKeyUp }: OTPprops, ref) => {
   return (
-    <Container additionClass={formCustomClass} style={{ width: '70px' }} textColor='text-dark'>
+    <Container additionClass={formCustomClass} style={{ width: '47px' }} textColor='text-dark'>
       <Input maxLength={1} textColor='text-primary' onKeyUp={onKeyUp}  type={'number'}   autoFocus={true} padding={'p-3'} 
        onChange={onChange} name={name} value={value} ref={ref} />
     </Container>
