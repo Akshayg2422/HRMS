@@ -98,13 +98,13 @@ export const CHILD_PATH = [
   { path: "/view-employee", parent: '/employee', name: 'View Employee', showBack: true, showBreadCrums: true },
   { path: "/inactive-employee-list", parent: '/employee', name: 'Deleted Employees', showBack: true, showBreadCrums: true },
   { path: "/my-notification", parent: '/notifications', name: 'BroadCast', showBack: true, showBreadCrums: true },
-  { path: "/leave-request", parent: '/approvals', name: 'Employee Leaves', showBack: true, showBreadCrums: true },
-  { path: "/modify-logs", parent: '/approvals', name: 'Modify Logs', showBack: true, showBreadCrums: true },
-  { path: "/employees-shifts", parent: '/approvals', name: 'Employee Shifts', showBack: true, showBreadCrums: true },
-  { path: "/shift-request", parent: '/approvals', name: 'Shift Request', showBack: true, showBreadCrums: true },
-  { path: "/face-re-register-request", parent: '/approvals', name: 'Face Re-register Request', showBack: true, showBreadCrums: true },
-  { path: "/log-approval", parent: '/approvals', name: 'Log Approval', showBack: true, showBreadCrums: true },
-  { path: "/face-re-request", parent: '/approvals', name: 'Face Approval', showBack: true, showBreadCrums: true },
+  // { path: "/leave-request", parent: '/approvals', name: 'Employee Leaves', showBack: true, showBreadCrums: true },
+  // { path: "/modify-logs", parent: '/approvals', name: 'Modify Logs', showBack: true, showBreadCrums: true },
+  // { path: "/employees-shifts", parent: '/approvals', name: 'Employee Shifts', showBack: true, showBreadCrums: true },
+  // { path: "/shift-request", parent: '/approvals', name: 'Shift Request', showBack: true, showBreadCrums: true },
+  // { path: "/face-re-register-request", parent: '/approvals', name: 'Face Re-register Request', showBack: true, showBreadCrums: true },
+  // { path: "/log-approval", parent: '/approvals', name: 'Log Approval', showBack: true, showBreadCrums: true },
+  // { path: "/face-re-request", parent: '/approvals', name: 'Face Approval', showBack: true, showBreadCrums: true },
   { path: "/profile", parent: '/profile', name: 'Profile', showBack: true, showBreadCrums: true },
   // { path: "/stats-attendance", parent: '/dashboard', name: 'Stats Attendance', showBack: true, showBreadCrums: true },
   { path: "/profile", parent: '/profile', name: 'Profile', showBack: true, showBreadCrums: false },
@@ -224,32 +224,7 @@ export const BLOOD_GROUP_LIST = [
 // single-copy-04
 
 
- // {
-  //   id:1,
-  //   collapse: true,
-  //   name: "Courses",
-  //   icon: "ni ni-ungroup text-orange",
-  //   state: "dashboardsCollapses",
-  //   views: [
-  //     {
-  //       id:1,
-  //       path: "/add-course",
-  //       name: "Add Course",
-  //       miniName: "JS",
-  //       component: <AddCourse />,
-  //       layout: "/dashboard",
-  //     },
-  //     {
-  //       id:2,
-  //       path: "/assign-course-students",
-  //       name: "Assign Course",
-  //       miniName: "AC",
-  //       component: <AssignCourseToStudents isCourseNotAssigned={true} />,
-  //       layout: "/dashboard",
 
-  //     },
-  //   ],
-  // },
 
 
 export const NAV_ITEM = [
@@ -270,7 +245,7 @@ export const NAV_ITEM = [
           name: "Employees Leaves",
           miniName: "JS",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4' 
+          icon:'ni ni-album-2 ml-sm-4' 
         },
         {
           id:2,
@@ -278,7 +253,7 @@ export const NAV_ITEM = [
           name: "Modify logs",
           miniName: "AC",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4'
+          icon:'ni ni-ruler-pencil ml-sm-4'
   
         },
         {
@@ -287,7 +262,7 @@ export const NAV_ITEM = [
           name: "Employees shifts",
           miniName: "AC",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4'
+          icon:'ni ni-time-alarm ml-sm-4'
   
         },
         {
@@ -296,7 +271,7 @@ export const NAV_ITEM = [
           name: "Shift Request",
           miniName: "AC",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4'
+          icon:'ni ni-bullet-list-67 ml-sm-4'
   
         },
         {
@@ -305,7 +280,7 @@ export const NAV_ITEM = [
           name: "Face Re-register",
           miniName: "AC",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4'
+          icon:'ni ni-badge ml-sm-4'
   
         },
         {
@@ -314,7 +289,7 @@ export const NAV_ITEM = [
           name: "Log Approval",
           miniName: "AC",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4'
+          icon:'ni ni-circle-08 ml-sm-4'
   
         },
         {
@@ -323,7 +298,7 @@ export const NAV_ITEM = [
           name: "Face Approval",
           miniName: "AC",
           layout: "",
-          icon:'ni ni-bell-55 ml-sm-4'
+          icon:'ni ni-image ml-sm-4'
   
         },
       ],
