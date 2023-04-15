@@ -254,7 +254,7 @@ function ELocker() {
             </TableWrapper>
 
 
-            <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
+            <Modal size={'modal-sm'} title={viewDocument.name}  showModel={model} toggle={() => setModel(!model)} >
                 {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {
                     return (
                         <>

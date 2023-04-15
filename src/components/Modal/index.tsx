@@ -45,37 +45,15 @@ const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChan
 
 
   return (
-    // <div
-    //   className={`${'modal fade ' + modalShow}`}
-    //   role="dialog"
-    //   aria-hidden="true"
-    //   style={{ display: display, }} >
-    //   <div className={`modal-dialog modal-dialog-centered modal-dialog-scrollable  ${size}`} role="document">
-    //     <div className="modal-content  ">
-    //       <div className="modal-header mx-3 mt-3">
-    //         <h5 className="modal-title" >{title}</h5>
-    //         <button type="button" className="close" onClick={toggle} aria-label="Close">
-    //           <span aria-hidden="true">&times;</span>
-    //         </button>
-    //       </div>
-    //       <div className="modal-body scroll-hidden overflow-auto">{children}</div>
-
-    //       {footer && <div className="modal-footer">
-    //         <button type="button" className="btn btn-link" onClick={toggle}>Close</button>
-    //         <button type="button" className="btn btn-primary ml-auto" onClick={saveChange}>Save change</button>
-    //       </div>}
-    //     </div>
-    //   </div>
-    // </div>
-
-    <ReactModal 
-      className={`modal-dialog-centered ${size}`}  
+    <ReactModal
+      className={`modal-dialog-centered ${size}`}
       isOpen={modalShow}
       toggle={toggle}
+      fade={false}
     >
       <div className="modal-header">
         <h5 className="modal-title" id="exampleModalLabel">
-         {title}
+          {title}
         </h5>
         <button
           aria-label="Close"

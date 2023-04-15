@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js";
-import { Line, Bar, Doughnut, Pie } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import { Card, CardHeader, CardBody, Row, Col } from "reactstrap";
 import { useSelector } from "react-redux";
 import {
@@ -16,6 +16,11 @@ function Charts() {
   const { employeeattendancedatalog } = useSelector(
     (state) => state.EmployeeReducer
   );
+
+  const { hierarchicalBranchIds } = useSelector(
+    (state) => state.DashboardReducer
+  );
+
   const [barChart, setBarChart] = useState()
   const [lineChart, setLineChart] = useState()
 
@@ -27,7 +32,7 @@ function Charts() {
   useEffect(() => {
     barChartNormalizedData()
     lineChartNormalizedData()
-  }, []);
+  }, [hierarchicalBranchIds, employeeattendancedatalog]);
 
   const barChartNormalizedData = () => {
     const barChartDataSet = { labels: [], dataset: [] }
@@ -115,7 +120,6 @@ function Charts() {
           label: "Count"
         }
       ],
-      hoverOffset: 1
     }
   };
 
@@ -183,8 +187,8 @@ function Charts() {
                 <h6 className="surtitle">Overview</h6>
                 <h5 className="h3 mb-0">Department wise</h5>
               </CardHeader>
-              <CardBody>
-                <div className="chart">
+              <CardBody style={{ overflowX: 'auto' }} className={'scroll-hidden'}>
+                <div className="chart" style={{ width: '800px' }}>
                   <Bar
                     data={lineChartData.data}
                     options={chartExample7.options}

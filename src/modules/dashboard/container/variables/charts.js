@@ -1,29 +1,5 @@
-/*!
-
-=========================================================
-* Argon Dashboard PRO React - v1.2.2
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-pro-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 const Chart = require("chart.js");
-// Only for demo purposes - return a random number to generate datasets
-var randomScalingFactor = function () {
-  return Math.round(Math.random() * 100);
-};
 
-//
-// Chart extension for making the bars rounded
-// Code from: https://codepen.io/jedtrow/full/ygRYgo
-//
 
 Chart.elements.Rectangle.prototype.draw = function () {
   var ctx = this._chart.ctx;
@@ -54,7 +30,6 @@ Chart.elements.Rectangle.prototype.draw = function () {
     borderSkipped = vm.borderSkipped || "left";
   }
 
-  // Canvas doesn't allow us to stroke inside the width so we can
   // adjust the sizes to fit if we're setting a stroke on the line
   if (borderWidth) {
     // borderWidth shold be less than bar width and bar height.
@@ -151,7 +126,7 @@ Chart.elements.Rectangle.prototype.draw = function () {
   }
 };
 
-var mode = "light"; //(themeMode) ? themeMode : 'light';
+var mode = "light"; 
 var fonts = {
   base: "Open Sans"
 };
@@ -259,7 +234,6 @@ function chartOptions() {
     }
   };
 
-  // yAxes
   Chart.scaleService.updateScaleDefaults("linear", {
     gridLines: {
       borderDash: [2],
@@ -284,7 +258,6 @@ function chartOptions() {
     }
   });
 
-  // xAxes
   Chart.scaleService.updateScaleDefaults("category", {
     gridLines: {
       drawBorder: false,
@@ -299,7 +272,6 @@ function chartOptions() {
   return options;
 }
 
-// Parse global options
 function parseOptions(parent, options) {
   for (var item in options) {
     if (typeof options[item] !== "object") {
@@ -310,12 +282,11 @@ function parseOptions(parent, options) {
   }
 }
 
-// Example 6 of Chart inside src/views/pages/Charts.js
 const chartExample6 = {
   options: {
     responsive: true,
     legend: {
-      position: "top"
+      position: "top",
     },
     animation: {
       animateScale: true,
@@ -325,57 +296,13 @@ const chartExample6 = {
 };
 
 const chartExample7 = {
-  data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [
-      {
-        label: "Dataset 1",
-        backgroundColor: colors.theme["danger"],
-        data: [
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor()
-        ],
-        maxBarThickness: 10
-      },
-      {
-        label: "Dataset 2",
-        backgroundColor: colors.theme["primary"],
-        data: [
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor()
-        ],
-        maxBarThickness: 10
-      },
-      {
-        label: "Dataset 3",
-        backgroundColor: colors.theme["success"],
-        data: [
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor(),
-          randomScalingFactor()
-        ],
-        maxBarThickness: 10
-      }
-    ]
-  },
   options: {
     tooltips: {
       mode: "index",
       intersect: false
+    },
+    legend: {
+      display: false,
     },
     responsive: true,
     scales: {

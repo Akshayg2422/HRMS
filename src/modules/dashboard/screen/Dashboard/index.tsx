@@ -32,9 +32,6 @@ function Dashboard() {
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
 
-  const [initialCall, setInitialCall] = useState(false)
-  const [reloadFlag, setReloadFlag] = useState(false);
-
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
@@ -79,18 +76,14 @@ function Dashboard() {
         params,
         onSuccess: (response: any) => () => {
           const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-          if (employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0) {
-            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
-          }
+          getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
           dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
         },
         onError: () => () => {
         },
       }))
     } else {
-      if (employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0) {
-        getStatsDetails({ ...hierarchicalBranchIds })
-      }
+      getStatsDetails({ ...hierarchicalBranchIds })
     }
   }
 
@@ -102,7 +95,6 @@ function Dashboard() {
     dispatch(getEmployeeAttendanceStats({
       params,
       onSuccess: (response: any) => () => {
-        setInitialCall(true)
       },
       onError: (error: any) => () => {
 
@@ -132,8 +124,10 @@ function Dashboard() {
   return (
     <>
       <ScreenContainer>
-        <Container additionClass="col-xl-3">
-          <ChooseBranchFromHierarchical />
+        <Container additionClass={'d-flex justify-content-end'}>
+          <Container additionClass="col-xl-3">
+            <ChooseBranchFromHierarchical />
+          </Container>
         </Container>
         <Container>
           {employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.length > 0 ? <Charts /> : <></>}
