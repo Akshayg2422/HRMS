@@ -282,6 +282,11 @@
                             padding-left: 8px;
                             transition: all .1s ease 0s;
                         }
+                        span.sidenav-active {
+                            padding-left: 8px;
+                            transition: all .1s ease 0s;
+                            color: #ec6101;
+                        }
 
                         span.sidenav-active {
                             padding-left: 8px;
@@ -452,7 +457,10 @@
             }
         }
 
-        .nav-item .collapse .sidenav-normal {
+        .nav-item .collapse .sidenav-normal  {
+            display: none !important;
+        }
+        .nav-item .collapse .sidenav-active  {
             display: none !important;
         }
 
@@ -476,7 +484,10 @@
             }
         }
 
-        .nav-item .collapse .sidenav-normal {
+        .nav-item .collapse .sidenav-normal  {
+            display: none !important;
+        }
+        .nav-item .collapse .sidenav-active  {
             display: none !important;
         }
 
