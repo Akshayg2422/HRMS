@@ -18,6 +18,7 @@ const Profile = () => {
     (state: any) => state.DashboardReducer
   );
 
+  
   return (
     <Container additionClass="row justify-content-center my-4">
       <Card additionClass={"col-lg-6 col-md-8"}>

@@ -21,6 +21,8 @@ import {
   getEmployeesTimeSheets,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { Collapse } from "reactstrap";
+
 import { useTranslation } from "react-i18next";
 import {
   paginationHandler,
@@ -32,7 +34,7 @@ import { Icons } from "@assets";
 import { Navbar } from "@modules";
 
 type TimeSheetResponse = {
-  id?: string;
+  id?: any;
   details?: string;
   attachments?: [];
   time_stamp?: string;
@@ -54,6 +56,8 @@ function EmployeeTimeSheets() {
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
   const KeyPress = useKeyPress('Enter')
+  const [collapseId, setCollapseId] = useState<any>()
+
 
   const {
     employeeTimeSheets,
@@ -133,7 +137,7 @@ function EmployeeTimeSheets() {
   const onTabChange = (index: number) => {
     setType(sortData[index].title.toLocaleLowerCase());
   };
-  
+
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -162,6 +166,16 @@ function EmployeeTimeSheets() {
       ) : <NoRecordFound />}
     </>
   }, [employeeTimeSheets])
+
+
+  const collapsesToggle = (collapse: string) => {
+    let openedCollapses = collapseId
+    if (openedCollapses?.includes(collapse)) {
+      setCollapseId('')
+    } else {
+      setCollapseId(collapse)
+    }
+  }
 
   return (
     <>
@@ -193,11 +207,6 @@ function EmployeeTimeSheets() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-                onClick={() => {
-                  getEmployeeTimeSheets(currentPage);
-                }}
-              /> */}
               <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
             </Container>
           </Container>
@@ -231,13 +240,9 @@ function EmployeeTimeSheets() {
                   return (
                     <div className="accordion">
                       <div
-                        data-toggle="collapse"
-                        data-target={
-                          index === accordion
-                            ? "#collapse" + index
-                            : undefined
-                        }
-                        id="accordionExample"
+                        role="tab"
+                        onClick={() => collapsesToggle(item.id)}
+                        aria-expanded={collapseId === item.id}
                       >
                         <Container
                           flexDirection={"flex-row"}
@@ -267,16 +272,11 @@ function EmployeeTimeSheets() {
                         <Divider />
                       </div>
 
-                      {accordion === index && (
-                        <div
-                          className="collapse"
-                          id={
-                            index === accordion
-                              ? "collapse" + index
-                              : undefined
-                          }
+                      {collapseId === item.id && (
+                        <Collapse role="tabpanel"
+                          isOpen={collapseId === item.id}
                         >
-                          <div className="card-body row align-items-center">
+                          <div className="card-body align-items-center">
                             {item.attachments &&
                               item.attachments.length > 0 ? (
                               <Carousel
@@ -287,7 +287,7 @@ function EmployeeTimeSheets() {
                               <NoRecordFound text={t("imageNotFound")} />
                             )}
                           </div>
-                        </div>
+                        </Collapse>
                       )}
                     </div>
                   );

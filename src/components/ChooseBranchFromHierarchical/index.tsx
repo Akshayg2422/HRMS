@@ -251,7 +251,7 @@ const SubLevelComponent = ({
                 }
               }}
             />
-          </div>
+          </div>  
         </div>
       </div>
       <Collapse role="tabpanel"
