@@ -1,3 +1,5 @@
+
+
 import React, { useEffect } from "react";
 import { useLocation, NavLink as NavLinkRRD, Link } from "react-router-dom";
 import classnames from "classnames";
@@ -20,17 +22,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
 
 function Navbar({
-  routes = NAV_ITEM,
-  logo = {
-    innerLink: '/',
-    imgSrc: Icons.LogoSmall,
-    imgAlt: '...',
-    text: '',
-  },
-  rtlActive = false
+  toggleSideNav,
+  routes ,
+  logo ,
+  rtlActive = false,
+  sideNavOpen
 }: SidebarProps) {
 
-  const [sideNavOpen, setSideNavOpen] = React.useState(true);
+  // const [sideNavOpen, setSideNavOpen] = React.useState(true);
   const [state, setState] = React.useState<any>({});
   const location = useLocation();
   const navigate = useNav();
@@ -97,18 +96,7 @@ function Navbar({
     setState(getCollapseStates(routes));
   }, []);
 
-  const toggleSideNav = () => {
 
-    if (document.body.classList.contains('g-sidenav-pinned')) {
-      document.body.classList.remove('g-sidenav-pinned');
-      document.body.classList.add('g-sidenav-hidden');
-    }
-    else {
-      document.body.classList.add('g-sidenav-pinned');
-      document.body.classList.remove('g-sidenav-hidden');
-    }
-    setSideNavOpen(!sideNavOpen);
-  };
 
 
   // verifies if routeName is the one active (in browser input)
@@ -313,4 +301,4 @@ function Navbar({
     </SideNav>
   );
 }
-export default Navbar;
+export  {Navbar};
