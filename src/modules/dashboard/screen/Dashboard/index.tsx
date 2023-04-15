@@ -124,7 +124,7 @@ function Dashboard() {
   return (
     <>
       <ScreenContainer>
-        <Container additionClass={'d-flex justify-content-end'}>
+        <Container additionClass={'d-flex justify-content-end mr-xl--3'}>
           <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
           </Container>
@@ -133,7 +133,6 @@ function Dashboard() {
           {employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.length > 0 ? <Charts /> : <></>}
         </Container>
       </ScreenContainer>
-
     </>
   );
 }
