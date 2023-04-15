@@ -6,7 +6,6 @@ import classnames from "classnames";
 import PerfectScrollbar from "react-perfect-scrollbar";
 import { CHILD_PATH, NAV_ITEM, useNav } from "@utils";
 
-
 import {
   Collapse,
   NavbarBrand,
@@ -20,16 +19,16 @@ import { SidebarProps } from './interface';
 import { Icons } from "@assets";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
+import { Container } from "@components";
 
 function Navbar({
   toggleSideNav,
-  routes ,
-  logo ,
+  routes,
+  logo,
   rtlActive = false,
   sideNavOpen
 }: SidebarProps) {
 
-  // const [sideNavOpen, setSideNavOpen] = React.useState(true);
   const [state, setState] = React.useState<any>({});
   const location = useLocation();
   const navigate = useNav();
@@ -55,11 +54,7 @@ function Navbar({
       if (pathname === el.path && pathname !== "/approvals") {
         dispatch(currentNavIndex(el.path));
       }
-      // else if (pathname === ) {
-      //   dispatch(currentNavIndex(el.views.path))
-      // }
       else {
-
         el?.views?.forEach((it: any, index: number) => {
           if (it.path === pathname && pathname !== "/approvals") {
             dispatch(currentNavIndex(it.path))
@@ -85,19 +80,9 @@ function Navbar({
     })
   }
 
-
-
-
-  console.log("===========>", pathname.substring(1), navIndex)
-
-
-
   React.useEffect(() => {
     setState(getCollapseStates(routes));
   }, []);
-
-
-
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
@@ -145,6 +130,7 @@ function Navbar({
     }
     return false;
   };
+
   // this is used on mobile devices, when a user navigates
   // the sidebar will autoclose
   const closeSideNav = () => {
@@ -154,10 +140,10 @@ function Navbar({
       }
     }
   };
+
   // this function creates the links and collapses that appear in the sidebar (left menu)
   const createLinks = (routes: any) => {
     return routes.map((prop: any, key: any) => {
-      console.log("00000000000>", key)
       if (prop.redirect) {
         return null;
       }
@@ -170,15 +156,11 @@ function Navbar({
             <NavLink
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
-              // className={` "ml-2" ${classnames({
-              //   active: getCollapseInitialState(prop.views),
-              // })}`}
               className="ml-2 pointer"
-              onClick={(e) => {
+              onClick={(e: any) => {
                 e.preventDefault();
                 setState(st);
                 prop.name !== 'Approvals' && dispatch(currentNavIndex(prop.path));
-                console.log("===========>",navIndex)
               }}
             >
               {prop.icon ? (
@@ -218,11 +200,6 @@ function Navbar({
               <>
                 <i className={`${prop.icon}  ${prop.path === navIndex ? "text-primary" : 'text-white'}`} />
                 <span className={`  ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}>{prop.name}</span>
-              </>
-            ) : prop.miniName !== undefined ? (
-              <>
-                <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
               </>
             ) : (
               prop.name
@@ -277,7 +254,7 @@ function Navbar({
         <Collapse navbar isOpen={true}>
           <Nav navbar>
             {createLinks(routes)}
-            <small className={"text-white text-version "}>Version: 1.30</small>
+            <small className={"text-white text-version"}>Version: 1.30</small>
           </Nav>
         </Collapse>
       </div>
@@ -301,4 +278,4 @@ function Navbar({
     </SideNav>
   );
 }
-export  {Navbar};
+export { Navbar };
