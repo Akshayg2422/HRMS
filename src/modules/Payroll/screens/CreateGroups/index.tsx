@@ -494,6 +494,7 @@ function CreateGroup() {
                 <InputText
                     label={t('maximumLimit')}
                     placeholder={t('maximumLimit')}
+                    type={'number'}
                     value={maximumLimit}
                     onChange={(event) => {
                         setMaximumLimit(event.target.value);

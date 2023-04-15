@@ -4,7 +4,7 @@ import { goTo, ROUTE, useNav } from '@utils'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreateGroup, getCompanyDeductions, settingSelectedDeductionDetails } from '../../../../store/Payroll/actions';
+import { CreateGroup, getCompanyDeductions, getCompanyDeductionsPaginated, settingSelectedDeductionDetails } from '../../../../store/Payroll/actions';
 
 const DROPDOWN_ITEM = [
     { id: '1', name: 'Edit', value: 'CL', icon: 'ni ni-active-40' },
@@ -36,9 +36,11 @@ function DeductionGroupList() {
 
     const getCompanyDeductionsList = (pageNumber: number) => {
 
-        const params = {}
+        const params = {
+            page_number: pageNumber
+        }
 
-        dispatch(getCompanyDeductions({
+        dispatch(getCompanyDeductionsPaginated({
             params,
             onSuccess: (success: any) => () => {
             },
@@ -99,7 +101,7 @@ function DeductionGroupList() {
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedAllowanceList(companyDeductionsList?.data)}
                     tableOnClick={(e, index, item) => {
-                       
+
                     }}
                 />
             ) : <NoRecordFound />}
@@ -114,13 +116,13 @@ function DeductionGroupList() {
                 buttonChildren={
                     <Primary
                         text={t("add")}
-                        additionClass={'col-sm-0 mr--4'}
+                        additionClass={'col-sm-0 mr--1'}
                         onClick={() => {
                             dispatch(CreateGroup('Deduction'))
                             manageRouteHandler(undefined)
                         }
                         }
-                        size={"btn-md"}
+                        size={"btn-sm"}
                     />
                 }
             >

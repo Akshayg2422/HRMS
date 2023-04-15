@@ -18,6 +18,10 @@ import {
   GET_ALLOWANCE_GROUPS_FAILURE,
   GET_ALLOWANCE_GROUPS_SUCCESS,
 
+  GET_ALLOWANCE_GROUPS_PAGINATED,
+  GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE,
+  GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS,
+
   GET_ALLOWANCE_GROUP_DETAILS,
   GET_ALLOWANCE_GROUP_DETAILS_SUCCESS,
   GET_ALLOWANCE_GROUP_DETAILS_FAILURE,
@@ -31,6 +35,10 @@ import {
   GET_COMPANY_DEDUCTIONS,
   GET_COMPANY_DEDUCTIONS_SUCCESS,
   GET_COMPANY_DEDUCTIONS_FAILURE,
+
+  GET_COMPANY_DEDUCTIONS_PAGINATED,
+  GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS,
+  GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE,
 
   SETTING_SELECTED_DEDUCTION_DETAILS,
 
@@ -195,6 +203,32 @@ export const getAllowanceGroupsFailure = (error) => {
   };
 };
 
+
+/**
+ * get Allowance Groups
+ */
+
+export const getAllowanceGroupsPaginated = (type) => {
+  return {
+    type: GET_ALLOWANCE_GROUPS_PAGINATED,
+    payload: type,
+  };
+};
+
+export const getAllowanceGroupsPaginatedSuccess = (response) => {
+  return {
+    type: GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getAllowanceGroupsPaginatedFailure = (error) => {
+  return {
+    type: GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE,
+    payload: error,
+  };
+};
+
 /**
  * get Allowance Group details
  */
@@ -266,6 +300,31 @@ export const getCompanyDeductionsSuccess = (response) => {
 export const getCompanyDeductionsFailure = (error) => {
   return {
     type: GET_COMPANY_DEDUCTIONS_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * get company deductions  Paginated
+ */
+
+export const getCompanyDeductionsPaginated = (type) => {
+  return {
+    type: GET_COMPANY_DEDUCTIONS_PAGINATED,
+    payload: type,
+  };
+};
+
+export const getCompanyDeductionsPaginatedSuccess = (response) => {
+  return {
+    type: GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getCompanyDeductionsPaginatedFailure = (error) => {
+  return {
+    type: GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE,
     payload: error,
   };
 };

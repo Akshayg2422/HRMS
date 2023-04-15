@@ -7,6 +7,7 @@ import { showToast, useNav, validateName } from '@utils';
 import { attachUserDocument, getEmployeeDocument } from '../../../../store/employee/actions';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
+import { Button } from 'reactstrap';
 
 
 function ELocker() {
@@ -211,7 +212,7 @@ function ELocker() {
     return (
         <div>
             <TableWrapper>
-                <Container additionClass='mt-2 mx-4'>
+                <Container additionClass='mt-2 mx-4 '>
                     <h1>{t("E_Locker")}</h1>
                     <Container
                         flexDirection={"row"}
@@ -227,34 +228,34 @@ function ELocker() {
                             />
 
                         </Container>
-                        <Icon type={"btn-primary"} additionClass={'mt--3'} icon={Icons.Search}
+                        <Button
                             onClick={() => {
                                 SelectedBranchFilter()
-                            }}
-                        />
-                        <Container
-                            col={"col"}
-                            additionClass={"mb-3"}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
+                            }} className='bg-primary text-white border-0 btn-icon mt--3'
+                        >
+                            <ImageView additionClass={''} icon={Icons.Search} height={20} width={20} />
+                        </Button>
+                        <div className='row col-sm-4 mt--3'
+
                             onClick={() => setUploadModel(!uploadModel)}
                         >
-                            <Icon
-                                text={t('add') + " " + "+"}
-                            />
-                        </Container>
+                            <Button className='bg-primary text-white border-0'
+                            >{t('add')}</Button>
+
+
+                        </div>
                     </Container>
 
                 </Container>
-                <Container additionClass='mx--3'>
+                <>
                     {
                         memoizedTable
                     }
-                </Container>
+                </>
             </TableWrapper>
 
 
-            <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
+            <Modal size={'modal-sm'} title={viewDocument.name}  showModel={model} toggle={() => setModel(!model)} >
                 {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {
                     return (
                         <>
@@ -330,16 +331,17 @@ function ELocker() {
                                 </>
                                 }
                             </Container>
-                            <Container margin={"mt-5"} additionClass={'text-right'}>
-                                <Secondary
-                                    text={t("cancel")}
-                                    onClick={() => handleUploadModelCancel()}
-                                />
-                                <Primary
-                                    text={t("upload")}
-                                    onClick={() => AttachDocuments()}
-                                />
-                            </Container>
+
+                        </Container>
+                        <Container margin={"mt-5"} additionClass={'text-right'}>
+                            <Secondary
+                                text={t("cancel")}
+                                onClick={() => handleUploadModelCancel()}
+                            />
+                            <Primary
+                                text={t("upload")}
+                                onClick={() => AttachDocuments()}
+                            />
                         </Container>
                     </Container>
                 </Container>

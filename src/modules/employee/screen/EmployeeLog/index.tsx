@@ -37,6 +37,8 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@modules";
 import { Icons } from "@assets";
+import { Collapse } from "reactstrap";
+
 
 type CheckInLog = {
   date?: string;
@@ -81,6 +83,9 @@ function EmployeeLog() {
     { id: 1, title: t("last3Months") },
     { id: 2, title: moment().format("MMMM") },
   ];
+
+  const [collapseId, setCollapseId] = useState<any>()
+
 
   const {
     registeredEmployeesList,
@@ -298,6 +303,7 @@ function EmployeeLog() {
           tableOnClick={(e, index, item) => {
             const selectedEmployee = registeredEmployeesList[index];
             getUserCheckInLogs(selectedEmployee);
+            setCollapseId('')
           }}
           paginationNumberClick={(currentPage) => {
             getEmployeeLogs(paginationHandler("current", currentPage));
@@ -313,11 +319,23 @@ function EmployeeLog() {
     </>
   }, [registeredEmployeesList])
 
+
+  const collapsesToggle = (collapse: string) => {
+    console.log("========>", collapse);
+
+    let openedCollapses = collapseId
+    if (openedCollapses?.includes(collapse)) {
+      setCollapseId('')
+    } else {
+      setCollapseId(collapse)
+    }
+  }
+
   return (
     <>
       <TableWrapper
         buttonChildren={
-          <div className="mr--4">
+          <div className="mr--1">
             <Sort
               size={'btn-sm'}
               sortData={employeeLogSort}
@@ -344,12 +362,7 @@ function EmployeeLog() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
-                onClick={() => {
-                  getEmployeeLogs(currentPage);
-                }}
-              /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-1'} onClick={() => { getEmployeeLogs(currentPage); }} />
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-2'} onClick={() => { getEmployeeLogs(currentPage); }} />
             </Container>
 
           </Container>
@@ -384,17 +397,15 @@ function EmployeeLog() {
             <div>
               {employeeCheckInLogs.map((item: any, index: number) => {
                 return (
-                  <div className="accordion" id="accordionExample" key={item?.id}>
+                  <div className="accordion" id="accordionExample" key={item?.id} >
                     <div
                       data-toggle="collapse"
-                      data-target={
-                        index === accordion ? "#collapse" + index : undefined
-                      }
-                      key={item?.id}
+                      role="tab"
+                      aria-expanded={collapseId === item.id}
                       onClick={() => {
                         if (accordion !== index || !clicked) {
                           getEmployeeCheckInDetailedLogPerDay(item, index);
-                          setAccordion(index);
+                          collapsesToggle(item.id)
                           setClicked(true);
                         } else {
                           setClicked(false);
@@ -431,15 +442,11 @@ function EmployeeLog() {
                       </Container>
                       <Divider />
                     </div>
-
-                    {accordion === index && (
-                      <div
-                        className="collapse"
-                        id={
-                          index === accordion ? "collapse" + index : undefined
-                        }
+                    {collapseId === item.id && (
+                      <Collapse
+                        isOpen={collapseId === item.id}
                       >
-                        <div className="card-body row align-items-center">
+                        <div className="card-body align-items-center">
                           {employeeCheckInDetailedLogPerDay &&
                             employeeCheckInDetailedLogPerDay.length > 0 ? (
                             <div>
@@ -483,14 +490,14 @@ function EmployeeLog() {
                               )}
                             </div>
                           ) : (
-                            <div className="row align-items-center">
-                              <small className="mb-0 text-center">
+                            <div className="d-flex justify-content-center">
+                              <small className="mb-0">
                                 {t("noLogsFound")}
                               </small>
                             </div>
                           )}
                         </div>
-                      </div>
+                      </Collapse>
                     )}
                   </div>
                 );

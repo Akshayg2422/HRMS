@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import { getGenderByValue, getImageUri } from "@utils";
 import { useTranslation } from "react-i18next";
 import { Icons } from "@assets";
+import { Col,Row } from "react-bootstrap";
 
 const Profile = () => {
 
@@ -18,20 +19,22 @@ const Profile = () => {
     (state: any) => state.DashboardReducer
   );
 
+  
   return (
-    <Container additionClass="row justify-content-center my-4">
-      <Card additionClass={"col-lg-6 col-md-8"}>
+    <Container additionClass="row justify-content-center my-4 m-0">
+      <Card additionClass={"col-lg-12 col-md-8"}>
         <Container additionClass={"col text-center mt-3"}>
           <ImageView
-            style={{ objectFit: 'cover' }}
-            width={'100%'}
-            height={'100px'}
+            // style={{ objectFit: 'cover' }}
+            width={'100px'}
+            height={'99px'}
+
             icon={
               dashboardDetails && dashboardDetails.user_details.profile_photo
                 ? getImageUri(dashboardDetails.user_details.profile_photo)
                 : Icons.ProfilePlaceHolder
             }
-            additionClass={"rounded-circle col-lg-3  order-lg-2"}
+            additionClass={"rounded-circle"}
           ></ImageView>
           <Container additionClass={"text-center my-3"}>
             <h1 className="text-black">{dashboardDetails.user_details.name}</h1>
@@ -40,31 +43,38 @@ const Profile = () => {
             </h3>
           </Container>
         </Container>
-        <Divider />
         <Container>
           <h2>{t("basicInformation")}</h2>
         </Container>
-        <Container margin={"mt-4"}>
-          <InputNumber
-            disabled={true}
-            label={t("mobileNumber")}
-            value={dashboardDetails.user_details.mobile_number}
-          />
-          <InputDefault
-            disabled={true}
-            label={t("email")}
-            value={dashboardDetails.user_details.email}
-          />
-          <InputDefault
-            disabled={true}
-            label={t("gender")}
-            value={getGenderByValue(dashboardDetails.user_details.gender)}
-          />
-          <InputDefault
-            disabled={true}
-            label={t("companyBranch")}
-            value={dashboardDetails.company_branch.name}
-          />
+        <Container additionClass="row m-0" margin={"mt-4"}>
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <InputNumber
+              disabled={true}
+              label={t("mobileNumber")}
+              value={dashboardDetails.user_details.mobile_number}
+            />
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <InputDefault
+              disabled={true}
+              label={t("email")}
+              value={dashboardDetails.user_details.email}
+            />
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <InputDefault
+              disabled={true}
+              label={t("gender")}
+              value={getGenderByValue(dashboardDetails.user_details.gender)}
+            />
+          </div>
+          <div className="col-lg-6 col-md-6 col-sm-12">
+            <InputDefault
+              disabled={true}
+              label={t("companyBranch")}
+              value={dashboardDetails.company_branch.name}
+            />
+          </div> 
         </Container>
       </Card>
     </Container>

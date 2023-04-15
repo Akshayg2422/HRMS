@@ -41,12 +41,8 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
-  const { hierarchicalBranchIds, dashboardDetails } = useSelector(
+  const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
-  );
-
-  const { listBranchesList } = useSelector(
-    (state: any) => state.LocationReducer
   );
 
   const [model, setModel] = useState(false);
@@ -58,8 +54,6 @@ const DashboardStats = () => {
   const [selectedDate, setSelectedDate] = useState(
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
-
-  const [initialCall, setInitialCall] = useState(false)
 
   const normalizedEmployeeAttendanceLog = (data: any) => {
     return data?.departments_stats?.map((el: any) => {
@@ -75,45 +69,20 @@ const DashboardStats = () => {
   };
 
 
-  useEffect(() => {
-    if (dashboardDetails) {
-      conditionalRendering(dashboardDetails)
-    }
-  }, [dashboardDetails]);
-
-
-  const conditionalRendering = (dashboardResponse: any) => {
-    if (listBranchesList.length === 0) {
-      const params = {}
-      dispatch(getListAllBranchesList({
-        params,
-        onSuccess: (response: any) => () => {
-          const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-          getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
-          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
-        },
-        onError: () => () => {
-        },
-      }))
-    } else {
-      getStatsDetails({ ...hierarchicalBranchIds })
-    }
-  }
 
   useEffect(() => {
-    initialCall && getStatsDetails({ ...hierarchicalBranchIds })
+    getStatsDetails()
   }, [selectedDate, hierarchicalBranchIds]);
 
 
-  const getStatsDetails = (obj: object) => {
+  const getStatsDetails = () => {
     const params = {
-      ...obj,
+      ...hierarchicalBranchIds,
       selected_date: selectedDate,
     };
     dispatch(getEmployeeAttendanceStats({
       params,
       onSuccess: (success: any) => () => {
-        setInitialCall(true)
       },
       onError: (error: any) => () => {
 
@@ -186,8 +155,8 @@ const DashboardStats = () => {
 
   return (
     <>
-      <Card additionClass="mx-2">
-        <Container additionClass="row ">
+      <Card additionClass="mx-3">
+        <Container additionClass="row">
           <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
           </Container>
@@ -204,16 +173,13 @@ const DashboardStats = () => {
           </Container>
         </Container>
       </Card>
-      <Container
-        additionClass={"row"}
-        justifyContent={"justify-content-around"}
-      >
-        <div className="row align-items-center mb-4">
+      <Container>
+        <div className="row align-items-center mb-4 m-0 ">
           <div className="col">
             <h3 className="mb-0">{t("dashboardDetails")}</h3>
           </div>
         </div>
-        <Container additionClass={"row"}>
+        <Container additionClass={"row m-0"}>
           {employeeattendancedatalog && employeeattendancedatalog?.cards?.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
             return (
               <Container additionClass={"col-xl-4 col-md-6"}>
@@ -242,7 +208,7 @@ const DashboardStats = () => {
             );
           }) : <NoRecordFound />}
         </Container>
-        <div className="mx-5">
+        <div className="mx-3">
           <Container additionClass="">
             {employeeattendancedatalog &&
               employeeattendancedatalog.departments_types && (

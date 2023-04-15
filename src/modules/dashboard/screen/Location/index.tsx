@@ -338,9 +338,7 @@ function LocationScreen() {
       <TableWrapper
         title={t('allRegisteredLocation')}
         buttonChildren={
-
-
-          <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
+          <Container additionClass={"d-flex justify-content-end mr-xl--4"}>
             <Primary
               text={t("AddBranch")}
               onClick={() => manageBranchesHandler(undefined)}
@@ -365,13 +363,7 @@ function LocationScreen() {
                 setSearchBranches(e.target.value);
               }}
             />
-            {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-            onClick={() => {
-              // SelectedBranchFilter()
-            }}
-          /> */}
-            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
-
+            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
           </Container>
         }
       >

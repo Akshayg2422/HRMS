@@ -118,7 +118,7 @@ const Rejected = () => {
 
   return (
     <div>
-      <div className="row">
+      <div className="">
         <>
           {
             memoizedTable
