@@ -18155,7 +18155,6 @@ textarea[resize=horizontal] {
   font-weight: 700;
   content: "\f105";
   margin-left: auto;
-  color: rgb(200, 63, 63);
   transition: all 0.15s ease;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -18164,7 +18163,6 @@ textarea[resize=horizontal] {
   }
 }
 .navbar-vertical .navbar-nav .nav-link[data-toggle=collapse][aria-expanded=true]:after {
-  color: RED;
   transform: rotate(90deg);
 }
 .navbar-vertical .navbar-nav .nav .nav-link {

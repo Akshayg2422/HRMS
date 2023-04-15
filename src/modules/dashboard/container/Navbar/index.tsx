@@ -20,6 +20,7 @@ import { Icons } from "@assets";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
 import { Container } from "@components";
+import { log } from "console";
 
 function Navbar({
   toggleSideNav,
@@ -86,14 +87,7 @@ function Navbar({
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
-
-    console.log(routeName + '=====routeName');
-
-    if ('/calendar') {
-
-    }
-
-    return location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    return location.pathname.indexOf(routeName) > -1 ? "active" : '';
   };
 
   // makes the sidenav normal on hover (actually when mouse enters on it)

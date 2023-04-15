@@ -120,7 +120,7 @@
             font-weight: 700;
             content: "\f105";
             margin-left: auto;
-            color: rgb(200, 63, 63);
+            // color: rgb(200, 63, 63);
             @include transition($transition-base);
 
 
@@ -129,7 +129,7 @@
         // Expanded
         &[aria-expanded="true"] {
             &:after {
-                color: RED;
+                // color: RED;
                 transform: rotate(90deg);
             }
         }
