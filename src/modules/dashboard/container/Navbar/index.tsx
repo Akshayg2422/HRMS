@@ -87,6 +87,7 @@ function Navbar({
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
+    console.log(location.pathname + '======routeName' + routeName + "1212121" + location.pathname.indexOf(routeName));
     return location.pathname.indexOf(routeName) > -1 ? "active" : '';
   };
 
@@ -207,7 +208,7 @@ function Navbar({
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
+                <span className={`${pathname === prop.name ? 'sidenav-active' : "sidenav-normal"}`}> {prop.name} </span>
               </>
             ) : (
               prop.name

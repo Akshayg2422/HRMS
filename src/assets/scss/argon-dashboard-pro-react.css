@@ -18270,6 +18270,11 @@ textarea[resize=horizontal] {
   padding-left: 8px;
   transition: all 0.1s ease 0s;
 }
+.navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link span.sidenav-active {
+  padding-left: 8px;
+  transition: all 0.1s ease 0s;
+  color: #ec6101;
+}
 .navbar-vertical.navbar-expand-xs .navbar-nav .nav .nav-link span.sidenav-mini-icon {
   width: 34px;
   text-align: center;
@@ -18386,6 +18391,11 @@ textarea[resize=horizontal] {
   .navbar-vertical.navbar-expand-sm .navbar-nav .nav .nav-link span.sidenav-normal {
     padding-left: 8px;
     transition: all 0.1s ease 0s;
+  }
+  .navbar-vertical.navbar-expand-sm .navbar-nav .nav .nav-link span.sidenav-active {
+    padding-left: 8px;
+    transition: all 0.1s ease 0s;
+    color: #ec6101;
   }
   .navbar-vertical.navbar-expand-sm .navbar-nav .nav .nav-link span.sidenav-mini-icon {
     width: 34px;
@@ -18507,6 +18517,11 @@ textarea[resize=horizontal] {
     padding-left: 8px;
     transition: all 0.1s ease 0s;
   }
+  .navbar-vertical.navbar-expand-md .navbar-nav .nav .nav-link span.sidenav-active {
+    padding-left: 8px;
+    transition: all 0.1s ease 0s;
+    color: #ec6101;
+  }
   .navbar-vertical.navbar-expand-md .navbar-nav .nav .nav-link span.sidenav-mini-icon {
     width: 34px;
     text-align: center;
@@ -18627,6 +18642,11 @@ textarea[resize=horizontal] {
     padding-left: 8px;
     transition: all 0.1s ease 0s;
   }
+  .navbar-vertical.navbar-expand-lg .navbar-nav .nav .nav-link span.sidenav-active {
+    padding-left: 8px;
+    transition: all 0.1s ease 0s;
+    color: #ec6101;
+  }
   .navbar-vertical.navbar-expand-lg .navbar-nav .nav .nav-link span.sidenav-mini-icon {
     width: 34px;
     text-align: center;
@@ -18746,6 +18766,11 @@ textarea[resize=horizontal] {
   .navbar-vertical.navbar-expand-xl .navbar-nav .nav .nav-link span.sidenav-normal {
     padding-left: 8px;
     transition: all 0.1s ease 0s;
+  }
+  .navbar-vertical.navbar-expand-xl .navbar-nav .nav .nav-link span.sidenav-active {
+    padding-left: 8px;
+    transition: all 0.1s ease 0s;
+    color: #ec6101;
   }
   .navbar-vertical.navbar-expand-xl .navbar-nav .nav .nav-link span.sidenav-mini-icon {
     width: 34px;
@@ -18895,6 +18920,9 @@ textarea[resize=horizontal] {
 .g-sidenav-hidden:not(.g-sidenav-show) .sidenav .nav-item .collapse .sidenav-normal {
   display: none !important;
 }
+.g-sidenav-hidden:not(.g-sidenav-show) .sidenav .nav-item .collapse .sidenav-active {
+  display: none !important;
+}
 .g-sidenav-hidden:not(.g-sidenav-show) .sidenav .nav-link-text {
   opacity: 0;
 }
@@ -18903,6 +18931,9 @@ textarea[resize=horizontal] {
   content: "";
 }
 .g-sidenav-hide .sidenav .nav-item .collapse .sidenav-normal {
+  display: none !important;
+}
+.g-sidenav-hide .sidenav .nav-item .collapse .sidenav-active {
   display: none !important;
 }
 .g-sidenav-hide .sidenav .nav-link-text {

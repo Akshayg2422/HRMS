@@ -284,7 +284,6 @@ function parseOptions(parent, options) {
 
 const chartExample6 = {
   options: {
-    responsive: true,
     legend: {
       position: "top",
     },
@@ -292,6 +291,24 @@ const chartExample6 = {
       animateScale: true,
       animateRotate: true
     },
+    tooltips: {
+      mode: "index",
+      intersect: false
+    },
+    responsive: true,
+    scales: {
+      xAxes: [
+        {
+          stacked: true
+        }
+      ],
+      yAxes: [
+        {
+          stacked: true
+        }
+      ]
+    }
+
   }
 };
 
