@@ -21,7 +21,6 @@ function AllowanceGroupList() {
         (state: any) => state.PayrollReducer
     );
 
-
     useEffect(() => {
         getAllowanceGroupList(currentPage)
     }, [])
