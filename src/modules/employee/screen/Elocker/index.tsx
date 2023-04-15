@@ -240,8 +240,10 @@ function ELocker() {
                             onClick={() => setUploadModel(!uploadModel)}
                         >
                             <Icon
-                                text={t('add') + " " + "+"}
+                                text={t('add')}
                             />
+                           
+                         
                         </Container>
                     </Container>
 
@@ -330,7 +332,9 @@ function ELocker() {
                                 </>
                                 }
                             </Container>
-                            <Container margin={"mt-5"} additionClass={'text-right'}>
+                            
+                        </Container>
+                        <Container margin={"mt-5"} additionClass={'text-right'}>
                                 <Secondary
                                     text={t("cancel")}
                                     onClick={() => handleUploadModelCancel()}
@@ -340,7 +344,6 @@ function ELocker() {
                                     onClick={() => AttachDocuments()}
                                 />
                             </Container>
-                        </Container>
                     </Container>
                 </Container>
             </Modal>
