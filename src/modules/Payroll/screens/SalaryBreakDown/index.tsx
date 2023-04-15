@@ -375,7 +375,7 @@ function SalaryBreakDown() {
             <DropDown
               label={t("AllowanceGroup")}
               placeholder={t("AllowanceGroup")}
-              data={allowanceGroupsList?.data}
+              data={allowanceGroupsList}
               value={allowanceGroup}
               onChange={(e) => setAllowanceGroup(e.target.value)}
 
