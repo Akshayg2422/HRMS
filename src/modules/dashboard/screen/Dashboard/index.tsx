@@ -130,7 +130,6 @@ function Dashboard() {
           </Container>
         </Container>
         <Container>
-          {/* {employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.length > 0 ? <Charts /> : <></>} */}
           <Charts />
         </Container>
       </ScreenContainer>
