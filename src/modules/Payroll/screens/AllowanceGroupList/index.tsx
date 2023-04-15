@@ -5,7 +5,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { CreateGroup, getAllowanceGroupDetails, getAllowanceGroups, settingSelectedAllowanceGroupDetails } from '../../../../store/Payroll/actions';
+import { CreateGroup, getAllowanceGroupDetails, getAllowanceGroups, getAllowanceGroupsPaginated, settingSelectedAllowanceGroupDetails } from '../../../../store/Payroll/actions';
 
 const DROPDOWN_ITEM = [
     { id: '1', name: 'Edit', value: 'CL', icon: 'ni ni-active-40' },
@@ -31,7 +31,7 @@ function AllowanceGroupList() {
             page_number: pageNumber,
         }
 
-        dispatch(getAllowanceGroups({
+        dispatch(getAllowanceGroupsPaginated({
             params,
             onSuccess: (success: any) => () => {
             },

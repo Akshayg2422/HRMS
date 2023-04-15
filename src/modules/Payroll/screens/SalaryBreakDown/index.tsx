@@ -394,7 +394,7 @@ function SalaryBreakDown() {
 
         {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
 
-          const isEditData = selectedDefinitionEditData?.some((item: any) => item.id !== el.id)
+          const isEditData = selectedDefinitionEditData?.some((item: any) => item.deduction_id === el.deduction_id)
           return (
             <Container additionClass='row'>
               <Container additionClass={'col-xl-5 col col-sm-0'}>
@@ -424,7 +424,7 @@ function SalaryBreakDown() {
                     }}
                   />
                   <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
-                    {isEditData ?
+                    {!isEditData ?
                       <ImageView icon={Icons.Remove} onClick={() => {
                         onDeleteAllowence(el)
                       }} /> :

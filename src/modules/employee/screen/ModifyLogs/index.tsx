@@ -128,7 +128,7 @@ const ModifyLogs = () => {
                       }`}
                     id={`tabs-icons-text-${el.id}-tab`}
                     data-toggle="tab"
-                    href={`#tabs-icons-text-${el.id}`}
+                    // href={`#tabs-icons-text-${el.id}`}
                     role="tab"
                     aria-controls={`tabs-icons-text-${el.id}`}
                     aria-selected="true"

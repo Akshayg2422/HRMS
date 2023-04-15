@@ -45,7 +45,11 @@ import {
     IS_EDIT_SALARY_DEFINITION,
 
     GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
-    GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER
+    GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER,
+    
+    GET_ALLOWANCE_GROUPS_PAGINATED,
+    GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS,
+    GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE
 } from './actionTypes'
 
 const initialState = {
@@ -177,6 +181,8 @@ const PayrollReducer = (state = initialState, action) => {
             };
             break;
 
+
+            
         /**
         * get Allowance Groups
         */
@@ -184,12 +190,37 @@ const PayrollReducer = (state = initialState, action) => {
         case GET_ALLOWANCE_GROUPS:
             state = {
                 ...state,
+            
+            };
+            break;
+        case GET_ALLOWANCE_GROUPS_SUCCESS:
+            state = {
+                ...state,
+                allowanceGroupsList: action.payload,
+             
+            };
+            break;
+        case GET_ALLOWANCE_GROUPS_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+            break;
+
+        /**
+        * get Allowance Groups Paginated
+        */
+
+        case GET_ALLOWANCE_GROUPS_PAGINATED:
+            state = {
+                ...state,
                 allowanceGroupsList: [],
                 numOfPages: 0,
                 currentPage: 1,
             };
             break;
-        case GET_ALLOWANCE_GROUPS_SUCCESS:
+        case GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS:
             state = {
                 ...state,
                 loading: false,
@@ -201,7 +232,7 @@ const PayrollReducer = (state = initialState, action) => {
                         : action.payload.next_page - 1,
             };
             break;
-        case GET_ALLOWANCE_GROUPS_FAILURE:
+        case GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE:
             state = {
                 ...state,
                 error: action.payload,

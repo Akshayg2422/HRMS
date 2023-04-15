@@ -10,7 +10,8 @@ import {
     GET_COMPANY_ALLOWANCE,
     GET_COMPANY_DEDUCTIONS,
     ADD_EMPLOYEE_SALARY_DEFINITION,
-    GET_EMPLOYEE_SALARY_DEFINITION
+    GET_EMPLOYEE_SALARY_DEFINITION,
+    GET_ALLOWANCE_GROUPS_PAGINATED
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -40,7 +41,10 @@ import {
     addEmployeeSalaryDefinitionFailure,
 
     getEmployeeSalaryDefinitionSuccess,
-    getEmployeeSalaryDefinitionFailure
+    getEmployeeSalaryDefinitionFailure,
+
+    getAllowanceGroupsPaginatedSuccess,
+    getAllowanceGroupsPaginatedFailure
 } from "./actions";
 
 import {
@@ -158,6 +162,31 @@ function* getAllowanceGroupsSaga(action) {
     } catch (error) {
         yield put(hideLoader());
         yield put(getAllowanceGroupsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
+
+//Get allowance groups paginated
+
+function* getAllowanceGroupsPaginatedSaga(action) {
+    try {
+        yield put(showLoader());
+
+        const response = yield call(fetchAllowanceGroupsApi, action.payload.params);
+
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getAllowanceGroupsPaginatedSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(getAllowanceGroupsPaginatedFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getAllowanceGroupsPaginatedFailure("Invalid Request"));
         yield call(action.payload.onError(error));
 
     }
@@ -301,6 +330,8 @@ function* PayrollSaga() {
     yield takeLatest(GET_COMPANY_DEDUCTIONS, getCompanyDeductionsApi);
     yield takeLatest(ADD_EMPLOYEE_SALARY_DEFINITION, addEmployeeSalaryDefinitionSaga);
     yield takeLatest(GET_EMPLOYEE_SALARY_DEFINITION, getEmployeeSalaryDefinitionSaga);
+    yield takeLatest(GET_ALLOWANCE_GROUPS_PAGINATED, getAllowanceGroupsPaginatedSaga);
+
 
 }
 
