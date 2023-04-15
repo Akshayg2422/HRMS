@@ -63,6 +63,8 @@ function SalaryBreakDown() {
     }
     else {
       setIsSubmitDisable(false)
+      isValidBasicSalary()
+
 
     }
     onTotalCalculator()
@@ -82,11 +84,16 @@ function SalaryBreakDown() {
 
   const getAllowanceGroupList = () => {
 
-    const params = {}
+    const params = {
+      page_number: -1,
+
+    }
 
     dispatch(getAllowanceGroups({
       params,
       onSuccess: (success: any) => () => {
+        console.log('ooooooooooooooo', success);
+
       },
       onError: (error: any) => () => {
 
@@ -97,7 +104,9 @@ function SalaryBreakDown() {
 
   const getCompanyDeductionsList = () => {
 
-    const params = {}
+    const params = {
+      page_number: -1
+    }
 
     dispatch(getCompanyDeductions({
       params,
@@ -111,7 +120,6 @@ function SalaryBreakDown() {
 
   const getEmployeeSalaryDefinitionDetails = () => {
 
-    //getEmployeeSalaryDefinition
     const params = {
       employee_id: selectedEmployeeDetails?.id
     }
@@ -151,7 +159,8 @@ function SalaryBreakDown() {
   const onTotalCalculator = () => {
     const AllowancePercentage = selectedDeductions?.map((el: any) => {
       if (el.type == "1") {
-        const convert = parseInt(el.percent)
+        const checkIsEmpty: any = el.percent == '' ? 0 : el.percent
+        const convert = parseInt(checkIsEmpty)
         return +convert
       }
       else {
@@ -191,10 +200,11 @@ function SalaryBreakDown() {
     }
   }
 
+
   const onDeductionDropdownChangeHandler = (event: string) => {
 
     const filteredDeduction = companyDeductionsList?.data?.filter((item: any) => event === item.id)
-    const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: 0, amount: 0, is_percent: false, type: "1", error: '' }))
+    const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }))
     setSelectedDeductions([...selectedDeductions, ...newArr])
 
   }
@@ -302,6 +312,8 @@ function SalaryBreakDown() {
       deductions_group_ids: filteredApiKeys ? filteredApiKeys : [],
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
+    console.log(params, 'params++++++++++++++');
+
     if (validatePostParams()) {
 
       dispatch(addEmployeeSalaryDefinition({
@@ -326,7 +338,7 @@ function SalaryBreakDown() {
 
         <Container additionClass='d-flex justify-content-between mb-3'>
 
-          <h3>{isEditSalary && !isDisablePayrollView ? 'Edit Employee salary definition' : 'Employee salary definition'}</h3>
+          <h3>{isEditSalary && !isDisablePayrollView ? 'Edit Employee salary definition' : 'Add Employee salary definition'}</h3>
 
         </Container>
 
@@ -365,7 +377,7 @@ function SalaryBreakDown() {
             <DropDown
               label={t("AllowanceGroup")}
               placeholder={t("AllowanceGroup")}
-              data={allowanceGroupsList?.data}
+              data={allowanceGroupsList}
               value={allowanceGroup}
               onChange={(e) => setAllowanceGroup(e.target.value)}
 
@@ -384,7 +396,7 @@ function SalaryBreakDown() {
 
         {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
 
-          const isEditData = selectedDefinitionEditData?.some((item: any) => item.id !== el.id)
+          const isEditData = selectedDefinitionEditData?.some((item: any) => item.deduction_id === el.deduction_id)
           return (
             <Container additionClass='row'>
               <Container additionClass={'col-xl-5 col col-sm-0'}>
@@ -414,7 +426,7 @@ function SalaryBreakDown() {
                     }}
                   />
                   <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
-                    {isEditData ?
+                    {!isEditData ?
                       <ImageView icon={Icons.Remove} onClick={() => {
                         onDeleteAllowence(el)
                       }} /> :
@@ -458,7 +470,7 @@ function SalaryBreakDown() {
           <DropDown
             label={t("DeductionGroup")}
             placeholder={t("DeductionGroup")}
-            data={companyDeductionsList?.data}
+            data={companyDeductionsList}
             value={deduction}
             onChange={(e) => {
               setDeduction(e.target.value)

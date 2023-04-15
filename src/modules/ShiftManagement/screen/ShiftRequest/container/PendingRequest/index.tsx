@@ -103,11 +103,11 @@ function PendingRequest() {
       onSuccess: (success: any) => () => {
         getEmployeeRequest(-1, currentPage);
         if (type === 1) {
-          showToast("success", success)
+          showToast("success", success.status)
           setApproveModel(!approveModel);
         }
         if (type === 0) {
-          showToast("success", success)
+          showToast("success", success.status)
           setRejectModel(!rejectModel);
         }
       },

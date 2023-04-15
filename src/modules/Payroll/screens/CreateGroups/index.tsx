@@ -33,7 +33,6 @@ function CreateGroup() {
     const [name, setName] = useState('')
     const [hint, setHint] = useState('')
     const [maximumLimit, setMaximumLimit] = useState('')
-    const [minimumLimit, setMinimumLimit] = useState('')
     const calendarYear = '2023-12-31'
     const [isTaxable, setIsTaxable] = useState(false)
 
@@ -43,7 +42,7 @@ function CreateGroup() {
     const [remaining, setRemaining] = useState(60)
     const [selectedAllowanceEditData, setSelectedAllowanceEditData] = useState<any>([])
 
-    const { groupFor, companyAllowanceList, selectedAllowanceGroupDetails } = useSelector(
+    const { companyAllowanceList, selectedAllowanceGroupDetails } = useSelector(
         (state: any) => state.PayrollReducer
     );
 
@@ -66,7 +65,6 @@ function CreateGroup() {
         dispatch(getAllowanceGroupDetails({
             params,
             onSuccess: (success: any) => () => {
-                console.log("success?.details", success?.details);
 
                 setGroupName(selectedAllowanceGroupDetails?.name)
                 setSelectedAllowanceEditData(success?.details?.allowance_break_down?.allowance_items)
@@ -95,7 +93,7 @@ function CreateGroup() {
             );
         }
         else {
-            let addedKey = { ...item, allowance_id: item.id, percent: 0, amount: 0, is_percent: false, type: "1", error: '' }
+            let addedKey = { ...item, allowance_id: item.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }
             updateSelectedAllowance = [...updateSelectedAllowance, addedKey];
         }
         setAllowances(updateSelectedAllowance)
@@ -138,7 +136,8 @@ function CreateGroup() {
     const onTotalCalculator = () => {
         const AllowancePercentage = selectedAllowances?.map((el: any) => {
             if (el.type == "1") {
-                const convert = parseInt(el.percent)
+                const checkIsEmpty:any = el.percent == '' ? 0 : el.percent
+                const convert = parseInt(checkIsEmpty)
                 return +convert
             }
             else {
@@ -148,7 +147,6 @@ function CreateGroup() {
             (accumulator: any, currentValue: any) => accumulator + currentValue,
             0
         );
-
 
         let remainingPercentage = AllowancePercentage > 0 ? 60 - AllowancePercentage : 60
         setRemaining(remainingPercentage)
@@ -177,7 +175,7 @@ function CreateGroup() {
 
             if (updatePercentage[index].max_limit !== -1 && updatePercentage[index].type != "1") {
                 if (event.target.value > updatePercentage[index].max_limit) {
-                    updatePercentage[index].error = '* You have exceeded the maximum limit'
+                    updatePercentage[index].error = `* You have exceeded the maximum limit (max ${updatePercentage[index].max_limit})`
                 }
                 else {
                     updatePercentage[index].error = ''
@@ -227,7 +225,7 @@ function CreateGroup() {
 
     const onAllowanceGroupAdd = () => {
 
-        const filteredApiKeys =selectedAllowances &&  selectedAllowances?.map((el: any) => {
+        const filteredApiKeys = selectedAllowances && selectedAllowances?.map((el: any) => {
             return {
                 ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el.id }),
                 percent: el.percent,
@@ -327,7 +325,10 @@ function CreateGroup() {
                 <Container>
                     {selectedAllowances && selectedAllowances?.length > 0 && selectedAllowances?.map((el: any, i: number) => {
 
-                        const isEditData = selectedAllowanceEditData?.some((item: any) => item.id !== el.id)
+                        const isEditData = selectedAllowanceEditData?.some((item: any) => item.allowance_id === el.allowance_id)
+
+
+
 
                         return (
                             <Container additionClass='row'>
@@ -352,13 +353,14 @@ function CreateGroup() {
                                             onChange={(e) => {
                                                 let updatePercentage = [...selectedAllowances]
                                                 updatePercentage[i].type = e.target.value
-                                                updatePercentage[i].percent = 0
-                                                updatePercentage[i].amount = 0
+                                                updatePercentage[i].percent = ''
+                                                updatePercentage[i].amount = ''
+                                                updatePercentage[i].error = ''
                                                 setSelectedAllowances(updatePercentage)
                                             }}
                                         />
                                         <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
-                                            {isEditData ?
+                                            {!isEditData ?
                                                 <ImageView icon={Icons.Remove} onClick={() => {
                                                     onDeleteAllowence(el)
                                                 }} /> : <></>}
@@ -492,6 +494,7 @@ function CreateGroup() {
                 <InputText
                     label={t('maximumLimit')}
                     placeholder={t('maximumLimit')}
+                    type={'number'}
                     value={maximumLimit}
                     onChange={(event) => {
                         setMaximumLimit(event.target.value);

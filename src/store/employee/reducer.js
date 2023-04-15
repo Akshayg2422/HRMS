@@ -145,7 +145,9 @@ import {
 
   FETCH_EMPLOYEE_ATTENDANCE_INFO,
   FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
-  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
+
+  EMPLOYEE_VIEW_DETAILS_API_HANDLER
 } from "./actionTypes";
 
 const initialState = {
@@ -192,7 +194,8 @@ const initialState = {
   editLeaveTypesDetails: '',
   currentLeaveType: -2,
   getEmployeeBasicInfo: undefined,
-  employeeAttendanceInfoDetails: undefined
+  employeeAttendanceInfoDetails: undefined,
+  employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false }
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1307,9 +1310,12 @@ const EmployeeReducer = (state = initialState, action) => {
       state = { ...state, loading: true };
       break;
     case FETCH_EMPLOYEE_BASIC_INFO_SUCCESS:
+      console.log("action.payload");
       state = {
         ...state,
         loading: false,
+        // eslint-disable-next-line no-undef
+        // employeeDetailsViewApiHandler:{ basicInfo: true, attendanceInfo: employeeDetailsViewApiHandler.attendanceInfo, logInfo: employeeDetailsViewApiHandler.logInfo, payrollInfo: employeeDetailsViewApiHandler.payrollInfo },
         getEmployeeBasicInfo: action.payload,
       };
       break;

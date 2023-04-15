@@ -97,6 +97,7 @@ function AddDeduction() {
                     label={t('minimumLimit')}
                     placeholder={t('minimumLimit')}
                     value={minimumLimit}
+                    type={'number'}
                     onChange={(event) => {
                         setMinimumLimit(event.target.value);
                     }}
@@ -106,6 +107,7 @@ function AddDeduction() {
                     label={t('maximumLimit')}
                     placeholder={t('maximumLimit')}
                     value={maximumLimit}
+                    type={'number'}
                     onChange={(event) => {
                         setMaximumLimit(event.target.value);
                     }}

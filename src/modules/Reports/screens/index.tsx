@@ -8,6 +8,7 @@ import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisRepo
 import { AttendanceReport, LeaveReports, LogReports, ShiftReports } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
+import moment from 'moment'
 
 
 function Reports() {
@@ -182,6 +183,7 @@ function Reports() {
         selected_date_to: customRange.dataTo,
         page_number: pageNumber,
       };
+
       dispatch(getMisReport({
         params,
         onSuccess: (response: any) => () => {
@@ -192,8 +194,24 @@ function Reports() {
     }
   })
 
+  useEffect(() => {
+
+
+    if (customRange.dateFrom && customRange.dataTo) {
+      const startOfMonth = moment(customRange.dateFrom).startOf('month').format('YYYY-MM-DD');
+      const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
+
+      if (customRange.dataTo > endOfMonth) {
+        setCustomRange({ ...customRange, dataTo: endOfMonth });
+      }
+
+    }
+
+  }, [customRange.dateFrom, customRange.dataTo])
+
 
   const dateTimePickerHandler = (value: string, key: string) => {
+
     setCustomRange({ ...customRange, [key]: value });
   };
 
@@ -215,6 +233,11 @@ function Reports() {
     } else if (reportsType === 'shift' && designationFilterShiftGroupData.length < 0) {
       showToast("error", t("noShift"));
       return false;
+    }
+    else if (!customRange.dataTo) {
+      showToast("error", 'End date should not be empty');
+      return false;
+
     }
     else if (!selectedShift && reportsType === 'shift') {
       showToast("error", t("invalidShift"));
@@ -251,8 +274,6 @@ function Reports() {
       }));
     }
   };
-
-  console.log("reportsType", reportsType);
 
 
   return (
