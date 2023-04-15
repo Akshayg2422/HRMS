@@ -28,7 +28,9 @@ function AllowanceGroupList() {
 
     const getAllowanceGroupList = (pageNumber: number) => {
 
-        const params = {}
+        const params = {
+            page_number: pageNumber,
+        }
 
         dispatch(getAllowanceGroups({
             params,

@@ -175,7 +175,7 @@
     "misReport": "MIS Report",
     "startDate": "Start Date",
     "endDate": "End Date",
-    "dateFromToValidation": "End Date Can't Be greaterThan Start Date",
+    "dateFromToValidation": "End Date Can't Be lesser then Start Date",
     "searchBranch": "Search Branch",
     "inValidType": "Invalid Type",
     "inValidDesignation": "Invalid Designation",

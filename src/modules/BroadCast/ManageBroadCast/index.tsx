@@ -89,15 +89,13 @@ function ManageBroadCast() {
             ...(broadCast.department && { applicable_departments: broadCast.department }),
             ...(broadCast.designation && { applicable_designations: broadCast.designation })
         }
-        console.log("params-->", params);
 
         if (validatePostParams()) {
             dispatch(createBroadcastMessage({
                 params,
                 onSuccess: (success: any) => () => {
-                    console.log("successsssss", success);
                     goBack(navigation);
-                    showToast("success", success.status)
+                    showToast("success", 'Broadcast message created successfully')
                     setBroadCast({ title: '', description: '', department: '', designation: '' })
                 },
                 onError: (error: string) => () => {

@@ -63,6 +63,7 @@ function BroadCast() {
         dispatch(createBroadcastMessage({
             params,
             onSuccess: (success: any) => () => {
+                showToast("success", success.status)
                 setDeleteModel(!deleteModel)
                 getBroadcastMessagesList(currentPage)
             },
