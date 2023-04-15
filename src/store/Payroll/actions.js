@@ -36,6 +36,10 @@ import {
   GET_COMPANY_DEDUCTIONS_SUCCESS,
   GET_COMPANY_DEDUCTIONS_FAILURE,
 
+  GET_COMPANY_DEDUCTIONS_PAGINATED,
+  GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS,
+  GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE,
+
   SETTING_SELECTED_DEDUCTION_DETAILS,
 
   ADD_EMPLOYEE_SALARY_DEFINITION,
@@ -296,6 +300,31 @@ export const getCompanyDeductionsSuccess = (response) => {
 export const getCompanyDeductionsFailure = (error) => {
   return {
     type: GET_COMPANY_DEDUCTIONS_FAILURE,
+    payload: error,
+  };
+};
+
+/**
+ * get company deductions  Paginated
+ */
+
+export const getCompanyDeductionsPaginated = (type) => {
+  return {
+    type: GET_COMPANY_DEDUCTIONS_PAGINATED,
+    payload: type,
+  };
+};
+
+export const getCompanyDeductionsPaginatedSuccess = (response) => {
+  return {
+    type: GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getCompanyDeductionsPaginatedFailure = (error) => {
+  return {
+    type: GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE,
     payload: error,
   };
 };

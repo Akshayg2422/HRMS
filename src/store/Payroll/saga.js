@@ -11,7 +11,8 @@ import {
     GET_COMPANY_DEDUCTIONS,
     ADD_EMPLOYEE_SALARY_DEFINITION,
     GET_EMPLOYEE_SALARY_DEFINITION,
-    GET_ALLOWANCE_GROUPS_PAGINATED
+    GET_ALLOWANCE_GROUPS_PAGINATED,
+    GET_COMPANY_DEDUCTIONS_PAGINATED
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -44,7 +45,10 @@ import {
     getEmployeeSalaryDefinitionFailure,
 
     getAllowanceGroupsPaginatedSuccess,
-    getAllowanceGroupsPaginatedFailure
+    getAllowanceGroupsPaginatedFailure,
+
+    getCompanyDeductionsPaginatedSuccess,
+    getCompanyDeductionsPaginatedFailure
 } from "./actions";
 
 import {
@@ -267,6 +271,32 @@ function* getCompanyDeductionsApi(action) {
     }
 }
 
+
+//Get company deductions
+
+function* getCompanyDeductionsPaginatedApi(action) {
+    try {
+        yield put(showLoader());
+
+        const response = yield call(fetchCompanyDeductionsApi, action.payload.params);
+
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getCompanyDeductionsPaginatedSuccess(response.details));
+            yield call(action.payload.onSuccess(response.details));
+        } else {
+            yield put(hideLoader());
+            yield put(getCompanyDeductionsPaginatedFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getCompanyDeductionsPaginatedFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
+
 //Add employee salary definition
 
 function* addEmployeeSalaryDefinitionSaga(action) {
@@ -331,6 +361,8 @@ function* PayrollSaga() {
     yield takeLatest(ADD_EMPLOYEE_SALARY_DEFINITION, addEmployeeSalaryDefinitionSaga);
     yield takeLatest(GET_EMPLOYEE_SALARY_DEFINITION, getEmployeeSalaryDefinitionSaga);
     yield takeLatest(GET_ALLOWANCE_GROUPS_PAGINATED, getAllowanceGroupsPaginatedSaga);
+    yield takeLatest(GET_COMPANY_DEDUCTIONS_PAGINATED, getCompanyDeductionsPaginatedApi);
+
 
 
 }

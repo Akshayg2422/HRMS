@@ -92,8 +92,8 @@ function SalaryBreakDown() {
     dispatch(getAllowanceGroups({
       params,
       onSuccess: (success: any) => () => {
-        console.log('ooooooooooooooo',success);
-        
+        console.log('ooooooooooooooo', success);
+
       },
       onError: (error: any) => () => {
 
@@ -104,7 +104,9 @@ function SalaryBreakDown() {
 
   const getCompanyDeductionsList = () => {
 
-    const params = {}
+    const params = {
+      page_number: -1
+    }
 
     dispatch(getCompanyDeductions({
       params,
@@ -157,7 +159,7 @@ function SalaryBreakDown() {
   const onTotalCalculator = () => {
     const AllowancePercentage = selectedDeductions?.map((el: any) => {
       if (el.type == "1") {
-        const checkIsEmpty:any = el.percent == '' ? 0 : el.percent
+        const checkIsEmpty: any = el.percent == '' ? 0 : el.percent
         const convert = parseInt(checkIsEmpty)
         return +convert
       }
@@ -311,7 +313,7 @@ function SalaryBreakDown() {
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
     console.log(params, 'params++++++++++++++');
-    
+
     if (validatePostParams()) {
 
       dispatch(addEmployeeSalaryDefinition({
@@ -468,7 +470,7 @@ function SalaryBreakDown() {
           <DropDown
             label={t("DeductionGroup")}
             placeholder={t("DeductionGroup")}
-            data={companyDeductionsList?.data}
+            data={companyDeductionsList}
             value={deduction}
             onChange={(e) => {
               setDeduction(e.target.value)

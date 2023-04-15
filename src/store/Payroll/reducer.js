@@ -24,6 +24,10 @@ import {
     GET_COMPANY_DEDUCTIONS_SUCCESS,
     GET_COMPANY_DEDUCTIONS_FAILURE,
 
+    GET_COMPANY_DEDUCTIONS_PAGINATED,
+    GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS,
+    GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE,
+
     SETTING_SELECTED_DEDUCTION_DETAILS,
 
     ADD_EMPLOYEE_SALARY_DEFINITION,
@@ -312,12 +316,38 @@ const PayrollReducer = (state = initialState, action) => {
         case GET_COMPANY_DEDUCTIONS:
             state = {
                 ...state,
+            };
+            break;
+        case GET_COMPANY_DEDUCTIONS_SUCCESS:
+
+            state = {
+                ...state,
+                companyDeductionsList: action.payload,
+            };
+            break;
+        case GET_COMPANY_DEDUCTIONS_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+            break;
+
+
+            
+        /**
+     * get company deductions paginated
+     */
+
+        case GET_COMPANY_DEDUCTIONS_PAGINATED:
+            state = {
+                ...state,
                 companyDeductionsList: [],
                 numOfPages: 0,
                 currentPage: 1,
             };
             break;
-        case GET_COMPANY_DEDUCTIONS_SUCCESS:
+        case GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS:
 
             state = {
                 ...state,
@@ -330,13 +360,14 @@ const PayrollReducer = (state = initialState, action) => {
                         : action.payload.next_page - 1,
             };
             break;
-        case GET_COMPANY_DEDUCTIONS_FAILURE:
+        case GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE:
             state = {
                 ...state,
                 error: action.payload,
                 loading: false,
             };
             break;
+
 
 
         /**
