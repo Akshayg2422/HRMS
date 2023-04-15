@@ -86,6 +86,13 @@ function Navbar({
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
+
+    console.log(routeName + '=====routeName');
+
+    if ('/calendar') {
+
+    }
+
     return location.pathname.indexOf(routeName) > -1 ? "active" : "";
   };
 
@@ -156,7 +163,9 @@ function Navbar({
             <NavLink
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
-              className="ml-2 pointer"
+              className={classnames({
+                active: getCollapseInitialState(prop.views),
+              })}
               onClick={(e: any) => {
                 e.preventDefault();
                 setState(st);
@@ -165,13 +174,13 @@ function Navbar({
             >
               {prop.icon ? (
                 <>
-                  <i className={`  ${prop.icon}  ${prop.path === navIndex ? "" : ''}`} />
-                  <span className={`  ${prop.path === navIndex ? "" : ''}`}>{prop.name}</span>
+                  <i className={prop.icon} />
+                  <span className="nav-link-text">{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
-                  <span className={`sidenav-mini-icon ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.miniName} </span>
-                  <span className={`sidenav-normal ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.name} </span>
+                  <span className="sidenav-mini-icon"> {prop.miniName} </span>
+                  <span className="sidenav-normal"> {prop.name} </span>
                 </>
               ) : null}
             </NavLink>
@@ -184,7 +193,7 @@ function Navbar({
         );
       }
       return (
-        <NavItem className={` ${prop.path === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
+        <NavItem className={activeRoute(prop.layout + prop.path)} key={key}>
           <NavLink
             to={prop.layout + prop.path}
             className=""
@@ -198,8 +207,13 @@ function Navbar({
           >
             {prop.icon !== undefined ? (
               <>
-                <i className={`${prop.icon}  ${prop.path === navIndex ? "text-primary" : 'text-white'}`} />
-                <span className={`  ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}>{prop.name}</span>
+                <i className={prop.icon} />
+                <span className="nav-link-text">{prop.name}</span>
+              </>
+            ) : prop.miniName !== undefined ? (
+              <>
+                <span className="sidenav-mini-icon"> {prop.miniName} </span>
+                <span className="sidenav-normal"> {prop.name} </span>
               </>
             ) : (
               prop.name
@@ -224,7 +238,7 @@ function Navbar({
   }
 
   const scrollBarInner = (
-    <div className="scrollbar-inner  overflow-auto scroll-hidden">
+    <div className="scrollbar-inner overflow-auto scroll-hidden">
       <div className="sidenav-header d-flex align-items-center">
         {logo ? (
           <NavbarBrand {...navbarBrandProps}>

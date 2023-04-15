@@ -132,6 +132,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                     imgAlt: '...',
                     text: '',
                 }} />
+
             <div className='main-content'>
                 {dashboardDetails && dashboardDetails.user_details && <div className='sticky-top' ><Header /></div>}
                 <div className='mx-3 my-4'>
