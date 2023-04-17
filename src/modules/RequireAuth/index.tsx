@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom'
 import { useSelector } from "react-redux";
 import { NAV_ITEM, ROUTE } from '@utils'
@@ -95,11 +95,12 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     const [sidenavOpen, setSidenavOpen] = React.useState(true);
 
+
     const location = useLocation()
     const { dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
-    const { userLoggedIn } = useSelector(
+    const { userLoggedIn, userDetails } = useSelector(
         (state: any) => state.AppReducer
     );
 
@@ -107,6 +108,16 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to={ROUTE.ROUTE_LOGIN} state={{ path: location.pathname }} />
     }
 
+    const conditionalNavbarItem = (details: any) => {
+        if (details?.is_admin) {
+            return NAV_ITEM
+        } else if (details?.is_branch_admin) {
+            let filtered = NAV_ITEM.filter((el: any) => {
+                return el.value !== 'LP'
+            })
+            return filtered
+        }
+    }
 
     const toggleSideNav = () => {
         if (document.body.classList.contains("g-sidenav-pinned")) {
@@ -121,9 +132,8 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     return (
         <>
-
-            <Navbar
-                routes={NAV_ITEM}
+            {userDetails && <Navbar
+                routes={conditionalNavbarItem(userDetails)}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sidenavOpen}
                 logo={{
@@ -131,7 +141,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                     imgSrc: Icons.LogoSmall,
                     imgAlt: '...',
                     text: '',
-                }} />
+                }} />}
             <div className='main-content'>
                 {dashboardDetails && dashboardDetails.user_details && <div className='sticky-top' ><Header /></div>}
                 <div className='mx-3 my-4'>

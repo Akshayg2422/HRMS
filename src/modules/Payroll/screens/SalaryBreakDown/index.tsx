@@ -203,8 +203,10 @@ function SalaryBreakDown() {
 
   const onDeductionDropdownChangeHandler = (event: string) => {
 
-    const filteredDeduction = companyDeductionsList?.data?.filter((item: any) => event === item.id)
+    const filteredDeduction = companyDeductionsList?.filter((item: any) => event === item.id)
+
     const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }))
+
     setSelectedDeductions([...selectedDeductions, ...newArr])
 
   }

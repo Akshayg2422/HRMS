@@ -126,7 +126,7 @@ Chart.elements.Rectangle.prototype.draw = function () {
   }
 };
 
-var mode = "light"; 
+var mode = "light";
 var fonts = {
   base: "Open Sans"
 };
@@ -291,7 +291,11 @@ const chartExample6 = {
     animation: {
       animateScale: true,
       animateRotate: true
-    }
+    },
+    tooltips: {
+      mode: "index",
+      intersect: false
+    },
   }
 };
 
