@@ -126,7 +126,7 @@ Chart.elements.Rectangle.prototype.draw = function () {
   }
 };
 
-var mode = "light"; 
+var mode = "light";
 var fonts = {
   base: "Open Sans"
 };
@@ -284,14 +284,31 @@ function parseOptions(parent, options) {
 
 const chartExample6 = {
   options: {
-    responsive: true,
     legend: {
       position: "top",
     },
     animation: {
       animateScale: true,
       animateRotate: true
+    },
+    tooltips: {
+      mode: "index",
+      intersect: false
+    },
+    responsive: true,
+    scales: {
+      xAxes: [
+        {
+          stacked: true
+        }
+      ],
+      yAxes: [
+        {
+          stacked: true
+        }
+      ]
     }
+
   }
 };
 
