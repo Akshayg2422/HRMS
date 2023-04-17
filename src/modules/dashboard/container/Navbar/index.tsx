@@ -20,6 +20,7 @@ import { Icons } from "@assets";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
 import { Container } from "@components";
+import { log } from "console";
 
 function Navbar({
   toggleSideNav,
@@ -50,7 +51,6 @@ function Navbar({
 
   const dynamicActiveNav = () => {
     NAV_ITEM.filter((el: any, index: number) => {
-      console.log("pathname", el.path)
       if (pathname === el.path && pathname !== "/approvals") {
         dispatch(currentNavIndex(el.path));
       }
@@ -86,7 +86,69 @@ function Navbar({
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
-    return location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    return location.pathname.indexOf(routeName) > -1 ? "active" : '';
+  };
+
+
+  const activeRouteLink = (routeName: string) => {
+    console.log(routeName + '===');
+
+    let path = location.pathname
+    console.log(path);
+
+    if (routeName === '/employee') {
+      if (path === '/manage-employee' || path === '/inactive-employee-list' || path === '/view-employee') {
+        path = '/employee'
+      }
+    }
+
+    if (routeName === '/location') {
+      if (path === '/manage-branches' || path === '/my-branches') {
+        path = '/location'
+      }
+    }
+
+    if (routeName === '/stats') {
+      if (path === '/stats-attendance') {
+        path = '/stats'
+      }
+    }
+
+
+    if (routeName === '/calendar') {
+      if (path === '/manage-holidays' || path === '/leaves-types' || path === '/manage-leave-types') {
+        path = '/calendar'
+      }
+    }
+
+    if (routeName === '/shift-group') {
+      if (path === '/shift-set' || path === '/shift-listing' || path === '/shift-management' || path === '/create-shift-group') {
+        path = '/shift-group'
+      }
+    }
+
+    if (routeName === '/payroll') {
+      if (path === '/salary-break-down' || path === '/view-employee-salary-definition' || path === '/shift-management' || path === '/create-shift-group') {
+        path = '/payroll'
+      }
+    }
+
+    if (routeName === '/broadcast') {
+      if (path === '/manage-broadcast') {
+        path = '/broadcast'
+      }
+    }
+
+
+
+
+
+
+
+    console.log("=====" + path + '=====' + routeName);
+
+
+    return path === routeName ? "active" : '';
   };
 
   // makes the sidenav normal on hover (actually when mouse enters on it)
@@ -156,7 +218,12 @@ function Navbar({
             <NavLink
               data-toggle="collapse"
               aria-expanded={state[prop.state]}
-              className="ml-2 pointer"
+              style={{
+                cursor: 'pointer'
+              }}
+              className={classnames({
+                active: getCollapseInitialState(prop.views),
+              })}
               onClick={(e: any) => {
                 e.preventDefault();
                 setState(st);
@@ -165,13 +232,13 @@ function Navbar({
             >
               {prop.icon ? (
                 <>
-                  <i className={`  ${prop.icon}  ${prop.path === navIndex ? "" : ''}`} />
-                  <span className={`  ${prop.path === navIndex ? "" : ''}`}>{prop.name}</span>
+                  <i className={prop.icon} />
+                  <span className="nav-link-text">{prop.name}</span>
                 </>
               ) : prop.miniName ? (
                 <>
-                  <span className={`sidenav-mini-icon ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.miniName} </span>
-                  <span className={`sidenav-normal ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}> {prop.name} </span>
+                  <span className="sidenav-mini-icon"> {prop.miniName} </span>
+                  <span className="sidenav-normal"> {prop.name} </span>
                 </>
               ) : null}
             </NavLink>
@@ -184,10 +251,10 @@ function Navbar({
         );
       }
       return (
-        <NavItem className={` ${prop.path === navIndex ? "sass-nav-active" : 'sass-nav'}`} key={key}>
+        <NavItem className={activeRoute(prop.layout + prop.path)} key={key}>
           <NavLink
             to={prop.layout + prop.path}
-            className=""
+            className={activeRouteLink(prop.layout + prop.path)}
             onClick={
               () => {
                 closeSideNav()
@@ -198,8 +265,15 @@ function Navbar({
           >
             {prop.icon !== undefined ? (
               <>
-                <i className={`${prop.icon}  ${prop.path === navIndex ? "text-primary" : 'text-white'}`} />
-                <span className={`  ${prop.path === navIndex ? "sass-active-text" : 'sass-link-text'}`}>{prop.name}</span>
+                <i className={prop.icon} />
+                <span className="nav-link-text">{prop.name}</span>
+              </>
+            ) : prop.miniName !== undefined ? (
+              <>
+                <span className="sidenav-mini-icon" style={{
+                  color: pathname === prop.path ? '#ec6101' : '#FFFFFF'
+                }}> {prop.miniName} </span>
+                <span className={`${pathname === prop.path ? "sidenav-active" : "sidenav-normal"}`}> {prop.name} </span>
               </>
             ) : (
               prop.name
@@ -224,7 +298,7 @@ function Navbar({
   }
 
   const scrollBarInner = (
-    <div className="scrollbar-inner  overflow-auto scroll-hidden">
+    <div className="scrollbar-inner overflow-auto scroll-hidden">
       <div className="sidenav-header d-flex align-items-center">
         {logo ? (
           <NavbarBrand {...navbarBrandProps}>

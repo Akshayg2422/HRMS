@@ -68,7 +68,7 @@ export const ROUTE = {
   ROUTE_MANAGE_ESSL_CONFIG: '/manage-essl-config',
   ROUTE_MANAGE_ESSL_DEVICES: '/manage-essl-devices',
   ROUTE_APPROVALS: '/approvals',
-  ROUTE_ADD_DEDUCTION:'/add-deduction',
+  ROUTE_ADD_DEDUCTION: '/add-deduction',
   ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION: '/view-employee-salary-definition'
 
 }
@@ -121,7 +121,7 @@ export const CHILD_PATH = [
   { path: "/add-deduction", parent: '/payroll', name: 'Manage Deduction', showBack: true, showBreadCrums: true },
   { path: "/view-employee-salary-definition", parent: '/payroll', name: 'Employee Salary Definition', showBack: true, showBreadCrums: true },
 
-]   
+]
 
 export const COMMON_HEADER = [
   { id: '1', name: 'Profile', route: ROUTE.ROUTE_PROFILE },
@@ -228,91 +228,92 @@ export const BLOOD_GROUP_LIST = [
 
 
 export const NAV_ITEM = [
-  { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", path: ROUTE.ROUTE_DASHBOARD ,layout:'',},
-  { id: '2', name: 'Employees Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, path: ROUTE.ROUTE_EMPLOYEE,layout:'' },
-  { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', image: Icons.LocationSecondary, path: ROUTE.ROUTE_LOCATION,layout:'' },
+  { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", path: ROUTE.ROUTE_DASHBOARD, layout: '', },
+  { id: '2', name: 'Employees Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, path: ROUTE.ROUTE_EMPLOYEE, layout: '' },
+  { id: '3', name: 'Location Portfolio', value: 'LP', icon: 'ni ni-pin-3', image: Icons.LocationSecondary, path: ROUTE.ROUTE_LOCATION, layout: '' },
   // { id: '4', name: 'Assign Location', value: 'AL', icon: 'ni ni-square-pin', image: Icons.AssignLocation, route: ROUTE.ROUTE_ASSIGN_LOCATION },
   // { id: '5', name: 'Manage Fence Admin', value: 'FA', icon: 'ni ni-archive-2', image: Icons.Admin, route: ROUTE.ROUTE_FENCE_ADMIN },
-  { id: '6', name: 'Logs', value: 'EL', icon: 'ni ni-book-bookmark', image: Icons.Employee, path: ROUTE.ROUTE_EMPLOYEE_LOG,layout:'' },
-  { id: '7', name: 'Time Sheets', value: 'TS', icon: 'ni ni-single-copy-04', image: Icons.Department, path: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK ,layout:''},
-  { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, path: ROUTE.ROUTE_DASHBOARD_STATS ,layout:''},
-  { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, path: ROUTE.ROUTE_CALENDAR,layout:'' },
-  { id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-bell-55', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false,layout:'' ,collapse: true,
-  views: [
-        {
-          id:1,
-          path: ROUTE.ROUTE_LEAVE_REQUEST,
-          name: "Employees Leaves",
-          miniName: "JS",
-          layout: "",
-          icon:'ni ni-album-2 ml-sm-4' 
-        },
-        {
-          id:2,
-          path:  ROUTE.ROUTE_MODIFY_LOGS,
-          name: "Modify logs",
-          miniName: "AC",
-          layout: "",
-          icon:'ni ni-ruler-pencil ml-sm-4'
-  
-        },
-        {
-          id:3,
-          path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
-          name: "Employees shifts",
-          miniName: "AC",
-          layout: "",
-          icon:'ni ni-time-alarm ml-sm-4'
-  
-        },
-        {
-          id:4,
-          path: ROUTE.ROUTE_SHIFT_REQUEST,
-          name: "Shift Request",
-          miniName: "AC",
-          layout: "",
-          icon:'ni ni-bullet-list-67 ml-sm-4'
-  
-        },
-        {
-          id:5,
-          path: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
-          name: "Face Re-register",
-          miniName: "AC",
-          layout: "",
-          icon:'ni ni-badge ml-sm-4'
-  
-        },
-        {
-          id:6,
-          path:  ROUTE.ROUTE_LOG_APPROVAL,
-          name: "Log Approval",
-          miniName: "AC",
-          layout: "",
-          icon:'ni ni-circle-08 ml-sm-4'
-  
-        },
-        {
-          id:7,
-          path:  ROUTE.ROUTE_FACE_RE_REQUEST,
-          name: "Face Approval",
-          miniName: "AC",
-          layout: "",
-          icon:'ni ni-image ml-sm-4'
-  
-        },
-      ],
-},
+  { id: '6', name: 'Logs', value: 'EL', icon: 'ni ni-book-bookmark', image: Icons.Employee, path: ROUTE.ROUTE_EMPLOYEE_LOG, layout: '' },
+  { id: '7', name: 'Time Sheets', value: 'TS', icon: 'ni ni-single-copy-04', image: Icons.Department, path: ROUTE.ROUTE_EMPLOYEE_WORK_BOOK, layout: '' },
+  { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, path: ROUTE.ROUTE_DASHBOARD_STATS, layout: '' },
+  { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, path: ROUTE.ROUTE_CALENDAR, layout: '' },
+  {
+    id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-bell-55', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false, layout: '', collapse: true,
+    views: [
+      {
+        id: 1,
+        path: ROUTE.ROUTE_LEAVE_REQUEST,
+        name: "Employees Leaves",
+        miniName: "EL",
+        layout: "",
+        // icon:'ni ni-album-2 ml-sm-4' 
+      },
+      {
+        id: 2,
+        path: ROUTE.ROUTE_MODIFY_LOGS,
+        name: "Modify logs",
+        miniName: "ML",
+        layout: "",
+        // icon:'ni ni-ruler-pencil ml-sm-4'
+
+      },
+      {
+        id: 3,
+        path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
+        name: "Employees shifts",
+        miniName: "ES",
+        layout: "",
+        // icon:'ni ni-time-alarm ml-sm-4'
+
+      },
+      {
+        id: 4,
+        path: ROUTE.ROUTE_SHIFT_REQUEST,
+        name: "Shift Request",
+        miniName: "SR",
+        layout: "",
+        // icon:'ni ni-bullet-list-67 ml-sm-4'
+
+      },
+      {
+        id: 5,
+        path: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
+        name: "Face Re-register",
+        miniName: "FR",
+        layout: "",
+        // icon: 'ni ni-badge ml-sm-4'
+
+      },
+      {
+        id: 6,
+        path: ROUTE.ROUTE_LOG_APPROVAL,
+        name: "Log Approval",
+        miniName: "LA",
+        layout: "",
+        // icon: 'ni ni-circle-08 ml-sm-4'
+
+      },
+      {
+        id: 7,
+        path: ROUTE.ROUTE_FACE_RE_REQUEST,
+        name: "Face Approval",
+        miniName: "FA",
+        layout: "",
+        // icon: 'ni ni-image ml-sm-4'
+
+      },
+    ],
+  },
   // { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
   // { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
-  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, path: ROUTE.ROUTE_REPORTS ,layout:''},
-  { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, path: ROUTE.ROUTE_SHIFT_GROUP,layout:'' },
+  { id: '13', name: 'MIS Reports', value: 'RS', icon: 'ni ni-collection', image: Icons.MISREPORT, path: ROUTE.ROUTE_REPORTS, layout: '' },
+  { id: '14', name: 'Shift Management', value: 'SM', icon: 'ni ni-watch-time', image: Icons.SHIFTMANAGEMENTPRIMARY, path: ROUTE.ROUTE_SHIFT_GROUP, layout: '' },
   // { id: '15', name: 'Employee Shifts', value: 'ESS', icon: 'ni ni-time-alarm', image: Icons.EMPLOYEESHIFTS, route: ROUTE.ROUTE_EMPLOYEES_SHIFTS },
   // { id: '16', name: 'Shift Request', value: 'MS', icon: 'ni ni-bullet-list-67', image: Icons.ShiftRequest, route: ROUTE.ROUTE_SHIFT_REQUEST },
-  { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, path: ROUTE.ROUTE_PAYROLL ,layout:''},
+  { id: '16', name: 'Payroll', value: 'PR', icon: 'ni ni-money-coins', image: Icons.PAYROLL, path: ROUTE.ROUTE_PAYROLL, layout: '' },
   // { id: '17', name: 'Face Re-Register', value: 'FR', icon: 'ni ni-badge', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST },
   // { id: '18', name: 'Log Approval', value: 'LA', icon: 'ni ni-circle-08', image: Icons.FaceApproval, route: ROUTE.ROUTE_LOG_APPROVAL },
-  { id: '19', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, path: ROUTE.ROUTE_BROADCAST ,layout:''},
+  { id: '19', name: 'Broadcast', value: 'BC', icon: 'ni ni-notification-70', image: Icons.BroadCast, path: ROUTE.ROUTE_BROADCAST, layout: '' },
   // { id: '20', name: 'Face Approval', value: 'FR', icon: 'ni ni-image', image: Icons.FaceRequest, route: ROUTE.ROUTE_FACE_RE_REQUEST },
   // { id: '19', name: 'Event Notification', value: 'EN', icon: 'ni ni-send', image: Icons.EventNotification, route: ROUTE.ROUTE_EVENT_NOTIFICATION },
   // { id: '20', name: 'My Branches', value: 'MB', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_MY_BRANCHES, is_admin: false },

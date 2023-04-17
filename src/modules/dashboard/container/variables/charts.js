@@ -284,7 +284,6 @@ function parseOptions(parent, options) {
 
 const chartExample6 = {
   options: {
-    responsive: true,
     legend: {
       position: "top",
     },

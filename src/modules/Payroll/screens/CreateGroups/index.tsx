@@ -101,7 +101,9 @@ function CreateGroup() {
 
     const getCompanyAllowanceList = () => {
 
-        const params = {}
+        const params = {
+            page_number: -1
+        }
 
         dispatch(getCompanyAllowance({
             params,
@@ -416,7 +418,7 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {companyAllowanceList?.data && companyAllowanceList?.data?.map((el: any) => {
+                        {companyAllowanceList && companyAllowanceList?.map((el: any) => {
 
                             const isActive = allowances?.some((item: any) => item.id === el.id)
 
