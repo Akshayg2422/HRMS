@@ -339,7 +339,7 @@ const LocationTable = ({
       <table className="table align-items-center table-flush">
         <thead className="thead-light">
           <tr>
-            <th scope="col">{"Name"}</th>
+            <th scope="col">{"Employee"}</th>
             <th scope="col">{"Date"}</th>
             <th scope="col">{"Leave Type"}</th>
             <th scope="col">{"Reason"}</th>

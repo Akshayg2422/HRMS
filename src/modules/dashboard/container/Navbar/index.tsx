@@ -61,7 +61,6 @@ function Navbar({
           }
           else {
             childNav()
-
           }
         })
       }
@@ -91,63 +90,31 @@ function Navbar({
 
 
   const activeRouteLink = (routeName: string) => {
-    console.log(routeName + '===');
-
     let path = location.pathname
-    console.log(path);
-
-    if (routeName === '/employee') {
-      if (path === '/manage-employee' || path === '/inactive-employee-list' || path === '/view-employee') {
-        path = '/employee'
+    NAV_ITEM.filter((el: any, index: number) => {
+      if (pathname === el.path && pathname !== "/approvals") {
+        path = el.path
       }
-    }
-
-    if (routeName === '/location') {
-      if (path === '/manage-branches' || path === '/my-branches') {
-        path = '/location'
+      else {
+        el?.views?.forEach((it: any, index: number) => {
+          if (it.path === pathname && pathname !== "/approvals") {
+            path = it.path
+          }
+          else {
+            CHILD_PATH.filter((el: any) => {
+              if (pathname === el.path) {
+                NAV_ITEM.filter((element: any, index: number) => {
+                  if (el.parent === element.path) {
+                    path = el.parent
+                  }
+                })
+              }
+            })
+          }
+        })
       }
-    }
-
-    if (routeName === '/stats') {
-      if (path === '/stats-attendance') {
-        path = '/stats'
-      }
-    }
-
-
-    if (routeName === '/calendar') {
-      if (path === '/manage-holidays' || path === '/leaves-types' || path === '/manage-leave-types') {
-        path = '/calendar'
-      }
-    }
-
-    if (routeName === '/shift-group') {
-      if (path === '/shift-set' || path === '/shift-listing' || path === '/shift-management' || path === '/create-shift-group') {
-        path = '/shift-group'
-      }
-    }
-
-    if (routeName === '/payroll') {
-      if (path === '/salary-break-down' || path === '/view-employee-salary-definition' || path === '/shift-management' || path === '/create-shift-group') {
-        path = '/payroll'
-      }
-    }
-
-    if (routeName === '/broadcast') {
-      if (path === '/manage-broadcast') {
-        path = '/broadcast'
-      }
-    }
-
-
-
-
-
-
-
-    console.log("=====" + path + '=====' + routeName);
-
-
+    })
+    
     return path === routeName ? "active" : '';
   };
 
@@ -271,9 +238,9 @@ function Navbar({
             ) : prop.miniName !== undefined ? (
               <>
                 <span className="sidenav-mini-icon" style={{
-                  color: pathname === prop.path ? '#ec6101' : '#FFFFFF'
+                  color: '#FFFFFF', fontWeight: pathname === prop.path ? 'bold' : 'lighter'
                 }}> {prop.miniName} </span>
-                <span className={`${pathname === prop.path ? "sidenav-active" : "sidenav-normal"}`}> {prop.name} </span>
+                <span className={`${pathname === prop.path ? "sidenav-active" : "sidenav-normal "}`}> {prop.name} </span>
               </>
             ) : (
               prop.name
