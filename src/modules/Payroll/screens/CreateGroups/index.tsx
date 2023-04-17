@@ -296,6 +296,8 @@ function CreateGroup() {
 
     }
 
+    console.log("companyAllowanceList",companyAllowanceList);
+    
     const isPercentageExist = selectedAllowances?.some((item: any) => item.type === "1")
 
     return (
@@ -418,7 +420,7 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {companyAllowanceList && companyAllowanceList?.map((el: any) => {
+                        {companyAllowanceList && companyAllowanceList?.data?.map((el: any) => {
 
                             const isActive = allowances?.some((item: any) => item.id === el.id)
 

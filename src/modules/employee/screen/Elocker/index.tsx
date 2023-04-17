@@ -1,4 +1,4 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress, TableWrapper } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress, TableWrapper, Search } from '@components'
 import { Icons } from '@assets';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -211,9 +211,15 @@ function ELocker() {
 
     return (
         <div>
-            <TableWrapper>
-                <Container additionClass='mt-2 mx-4 '>
-                    <h1>{t("E_Locker")}</h1>
+            <TableWrapper
+                title={t("E_Locker")}
+                buttonChildren={
+                    <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => setUploadModel(!uploadModel)} />
+                }
+            >
+                <Container additionClass='mt-1 mx-3'>
+
+
                     <Container
                         flexDirection={"row"}
                         additionClass={"col"}
@@ -228,22 +234,9 @@ function ELocker() {
                             />
 
                         </Container>
-                        <Button
-                            onClick={() => {
-                                SelectedBranchFilter()
-                            }} className='bg-primary text-white border-0 btn-icon mt--3'
-                        >
-                            <ImageView additionClass={''} icon={Icons.Search} height={20} width={20} />
-                        </Button>
-                        <div className='row col-sm-4 mt--3'
 
-                            onClick={() => setUploadModel(!uploadModel)}
-                        >
-                            <Button className='bg-primary text-white border-0'
-                            >{t('add')}</Button>
+                        <Search variant="Icon" additionalClassName='mt--3 mr-2' onClick={() => SelectedBranchFilter()} />
 
-
-                        </div>
                     </Container>
 
                 </Container>
@@ -255,7 +248,7 @@ function ELocker() {
             </TableWrapper>
 
 
-            <Modal size={'modal-sm'} title={viewDocument.name}  showModel={model} toggle={() => setModel(!model)} >
+            <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
                 {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {
                     return (
                         <>
