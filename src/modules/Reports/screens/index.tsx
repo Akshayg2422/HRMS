@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress, TableWrapper } from '@components'
 import { Icons } from '@assets'
-import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
+import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, INITIAL_PAGE, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
@@ -70,18 +70,18 @@ function Reports() {
 
   useEffect(() => {
     if (enterPress) {
-      getReports(currentPage)
+      getReports(INITIAL_PAGE)
     }
   }, [enterPress])
 
   useEffect(() => {
-    reportsType !== 'shift' && getReports(currentPage)
+    reportsType !== 'shift' && getReports(INITIAL_PAGE)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
 
   useEffect(() => {
     if (reportsType === 'shift' && selectedShift) {
-      getReports(currentPage)
+      getReports(INITIAL_PAGE)
       setShiftName(getShiftName(selectedShift, shiftGroupData))
     }
     if (reportsType === 'shift' && initialRender) {
@@ -414,7 +414,7 @@ function Reports() {
           </div>
           <div className='row ml-xl-1'>
             <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
-            <Primary text={'Search'} col={'col-xl-1 p-auto'} size={'btn-sm'} onClick={() => getReports(currentPage)} />
+            <Primary text={'Search'} col={'col-xl-1 p-auto'} size={'btn-sm'} onClick={() => getReports(INITIAL_PAGE)} />
           </div>
         </div>
         {reportsType === "leave" &&

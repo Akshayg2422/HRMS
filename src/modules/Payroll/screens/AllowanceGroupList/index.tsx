@@ -1,6 +1,6 @@
 import { CommonDropdownMenu, CommonTable, Container, DropDown, FormWrapper, Icon, ImageView, InputText, Modal, NoRecordFound, Primary, ScreenContainer, Secondary, TableWrapper } from '@components'
 import { Icons } from '@assets';
-import { goTo, ROUTE, useNav } from '@utils'
+import { goTo, INITIAL_PAGE, ROUTE, useNav } from '@utils'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +22,7 @@ function AllowanceGroupList() {
     );
 
     useEffect(() => {
-        getAllowanceGroupList(currentPage)
+        getAllowanceGroupList(INITIAL_PAGE)
     }, [])
 
     const getAllowanceGroupList = (pageNumber: number) => {

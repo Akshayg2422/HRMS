@@ -3,7 +3,7 @@ import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRequestType, showToast } from '@utils';
+import { INITIAL_PAGE, getRequestType, showToast } from '@utils';
 import { AllFFaceRequest, ApprovedFaceRequest, PendingFaceRequest, RejectFaceRequest } from './Container';
 import { faceReRegisterRequestAction, setFaceCurrentStatusType } from '../../store/dashboard/actions';
 
@@ -34,7 +34,7 @@ function FaceReRequest() {
 
   useEffect(() => {
     if (enterPress) {
-      getEmployeeRequest(currentFaceType, currentPage)
+      getEmployeeRequest(currentFaceType, INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -42,7 +42,7 @@ function FaceReRequest() {
   const getRequestDetails = (item: any) => {
     setActive(item.id || item)
     dispatch(setFaceCurrentStatusType(getRequestType(item.name)))
-    getEmployeeRequest(getRequestType(item.name), currentPage)
+    getEmployeeRequest(getRequestType(item.name), INITIAL_PAGE)
   }
 
   const getEmployeeRequest = (type: number, pageNumber: number) => {
@@ -93,7 +93,7 @@ function FaceReRequest() {
 
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} /> */}
-            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} />
+            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">

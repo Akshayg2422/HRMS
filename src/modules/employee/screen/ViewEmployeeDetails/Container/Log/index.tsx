@@ -209,7 +209,7 @@ const LogView = () => {
         return true;
     };
 
-    
+
 
     const onRequestHandler = () => {
         if (validateOnSubmit()) {
@@ -221,7 +221,7 @@ const LogView = () => {
                 is_approved: true,
                 employee_id: selectedEmployeeId,
             };
-            
+
             dispatch(
                 applyLeave({
                     params,
@@ -248,7 +248,7 @@ const LogView = () => {
                         size={'btn-sm'}
                         sortData={employeeLogSort}
                         activeIndex={activeSort}
-                        onClick={(index) => {
+                        onClick={(index: any, item: any) => {
                             setActiveSort(index);
                             onTabChange(index);
                         }}

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { REQUEST_TYPE } from '@utils';
 import { AllRequest, ApprovedRequest, PendingRequest, RejectRequest } from './container'
 import { getShiftRequestedEmployees, setCurrentStatusType } from '../../../../store/shiftManagement/actions';
-import { getRequestType } from '@utils';
+import { INITIAL_PAGE, getRequestType } from '@utils';
 
 function ShiftRequest() {
   const { t } = useTranslation();
@@ -29,12 +29,12 @@ function ShiftRequest() {
 
 
   useEffect(() => {
-    getEmployeeRequest(currentType, currentPage)
+    getEmployeeRequest(currentType, INITIAL_PAGE)
   }, [hierarchicalBranchIds])
 
   useEffect(() => {
     if (enterPress) {
-      getEmployeeRequest(currentType, currentPage)
+      getEmployeeRequest(currentType, INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -42,7 +42,7 @@ function ShiftRequest() {
   const getRequestDetails = (item: any) => {
     setActive(item.id || item)
     dispatch(setCurrentStatusType(getRequestType(item.name)))
-    getEmployeeRequest(getRequestType(item.name), currentPage)
+    getEmployeeRequest(getRequestType(item.name), INITIAL_PAGE)
   }
 
 
@@ -88,7 +88,7 @@ function ShiftRequest() {
                   getEmployeeLogsWithShifts(currentPage);
                 }}
               /> */}
-            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeRequest(currentType, currentPage) }} />
+            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeRequest(currentType, INITIAL_PAGE) }} />
           </Container>
 
         </Container>

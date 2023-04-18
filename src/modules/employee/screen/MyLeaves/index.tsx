@@ -24,7 +24,7 @@ import {
   deleteHoliday,
   getLeavesByTypes,
 } from "../../../../store/employee/actions";
-import { dropDownValueCheck, getRequestType, goTo, LEAVES_TYPE, REQUEST_TYPE_SUBSET, ROUTE, showToast, useNav } from "@utils";
+import { dropDownValueCheck, getRequestType, goTo, INITIAL_PAGE, LEAVES_TYPE, REQUEST_TYPE_SUBSET, ROUTE, showToast, useNav } from "@utils";
 
 function MyLeaves() {
   const navigation = useNav();
@@ -42,7 +42,7 @@ function MyLeaves() {
   );
 
   useEffect(() => {
-    fetchleaveDetail(getRequestType(leaveTypes), currentPage)
+    fetchleaveDetail(getRequestType(leaveTypes), INITIAL_PAGE)
   }, [leaveTypes]);
 
   const fetchleaveDetail = (type: number, pageNumber: number) => {

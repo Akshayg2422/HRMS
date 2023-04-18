@@ -73,7 +73,7 @@ function ShiftDetailsPerDay() {
                 if (item.week === el.week) {
                     item?.week_calendar.forEach((element: any) => {
                         if (element.week_day === el.week_day) {
-                            matchedData = [...matchedData,{ time: element.time_breakdown, date: el.date, day: el.day }]
+                            matchedData = [...matchedData, { time: element.time_breakdown, date: el.date, day: el.day }]
                         }
                     })
                 }
@@ -111,11 +111,11 @@ function ShiftDetailsPerDay() {
                 </div>
             </Card>
 
-            <Container flexDirection={"row"} margin={"mt-3"}>
-                {filteredDetails() && filteredDetails().length > 0 ? filteredDetails().map((it: any) => {
+            <Container additionClass={'row'} margin={"mt-3"}>
+                {filteredDetails() && filteredDetails().length < 0 ? filteredDetails().map((it: any) => {
                     return (
                         <Container additionClass={"col-xl-3 col-md-6"}>
-                            <Card style={{height:'25vh'}}
+                            <Card style={{ height: '25vh' }}
                             >
                                 <Container additionClass={"d-flex justify-content-between"} >
                                     <Container>
@@ -141,11 +141,11 @@ function ShiftDetailsPerDay() {
                             </Card>
                         </Container>
                     );
-                }) : <NoRecordFound />}
+                }) : <Container additionClass='col'><NoRecordFound /></Container>}
             </Container>
         </div >
 
-    )
+    ) 
 }
 
 export { ShiftDetailsPerDay }

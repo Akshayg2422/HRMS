@@ -23,6 +23,7 @@ import {
   WEEK_LIST,
   showToast,
   mergeTimeSlots,
+  INITIAL_PAGE,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { getBranchShifts, getEmployeeWithShift, getMyShifts, postEmployeeShiftChange } from "../../../../store/shiftManagement/actions";
@@ -56,12 +57,12 @@ function EmployeeShifts() {
   );
 
   useEffect(() => {
-    getEmployeeLogsWithShifts(currentPage);
+    getEmployeeLogsWithShifts(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
   useEffect(() => {
     if (enterPress) {
-      getEmployeeLogsWithShifts(currentPage);
+      getEmployeeLogsWithShifts(INITIAL_PAGE);
     }
   }, [enterPress])
 
@@ -163,7 +164,7 @@ function EmployeeShifts() {
       onSuccess: (success: any) => () => {
         setChangeShiftModelModel(!changeShiftModel)
         showToast("success", success);
-        getEmployeeLogsWithShifts(currentPage);
+        getEmployeeLogsWithShifts(INITIAL_PAGE);
       },
       onError: (error: string) => () => {
         setChangeShiftModelModel(!changeShiftModel)

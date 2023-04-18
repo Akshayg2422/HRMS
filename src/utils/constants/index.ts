@@ -486,7 +486,7 @@ export const LEAVE_STATUS_REVERT = [
   }
 ]
 
-
+export const INITIAL_PAGE = 1
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 

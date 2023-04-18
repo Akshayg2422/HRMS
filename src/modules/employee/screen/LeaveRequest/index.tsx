@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Pending, Approved, Rejected, AllLeaves } from "./Container";
-import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { INITIAL_PAGE, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
@@ -42,13 +42,13 @@ const LeaveRequest = () => {
   const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
 
   useEffect(() => {
-    fetchPendingDetail(currentPage, currentStatusId);
+    fetchPendingDetail(INITIAL_PAGE, currentStatusId);
   }, [hierarchicalBranchIds]);
 
 
   useEffect(() => {
     if (enterPress) {
-      fetchPendingDetail(currentPage, currentStatusId);
+      fetchPendingDetail(INITIAL_PAGE, currentStatusId);
     }
   }, [enterPress])
 
@@ -70,7 +70,7 @@ const LeaveRequest = () => {
   };
 
   function proceedSearchApi() {
-    fetchPendingDetail(currentPage, currentStatusId);
+    fetchPendingDetail(INITIAL_PAGE, currentStatusId);
   }
 
   return (
@@ -128,7 +128,7 @@ const LeaveRequest = () => {
                       role="tab"
                       aria-controls={`tabs-icons-text-${el.id}`}
                       aria-selected="true"
-                      onClick={() => fetchPendingDetail(currentPage, el.value)}
+                      onClick={() => fetchPendingDetail(INITIAL_PAGE, el.value)}
                     >
                       {el.name}
                     </a>

@@ -295,8 +295,6 @@ function CreateGroup() {
         }
 
     }
-
-    console.log("companyAllowanceList",companyAllowanceList);
     
     const isPercentageExist = selectedAllowances?.some((item: any) => item.type === "1")
 

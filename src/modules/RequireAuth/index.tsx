@@ -143,7 +143,9 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                     text: '',
                 }} />}
             <div className='main-content'>
-                {dashboardDetails && dashboardDetails.user_details && <div className='sticky-top' ><Header /></div>}
+                {dashboardDetails && dashboardDetails.user_details && <div className='sticky-top' ><Header
+                    toggleSideNav={toggleSideNav}
+                /></div>}
                 <div className='mx-3 my-4'>
                     {children}
                 </div>

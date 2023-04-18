@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName } from '../../../../store/location/actions';
-import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
+import { goTo, useNav, ROUTE, showToast, validateDefault, INITIAL_PAGE } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
 import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/actions';
@@ -105,13 +105,13 @@ function LocationScreen() {
   useEffect(() => {
 
     if (selectedBranchId) {
-      getRegisteredFenceAdmin(currentPage)
+      getRegisteredFenceAdmin(INITIAL_PAGE)
     }
   }, [selectedBranchId])
 
   useEffect(() => {
     if (enterPress && isOpenFenceModal === true) {
-      getRegisteredFenceAdmin(currentPage);
+      getRegisteredFenceAdmin(INITIAL_PAGE);
     }
   }, [enterPress])
 
@@ -149,7 +149,7 @@ function LocationScreen() {
     setSelectedBranchId(selectedBranch);
     setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
     setIsOpenFenceModal(!isOpenFenceModal)
-    getRegisteredFenceAdmin(currentPage)
+    getRegisteredFenceAdmin(INITIAL_PAGE)
   }
 
   function getRegisteredFenceAdmin(pageNumber: number) {
@@ -472,7 +472,7 @@ function LocationScreen() {
               }}
             /> */}
             <Search variant={'Icon'} additionalClassName='col-xl-3 mt-xl-2 mt-2 mt-sm-0' onClick={() => {
-              getRegisteredFenceAdmin(currentPage)
+              getRegisteredFenceAdmin(INITIAL_PAGE)
             }} />
           </Container>
           {registeredEmployeesList && registeredEmployeesList.length > 0 ? (

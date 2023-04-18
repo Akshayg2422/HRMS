@@ -32,7 +32,7 @@ function Charts() {
   useEffect(() => {
     barChartNormalizedData()
     lineChartNormalizedData()
-  }, [hierarchicalBranchIds, employeeattendancedatalog]);
+  }, [employeeattendancedatalog]);
 
   const barChartNormalizedData = () => {
     const barChartDataSet = { labels: [], dataset: [] }

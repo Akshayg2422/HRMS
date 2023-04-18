@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { employeeEnableFaceReRegister, employeeFaceReRegisterRequest } from '../../../../store/dashboard/actions';
-import { showToast } from '@utils';
+import { INITIAL_PAGE, showToast } from '@utils';
 
 function FaceReRegisterRequest() {
   const { t } = useTranslation();
@@ -23,12 +23,12 @@ function FaceReRegisterRequest() {
 
 
   useEffect(() => {
-    getRequestDetails(currentPage)
+    getRequestDetails(INITIAL_PAGE)
   }, [])
 
   useEffect(() => {
     if (enterPress) {
-      getRequestDetails(currentPage)
+      getRequestDetails(INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -82,7 +82,9 @@ function FaceReRegisterRequest() {
           showToast('success', success?.message)
           getRequestDetails(currentPage)
         },
-        onError: (error: string) => () => { },
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };
@@ -148,7 +150,7 @@ function FaceReRegisterRequest() {
 
             >
               {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-              <Search variant="Icon" additionalClassName={''} onClick={() => getRequestDetails(currentPage)} />
+              <Search variant="Icon" additionalClassName={''} onClick={() => getRequestDetails(INITIAL_PAGE)} />
             </Container>
           </Container>
           <div>

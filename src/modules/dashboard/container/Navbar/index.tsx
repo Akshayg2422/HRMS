@@ -20,7 +20,6 @@ import { Icons } from "@assets";
 import { useDispatch, useSelector } from "react-redux";
 import { currentNavIndex } from "../../../../store/app/actions";
 import { Container, ImageView } from "@components";
-import { log } from "console";
 
 function Navbar({
   toggleSideNav,
@@ -250,8 +249,6 @@ function Navbar({
       );
     });
   };
-
-  // {pathname === prop.path && <ImageView additionClass="ml--4" icon={Icons.Dot} height={'30px'} width={'30px'}/>}
 
   let navbarBrandProps;
   if (logo && logo.innerLink) {
