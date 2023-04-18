@@ -414,7 +414,7 @@ function LocationScreen() {
                 resetRadiusApi(el)
               }}>
               <div className='row align-items-center'>
-                <span className='col text-xl text-gray'>{el}</span>
+                <span className='col text-gray'>{el}</span>
                 {modelData && modelData?.fencing_radius === el && <div className='col-2 text-right'><ImageView icon={Icons.TickActive} /></div>}
                 <Divider />
               </div>
