@@ -106,7 +106,7 @@ export const CHILD_PATH = [
   { path: "/face-re-register-request", parent: '/approvals', name: 'Face Re-register Request', showBack: false, showBreadCrums: true },
   { path: "/log-approval", parent: '/approvals', name: 'Log Approval', showBack: false, showBreadCrums: true },
   { path: "/face-re-request", parent: '/approvals', name: 'Face Approval', showBack: false, showBreadCrums: true },
-  
+
   { path: "/profile", parent: '/profile', name: 'Profile', showBack: true, showBreadCrums: true },
   { path: "/stats-attendance", parent: '/stats', name: 'Stats Attendance', showBack: true, showBreadCrums: true },
   { path: "/profile", parent: '/profile', name: 'Profile', showBack: true, showBreadCrums: false },
