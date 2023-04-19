@@ -71,7 +71,7 @@ function AvailableLeaves() {
 
     return (
         <>
-            <Container additionClass={"mt-5 main-contain"}>
+            <Container additionClass={"mt-5 main-contain mx-3"}>
                 <Container additionClass='mt-5'>
                     {
                         memoizedTable

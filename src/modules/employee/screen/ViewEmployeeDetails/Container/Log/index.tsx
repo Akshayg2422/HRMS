@@ -209,7 +209,7 @@ const LogView = () => {
         return true;
     };
 
-    
+
 
     const onRequestHandler = () => {
         if (validateOnSubmit()) {
@@ -221,7 +221,7 @@ const LogView = () => {
                 is_approved: true,
                 employee_id: selectedEmployeeId,
             };
-            
+
             dispatch(
                 applyLeave({
                     params,
@@ -241,14 +241,14 @@ const LogView = () => {
     };
 
     return (
-        <Container additionClass='mx--1'>
+        <Container additionClass='mx-2 m-0'>
             <TableWrapper
                 buttonChildren={<div className="text-right">
                     <Sort
                         size={'btn-sm'}
                         sortData={employeeLogSort}
                         activeIndex={activeSort}
-                        onClick={(index) => {
+                        onClick={(index: any, item: any) => {
                             setActiveSort(index);
                             onTabChange(index);
                         }}

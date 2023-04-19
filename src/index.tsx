@@ -9,6 +9,10 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { BrowserRouter } from 'react-router-dom'
 import "./i18n";
 
+import "./assets/vendor/nucleo/css/nucleo.css";
+// core styles
+import "./assets/scss/argon-dashboard-pro-react.scss?v1.2.1";
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );

@@ -202,12 +202,12 @@ function MyBranches() {
             <TableWrapper>
                 <div className="ml-2 mt--3">
                     <Container additionClass={"col-xl-3 col-md-6 col-sm-12 ml-2 "}>
-                        <MyActiveBranches />
+                        <MyActiveBranches isReload={true} />
                     </Container>
                 </div>
-                <Container additionClass="row">
+                <Container additionClass="row scroll-hidden  overflow-auto">
                     <div className="col-xl col-sm-3 "
-                        style={{ height: "100vh", overflowY: "scroll" }}
+                        style={{ height: "100vh" }}
                     >
                         {
                             memoizedTable
@@ -215,23 +215,23 @@ function MyBranches() {
                     </div>
                     {adminId && (
                         <div
-                            className="col-xl col-sm-3 col-0 mx-2"
-                            style={{ height: "100vh", overflowY: "scroll", cursor: 'pointer' }}
+                            className="col-xl col-sm-3 col-0 mx-2 scroll-hidden  overflow-auto"
+                            style={{ height: "100vh", cursor: 'pointer' }}
                         >
                             <h3>{adminId ? `${adminId.name}'s ${t('branches')} ` : t('branches')}</h3>
                             <Divider />
-                            <div className="my-4">
+                            <div className="my-4 ">
                                 {branchesListSet && branchesListSet.length > 0 ? branchesListSet.map((item: Branch, index: number) => {
                                     const isActive = associatedBranch && associatedBranch.length > 0 && associatedBranch.some((el: any) => el === item.id)
                                     return (
                                         <div
-                                            className="row align-items-center mx-4"
+                                            className="row align-items-center mx-4 "
                                         >
                                             <div className="col-8"
                                                 onClick={() => adminId && addSelectedBranch(item)}
 
                                             >
-                                                <span className="text-xl text-gray">{item.name}</span>
+                                                <span>{item.name}</span>
                                             </div>
                                             {adminId ? <div className="col-4 text-right"
                                                 onClick={() => adminId && addSelectedBranch(item)}

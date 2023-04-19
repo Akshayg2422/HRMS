@@ -195,7 +195,7 @@ const AttendanceView = () => {
 
     return (
         <ScreenContainer>
-            <FormWrapper hideFooter isTitle>
+            <FormWrapper hideFooter isTitle >
 
 
                 <Container additionClass={'d-flex justify-content-between'}>

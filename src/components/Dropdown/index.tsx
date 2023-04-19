@@ -50,9 +50,9 @@ const DropDown = (({
 
 
   return (
-    <Container additionClass={`form-group ${additionClass}`} col={col} >
+    <div className={`form-group`}>
       {label && <small className="form-control-label text-black ">{label}</small>}
-      <select ref={selectRef} value={value} className={`form-control mt-3 ml-2 ${showArrow && "form-select"}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}
+      <select ref={selectRef} value={value} className={`form-control mt-2  ${showArrow && "form-select"}  ${isDisabled&&`bg-white`}`} {...props} onChange={handleSelectChange} name={name} disabled={isDisabled}
       >
         <option>{placeholder}</option>
         {data && data.length > 0 && data.map((item: { id: any; type: any; name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<ReactI18NextChild> | null | undefined; group_name: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<ReactI18NextChild> | null | undefined; title: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | React.ReactFragment | React.ReactPortal | Iterable<ReactI18NextChild> | null | undefined; }, index: React.Key | null | undefined) => (
@@ -64,7 +64,7 @@ const DropDown = (({
         ))}
       </select>
       {error && <code className="text-danger">{error}</code>}
-    </Container>
+    </div>
   )
 });
 

@@ -3,7 +3,7 @@ import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getRequestType } from '@utils';
+import { INITIAL_PAGE, getRequestType } from '@utils';
 import { AllApproval, ApprovedApproval, PendingApproval, RejectApproval } from './Container';
 import { getEmployeesLoginFaceFailureAction, setFaceCurrentStatusType } from '../../store/dashboard/actions';
 
@@ -34,7 +34,7 @@ function FaceApproval() {
 
   useEffect(() => {
     if (enterPress) {
-      getEmployeeRequest(currentFaceType, currentPage)
+      getEmployeeRequest(currentFaceType, INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -42,7 +42,7 @@ function FaceApproval() {
   const getRequestDetails = (item: any) => {
     setActive(item.id || item)
     dispatch(setFaceCurrentStatusType(getRequestType(item.name)))
-    getEmployeeRequest(getRequestType(item.name), currentPage)
+    getEmployeeRequest(getRequestType(item.name), INITIAL_PAGE)
   }
 
 
@@ -92,10 +92,10 @@ function FaceApproval() {
             additionClass={"mt-sm-3 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
+            // onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} />
+            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -112,7 +112,7 @@ function FaceApproval() {
                       }`}
                     id={`tabs-icons-text-${el.id}-tab`}
                     data-toggle="tab"
-                    href={`#tabs-icons-text-${el.id}`}
+                    // href={`#tabs-icons-text-${el.id}`}
                     role="tab"
                     aria-controls={`tabs-icons-text-${el.id}`}
                     aria-selected="true"

@@ -1,5 +1,5 @@
 import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal, Pagination } from '@components';
-import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
+import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, INITIAL_PAGE, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -30,7 +30,7 @@ function BroadCast() {
     ];
 
     useEffect(() => {
-        getBroadcastMessagesList(currentPage)
+        getBroadcastMessagesList(INITIAL_PAGE)
     }, [])
 
 
@@ -63,6 +63,7 @@ function BroadCast() {
         dispatch(createBroadcastMessage({
             params,
             onSuccess: (success: any) => () => {
+                showToast("success", success.status)
                 setDeleteModel(!deleteModel)
                 getBroadcastMessagesList(currentPage)
             },
@@ -97,7 +98,7 @@ function BroadCast() {
                                 onClick={(index: any) => {
                                     setType(sortData[index].title.toLocaleLowerCase())
                                     setActiveSort(index);
-                                    getBroadcastMessagesList(currentPage)
+                                    getBroadcastMessagesList(INITIAL_PAGE)
                                 }}
                             />
                         </Container>

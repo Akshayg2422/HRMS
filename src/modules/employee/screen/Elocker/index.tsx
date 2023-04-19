@@ -1,4 +1,4 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress, TableWrapper } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress, TableWrapper, Search } from '@components'
 import { Icons } from '@assets';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { showToast, useNav, validateName } from '@utils';
 import { attachUserDocument, getEmployeeDocument } from '../../../../store/employee/actions';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
+import { Button } from 'reactstrap';
 
 
 function ELocker() {
@@ -210,9 +211,15 @@ function ELocker() {
 
     return (
         <div>
-            <TableWrapper>
-                <Container additionClass='mt-2 mx-4'>
-                    <h1>{t("E_Locker")}</h1>
+            <TableWrapper
+                title={t("E_Locker")}
+                buttonChildren={
+                    <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => setUploadModel(!uploadModel)} />
+                }
+            >
+                <Container additionClass='mt-1 mx-3'>
+
+
                     <Container
                         flexDirection={"row"}
                         additionClass={"col"}
@@ -227,30 +234,17 @@ function ELocker() {
                             />
 
                         </Container>
-                        <Icon type={"btn-primary"} additionClass={'mt--3'} icon={Icons.Search}
-                            onClick={() => {
-                                SelectedBranchFilter()
-                            }}
-                        />
-                        <Container
-                            col={"col"}
-                            additionClass={"mb-3"}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => setUploadModel(!uploadModel)}
-                        >
-                            <Icon
-                                text={t('add') + " " + "+"}
-                            />
-                        </Container>
+
+                        <Search variant="Icon" additionalClassName='mt--3 mr-2' onClick={() => SelectedBranchFilter()} />
+
                     </Container>
 
                 </Container>
-                <Container additionClass='mx--3'>
+                <>
                     {
                         memoizedTable
                     }
-                </Container>
+                </>
             </TableWrapper>
 
 
@@ -330,16 +324,17 @@ function ELocker() {
                                 </>
                                 }
                             </Container>
-                            <Container margin={"mt-5"} additionClass={'text-right'}>
-                                <Secondary
-                                    text={t("cancel")}
-                                    onClick={() => handleUploadModelCancel()}
-                                />
-                                <Primary
-                                    text={t("upload")}
-                                    onClick={() => AttachDocuments()}
-                                />
-                            </Container>
+
+                        </Container>
+                        <Container margin={"mt-5"} additionClass={'text-right'}>
+                            <Secondary
+                                text={t("cancel")}
+                                onClick={() => handleUploadModelCancel()}
+                            />
+                            <Primary
+                                text={t("upload")}
+                                onClick={() => AttachDocuments()}
+                            />
                         </Container>
                     </Container>
                 </Container>

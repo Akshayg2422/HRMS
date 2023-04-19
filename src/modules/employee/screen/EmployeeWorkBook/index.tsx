@@ -21,18 +21,22 @@ import {
   getEmployeesTimeSheets,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { Collapse } from "reactstrap";
+
 import { useTranslation } from "react-i18next";
 import {
   paginationHandler,
   getDisplayDateTimeFromMoment,
   getMomentObjFromServer,
   showToast,
+  INITIAL_PAGE,
 } from "@utils";
 import { Icons } from "@assets";
 import { Navbar } from "@modules";
+import { log } from "console";
 
 type TimeSheetResponse = {
-  id?: string;
+  id?: any;
   details?: string;
   attachments?: [];
   time_stamp?: string;
@@ -54,6 +58,8 @@ function EmployeeTimeSheets() {
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
   const KeyPress = useKeyPress('Enter')
+  const [collapseId, setCollapseId] = useState<any>()
+
 
   const {
     employeeTimeSheets,
@@ -73,12 +79,12 @@ function EmployeeTimeSheets() {
   ];
 
   useEffect(() => {
-    getEmployeeTimeSheets(currentPage);
+    getEmployeeTimeSheets(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
   useEffect(() => {
     if (KeyPress) {
-      getEmployeeTimeSheets(currentPage);
+      getEmployeeTimeSheets(INITIAL_PAGE);
     }
   }, [KeyPress])
 
@@ -112,13 +118,15 @@ function EmployeeTimeSheets() {
     });
   };
 
-  function getEmployeeEachUserTimeSheetsApi(index: number) {
+  function getEmployeeEachUserTimeSheetsApi(index: number, type: string) {
     const userId = employeeTimeSheets[index].id;
-
+    const params = {
+      type: type.toLowerCase(),
+      ...(userId && { user_id: userId })
+    }
     dispatch(
       getEmployeeEachUserTimeSheets({
-        type,
-        ...(userId && { user_id: userId }),
+        params,
         onSuccess: (success: any) => () => {
 
         },
@@ -131,9 +139,9 @@ function EmployeeTimeSheets() {
   }
 
   const onTabChange = (index: number) => {
-    setType(sortData[index].title.toLocaleLowerCase());
+    const data = sortData[index].title
+    setType(data);
   };
-  
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -147,7 +155,7 @@ function EmployeeTimeSheets() {
           displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
             setSelectedEmployeeDetails(employeeTimeSheets[index])
-            getEmployeeEachUserTimeSheetsApi(index);
+            getEmployeeEachUserTimeSheetsApi(index, type);
           }}
           paginationNumberClick={(currentPage) => {
             getEmployeeTimeSheets(paginationHandler("current", currentPage));
@@ -161,18 +169,34 @@ function EmployeeTimeSheets() {
         />
       ) : <NoRecordFound />}
     </>
-  }, [employeeTimeSheets])
+  }, [employeeTimeSheets, type])
+
+
+  const collapsesToggle = (collapse: string) => {
+    let openedCollapses = collapseId
+    if (openedCollapses?.includes(collapse)) {
+      setCollapseId('')
+    } else {
+      setCollapseId(collapse)
+    }
+  }
+
+  console.log(type + "====");
+
 
   return (
     <>
       <TableWrapper
         buttonChildren={
-          <div className="mr--4">
+          <div className="mr--1">
             <Sort
               size={'btn-sm'}
               sortData={sortData}
               activeIndex={activeSort}
-              onClick={(index) => {
+              onClick={(index: any, item: any) => {
+
+                console.log(index + "======");
+
                 setActiveSort(index);
                 onTabChange(index);
               }}
@@ -193,12 +217,7 @@ function EmployeeTimeSheets() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-                onClick={() => {
-                  getEmployeeTimeSheets(currentPage);
-                }}
-              /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-1 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(INITIAL_PAGE); }} />
             </Container>
           </Container>
         }
@@ -231,13 +250,9 @@ function EmployeeTimeSheets() {
                   return (
                     <div className="accordion">
                       <div
-                        data-toggle="collapse"
-                        data-target={
-                          index === accordion
-                            ? "#collapse" + index
-                            : undefined
-                        }
-                        id="accordionExample"
+                        role="tab"
+                        onClick={() => collapsesToggle(item.id)}
+                        aria-expanded={collapseId === item.id}
                       >
                         <Container
                           flexDirection={"flex-row"}
@@ -267,16 +282,11 @@ function EmployeeTimeSheets() {
                         <Divider />
                       </div>
 
-                      {accordion === index && (
-                        <div
-                          className="collapse"
-                          id={
-                            index === accordion
-                              ? "collapse" + index
-                              : undefined
-                          }
+                      {collapseId === item.id && (
+                        <Collapse role="tabpanel"
+                          isOpen={collapseId === item.id}
                         >
-                          <div className="card-body row align-items-center">
+                          <div className="card-body align-items-center">
                             {item.attachments &&
                               item.attachments.length > 0 ? (
                               <Carousel
@@ -287,7 +297,7 @@ function EmployeeTimeSheets() {
                               <NoRecordFound text={t("imageNotFound")} />
                             )}
                           </div>
-                        </div>
+                        </Collapse>
                       )}
                     </div>
                   );

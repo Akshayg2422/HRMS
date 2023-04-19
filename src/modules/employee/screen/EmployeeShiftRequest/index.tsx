@@ -1,6 +1,6 @@
 import { BackArrow, Card, CommonTable, Container, DropDown, InputText, Modal, NoRecordFound, Primary, Secondary, TableWrapper, useKeyPress } from '@components'
 import { getBranchShifts, getBranchWeeklyShifts, getShiftRequestedStatus, postRequestShiftChange } from '../../../../store/shiftManagement/actions';
-import { dropDownValueCheck, dropDownValueCheckByEvent, getRequestType, LEAVES_TYPE, REQUEST_TYPE, REQUEST_TYPE_SUBSET, showToast, useNav, validateDefault } from '@utils'
+import { dropDownValueCheck, dropDownValueCheckByEvent, getRequestType, INITIAL_PAGE, LEAVES_TYPE, REQUEST_TYPE, REQUEST_TYPE_SUBSET, showToast, useNav, validateDefault } from '@utils'
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -21,7 +21,7 @@ function EmployeeShiftRequest() {
 
 
     useEffect(() => {
-        getRequestList(getRequestType(requestTypes), currentPage);
+        getRequestList(getRequestType(requestTypes), INITIAL_PAGE);
     }, [requestTypes])
 
     const typeValidation = () => {
@@ -57,7 +57,7 @@ function EmployeeShiftRequest() {
             data.length > 0 &&
             data.map((el: any) => {
                 return {
-                    'name': `${el?.name}${' '}(${el.employee_id})`,
+                    'Employee': `${el?.name}${' '}(${el.employee_id})`,
                     "Branch": el?.branch_name,
                     "Shift": el?.shift_details?.name,
                     "Status": el?.status_text
@@ -118,15 +118,16 @@ function EmployeeShiftRequest() {
                         </Container>
                     </Container>
                 </div>
-                <div>
-                    <h2>{t("requestList")}</h2>
-                    <>
-                        {
-                            memoizedTable
-                        }
-                    </>
-                </div>
+
             </Container>
+            <div>
+                <h2 className='ml-3'>{t("requestList")}</h2>
+                <>
+                    {
+                        memoizedTable
+                    }
+                </>
+            </div>
 
         </TableWrapper>
     )

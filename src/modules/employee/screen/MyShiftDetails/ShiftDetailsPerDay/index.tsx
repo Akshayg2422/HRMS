@@ -73,7 +73,7 @@ function ShiftDetailsPerDay() {
                 if (item.week === el.week) {
                     item?.week_calendar.forEach((element: any) => {
                         if (element.week_day === el.week_day) {
-                            matchedData = [...matchedData,{ time: element.time_breakdown, date: el.date, day: el.day }]
+                            matchedData = [...matchedData, { time: element.time_breakdown, date: el.date, day: el.day }]
                         }
                     })
                 }
@@ -94,28 +94,28 @@ function ShiftDetailsPerDay() {
 
 
     return (
-        <div>
+        <div className='mx-3'>
             <Card>
-                <Container additionClass='row mb-4'>
-                    <Container additionClass='row'>
+                <div className='mb-4'>
+                    <div >
                         <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{`${t('myShift')}`}</h2>
-                        {filteredDetails() && filteredDetails().length > 0 && <Container additionClass="text-right">
+                        {filteredDetails() && filteredDetails().length > 0 && <div className="row m-0 d-flex justify-content-end">
                             <Primary
                                 text={'Detailed View'}
                                 onClick={() => { navigate(ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY) }}
                                 size={"btn-md"}
                                 additionClass={"mt-sm-0 mt-2"}
                             />
-                        </Container>}
-                    </Container>
-                </Container>
+                        </div>}
+                    </div>
+                </div>
             </Card>
 
-            <Container flexDirection={"row"} margin={"mt-3"}>
-                {filteredDetails() && filteredDetails().length > 0 ? filteredDetails().map((it: any) => {
+            <Container additionClass={'row'} margin={"mt-3"}>
+                {filteredDetails() && filteredDetails().length < 0 ? filteredDetails().map((it: any) => {
                     return (
                         <Container additionClass={"col-xl-3 col-md-6"}>
-                            <Card style={{height:'25vh'}}
+                            <Card style={{ height: '25vh' }}
                             >
                                 <Container additionClass={"d-flex justify-content-between"} >
                                     <Container>
@@ -141,11 +141,11 @@ function ShiftDetailsPerDay() {
                             </Card>
                         </Container>
                     );
-                }) : <NoRecordFound />}
+                }) : <Container additionClass='col'><NoRecordFound /></Container>}
             </Container>
         </div >
 
-    )
+    ) 
 }
 
 export { ShiftDetailsPerDay }

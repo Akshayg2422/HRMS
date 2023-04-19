@@ -310,7 +310,7 @@ function MyLog() {
                 size="btn-sm"
                 sortData={employeeLogSort}
                 activeIndex={activeSort}
-                onClick={(index) => {
+                onClick={(index: any, item: any) => {
                   setActiveSort(index);
                   onTabChange(index);
                 }}

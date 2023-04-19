@@ -42,7 +42,7 @@ function AllRequest() {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el?.name}${' '}(${el?.employee_id})`,
+          Employee: `${el?.name}${' '}(${el?.employee_id})`,
           "Branch": el?.branch_name,
           "Shift": el?.shift_details?.name,
           "Reason": el?.reason,
@@ -101,12 +101,13 @@ function AllRequest() {
       params,
       onSuccess: (success: any) => () => {
         getEmployeeRequest(-2, currentPage);
+        
         if (type === 1) {
-          showToast("success", success)
+          showToast("success", success.status)
           setApproveModel(!approveModel);
         }
         if (type === 0) {
-          showToast("success", success)
+          showToast("success", success.status)
           setRejectModel(!rejectModel);
         }
       },

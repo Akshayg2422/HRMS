@@ -19,6 +19,7 @@ import {
     useNav,
     ROUTE,
     showToast,
+    INITIAL_PAGE,
 } from "@utils";
 import {
     getEmployeesList,
@@ -56,12 +57,12 @@ function PayRoll() {
     );
 
     useEffect(() => {
-        getEmployeesApi(currentPage);
+        getEmployeesApi(INITIAL_PAGE);
     }, [hierarchicalBranchIds]);
 
     useEffect(() => {
         if (enterPress) {
-            getEmployeesApi(currentPage);
+            getEmployeesApi(INITIAL_PAGE);
         }
     }, [enterPress])
 
@@ -108,8 +109,8 @@ function PayRoll() {
     const normalizedEmployeeLog = (data: any) => {
         return data.map((el: any) => {
             return {
-                id: el.employee_id,
                 name: el.name,
+                code: el.employee_id,
                 "mobile number": el.mobile_number,
                 branch: el.branch,
                 "  ":

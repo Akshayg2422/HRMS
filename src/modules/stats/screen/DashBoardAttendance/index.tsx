@@ -35,6 +35,7 @@ import {
   showAdminModify,
   dropDownValueCheckByEvent,
   dropDownValueCheck,
+  INITIAL_PAGE,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -91,7 +92,7 @@ const DashBoardAttendance = ({ }) => {
   const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
 
   useEffect(() => {
-    getTodayStats(currentPage);
+    getTodayStats(INITIAL_PAGE);
   }, [selectedAttendance, selectedDepartment, customselectedDate]);
 
   console.log("routeParams", routeParams)
@@ -99,7 +100,7 @@ const DashBoardAttendance = ({ }) => {
 
   useEffect(() => {
     if (keyPress) {
-      getTodayStats(currentPage);
+      getTodayStats(INITIAL_PAGE);
     }
   }, [keyPress])
 
@@ -486,7 +487,7 @@ const DashBoardAttendance = ({ }) => {
                     }}
                   />
                 </div>
-                <div className="col-lg-3 col-md-12 mt-1">
+                <div className="col-lg-3 col-md-12 " style={{marginTop:"4px"}}>
                   <h5>{t("selectedDate")}</h5>
                   <DatePicker
                     placeholder={"Select Date"}
@@ -501,7 +502,7 @@ const DashBoardAttendance = ({ }) => {
                     }
                   />
                 </div>
-                <Container additionClass={'col-lg-3 col-md-12'}>
+                <Container additionClass={'col-lg-3 col-md-12'} >
                   <InputText
                     placeholder={t("enterEmployeeName")}
                     label={t("employeeName")}
@@ -512,7 +513,7 @@ const DashBoardAttendance = ({ }) => {
                   />
                 </Container>
                 <Container additionClass={"col mb-4"}>
-                  <Primary text={'Search'} onClick={() => getTodayStats(currentPage)} />
+                  <Primary text={'Search'} onClick={() => getTodayStats(INITIAL_PAGE)} />
                   {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
           <Icon icon={Icons.DownloadSecondary} />
         </a> */}

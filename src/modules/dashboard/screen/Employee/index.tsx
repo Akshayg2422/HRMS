@@ -25,6 +25,7 @@ import {
   useNav,
   ROUTE,
   showToast,
+  INITIAL_PAGE,
 } from "@utils";
 import {
   changeAttendanceSettings,
@@ -52,9 +53,6 @@ import {
 import { log } from "console";
 import { settingSelectedEmployeeDetails } from "../../../../store/Payroll/actions";
 
-
-
-
 type Branch = {
   id?: string;
   name?: string;
@@ -68,7 +66,7 @@ type Branch = {
 
 export const DROPDOWN_MENU_ADMIN = [
   { id: '1', name: 'View', value: 'PF', image: Icons.View },
-  { id: '2', name: 'Delete', value: 'CL', image:Icons.Delete_1 },
+  { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
   { id: '3', name: 'Assign Location', value: 'LG', image: Icons.Location_Gray },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
@@ -76,8 +74,8 @@ export const DROPDOWN_MENU_ADMIN = [
 ]
 
 export const DROPDOWN_MENU_BRANCH_ADMIN = [
-  { id: '1', name: 'View', value: 'PF',  image: Icons.View },
-  { id: '2', name: 'Delete', value: 'CL', image:Icons.Delete_1  },
+  { id: '1', name: 'View', value: 'PF', image: Icons.View },
+  { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
   // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
   // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
@@ -92,7 +90,7 @@ function EmployeeScreen() {
   );
 
   const CARD_DROPDOWN_ITEM = [
-    { id: '1', name: `${t("deletedUser")}`, value: 'CL', image:Icons.Delete_1 },
+    { id: '1', name: `${t("deletedUser")}`, value: 'CL', image: Icons.Delete_1 },
   ]
 
   const [deleteModel, setDeleteModel] = useState(false);
@@ -119,30 +117,15 @@ function EmployeeScreen() {
     (state: any) => state.DashboardReducer
   );
 
+
   useEffect(() => {
-    getEmployeesApi(currentPage);
+    getEmployeesApi(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
 
   useEffect(() => {
-    const params = {}
-    // if (listBranchesList) {
-    //   dispatch(getListAllBranchesList({
-    //     params,
-    //     onSuccess: (success: any) => () => {
-
-    //     },
-    //     onError: (error: any) => () => {
-
-    //     }
-    //   }))
-    // }
-
-  }, [])
-
-  useEffect(() => {
     if (enterPress) {
-      getEmployeesApi(currentPage)
+      getEmployeesApi(INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -267,9 +250,6 @@ function EmployeeScreen() {
     );
   };
 
-  function proceedSearchApi() {
-    getEmployeesApi(currentPage);
-  }
 
   /**
    * Assign location
@@ -426,7 +406,7 @@ function EmployeeScreen() {
       <TableWrapper
         title={t('allRegisteredEmployee')}
         buttonChildren={
-          <Container additionClass={"d-flex justify-content-end mr-xl--5"}>
+          <Container additionClass={" d-flex justify-content-end mr-xl--4"}>
             <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => {
               manageEmployeeHandler('')
             }} />
@@ -459,18 +439,17 @@ function EmployeeScreen() {
                 col={"col-xl-3 col-md-6 col-sm-12"}
                 additionClass={"mt-xl-4"}
               >
-                <Container additionClass="mt-2">
+                <Container additionClass="">
                   <ChooseBranchFromHierarchical />
                 </Container>
               </Container>
               <Container
                 col={"col"}
-                additionClass={"mt-sm-3 mt-xl--2"}
+                additionClass={"mt-sm-3 mt-xl-1"}
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
               >
-                {/* <Icon  icon={Icons.Search} /> */}
-                <Search variant="Icon" onClick={() => getEmployeesApi(currentPage)} />
+                <Search variant="Icon" onClick={() => getEmployeesApi(INITIAL_PAGE)} />
               </Container>
             </Container>
           </Container>
@@ -549,6 +528,22 @@ function EmployeeScreen() {
               onClick={() => manageProceedHandler()}
             />
           </Container>
+        </Container>
+      </Modal>
+      <Modal
+        title={showEmployeeProfile?.name}
+        showModel={ProfilePictureModel}
+        size={'modal-sm'}
+        toggle={() => setProfilePictureModel(!ProfilePictureModel)}
+      >
+        <Container>
+          {showEmployeeProfile.face_photo ? <ImageView
+            style={{ objectFit: 'cover' }}
+            width={'100%'}
+            height={'100%'}
+            alt='Image placeholder'
+            icon={showEmployeeProfile?.face_photo}
+          /> : <NoRecordFound />}
         </Container>
       </Modal>
     </>

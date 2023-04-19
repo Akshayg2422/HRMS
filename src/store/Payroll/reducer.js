@@ -24,6 +24,10 @@ import {
     GET_COMPANY_DEDUCTIONS_SUCCESS,
     GET_COMPANY_DEDUCTIONS_FAILURE,
 
+    GET_COMPANY_DEDUCTIONS_PAGINATED,
+    GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS,
+    GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE,
+
     SETTING_SELECTED_DEDUCTION_DETAILS,
 
     ADD_EMPLOYEE_SALARY_DEFINITION,
@@ -45,7 +49,11 @@ import {
     IS_EDIT_SALARY_DEFINITION,
 
     GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
-    GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER
+    GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER,
+    
+    GET_ALLOWANCE_GROUPS_PAGINATED,
+    GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS,
+    GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE
 } from './actionTypes'
 
 const initialState = {
@@ -177,6 +185,8 @@ const PayrollReducer = (state = initialState, action) => {
             };
             break;
 
+
+            
         /**
         * get Allowance Groups
         */
@@ -184,12 +194,37 @@ const PayrollReducer = (state = initialState, action) => {
         case GET_ALLOWANCE_GROUPS:
             state = {
                 ...state,
+            
+            };
+            break;
+        case GET_ALLOWANCE_GROUPS_SUCCESS:
+            state = {
+                ...state,
+                allowanceGroupsList: action.payload,
+             
+            };
+            break;
+        case GET_ALLOWANCE_GROUPS_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+            break;
+
+        /**
+        * get Allowance Groups Paginated
+        */
+
+        case GET_ALLOWANCE_GROUPS_PAGINATED:
+            state = {
+                ...state,
                 allowanceGroupsList: [],
                 numOfPages: 0,
                 currentPage: 1,
             };
             break;
-        case GET_ALLOWANCE_GROUPS_SUCCESS:
+        case GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS:
             state = {
                 ...state,
                 loading: false,
@@ -201,7 +236,7 @@ const PayrollReducer = (state = initialState, action) => {
                         : action.payload.next_page - 1,
             };
             break;
-        case GET_ALLOWANCE_GROUPS_FAILURE:
+        case GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE:
             state = {
                 ...state,
                 error: action.payload,
@@ -281,12 +316,38 @@ const PayrollReducer = (state = initialState, action) => {
         case GET_COMPANY_DEDUCTIONS:
             state = {
                 ...state,
+            };
+            break;
+        case GET_COMPANY_DEDUCTIONS_SUCCESS:
+
+            state = {
+                ...state,
+                companyDeductionsList: action.payload,
+            };
+            break;
+        case GET_COMPANY_DEDUCTIONS_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+            break;
+
+
+            
+        /**
+     * get company deductions paginated
+     */
+
+        case GET_COMPANY_DEDUCTIONS_PAGINATED:
+            state = {
+                ...state,
                 companyDeductionsList: [],
                 numOfPages: 0,
                 currentPage: 1,
             };
             break;
-        case GET_COMPANY_DEDUCTIONS_SUCCESS:
+        case GET_COMPANY_DEDUCTIONS_PAGINATED_SUCCESS:
 
             state = {
                 ...state,
@@ -299,13 +360,14 @@ const PayrollReducer = (state = initialState, action) => {
                         : action.payload.next_page - 1,
             };
             break;
-        case GET_COMPANY_DEDUCTIONS_FAILURE:
+        case GET_COMPANY_DEDUCTIONS_PAGINATED_FAILURE:
             state = {
                 ...state,
                 error: action.payload,
                 loading: false,
             };
             break;
+
 
 
         /**

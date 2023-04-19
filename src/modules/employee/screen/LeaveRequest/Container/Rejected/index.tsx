@@ -52,7 +52,7 @@ const Rejected = () => {
   const normalizedEmployeeLog = (data: any) => {
     return data && data.length > 0 && data.map((el: any) => {
       return {
-        name: `${el.name}${' '}(${el.employee_id})`,
+        Employee: `${el.name}${' '}(${el.employee_id})`,
         "Date From": el.date_from,
         "Date To": el.date_to,
         "Leave Types": el.leave_type,
@@ -118,7 +118,7 @@ const Rejected = () => {
 
   return (
     <div>
-      <div className="row">
+      <div className="">
         <>
           {
             memoizedTable

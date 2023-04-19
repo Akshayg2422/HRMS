@@ -16,7 +16,7 @@ interface ButtonIconProps {
 
 function index({ backgroundColor, icon, text, ImageClass, type = 'btn-primary', onClick, additionClass, height = 30, width = 30 }: ButtonIconProps) {
   return (
-    <button type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  align-items-center ${additionClass}`} onClick={onClick}>
+    <button type='button' className={`btn ${type}  btn-icon-only ${backgroundColor}  ${additionClass}`} onClick={onClick}>
       <span className='btn-inner--icon'>
         {
           icon && <ImageView additionClass={ImageClass} icon={icon} height={height} width={width} />

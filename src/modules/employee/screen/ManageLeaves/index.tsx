@@ -90,7 +90,7 @@ function ManageLeaves() {
         title: item.title,
         start: item.day,
         end: item.day,
-        color: "green",
+        color: "#52307c",
       });
     });
     setRecall(true);
@@ -105,18 +105,18 @@ function ManageLeaves() {
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>
-        <Card>
-          {daysHoliday && daysHoliday.length > 0 ? (
-            <CommonTable
-              noHeader
-              displayDataSet={normalizedEmployeeLog(
-                calendarEvents?.days_holiday
-              )}
-            />
-          ) : (
-            <NoRecordFound />
-          )}
-        </Card>
+        {/* <Card> */}
+        {daysHoliday && daysHoliday.length > 0 ? (
+          <CommonTable
+            noHeader
+            displayDataSet={normalizedEmployeeLog(
+              calendarEvents?.days_holiday
+            )}
+          />
+        ) : (
+          <NoRecordFound />
+        )}
+        {/* </Card> */}
       </Container>
     </>
   );

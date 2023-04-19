@@ -89,15 +89,13 @@ function ManageBroadCast() {
             ...(broadCast.department && { applicable_departments: broadCast.department }),
             ...(broadCast.designation && { applicable_designations: broadCast.designation })
         }
-        console.log("params-->", params);
 
         if (validatePostParams()) {
             dispatch(createBroadcastMessage({
                 params,
                 onSuccess: (success: any) => () => {
-                    console.log("successsssss", success);
                     goBack(navigation);
-                    showToast("success", success.status)
+                    showToast("success", 'Broadcast message created successfully')
                     setBroadCast({ title: '', description: '', department: '', designation: '' })
                 },
                 onError: (error: string) => () => {
@@ -114,10 +112,9 @@ function ManageBroadCast() {
                 title={"Manage BroadCast"}
                 onClick={onsubmit}
             >
-                <Container additionClass={'col-xl-12  col-sm-3'}>
+                <Container additionClass={'col-xl-3  col-sm-3'}>
                     <ChooseBranchFromHierarchical />
                 </Container>
-
                 <Container additionClass={'col-xl-12 row col-sm-3'}>
                     <div className="col-xl-6">
                         <InputText
@@ -133,8 +130,8 @@ function ManageBroadCast() {
                     </div>
                     <div className="col-xl-6">
                         <InputText
-                            label={'Message'}
-                            placeholder={'Message'}
+                            label={'Description'}
+                            placeholder={'Description'}
                             // validator={validateName}
                             value={broadCast.description}
                             name={"description"}

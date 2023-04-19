@@ -139,7 +139,7 @@ const AllLeaves = () => {
 
   return (
     <div>
-      <div className="row">
+      <div className="">
         <>
           {
             memoizedTable
@@ -336,7 +336,7 @@ const LocationTable = ({
       <table className="table align-items-center table-flush">
         <thead className="thead-light">
           <tr>
-            <th scope="col">{"Name"}</th>
+            <th scope="col">{"Employee Name"}</th>
             <th scope="col">{"Date From"}</th>
             <th scope="col">{"Date To"}</th>
             <th scope="col">{"Leave Type"}</th>

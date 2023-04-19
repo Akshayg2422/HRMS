@@ -15,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Pending, Approved, Rejected, AllLeaves } from "./Container";
-import { getRequestType, LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { getRequestType, INITIAL_PAGE, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import {
   getCurrentLeaveType,
   getEmployeeLeaves,
@@ -46,7 +46,7 @@ const ModifyLogs = () => {
   const { currentPage, currentLeaveType } = useSelector((state: any) => state.EmployeeReducer);
 
   useEffect(() => {
-    fetchPendingDetail(currentPage, currentLeaveType)
+    fetchPendingDetail(INITIAL_PAGE, currentLeaveType)
   }, [hierarchicalBranchIds]);
 
 
@@ -70,14 +70,14 @@ const ModifyLogs = () => {
 
   useEffect(() => {
     if (enterPress) {
-      fetchPendingDetail(currentPage, currentLeaveType)
+      fetchPendingDetail(INITIAL_PAGE, currentLeaveType)
     }
   }, [enterPress])
 
   const getLeavesDetails = (item: any) => {
     setActive(item.id || item)
     dispatch(getCurrentLeaveType(getRequestType(item.name)))
-    fetchPendingDetail(currentPage, getRequestType(item.name))
+    fetchPendingDetail(INITIAL_PAGE, getRequestType(item.name))
   }
 
   return (
@@ -111,7 +111,7 @@ const ModifyLogs = () => {
 
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} /> */}
-            <Search variant="Icon" onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} />
+            <Search variant="Icon" onClick={() => fetchPendingDetail(INITIAL_PAGE, currentLeaveType)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -128,7 +128,7 @@ const ModifyLogs = () => {
                       }`}
                     id={`tabs-icons-text-${el.id}-tab`}
                     data-toggle="tab"
-                    href={`#tabs-icons-text-${el.id}`}
+                    // href={`#tabs-icons-text-${el.id}`}
                     role="tab"
                     aria-controls={`tabs-icons-text-${el.id}`}
                     aria-selected="true"

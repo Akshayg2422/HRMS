@@ -179,10 +179,10 @@ function MyWorkLog() {
           <div className="col">
             <div className="col text-right mb-3">
               <Sort
-              size="btn-sm"
+                size="btn-sm"
                 sortData={sortData}
                 activeIndex={activeSortWorkBook}
-                onClick={(index) => {
+                onClick={(index: any, item: any) => {
                   setActiveSortWorkBook(index);
                   onTabChangeWorkBook(index);
                 }}

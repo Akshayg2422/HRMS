@@ -1,11 +1,11 @@
 import { CommonDropdownMenu, CommonTable, Container, DropDown, FormWrapper, Icon, ImageView, InputText, Modal, NoRecordFound, Primary, ScreenContainer, Secondary, TableWrapper } from '@components'
 import { Icons } from '@assets';
-import { goTo, ROUTE, useNav } from '@utils'
+import { goTo, INITIAL_PAGE, ROUTE, useNav } from '@utils'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
-import { CreateGroup, getAllowanceGroupDetails, getAllowanceGroups, settingSelectedAllowanceGroupDetails } from '../../../../store/Payroll/actions';
+import { CreateGroup, getAllowanceGroupDetails, getAllowanceGroups, getAllowanceGroupsPaginated, settingSelectedAllowanceGroupDetails } from '../../../../store/Payroll/actions';
 
 const DROPDOWN_ITEM = [
     { id: '1', name: 'Edit', value: 'CL', icon: 'ni ni-active-40' },
@@ -21,16 +21,17 @@ function AllowanceGroupList() {
         (state: any) => state.PayrollReducer
     );
 
-
     useEffect(() => {
-        getAllowanceGroupList(currentPage)
+        getAllowanceGroupList(INITIAL_PAGE)
     }, [])
 
     const getAllowanceGroupList = (pageNumber: number) => {
 
-        const params = {}
+        const params = {
+            page_number: pageNumber,
+        }
 
-        dispatch(getAllowanceGroups({
+        dispatch(getAllowanceGroupsPaginated({
             params,
             onSuccess: (success: any) => () => {
             },
@@ -121,7 +122,7 @@ function AllowanceGroupList() {
                 buttonChildren={
                     <Primary
                         text={t("add")}
-                        additionClass={'col-sm-0 mr--4'}
+                        additionClass={'col-sm-0 mr--1'}
                         onClick={() => {
                             dispatch(CreateGroup('Allowance'))
                             manageRouteHandler(undefined)

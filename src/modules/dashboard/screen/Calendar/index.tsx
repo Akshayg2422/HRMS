@@ -32,7 +32,7 @@ import {
 import { t } from "i18next";
 
 export const DROPDOWN_MENU = [
-  { id: '1', name: 'Edit', value: 'PF', image:Icons.Pencil },
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
 ]
 
@@ -188,7 +188,7 @@ function Calendar() {
         },
         onError: (error: any) => () => {
           setDeleteModel(!deleteModel);
-          showToast("error",error);
+          showToast("error", error);
         },
       })
     );
@@ -233,11 +233,8 @@ function Calendar() {
               />
             </div>
           </Container>
-          <Container additionClass={"row ml-1"}>
-            <Container additionClass="col-xl-3">
-              <ChooseBranchFromHierarchical showCheckBox={false} />
-            </Container>
-
+          <Container additionClass="col-xl-3">
+            <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>
           <Calender
             // dateClick={handleDateClick}
@@ -299,6 +296,7 @@ function Calendar() {
         </Modal>
       </Container>
     </>
+
   );
 }
 

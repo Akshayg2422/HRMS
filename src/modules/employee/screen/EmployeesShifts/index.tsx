@@ -23,6 +23,7 @@ import {
   WEEK_LIST,
   showToast,
   mergeTimeSlots,
+  INITIAL_PAGE,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { getBranchShifts, getEmployeeWithShift, getMyShifts, postEmployeeShiftChange } from "../../../../store/shiftManagement/actions";
@@ -56,12 +57,12 @@ function EmployeeShifts() {
   );
 
   useEffect(() => {
-    getEmployeeLogsWithShifts(currentPage);
+    getEmployeeLogsWithShifts(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
   useEffect(() => {
     if (enterPress) {
-      getEmployeeLogsWithShifts(currentPage);
+      getEmployeeLogsWithShifts(INITIAL_PAGE);
     }
   }, [enterPress])
 
@@ -87,8 +88,8 @@ function EmployeeShifts() {
   const normalizedEmployeeDetails = (employeesDetails: any) => {
     return employeesDetails && employeesDetails.length > 0 && employeesDetails.map((element: any) => {
       return {
-        id: element.employee_id,
         name: element.name,
+        code: element.employee_id,
         'Shift Name': element.shift?.name ? element.shift?.name : <div className="ml-4">{'-'}</div>,
         "mobile number": element.mobile_number,
         "Change Shift": <> <span style={{ cursor: 'pointer' }} className={`text-primary h5`}
@@ -163,7 +164,7 @@ function EmployeeShifts() {
       onSuccess: (success: any) => () => {
         setChangeShiftModelModel(!changeShiftModel)
         showToast("success", success);
-        getEmployeeLogsWithShifts(currentPage);
+        getEmployeeLogsWithShifts(INITIAL_PAGE);
       },
       onError: (error: string) => () => {
         setChangeShiftModelModel(!changeShiftModel)

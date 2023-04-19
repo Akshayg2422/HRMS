@@ -100,8 +100,9 @@ function InActiveEmployeeList() {
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.employee_id,
         name: el.name,
+        code: el.employee_id,
+
         "mobile number": el.mobile_number,
         branch: el.branch,
       };
