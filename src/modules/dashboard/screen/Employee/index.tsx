@@ -25,6 +25,7 @@ import {
   useNav,
   ROUTE,
   showToast,
+  INITIAL_PAGE,
 } from "@utils";
 import {
   changeAttendanceSettings,
@@ -51,9 +52,6 @@ import {
 } from "../../../../store/location/actions";
 import { log } from "console";
 import { settingSelectedEmployeeDetails } from "../../../../store/Payroll/actions";
-
-
-
 
 type Branch = {
   id?: string;
@@ -119,30 +117,15 @@ function EmployeeScreen() {
     (state: any) => state.DashboardReducer
   );
 
+
   useEffect(() => {
-    getEmployeesApi(currentPage);
+    getEmployeesApi(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
 
   useEffect(() => {
-    const params = {}
-    // if (listBranchesList) {
-    //   dispatch(getListAllBranchesList({
-    //     params,
-    //     onSuccess: (success: any) => () => {
-
-    //     },
-    //     onError: (error: any) => () => {
-
-    //     }
-    //   }))
-    // }
-
-  }, [])
-
-  useEffect(() => {
     if (enterPress) {
-      getEmployeesApi(currentPage)
+      getEmployeesApi(INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -267,9 +250,6 @@ function EmployeeScreen() {
     );
   };
 
-  function proceedSearchApi() {
-    getEmployeesApi(currentPage);
-  }
 
   /**
    * Assign location
@@ -469,7 +449,7 @@ function EmployeeScreen() {
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
               >
-                <Search variant="Icon" onClick={() => getEmployeesApi(currentPage)} />
+                <Search variant="Icon" onClick={() => getEmployeesApi(INITIAL_PAGE)} />
               </Container>
             </Container>
           </Container>

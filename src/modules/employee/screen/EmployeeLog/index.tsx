@@ -100,7 +100,7 @@ function EmployeeLog() {
   );
 
   useEffect(() => {
-    getEmployeeLogs(currentPage);
+    getEmployeeLogs(1);
   }, [startDate, hierarchicalBranchIds]);
 
 
@@ -120,10 +120,8 @@ function EmployeeLog() {
     dispatch(getEmployeesList({
       params,
       onSuccess: (success: any) => () => {
-
       },
       onError: (error: any) => () => {
-
       }
     }));
   }
@@ -321,8 +319,6 @@ function EmployeeLog() {
 
 
   const collapsesToggle = (collapse: string) => {
-    console.log("========>", collapse);
-
     let openedCollapses = collapseId
     if (openedCollapses?.includes(collapse)) {
       setCollapseId('')
@@ -340,7 +336,7 @@ function EmployeeLog() {
               size={'btn-sm'}
               sortData={employeeLogSort}
               activeIndex={activeSort}
-              onClick={(index) => {
+              onClick={(index: any, item: any) => {
                 setActiveSort(index);
                 onTabChange(index);
               }}

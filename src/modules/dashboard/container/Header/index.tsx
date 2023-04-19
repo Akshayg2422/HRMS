@@ -5,6 +5,8 @@ import { ImageView, Modal, Container, BackArrow, Secondary, Primary, Divider, My
 import { useSelector, useDispatch } from 'react-redux';
 import { getImageUri } from '@utils';
 import { Icons } from '@assets';
+import classnames from "classnames";
+
 
 
 import { resetApp } from '../../../../store/app/actions';
@@ -17,10 +19,12 @@ import { resetShiftManagement } from '../../../../store/shiftManagement/actions'
 import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DropdownItem, DropdownMenu, DropdownToggle, Media, Nav, UncontrolledDropdown } from 'reactstrap';
+import { HeaderProps } from './interfaces';
 
 //ROUTE_PORTFOLIO
 
-const Header = () => {
+const Header = ({ toggleSideNav,
+  sideNavOpen }: HeaderProps) => {
   const [languageModel, setLanguageModel] = useState(false);
   const [model, setModel] = useState(false);
   const [activeBranchModel, setActiveBranchModel] = useState(false);
@@ -165,10 +169,11 @@ const Header = () => {
             <a className='nav-item d-xl-none'>
               <div
                 className='pr-3 sidenav-toggler sidenav-toggler-white'
+                onClick={toggleSideNav}
                 data-action='sidenav-pin'
                 data-target='#sidenav-main'
               >
-                <div className='sidenav-toggler-inner'>
+                <div className='sidenav-toggler-inner bg-primary'>
                   <i className='sidenav-toggler-line '></i>
                   <i className='sidenav-toggler-line '></i>
                   <i className='sidenav-toggler-line '></i>

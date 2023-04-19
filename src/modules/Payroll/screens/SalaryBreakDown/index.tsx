@@ -205,6 +205,7 @@ function SalaryBreakDown() {
 
     const filteredDeduction = companyDeductionsList?.filter((item: any) => event === item.id)
     const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }))
+
     setSelectedDeductions([...selectedDeductions, ...newArr])
 
   }
@@ -297,8 +298,8 @@ function SalaryBreakDown() {
     const filteredApiKeys = selectedDeductions?.map((el: any) => {
       return {
         ...(isEditSalary ? { id: el.deduction_id } : { deduction_id: el.deduction_id }),
-        percent: el.percent,
-        amount: el.amount,
+        percent: parseInt(el.percent),
+        amount: parseInt(el.amount),
         is_percent: el.type == "1" ? true : false
       }
     })
@@ -322,7 +323,7 @@ function SalaryBreakDown() {
           goBack(navigation)
         },
         onError: (error: any) => () => {
-
+          showToast('error', error)
         }
       }));
     }
@@ -419,8 +420,9 @@ function SalaryBreakDown() {
                     onChange={(e) => {
                       let updatePercentage = [...selectedDeductions]
                       updatePercentage[i].type = e.target.value
-                      updatePercentage[i].percent = 0
-                      updatePercentage[i].amount = 0
+                      updatePercentage[i].percent = ''
+                      updatePercentage[i].amount = ''
+                      updatePercentage[i].error = ''
                       setSelectedDeductions(updatePercentage)
                     }}
                   />

@@ -19,6 +19,7 @@ import {
     useNav,
     ROUTE,
     showToast,
+    INITIAL_PAGE,
 } from "@utils";
 import {
     getEmployeesList,
@@ -56,12 +57,12 @@ function PayRoll() {
     );
 
     useEffect(() => {
-        getEmployeesApi(currentPage);
+        getEmployeesApi(INITIAL_PAGE);
     }, [hierarchicalBranchIds]);
 
     useEffect(() => {
         if (enterPress) {
-            getEmployeesApi(currentPage);
+            getEmployeesApi(INITIAL_PAGE);
         }
     }, [enterPress])
 

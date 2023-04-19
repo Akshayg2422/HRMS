@@ -1,7 +1,7 @@
 import { HEADER_MENU } from '@utils';
 import React from 'react'
 import { UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap'
-import {ImageView} from '@components'
+import { ImageView } from '@components'
 
 
 type CommonDropdownMenuProps = {
@@ -18,7 +18,7 @@ type CommonDropdownMenuProps = {
     data?: any
 }
 
-function CommonDropdownMenu({ data, onAddClick, onDeleteClick, onAssignCourse, isStudent = false, showEdit = false, isAddChild = false, onAddChild, onAddRemark, showDelete = false, onItemClick }: CommonDropdownMenuProps) {
+function CommonDropdownMenu({ data, onItemClick }: CommonDropdownMenuProps) {
 
     return (
         <div>
@@ -26,22 +26,21 @@ function CommonDropdownMenu({ data, onAddClick, onDeleteClick, onAssignCourse, i
                 <DropdownToggle
                     color=""
                     size="sm"
-                    className="btn-icon-only text-light shadow-none"
+                    className="btn-icon-only text-light shadow-none "
                     onClick={(e) =>
                         e.stopPropagation()
                     }
                 >
                     <i className="fas fa-ellipsis-v" />
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow " right>
+                <DropdownMenu className="dropdown-menu-arrow" right>
                     {data && data?.map((item: any) => {
                         return (
                             <>
                                 <a className="dropdown-item"
                                     onClick={(e) => {
-
                                         if (onItemClick) {
-                                            onItemClick(e,item)
+                                            onItemClick(e, item)
                                         }
                                     }}
                                 >

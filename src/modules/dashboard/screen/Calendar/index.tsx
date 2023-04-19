@@ -233,11 +233,8 @@ function Calendar() {
               />
             </div>
           </Container>
-          <Container additionClass={"row ml-1"}>
-            <Container additionClass="col-xl-3">
-              <ChooseBranchFromHierarchical showCheckBox={false} />
-            </Container>
-
+          <Container additionClass="col-xl-3">
+            <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>
           <Calender
             // dateClick={handleDateClick}
@@ -299,7 +296,7 @@ function Calendar() {
         </Modal>
       </Container>
     </>
-   
+
   );
 }
 

@@ -202,7 +202,7 @@ function MyBranches() {
             <TableWrapper>
                 <div className="ml-2 mt--3">
                     <Container additionClass={"col-xl-3 col-md-6 col-sm-12 ml-2 "}>
-                        <MyActiveBranches />
+                        <MyActiveBranches isReload={true} />
                     </Container>
                 </div>
                 <Container additionClass="row scroll-hidden  overflow-auto">
@@ -231,7 +231,7 @@ function MyBranches() {
                                                 onClick={() => adminId && addSelectedBranch(item)}
 
                                             >
-                                                <span className="text-xl text-gray">{item.name}</span>
+                                                <span>{item.name}</span>
                                             </div>
                                             {adminId ? <div className="col-4 text-right"
                                                 onClick={() => adminId && addSelectedBranch(item)}
@@ -249,7 +249,7 @@ function MyBranches() {
                                             <></>
                                         </div>
                                     );
-                                }) : <NoRecordFound/>}
+                                }) : <NoRecordFound />}
                                 {branchesListSet && branchesListSet.length > 0 ? <div className="row col-lg-4 ml-4 my-5 float-right">
                                     <Primary
                                         text={"Submit"}

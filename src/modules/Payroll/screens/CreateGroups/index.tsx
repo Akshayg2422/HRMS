@@ -229,9 +229,9 @@ function CreateGroup() {
 
         const filteredApiKeys = selectedAllowances && selectedAllowances?.map((el: any) => {
             return {
-                ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el.id }),
-                percent: el.percent,
-                amount: el.amount,
+                ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el. id }),
+                percent: parseInt(el.percent),
+                amount: parseInt(el.amount),
                 is_percent: el.type == "1" ? true : false
             }
         })
@@ -295,7 +295,7 @@ function CreateGroup() {
         }
 
     }
-
+    
     const isPercentageExist = selectedAllowances?.some((item: any) => item.type === "1")
 
     return (
@@ -378,7 +378,7 @@ function CreateGroup() {
                     <h5 className="font-weight-light " style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
                 )}
 
-                <Container>
+                {selectedAllowanceGroupDetails ? <></> : <Container>
                     <Primary
                         text={selectedAllowances.length > 0 ? 'Add another' : 'Add new'}
                         onClick={() => {
@@ -388,6 +388,7 @@ function CreateGroup() {
                         size={"btn-sm"}
                     />
                 </Container>
+                }
 
 
                 {selectedAllowances && selectedAllowances?.length > 0 && (
@@ -417,7 +418,7 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {companyAllowanceList && companyAllowanceList?.map((el: any) => {
+                        {companyAllowanceList && companyAllowanceList?.data?.map((el: any) => {
 
                             const isActive = allowances?.some((item: any) => item.id === el.id)
 

@@ -62,6 +62,7 @@ function AddDeduction() {
                 params,
                 onSuccess: (success: any) => () => {
                     goBack(navigation);
+                    showToast('success', success.status)
                 },
                 onError: (error: any) => () => {
 

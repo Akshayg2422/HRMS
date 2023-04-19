@@ -69,6 +69,7 @@ const CreateShiftGroup = () => {
     useEffect(() => {
         PreFilledDetails()
         getBranchesWeeklyShiftsList()
+        getDepartments()
         if (!selectedShiftGroupDetails || isShowManageEmpOnEdit) {
             getDepartments()
         }
@@ -205,7 +206,7 @@ const CreateShiftGroup = () => {
             }
             dispatch(postAddShift({
                 params,
-                onSuccess: (success: any) => () => {
+                onSuccess: (success: any) => () => {                    
                     setSelectedEmployeesIds([])
                     goBack(navigation);
                     showToast("success", success.status)
@@ -428,7 +429,7 @@ const CreateShiftGroup = () => {
                         </Container>
                         <Container
                             col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 `}
-                            additionClass={"xl-4"} style={{marginTop:"1px"}}
+                            additionClass={"xl-4"} style={{ marginTop: "1px" }}
                         >
                             <DropDown
                                 label={t('designation')}
@@ -444,7 +445,7 @@ const CreateShiftGroup = () => {
                         </Container>
 
 
-                        <div className='float-right mb-3 ml-3' style={{marginTop:"35px"}}>
+                        <div className='float-right mb-3 ml-3' style={{ marginTop: "35px" }}>
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </div>
@@ -469,7 +470,7 @@ const CreateShiftGroup = () => {
                         <Container additionClass={'row mx-0'}>
                             <Container col={"col col-md-6 col-sm-12 mt-xl-4 m-0"} >
                                 <InputText
-                                  label='Search'
+                                    label='Search'
                                     placeholder={t('enterEmployeeName')}
                                     onChange={(e) => {
                                         setSearchEmployee(e.target.value);
@@ -522,7 +523,7 @@ const CreateShiftGroup = () => {
                         <Container additionClass={'row'}>
                             <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
                                 <InputText
-                                  label='Search'
+                                    label='Search'
                                     placeholder={t('enterEmployeeName')}
                                     value={searchSelectedEmployee}
                                     onChange={(e) => {

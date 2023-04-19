@@ -365,7 +365,6 @@ const WeeklyShiftSelection = () => {
                       className={`nav-link mb-sm-3 mb-md-0 ${it.week === isActiveWeek ? 'active' : ''}`}
                       id={`tabs-icons-text-${it.week}-tab`}
                       data-toggle="tab"
-                      href={`#tabs-icons-text-${it.week}`}
                       role="tab"
                       aria-controls={`tabs-icons-text-${it.week}`}
                       aria-selected="true"

@@ -410,7 +410,7 @@ function* getEmployeeEachUserTimeSheets(action) {
 
     const response = yield call(
       fetchEmployeeEachUserTimeSheets,
-      action.payload
+      action.payload.params
     );
 
     if (response.success) {

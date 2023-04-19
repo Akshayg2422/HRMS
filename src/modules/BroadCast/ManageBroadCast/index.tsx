@@ -112,10 +112,9 @@ function ManageBroadCast() {
                 title={"Manage BroadCast"}
                 onClick={onsubmit}
             >
-                <Container additionClass={'col-xl-12  col-sm-3'}>
+                <Container additionClass={'col-xl-3  col-sm-3'}>
                     <ChooseBranchFromHierarchical />
                 </Container>
-
                 <Container additionClass={'col-xl-12 row col-sm-3'}>
                     <div className="col-xl-6">
                         <InputText
@@ -131,8 +130,8 @@ function ManageBroadCast() {
                     </div>
                     <div className="col-xl-6">
                         <InputText
-                            label={'Message'}
-                            placeholder={'Message'}
+                            label={'Description'}
+                            placeholder={'Description'}
                             // validator={validateName}
                             value={broadCast.description}
                             name={"description"}

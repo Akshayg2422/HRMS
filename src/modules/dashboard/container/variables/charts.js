@@ -295,20 +295,6 @@ const chartExample6 = {
       mode: "index",
       intersect: false
     },
-    responsive: true,
-    scales: {
-      xAxes: [
-        {
-          stacked: true
-        }
-      ],
-      yAxes: [
-        {
-          stacked: true
-        }
-      ]
-    }
-
   }
 };
 

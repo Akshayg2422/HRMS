@@ -313,9 +313,9 @@ const EmployeeReducer = (state = initialState, action) => {
     case FETCH_EMPLOYEE_LIST:
       state = {
         ...state,
-        registeredEmployeesList: [],
-        numOfPages: 0,
         currentPage: 1,
+        numOfPages: 0,
+        registeredEmployeesList: [],
       };
       break;
     case FETCH_EMPLOYEE_LIST_SUCCESS:

@@ -9,7 +9,7 @@ import {
   chartExample6,
   chartExample7
 } from "./variables/charts";
-import { Container } from "@components";
+import { Container, NoRecordFound } from "@components";
 
 function Charts() {
 
@@ -32,7 +32,7 @@ function Charts() {
   useEffect(() => {
     barChartNormalizedData()
     lineChartNormalizedData()
-  }, [hierarchicalBranchIds, employeeattendancedatalog]);
+  }, [employeeattendancedatalog]);
 
   const barChartNormalizedData = () => {
     const barChartDataSet = { labels: [], dataset: [] }
@@ -52,7 +52,7 @@ function Charts() {
         color = '#05dd7f'
         break;
       case "Alert":
-        color = '#ff481f'
+        color = '#FFA500'
         break;
       case "Exempted":
         color = '#ce338b'
@@ -156,8 +156,10 @@ function Charts() {
     },
   }
 
-  // console.log("===========>", employeeattendancedatalog);
-
+  function validateArrayData(arr) {
+    const hasNonZeroElement = arr && arr.length > 0 && arr.some((element) => element !== 0);
+    return hasNonZeroElement;
+  }
 
   return (
     <>
@@ -171,12 +173,12 @@ function Charts() {
               </CardHeader>
               <CardBody>
                 <div className="chart">
-                  <Pie
+                  {validateArrayData(pieChartData?.data?.datasets[0]?.data) ? <Pie
                     data={pieChartData.data}
                     options={chartExample6.options}
                     className="chart-canvas"
                     id="chart-pie"
-                  />
+                  /> : <NoRecordFound />}
                 </div>
               </CardBody>
             </Card>

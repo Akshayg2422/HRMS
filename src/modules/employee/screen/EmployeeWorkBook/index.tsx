@@ -29,9 +29,11 @@ import {
   getDisplayDateTimeFromMoment,
   getMomentObjFromServer,
   showToast,
+  INITIAL_PAGE,
 } from "@utils";
 import { Icons } from "@assets";
 import { Navbar } from "@modules";
+import { log } from "console";
 
 type TimeSheetResponse = {
   id?: any;
@@ -77,12 +79,12 @@ function EmployeeTimeSheets() {
   ];
 
   useEffect(() => {
-    getEmployeeTimeSheets(currentPage);
+    getEmployeeTimeSheets(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
   useEffect(() => {
     if (KeyPress) {
-      getEmployeeTimeSheets(currentPage);
+      getEmployeeTimeSheets(INITIAL_PAGE);
     }
   }, [KeyPress])
 
@@ -116,13 +118,15 @@ function EmployeeTimeSheets() {
     });
   };
 
-  function getEmployeeEachUserTimeSheetsApi(index: number) {
+  function getEmployeeEachUserTimeSheetsApi(index: number, type: string) {
     const userId = employeeTimeSheets[index].id;
-
+    const params = {
+      type: type.toLowerCase(),
+      ...(userId && { user_id: userId })
+    }
     dispatch(
       getEmployeeEachUserTimeSheets({
-        type,
-        ...(userId && { user_id: userId }),
+        params,
         onSuccess: (success: any) => () => {
 
         },
@@ -135,9 +139,9 @@ function EmployeeTimeSheets() {
   }
 
   const onTabChange = (index: number) => {
-    setType(sortData[index].title.toLocaleLowerCase());
+    const data = sortData[index].title
+    setType(data);
   };
-
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -151,7 +155,7 @@ function EmployeeTimeSheets() {
           displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
             setSelectedEmployeeDetails(employeeTimeSheets[index])
-            getEmployeeEachUserTimeSheetsApi(index);
+            getEmployeeEachUserTimeSheetsApi(index, type);
           }}
           paginationNumberClick={(currentPage) => {
             getEmployeeTimeSheets(paginationHandler("current", currentPage));
@@ -165,7 +169,7 @@ function EmployeeTimeSheets() {
         />
       ) : <NoRecordFound />}
     </>
-  }, [employeeTimeSheets])
+  }, [employeeTimeSheets, type])
 
 
   const collapsesToggle = (collapse: string) => {
@@ -177,6 +181,9 @@ function EmployeeTimeSheets() {
     }
   }
 
+  console.log(type + "====");
+
+
   return (
     <>
       <TableWrapper
@@ -186,7 +193,10 @@ function EmployeeTimeSheets() {
               size={'btn-sm'}
               sortData={sortData}
               activeIndex={activeSort}
-              onClick={(index) => {
+              onClick={(index: any, item: any) => {
+
+                console.log(index + "======");
+
                 setActiveSort(index);
                 onTabChange(index);
               }}
@@ -207,7 +217,7 @@ function EmployeeTimeSheets() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(currentPage); }} />
+              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(INITIAL_PAGE); }} />
             </Container>
           </Container>
         }
