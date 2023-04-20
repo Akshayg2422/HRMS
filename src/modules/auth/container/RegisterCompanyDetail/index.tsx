@@ -37,7 +37,6 @@ function RegisterCompanyDetail() {
 
   return (
     <Container
-      flexDirection={"row"}
       justifyContent={"justify-content-center"}
     >
       <InputText

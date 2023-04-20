@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import {InputItem} from "../../components";
+import { InputItem } from "../../components";
 
-import {Icons} from '@assets'
+import { Icons } from '@assets'
 
 const Contact = (props) => {
   const [Name, SetName] = useState("");
@@ -46,7 +46,7 @@ const Contact = (props) => {
     <>
       <div id="Contact" className="container-fluid mt-2">
         <div className="card container-fluid">
-          <h1 class="card-header text-website-primary">Contact{' '}<u>us</u></h1>  
+          <h1 class="card-header text-website-primary">Contact{' '}<u>us</u></h1>
           <div className="row card-body">
             <div className="col-sm-6">
               <h1 className="mt-5 text-primary">Get a quote</h1>
@@ -86,19 +86,19 @@ const Contact = (props) => {
                 </p>
               </div>
               <div class="card-profile-stats d-flex  justify-content-center container">
-                    <div>
-                      <img src={Icons.Instagram} height="30px" width={"30px"}></img>
-                    </div>
-                    <div>
-                      <img src={Icons.FacebookWeb} height="30px" width={"20px"}></img>
-                    </div>
-                    <div>
-                      <img src={Icons.Twitter} height="30px" width={"30px"}></img>
-                    </div>
-                    <div>
-                      <img src={Icons.Linkedin} height="30px" width={"30px"}></img>
-                    </div>
+                <div>
+                  <img src={Icons.Instagram} height="30px" width={"30px"}></img>
                 </div>
+                <div>
+                  <img src={Icons.FacebookWeb} height="30px" width={"20px"}></img>
+                </div>
+                <div>
+                  <img src={Icons.Twitter} height="30px" width={"30px"}></img>
+                </div>
+                <div>
+                  <img src={Icons.Linkedin} height="30px" width={"30px"}></img>
+                </div>
+              </div>
             </div>
             <div className=" col-lg-6 col-md-8 mt-2">
               <div className="card p-4">
@@ -113,7 +113,8 @@ const Contact = (props) => {
                 <div className="col-lg-6 col-8 text-right mb-3">
                   <button
                     type="button"
-                    class="btn btn-web-primary btn-lg btn-block col-sm-6"
+                    class="btn btn-lg text-white btn-block col-sm-6"
+                    style={{ background: '#0d6e78' }}
                   >
                     SEND
                   </button>

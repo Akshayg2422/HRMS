@@ -229,7 +229,7 @@ function CreateGroup() {
 
         const filteredApiKeys = selectedAllowances && selectedAllowances?.map((el: any) => {
             return {
-                ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el. id }),
+                ...(selectedAllowanceGroupDetails ? { id: el.id } : { allowance_id: el.id }),
                 percent: parseInt(el.percent),
                 amount: parseInt(el.amount),
                 is_percent: el.type == "1" ? true : false
@@ -295,7 +295,7 @@ function CreateGroup() {
         }
 
     }
-    
+
     const isPercentageExist = selectedAllowances?.some((item: any) => item.type === "1")
 
     return (
@@ -418,7 +418,7 @@ function CreateGroup() {
                         />
                     </Container>
                     <Container>
-                        {companyAllowanceList && companyAllowanceList?.data?.map((el: any) => {
+                        {companyAllowanceList && companyAllowanceList?.map((el: any) => {
 
                             const isActive = allowances?.some((item: any) => item.id === el.id)
 
