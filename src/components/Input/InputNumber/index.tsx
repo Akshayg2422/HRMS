@@ -2,11 +2,11 @@ import React from 'react'
 import Input from '../InputDefault'
 import {InputProps} from '../../Interface'
 
-function InputNumber(props: InputProps) {
+const InputNumber =  React.forwardRef((props: InputProps, ref: any)=> {
   return (
-    <Input type={'number'}  {...props}></Input>
+    <Input type={'number'}  {...props} ref={ref}></Input>
   )
-}
+})
 
 export default InputNumber
 

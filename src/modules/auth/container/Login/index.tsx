@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState ,useRef } from 'react';
 import {
   Logo,
   Secondary,
@@ -26,6 +26,7 @@ import { useDispatch } from 'react-redux';
 import { getValidateUser } from '../../../../store/auth/actions';
 import { useSelector } from 'react-redux';
 import { launchActive } from '../../../../store/app/actions';
+import { log } from 'console';
 
 function Login() {
 
@@ -36,6 +37,8 @@ function Login() {
   );
 
   const [mobile, setMobile] = useState<string | undefined>(mobileNumber);
+
+  const mobileRef = useRef<HTMLInputElement>(null);
 
 
   const { t } = useTranslation();
@@ -49,11 +52,12 @@ function Login() {
   }, [enterPress])
 
   const proceedValidateUser = (params: object) => {
+
     dispatch(
       getValidateUser({
         params,
         onSuccess: (success: object) => () => {
-          goTo(navigate, ROUTE.ROUTE_OTP, true);
+           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => () => {
           showToast('error', t('invalidUser'));
@@ -67,6 +71,10 @@ function Login() {
   };
 
   const proceedValidateUserApi = () => {
+
+    const value = mobileRef.current?.value
+
+    console.log("ref",value+"====");
     if (validateUserParams()) {
       const params = {
         mobile_number: mobile,
@@ -76,6 +84,11 @@ function Login() {
       showToast('error', t('pleaseEnterYourMobileNumber'));
     }
   };
+
+
+  
+
+
 
   return (
     <Container
@@ -98,10 +111,15 @@ function Login() {
       <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>
         {t('welcome')}
       </h1>
-
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
-        <InputNumber label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
-          setMobile(inputNumberMaxLength(e.target.value, MAX_LENGTH_MOBILE_NUMBER));
+        <InputNumber 
+        label={t('mobileNumber')}
+        ref={mobileRef}
+        value={mobile}
+        placeholder={t('enterYourMobileNumber')}
+        validator={validateMobileNumber} 
+         onChange={(e) => {
+         setMobile(inputNumberMaxLength(e.target.value, 10));
         }} />
         <Container padding={'pt-3'} />
         <Primary additionClass={'btn-block'} text={t('continue')} onClick={() => proceedValidateUserApi()} />
