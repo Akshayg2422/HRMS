@@ -49,7 +49,7 @@ function Otp() {
 
         },
         onError: (error: any) => () => {
-  
+
         }
       })
     );
@@ -72,7 +72,7 @@ function Otp() {
   }, [registerOtp.otp1, registerOtp.otp2, registerOtp.otp3, registerOtp.otp4]);
 
   return (
-    <Container additionClass="ml-xl-7 mt-xl-3 col-xl-12"
+    <Container additionClass=" mt-xl-3 col-xl-12"
     >
       <Container
         display={"d-flex"}
@@ -98,15 +98,12 @@ function Otp() {
         </Container>
 
         <Container
-          flexDirection={"flex-row"}
+          // flexDirection={"flex-row"}
           justifyContent={"justify-content-between"}
-          alignItems={"align-items-center"}
           margin={"mt-4"}
-          additionClass={"pl-lg-4"}
           display={"d-flex"}
         >
           <OtpInput
-            formCustomClass={"col-lg-3"}
             ref={inputRef1}
             value={registerOtp.otp1}
             onChange={(e) => {
@@ -117,7 +114,7 @@ function Otp() {
 
           />
           <OtpInput
-            formCustomClass={"col-lg-3"}
+            formCustomClass='ml-4'
             ref={inputRef2}
             value={registerOtp.otp2}
             onChange={(e) => {
@@ -127,7 +124,7 @@ function Otp() {
             }}
           />
           <OtpInput
-            formCustomClass={"col-lg-3"}
+            formCustomClass='ml-4'
             ref={inputRef3}
             value={registerOtp.otp3}
             onChange={(e) => {
@@ -137,7 +134,7 @@ function Otp() {
             }}
           />
           <OtpInput
-            formCustomClass={"col-lg-3"}
+            formCustomClass='ml-4'
             ref={inputRef4}
             value={registerOtp.otp4}
             onChange={(e) => {
