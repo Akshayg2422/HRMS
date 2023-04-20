@@ -106,7 +106,7 @@ const LeaveRequest = () => {
               onClick={proceedSearchApi}
             >
               {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-              <Search variant="Icon" onClick={() => proceedSearchApi} />
+              <Search variant="Button" onClick={() => proceedSearchApi} />
 
             </Container>
           </Container>

@@ -235,7 +235,7 @@ function ELocker() {
 
                         </Container>
 
-                        <Search variant="Icon" additionalClassName='mt--3 mr-2' onClick={() => SelectedBranchFilter()} />
+                        <Search variant="Button" additionalClassName='mt--3 mr-2' onClick={() => SelectedBranchFilter()} />
 
                     </Container>
 

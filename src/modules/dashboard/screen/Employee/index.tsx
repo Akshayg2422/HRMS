@@ -418,7 +418,7 @@ function EmployeeScreen() {
           </Container>
         }
         filterChildren={
-          <Container flexDirection={"row"} alignItems={"align-items-center"}>
+          <Container additionClass={'d-flex'} alignItems={"align-items-center"}>
             <Container
               flexDirection={"row"}
               additionClass={"col"}
@@ -443,11 +443,11 @@ function EmployeeScreen() {
               </Container>
               <Container
                 col={"col"}
-                additionClass={"mt-sm-3 mt-xl-1"}
+                additionClass={"mt-sm-3 mt-xl--1"}
                 justifyContent={"justify-content-center"}
                 alignItems={"align-items-center"}
               >
-                <Search variant="Icon" onClick={() => getEmployeesApi(INITIAL_PAGE)} />
+                <Search variant="Button" onClick={() => getEmployeesApi(INITIAL_PAGE)} />
               </Container>
             </Container>
           </Container>
