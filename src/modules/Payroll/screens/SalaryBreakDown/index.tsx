@@ -38,7 +38,7 @@ function SalaryBreakDown() {
   const [editSalaryDefinitionId, setEditSalaryDefinitionId] = useState("")
   const [selectedDefinitionEditData, setSelectedDefinitionEditData] = useState<any>([])
   const [isDisablePayrollView, setIsDisablePayrollView] = useState(false)
-
+  const [deductionsData, setDeductionsData] = useState<any>([])
 
 
   const { allowanceGroupsList, companyDeductionsList, selectedEmployeeDetails, isEditSalary } = useSelector(
@@ -150,7 +150,7 @@ function SalaryBreakDown() {
 
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
-    const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, deduction_id: el.id, type: el.is_percent ? "1" : "2", error: '' }))
+    const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, type: el.is_percent ? "1" : "2", error: '' }))
     setSelectedDefinitionEditData(newKeyAddedArray)
     setSelectedDeductions(newKeyAddedArray)
 
@@ -205,7 +205,7 @@ function SalaryBreakDown() {
 
     const filteredDeduction = companyDeductionsList?.filter((item: any) => event === item.id)
     const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }))
-
+    setDeductionsData([...deductionsData, ...newArr])
     setSelectedDeductions([...selectedDeductions, ...newArr])
 
   }
@@ -293,11 +293,35 @@ function SalaryBreakDown() {
     return status
   }
 
+  const modifiedApiKeys = () => {
+
+    const editData = selectedDefinitionEditData.map((el: any) => {
+      return {
+        id: el.id,
+        percent: el.percent,
+        amount: el.amount,
+        is_percent: el.type == "1" ? true : false
+      }
+    })
+
+    const newlyAddedDeduction = deductionsData.map((el: any) => {
+      return {
+        deduction_id: el.id,
+        percent: el.percent,
+        amount: el.amount,
+        is_percent: el.type == "1" ? true : false
+      }
+    })
+
+    return [...editData, ...newlyAddedDeduction]
+
+  }
+
   const onSubmit = () => {
 
     const filteredApiKeys = selectedDeductions?.map((el: any) => {
       return {
-        ...(isEditSalary ? { id: el.deduction_id } : { deduction_id: el.deduction_id }),
+        deduction_id: el.id,
         percent: parseInt(el.percent),
         amount: parseInt(el.amount),
         is_percent: el.type == "1" ? true : false
@@ -310,7 +334,7 @@ function SalaryBreakDown() {
       employee_id: selectedEmployeeDetails.id,
       calendar_year: calendarYear,
       allowance_break_down_group_id: allowanceGroup,
-      deductions_group_ids: filteredApiKeys ? filteredApiKeys : [],
+      deductions_group_ids: isEditSalary ? modifiedApiKeys() : filteredApiKeys ? filteredApiKeys : [],
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
 

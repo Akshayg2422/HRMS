@@ -5,12 +5,12 @@ const AboutUs = (props) => {
   return (
     <>
       <div id="AboutAs" className="row mt-5">
-        <div className="col-sm-6 mt-5">
+        <div className="col-sm-6 my-5">
           <img
             src={Icons.Group2}
             height={"100%"}
             width={"80%"}
-            align="right"
+            className="ml-xl-6 ml-sm-0 ml-4"
           ></img>
         </div>
         <div class="col-sm-6 row d-flex align-items-center justify-content-center ">

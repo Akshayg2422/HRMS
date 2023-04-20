@@ -7,6 +7,7 @@ import {
   ScreenTitle,
   Primary,
   useKeyPress,
+
 } from "@components";
 import {
   RegisterUserDetail,
@@ -51,12 +52,34 @@ import {
   uploadCompanyDocuments,
 } from "../../../../store/auth/actions";
 import { setUserLoginDetails } from "../../../../store/app/actions";
+import { DynamicHeight } from "@components";
 
 function SignUp() {
   const { t, i18n } = useTranslation();
   let dispatch = useDispatch();
   const enterPress = useKeyPress("Enter");
 
+  const [screenSize, getDimension] = useState({
+    dynamicWidth: window.innerWidth,
+    dynamicHeight: window.innerHeight
+  });
+
+  const setDimension = () => {
+    getDimension({
+      dynamicWidth: window.innerWidth,
+      dynamicHeight: window.innerHeight
+    })
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', setDimension);
+
+    return (() => {
+      window.removeEventListener('resize', setDimension);
+    })
+  }, [screenSize])
+
+  console.log("==============>", screenSize.dynamicHeight);
 
   const {
     registerCurrentContainer,
@@ -68,7 +91,6 @@ function SignUp() {
   const REGISTER_COMPANY_DETAILS = 3;
   const REGISTER_DOCUMENT_UPLOAD = 4;
 
-  console.log('registerAdminDetails', registerAdminDetails)
 
   const navigation = useNav();
 
@@ -294,7 +316,6 @@ function SignUp() {
         state: registerCompanyDetails.state,
         referral_id: registerCompanyDetails.refferalId,
       };
-      console.log("company details params--->", params);
       dispatch(
         getValidateCompanyDetails({
           params,
@@ -310,13 +331,14 @@ function SignUp() {
             }
             dispatch(updateCompanyInput({}))
           },
-          onError: (error: string) => () => { },
+          onError: (error: string) => () => {
+            showToast('error', error)
+          },
         })
       );
     }
   };
 
-  // goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
 
   const proceedDocumentUploadAPi = () => {
     let params: object = {};
@@ -329,7 +351,7 @@ function SignUp() {
           params = { ...params, [param]: base64 };
         }
       }
-      console.log(" uploadCompanyDocumentsParams", params);
+
       dispatch(
         uploadCompanyDocuments({
           params,
@@ -363,7 +385,9 @@ function SignUp() {
             }
           />
         </Container>
-        <Container additionClass={`${registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION && 'scrollable-register'} aligns-item-center  justify-content-center`}>
+        <Container additionClass={`${registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION && 'scrollable-register'} d-flex aligns-item-center overflow-auto scroll-hidden  justify-content-center`}
+          style={{ height: registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION ? screenSize.dynamicHeight - 270 : '' }}
+        >
           <Container
             additionClass={"col-xl-9 col-md-9 col-sm-3"}
           >

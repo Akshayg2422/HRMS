@@ -196,7 +196,7 @@ function EmployeeScreen() {
         branch: el.branch,
         "  ":
           <CommonDropdownMenu
-            data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_BRANCH_ADMIN : []}
+            data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
             onItemClick={(e, item) => {
               e.stopPropagation();
               setSelectedEmployeeItem(el)
@@ -309,8 +309,6 @@ function EmployeeScreen() {
       id: associatedId,
       associated_branch: [...branchIds, defaultBranchId],
     };
-
-
     dispatch(
       updateEmployeeCheckinAssociations({
         params,
