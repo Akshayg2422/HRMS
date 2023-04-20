@@ -33,7 +33,7 @@ function CommonDropdownMenu({ data, onItemClick }: CommonDropdownMenuProps) {
                 >
                     <i className="fas fa-ellipsis-v" />
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownMenu className="dropdown-menu-arrow" right style={{ position: 'absolute', zIndex: 'inherit'}}>
                     {data && data?.map((item: any) => {
                         return (
                             <>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   Logo,
   Secondary,
@@ -38,6 +38,12 @@ function Login() {
   const [mobile, setMobile] = useState<string | undefined>(mobileNumber);
 
 
+  // const inputRef = useRef<any>();
+  const inputRef = React.createRef<HTMLInputElement>();
+
+
+
+
   const { t } = useTranslation();
   const enterPress = useKeyPress("Enter");
   let dispatch = useDispatch();
@@ -56,7 +62,7 @@ function Login() {
           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => () => {
-          showToast('error', t('invalidUser'));
+          showToast('error', error);
         },
       })
     );
@@ -100,11 +106,12 @@ function Login() {
       </h1>
 
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
-        <InputNumber label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
+        <InputNumber id="my-input" ref={inputRef} type='number' label={t('mobileNumber')} value={mobile} placeholder={t('enterYourMobileNumber')} validator={validateMobileNumber} onChange={(e) => {
           setMobile(inputNumberMaxLength(e.target.value, MAX_LENGTH_MOBILE_NUMBER));
         }} />
         <Container padding={'pt-3'} />
         <Primary additionClass={'btn-block'} text={t('continue')} onClick={() => proceedValidateUserApi()} />
+        {/* <Primary additionClass={'btn-block'} text={t('continue')} onClick={() => handleClick()} /> */}
         <Container padding={'pt-5'} />
         <small className={'text-center'}>{t('loginwith')}</small>
         <Container flexDirection={'flex-row'} justifyContent={'justify-content-center'} alignItems={'align-items-center'} display={'d-flex'} margin={'mt-4'}>

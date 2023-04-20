@@ -104,7 +104,7 @@ function App() {
 
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       <PushNotification />
       <GetToken />
       <DeviceInfo />
