@@ -232,7 +232,7 @@ function Navbar({
             {prop.icon !== undefined ? (
               <>
                 <i className={prop.icon} />
-                <span className="nav-link-text">{prop.name}</span>
+                <span className={`${pathname === prop.path ? "sidenav-active" : "sidenav-normal "}`}>{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (
               <>
@@ -294,7 +294,7 @@ function Navbar({
         <Collapse navbar isOpen={true}>
           <Nav navbar>
             {createLinks(routes)}
-            <small className={"text-white text-version"}>Version: 1.32</small>
+            <small className={"text-white text-version"}>Version: 1.33</small>
           </Nav>
         </Collapse>
       </div>

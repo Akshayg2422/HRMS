@@ -6,7 +6,7 @@ import { Card, ChooseBranchFromHierarchical, Container, ScreenContainer } from "
 import Charts from '../../container/Charts'
 import { getEmployeeAttendanceStats } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
-import { getMomentObjFromServer, getServerDateFromMoment, useNav } from "@utils";
+import { getMomentObjFromServer, getServerDateFromMoment, showToast, useNav } from "@utils";
 import { getListAllBranchesList } from "../../../../store/location/actions";
 import { setBranchHierarchical } from "../../../../store/dashboard/actions";
 
@@ -27,6 +27,8 @@ function Dashboard() {
   const { listBranchesList } = useSelector(
     (state: any) => state.LocationReducer
   );
+
+  const [initialCall, setInitialCall] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState(
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
@@ -67,21 +69,26 @@ function Dashboard() {
     if (dashboardDetails) {
       conditionalRendering(dashboardDetails)
     }
-  }, [dashboardDetails, hierarchicalBranchIds]);
+  }, [hierarchicalBranchIds]);
+
 
   const conditionalRendering = (dashboardResponse: any) => {
     if (listBranchesList.length === 0) {
-      const params = {}
-      dispatch(getListAllBranchesList({
-        params,
-        onSuccess: (response: any) => () => {
-          const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-          getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
-          dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
-        },
-        onError: () => () => {
-        },
-      }))
+      if (!initialCall) {
+        const params = {}
+        dispatch(getListAllBranchesList({
+          params,
+          onSuccess: (response: any) => () => {
+            const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
+            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
+            dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
+            setInitialCall(true)
+          },
+          onError: (error: any) => () => {
+            showToast('error', error)
+          },
+        }))
+      }
     } else {
       getStatsDetails({ ...hierarchicalBranchIds })
     }

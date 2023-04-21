@@ -209,7 +209,7 @@ function PayRoll() {
                             additionClass={"col mt-4"}
                         >
                             <Container additionClass="mt-2">
-                                <Search variant="Icon" onClick={() => {
+                                <Search variant="Button" onClick={() => {
                                     getEmployeesApi(currentPage);
                                 }} />
                             </Container>

@@ -38,9 +38,8 @@ function Otp() {
 
   const { t } = useTranslation();
   const enterPress = useKeyPress('Enter')
-  const backPress = useKeyPress('Backspace')
 
-  const { userDetails, success, mobileNumber, error } = useSelector(
+  const { mobileNumber} = useSelector(
     (state: any) => state.AuthReducer
   );
 
