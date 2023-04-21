@@ -93,7 +93,7 @@ function FaceReRequest() {
 
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => getEmployeeRequest(currentFaceType, currentPage)} /> */}
-            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
+            <Search variant="Button" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">

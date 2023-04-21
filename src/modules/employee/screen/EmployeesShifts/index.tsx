@@ -241,7 +241,9 @@ function EmployeeShifts() {
                   getEmployeeLogsWithShifts(currentPage);
                 }}
               /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeLogsWithShifts(currentPage); }} />
+              <Container additionClass="col-xl-2 mt-2">
+                <Search variant="Button" additionalClassName={'mt-xl-4'} onClick={() => { getEmployeeLogsWithShifts(currentPage); }} />
+              </Container>
             </Container>
 
           </Container>

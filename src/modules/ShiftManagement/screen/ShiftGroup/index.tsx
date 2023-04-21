@@ -207,7 +207,7 @@ const ShiftGroup = () => {
                             alignItems={"align-items-center"}
                         >
                             {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-                            <Search variant="Icon" additionalClassName={''}  onClick={() => { searchHandler() }} />
+                            <Search variant="Button" additionalClassName={''}  onClick={() => { searchHandler() }} />
                         </Container>
 
                     </Container>

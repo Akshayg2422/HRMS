@@ -150,7 +150,7 @@ function FaceReRegisterRequest() {
 
             >
               {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-              <Search variant="Icon" additionalClassName={''} onClick={() => getRequestDetails(INITIAL_PAGE)} />
+              <Search variant="Button" additionalClassName={''} onClick={() => getRequestDetails(INITIAL_PAGE)} />
             </Container>
           </Container>
           <div>

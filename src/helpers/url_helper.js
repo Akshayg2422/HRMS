@@ -262,3 +262,5 @@ export const GET_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/getEmployeeSalaryDefi
 //get employee attendance info
 
 export const GET_EMPLOYEE_ATTENDANCE_INFO_URL = 'employee/getEmployeeAttendanceInfo'
+
+

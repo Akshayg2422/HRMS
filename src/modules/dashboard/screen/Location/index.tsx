@@ -364,7 +364,9 @@ function LocationScreen() {
                 setSearchBranches(e.target.value);
               }}
             />
-            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
+            <Container additionClass='col-xl-2'>
+              <Search variant="Button" additionalClassName={' mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
+            </Container>
           </Container>
         }
       >
@@ -435,9 +437,12 @@ function LocationScreen() {
                 setSearchEmployee(e.target.value);
               }}
             />
-            <Search variant={'Icon'} additionalClassName='col-xl-3 mt-xl-2 mt-2 mt-sm-0' onClick={() => {
-              getRegisteredFenceAdmin(INITIAL_PAGE)
-            }} />
+            <Container additionClass='col-xl-3'>
+              <Search variant={'Button'} additionalClassName=' mt-xl-2 mt-2 mt-sm-0' onClick={() => {
+                getRegisteredFenceAdmin(INITIAL_PAGE)
+              }} />
+            </Container>
+
           </Container>
           {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
             <CommonTable

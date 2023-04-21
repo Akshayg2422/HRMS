@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react'
-import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound, TableWrapper } from '@components'
+import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound, TableWrapper, Search } from '@components'
 import {
     useNav,
     showToast,
@@ -206,7 +206,7 @@ const CreateShiftGroup = () => {
             }
             dispatch(postAddShift({
                 params,
-                onSuccess: (success: any) => () => {                    
+                onSuccess: (success: any) => () => {
                     setSelectedEmployeesIds([])
                     goBack(navigation);
                     showToast("success", success.status)
@@ -352,7 +352,6 @@ const CreateShiftGroup = () => {
                             selectedEmployeeData={selectedEmployeesList}
                         />
                     }
-
                 />
             ) : <NoRecordFound />}
         </>
@@ -443,8 +442,6 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
-
-
                         <div className='float-right mb-3 ml-3' style={{ marginTop: "35px" }}>
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
@@ -499,9 +496,9 @@ const CreateShiftGroup = () => {
                                 additionClass={'mb-3'}
                                 justifyContent={"justify-content-center"}
                                 alignItems={"align-items-center"}
-                                onClick={() => { proceedSearchApi() }}
                             >
-                                <Icon type={"btn-primary"} icon={Icons.Search} />
+                                {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+                                <Search variant="Button" onClick={() => { proceedSearchApi() }} />
                             </Container>
                         </Container>
 
@@ -553,12 +550,11 @@ const CreateShiftGroup = () => {
                                 additionClass={'mb-3'}
                                 justifyContent={"justify-content-center"}
                                 alignItems={"align-items-center"}
-                                onClick={() => { SelectedEmployeeFilter() }}
+
                             >
-                                <Icon type={"btn-primary"} icon={Icons.Search} />
+                                <Search variant="Button" onClick={() => { SelectedEmployeeFilter() }} />
                             </Container>
                         </Container>
-
                         {
                             memoizedFilteredEmployeesTable
                         }
