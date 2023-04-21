@@ -248,7 +248,7 @@ export const NAV_ITEM = [
         name: "Employees Leaves",
         miniName: "EL",
         layout: "",
-        icon:'ni ni-album-2 ml-sm-4' 
+        // icon:'ni ni-album-2 ml-sm-4' 
       },
       {
         id: 2,
@@ -256,7 +256,7 @@ export const NAV_ITEM = [
         name: "Modify logs",
         miniName: "ML",
         layout: "",
-        icon:'ni ni-ruler-pencil ml-sm-4'
+        // icon:'ni ni-ruler-pencil ml-sm-4'
 
       },
       {
@@ -265,7 +265,7 @@ export const NAV_ITEM = [
         name: "Employees shifts",
         miniName: "ES",
         layout: "",
-        icon:'ni ni-time-alarm ml-sm-4'
+        // icon:'ni ni-time-alarm ml-sm-4'
 
       },
       {
@@ -274,7 +274,7 @@ export const NAV_ITEM = [
         name: "Shift Request",
         miniName: "SR",
         layout: "",
-        icon:'ni ni-bullet-list-67 ml-sm-4'
+        // icon:'ni ni-bullet-list-67 ml-sm-4'
 
       },
       {
@@ -283,7 +283,7 @@ export const NAV_ITEM = [
         name: "Face Re-register",
         miniName: "FR",
         layout: "",
-        icon: 'ni ni-badge ml-sm-4'
+        // icon: 'ni ni-badge ml-sm-4'
 
       },
       {
@@ -292,7 +292,7 @@ export const NAV_ITEM = [
         name: "Log Approval",
         miniName: "LA",
         layout: "",
-        icon: 'ni ni-circle-08 ml-sm-4'
+        // icon: 'ni ni-circle-08 ml-sm-4'
 
       },
       {
@@ -301,7 +301,7 @@ export const NAV_ITEM = [
         name: "Face Approval",
         miniName: "FA",
         layout: "",
-        icon: 'ni ni-image ml-sm-4'
+        // icon: 'ni ni-image ml-sm-4'
 
       },
     ],
