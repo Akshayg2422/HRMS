@@ -33,16 +33,18 @@ function CommonDropdownMenu({ data, onItemClick }: CommonDropdownMenuProps) {
                 >
                     <i className="fas fa-ellipsis-v" />
                 </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right style={{ position: 'absolute', zIndex: 'inherit'}}>
+                <DropdownMenu className="dropdown-menu-arrow" right>
                     {data && data?.map((item: any) => {
                         return (
                             <>
                                 <a className="dropdown-item"
                                     onClick={(e) => {
                                         if (onItemClick) {
+                                            e.stopPropagation()
                                             onItemClick(e, item)
                                         }
                                     }}
+                                    style={{ cursor: 'pointer' }}
                                 >
                                     {item.image
                                         ? <ImageView
@@ -50,7 +52,12 @@ function CommonDropdownMenu({ data, onItemClick }: CommonDropdownMenuProps) {
                                             alt='Menu Icon'
                                             icon={item.image}
                                         /> : <i className={`${item.icon}`}></i>}
-                                    <span className='ml-2'>{item?.name}</span></a>
+                                    <span className='ml-2' onClick={(e) => {
+                                        if (onItemClick) {
+                                            e.stopPropagation()
+                                            onItemClick(e, item)
+                                        }
+                                    }}  >{item?.name}</span></a>
                             </>
                         );
                     })}

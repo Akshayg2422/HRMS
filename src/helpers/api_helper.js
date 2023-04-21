@@ -19,27 +19,27 @@ const STAGING_IP = 'http://103.118.188.135:8001';
 const PROD_WEB = 'https://webapi.zenyq.com';
 
 
-export const REACT_APP_APP_URL = LOCAL_DEV;
+export const REACT_APP_APP_URL = PROD_WEB;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
 
-// export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
+export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
 
-// export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
+export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
 
-// export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuserweb.zenyq.com'; ////
+export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuserweb.zenyq.com'; ////
 
-// export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
+export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
 
 
-export const BASE_URL_AUTH_PROD = ''; ////
+// export const BASE_URL_AUTH_PROD = ''; ////
 
-export const BASE_URL_REPORTS_PROD = ''; ////
+// export const BASE_URL_REPORTS_PROD = ''; ////
 
-export const BASE_URL_VALIDATE_USER_PROD = ''; ////
+// export const BASE_URL_VALIDATE_USER_PROD = ''; ////
 
-export const BASE_URL_ONBOARD_PROD = ''; ////
+// export const BASE_URL_ONBOARD_PROD = ''; ////
 
 
 const axiosApi = axios.create({
