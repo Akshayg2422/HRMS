@@ -103,11 +103,7 @@ function MyWorkLog() {
 
   function getEmployeeEachUserTimeSheetsApi() {
     const params = {
-<<<<<<< HEAD
-      type: type,
-=======
       type: type
->>>>>>> 9ec182ccb3b155b75591e7069fd84af69f7a36c3
     }
     dispatch(
       getEmployeeEachUserTimeSheets({
