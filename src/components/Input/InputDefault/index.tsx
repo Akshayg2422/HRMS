@@ -24,7 +24,8 @@ const Input = React.forwardRef(({
   onFocus,
   onKeyUp,
   defaultValue,
-  showArrow = false
+  showArrow = false,
+  id
 }: InputProps, ref: any) => {
   const [validStatus, setValidStatus] = useState({ status: true, error: "" });
 
@@ -35,6 +36,7 @@ const Input = React.forwardRef(({
         <input
           className={`form-control mt-2 ${size} ${disabled && `bg-white`}  ${formCustomClass}`}
           type={type}
+          id={id}
           onFocus={onFocus}
           value={value}
           min={min}
@@ -55,9 +57,9 @@ const Input = React.forwardRef(({
             }
           }}
           placeholder={placeholder}
-          id="example-text-input"
+          // id="example-text-input"
         />
-        {showArrow && <span  className="mr-4" style={{ position: 'absolute', right: 0, top: '30%' }} ><i className="fa fa-angle-down" style={{ fontSize: '12px' }}></i></span>}
+        {showArrow && <span className="mr-4" style={{ position: 'absolute', right: 0, top: '30%' }} ><i className="fa fa-angle-down" style={{ fontSize: '12px' }}></i></span>}
       </Container>
       {validStatus.error !== null && (
         <code className="text-danger">{validStatus.error}</code>

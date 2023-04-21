@@ -111,7 +111,7 @@ const ModifyLogs = () => {
 
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} /> */}
-            <Search variant="Icon" onClick={() => fetchPendingDetail(INITIAL_PAGE, currentLeaveType)} />
+            <Search variant="Button" onClick={() => fetchPendingDetail(INITIAL_PAGE, currentLeaveType)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">

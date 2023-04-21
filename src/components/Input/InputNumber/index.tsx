@@ -9,4 +9,3 @@ const InputNumber =  React.forwardRef((props: InputProps, ref: any)=> {
 })
 
 export default InputNumber
-

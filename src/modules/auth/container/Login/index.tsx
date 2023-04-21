@@ -1,4 +1,4 @@
-import React, { useEffect, useState ,useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Logo,
   Secondary,
@@ -25,8 +25,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { getValidateUser } from '../../../../store/auth/actions';
 import { useSelector } from 'react-redux';
-import { launchActive } from '../../../../store/app/actions';
-import { log } from 'console';
 
 function Login() {
 
@@ -74,10 +72,9 @@ function Login() {
 
     const value = mobileRef.current?.value
 
-    console.log("ref",value+"====");
-    if (validateUserParams()) {
+    if (validateUserParams() || value) {
       const params = {
-        mobile_number: mobile,
+        mobile_number: value,
       };
       proceedValidateUser(params);
     } else {
@@ -103,24 +100,24 @@ function Login() {
         margin={'mt-4'}
       >
         <Logo additionClass={'col-sm-3'} />
-        {/* <Secondary
+        <Secondary
           text={t('register')}
           onClick={() => goTo(navigate, ROUTE.ROUTE_REGISTER)}
-        /> */}
+        />
       </Container>
       <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>
         {t('welcome')}
       </h1>
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
-        <InputNumber 
-        label={t('mobileNumber')}
-        ref={mobileRef}
-        value={mobile}
-        placeholder={t('enterYourMobileNumber')}
-        validator={validateMobileNumber} 
-         onChange={(e) => {
-         setMobile(inputNumberMaxLength(e.target.value, 10));
-        }} />
+        <InputNumber
+          label={t('mobileNumber')}
+          ref={mobileRef}
+          value={mobile}
+          placeholder={t('enterYourMobileNumber')}
+          validator={validateMobileNumber}
+          onChange={(e) => {
+            setMobile(inputNumberMaxLength(e.target.value, MAX_LENGTH_MOBILE_NUMBER));
+          }} />
         <Container padding={'pt-3'} />
         <Primary additionClass={'btn-block'} text={t('continue')} onClick={() => proceedValidateUserApi()} />
         <Container padding={'pt-5'} />

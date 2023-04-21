@@ -217,7 +217,9 @@ function EmployeeTimeSheets() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(INITIAL_PAGE); }} />
+              <Container additionClass="col-xl-3">
+                <Search variant="Button" additionalClassName={' mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(INITIAL_PAGE); }} />
+              </Container>
             </Container>
           </Container>
         }

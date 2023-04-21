@@ -141,12 +141,12 @@ const ShiftListing = () => {
                         />
                         <Container
                             col={'col-xl'}
-                            additionClass={'mt-xl-1'}
+                            additionClass={'mt-xl-2'}
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
                         >
                             {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-                            <Search variant="Icon" additionalClassName={''} onClick={() => { searchHandler() }} />
+                            <Search variant="Button" additionalClassName={''} onClick={() => { searchHandler() }} />
                         </Container>
 
                     </Container>

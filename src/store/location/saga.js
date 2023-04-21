@@ -245,15 +245,11 @@ function* getListAllBranches(action) {
       yield put(getListAllBranchesListSuccess(response.details));
 
     } else {
-      console.log('=====error22222');
-
       yield put(hideLoader());
       yield put(getListAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
-    console.log(error + '=====error');
-
     yield put(hideLoader());
     yield put(getListAllBranchesListFailure("Invalid Request"));
     yield call(action.payload.onError(error));

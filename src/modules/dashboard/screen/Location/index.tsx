@@ -182,6 +182,7 @@ function LocationScreen() {
         getAllBranchesListData(LocationCurrentPage)
         showToast("success", success.message);
         setIsOpenFenceModal(!isOpenFenceModal)
+        setSearchEmployee('');
       },
       onError: (error: string) => () => {
         showToast("error", error);
@@ -363,42 +364,14 @@ function LocationScreen() {
                 setSearchBranches(e.target.value);
               }}
             />
-            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
+            <Container additionClass='col-xl-2'>
+              <Search variant="Button" additionalClassName={' mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
+            </Container>
           </Container>
         }
       >
         {memoizedTable}
       </TableWrapper>
-      {/* <Card additionClass='mx-3 row'>
-        <h2 className='mb-3'>{t('allRegisteredLocation')}</h2>
-        <Container additionClass={"col-xl-4 row ml--4"}>
-          <InputText
-            value={searchBranches}
-            col={'col'}
-            placeholder={t("searchLocation")}
-            onChange={(e) => {
-              setSearchBranches(e.target.value);
-            }}
-          />
-          <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-            onClick={() => {
-              // SelectedBranchFilter()
-            }}
-          />
-        </Container>
-        <Container additionClass='text-right mt--3'>
-          <Primary
-            text={t("AddBranch")}
-            onClick={() => manageBranchesHandler(undefined)}
-            size={"btn-sm"}
-          />
-        </Container>
-      </Card> */}
-      {/* {branch && branch.length > 0 ? (
-        <CommonTable
-          displayDataSet={normalizedEmployeeLog(branch)}
-        />
-      ) : <Card additionClass='mx-3'><NoRecordFound /></Card>} */}
 
       <Modal
         title={'Select Radius'}
@@ -409,8 +382,6 @@ function LocationScreen() {
             <div
               className='row align-items-center mx-4'
               onClick={() => {
-                console.log("ellll", el);
-
                 resetRadiusApi(el)
               }}>
               <div className='row align-items-center'>
@@ -466,14 +437,12 @@ function LocationScreen() {
                 setSearchEmployee(e.target.value);
               }}
             />
-            {/* <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-              onClick={() => {
-                getRegisteredFenceAdmin(currentPage)
-              }}
-            /> */}
-            <Search variant={'Icon'} additionalClassName='col-xl-3 mt-xl-2 mt-2 mt-sm-0' onClick={() => {
-              getRegisteredFenceAdmin(INITIAL_PAGE)
-            }} />
+            <Container additionClass='col-xl-3'>
+              <Search variant={'Button'} additionalClassName=' mt-xl-2 mt-2 mt-sm-0' onClick={() => {
+                getRegisteredFenceAdmin(INITIAL_PAGE)
+              }} />
+            </Container>
+
           </Container>
           {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
             <CommonTable
