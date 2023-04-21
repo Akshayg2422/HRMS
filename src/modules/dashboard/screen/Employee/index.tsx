@@ -385,14 +385,14 @@ function EmployeeScreen() {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-          tableOnClick={(e, index, item) => {
-            const selectedId = registeredEmployeesList[index].id;
-            const selectedObject = registeredEmployeesList[index]
-            dispatch(getSelectedEmployeeId(selectedId));
-            dispatch(settingSelectedEmployeeDetails(selectedObject))
-            dispatch(employeeEdit(selectedId))
-            goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-          }}
+          // tableOnClick={(e, index, item) => {
+          //   const selectedId = registeredEmployeesList[index].id;
+          //   const selectedObject = registeredEmployeesList[index]
+          //   dispatch(getSelectedEmployeeId(selectedId));
+          //   dispatch(settingSelectedEmployeeDetails(selectedObject))
+          //   dispatch(employeeEdit(selectedId))
+          //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+          // }}
         />
       ) : <NoRecordFound />}
     </>
@@ -414,7 +414,6 @@ function EmployeeScreen() {
               onItemClick={(e, item) => {
                 // e.stopPropagation();
                 console.log("============>clicked",);
-
                 goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
               }}
             />
