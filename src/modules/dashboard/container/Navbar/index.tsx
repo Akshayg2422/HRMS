@@ -232,7 +232,7 @@ function Navbar({
             {prop.icon !== undefined ? (
               <>
                 <i className={prop.icon} />
-                <span className={`${pathname === prop.path ? "sidenav-active" : "sidenav-normal "}`}>{prop.name}</span>
+                <span className="nav-link-text">{prop.name}</span>
               </>
             ) : prop.miniName !== undefined ? (
               <>
