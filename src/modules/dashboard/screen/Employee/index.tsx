@@ -405,13 +405,16 @@ function EmployeeScreen() {
         title={t('allRegisteredEmployee')}
         buttonChildren={
           <Container additionClass={" d-flex justify-content-end mr-xl--4"}>
-            <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => {
+            <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={(e: { stopPropagation: () => void; }) => {
+              e.stopPropagation();
               manageEmployeeHandler('')
             }} />
             <CommonDropdownMenu
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
-                e.stopPropagation();
+                // e.stopPropagation();
+                console.log("============>clicked",);
+
                 goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
               }}
             />
