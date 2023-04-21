@@ -196,8 +196,8 @@ function InActiveEmployeeList() {
               />
             </Container>
             <Container additionClass="col-xl-1 mt-xl-4 text-center">
-              <Container additionClass="mt-1">
-                <Search variant="Icon" onClick={() => { manageInactiveEmployeeList(currentPage) }} />
+              <Container additionClass="mt-2">
+                <Search variant="Button" onClick={() => { manageInactiveEmployeeList(currentPage) }} />
               </Container>
             </Container>
           </Container>

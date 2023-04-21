@@ -14,6 +14,7 @@ import {
   InputText,
   useKeyPress,
   TableWrapper,
+  Search,
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -487,7 +488,7 @@ const DashBoardAttendance = ({ }) => {
                     }}
                   />
                 </div>
-                <div className="col-lg-3 col-md-12 " style={{marginTop:"4px"}}>
+                <div className="col-lg-3 col-md-12 " style={{ marginTop: "4px" }}>
                   <h5>{t("selectedDate")}</h5>
                   <DatePicker
                     placeholder={"Select Date"}
@@ -513,10 +514,7 @@ const DashBoardAttendance = ({ }) => {
                   />
                 </Container>
                 <Container additionClass={"col mb-4"}>
-                  <Primary text={'Search'} onClick={() => getTodayStats(INITIAL_PAGE)} />
-                  {/* <a download onClick={(e) => setDownloadModel(!downloadmodel)}>
-          <Icon icon={Icons.DownloadSecondary} />
-        </a> */}
+                  <Search variant="Button" onClick={() => getTodayStats(INITIAL_PAGE)} />
                 </Container>
               </Container>
             </div>

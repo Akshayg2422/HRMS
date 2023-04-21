@@ -83,12 +83,9 @@ function ShiftRequest() {
                 setSearchEmployee(e.target.value);
               }}
             />
-            {/* <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-2'} icon={Icons.Search}
-                onClick={() => {
-                  getEmployeeLogsWithShifts(currentPage);
-                }}
-              /> */}
-            <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeRequest(currentType, INITIAL_PAGE) }} />
+            <Container additionClass='col-xl-2 mt-2'>
+              <Search variant="Button" additionalClassName={'mt-xl-4'} onClick={() => { getEmployeeRequest(currentType, INITIAL_PAGE) }} />
+            </Container>
           </Container>
 
         </Container>

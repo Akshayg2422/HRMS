@@ -187,7 +187,7 @@ function Charts() {
             <Card>
               <CardHeader>
                 <h6 className="surtitle">Overview</h6>
-                <h5 className="h3 mb-0">Department wise</h5>
+                <h5 className="h3 mb-0">Department</h5>
               </CardHeader>
               <CardBody style={{ overflowX: 'auto' }} className={'scroll-hidden'}>
                 <div className="chart" style={{ width: '700px' }}>

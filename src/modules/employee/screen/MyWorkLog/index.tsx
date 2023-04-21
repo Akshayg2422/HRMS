@@ -102,9 +102,12 @@ function MyWorkLog() {
 
 
   function getEmployeeEachUserTimeSheetsApi() {
+    const params = {
+      type: type
+    }
     dispatch(
       getEmployeeEachUserTimeSheets({
-        type,
+        params,
         onSuccess: (success: any) => () => {
 
         },

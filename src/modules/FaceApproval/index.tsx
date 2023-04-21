@@ -95,7 +95,7 @@ function FaceApproval() {
             // onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
-            <Search variant="Icon" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
+            <Search variant="Button" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">

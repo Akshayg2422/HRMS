@@ -241,7 +241,9 @@ function EmployeeShifts() {
                   getEmployeeLogsWithShifts(currentPage);
                 }}
               /> */}
-              <Search variant="Icon" additionalClassName={'col-xl-2 mt-xl-4'} onClick={() => { getEmployeeLogsWithShifts(currentPage); }} />
+              <Container additionClass="col-xl-2 mt-2">
+                <Search variant="Button" additionalClassName={'mt-xl-4'} onClick={() => { getEmployeeLogsWithShifts(currentPage); }} />
+              </Container>
             </Container>
 
           </Container>
@@ -283,7 +285,6 @@ function EmployeeShifts() {
                         className={`nav-link  ml-0 ml-sm-2 align-content-center justify-content-center  ${it.week === isActiveWeek ? 'active' : ''}`}
                         id={`tabs-icons-text-${it.week}-tab`}
                         data-toggle="tab"
-                        href={`#tabs-icons-text-${it.week}`}
                         role="tab"
                         aria-controls={`tabs-icons-text-${it.week}`}
                         aria-selected="true"

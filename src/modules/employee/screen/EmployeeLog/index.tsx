@@ -358,7 +358,9 @@ function EmployeeLog() {
                   setSearchEmployee(e.target.value);
                 }}
               />
-              <Search variant="Icon" additionalClassName={'col-xl-3 mt-2'} onClick={() => { getEmployeeLogs(currentPage); }} />
+              <Container additionClass="col-xl-3">
+                <Search variant="Button" additionalClassName={' mt-2'} onClick={() => { getEmployeeLogs(currentPage) }} />
+              </Container>
             </Container>
 
           </Container>
