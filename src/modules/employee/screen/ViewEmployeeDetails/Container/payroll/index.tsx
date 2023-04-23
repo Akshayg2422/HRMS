@@ -15,56 +15,63 @@ function PayrollView() {
 
   const MONTHS = [
     {
-      id: 1,
+      id: "0",
       name: "January",
     },
     {
-      id: 2,
+      id: "1",
       name: "February",
     },
     {
-      id: 3,
+      id: "2",
       name: "March",
     },
     {
-      id: 4,
+      id: "3",
       name: "April",
     },
     {
-      id: 5,
+      id: "4",
       name: "May",
     },
     {
-      id: 6,
+      id: "5",
       name: "June",
     },
     {
-      id: 7,
+      id: "6",
       name: "July",
     },
     {
-      id: 8,
+      id: "7",
       name: "August",
     },
     {
-      id: 9,
+      id: "8",
       name: "September",
     },
     {
-      id: 10,
+      id: "9",
       name: "October",
     },
     {
-      id: 11,
+      id: "10",
       name: "November",
     },
     {
-      id: 12,
+      id: "11",
       name: "December",
     }
   ]
 
-  const currentMonth = new Date().getMonth()+1 ;
+  const currentMonth = new Date().getMonth() ;
+
+
+  console.log("currentMonth---->",currentMonth);
+  
+
+
+ 
 
   const [monthData, setMonthData] = useState(MONTHS);
 
@@ -74,25 +81,22 @@ function PayrollView() {
     dateFrom: startOfMonth,
     dataTo: Today,
   });
-  const [customMonth, setCustomMonth] = useState('');
+  const [customMonth, setCustomMonth] = useState(MONTHS[currentMonth].id);
   const [minData,setMinData] = useState('')
   const [maxDate,setMaxData] = useState('')
 
 
+
+  
 
   let dispatch = useDispatch();
   const { t } = useTranslation();
   const navigation = useNav();
 
   useEffect(() => {
-
     const filteredMonth = MONTHS.filter((el: any) => el.id <= currentMonth)
-
     setMonthData(filteredMonth);
-
-
-
-  }, [customRange.dateFrom, customRange.dataTo])
+  }, [])
 
 
 
@@ -108,7 +112,6 @@ function PayrollView() {
 
   useEffect(() => {
     getEmployeeSalaryDefinitionDetails()
-
   }, [])
 
 
@@ -146,7 +149,6 @@ function PayrollView() {
 
   useEffect(() => {
     getMonthMinMaxDate(customMonth)
-
   }, [customMonth])
 
 
@@ -187,21 +189,17 @@ function PayrollView() {
     });
   }
 
-  console.log("month--->",currentMonth);
+ 
   
 
   function getMonthMinMaxDate(month: any) {
-
-
     const year = new Date().getFullYear();
-    const date = new Date(year, month-1, 1);
+    const date = new Date(year, month, 1);
     const minDate = new Date(date.getFullYear(), date.getMonth(), 1);
     const maxDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const dateFrom = getServerDateFromMoment(getMomentObjFromServer(minDate))
     const dataTo = getServerDateFromMoment(getMomentObjFromServer(maxDate))
-
-
-    if(month-1 != -1 && month-1 != currentMonth-1)
+    if(month != currentMonth)
     {
     setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: dataTo, });
     setMinData(dateFrom)
@@ -209,7 +207,7 @@ function PayrollView() {
     }
     else
     {
-      setCustomRange({ ...customRange, dateFrom:startOfMonth , dataTo: Today, });
+      setCustomRange({ ...customRange, dateFrom:dateFrom , dataTo: Today, });
       setMinData(startOfMonth)
       setMaxData(Today)
     }
