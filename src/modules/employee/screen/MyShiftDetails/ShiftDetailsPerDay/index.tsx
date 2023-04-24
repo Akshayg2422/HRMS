@@ -112,7 +112,7 @@ function ShiftDetailsPerDay() {
             </Card>
 
             <Container additionClass={'row'} margin={"mt-3"}>
-                {filteredDetails() && filteredDetails().length < 0 ? filteredDetails().map((it: any) => {
+                {filteredDetails() && filteredDetails().length > 0 ? filteredDetails().map((it: any) => {
                     return (
                         <Container additionClass={"col-xl-3 col-md-6"}>
                             <Card style={{ height: '25vh' }}
@@ -145,7 +145,7 @@ function ShiftDetailsPerDay() {
             </Container>
         </div >
 
-    ) 
+    )
 }
 
 export { ShiftDetailsPerDay }

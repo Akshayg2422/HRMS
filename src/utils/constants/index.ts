@@ -240,7 +240,7 @@ export const NAV_ITEM = [
   { id: '8', name: 'Stats', value: 'ST', icon: 'ni ni-books', image: Icons.Statistics, path: ROUTE.ROUTE_DASHBOARD_STATS, layout: '' },
   { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, path: ROUTE.ROUTE_CALENDAR, layout: '' },
   {
-    id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-bell-55', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false, layout: '', collapse: true,
+    id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-folder-17', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false, layout: '', collapse: true,
     views: [
       {
         id: 1,
