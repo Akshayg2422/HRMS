@@ -142,7 +142,7 @@ function EmployeeScreen() {
 
       },
       onError: (error: any) => () => {
-
+        showToast('error', error)
       }
     }));
   }
@@ -385,14 +385,14 @@ function EmployeeScreen() {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-          // tableOnClick={(e, index, item) => {
-          //   const selectedId = registeredEmployeesList[index].id;
-          //   const selectedObject = registeredEmployeesList[index]
-          //   dispatch(getSelectedEmployeeId(selectedId));
-          //   dispatch(settingSelectedEmployeeDetails(selectedObject))
-          //   dispatch(employeeEdit(selectedId))
-          //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-          // }}
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   const selectedObject = registeredEmployeesList[index]
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   dispatch(settingSelectedEmployeeDetails(selectedObject))
+        //   dispatch(employeeEdit(selectedId))
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
         />
       ) : <NoRecordFound />}
     </>
@@ -464,47 +464,49 @@ function EmployeeScreen() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-          {listBranchesList.map((item: Branch, index: number) => {
-            return (
-              <div
-                onClick={() => addSelectedBranch(item)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="row mx-3 my-1"
+          <div >
+            {listBranchesList.map((item: Branch, index: number) => {
+              return (
+
+                <div
+                  onClick={() => addSelectedBranch(item)}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <div className="col-8">
-                    <span className=" text-gray">{item.name}</span>
-                  </div>
+                  <div className="d-flex mx-3"
+                  >
+                    <div className="col-8">
+                      <span className="text-gray">{item.name}</span>
+                    </div>
 
-                  <div className="col-4 text-right">
-                    <ImageView
-                      icon={
-                        checkStatus(item.id!)
-                          ? Icons.TickActive
-                          : Icons.TickDefault
-                      }
-                    />
+                    <div className="col-4 text-right">
+                      <ImageView
+                        icon={
+                          checkStatus(item.id!)
+                            ? Icons.TickActive
+                            : Icons.TickDefault
+                        }
+                      />
+                    </div>
                   </div>
+                  {index !== listBranchesList.length - 1 && <Divider space={3} />}
                 </div>
-                {index !== listBranchesList.length - 1 && <Divider />}
-              </div>
-            );
-          })}
-
-          <Container
-            additionClass={'mt-4 sticky-bottom'}
-            justifyContent={"justify-content-end"}
-            display={"d-flex"}
-          >
-            <Secondary
-              text={t("cancel")}
-              onClick={() => setModel(!model)}
-            />
-            <Primary
-              text={t("submit")}
-              onClick={() => updateEmployeeCheckInAssociationApi()}
-            />
-          </Container>
+              );
+            })}
+            <Container
+              additionClass={'mt-4 position-sticky bottom-0 end-0 right-0'}
+              justifyContent={"justify-content-end"}
+              display={"d-flex"}
+            >
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setModel(!model)}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={() => updateEmployeeCheckInAssociationApi()}
+              />
+            </Container>
+          </div>
         </Modal>
       )}
       <Modal

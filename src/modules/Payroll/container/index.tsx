@@ -1,3 +1,4 @@
 
+import { Payslip } from './Payslip'
 
-export { }
+export {Payslip}

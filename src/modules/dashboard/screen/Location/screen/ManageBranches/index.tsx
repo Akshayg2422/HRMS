@@ -34,6 +34,8 @@ const ManageBranches = () => {
     listBranchesList
   } = useSelector((state: any) => state.LocationReducer);
 
+  
+
   const [branchDetails, setBranchDetails] = useState({
     companyname: "",
     displaycompanyname: "",

@@ -46,12 +46,13 @@ const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChan
 
   return (
     <ReactModal
-      className={`modal-dialog-centered ${size}`}
+      className={`modal-dialog-centered ${size} scroll-hidden`}
       isOpen={modalShow}
       toggle={toggle}
       fade={false}
     >
-      <div className="modal-header">
+      <div className="modal-header"
+      >
         <h5 className="modal-title" id="exampleModalLabel">
           {title}
         </h5>
@@ -65,7 +66,9 @@ const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChan
           <span aria-hidden={true}>×</span>
         </button>
       </div>
-      <div className="modal-body scroll-hidden overflow-auto">{children}</div>
+      <div className="modal-body scroll-hidden"
+        style={{ overflowY: 'auto', maxHeight: "600px" }}
+      >{children}</div>
 
       {footer && <div className="modal-footer">
         <button type="button" className="btn btn-link" onClick={toggle}>Close</button>

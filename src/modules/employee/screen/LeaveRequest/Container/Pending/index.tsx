@@ -106,7 +106,9 @@ const Pending = () => {
           fetchPendingDetail(currentPage);
           showToast('success', success?.status)
         },
-        onError: (error: string) => () => { },
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };

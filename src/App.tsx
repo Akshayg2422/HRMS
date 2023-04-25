@@ -61,7 +61,8 @@ import {
   ManageEsslConfig,
   ManageDevices,
   FaceReRegisterRequest,
-  ShiftDetailsPerDay
+  ShiftDetailsPerDay,
+  Payslip
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -104,7 +105,7 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <PushNotification />
       <GetToken />
       <DeviceInfo />
@@ -124,7 +125,7 @@ function App() {
             path={ROUTE.ROUTE_OTP}
             element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
           />
-          {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
+          <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} />
           <Route
             path={ROUTE.ROUTE_DASHBOARD}
             element={<RequireAuth>{<Dashboard />}</RequireAuth>}
@@ -380,6 +381,11 @@ function App() {
           <Route
             path={ROUTE.ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION}
             element={<RequireAuth>{<ViewEmployeeSalaryDefinition />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_PAYSLIP}
+            element={<RequireAuth>{<Payslip />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />
