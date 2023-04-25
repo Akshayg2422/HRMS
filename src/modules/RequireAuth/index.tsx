@@ -123,11 +123,12 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         if (document.body.classList.contains("g-sidenav-pinned")) {
             document.body.classList.remove("g-sidenav-pinned");
             document.body.classList.add("g-sidenav-hidden");
-        } else {
+        }
+         else {
             document.body.classList.add("g-sidenav-pinned");
             document.body.classList.remove("g-sidenav-hidden");
         }
-        setSidenavOpen(!sidenavOpen);
+         setSidenavOpen(!sidenavOpen);
     };
 
     return (

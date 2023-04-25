@@ -97,6 +97,7 @@ function Otp() {
     dispatch(proceedSignIn({
       params,
       onSuccess: (response: LoginResponse) => async () => {
+        console.log("response---->",response);
         
         if (response.is_admin || response.is_branch_admin) {
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
