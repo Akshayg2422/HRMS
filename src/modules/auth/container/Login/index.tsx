@@ -55,7 +55,7 @@ function Login() {
       getValidateUser({
         params,
         onSuccess: (success: object) => () => {
-          goTo(navigate, ROUTE.ROUTE_OTP, true);
+           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => () => {
           showToast('error', error);
@@ -82,6 +82,11 @@ function Login() {
     }
   };
 
+
+  
+
+
+
   return (
     <Container
       col={'col'}
@@ -103,7 +108,6 @@ function Login() {
       <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>
         {t('welcome')}
       </h1>
-
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
         <InputNumber
           label={t('mobileNumber')}
