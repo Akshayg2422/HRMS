@@ -29,7 +29,13 @@ export const fetchListAllBranchesList = (payload) => post(url.FETCH_LIST_ALL_BRA
 
 export const fetchEmployeeDetails = (payload) => post(url.FETCH_EMPLOYEE_DETAILS, payload, {})
 export const postEmployeeAddition = (payload) => post(url.POST_EMPLOYEE_ADDITION_V1, payload, {})
-export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {})
+
+
+export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {}, BASE_URL_REPORTS_PROD)
+
+
+
+
 export const fetchEmployeeTimeSheets = (payload) => post(url.GET_EMPLOYEE_TIME_SHEETS, payload, {})
 export const fetchEmployeeCheckInLogs = (payload) => post(url.GET_EMPLOYEE_CHECK_IN_LOGS, payload, {})
 export const fetchEmployeeEachUserTimeSheets = (payload) => post(url.GET_EMPLOYEE_EACH_USER_TIME_SHEETS, payload, {})
@@ -115,7 +121,7 @@ export const getBranchAdminsApi = (payload) => post(url.GET_ADMIN_BRANCHES, payl
  * EDIT BRANCH NAME 
  */
 
-export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {})
+export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {}, BASE_URL_REPORTS_PROD)
 
 /**
  * employees Shift request

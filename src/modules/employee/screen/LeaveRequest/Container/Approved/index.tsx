@@ -92,7 +92,9 @@ const Approved = () => {
           showToast('success', success?.status)
 
         },
-        onError: (error: string) => () => { },
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };

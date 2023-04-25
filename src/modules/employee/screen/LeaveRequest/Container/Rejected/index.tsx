@@ -82,6 +82,7 @@ const Rejected = () => {
           showToast('success', success?.status)
         },
         onError: (error: string) => () => {
+          showToast('error', error)
         },
       })
     );

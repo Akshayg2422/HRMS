@@ -1,4 +1,4 @@
-import { Card, CommonTable, Container, DatePicker, FormTypography, FormWrapper, DropDown, NoRecordFound, Primary, ScreenContainer } from '@components'
+import { Card, CommonDropdownMenu, CommonTable, Container, DatePicker, DropDown, FormTypography, FormWrapper, NoRecordFound, Primary, ScreenContainer } from '@components'
 import { getEmployeeSalaryDefinition } from '../../../../../../store/Payroll/actions';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,6 +10,9 @@ import moment from 'moment';
 
 
 function PayrollView() {
+  let dispatch = useDispatch();
+  const { t } = useTranslation();
+  const navigation = useNav();
 
   const sampleData = [{ name: "Total Days", days: "17" }, { name: "Working Days", days: "17" }, { name: "Holidays", days: "0" }, { name: "leaves (UnPaid) ", days: "0" }]
 
@@ -64,17 +67,9 @@ function PayrollView() {
     }
   ]
 
-  const currentMonth = new Date().getMonth() ;
-
-
-  console.log("currentMonth---->",currentMonth);
-  
-
-
- 
+  const currentMonth = new Date().getMonth();
 
   const [monthData, setMonthData] = useState(MONTHS);
-
 
   const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
   const [customRange, setCustomRange] = useState({
@@ -82,16 +77,12 @@ function PayrollView() {
     dataTo: Today,
   });
   const [customMonth, setCustomMonth] = useState(MONTHS[currentMonth].id);
-  const [minData,setMinData] = useState('')
-  const [maxDate,setMaxData] = useState('')
+  const [minData, setMinData] = useState('')
+  const [maxDate, setMaxData] = useState('')
 
-
-
-  
-
-  let dispatch = useDispatch();
-  const { t } = useTranslation();
-  const navigation = useNav();
+  const CARD_DROPDOWN_ITEM = [
+    { id: '1', name: `View Payslip`, value: 'PS', image: '' },
+  ]
 
   useEffect(() => {
     const filteredMonth = MONTHS.filter((el: any) => el.id <= currentMonth)
@@ -189,8 +180,8 @@ function PayrollView() {
     });
   }
 
- 
-  
+
+
 
   function getMonthMinMaxDate(month: any) {
     const year = new Date().getFullYear();
@@ -199,15 +190,13 @@ function PayrollView() {
     const maxDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
     const dateFrom = getServerDateFromMoment(getMomentObjFromServer(minDate))
     const dataTo = getServerDateFromMoment(getMomentObjFromServer(maxDate))
-    if(month != currentMonth)
-    {
-    setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: dataTo, });
-    setMinData(dateFrom)
-    setMaxData(dataTo)
+    if (month != currentMonth) {
+      setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: dataTo, });
+      setMinData(dateFrom)
+      setMaxData(dataTo)
     }
-    else
-    {
-      setCustomRange({ ...customRange, dateFrom:dateFrom , dataTo: Today, });
+    else {
+      setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: Today, });
       setMinData(startOfMonth)
       setMaxData(Today)
     }
@@ -222,7 +211,6 @@ function PayrollView() {
       <Card additionClass='mx-4'>
         <div className='row'>
           <div className="col-lg-3 col-md-4 col-sm-12 mt--1 ">
-
             <DropDown
               label='Earnings from month'
               placeholder='Select month'
@@ -232,7 +220,6 @@ function PayrollView() {
                 setCustomMonth(e.target.value)
               }}
             />
-
           </div>
           <div className='col-sm-3'>
             <h5 className=''>{t("startDate")}</h5>
