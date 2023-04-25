@@ -11,9 +11,10 @@ interface ModelProps {
   saveChange?: () => void;
   showModel?: boolean;
   footer?: boolean;
+  style?:any
 }
 
-const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChange, footer }: ModelProps) => {
+const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChange, footer,style }: ModelProps) => {
   const [modalShow, setModelShow] = useState<any>('');
   const [display, setDisplay] = useState('none')
 
@@ -50,6 +51,7 @@ const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChan
       isOpen={modalShow}
       toggle={toggle}
       fade={false}
+      style={style}
     >
       <div className="modal-header"
       >
