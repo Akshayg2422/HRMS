@@ -4,12 +4,12 @@ import * as url from "./url_helper";
 /***
  * Auth 
  */
-export const postValidateUser = (payload) => post(url.VALIDATE_USER, payload, {}, BASE_URL_AUTH_PROD)
+export const postValidateUser = (payload) => post(url.VALIDATE_USER, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const postRegisterCompany = (payload) => post(url.VALIDATE_COMPANY_DETAILS, payload, {}, BASE_URL_ONBOARD_PROD)
-export const postRegisterAdmin = (payload) => post(url.REGISTER_ADMIN, payload, {}, BASE_URL_ONBOARD_PROD)
+export const postRegisterAdmin = (payload) => post(url.REGISTER_ADMIN, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const postUploadCompanyDocument = (payload) => post(url.UPLOAD_COMPANY_DOCUMENT, payload, {}, BASE_URL_ONBOARD_PROD)
-export const postOtpLogin = (payload) => post(url.OTP_LOGIN, payload, {}, BASE_URL_VALIDATE_USER_PROD)
-export const postResendLoginOtp = (payload) => post(url.RESEND_LOGIN_OTP, payload, {})
+export const postOtpLogin = (payload) => post(url.OTP_LOGIN, payload, {}, BASE_URL_AUTH_PROD)
+export const postResendLoginOtp = (payload) => post(url.RESEND_LOGIN_OTP, payload, {}, BASE_URL_VALIDATE_USER_PROD)
 export const fetchNatureOfBusiness = (payload) => post(url.FETCH_NATURE_OF_BUSINESS, payload, {})
 export const fetchTypeOfBusiness = (payload) => post(url.FETCH_TYPE_OF_BUSINESS, payload, {})
 /***
@@ -29,7 +29,13 @@ export const fetchListAllBranchesList = (payload) => post(url.FETCH_LIST_ALL_BRA
 
 export const fetchEmployeeDetails = (payload) => post(url.FETCH_EMPLOYEE_DETAILS, payload, {})
 export const postEmployeeAddition = (payload) => post(url.POST_EMPLOYEE_ADDITION_V1, payload, {})
-export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {})
+
+
+export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {}, BASE_URL_REPORTS_PROD)
+
+
+
+
 export const fetchEmployeeTimeSheets = (payload) => post(url.GET_EMPLOYEE_TIME_SHEETS, payload, {})
 export const fetchEmployeeCheckInLogs = (payload) => post(url.GET_EMPLOYEE_CHECK_IN_LOGS, payload, {})
 export const fetchEmployeeEachUserTimeSheets = (payload) => post(url.GET_EMPLOYEE_EACH_USER_TIME_SHEETS, payload, {})
@@ -54,7 +60,22 @@ export const fetchLeaveTypes = (payload) => post(url.FETCH_LEAVE_TYPES, payload,
 export const postApplyLeave = (payload) => post(url.POST_APPLY_LEAVE, payload, {})
 export const fetchCalendarDetails = (payload) => post(url.FETCH_CALENDAR_DETAILS, payload, {})
 
+// Modify api for modify log for employee
+
+export const employeeModifyRequestApi = (payload) => post(url.EMPLOYEE_MODIFY_REQUEST, payload, {})
+
+// api for modify admin
+
+export const adminModifyLogApi = (payload) => post(url.ADMIN_MODIFY_LOG, payload, {})
+
+
+
 export const postChangeEmployeeLeaveStatus = (payload) => post(url.POST_CHANGE_EMPLOYEE_LEAVE_STATUS, payload, {})
+
+export const postChangeEmployeeModifyLogStatus = (payload) => post(url.POST_EMPLOYEE_MODIFY_LOG_STATUS, payload, {})
+
+
+
 export const postAddHolidays = (payload) => post(url.POST_EMPLOYEES_HOLIDAYS, payload, {})
 export const postDeleteHolidays = (payload) => post(url.POST_DELETE_HOLIDAYS, payload, {})
 
@@ -115,7 +136,7 @@ export const getBranchAdminsApi = (payload) => post(url.GET_ADMIN_BRANCHES, payl
  * EDIT BRANCH NAME 
  */
 
-export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {})
+export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {}, BASE_URL_REPORTS_PROD)
 
 /**
  * employees Shift request
@@ -225,5 +246,67 @@ export const getEmployeeReRegisterRequestApi = (payload) => post(url.FACE_RE_REG
 
 
 export const employeeEnableFaceReRegisterApi = (payload) => post(url.EMPLOYEE_ENABLE_FACE_RE_REGISTER, payload, {})
+
+
+//enableFieldCheckIn
+
+export const enableFieldCheckInApi = (payload) => post(url.POST_ENABLE_FIELD_CHECK_IN, payload, {})
+
+// enableOfficeCheckIn
+
+export const enableOfficeCheckInApi = (payload) => post(url.POST_ENABLE_OFFICE_CHECK_IN, payload, {})
+
+//changeAttendanceSettings  
+
+export const changeAttendanceSettingsApi = (payload) => post(url.FACE_VALIDATION_STATUS, payload, {})
+
+/**
+ * Payroll
+ */
+
+//Add company allowance
+
+export const addCompanyAllowanceApi = (payload) => post(url.ADD_COMPANY_ALLOWANCE_URL, payload, {})
+
+//Add company deduction
+
+export const addCompanyDeductionApi = (payload) => post(url.ADD_COMPANY_DEDUCTION_URL, payload, {})
+
+//Add allowance group
+
+export const addAllowanceGroupApi = (payload) => post(url.ADD_ALLOWANCE_GROUP_URL, payload, {})
+
+//Get allowance group
+
+export const fetchAllowanceGroupsApi = (payload) => post(url.FETCH_ALLOWANCE_GROUP_URL, payload, {})
+
+//Get allowance group details
+
+export const fetchAllowanceGroupDetailsApi = (payload) => post(url.FETCH_ALLOWANCE_GROUP_DETAILS_URL, payload, {})
+
+//Get company allowance
+
+export const fetchCompanyAllowanceApi = (payload) => post(url.FETCH_COMPANY_ALLOWANCE_URL, payload, {})
+
+//Get company deductions
+
+export const fetchCompanyDeductionsApi = (payload) => post(url.GET_COMPANY_DEDUCTIONS_URL, payload, {})
+
+//add employee salary definition
+
+export const addEmployeeSalaryDefinitionApi = (payload) => post(url.ADD_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
+
+//get employee salary definition
+
+export const getEmployeeSalaryDefinitionApi = (payload) => post(url.GET_EMPLOYEE_SALARY_DEFINITION_URL, payload, {})
+
+//get employee basic info
+
+export const fetchEmployeeBasicInfoApi = (payload) => post(url.FETCH_EMPLOYEE_BASIC_INFO, payload, {})
+
+//get employee attendance info
+
+export const fetchEmployeeAttendanceInfoApi = (payload) => post(url.GET_EMPLOYEE_ATTENDANCE_INFO_URL, payload, {})
+
 
 

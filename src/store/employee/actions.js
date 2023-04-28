@@ -130,7 +130,35 @@ import {
   CURRENT_LEAVE_TYPE,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
-  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+  ENABLE_FIELD_CHECK_IN,
+  ENABLE_FIELD_CHECK_IN_SUCCESS,
+  ENABLE_FIELD_CHECK_IN_FAILURE,
+  ENABLE_OFFICE_CHECK_IN,
+  ENABLE_OFFICE_CHECK_IN_SUCCESS,
+  ENABLE_OFFICE_CHECK_IN_FAILURE,
+  POST_FACE_VALIDATION_STATUS,
+  POST_FACE_VALIDATION_STATUS_SUCCESS,
+  POST_FACE_VALIDATION_STATUS_FAILURE,
+
+  FETCH_EMPLOYEE_BASIC_INFO,
+  FETCH_EMPLOYEE_BASIC_INFO_SUCCESS,
+  FETCH_EMPLOYEE_BASIC_INFO_FAILURE,
+
+  FETCH_EMPLOYEE_ATTENDANCE_INFO,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
+
+  EMPLOYEE_VIEW_DETAILS_API_HANDLER,
+  EMPLOYEE_MODIFY_REQUEST,
+  EMPLOYEE_MODIFY_REQUEST_SUCCESS,
+  EMPLOYEE_MODIFY_REQUEST_FAILURE,
+  ADMIN_MODIFY_LOG,
+  ADMIN_MODIFY_LOG_SUCCESS,
+  ADMIN_MODIFY_LOG_FAILURE,
+  CHANGE_MODIFY_LOG_STATUS,
+  CHANGE_MODIFY_LOG_STATUS_SUCCESS,
+  CHANGE_MODIFY_LOG_STATUS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -787,6 +815,31 @@ export const changeEmployeeLeaveStatusFailure = (error) => {
   };
 };
 
+
+// modify log change status
+
+export const changeEmployeeModifyLogStatus = (params) => {
+  return {
+    type: CHANGE_MODIFY_LOG_STATUS,
+    payload: params,
+  };
+};
+
+export const changeEmployeeModifyLogStatusSuccess = (response) => {
+  return {
+    type: CHANGE_MODIFY_LOG_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const changeEmployeeModifyLogStatusFailure = (error) => {
+  return {
+    type: CHANGE_MODIFY_LOG_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+
 /**
  *
  * ADD holidays
@@ -1185,6 +1238,179 @@ export const getDownloadEmployeeCheckinLogsSuccess = (response) => {
 export const getDownloadEmployeeCheckinLogsFailure = (error) => {
   return {
     type: GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+    payload: error,
+  };
+};
+
+
+// enableFieldCheckIn
+
+export const postEnableFieldCheckIn = (params) => {
+  return {
+    type: ENABLE_FIELD_CHECK_IN,
+    payload: params,
+  };
+};
+
+export const postEnableFieldCheckInSuccess = (response) => {
+  return {
+    type: ENABLE_FIELD_CHECK_IN_SUCCESS,
+    payload: response,
+  };
+};
+export const postEnableFieldCheckInFailure = (error) => {
+  return {
+    type: ENABLE_FIELD_CHECK_IN_FAILURE,
+    payload: error,
+  };
+};
+
+//enableOfficeCheckIn
+
+export const postEnableOfficeCheckIn = (params) => {
+  return {
+    type: ENABLE_OFFICE_CHECK_IN,
+    payload: params,
+  };
+};
+
+export const postEnableOfficeCheckInSuccess = (response) => {
+  return {
+    type: ENABLE_OFFICE_CHECK_IN_SUCCESS,
+    payload: response,
+  };
+};
+export const postEnableOfficeCheckInFailure = (error) => {
+  return {
+    type: ENABLE_OFFICE_CHECK_IN_FAILURE,
+    payload: error,
+  };
+};
+
+// changeAttendanceSettings
+
+export const changeAttendanceSettings = (params) => {
+  return {
+    type: POST_FACE_VALIDATION_STATUS,
+    payload: params,
+  };
+};
+
+export const changeAttendanceSettingsSuccess = (response) => {
+  return {
+    type: POST_FACE_VALIDATION_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+export const changeAttendanceSettingsFailure = (error) => {
+  return {
+    type: POST_FACE_VALIDATION_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+//get employee basic info
+
+export const getEmployeeBasicInfo = (params) => {
+  return {
+    type: FETCH_EMPLOYEE_BASIC_INFO,
+    payload: params,
+  };
+};
+
+export const getEmployeeBasicInfoSuccess = (response) => {
+  return {
+    type: FETCH_EMPLOYEE_BASIC_INFO_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeBasicInfoFailure = (error) => {
+  return {
+    type: FETCH_EMPLOYEE_BASIC_INFO_FAILURE,
+    payload: error,
+  };
+};
+
+//get employee Attendance info
+
+export const getEmployeeAttendanceInfo = (params) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_INFO,
+    payload: params,
+  };
+};
+
+export const getEmployeeAttendanceInfoSuccess = (response) => {
+  console.log("action", response);
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeAttendanceInfoFailure = (error) => {
+  return {
+    type: FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
+    payload: error,
+  };
+};
+
+
+//Employee View details api handler
+
+
+export const employeeViewDetailsApiHandler = (value) => {
+  return {
+    type: EMPLOYEE_VIEW_DETAILS_API_HANDLER,
+    payload: value,
+  };
+};
+
+
+// api for modify log for employee
+
+export const postEmployeeModifyRequest = (params) => {
+  return {
+    type: EMPLOYEE_MODIFY_REQUEST,
+    payload: params,
+  };
+};
+
+export const postEmployeeModifyRequestSuccess = (response) => {
+  return {
+    type: EMPLOYEE_MODIFY_REQUEST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postEmployeeModifyRequestFailure = (error) => {
+  return {
+    type: EMPLOYEE_MODIFY_REQUEST_FAILURE,
+    payload: error,
+  };
+};
+
+
+/// api for modify admin
+
+export const postAdminModifyLog = (params) => {
+  return {
+    type: ADMIN_MODIFY_LOG,
+    payload: params,
+  };
+};
+
+export const postAdminModifyLogSuccess = (response) => {
+  return {
+    type: ADMIN_MODIFY_LOG_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postAdminModifyLogFailure = (error) => {
+  return {
+    type: ADMIN_MODIFY_LOG_FAILURE,
     payload: error,
   };
 };

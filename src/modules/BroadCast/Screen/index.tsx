@@ -1,5 +1,5 @@
 import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary, ImageView, Sort, Secondary, Modal, Pagination } from '@components';
-import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, ROUTE, showToast, useNav } from '@utils';
+import { getDisplayDateTimeFromMoment, getMomentObjFromServer, goTo, INITIAL_PAGE, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -30,7 +30,7 @@ function BroadCast() {
     ];
 
     useEffect(() => {
-        getBroadcastMessagesList(currentPage)
+        getBroadcastMessagesList(INITIAL_PAGE)
     }, [])
 
 
@@ -42,9 +42,9 @@ function BroadCast() {
         };
         dispatch(getBroadcastMessage({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error)
             },
         }));
@@ -62,11 +62,12 @@ function BroadCast() {
         };
         dispatch(createBroadcastMessage({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
+                showToast("success", success.status)
                 setDeleteModel(!deleteModel)
                 getBroadcastMessagesList(currentPage)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error)
             },
         }));
@@ -97,7 +98,7 @@ function BroadCast() {
                                 onClick={(index: any) => {
                                     setType(sortData[index].title.toLocaleLowerCase())
                                     setActiveSort(index);
-                                    getBroadcastMessagesList(currentPage)
+                                    getBroadcastMessagesList(INITIAL_PAGE)
                                 }}
                             />
                         </Container>
@@ -118,8 +119,8 @@ function BroadCast() {
                                 <Card>
                                     <Container additionClass={"d-flex justify-content-between"} >
                                         <Container>
-                                            <div className="h1">
-                                                {el.title}
+                                            <div className="h2">
+                                                {el.title.toUpperCase()}
                                             </div>
                                         </Container>
                                         <Container additionClass='d-flex justify-content-between'>

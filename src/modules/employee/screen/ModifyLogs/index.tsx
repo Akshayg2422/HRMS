@@ -6,6 +6,8 @@ import {
   Icon,
   InputText,
   NoRecordFound,
+  Search,
+  TableWrapper,
   useKeyPress,
   WorkInProgress,
 } from "@components";
@@ -13,7 +15,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Pending, Approved, Rejected, AllLeaves } from "./Container";
-import { getRequestType, LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { getRequestType, INITIAL_PAGE, LEAVE_STATUS_UPDATE, showToast } from "@utils";
 import {
   getCurrentLeaveType,
   getEmployeeLeaves,
@@ -44,43 +46,42 @@ const ModifyLogs = () => {
   const { currentPage, currentLeaveType } = useSelector((state: any) => state.EmployeeReducer);
 
   useEffect(() => {
-    fetchPendingDetail(currentPage, currentLeaveType)
+    fetchPendingDetail(INITIAL_PAGE, currentLeaveType)
   }, [hierarchicalBranchIds]);
 
-  
+
   const fetchPendingDetail = (pageNumber: number, status: any) => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: status,
       q: searchEmployee,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };
 
   useEffect(() => {
     if (enterPress) {
-      fetchPendingDetail(currentPage, currentLeaveType)
+      fetchPendingDetail(INITIAL_PAGE, currentLeaveType)
     }
   }, [enterPress])
 
   const getLeavesDetails = (item: any) => {
     setActive(item.id || item)
     dispatch(getCurrentLeaveType(getRequestType(item.name)))
-    fetchPendingDetail(currentPage, getRequestType(item.name))
+    fetchPendingDetail(INITIAL_PAGE, getRequestType(item.name))
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
+    <TableWrapper>
+      <div className="mt--5">
         <Container
           flexDirection={"row"}
           additionClass={"col"}
@@ -96,7 +97,7 @@ const ModifyLogs = () => {
             />
           </Container>
           <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
+            col={"col-xl-3 col-md-6 col-sm-12"}
             additionClass={"mt-xl-4"}
           >
             <ChooseBranchFromHierarchical />
@@ -108,7 +109,8 @@ const ModifyLogs = () => {
             alignItems={"align-items-center"}
 
           >
-            <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} />
+            {/* <Icon type={"btn-primary"} icon={Icons.Search} onClick={() => fetchPendingDetail(currentPage, currentLeaveType)} /> */}
+            <Search variant="Button" onClick={() => fetchPendingDetail(INITIAL_PAGE, currentLeaveType)} />
           </Container>
         </Container>
         <div className="nav-wrapper mx-xl-4">
@@ -125,7 +127,7 @@ const ModifyLogs = () => {
                       }`}
                     id={`tabs-icons-text-${el.id}-tab`}
                     data-toggle="tab"
-                    href={`#tabs-icons-text-${el.id}`}
+                    // href={`#tabs-icons-text-${el.id}`}
                     role="tab"
                     aria-controls={`tabs-icons-text-${el.id}`}
                     aria-selected="true"
@@ -138,24 +140,22 @@ const ModifyLogs = () => {
             })}
           </ul>
         </div>
-      </Card>
-      <Card>
-        <div className="tab-content" id="myTabContent">
-          {LEAVE_TYPES.map((el) => {
-            return (
-              <div
-                className={`tab-pane fade ${active === el.id && "show active"}`}
-                id={`tabs-icons-text-${el.id}`}
-                role="tabpanel"
-                aria-labelledby={`tabs-icons-text-${el.id}-tab`}
-              >
-                {el.component}
-              </div>
-            )
-          })}
-        </div>
-      </Card>
-    </div>
+      </div>
+      <div className="tab-content" id="myTabContent">
+        {LEAVE_TYPES.map((el) => {
+          return (
+            <div
+              className={`tab-pane fade ${active === el.id && "show active"}`}
+              id={`tabs-icons-text-${el.id}`}
+              role="tabpanel"
+              aria-labelledby={`tabs-icons-text-${el.id}-tab`}
+            >
+              {el.component}
+            </div>
+          )
+        })}
+      </div>
+    </TableWrapper>
   );
 };
 

@@ -1,6 +1,6 @@
 import { Card, CommonTable, NoRecordFound } from '@components';
 import { Icons } from '@assets';
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
 import { getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
@@ -60,26 +60,32 @@ const ApprovedApproval = () => {
   }
 
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesLoginFaceFailureDetails && employeesLoginFaceFailureDetails.length > 0 ? (
+        <CommonTable
+          card={false}
+          noHeader
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedRequestList(employeesLoginFaceFailureDetails)}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesLoginFaceFailureDetails])
+
+
   return (
     <div>
-      <Card>
-        {employeesLoginFaceFailureDetails && employeesLoginFaceFailureDetails?.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedRequestList(employeesLoginFaceFailureDetails)}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-      </Card>
+      {
+        memoizedTable
+      }
     </div>
   )
 

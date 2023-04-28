@@ -103,12 +103,14 @@ function* onValidateUser(action) {
     } else {
       yield put(hideLoader());
       yield put(getValidateUserFail(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getValidateUserFail("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -124,17 +126,23 @@ function* reSendOtp(action) {
 
       yield put(hideLoader());
       yield put(getResendLoginOtpSuccess(response.message));
+      yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(getResendLoginOtpFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getResendLoginOtpFailure("Invalid Request"));
+    yield call(action.payload.onError);
+
 
   }
 }
@@ -162,6 +170,8 @@ function* loginOtp(action) {
 
     yield put(hideLoader());
     yield put(proceedSignInFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -192,6 +202,8 @@ function* adminVerificationOtp(action) {
 
     yield put(hideLoader());
     yield put(getResendLoginOtpFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -211,12 +223,14 @@ function* registerAdmin(action) {
     } else {
       yield put(hideLoader());
       yield put(getRegisterAdminFailure(response.error_message));
-      yield call(action.payload.onError(response));
+      yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getRegisterAdminFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -245,6 +259,8 @@ function* registerCompany(action) {
 
     yield put(hideLoader());
     yield put(getValidateCompanyDetailsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -273,6 +289,8 @@ function* uploadCompanyDocument(action) {
 
     yield put(hideLoader());
     yield put(uploadCompanyDocumentsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -288,17 +306,23 @@ function* getNatureOfBusiness(action) {
 
       yield put(hideLoader());
       yield put(getNatureOfBusinessSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(getNatureOfBusinessFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getNatureOfBusinessFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -314,17 +338,23 @@ function* getTypeOfBusiness(action) {
 
       yield put(hideLoader());
       yield put(getTypeOfBusinessSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(getTypeOfBusinessFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getTypeOfBusinessFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -344,17 +374,23 @@ function* postAppConfigDetailsSaga(action) {
 
       yield put(hideLoader());
       yield put(postAppConfigSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+
 
     } else {
 
       yield put(hideLoader());
       yield put(postAppConfigFailure(response.error_message));
+      yield call(action.payload.onError(response));
+
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(postAppConfigFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -384,6 +420,8 @@ function* postEsslConfigSaga(action) {
 
     yield put(hideLoader());
     yield put(postEsslConfigFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -415,6 +453,8 @@ function* fetchEsslConfigSaga(action) {
 
     yield put(hideLoader());
     yield put(getEsslConfigFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -432,7 +472,7 @@ function* postAddEsslDeviceSaga(action) {
 
       yield put(hideLoader());
       yield put(postAddEsslDeviceSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
 
 
     } else {
@@ -446,6 +486,8 @@ function* postAddEsslDeviceSaga(action) {
 
     yield put(hideLoader());
     yield put(postAddEsslDeviceFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -475,6 +517,8 @@ function* fetchEsslDevicesSaga(action) {
 
     yield put(hideLoader());
     yield put(fetchEsslDevicesFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -504,6 +548,8 @@ function* syncEsslDeviceUsersSaga(action) {
 
     yield put(hideLoader());
     yield put(syncEsslDeviceUsersFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -516,18 +562,20 @@ function* webPushRegisterSaga(action) {
     const response = yield call(webPushRegisterApi, action.payload.params);
 
     if (response.success) {
-
+      yield put(hideLoader());
       yield put(webPushRegisterSuccess(response.details));
       yield call(action.payload.onSuccess(response));
 
     } else {
+      yield put(hideLoader());
       yield put(webPushRegisterFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
-
+    yield put(hideLoader());
     yield put(webPushRegisterFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
 
   }
 }

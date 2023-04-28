@@ -1,4 +1,4 @@
-import { DatePicker, DropDown, FormWrapper, InputText } from "@components";
+import { DatePicker, DropDown, FormWrapper, InputText, ScreenContainer } from "@components";
 import { Icons } from "@assets";
 import {
   dropDownValueCheckByEvent,
@@ -83,7 +83,15 @@ const ApplyLeave = () => {
       ...hierarchicalBranchIds,
       pageNumber: pageNumber,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   const FilterDropdown = (data: any) => {
@@ -110,11 +118,11 @@ const ApplyLeave = () => {
     dispatch(
       getLeaveTypes({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setLeaveTypes(FilterDropdown(success.leave_types));
           setDropDownData(success.leave_types)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
@@ -161,11 +169,11 @@ const ApplyLeave = () => {
       dispatch(
         applyLeave({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             showToast("success", response?.message);
             goBack(navigation);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
             setFormDetails({ ...fromDetails, dataTo: "", dateFrom: '', reason: '' });
           },
@@ -193,53 +201,56 @@ const ApplyLeave = () => {
 
   return (
     <>
-      <FormWrapper
-        title={t("applyLeave")}
-        onClick={() => {
-          onSubmitHandler();
-        }}
-        buttonTittle={t("apply")}
-      >
-        <DropDown
-          placeholder={t("leaveType")}
-          data={leaveTypes}
-          name={"leaveType"}
-          value={fromDetails.leaveType}
-          onChange={(event) => onChangeHandler(dropDownValueCheckByEvent(event, t("leaveType")))}
-        />
-        <h5>{t("dataFrom")}</h5>
-        <DatePicker
-          icon={Icons.Calendar}
-          minDate={Today}
-          iconPosition={"append"}
-          disabledDate={disableDate(calendarEvents.days_holiday)}
-          onChange={(date: string) => {
-            dateTimePickerHandler(date, "dateFrom");
+      <ScreenContainer>
+
+        <FormWrapper
+          title={t("applyLeave")}
+          onClick={() => {
+            onSubmitHandler();
           }}
-          value={fromDetails.dateFrom}
-        />
-        <h5>{t("dataTo")}</h5>
-        <DatePicker
-          icon={Icons.Calendar}
-          minDate={Today}
-          iconPosition={"append"}
-          disabledDate={disableDate(calendarEvents.days_holiday)}
-          onChange={(date: string) => {
-            dateTimePickerHandler(date, "dataTo");
-          }}
-          value={fromDetails.dataTo}
-        />
-        <InputText
-          label={t("reason")}
-          maxLength={150}
-          validator={validateDefault}
-          value={fromDetails.reason}
-          name={"reason"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
-        />
-      </FormWrapper>
+          buttonTittle={t("apply")}
+        >
+          <DropDown
+            placeholder={t("leaveType")}
+            data={leaveTypes}
+            name={"leaveType"}
+            value={fromDetails.leaveType}
+            onChange={(event) => onChangeHandler(dropDownValueCheckByEvent(event, t("leaveType")))}
+          />
+          <h5>{t("dataFrom")}</h5>
+          <DatePicker
+            icon={Icons.Calendar}
+            minDate={Today}
+            iconPosition={"append"}
+            disabledDate={disableDate(calendarEvents.days_holiday)}
+            onChange={(date: string) => {
+              dateTimePickerHandler(date, "dateFrom");
+            }}
+            value={fromDetails.dateFrom}
+          />
+          <h5>{t("dataTo")}</h5>
+          <DatePicker
+            icon={Icons.Calendar}
+            minDate={Today}
+            iconPosition={"append"}
+            disabledDate={disableDate(calendarEvents.days_holiday)}
+            onChange={(date: string) => {
+              dateTimePickerHandler(date, "dataTo");
+            }}
+            value={fromDetails.dataTo}
+          />
+          <InputText
+            label={t("reason")}
+            maxLength={150}
+            validator={validateDefault}
+            value={fromDetails.reason}
+            name={"reason"}
+            onChange={(event) => {
+              onChangeHandler(event);
+            }}
+          />
+        </FormWrapper>
+      </ScreenContainer>
     </>
   );
 };

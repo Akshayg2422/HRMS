@@ -54,14 +54,30 @@ function EsslConfig() {
 
   const getEsslConfigDetails = () => {
     const params = {}
-    dispatch(getEsslConfig({ params }))
+    dispatch(getEsslConfig({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   }
 
   const getEsslDevices = (id: string) => {
     const params = {
       ...(id && { branch_id: id })
     }
-    dispatch(fetchEsslDevices({ params }))
+    dispatch(fetchEsslDevices({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
   }
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
@@ -83,7 +99,7 @@ function EsslConfig() {
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (success: object) => {
+        onSuccess: (success: object) => () => {
           const parentBranch = branchesDropdownData.find(
             (it: any) => it.id === dashboardDetails.company_branch.id
           );
@@ -95,7 +111,7 @@ function EsslConfig() {
             parentBranch,
           ]);
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   }
@@ -128,14 +144,14 @@ function EsslConfig() {
       dispatch(
         syncEsslDeviceUsers({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast('success', success.status)
             setSyncUsersModal(!syncUsersModal)
             setUserInfo('')
             setUserPersonalInfo('')
 
           },
-          onError: (error: string) => { },
+          onError: (error: string) => () => { },
         }))
     }
 

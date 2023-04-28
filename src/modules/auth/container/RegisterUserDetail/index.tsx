@@ -76,7 +76,7 @@ function RegisterUserDetail() {
         label={t('designation')}
         placeholder={t('enterDesignation')}
         validator={validateDefault}
-        maxLength={10}
+        maxLength={20}
         onChange={(e) => dispatch(updateAdminInput('designation', e.target.value))}
       />
       <InputDefault

@@ -12,25 +12,31 @@ import {
   Icon,
   Card,
   useKeyPress,
+  TableWrapper,
+  Search,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   getEmployeeEachUserTimeSheets,
   getEmployeesTimeSheets,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
+import { Collapse } from "reactstrap";
+
 import { useTranslation } from "react-i18next";
 import {
   paginationHandler,
   getDisplayDateTimeFromMoment,
   getMomentObjFromServer,
   showToast,
+  INITIAL_PAGE,
 } from "@utils";
 import { Icons } from "@assets";
 import { Navbar } from "@modules";
+import { log } from "console";
 
 type TimeSheetResponse = {
-  id?: string;
+  id?: any;
   details?: string;
   attachments?: [];
   time_stamp?: string;
@@ -52,6 +58,8 @@ function EmployeeTimeSheets() {
   const [searchEmployee, setSearchEmployee] = useState('')
   const [selectedEmployeeDetails, setSelectedEmployeeDetails] = useState<any>()
   const KeyPress = useKeyPress('Enter')
+  const [collapseId, setCollapseId] = useState<any>()
+
 
   const {
     employeeTimeSheets,
@@ -71,12 +79,12 @@ function EmployeeTimeSheets() {
   ];
 
   useEffect(() => {
-    getEmployeeTimeSheets(currentPage);
+    getEmployeeTimeSheets(INITIAL_PAGE);
   }, [hierarchicalBranchIds]);
 
   useEffect(() => {
     if (KeyPress) {
-      getEmployeeTimeSheets(currentPage);
+      getEmployeeTimeSheets(INITIAL_PAGE);
     }
   }, [KeyPress])
 
@@ -87,14 +95,22 @@ function EmployeeTimeSheets() {
       ...(searchEmployee && { q: searchEmployee }),
 
     };
-    dispatch(getEmployeesTimeSheets({ params }));
+    dispatch(getEmployeesTimeSheets({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.employee_id,
         name: el.name,
+        Code: el.employee_id,
         "mobile number": el.mobile_number,
         today: el.timesheet_entries_count,
         "this month": el.timesheet_entries_count_current_month,
@@ -102,66 +118,44 @@ function EmployeeTimeSheets() {
     });
   };
 
-  function getEmployeeEachUserTimeSheetsApi(index: number) {
+  function getEmployeeEachUserTimeSheetsApi(index: number, type: string) {
     const userId = employeeTimeSheets[index].id;
-
+    const params = {
+      type: type.toLowerCase(),
+      ...(userId && { user_id: userId })
+    }
     dispatch(
       getEmployeeEachUserTimeSheets({
-        type,
-        ...(userId && { user_id: userId }),
+        params,
+        onSuccess: (success: any) => () => {
+
+        },
+        onError: (error: any) => () => {
+
+        }
       })
     );
     setModel(!model);
   }
 
   const onTabChange = (index: number) => {
-    setType(sortData[index].title.toLocaleLowerCase());
+    const data = sortData[index].title
+    setType(data);
   };
 
-  return (
-    <>
-      <Card additionClass="mx-3">
-        <Container additionClass={"row mx-2 my-4"}>
-          <Container col={"col-xl-6"}>
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
-            <InputText
-              value={searchEmployee}
-              col={'col'}
-              placeholder={t("enterEmployeeName")}
-              onChange={(e) => {
-                setSearchEmployee(e.target.value);
-              }}
-            />
-            <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-              onClick={() => {
-                getEmployeeTimeSheets(currentPage);
-              }}
-            />
-          </Container>
-        </Container>
-        <div className="text-right">
-          <Sort
-            sortData={sortData}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
-            }}
-          />
-        </div>
-      </Card>
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeeTimeSheets && employeeTimeSheets.length > 0 ? (
         <CommonTable
+          card={false}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
-          tableTitle={t("employeeTimeSheets")}
+          title={t("employeeTimeSheets")}
           displayDataSet={normalizedEmployeeLog(employeeTimeSheets)}
           tableOnClick={(e, index, item) => {
             setSelectedEmployeeDetails(employeeTimeSheets[index])
-            getEmployeeEachUserTimeSheetsApi(index);
+            getEmployeeEachUserTimeSheetsApi(index, type);
           }}
           paginationNumberClick={(currentPage) => {
             getEmployeeTimeSheets(paginationHandler("current", currentPage));
@@ -173,7 +167,62 @@ function EmployeeTimeSheets() {
             getEmployeeTimeSheets(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card additionClass={"mx-3"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeTimeSheets, type])
+
+
+  const collapsesToggle = (collapse: string) => {
+    let openedCollapses = collapseId
+    if (openedCollapses?.includes(collapse)) {
+      setCollapseId('')
+    } else {
+      setCollapseId(collapse)
+    }
+  }
+
+  console.log(type + "====");
+
+
+  return (
+    <>
+      <TableWrapper
+        buttonChildren={
+          <div className="mr--1 ml-sm-0 ml--4" style={{ display: 'inline-block' }}>
+            <Sort
+              size={'btn-sm'}
+              sortData={sortData}
+              activeIndex={activeSort}
+              onClick={(index: any, item: any) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
+        }
+        filterChildren={
+          <Container additionClass={"row"}>
+            <Container col={"col-xl-3"}>
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
+              <InputText
+                value={searchEmployee}
+                col={'col'}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              <Container additionClass="col-xl-3">
+                <Search variant="Button" additionalClassName={' mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getEmployeeTimeSheets(INITIAL_PAGE); }} />
+              </Container>
+            </Container>
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
 
       <Modal
         showModel={model}
@@ -200,13 +249,9 @@ function EmployeeTimeSheets() {
                   return (
                     <div className="accordion">
                       <div
-                        data-toggle="collapse"
-                        data-target={
-                          index === accordion
-                            ? "#collapse" + index
-                            : undefined
-                        }
-                        id="accordionExample"
+                        role="tab"
+                        onClick={() => collapsesToggle(item.id)}
+                        aria-expanded={collapseId === item.id}
                       >
                         <Container
                           flexDirection={"flex-row"}
@@ -236,16 +281,11 @@ function EmployeeTimeSheets() {
                         <Divider />
                       </div>
 
-                      {accordion === index && (
-                        <div
-                          className="collapse"
-                          id={
-                            index === accordion
-                              ? "collapse" + index
-                              : undefined
-                          }
+                      {collapseId === item.id && (
+                        <Collapse role="tabpanel"
+                          isOpen={collapseId === item.id}
                         >
-                          <div className="card-body row align-items-center">
+                          <div className="card-body align-items-center">
                             {item.attachments &&
                               item.attachments.length > 0 ? (
                               <Carousel
@@ -256,7 +296,7 @@ function EmployeeTimeSheets() {
                               <NoRecordFound text={t("imageNotFound")} />
                             )}
                           </div>
-                        </div>
+                        </Collapse>
                       )}
                     </div>
                   );

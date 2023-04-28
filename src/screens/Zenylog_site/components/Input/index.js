@@ -28,7 +28,7 @@ export const Item = (props) => {
         type="text"
         value={props.value}
         onChange={(it) => {
-          setError(props.validate(it.target.value));
+          // setError(props.validate(it.target.value));
           props.onChange(it.target.value);
         }}
         placeholder={`${props.placeholder}`}

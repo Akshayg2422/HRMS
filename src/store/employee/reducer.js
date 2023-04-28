@@ -128,7 +128,35 @@ import {
   CURRENT_LEAVE_TYPE,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT,
   GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_SUCCESS,
-  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE
+  GET_EMPLOYEE_CHECK_IN_LOGS_REPORT_FAILURE,
+  ENABLE_FIELD_CHECK_IN,
+  ENABLE_FIELD_CHECK_IN_SUCCESS,
+  ENABLE_FIELD_CHECK_IN_FAILURE,
+  ENABLE_OFFICE_CHECK_IN,
+  ENABLE_OFFICE_CHECK_IN_SUCCESS,
+  ENABLE_OFFICE_CHECK_IN_FAILURE,
+  POST_FACE_VALIDATION_STATUS,
+  POST_FACE_VALIDATION_STATUS_SUCCESS,
+  POST_FACE_VALIDATION_STATUS_FAILURE,
+
+  FETCH_EMPLOYEE_BASIC_INFO,
+  FETCH_EMPLOYEE_BASIC_INFO_SUCCESS,
+  FETCH_EMPLOYEE_BASIC_INFO_FAILURE,
+
+  FETCH_EMPLOYEE_ATTENDANCE_INFO,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
+  FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
+
+  EMPLOYEE_VIEW_DETAILS_API_HANDLER,
+  EMPLOYEE_MODIFY_REQUEST,
+  EMPLOYEE_MODIFY_REQUEST_SUCCESS,
+  EMPLOYEE_MODIFY_REQUEST_FAILURE,
+  ADMIN_MODIFY_LOG,
+  ADMIN_MODIFY_LOG_SUCCESS,
+  ADMIN_MODIFY_LOG_FAILURE,
+  CHANGE_MODIFY_LOG_STATUS,
+  CHANGE_MODIFY_LOG_STATUS_SUCCESS,
+  CHANGE_MODIFY_LOG_STATUS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -173,7 +201,10 @@ const initialState = {
   branchAdmins: [],
   leaveTypesDetails: {},
   editLeaveTypesDetails: '',
-  currentLeaveType: -2
+  currentLeaveType: -2,
+  getEmployeeBasicInfo: undefined,
+  employeeAttendanceInfoDetails: undefined,
+  employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false }
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -291,9 +322,9 @@ const EmployeeReducer = (state = initialState, action) => {
     case FETCH_EMPLOYEE_LIST:
       state = {
         ...state,
-        registeredEmployeesList: [],
-        numOfPages: 0,
         currentPage: 1,
+        numOfPages: 0,
+        registeredEmployeesList: [],
       };
       break;
     case FETCH_EMPLOYEE_LIST_SUCCESS:
@@ -346,7 +377,7 @@ const EmployeeReducer = (state = initialState, action) => {
         ...state, loading: true,
         numOfPages: 0,
         currentPage: 1,
-        employeeTimeSheets:[]
+        employeeTimeSheets: []
       };
       break;
 
@@ -768,6 +799,29 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     case CHANGE_EMPLOYEE_LEAVE_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    /// modify log change status
+    
+    case CHANGE_MODIFY_LOG_STATUS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case CHANGE_MODIFY_LOG_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case CHANGE_MODIFY_LOG_STATUS_FAILURE:
       state = {
         ...state,
         error: action.payload,
@@ -1214,6 +1268,154 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+    //enableFieldCheckIn
+
+    case ENABLE_FIELD_CHECK_IN:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ENABLE_FIELD_CHECK_IN_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case ENABLE_FIELD_CHECK_IN_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //enableOfficeCheckIn
+
+    case ENABLE_OFFICE_CHECK_IN:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ENABLE_OFFICE_CHECK_IN_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case ENABLE_OFFICE_CHECK_IN_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    //changeAttendanceSettings
+
+    case POST_FACE_VALIDATION_STATUS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case POST_FACE_VALIDATION_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case POST_FACE_VALIDATION_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //get employee basic info
+    case FETCH_EMPLOYEE_BASIC_INFO:
+      state = { ...state, loading: true };
+      break;
+    case FETCH_EMPLOYEE_BASIC_INFO_SUCCESS:
+      console.log("action.payload");
+      state = {
+        ...state,
+        loading: false,
+        // eslint-disable-next-line no-undef
+        // employeeDetailsViewApiHandler:{ basicInfo: true, attendanceInfo: employeeDetailsViewApiHandler.attendanceInfo, logInfo: employeeDetailsViewApiHandler.logInfo, payrollInfo: employeeDetailsViewApiHandler.payrollInfo },
+        getEmployeeBasicInfo: action.payload,
+      };
+      break;
+    case FETCH_EMPLOYEE_BASIC_INFO_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //get employee attendance info
+    case FETCH_EMPLOYEE_ATTENDANCE_INFO:
+      state = { ...state, loading: true };
+      break;
+    case FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS:
+      console.log("action.payload-->", action.payload);
+      state = {
+        ...state,
+        employeeAttendanceInfoDetails: action.payload
+      };
+      break;
+    case FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //  modify log for employee
+
+    case EMPLOYEE_MODIFY_REQUEST:
+      state = { ...state, loading: true };
+      break;
+    case EMPLOYEE_MODIFY_REQUEST_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case EMPLOYEE_MODIFY_REQUEST_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // api for modify admin
+
+    case ADMIN_MODIFY_LOG:
+      state = { ...state, loading: true };
+      break;
+    case ADMIN_MODIFY_LOG_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case ADMIN_MODIFY_LOG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
     /**
      * Default
      */

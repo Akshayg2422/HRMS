@@ -25,8 +25,12 @@ import {
   useNav,
   getServerDateFromMoment,
   getMomentObjFromServer,
+  showToast,
+  Today,
 } from "@utils";
 import { Icons } from "@assets";
+import { getListAllBranchesList } from "../../../../store/location/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 
 const DashboardStats = () => {
   const { t } = useTranslation();
@@ -37,7 +41,7 @@ const DashboardStats = () => {
     (state: any) => state.EmployeeReducer
   );
 
-  const { hierarchicalBranchName, hierarchicalBranchIds } = useSelector(
+  const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -64,14 +68,27 @@ const DashboardStats = () => {
     });
   };
 
+
+
   useEffect(() => {
+    getStatsDetails()
+  }, [selectedDate, hierarchicalBranchIds]);
+
+
+  const getStatsDetails = () => {
     const params = {
       ...hierarchicalBranchIds,
       selected_date: selectedDate,
     };
+    dispatch(getEmployeeAttendanceStats({
+      params,
+      onSuccess: (success: any) => () => {
+      },
+      onError: (error: any) => () => {
 
-    dispatch(getEmployeeAttendanceStats(params));
-  }, [selectedDate, hierarchicalBranchIds]);
+      }
+    }));
+  }
 
   const proceedNext = (
     attendanceType: number,
@@ -82,8 +99,17 @@ const DashboardStats = () => {
       departmentId: departmentId,
       selectedDate: selectedDate,
     };
-    dispatch(getSelectedCardType(params));
+    dispatch(getSelectedCardType({
+      params,
+      onSuccess: (success: any) => () => {
+      },
+      onError: (error: any) => () => {
+        showToast('error', error)
+      }
+    }
+    ));
     goTo(navigation, ROUTE.ROUTE_DASHBOARD_ATTENDANCE);
+
   };
 
   const getAttendanceConsolidatedData = (departmentId: string) => {
@@ -96,49 +122,45 @@ const DashboardStats = () => {
     dispatch(
       getAttendanceConsolidatedCards({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           if (response && response.cards?.length > 0) {
             setAttendanceConsolidatedCardsData(response.cards);
             setModel(!model);
           }
         },
-        onError: (error: string) => { },
+        onError: (error: string) => () => { },
       })
     );
   };
 
 
-
   return (
     <>
-
-      <Card additionClass={"row mx-2"}>
-        <div className="row mt-3">
-          <div className="col-lg-6 col-md-6">
+      <Card additionClass="mx-3">
+        <Container additionClass="row">
+          <Container additionClass="col-xl-3">
             <ChooseBranchFromHierarchical />
-          </div>
-          <div className="col-lg-3 col-md-6 mt-xl-4">
+          </Container>
+          <Container additionClass="col-xl-3 mt-xl-2">
             <DatePicker
-              additionalClass="mt-xl-2"
+              additionalClass="mt-xl-4"
               placeholder={"Select Date"}
               icon={Icons.Calendar}
               iconPosition={"prepend"}
+              maxDate={Today}
               value={selectedDate}
               onChange={(date: string) => setSelectedDate(date)}
             />
-          </div>
-        </div>
+          </Container>
+        </Container>
       </Card>
-      <Container
-        additionClass={"row"}
-        justifyContent={"justify-content-around"}
-      >
-        <div className="row align-items-center mb-4">
+      <Container>
+        <div className="row align-items-center mb-4 m-0 ">
           <div className="col">
             <h3 className="mb-0">{t("dashboardDetails")}</h3>
           </div>
         </div>
-        <Container additionClass={"row"}>
+        <Container additionClass={"row m-0"}>
           {employeeattendancedatalog && employeeattendancedatalog?.cards?.length > 0 ? employeeattendancedatalog?.cards?.map((el: any) => {
             return (
               <Container additionClass={"col-xl-4 col-md-6"}>
@@ -167,35 +189,34 @@ const DashboardStats = () => {
             );
           }) : <NoRecordFound />}
         </Container>
-        <Container margin={"mx-6"}>
-          {employeeattendancedatalog &&
-            employeeattendancedatalog.departments_types && (
-              <CommonTable
-                tableTitle={t(t("departments"))}
-                displayDataSet={normalizedEmployeeAttendanceLog(
-                  employeeattendancedatalog
-                )}
-                tableOnClick={(e, index, item) => {
-                  // console.log(
-                  //   employeeattendancedatalog.departments_stats[index]
-                  //     .department_id + "====="
-                  // );
+        <div className="mx-3">
+          <Container additionClass="">
+            {employeeattendancedatalog &&
+              employeeattendancedatalog.departments_types && (
+                <CommonTable
+                  title={t(t("departments"))}
+                  displayDataSet={normalizedEmployeeAttendanceLog(
+                    employeeattendancedatalog
+                  )}
+                  tableOnClick={(e, index, item) => {
 
-                  setSelectedDepartmentName(
-                    employeeattendancedatalog.departments_stats[index].name
-                  );
-                  setSelectedDepartmentId(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                  getAttendanceConsolidatedData(
-                    employeeattendancedatalog.departments_stats[index]
-                      .department_id
-                  );
-                }}
-              />
-            )}
-        </Container>
+
+                    setSelectedDepartmentName(
+                      employeeattendancedatalog.departments_stats[index].name
+                    );
+                    setSelectedDepartmentId(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                    getAttendanceConsolidatedData(
+                      employeeattendancedatalog.departments_stats[index]
+                        .department_id
+                    );
+                  }}
+                />
+              )}
+          </Container>
+        </div>
         <Modal
           title={selectedDepartmentName}
           showModel={model}

@@ -1,4 +1,4 @@
-import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, useKeyPress } from '@components';
+import { Card, ChooseBranchFromHierarchical, Container, Icon, InputText, Search, TableWrapper, useKeyPress } from '@components';
 import { Icons } from '@assets';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // import { REQUEST_TYPE } from '@utils';
 import { AllRequest, ApprovedRequest, PendingRequest, RejectRequest } from './container'
 import { getShiftRequestedEmployees, setCurrentStatusType } from '../../../../store/shiftManagement/actions';
-import { getRequestType } from '@utils';
+import { INITIAL_PAGE, getRequestType } from '@utils';
 
 function ShiftRequest() {
   const { t } = useTranslation();
@@ -29,12 +29,12 @@ function ShiftRequest() {
 
 
   useEffect(() => {
-    getEmployeeRequest(currentType, currentPage)
+    getEmployeeRequest(currentType, INITIAL_PAGE)
   }, [hierarchicalBranchIds])
 
   useEffect(() => {
     if (enterPress) {
-      getEmployeeRequest(currentType, currentPage)
+      getEmployeeRequest(currentType, INITIAL_PAGE)
     }
   }, [enterPress])
 
@@ -42,7 +42,7 @@ function ShiftRequest() {
   const getRequestDetails = (item: any) => {
     setActive(item.id || item)
     dispatch(setCurrentStatusType(getRequestType(item.name)))
-    getEmployeeRequest(getRequestType(item.name), currentPage)
+    getEmployeeRequest(getRequestType(item.name), INITIAL_PAGE)
   }
 
 
@@ -56,42 +56,38 @@ function ShiftRequest() {
       ...(searchEmployee && { q: searchEmployee })
     }
     dispatch(getShiftRequestedEmployees({
-      params
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
     }))
   }
 
   return (
-    <div>
-      <Card additionClass="my-3">
-        <Container
-          flexDirection={"row"}
-          additionClass={"col"}
-          alignItems={"align-items-center"}
-        >
-          <Container col={"col-xl-3 col-md-6 col-sm-12 mt-xl--3"}>
+    <TableWrapper>
+      <div className='mt--4'>
+        <Container additionClass={"row mx-1"}>
+          <Container col={"col-xl-3"}>
+            <ChooseBranchFromHierarchical showCheckBox={false} />
+          </Container>
+          <Container additionClass={"col-xl-3 col-md-6 row"}>
             <InputText
-              placeholder={t("enterEmployeeName")}
+              value={searchEmployee}
+              col={'col'}
               label={t("employeeName")}
+              placeholder={t("enterEmployeeName")}
               onChange={(e) => {
                 setSearchEmployee(e.target.value);
               }}
             />
+            <Container additionClass='col-xl-2 mt-2'>
+              <Search variant="Button" additionalClassName={'mt-xl-4'} onClick={() => { getEmployeeRequest(currentType, INITIAL_PAGE) }} />
+            </Container>
           </Container>
-          <Container
-            col={"col-xl-5 col-md-6 col-sm-12"}
-            additionClass={"mt-xl-3"}
-          >
-            <ChooseBranchFromHierarchical />
-          </Container>
-          <Container
-            col={"col"}
-            additionClass={"mt-sm-3 mb-xl-3"}
-            justifyContent={"justify-content-center"}
-            alignItems={"align-items-center"}
-            onClick={() => getEmployeeRequest(currentType, currentPage)}
-          >
-            <Icon type={"btn-primary"} icon={Icons.Search} />
-          </Container>
+
         </Container>
         <div className="nav-wrapper mx-xl-4">
           <ul
@@ -107,7 +103,7 @@ function ShiftRequest() {
                       }`}
                     id={`tabs-icons-text-${el.id}-tab`}
                     data-toggle="tab"
-                    href={`#tabs-icons-text-${el.id}`}
+                    // href={`#tabs-icons-text-${el.id}`}
                     role="tab"
                     aria-controls={`tabs-icons-text-${el.id}`}
                     aria-selected="true"
@@ -120,7 +116,7 @@ function ShiftRequest() {
             })}
           </ul>
         </div>
-      </Card>
+      </div>
       <div className="tab-content" id="myTabContent">
         {REQUEST_TYPE.map((el) => {
           return (
@@ -135,7 +131,7 @@ function ShiftRequest() {
           )
         })}
       </div>
-    </div>
+    </TableWrapper>
   )
 
 }

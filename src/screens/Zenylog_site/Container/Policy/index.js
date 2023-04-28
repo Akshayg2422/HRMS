@@ -1,8 +1,8 @@
 import React from 'react'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function Policy() {
-    let navigate=useNavigate()
+    let navigate = useNavigate()
     return (
         <>
             <footer class="footer pt-0 px-3">
@@ -13,11 +13,20 @@ function Policy() {
                         </div>
                     </div>
                     <div class="col-lg-6">
-                        <ul  class="nav nav-footer justify-content-center justify-content-lg-end">
-                            <li onClick={()=>{navigate('/PrivacyPolicy')}} data-toggle="modal" data-target="#exampleModal" class="nav-item">
+                        <ul class="nav nav-footer justify-content-center justify-content-lg-end">
+                            <li style={{
+                                cursor: 'pointer'
+                            }} onClick={() => { navigate('/RefundPolicy') }} data-toggle="modal" data-target="#exampleModal" class="nav-item">
+                                <a class="nav-link" >Refund Policy</a>
+                            </li>
+                            <li style={{
+                                cursor: 'pointer'
+                            }} onClick={() => { navigate('/PrivacyPolicy') }} data-toggle="modal" data-target="#exampleModal" class="nav-item">
                                 <a class="nav-link" >Privacy Policy</a>
                             </li>
-                            <li onClick={()=>{navigate('/TermsOfUse')}} class="nav-item" data-toggle="modal" data-target="#termsModel"  >
+                            <li style={{
+                                cursor: 'pointer'
+                            }} onClick={() => { navigate('/TermsOfUse') }} class="nav-item" data-toggle="modal" data-target="#termsModel"  >
                                 <a class="nav-link" >Terms Of Use</a>
                             </li>
                         </ul>

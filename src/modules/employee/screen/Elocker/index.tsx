@@ -1,12 +1,13 @@
-import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary } from '@components'
+import { BackArrow, Card, Container, Icon, InputText, NoRecordFound, Upload, Modal, Carousel, ImageView, CommonTable, Input, Secondary, Primary, useKeyPress, TableWrapper, Search } from '@components'
 import { Icons } from '@assets';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { showToast, useNav, validateName } from '@utils';
 import { attachUserDocument, getEmployeeDocument } from '../../../../store/employee/actions';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
+import { Button } from 'reactstrap';
 
 
 function ELocker() {
@@ -21,15 +22,25 @@ function ELocker() {
     const [previewModel, setPreviewModel] = useState(false)
     const [title, setTitle] = useState('')
     const [documents, setDocuments] = useState<any>([])
+    const [documentListData, setDocumentListData] = useState<any>([])
+    let enterPress = useKeyPress("Enter");
 
 
 
     const { employeeDocuments } =
         useSelector((state: any) => state.EmployeeReducer);
 
+
+    useEffect(() => {
+        if (enterPress) {
+            SelectedBranchFilter()
+        }
+    }, [enterPress])
+
     useEffect(() => {
         fetchEmployeeDocuments()
-    }, [search])
+    }, [])
+
 
 
     const Upload = () => {
@@ -59,12 +70,23 @@ function ELocker() {
 
     const fetchEmployeeDocuments = () => {
         const params = {
-            q: search
+            ...(search && { q: search })
         };
+        console.log("asdsdsd");
+
         dispatch(getEmployeeDocument({
             params,
+            onSuccess: (success: any) => () => {
+                setDocumentListData(success.details)
+            },
+            onError: (error: any) => () => {
+
+            }
         }));
     };
+
+
+
 
 
     const resetAttachment = () => {
@@ -83,12 +105,12 @@ function ELocker() {
                 setUploadModel(!uploadModel)
                 dispatch(attachUserDocument({
                     params,
-                    onSuccess: (success: any) => {
+                    onSuccess: (success: any) => () => {
                         showToast("success", "uploaded");
                         fetchEmployeeDocuments()
                         resetAttachment()
                     },
-                    onError: (error: string) => {
+                    onError: (error: string) => () => {
                         showToast("error", error);
                         fetchEmployeeDocuments()
                         resetAttachment()
@@ -151,53 +173,80 @@ function ELocker() {
         resetAttachment()
     }
 
+    const SelectedBranchFilter = () => {
+
+        let filteredDocument = [...documentListData]
+        if (search !== "") {
+            filteredDocument = filteredDocument.filter((element: any) => {
+                return element.name.replace(/\s/g, '').toLowerCase().includes(search.replace(/\s/g, '').toLowerCase())
+            })
+            setDocumentListData(filteredDocument)
+        }
+        else {
+            setDocumentListData(employeeDocuments?.details)
+        }
+    }
+
+    const memoizedTable = useMemo(() => {
+        return <>
+            {documentListData && documentListData.length > 0 ? (
+                <CommonTable
+                    // noHeader
+                    card={false}
+                    title={"Documents List"}
+                    displayDataSet={documentsList(documentListData)}
+                    tableOnClick={(e, index, item) => {
+                        let current = documentListData[index]
+                        viewUserDocument(current)
+                    }}
+                // tableOnClick={(e, index, item) => {
+                //   const selectedId = registeredEmployeesList[index].id;
+                //   dispatch(getSelectedEmployeeId(selectedId));
+                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+                // }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [documentListData])
+
     return (
         <div>
-            <Card>
-                <BackArrow />
-                <Container additionClass='mt-2'>
-                    <h1>{t("E_Locker")}</h1>
+            <TableWrapper
+                title={t("E_Locker")}
+                buttonChildren={
+                    <Primary size={'btn-sm'} text={'Add'} additionClass={''} onClick={() => setUploadModel(!uploadModel)} />
+                }
+            >
+                <Container additionClass='mt-1 mx-3'>
+
+
                     <Container
                         flexDirection={"row"}
                         additionClass={"col"}
                         alignItems={"align-items-center"}
                     >
-                        <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+                        <Container col={"col-xl-3 col-md-6 col-sm-12 ml--2"}>
                             <InputText
                                 placeholder={t("search")}
                                 onChange={(e) => {
                                     setSearch(e.target.value);
                                 }}
                             />
-                        </Container>
-                        <Container
-                            col={"col"}
-                            additionClass={"mb-3"}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => setUploadModel(!uploadModel)}
 
-                        >
-                            <Icon
-                                text={t('add') + " " + "+"}
-                            />
                         </Container>
+
+                        <Search variant="Button" additionalClassName='mt--3 mr-2' onClick={() => SelectedBranchFilter()} />
+
                     </Container>
 
                 </Container>
-            </Card>
-            <Container additionClass='mx--3'>
-                {employeeDocuments && employeeDocuments?.details?.length > 0 ? <CommonTable
-                    tableTitle={"Documents List"}
-                    displayDataSet={documentsList(employeeDocuments.details)}
-                    tableOnClick={(e, index, item) => {
-                        let current = employeeDocuments.details[index]
-                        viewUserDocument(current)
-                    }}
-                /> :
-                    <NoRecordFound />
-                }
-            </Container>
+                <>
+                    {
+                        memoizedTable
+                    }
+                </>
+            </TableWrapper>
+
 
             <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
                 {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {
@@ -275,16 +324,17 @@ function ELocker() {
                                 </>
                                 }
                             </Container>
-                            <Container margin={"mt-5"} additionClass={'text-right'}>
-                                <Secondary
-                                    text={t("cancel")}
-                                    onClick={() => handleUploadModelCancel()}
-                                />
-                                <Primary
-                                    text={t("upload")}
-                                    onClick={() => AttachDocuments()}
-                                />
-                            </Container>
+
+                        </Container>
+                        <Container margin={"mt-5"} additionClass={'text-right'}>
+                            <Secondary
+                                text={t("cancel")}
+                                onClick={() => handleUploadModelCancel()}
+                            />
+                            <Primary
+                                text={t("upload")}
+                                onClick={() => AttachDocuments()}
+                            />
                         </Container>
                     </Container>
                 </Container>

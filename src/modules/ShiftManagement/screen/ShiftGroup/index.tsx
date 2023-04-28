@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { Card, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { Card, CommonDropdownMenu, CommonTable, Container, Icon, ImageView, InputText, NoRecordFound, Primary, Search, TableWrapper, useKeyPress } from '@components'
 import {
     goTo,
     useNav,
@@ -18,6 +18,15 @@ import {
 import { useTranslation } from 'react-i18next';
 import { Icons } from '@assets';
 import { getDesignationData } from '../../../../store/employee/actions';
+import { t } from 'i18next';
+
+export const DROPDOWN_MENU = [
+    { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
+]
+
+const CARD_DROPDOWN_ITEM = [
+    { id: '1', name: `${t("manageWeeklyShifts")}`, value: 'CL', icon: 'ni ni-active-40' },
+]
 
 const ShiftGroup = () => {
     const navigation = useNav();
@@ -44,7 +53,16 @@ const ShiftGroup = () => {
 
     useEffect(() => {
         getBranchShiftsList()
-        dispatch(getDesignationData({}));
+        const params = {}
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }, []);
 
     useEffect(() => {
@@ -56,10 +74,10 @@ const ShiftGroup = () => {
     const getBranchShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchShifts({
-            params, onSuccess: (success: any) => {
+            params, onSuccess: (success: any) => () => {
                 setShiftGroup(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast('error', error)
             },
         }));
@@ -68,11 +86,23 @@ const ShiftGroup = () => {
 
 
     const normalizedBranchShifts = (branchShift: any) => {
-        return branchShift && branchShift.length > 0 && branchShift.map((element: any) => {
+        return branchShift && branchShift.length > 0 && branchShift.map((element: any, index: number) => {
             return {
                 "Shift Name": element.name,
                 "Designation": getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id) ? getDropDownValueByName(designationDropdownData, element?.weekly_shift?.designation_id).name : <>{'-'}</>,
                 " Total Employees": element.employee_count,
+                "Manage employee": <span className={'text-primary'} style={{ cursor: 'pointer' }} onClick={() => {
+                    const current = shiftGroup[index];
+                    handleAddEmployeeToGroup(current)
+                }}>Manage Employee</span>,
+                "": <CommonDropdownMenu
+                    data={DROPDOWN_MENU}
+                    onItemClick={(e, item) => {
+                        const current = shiftGroup[index];
+                        e.stopPropagation();
+                        manageShiftGroupHandler(current)
+                    }}
+                />
             };
         });
     };
@@ -105,15 +135,67 @@ const ShiftGroup = () => {
         dispatch(getDesignationGroup(item))
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {shiftGroup && shiftGroup.length > 0 ? (
+                <CommonTable
+                    // noHeader
+                    card={false}
+                    isPagination
+                    displayDataSet={normalizedBranchShifts(shiftGroup)}
+                    // additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
+                    tableOnClick={(e: any) => {
+                    }}
+                    tableValueOnClick={(e, index, item, elv) => {
+                        const current = shiftGroup[index];
+                        if (elv === "Edit") {
+                            manageShiftGroupHandler(current)
+                        }
+                        if (elv === "Manage Employee") {
+                            handleAddEmployeeToGroup(current)
+                        }
+                    }}
+
+                // tableOnClick={(e, index, item) => {
+                //   const selectedId = registeredEmployeesList[index].id;
+                //   dispatch(getSelectedEmployeeId(selectedId));
+                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+                // }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [shiftGroup])
+
 
     return (
-        <>
-            <Container>
-                <Card additionClass='row mx-3'>
-                    <h2>{t('shiftss')}</h2>
-                    <Container additionClass='row mt-xl-3'>
+        <div className=''>
+            <TableWrapper>
+                <div className='px-4  mt--4 '>
+                    <Container additionClass="row ">
+                        <div className=" col">
+                            <h2>{t('shiftss')}</h2>
+                        </div>
+
+                        <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4">
+                            <Primary
+                                size="btn-sm"
+                                additionClass=''
+                                text={t("addNew")}
+                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
+                            />
+
+                            <CommonDropdownMenu
+                                data={CARD_DROPDOWN_ITEM}
+                                onItemClick={(e, item) => {
+                                    e.stopPropagation();
+                                    goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
+                                }}
+                            />
+                        </div>
+                    </Container>
+                    <Container additionClass='row mt--3'>
                         <InputText
-                            col='col-xl-3 col-md-4'
+                            col='col-xl-3 col-md-4 ml--2'
                             placeholder={t('searchGroup')}
                             onChange={(e) => {
                                 setSearchGroup(e.target.value);
@@ -123,45 +205,20 @@ const ShiftGroup = () => {
                             additionClass='col mt-xl-2 mt-md-2'
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
-                            onClick={() => { searchHandler() }}
                         >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+                            <Search variant="Button" additionalClassName={''}  onClick={() => { searchHandler() }} />
                         </Container>
-                        <Container additionClass="text-right col-md-5 mt-sm-0 mt-3">
-                            <Primary
-                                additionClass='col col-md-4'
-                                text={t('addNew')}
-                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_SET) }}
-                            />
-                            <Primary
-                                additionClass='col mt-sm-0 mt-3 col-md-6'
-                                text={t('manageWeeklyShifts')}
-                                onClick={() => { goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING) }}
-                            />
-                        </Container>
+
                     </Container>
-                </Card>
-                {shiftGroup && shiftGroup.length > 0 ? (
-                    <Container>
-                        <CommonTable
-                            displayDataSet={normalizedBranchShifts(shiftGroup)}
-                            additionalDataSet={EMPLOYEES_SHIFT_DATA_EDIT}
-                            tableOnClick={(e: any) => {
-                            }}
-                            tableValueOnClick={(e, index, item, elv) => {
-                                const current = shiftGroup[index];
-                                if (elv === "Edit") {
-                                    manageShiftGroupHandler(current)
-                                }
-                                if (elv === "Manage Employee") {
-                                    handleAddEmployeeToGroup(current)
-                                }
-                            }}
-                        />
-                    </Container>
-                ) : <Card additionClass='mt-3 mx-3'> <NoRecordFound /></Card>}
-            </Container>
-        </>
+                </div>
+                <>
+                    {
+                        memoizedTable
+                    }
+                </>
+            </TableWrapper>
+        </div>
     )
 }
 

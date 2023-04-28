@@ -4,6 +4,7 @@ import {
   DatePicker,
   FormWrapper,
   InputText,
+  ScreenContainer,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -39,6 +40,7 @@ const ManageHolidays = () => {
   const { selectedEventId, leaveFromDate } = useSelector(
     (state: any) => state.EmployeeReducer
   );
+
 
   useEffect(() => {
     if (selectedEventId !== undefined) {
@@ -91,11 +93,11 @@ const ManageHolidays = () => {
       dispatch(
         addHoliday({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast('success', success.message)
             goBack(navigation);
           },
-          onError: (error: any) => {
+          onError: (error: any) => () => {
             showToast('error', error.error_message)
           },
         })
@@ -104,7 +106,7 @@ const ManageHolidays = () => {
   };
 
   return (
-    <div>
+    <ScreenContainer >
       <FormWrapper
         title={selectedEventId ? t("editHoliday") : t("addHoildays")}
         onClick={onSubmit}
@@ -113,6 +115,8 @@ const ManageHolidays = () => {
         <Container additionClass="col-xl-12">
           <ChooseBranchFromHierarchical showCheckBox={false} />
         </Container>
+
+        
         <InputText
           col="col-xl-12"
           label={t("title")}
@@ -130,6 +134,7 @@ const ManageHolidays = () => {
             icon={Icons.Calendar}
             minDate={Today}
             iconPosition={"append"}
+            name={'date'}
             value={holidayEvents.date}
             onChange={(date: string) => dateTimePickerHandler(date, "date")}
           />
@@ -145,7 +150,7 @@ const ManageHolidays = () => {
           }}
         />
       </FormWrapper>
-    </div>
+    </ScreenContainer>
   );
 };
 

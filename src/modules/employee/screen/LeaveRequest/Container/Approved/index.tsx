@@ -13,7 +13,7 @@ import {
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,8 +37,8 @@ const Approved = () => {
     dispatch(
       getEmployeeLeaves({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {},
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -51,8 +51,8 @@ const Approved = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchApprovedLeaves(page);
   }
 
@@ -62,7 +62,7 @@ const Approved = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${' '}(${el.employee_id})`,
+          Employee: `${el.name}${' '}(${el.employee_id})`,
           "Date From": el.date_from,
           "Date To": el.date_to,
           "Leave Types": el.leave_type,
@@ -86,23 +86,27 @@ const Approved = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setRevertModel(!revertModel);
           fetchApprovedLeaves(currentPage);
-          showToast('success',success?.status)
+          showToast('success', success?.status)
 
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };
 
-  return (
-    <div>
+
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeesLeaves && employeesLeaves.length > 0 ? (
         <CommonTable
           noHeader
           isPagination
+          card={false}
           currentPage={currentPage}
           noOfPage={numOfPages}
           paginationNumberClick={(currentPage) => {
@@ -120,9 +124,17 @@ const Approved = () => {
           }}
           custombutton={"h5"}
         />
-      ) : (
-        <NoRecordFound />
-      )}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesLeaves])
+
+  return (
+    <div>
+      <>
+        {
+          memoizedTable
+        }
+      </>
       <Modal
         title={t("revertStatus")}
         showModel={revertModel}

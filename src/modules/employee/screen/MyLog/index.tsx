@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Sort,
   CommonTable,
@@ -11,6 +11,7 @@ import {
   Primary,
   InputText,
   BackArrow,
+  TableWrapper,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -20,6 +21,7 @@ import {
   getCheckInDetailedLogPerDay,
   getEmployeeEachUserTimeSheets,
   applyLeave,
+  postEmployeeModifyRequest,
 } from "../../../../store/employee/actions";
 import {
   getDisplayTimeFromMoment,
@@ -105,16 +107,17 @@ function MyLog() {
 
   function getUserCheckInLogs() {
     const params = { start_time: startDate, end_time: endDate };
-    dispatch(getEmployeesCheckInLogs({ params }));
+    dispatch(getEmployeesCheckInLogs({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
-  function getEmployeeEachUserTimeSheetsApi() {
-    dispatch(
-      getEmployeeEachUserTimeSheets({
-        type,
-      })
-    );
-  }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.slice(0).reverse().map((el: CheckInLog) => {
@@ -145,7 +148,7 @@ function MyLog() {
       return {
         Time: getDisplayTimeFromMoment(getMomentObjFromServer(it.checkin_time)),
         Type: it.type,
-        address: it.address_text,
+        address: it.address_text ? it.address_text : "       -",
       };
     });
   };
@@ -175,19 +178,16 @@ function MyLog() {
     dispatch(
       getCheckInDetailedLogPerDay({
         params,
-        onSuccess: (response: any) => {
-          setLogPerDayModel(!logPerDayModel); 
+        onSuccess: (response: any) => () => {
+          setLogPerDayModel(!logPerDayModel);
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
 
         },
       })
     );
   }
 
-  const dateTimePickerHandler = (value: string, key: string) => {
-    setMarkAsPresentDetails({ ...markAsPresentDetails, [key]: value });
-  };
   const onChangeHandler = (event: any) => {
     setMarkAsPresentDetails({
       ...markAsPresentDetails,
@@ -206,20 +206,24 @@ function MyLog() {
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
       const params = {
-        day_status_id: markAsPresentDetails.id,
-        date_from: markAsPresentDetails.date,
-        date_to: markAsPresentDetails.date,
+        // day_status_id: markAsPresentDetails.id,
+        // date_from: markAsPresentDetails.date,
+        // date_to: markAsPresentDetails.date,
+        // reason: markAsPresentDetails.reason,
+        attendance_date: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
+        daily_log_id: markAsPresentDetails.id,
+        // employee_id:
       };
       dispatch(
-        applyLeave({
+        postEmployeeModifyRequest({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
             showToast("success", response?.message);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
             setMarkAsPresentModel(!markAsPresentModel);
@@ -262,33 +266,54 @@ function MyLog() {
     return color
   }
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeeCheckInLogs && employeeCheckInLogs.length > 0 ? (
+        <CommonTable
+          // noHeader
+          card={false}
+          isPagination
+          displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
+          tableOnClick={(e, index, Item) => {
+            getEmployeeCheckInDetailedLogPerDay(Item);
+          }}
+
+        // tableOnClick={(e, index, item) => {
+        //   const selectedId = registeredEmployeesList[index].id;
+        //   dispatch(getSelectedEmployeeId(selectedId));
+        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+        // }}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeeCheckInLogs])
+
   return (
     <>
-      <div className="row">
-        <div className="col">
-          <BackArrow additionClass={"m-3"} />
-          <div className="col text-right mb-3">
-            <Sort
-              sortData={employeeLogSort}
-              activeIndex={activeSort}
-              onClick={(index) => {
-                setActiveSort(index);
-                onTabChange(index);
-              }}
-            />
-          </div>
+      <TableWrapper>
+        <div className="row">
+          <div className="col">
+            <div className="col text-right mb-5">
+              <Sort
+                size="btn-sm"
+                sortData={employeeLogSort}
+                activeIndex={activeSort}
+                onClick={(index: any, item: any) => {
+                  setActiveSort(index);
+                  onTabChange(index);
+                }}
+              />
+            </div>
 
-          <div className="ml--3">
-            <CommonTable
-              tableTitle={"My Log"}
-              displayDataSet={normalizedEmployeeLog(employeeCheckInLogs)}
-              tableOnClick={(e, index, Item) => {
-                getEmployeeCheckInDetailedLogPerDay(Item);
-              }}
-            />
+            <div className="">
+              {
+                memoizedTable
+              }
+            </div>
           </div>
         </div>
-      </div>
+      </TableWrapper>
       <Modal
         title={"Attachment"}
         showModel={attachmentModel}
@@ -317,7 +342,13 @@ function MyLog() {
       </Modal>
       <Modal
         showModel={markAsPresentModel}
-        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+        toggle={() => {
+          setMarkAsPresentModel(!markAsPresentModel)
+          setMarkAsPresentDetails({
+            ...markAsPresentDetails,
+            reason: '',
+          });
+        }}
       >
         <Container>
           <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
@@ -344,7 +375,13 @@ function MyLog() {
           <Container margin={"mt-5"} additionClass={"text-right"}>
             <Secondary
               text={t("cancel")}
-              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+              onClick={() => {
+                setMarkAsPresentModel(!markAsPresentModel)
+                setMarkAsPresentDetails({
+                  ...markAsPresentDetails,
+                  reason: '',
+                });
+              }}
             />
             <Primary text={t("request")} onClick={() => onRequestHandler()} />
           </Container>

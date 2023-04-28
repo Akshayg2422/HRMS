@@ -9,13 +9,14 @@ import {
 } from "@components";
 import {
   changeEmployeeLeaveStatus,
+  changeEmployeeModifyLogStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
   getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -37,13 +38,12 @@ const Pending = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -1,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: object) => {},
-        onError: (error: string) => {},
+        onSuccess: (success: object) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -56,8 +56,8 @@ const Pending = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchPendingDetail(page);
   }
   const normalizedEmployeeLog = (data: any) => {
@@ -66,10 +66,10 @@ const Pending = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${" "}(${el.employee_id})`,
-          "Date From": el.date_from,
-          "Date To": el.date_to,
-          "Leave Types": el.leave_type,
+          Employee: `${el.name}${" "}(${el.employee_id})`,
+          "Date": el.attendance_date,
+          // "Date To": el.date_to,
+          // "Leave Types": el.leave_type,
           Reason: el.reason,
           Branch: el.branch_name,
         };
@@ -93,9 +93,9 @@ const Pending = () => {
       status: el,
     };
     dispatch(
-      changeEmployeeLeaveStatus({
+      changeEmployeeModifyLogStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           if (el === 1) {
             setApproveModel(!approveModel);
             showToast("info", success.status);
@@ -106,41 +106,51 @@ const Pending = () => {
           }
           fetchPendingDetail(currentPage);
         },
-        onError: (error: string) => {},
+        onError: (error: string) => () => { },
       })
     );
   };
 
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
+          additionalDataSet={LEAVE_STATUS_UPDATE}
+          tableValueOnClick={(e, index, item, elv) => {
+            const current = employeesModifyLeaves[index];
+            if (elv === "Approve") {
+              manageApproveStatus(current);
+            }
+            if (elv === "Reject") {
+              manageRejectStatus(current);
+            }
+          }}
+          custombutton={"h5"}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesModifyLeaves])
+
   return (
     <div>
-      <div className="row">
-        {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
-            additionalDataSet={LEAVE_STATUS_UPDATE}
-            tableValueOnClick={(e, index, item, elv) => {
-              const current = employeesModifyLeaves[index];
-              if (elv === "Approve") {
-                manageApproveStatus(current);
-              }
-              if (elv === "Reject") {
-                manageRejectStatus(current);
-              }
-            }}
-            custombutton={"h5"}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
+      <div className="">
+        <>
+          {
+            memoizedTable
+          }
+        </>
         <Modal
           title={t("approveLeave")}
           showModel={approveModel}
@@ -158,7 +168,7 @@ const Pending = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
 
@@ -205,7 +215,7 @@ const Pending = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
               <span>

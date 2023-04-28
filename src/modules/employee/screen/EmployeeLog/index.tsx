@@ -12,13 +12,17 @@ import {
   Secondary,
   Primary,
   useKeyPress,
+  ImageView,
+  TableWrapper,
+  Search,
 } from "@components";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   getEmployeesList,
   getEmployeesCheckInLogs,
   getCheckInDetailedLogPerDay,
   applyLeave,
+  postAdminModifyLog,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -34,6 +38,8 @@ import moment from "moment";
 import { useTranslation } from "react-i18next";
 import { Navbar } from "@modules";
 import { Icons } from "@assets";
+import { Collapse } from "reactstrap";
+
 
 type CheckInLog = {
   date?: string;
@@ -79,6 +85,9 @@ function EmployeeLog() {
     { id: 2, title: moment().format("MMMM") },
   ];
 
+  const [collapseId, setCollapseId] = useState<any>()
+
+
   const {
     registeredEmployeesList,
     numOfPages,
@@ -92,7 +101,7 @@ function EmployeeLog() {
   );
 
   useEffect(() => {
-    getEmployeeLogs(currentPage);
+    getEmployeeLogs(1);
   }, [startDate, hierarchicalBranchIds]);
 
 
@@ -109,14 +118,20 @@ function EmployeeLog() {
       page_number: pageNumber,
       ...(searchEmployee && { q: searchEmployee }),
     };
-    dispatch(getEmployeesList({ params }));
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+      },
+      onError: (error: any) => () => {
+      }
+    }));
   }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
-        id: el.employee_id,
         name: el.name,
+        Code: el.employee_id,
         "mobile number": el.mobile_number,
         branch: el.branch,
       };
@@ -141,17 +156,16 @@ function EmployeeLog() {
 
     dispatch(getEmployeesCheckInLogs({
       params,
-      onSuccess: (success: object) => {
-        setModel(!model);
+      onSuccess: (success: object) => () => {
+        setModel(true);
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("info", error);
       },
     }));
   }
 
   function getEmployeeCheckInDetailedLogPerDay(item: any, index: number) {
-    // setAccordion(index);
     const params = {
       date: item.date,
       user_id: selectedEmployeeDetails.id,
@@ -159,10 +173,10 @@ function EmployeeLog() {
     dispatch(
       getCheckInDetailedLogPerDay({
         params,
-        onSuccess: (response: any) => {
+        onSuccess: (response: any) => () => {
           console.log('----------------->');
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
         },
       })
     );
@@ -195,18 +209,21 @@ function EmployeeLog() {
 
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
+      
       const params = {
-        day_status_id: markAsPresentDetails.day_status_id,
-        date_from: markAsPresentDetails.date,
-        date_to: markAsPresentDetails.date,
+        daily_log_id: markAsPresentDetails.day_status_id,
+        // date_from: markAsPresentDetails.date,
+        // date_to: markAsPresentDetails.date,
+        attendance_date: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
         is_approved: true,
         employee_id: selectedEmployeeDetails.id,
       };
+
       dispatch(
-        applyLeave({
+        postAdminModifyLog({
           params,
-          onSuccess: (response: any) => {
+          onSuccess: (response: any) => () => {
             showToast("success", response?.message);
             setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
@@ -215,10 +232,19 @@ function EmployeeLog() {
               end_time: endDate,
               user_id: selectedEmployeeDetails.id,
             };
-            dispatch(getEmployeesCheckInLogs({ params }));
+            dispatch(getEmployeesCheckInLogs({
+              params,
+              onSuccess: (success: any) => () => {
+
+              },
+              onError: (error: any) => () => {
+
+              }
+            }));
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
+            setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
           },
         })
@@ -267,45 +293,11 @@ function EmployeeLog() {
     }
   }
 
-
-  return (
-    <>
-      <Container additionClass={"row mx-2 my-3"}>
-        <Container col={"col-xl-5"}>
-          <ChooseBranchFromHierarchical />
-        </Container>
-        <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
-          <InputText
-            value={searchEmployee}
-            col={'col'}
-            placeholder={t("enterEmployeeName")}
-            onChange={(e) => {
-              setSearchEmployee(e.target.value);
-            }}
-          />
-          <Icon type={"btn-primary"} additionClass={'col-xl-3 mt-2'} icon={Icons.Search}
-            onClick={() => {
-              getEmployeeLogs(currentPage);
-            }}
-          />
-        </Container>
-
-        <div className="col text-right mt-xl-4 my-sm-2 mt-3 mt-sm-0">
-          <Sort
-            sortData={employeeLogSort}
-            activeIndex={activeSort}
-            onClick={(index) => {
-              setActiveSort(index);
-              onTabChange(index);
-            }}
-          />
-        </div>
-
-      </Container>
-
+  const memoizedTable = useMemo(() => {
+    return <>
       {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
         <CommonTable
-          tableTitle={t("employeeLog")}
+          card={false}
           isPagination
           currentPage={currentPage}
           noOfPage={numOfPages}
@@ -313,6 +305,7 @@ function EmployeeLog() {
           tableOnClick={(e, index, item) => {
             const selectedEmployee = registeredEmployeesList[index];
             getUserCheckInLogs(selectedEmployee);
+            setCollapseId('')
           }}
           paginationNumberClick={(currentPage) => {
             getEmployeeLogs(paginationHandler("current", currentPage));
@@ -324,7 +317,63 @@ function EmployeeLog() {
             getEmployeeLogs(paginationHandler("next", currentPage))
           }
         />
-      ) : <Card additionClass={"mx-4"}><NoRecordFound /></Card>}
+      ) : <NoRecordFound />}
+    </>
+  }, [registeredEmployeesList])
+
+
+  const collapsesToggle = (collapse: string) => {
+    let openedCollapses = collapseId
+    if (openedCollapses?.includes(collapse)) {
+      setCollapseId('')
+    } else {
+      setCollapseId(collapse)
+    }
+  }
+
+  return (
+    <>
+      <TableWrapper
+        buttonChildren={
+          <div className="mr--1">
+            <Sort
+              size={'btn-sm'}
+              sortData={employeeLogSort}
+              activeIndex={activeSort}
+              onClick={(index: any, item: any) => {
+                setActiveSort(index);
+                onTabChange(index);
+              }}
+            />
+          </div>
+        }
+        filterChildren={
+          <Container additionClass={"row"}>
+            <Container col={"col-xl-3"}>
+              <ChooseBranchFromHierarchical />
+            </Container>
+            <Container additionClass={"col-xl-4 col-md-6 col-sm-12 mt-xl-4 row"}>
+              <InputText
+                size="sm"
+                value={searchEmployee}
+                col={'col'}
+                placeholder={t("enterEmployeeName")}
+                onChange={(e) => {
+                  setSearchEmployee(e.target.value);
+                }}
+              />
+              <Container additionClass="col-xl-3">
+                <Search variant="Button" additionalClassName={' mt-2'} onClick={() => { getEmployeeLogs(currentPage) }} />
+              </Container>
+            </Container>
+
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
+
+
       <Modal
         showModel={model}
         title={`${selectedEmployeeDetails?.name}'s ${t('log')}`}
@@ -350,17 +399,15 @@ function EmployeeLog() {
             <div>
               {employeeCheckInLogs.map((item: any, index: number) => {
                 return (
-                  <div className="accordion" id="accordionExample" key={item?.id}>
+                  <div className="accordion" id="accordionExample" key={item?.id} >
                     <div
                       data-toggle="collapse"
-                      data-target={
-                        index === accordion ? "#collapse" + index : undefined
-                      }
-                      key={item?.id}
+                      role="tab"
+                      aria-expanded={collapseId === item.id}
                       onClick={() => {
                         if (accordion !== index || !clicked) {
                           getEmployeeCheckInDetailedLogPerDay(item, index);
-                          setAccordion(index);
+                          collapsesToggle(item.id)
                           setClicked(true);
                         } else {
                           setClicked(false);
@@ -397,15 +444,11 @@ function EmployeeLog() {
                       </Container>
                       <Divider />
                     </div>
-
-                    {accordion === index && (
-                      <div
-                        className="collapse"
-                        id={
-                          index === accordion ? "collapse" + index : undefined
-                        }
+                    {collapseId === item.id && (
+                      <Collapse
+                        isOpen={collapseId === item.id}
                       >
-                        <div className="card-body row align-items-center">
+                        <div className="card-body align-items-center">
                           {employeeCheckInDetailedLogPerDay &&
                             employeeCheckInDetailedLogPerDay.length > 0 ? (
                             <div>
@@ -439,7 +482,7 @@ function EmployeeLog() {
                                           {item.type}
                                         </small>
                                         <small className="mb-0 col">
-                                          {item.address_text}
+                                          {item.address_text ? item.address_text : "       -"}
                                         </small>
                                       </Container>
                                       <Divider />
@@ -449,14 +492,14 @@ function EmployeeLog() {
                               )}
                             </div>
                           ) : (
-                            <div className="row align-items-center">
-                              <small className="mb-0 text-center">
+                            <div className="d-flex justify-content-center">
+                              <small className="mb-0">
                                 {t("noLogsFound")}
                               </small>
                             </div>
                           )}
                         </div>
-                      </div>
+                      </Collapse>
                     )}
                   </div>
                 );
@@ -467,9 +510,16 @@ function EmployeeLog() {
           <NoRecordFound />
         )}
       </Modal>
+
       <Modal
         showModel={markAsPresentModel}
-        toggle={() => setMarkAsPresentModel(!markAsPresentModel)}
+        toggle={() => {
+          setMarkAsPresentModel(!markAsPresentModel)
+          setMarkAsPresentDetails({
+            ...markAsPresentDetails,
+            reason: '',
+          });
+        }}
       >
         <Container>
           <span className="h4 ml-xl-4">{t("requestForAsPresent")}</span>
@@ -496,12 +546,19 @@ function EmployeeLog() {
           <Container margin={"mt-5"} additionClass={"text-right"}>
             <Secondary
               text={t("cancel")}
-              onClick={() => setMarkAsPresentModel(!markAsPresentModel)}
+              onClick={() => {
+                setMarkAsPresentModel(!markAsPresentModel)
+                setMarkAsPresentDetails({
+                  ...markAsPresentDetails,
+                  reason: '',
+                });
+              }}
             />
             <Primary text={t("modify")} onClick={() => onRequestHandler()} />
           </Container>
         </Container>
       </Modal>
+
       <Modal showModel={presentModifiedModel} title={t('markAsPresent')}
         toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
         <Container additionClass={'ml-3'}><span>

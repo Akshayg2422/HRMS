@@ -13,7 +13,7 @@ import {
   getModifyLogs,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -34,13 +34,12 @@ const Approved = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: 1,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({
         params,
-        onSuccess: (success: any) => {},
-        onError: (error: string) => {},
+        onSuccess: (success: any) => () => { },
+        onError: (error: string) => () => { },
       })
     );
   };
@@ -53,8 +52,8 @@ const Approved = () => {
       type === "next"
         ? currentPage + 1
         : type === "prev"
-        ? currentPage - 1
-        : position;
+          ? currentPage - 1
+          : position;
     fetchApprovedLeaves(page);
   }
 
@@ -64,23 +63,24 @@ const Approved = () => {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el.name}${" "}(${el.employee_id})`,
-          "Date From": el.date_from,
-          "Date To": el.date_to,
-          "Leave Types": el.leave_type,
-          Reason: el.reason,
+          Employee: `${el.name}${" "}(${el.employee_id})`,
+          "Date": el.attendance_date,
+          // "Leave Types": el.leave_type,
+          Reason: el.reason,  
           Branch: el.branch_name,
         };
       })
     );
   };
 
-  return (
-    <div>
+
+  const memoizedTable = useMemo(() => {
+    return <>
       {employeesModifyLeaves && employeesModifyLeaves.length > 0 ? (
         <CommonTable
           noHeader
           isPagination
+          card={false}
           currentPage={currentPage}
           noOfPage={numOfPages}
           paginationNumberClick={(currentPage) => {
@@ -91,9 +91,15 @@ const Approved = () => {
           displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
           custombutton={"h5"}
         />
-      ) : (
-        <NoRecordFound />
-      )}
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesModifyLeaves])
+
+  return (
+    <div>
+      {
+        memoizedTable
+      }
     </div>
   );
 };

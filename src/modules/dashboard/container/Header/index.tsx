@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast } from '@utils';
+import { goTo, HEADER_MENU, ROUTE, useNav, LANGUAGE_LIST, NAV_ITEM, CHILD_PATH, showToast, goBack, COMMON_HEADER } from '@utils';
 import { useTranslation } from 'react-i18next';
-import { ImageView, Modal, Container, Secondary, Primary, Divider, } from '@components';
+import { ImageView, Modal, Container, BackArrow, Secondary, Primary, Divider, MyActiveBranches } from '@components';
 import { useSelector, useDispatch } from 'react-redux';
 import { getImageUri } from '@utils';
 import { Icons } from '@assets';
+import classnames from "classnames";
+
 
 
 import { resetApp } from '../../../../store/app/actions';
@@ -14,18 +16,25 @@ import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
-import { Notification } from '../Notification';
-import { setIsShowBack } from '../../../../store/notifications/actions';
+import { Col, Collapse, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, ListGroup, ListGroupItem, Media, Nav, NavItem, Navbar, NavbarBrand, Row, UncontrolledCollapse, UncontrolledDropdown, Form, UncontrolledTooltip } from 'reactstrap';
+import { HeaderProps } from './interfaces';
+import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 
-const Header = () => {
+//ROUTE_PORTFOLIO
+
+const Header = ({ headerNavOpen, toggleHeaderNav }: HeaderProps) => {
   const [languageModel, setLanguageModel] = useState(false);
   const [model, setModel] = useState(false);
+  const [activeBranchModel, setActiveBranchModel] = useState(false);
   const [headerTitle, setHeaderTitle] = useState('')
   const { t, i18n } = useTranslation();
   const navigate = useNav();
-  const navigation = useNav();
 
   const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
+  const [isParent, setIsParent] = useState(false)
+  const [showArrow, setShowArrow] = useState(false)
+  const [commonChild, setCommonChild] = useState(false)
+
 
   let dispatch = useDispatch();
 
@@ -33,7 +42,7 @@ const Header = () => {
     (state: any) => state.DashboardReducer
   );
 
-  const { broadcastMessagesData, notificationsDataList } = useSelector(
+  const { NotificationCount } = useSelector(
     (state: any) => state.NotificationReducer
   );
 
@@ -45,10 +54,13 @@ const Header = () => {
   }, [pathname])
 
 
+
   const dynamicHeaderTitle = () => {
     NAV_ITEM.filter((el: any) => {
-      if (pathname === el.route) {
+      if (pathname === el.path) {
         setHeaderTitle(el.name)
+        setShowArrow(false)
+        setIsParent(false)
       } else {
         dynamicChildHeader()
       }
@@ -59,13 +71,39 @@ const Header = () => {
     CHILD_PATH.filter((el: any) => {
       if (pathname === el.path) {
         NAV_ITEM.filter((element: any) => {
-          if (el.parent === element.route) {
+          if (el.parent === element.path) {
             setHeaderTitle(element.name)
+            setShowArrow(el.showBack)
+            setIsParent(el.showBreadCrums)
+          } else {
+            CHILD_PATH.filter((item: any) => {
+              if (el.parent === item.path) {
+                COMMON_HEADER.filter((child: any) => {
+                  if (child.route === item.path) {
+                    setHeaderTitle(child.name)
+                    setShowArrow(el.showBack)
+                    setIsParent(el.showBreadCrums)
+                  }
+                })
+              }
+            })
           }
         })
       }
     })
   }
+
+
+  const getNameFromPath = (pathname: string) => {
+    let name = ''
+    CHILD_PATH.filter((el: any) => {
+      if (pathname === el.path) {
+        name = el.name
+      }
+    })
+    return name
+  }
+
 
   const DropdownHandler = (item: any) => {
     if (item.value === 'CL') {
@@ -74,9 +112,13 @@ const Header = () => {
     else if (item.value === 'PF') {
       goTo(navigate, ROUTE.ROUTE_PROFILE);
     }
-
     else if (item.value === 'LG') {
       setModel(!model)
+    }
+    else if (item.value === 'MP') {
+      goTo(navigate, ROUTE.ROUTE_PORTFOLIO);
+    } else if (item.value === 'MA') {
+      setActiveBranchModel(!activeBranchModel)
     }
 
   };
@@ -106,12 +148,12 @@ const Header = () => {
     }
   };
 
-  const checkLength = (data:any) =>{
+  const checkLength = (data: any) => {
 
-    if(data.length < 100){
+    if (data.length < 100) {
       return data.length
     }
-    else{
+    else {
       return '99+'
     }
   }
@@ -119,88 +161,100 @@ const Header = () => {
 
   return (
     <>
-      <nav className='navbar navbar-top navbar-expand  bg-primary '>
-        <div className='container-fluid'>
-          <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-            <a className='nav-item d-xl-none'>
-              <div
-                className='pr-3 sidenav-toggler sidenav-toggler-dark'
-                data-action='sidenav-pin'
-                data-target='#sidenav-main'
-              >
-                <div className='sidenav-toggler-inner'>
-                  <i className='sidenav-toggler-line'></i>
-                  <i className='sidenav-toggler-line'></i>
-                  <i className='sidenav-toggler-line'></i>
+      <Navbar
+        className={classnames(
+          "navbar-top navbar-expand"
+        )}
+        style={{ background: '#f8f9ff' }}
+      >
+        <Container additionClass='container-fluid'>
+          <Collapse navbar isOpen={true}>
+            <Nav className="align-items-center ml-md-auto" navbar>
+              <NavItem className="d-xl-none">
+                <div
+                  className={classnames(
+                    "pr-3 sidenav-toggler",
+                    // { active: headerNavOpen },
+                  )}
+                  onClick={toggleHeaderNav}
+                >
+                  <div className="sidenav-toggler-inner">
+                    <i className="sidenav-toggler-line bg-primary" />
+                    <i className="sidenav-toggler-line bg-primary" />
+                    <i className="sidenav-toggler-line bg-primary" /> 
+                  </div>
                 </div>
+              </NavItem>
+            </Nav>
+            {showArrow && <BackArrow additionClass={`mr--1 ${isParent && 'mt-xl--3 '}`} />}
+            <div className='col'>
+              <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
+              {isParent && <div className='small d-none d-sm-block'>
+                <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigate) }}>{headerTitle} </span>
+                <span> {" / "} {getNameFromPath(pathname)}</span>
               </div>
-            </a>
-            <h6 className='h2 text-white d-inline-block mb-0'>{headerTitle}</h6>
+              }
+            </div>
             <ul className='navbar-nav align-items-center  ml-md-auto '>
               {/* <Notification /> */}
               <div className='mr-3 d-flex'>
                 <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_MY_NOTIFICATION);
+                  goTo(navigate, ROUTE.ROUTE_MY_NOTIFICATION);
                 }} >
-                  <i className="ni ni-chat-round text-white" style={{cursor:'pointer'}}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{1000}</span> */}
+                  <i className="ni ni-chat-round text-primary  " style={{ cursor: 'pointer' }}></i>
                 </a>
                 <a className="nav-link" onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_NOTIFICATIONS);
+                  goTo(navigate, ROUTE.ROUTE_NOTIFICATIONS);
                   dispatch(setIsShowBack(true))
                 }} >
-                  <i className="ni ni-bell-55 text-white" style={{cursor:'pointer'}}></i>
-                  {/* <span className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(notificationsDataList)}</span> */}
+                  <i className="ni ni-bell-55 text-primary" style={{ cursor: 'pointer' }} onClick={() => dispatch(clearNotificationCount())}></i>
+                  {NotificationCount > 0 && <span style={{ cursor: 'pointer' }} className="badge badge-sm badge-circle badge-floating badge-danger border-white top-0 mt-1 start-100 translate-middle p--2" >{checkLength(NotificationCount)}</span>}
                 </a>
               </div>
               <div className='media-body  d-none d-lg-block'>
                 {dashboardDetails && dashboardDetails.user_details && (
-                  <span className='mb-0 text-white  font-weight-bold'>
+                  <span className='mb-0 text-primary  font-weight-bold'>
                     {dashboardDetails.user_details.name}
                   </span>
                 )}
               </div>
             </ul>
-            <ul className='navbar-nav align-items-center  ml-auto ml-md-0 '>
-              <li className='nav-item dropdown '>
-                <a
-                  className='nav-link pr-0'
-                  href='#'
-                  role='button'
-                  data-toggle='dropdown'
-                  aria-haspopup='true'
-                  aria-expanded='false'
-                >
-                  <div className='media align-items-center'>
-                    <span className='avatar avatar-sm rounded-circle'>
+            <Nav className="align-items-center ml-auto ml-md-0" navbar>
+              <UncontrolledDropdown nav>
+                <DropdownToggle className="nav-link pr-0" color="" tag="a">
+                  <Media className="align-items-center">
+                    <span className="avatar avatar-sm rounded-circle">
                       <ImageView
                         height={'38'}
                         alt='Image placeholder'
                         icon={dashboardDetails && dashboardDetails.user_details.profile_photo ? getImageUri(dashboardDetails.user_details.profile_photo) : Icons.ProfilePlaceHolder}
                       />
                     </span>
-                    <div className='media-body  ml-2 text-white d-none d-lg-block dropdown-toggle'></div>
-                  </div>
-                </a>
-                <div className='dropdown-menu dropdown-menu-right'>
+                    <Media className="ml-2 d-none d-lg-block">
+                      <div className='media-body text-primary d-none d-lg-block dropdown-toggle'> </div>
+                    </Media>
+                  </Media>
+                </DropdownToggle>
+                <DropdownMenu right>
                   {HEADER_MENU.map((item) => {
                     return (
-                      <a
-                        className='dropdown-item'
-                        onClick={() => DropdownHandler(item)}
+                      <DropdownItem
+                        onClick={(e) => {
+                          e.preventDefault()
+                          DropdownHandler(item)
+                        }}
                       >
                         <i className={item.icon}></i>
                         <span>{item.name}</span>
-                      </a>
+                      </DropdownItem>
                     );
                   })}
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav >
-
+                </DropdownMenu>
+              </UncontrolledDropdown>
+            </Nav>
+          </Collapse>
+        </Container>
+      </Navbar>
       <Modal
         title={'Select Language'}
         toggle={() => setLanguageModel(!languageModel)}
@@ -222,8 +276,6 @@ const Header = () => {
           );
         })}
       </Modal>
-
-
       {
         <Modal
           title={t('logoutUser')}
@@ -247,6 +299,28 @@ const Header = () => {
           </Container>
         </Modal>
       }
+
+      <Modal
+        title={t('MyActiveBranches')}
+        showModel={activeBranchModel}
+        toggle={() => setActiveBranchModel(!activeBranchModel)}>
+        <Container additionClass='col-xl-5'>
+          <MyActiveBranches isReload={activeBranchModel === true ? true : false} />
+        </Container>
+        <Container
+          margin={'m-3'}
+          justifyContent={'justify-content-end'}
+          display={'d-flex'}>
+          <Secondary
+            text={t('cancel')}
+            onClick={() => setActiveBranchModel(!activeBranchModel)}
+          />
+          {/* <Primary
+            text={t('proceed')}
+          // onClick={proceedLogout}
+          /> */}
+        </Container>
+      </Modal>
     </>
   );
 };

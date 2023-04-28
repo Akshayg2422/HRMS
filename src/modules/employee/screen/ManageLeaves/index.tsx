@@ -20,7 +20,7 @@ function ManageLeaves() {
   const dispatch = useDispatch();
   const [model, setModel] = useState(false);
   const [recall, setRecall] = useState(false);
-  const [daysHoliday,setDaysHoliday] = useState<any[]>([]);
+  const [daysHoliday, setDaysHoliday] = useState<any[]>([]);
   const { t, i18n } = useTranslation();
   const { calendarEvents, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
@@ -31,15 +31,23 @@ function ManageLeaves() {
 
   useEffect(() => {
     getCalendarDetails(currentPage);
-    geteventsdetails();
-  }, [recall]);
+  }, []);
+
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
       pageNumber: pageNumber,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+        geteventsdetails(success?.details);
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   const normalizedEmployeeLog = (data: any) => {
@@ -52,9 +60,11 @@ function ManageLeaves() {
     });
   };
 
-  const geteventsdetails = () => {
-    calendarEvents?.days_leave?.map((item: any) => {
-      let update={
+  const geteventsdetails = (events: any) => {
+
+    let leaves: any = []
+    events?.days_leave?.map((item: any) => {
+      leaves.push({
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
@@ -64,49 +74,52 @@ function ManageLeaves() {
             : item.status_code === 0
               ? "red"
               : "gray",
-      }
+      })
     });
-    calendarEvents?.days_absent?.map((item: any) => {
-      daysHoliday.push({
+    events?.days_absent?.map((item: any) => {
+      leaves.push({
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
         color: "gray",
       });
     });
-    calendarEvents?.days_holiday?.map((item: any) => {
-      daysHoliday.push({
+    events?.days_holiday?.map((item: any) => {
+      leaves.push({
         title: item.title,
         start: item.day,
         end: item.day,
-        color: "green",
+        color: "#52307c",
       });
     });
-    setRecall(true);
+    setDaysHoliday(leaves)
   };
+
+
+
+  console.log("=========>", daysHoliday);
 
 
   return (
     <>
       <Container additionClass={"mt-5 main-contain"}>
         <Card>
-          <BackArrow additionClass={"mb-3"} />
           <h1 className="mb-3">{t('Calendar')}</h1>
           <Calender events={daysHoliday?.length > 0 ? daysHoliday : []} />
         </Card>
         <h1>{t("holidayList")}</h1>
-        <Card>
-          {daysHoliday && daysHoliday.length > 0 ? (
-            <CommonTable
-              noHeader
-              displayDataSet={normalizedEmployeeLog(
-                calendarEvents?.days_holiday
-              )}
-            />
-          ) : (
-            <NoRecordFound />
-          )}
-        </Card>
+        {/* <Card> */}
+        {daysHoliday && daysHoliday.length > 0 ? (
+          <CommonTable
+            noHeader
+            displayDataSet={normalizedEmployeeLog(
+              calendarEvents?.days_holiday
+            )}
+          />
+        ) : (
+          <NoRecordFound />
+        )}
+        {/* </Card> */}
       </Container>
     </>
   );

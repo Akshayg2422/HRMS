@@ -36,7 +36,7 @@ import {
   ShiftGroup,
   ShiftListing,
   CreateShiftGroup,
-  MyShiftDetails,
+  ShiftMonthlyView,
   EmployeeShifts,
   PayRoll,
   SalaryBreakDown,
@@ -60,7 +60,9 @@ import {
   EsslConfig,
   ManageEsslConfig,
   ManageDevices,
-  FaceReRegisterRequest
+  FaceReRegisterRequest,
+  ShiftDetailsPerDay,
+  Payslip
   // DashBoardOtp
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
@@ -75,8 +77,29 @@ import { ManageAssignLocation, } from "./modules/dashboard/screen";
 import { PolicyScr, TermsOfUse, ZenylogSite } from "@screens";
 import ViewEmployeeDetails from "./modules/employee/screen/ViewEmployeeDetails";
 import { AppProvider } from "@contexts";
-import { PushNotification } from './PushNotification'
-import { useSelector } from "react-redux";
+import { PushConfig } from './PushConfig'
+import { useDispatch, useSelector } from "react-redux";
+import { PushNotification } from "./PushNotification";
+import { Approvals } from "./modules/employee";
+import { AddDeduction, ViewEmployeeSalaryDefinition } from "./modules/Payroll";
+import GetToken from "./PushNotification/GetToken";
+
+import RefundPolicy from "./screens/RefundPolicy";
+
+
+/**
+ *  select-react  - important need to add this app.js
+ */
+import "select2/dist/css/select2.min.css";
+
+import "@fortawesome/fontawesome-free/css/all.min.css";
+import "@fullcalendar/common/main.min.css";
+import "@fullcalendar/daygrid/main.min.css";
+import "quill/dist/quill.core.css";
+import "react-notification-alert/dist/animate.css";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import "sweetalert2/dist/sweetalert2.min.css";
+
 
 function App() {
 
@@ -95,6 +118,7 @@ function App() {
         <ScreenLoader />
         <Routes>
           <Route path={"/"} element={<ZenylogSite />} />
+          <Route path={"/RefundPolicy"} element={<RefundPolicy />} />
           <Route path={"/PrivacyPolicy"} element={<PolicyScr />} />
           <Route path={"/TermsOfUse"} element={<TermsOfUse />} />
           <Route
@@ -235,8 +259,12 @@ function App() {
             element={<RequireAuth>{<CreateShiftGroup />}</RequireAuth>}
           />
           <Route
-            path={ROUTE.ROUTE_MY_SHIFTS_DETAILS}
-            element={<RequireAuth>{<MyShiftDetails />}</RequireAuth>}
+            path={ROUTE.ROUTE_MY_SHIFTS_DETAILS_MONTHLY}
+            element={<RequireAuth>{<ShiftMonthlyView />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_MY_SHIFTS_DETAILS_DAILY}
+            element={<RequireAuth>{<ShiftDetailsPerDay />}</RequireAuth>}
           />
           <Route
             path={ROUTE.ROUTE_EMPLOYEES_SHIFTS}
@@ -342,6 +370,26 @@ function App() {
           <Route
             path={ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST}
             element={<RequireAuth>{<FaceReRegisterRequest />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_APPROVALS}
+            element={<RequireAuth>{<Approvals />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_ADD_DEDUCTION}
+            element={<RequireAuth>{<AddDeduction />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION}
+            element={<RequireAuth>{<ViewEmployeeSalaryDefinition />}</RequireAuth>}
+          />
+
+          <Route
+            path={ROUTE.ROUTE_PAYSLIP}
+            element={<RequireAuth>{<Payslip />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

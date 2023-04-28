@@ -1,6 +1,6 @@
 import { Card, CommonTable, NoRecordFound } from '@components';
 import { getShiftRequestedEmployees } from '../../../../../../store/shiftManagement/actions';
-import React from 'react'
+import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
 function ApprovedRequest() {
@@ -19,7 +19,15 @@ function ApprovedRequest() {
       page_number: pageNumber,
       ...hierarchicalBranchIds
     }
-    dispatch(getShiftRequestedEmployees({ params }));
+    dispatch(getShiftRequestedEmployees({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedRequestList = (data: any) => {
@@ -28,7 +36,7 @@ function ApprovedRequest() {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el?.name}${' '}(${el?.employee_id})`,
+          Employee : `${el?.name}${' '}(${el?.employee_id})`,
           "Branch": el?.branch_name,
           "Shift": el?.shift_details?.name,
           "Reason": el?.reason,
@@ -52,26 +60,34 @@ function ApprovedRequest() {
   }
 
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {shiftRequestedEmployees && shiftRequestedEmployees.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedRequestList(shiftRequestedEmployees)}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [shiftRequestedEmployees])
+
   return (
     <div>
-      <Card>
-        {shiftRequestedEmployees && shiftRequestedEmployees?.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedRequestList(shiftRequestedEmployees)}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-      </Card>
+      <div>
+        {
+          memoizedTable
+        }
+
+      </div>
     </div>
   )
 }

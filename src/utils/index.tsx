@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER,INITIAL_PAGE
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -35,8 +35,16 @@ const IMAGE_BASE_URL_DEV = REACT_APP_APP_URL;
 const useNav = () => useNavigate()
 
 const getImageUri = (imageUri: string) => {
-  return '' + imageUri
+  if (imageUri) {
+    if (imageUri.substring(0, 5) === 'https') {
+      return imageUri
+    }
+    else {
+      return IMAGE_BASE_URL_DEV + imageUri
+    }
+  }
 }
+
 const getGenderByValue = (value: string) => {
   return GENDER_LIST.find(item => {
     return item.value === value
@@ -85,6 +93,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
     draggable: true,
     progress: undefined,
     theme: "colored"
+
   }
 
   let toastElement = null;
@@ -100,6 +109,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
       break;
     default:
       toastElement = toast(message, style)
+
       break;
   }
 
@@ -206,6 +216,17 @@ function convertTo24Hour(s: any) {
   return convertedTime.join(":");
 }
 
+const convertToUpperCase = (data: string) => {
+  if (data) {
+    let toUpperCase = data?.charAt(0)?.toUpperCase() + data?.slice(1);
+    return toUpperCase
+  }
+  else {
+    return data
+  }
+
+}
+
 
 const displayStringExists = (value: any) => value && value === 'Invalid date' ? value : "-";
 const inputNumberMaxLength = (value: any, length: number) => value && value.slice(0, length);
@@ -213,6 +234,34 @@ const inputAadharLength = (value: any, length: number) => value && value.slice(0
 const inputTextMaxLength = (value: any, length: number) => value && value.slice(0, length);
 
 
+export const HH_MM_SS = 'hh:mm:ss'
+export const HH_MM = 'hh:mm'
+
+
+export function toDate(dStr: any, format: string) {
+  var now = new Date();
+  if (format === HH_MM) {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  } else if (format === HH_MM_SS) {
+    now.setHours(dStr.substr(0, dStr.indexOf(":")));
+    now.setMinutes(dStr.substr(dStr.indexOf(":") + 1));
+    now.setSeconds(0);
+    return now;
+  }
+  else
+    return "Invalid Format";
+}
+
+export const convertFrom24To12Format = (time24: any) => {
+  const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
+  const period = +sHours < 12 ? 'AM' : 'PM';
+  const hours = +sHours % 12 || 12;
+
+  return `${hours}:${minutes} ${period}`
+}
 
 
 const downloadFile = ((response: any) => {
@@ -235,7 +284,7 @@ const base64ToImage = (base64: any) => {
 const formatAMPM = (time: any) => {
   if (time) {
     let [hours, minutes, seconds] = time.split(':');
-    var ampm = hours >= 12 ? 'Pm' : 'Am';
+    var ampm = hours >= 12 ? 'pm' : 'am';
     hours = hours % 12;
     hours = hours ? hours : 12;
     let strTime = hours + ':' + minutes + ' ' + ampm;
@@ -287,6 +336,23 @@ const getTimelineRelativeTimeFormat = (date: Date | null | undefined): string =>
   }
 }
 
+
+const mergeTimeSlots = (timeSlots: any) => {
+  let formattedData = []
+  if (timeSlots.length > 1) {
+    formattedData = timeSlots.map((ele: any, index: number) => {
+      const start_time = index === 0 ? ele?.start_time : timeSlots[index - 1]?.end_time
+      const end_time = index === 0 ? timeSlots[timeSlots.length - 1].end_time : ele.start_time
+      return {
+        start_time,
+        end_time
+      }
+    })
+  } else {
+    formattedData = timeSlots
+  }
+  return formattedData
+}
 
 
 export {
@@ -360,5 +426,9 @@ export {
   base64ToImage,
   MAX_LENGTH_PAN_CARD,
   CHILD_PATH,
-  getTimelineRelativeTimeFormat
+  getTimelineRelativeTimeFormat,
+  convertToUpperCase,
+  COMMON_HEADER,
+  mergeTimeSlots,
+  INITIAL_PAGE
 }

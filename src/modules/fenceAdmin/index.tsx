@@ -45,19 +45,27 @@ function FenceAdmin() {
 
 
     useEffect(() => {
+        if (enterPress && model === false) {
+            getAllBranchesListData()
+        }
+    }, [enterPress])
+
+    useEffect(() => {
         getAllBranchesListData()
     }, [])
 
     const getAllBranchesListData = () => {
 
-        const params = {};
+        const params = {
+            ...(searchBranches && { q: searchBranches })
+        };
         dispatch(
             getAllBranchesList({
                 params,
-                onSuccess: (response: any) => {
+                onSuccess: (response: any) => () => {
                     setBranch(response)
                 },
-                onError: () => {
+                onError: () => () => {
                 },
             })
         );
@@ -65,11 +73,17 @@ function FenceAdmin() {
 
 
     useEffect(() => {
-        if (enterPress) {
+
+        if (enterPress && model === true) {
             getRegisteredFenceAdmin(currentPage);
         }
-        getRegisteredFenceAdmin(currentPage)
-    }, [enterPress, selectedBranchId])
+    }, [enterPress])
+
+    useEffect(() => {
+        if (selectedBranchId) {
+            getRegisteredFenceAdmin(currentPage)
+        }
+    }, [selectedBranchId])
 
 
     const normalizedBranchList = (data: any) => {
@@ -89,14 +103,14 @@ function FenceAdmin() {
         }
         dispatch(getEmployeesList({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 success && success?.data.length > 0 && success?.data.map((item: any) => {
                     if (item?.id == selectedBranchId?.fence_admin_id) {
                         setSelectedEmployeeFenceId(item.id)
                     }
                 })
             },
-            onError: () => {
+            onError: (error: any) => () => {
             },
         }))
     }
@@ -120,12 +134,12 @@ function FenceAdmin() {
 
         dispatch(addFenceAdmin({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 getAllBranchesListData()
                 showToast("success", success.message);
                 setModel(!model)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }))
@@ -135,7 +149,7 @@ function FenceAdmin() {
     function proceedModelHandler(selectedBranch: any) {
         setSelectedBranchId(selectedBranch);
         setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
-        getRegisteredFenceAdmin(currentPage)
+        // getRegisteredFenceAdmin(currentPage)
         setModel(!model)
     }
 
@@ -249,7 +263,9 @@ const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: Emp
             <tbody>
                 {
                     tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
-                        return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
+                        return <tr className='align-items-center'
+                            style={{ cursor: 'pointer' }}
+                            onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
                             <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
                             <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
                         </tr>

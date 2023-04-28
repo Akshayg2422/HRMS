@@ -11,7 +11,9 @@ import {
   CommonTable,
   Secondary,
   NoRecordFound,
+  CommonDropdownMenu,
 } from "@components";
+import { Icons } from "@assets";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -27,6 +29,16 @@ import {
   showToast,
   useNav,
 } from "@utils";
+import { t } from "i18next";
+
+export const DROPDOWN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
+  { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
+]
+
+const CARD_DROPDOWN_ITEM = [
+  { id: '1', name: `manageLeaveTypes`, value: 'CL', icon: 'ni ni-active-40' },
+]
 
 function Calendar() {
   const navigation = useNav();
@@ -49,7 +61,15 @@ function Calendar() {
     const params = {
       ...hierarchicalBranchIds,
     };
-    dispatch(fetchCalendardetails({ params }));
+    dispatch(fetchCalendardetails({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   };
 
   function paginationHandler(
@@ -65,24 +85,45 @@ function Calendar() {
     getCalendarDetails(page);
   }
 
+  const dropdownMenuItemActionHandler = (item: any, data: any, index: number) => {
+    const current = calendarEvents.days_holiday[index];
+
+    switch (item.name) {
+      case 'Edit':
+        manageEventEditHandler(current)
+        break;
+
+      case 'Delete':
+        manageEventDeleteHandler(current)
+        break;
+    }
+  }
+
   const normalizedEmployeeLog = (data: any) => {
-    return data.map((el: any) => {
+    return data?.map((el: any, index: number) => {
       return {
         day: el.day,
         title: el.title,
         description: el.description,
+        "": <CommonDropdownMenu
+          data={DROPDOWN_MENU}
+          onItemClick={(e, item) => {
+            e.stopPropagation();
+            dropdownMenuItemActionHandler(item, el, index)
+          }}
+        />
       };
     });
   };
 
   const geteventsdetails = (data: any) => {
-    return data && data.length > 0 && data.map((item: any) => {
+    return data && data?.length > 0 && data?.map((item: any) => {
       let filteredlist = {};
       filteredlist = {
         title: item.title,
         start: item.day,
         end: item.day,
-        color: "green",
+        color: "#52307c",
       };
       return filteredlist;
     });
@@ -101,17 +142,17 @@ function Calendar() {
   };
 
   const handleDateClick = (arg: any) => {
-    let Range = geteventsdetails(calendarEvents?.data.days_holiday).map(
+    let Range = geteventsdetails(calendarEvents?.data?.days_holiday)?.map(
       (item: any) => {
-        if (item.end)
-          return getDatesListBetweenStartEndDates(item.start, item.end);
+        if (item?.end)
+          return getDatesListBetweenStartEndDates(item?.start, item?.end);
       }
     );
-    let match = Range.some((date: any) => date === arg.dateStr);
+    let match = Range?.some((date: any) => date === arg?.dateStr);
     if (match) {
-      onEventClickHandler(arg.dateStr);
+      onEventClickHandler(arg?.dateStr);
     } else {
-      dispatch(getLeaveFromDate(arg.dateStr));
+      dispatch(getLeaveFromDate(arg?.dateStr));
       dispatch(getSelectedEventId(undefined));
       goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS);
     }
@@ -123,12 +164,12 @@ function Calendar() {
     goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS);
   };
 
-  const manageEventEditHandler = (el: object) => {
+  const manageEventEditHandler = (el: any | undefined) => {
     dispatch(getSelectedEventId(el));
     goTo(navigation, ROUTE.ROUTE_MANAGE_HOLIDAYS);
   };
 
-  const manageEventDeleteHandler = (el: object) => {
+  const manageEventDeleteHandler = (el: any | undefined) => {
     dispatch(getSelectedEventId(el));
     setDeleteModel(!deleteModel);
   };
@@ -141,20 +182,20 @@ function Calendar() {
     dispatch(
       deleteHoliday({
         params,
-        onSuccess: (success: any) => {
-          showToast("success",success.message)
+        onSuccess: (success: any) => () => {
+          showToast("success", success.message)
           getCalendarDetails(currentPage);
         },
-        onError: (error: string) => {
+        onError: (error: any) => () => {
           setDeleteModel(!deleteModel);
-          showToast("error", t("somethingWrong"));
+          showToast("error", error);
         },
       })
     );
   };
 
   const onEventClickHandler = (date: string) => {
-    return calendarEvents?.days_holiday.find((element: { day: string }) => {
+    return calendarEvents?.days_holiday?.find((element: { day: string }) => {
       if (element.day === date) {
         dispatch(getSelectedEventId(element));
         setOnEventClickModel(!onEventClickModel);
@@ -169,54 +210,48 @@ function Calendar() {
 
   return (
     <>
-      <Container additionClass={"mt-5 main-contain"}>
+      <Container additionClass={"main-contain"}>
         <Card>
-          <h1 className="mb-3">{t('Calendar')}</h1>
-          <Container additionClass={"row"}>
-            <Container additionClass="col">
-              <ChooseBranchFromHierarchical showCheckBox={false} />
-            </Container>
-
-            <Container additionClass="text-right col mt-4">
+          <Container additionClass="row ">
+            <div className=" col">
+              <h1 className="mb-3">{t('Calendar')}</h1>
+            </div>
+            <div className=" d-flex justify-content-end col mt-1 mb-4 mr-lg--4 mr-sm-0 mr--4 ">
               <Primary
-                additionClass='col col-md-4'
+                size="btn-sm"
+                additionClass=''
                 text={t("addHoildays")}
                 onClick={handleAddHolidays}
               />
-              <Primary
-                additionClass='col mt-sm-0 mt-3 col-md-6'
-                text={t('manageLeaveTypes')}
-                onClick={() => { goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES) }}
+
+              <CommonDropdownMenu
+                data={CARD_DROPDOWN_ITEM}
+                onItemClick={(e, item) => {
+                  e.stopPropagation();
+                  goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+                }}
               />
-            </Container>
+            </div>
+          </Container>
+          <Container additionClass="col-xl-3">
+            <ChooseBranchFromHierarchical showCheckBox={false} />
           </Container>
           <Calender
-            dateClick={handleDateClick}
+            // dateClick={handleDateClick}
             events={geteventsdetails(calendarEvents?.days_holiday)}
           />
         </Card>
         <h1>{t("holidayList")}</h1>
-        <Card>
-          {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
-            <CommonTable
-              noHeader
-              displayDataSet={normalizedEmployeeLog(
-                calendarEvents?.days_holiday
-              )}
-              additionalDataSet={EMPLOYEE_ADDITIONAL_DATA}
-              tableValueOnClick={(e, index, item, elv) => {
-                const current = calendarEvents.days_holiday[index];
-                if (elv === "Edit") {
-                  manageEventEditHandler(current);
-                }
-                if (elv === "Delete") {
-                  manageEventDeleteHandler(current);
-                }
-              }}
-              custombutton={"h5"}
-            />
-          ) : <NoRecordFound />}
-        </Card>
+        {calendarEvents && calendarEvents.days_holiday.length > 0 ? (
+          <CommonTable
+            noHeader
+            displayDataSet={normalizedEmployeeLog(
+              calendarEvents?.days_holiday
+            )}
+
+            custombutton={"h5"}
+          />
+        ) : <NoRecordFound />}
         <Modal
           title={t("deleteHoliday")}
           showModel={deleteModel}
@@ -261,6 +296,7 @@ function Calendar() {
         </Modal>
       </Container>
     </>
+
   );
 }
 

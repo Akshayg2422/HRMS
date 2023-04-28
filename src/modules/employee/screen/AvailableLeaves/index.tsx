@@ -3,7 +3,7 @@ import { getLeaveFromDate, getLeaveTypes, getLeaveTypesDetails } from '../../../
 import { goTo, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function AvailableLeaves() {
     const navigation = useNav();
@@ -21,10 +21,10 @@ function AvailableLeaves() {
         dispatch(
             getLeaveTypes({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     setLeaveTypes(success.leave_types);
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error);
                 },
             })
@@ -50,20 +50,32 @@ function AvailableLeaves() {
         goTo(navigation, ROUTE.ROUTE_APPLY_LEAVE);
     };
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {leaveTypes && leaveTypes.length > 0 ? (
+                <CommonTable
+                    // noHeader
+                    title={t("AvailableLeaves")}
+                    displayDataSet={normalizedEmployeeLog(leaveTypes)}
+
+                // tableOnClick={(e, index, item) => {
+                //   const selectedId = registeredEmployeesList[index].id;
+                //   dispatch(getSelectedEmployeeId(selectedId));
+                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+                // }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [leaveTypes])
+
 
     return (
         <>
-            <Container additionClass={"mt-5 main-contain"}>
-                <BackArrow additionClass='ml-3' />
+            <Container additionClass={"mt-5 main-contain mx-3"}>
                 <Container additionClass='mt-5'>
-                    {leaveTypes && leaveTypes?.length > 0 ? (
-                        <CommonTable
-                            tableTitle={t("AvailableLeaves")}
-                            displayDataSet={normalizedEmployeeLog(leaveTypes)}
-                        />
-                    ) : (
-                        <NoRecordFound />
-                    )}
+                    {
+                        memoizedTable
+                    }
                 </Container>
             </Container>
         </>

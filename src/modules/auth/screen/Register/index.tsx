@@ -7,6 +7,7 @@ import {
   ScreenTitle,
   Primary,
   useKeyPress,
+
 } from "@components";
 import {
   RegisterUserDetail,
@@ -51,11 +52,32 @@ import {
   uploadCompanyDocuments,
 } from "../../../../store/auth/actions";
 import { setUserLoginDetails } from "../../../../store/app/actions";
+import { DynamicHeight } from "@components";
 
 function SignUp() {
   const { t, i18n } = useTranslation();
   let dispatch = useDispatch();
   const enterPress = useKeyPress("Enter");
+
+  const [screenSize, getDimension] = useState({
+    dynamicWidth: window.innerWidth,
+    dynamicHeight: window.innerHeight
+  });
+
+  const setDimension = () => {
+    getDimension({
+      dynamicWidth: window.innerWidth,
+      dynamicHeight: window.innerHeight
+    })
+  }
+
+  useEffect(() => {
+    window.addEventListener('resize', setDimension);
+
+    return (() => {
+      window.removeEventListener('resize', setDimension);
+    })
+  }, [screenSize])
 
 
   const {
@@ -68,7 +90,6 @@ function SignUp() {
   const REGISTER_COMPANY_DETAILS = 3;
   const REGISTER_DOCUMENT_UPLOAD = 4;
 
-  console.log('registerAdminDetails', registerAdminDetails)
 
   const navigation = useNav();
 
@@ -85,8 +106,8 @@ function SignUp() {
   };
 
   useEffect(() => {
-    dispatch(getNatureOfBusiness({}));
-    dispatch(getTypeOfBusiness({}));
+    natureOfBusiness()
+    typeOfBusiness()
   }, []);
 
 
@@ -96,17 +117,47 @@ function SignUp() {
     }
   }, [enterPress])
 
+  const natureOfBusiness = () => {
+    const params = {}
+
+    dispatch(getNatureOfBusiness({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+
+
+  }
+
+  const typeOfBusiness = () => {
+    const params = {}
+    dispatch(getTypeOfBusiness({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
+
 
   const validateUserDetailsParams = () => {
     if (validateName(registerAdminDetails.firstName).status === false) {
       showToast("error", t("invalidName"));
       return false;
-    } else if (
-      validateDefault(registerAdminDetails.lastName).status === false
-    ) {
-      showToast("error", t("invalidsccdName"));
-      return false;
-    }
+    } 
+    // else if (
+    //   validateDefault(registerAdminDetails.lastName).status === false
+    // ) {
+    //   showToast("error", t(""));
+    //   return false;
+    // }
     else if (
       validateMobileNumber(registerAdminDetails.mobileNumber).status === false
     ) {
@@ -122,11 +173,11 @@ function SignUp() {
       showToast("error", t("invalidGender"));
       return false;
     } else if (validateAadhar(registerAdminDetails.aadhaar).status === false) {
-      showToast("error", t("formInvalidParams"));
+      showToast("error", t("InvalidAadhaar"));
       return false;
     }
     else if (validatePAN(registerAdminDetails.pan).status === false) {
-      showToast("error", t("formInvalidParams"));
+      showToast("error", t("InvaliadPan"));
       return false;
     }
     else {
@@ -183,18 +234,19 @@ function SignUp() {
     dispatch(
       getAdminVerificationOtp({
         params,
-        onSuccess: async (response: any) => {
+        onSuccess: (response: any) => async () => {
           const value = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
           dispatch(setUserLoginDetails(value))
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
           dispatch(registerOtpVerify({}))
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       })
     );
   };
+
 
   const validatePostParams = () => {
     const otpConvertor = registerOtp.otp1 + registerOtp.otp2 + registerOtp.otp3 + registerOtp.otp4;
@@ -237,10 +289,11 @@ function SignUp() {
         aadhar_number: registerAdminDetails.aadhaar,
       };
       dispatch(getRegisterAdmin({
-        params, onSuccess: (response: object) => {
+        params,
+        onSuccess: (response: object) => () => {
           dispatch(updateAdminInput({}))
         },
-        onError: (error: any) => {
+        onError: (error: any) => () => {
           showToast("error", error?.error_message ? error?.error_message : error?.error);
 
         },
@@ -263,11 +316,10 @@ function SignUp() {
         state: registerCompanyDetails.state,
         referral_id: registerCompanyDetails.refferalId,
       };
-      console.log("company details params--->", params);
       dispatch(
         getValidateCompanyDetails({
           params,
-          onSuccess: async (response: object) => {
+          onSuccess: (response: object) => async () => {
             let current = await localStorage.getItem(ASYN_USER_AUTH);
             if (current) {
               const jsonValue: object = JSON.parse(current);
@@ -279,13 +331,14 @@ function SignUp() {
             }
             dispatch(updateCompanyInput({}))
           },
-          onError: (error: string) => { },
+          onError: (error: string) => () => {
+            showToast('error', error)
+          },
         })
       );
     }
   };
 
-  // goTo(navigation, ROUTE.ROUTE_EMPLOYEE);
 
   const proceedDocumentUploadAPi = () => {
     let params: object = {};
@@ -298,14 +351,14 @@ function SignUp() {
           params = { ...params, [param]: base64 };
         }
       }
-      console.log(" uploadCompanyDocumentsParams", params);
+      
       dispatch(
         uploadCompanyDocuments({
           params,
-          onSuccess: (response: object) => {
+          onSuccess: (response: object) => () => {
             goTo(navigation, ROUTE.ROUTE_LOGIN);
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })
@@ -332,7 +385,9 @@ function SignUp() {
             }
           />
         </Container>
-        <Container additionClass={`${registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION && 'scrollable-register'} aligns-item-center  justify-content-center`}>
+        <Container additionClass={`${registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION && 'scrollable-register'} d-flex aligns-item-center overflow-auto scroll-hidden  justify-content-center`}
+          style={{ height: registerCurrentContainer !== MOBILE_NUMBER_VERIFICATION ? screenSize.dynamicHeight - 270 : '' }}
+        >
           <Container
             additionClass={"col-xl-9 col-md-9 col-sm-3"}
           >

@@ -1,6 +1,6 @@
 import { Card, CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from '@components';
 import { getShiftRequestedEmployees, postChangeShiftChange } from '../../../../../../store/shiftManagement/actions';
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { showToast } from '@utils';
 import { useTranslation } from 'react-i18next';
@@ -26,7 +26,15 @@ function PendingRequest() {
       page_number: pageNumber,
       ...hierarchicalBranchIds
     }
-    dispatch(getShiftRequestedEmployees({ params }));
+    dispatch(getShiftRequestedEmployees({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
   }
 
   const normalizedRequestList = (data: any) => {
@@ -35,7 +43,7 @@ function PendingRequest() {
       data.length > 0 &&
       data.map((el: any) => {
         return {
-          name: `${el?.name}${' '}(${el?.employee_id})`,
+          Employee: `${el?.name}${' '}(${el?.employee_id})`,
           "Branch": el?.branch_name,
           "Shift": el?.shift_details?.name,
           "Reason": el?.reason,
@@ -92,18 +100,18 @@ function PendingRequest() {
     const params = { id: item.id, status: type }
     dispatch(postChangeShiftChange({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         getEmployeeRequest(-1, currentPage);
         if (type === 1) {
-          showToast("success", success)
+          showToast("success", success.status)
           setApproveModel(!approveModel);
         }
         if (type === 0) {
-          showToast("success", success)
+          showToast("success", success.status)
           setRejectModel(!rejectModel);
         }
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         showToast("error", error)
       }
     }));
@@ -119,26 +127,36 @@ function PendingRequest() {
     setRejectModel(!rejectModel)
   }
 
+  const memoizedTable = useMemo(() => {
+    return <>
+      {shiftRequestedEmployees && shiftRequestedEmployees.length > 0 ? (
+        <CommonTable
+          noHeader
+          card={false}
+          isPagination
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedRequestList(shiftRequestedEmployees)}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [shiftRequestedEmployees])
+
   return (
     <div>
-      <Card>
-        {shiftRequestedEmployees && shiftRequestedEmployees?.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedRequestList(shiftRequestedEmployees)}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
-      </Card>
+      <div>
+        <>
+          {
+            memoizedTable
+          }
+
+        </>
+      </div>
       <Modal
         title={t("approveShift")}
         showModel={approveModel}

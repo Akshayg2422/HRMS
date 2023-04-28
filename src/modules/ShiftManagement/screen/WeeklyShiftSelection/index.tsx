@@ -14,13 +14,13 @@ import { log } from 'console';
 
 
 const WEEK_DAYS_LIST = [
-  { week_day: 1, is_working: true, time_breakdown: [] },
-  { week_day: 2, is_working: true, time_breakdown: [] },
-  { week_day: 3, is_working: true, time_breakdown: [] },
-  { week_day: 4, is_working: true, time_breakdown: [] },
-  { week_day: 5, is_working: true, time_breakdown: [] },
-  { week_day: 6, is_working: false, time_breakdown: [] },
-  { week_day: 7, is_working: false, time_breakdown: [] }]
+  { week_day: 1, is_working: true, time_breakdown: [], api_breakdown: [] },
+  { week_day: 2, is_working: true, time_breakdown: [], api_breakdown: [] },
+  { week_day: 3, is_working: true, time_breakdown: [], api_breakdown: [] },
+  { week_day: 4, is_working: true, time_breakdown: [], api_breakdown: [] },
+  { week_day: 5, is_working: true, time_breakdown: [], api_breakdown: [] },
+  { week_day: 6, is_working: false, time_breakdown: [], api_breakdown: [] },
+  { week_day: 7, is_working: false, time_breakdown: [], api_breakdown: [] }]
 
 
 const WeeklyShiftSelection = () => {
@@ -67,29 +67,103 @@ const WeeklyShiftSelection = () => {
       showToast("error", t('theShiftNameCantBeEmpty'));
       return false;
     }
+    else if (ValidationShift().status) {
+      showToast('error', ValidationShift().errorMessage)
+      return false
+    }
     else {
       return true;
     }
   }
 
+
+  const ValidationShift = () => {
+    let status = { status: false, errorMessage: '' }
+    const hasWorkingWeek = weeklyData.some((week: any) => week.is_working);
+    if (hasWorkingWeek) {
+      weeklyData.forEach((ele: any) => {
+        if (ele.is_working) {
+          const hasWorkingWeekDays = ele.week_calendar.some((weekDays: any) => weekDays.is_working);
+          ele.week_calendar && ele.week_calendar.length > 0 && ele.week_calendar.map((item: any) => {
+            if (hasWorkingWeekDays) {
+              if (item.is_working) {
+                if (item.time_breakdown.length === 0) {
+                  status = { status: true, errorMessage: `Please assign time for enabled week days` }
+                }
+              }
+            } else {
+              status = { status: true, errorMessage: `None of the week Day is enabled` }
+            }
+          })
+        }
+      })
+    } else {
+      status = { status: true, errorMessage: `At least one week should be Enabled` }
+    }
+    return status
+  }
+
   const onSubmit = () => {
     if (validatePostParams()) {
+      weeklyData.forEach((week: any) => {
+        const weekCalendar = week.week_calendar
+        weekCalendar.forEach((weekDay: any) => {
+          const time_breakdown = weekDay.time_breakdown
+          const maxLength = time_breakdown.length
+          weekDay.api_breakdown = []
+          if (maxLength > 0) {
+            if (maxLength === 1) {
+              weekDay.api_breakdown = time_breakdown
+            } else {
+              time_breakdown.forEach((element: any, index: number) => {
+                let start_time = index === 0 ? element.start_time : element.end_time
+                let end_time = time_breakdown[index + 1]?.start_time
+                if (end_time) {
+                  weekDay.api_breakdown = [...weekDay.api_breakdown, {
+                    start_time: start_time,
+                    end_time: end_time
+                  }]
+                } else {
+                  weekDay.api_breakdown = [...weekDay.api_breakdown, {
+                    start_time: start_time,
+                    end_time: time_breakdown[0].end_time
+                  }]
+                }
+              });
+
+            }
+          }
+        });
+      });
+
+      let updatedData = [...weeklyData]
+      updatedData = updatedData.map((week: any) => {
+        const updateWeek = { ...week }
+        updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+          let updateWeek = { ...weekDay }
+          updateWeek.time_breakdown = [...updateWeek.api_breakdown]
+          delete updateWeek.api_breakdown
+          weekDay = updateWeek
+          return weekDay
+        });
+        return updateWeek
+      });
+
       const params = {
         ...(selectedWeeklyShiftId && { id: selectedWeeklyShiftId }),
         group_name: shiftName,
-        weekly_group_details: weeklyData
+        weekly_group_details: updatedData
       }
-      console.log('params', params)
+
       dispatch(
         addWeeklyShift({
           params,
-          onSuccess: (success: any) => {
+          onSuccess: (success: any) => () => {
             showToast("success", success.status);
             selectedWeeklyShiftId && dispatch(selectedWeeklyShiftIdAction(undefined))
             goBack(navigation);
-            // goTo(navigation, ROUTE.ROUTE_SHIFT_LISTING)
           },
-          onError: (error: string) => {
+          onError: (error: string) => () => {
             showToast("error", error);
           },
         })
@@ -97,81 +171,11 @@ const WeeklyShiftSelection = () => {
     }
   }
 
-  //muthu validation
-
-  // const shiftTimeValidation = () => {
-  //   let output = { status: false, error: '' }
-  //   let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
-  //   if (WeekEnable) {
-  //     console.log("weekly shoift on");
-  //     weeklyData.map((element: any) => {
-  //       if (element.is_working) {
-  //         const isDayEnable = element.week_calendar.some((element2: any) => element2.is_working)
-
-  //         if (isDayEnable) {
-  //           console.log("is day enable");
-
-  //           weeklyData.map((element3: any) => {
-
-  //             if (element3.is_working) {
-
-  //               element3.week_calendar.map((element4: any) => {
-
-  //                 if (element4.is_working) {
-
-  //                   if (element4.time_breakdown.length > 0) {
-  //                     console.log("shift time assigned for the selected day");
-  //                   }
-  //                   else {
-  //                     console.log("please assign shift time for the selected day");
-
-  //                   }
-  //                 }
-  //               })
-  //             }
-  //           })
-  //         }
-  //         else {
-  //           console.log("please atleast enable one day to add shift")
-  //         }
-  //       }
-  //     })
-  //   }
-  //   else {
-  //     output = { status: false, error: `Can't Create Shift Please Enable At least one Week` }
-  //   }
-  //   return output
-  // }
-
-
-  // const shiftTimeValidation = () => {
-  //   let output = { status: false, error: '' }
-  //   let WeekEnable = weeklyData.some((enable: any) => enable.is_working)
-  //   if (WeekEnable) {
-  //     weeklyData.map((el: any, i: any) => {
-  //       let weekEnable = el.week_calendar.filter((enable: any) => enable?.is_working)
-  //       if (weekEnable.length > 0) {
-  //         weekEnable.map((el: any) => {
-  //           console.log("el",el.time_breakdown.length);
-
-  //           if (el?.time_breakdown.length > 0) {
-  //             output = { status: true, error: 'No' }
-  //           } else {
-  //             output = { status: false, error: 'Please Select Time For Working Enable Days' }
-  //           }
-  //         })
-  //       } else {
-  //         output = { status: false, error: `Please Enable Days For Enable Week` }
-  //       }
-  //     })
-  //   } else {
-  //     output = { status: false, error: `Can't Create Shift Please Enable At least one Week` }
-  //   }
-  //   return output
-  // }
   const dt = new Date();
 
   function getDate(time: any) {
+
+    const dt = new Date();
     const start = time?.split(':');
     return new Date(
       dt.getFullYear(),
@@ -181,27 +185,21 @@ const WeeklyShiftSelection = () => {
       parseInt(start[1]),
       // parseInt(start[2]),
     );
+
   }
 
-  function dateRangeOverlaps(
-    a_start: any,
-    a_end: any,
-    b_start: any,
-    b_end: any,
+  function isBetween(
+    time: any,
+    checkStart: any,
+    checkEnd: any,
   ) {
-    console.log(a_start + '====' + a_end + '====' + b_start + '=====' + b_end);
 
-    if (a_start <= b_start && b_start <= a_end) {
+    if (checkStart < time && checkEnd > time) {
       return true;
-    } // b starts in a
-    if (a_start <= b_end && b_end <= a_end) {
-      return true;
-    } // b ends in a
-    if (b_start < a_start && a_end < b_end) {
-      return true;
-    } // a in b
+    }
     return false;
   }
+
 
   function updateShiftTimeBreakdown() {
 
@@ -218,73 +216,18 @@ const WeeklyShiftSelection = () => {
         };
 
         if (timeBreakdown && timeBreakdown.length > 0) {
-
-          // if (timeBreakdown.length < 3) {
-          //   const isExist = timeBreakdown.some((each: any) => {
-          //     return (
-          //       currentShift.start_time === each.startTime &&
-          //       currentShift.end_time === each.endTime
-          //     );
-          //   });
-
-          //   console.log("isExist---------->", isExist);
-
-          //   if (!isExist) {
-          //     console.log("timeBreakdown------->", timeBreakdown);
-          //     let is_add = true;
-          //     timeBreakdown.forEach((element: any) => {
-          //       const isOverLab = dateRangeOverlaps(
-          //         getDate(currentShift.start_time),
-          //         getDate(currentShift.end_time),
-          //         getDate(element.start_time),
-          //         getDate(element.end_time),
-          //       );
-          //       console.log("isOverLab--------->", isOverLab);
-
-          //       if (isOverLab) {
-          //         is_add = false;
-          //         return;
-          //       }
-          //     });
-
-          //     if (is_add) {
-          //       console.log("is_add--------------->", is_add);
-          //       changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
-          //     }
-          //     else {
-          //       showToast("error", t('alreadyShiftAllocated'))
-          //     }
-          //   }
-
-          // } else {
-          //   // Toast(I18n.t('overLimit'));
-          //   showToast("error", "overLimit")
-          // }
           if (timeBreakdown.length < 3) {
-            const isMatching = timeBreakdown.some((el: { start_time: any; end_time: any; }) => el.start_time === currentShift.start_time && el.end_time === currentShift.end_time);
+            const isBetweenStartTime = isBetween(getDate(currentShift.start_time), getDate(timeBreakdown[0].start_time), getDate(timeBreakdown[0].end_time))
+            const isBetweenEndTime = isBetween(getDate(currentShift.end_time), getDate(timeBreakdown[0].start_time), getDate(timeBreakdown[0].end_time))
 
-            let isOverlapping = false;
+            if (isBetweenStartTime && isBetweenEndTime) {
+              changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
+            }
+            else {
+              showToast("error", 'your selected break time is not in between selected shift time')
+            }
 
-            for (let i = 0; i < timeBreakdown.length; i++) {
-              const consolidatedTime = timeBreakdown[i];
-              if (currentShift.start_time >= consolidatedTime.start_time && currentShift.start_time < consolidatedTime.end_time ||
-                currentShift.end_time > consolidatedTime.start_time && currentShift.end_time <= consolidatedTime.end_time ||
-                currentShift.start_time <= consolidatedTime.start_time && currentShift.end_time >= consolidatedTime.end_time) {
-                isOverlapping = true;
-                break;
-              }
-            }
-            if (isMatching) {
-              showToast("error", t('alreadyShiftAllocated'))
-            } else {
-              if (isOverlapping) {
-                showToast("error", t('alreadyShiftAllocated'))
-              } else {
-                changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, currentShift] }
-              }
-            }
-          }
-          else {
+          } else {
             showToast("error", 'Limit exceeds')
           }
         }
@@ -303,39 +246,6 @@ const WeeklyShiftSelection = () => {
   }
 
 
-  // const onShiftAdd = () => {
-  //   if (dateValidation()) {
-  //     let updatedWeek = [...weeklyData]
-  //     let selectedWeekPosition = isActiveWeek - 1
-  //     let changedWeek = updatedWeek[selectedWeekPosition]['week_calendar']
-  //     const timeBreakdown = updatedWeek[selectedWeekPosition]['week_calendar'][selectedDayIndex].time_breakdown
-  //     if (timeBreakdown.length === 0) {
-  //       let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-  //       changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
-  //     }
-  //     else if (timeBreakdown.length > 0) {
-  //       let isInRange = false
-  //       for (let i = 0; i < timeBreakdown.length; i++) {
-  //         if ((shiftsTime.inTime > timeBreakdown[i].start_time && shiftsTime.inTime < timeBreakdown[i].end_time) ||
-  //           (shiftsTime.outTime > timeBreakdown[i].start_time && shiftsTime.outTime < timeBreakdown[i].end_time)) {
-  //           showToast("error", t('alreadyShiftAllocated'))
-  //           isInRange = true
-  //         }
-  //       }
-  //       if (!isInRange && changedWeek[selectedDayIndex].time_breakdown.length < 3) {
-  //         let shiftObject = { start_time: shiftsTime.inTime, end_time: shiftsTime.outTime }
-  //         changedWeek[selectedDayIndex] = { ...changedWeek[selectedDayIndex], time_breakdown: [...timeBreakdown, shiftObject] }
-  //       }
-
-  //     }
-  //     setWeeklyData(updatedWeek)
-  //     setOpenModel(!openModel)
-  //     shiftTimeReset()
-  //   }
-  //   else {
-  //     showToast("error", t('timeCantbeempty'))
-  //   }
-  // }
 
 
   const onDelete = (selectedShift: any, index: number) => {
@@ -344,7 +254,13 @@ const WeeklyShiftSelection = () => {
       if (deletedShift[isActiveWeek - 1].week === element.week) {
         element.week_calendar.map((el: any) => {
           if (el.week_day === selectedShift.week_day) {
-            el.time_breakdown.splice(index, 1)
+
+            if (index === 0 && el.time_breakdown.length > 1) {
+              el.time_breakdown.splice(0, el.time_breakdown.length)
+            }
+            else {
+              el.time_breakdown.splice(index, 1)
+            }
           }
         })
       }
@@ -369,25 +285,57 @@ const WeeklyShiftSelection = () => {
     setWeeklyData(updatedWeek)
   }
 
+  const mergeTimeSlots = (timeSlots: any) => {
+    let formattedData = []
+    if (timeSlots.length > 1) {
+      formattedData = timeSlots.map((ele: any, index: number) => {
+        const start_time = index === 0 ? ele?.start_time : timeSlots[index - 1]?.end_time
+        const end_time = index === 0 ? timeSlots[timeSlots.length - 1].end_time : ele.start_time
+        return {
+          start_time,
+          end_time
+        }
+      })
+    } else {
+      formattedData = timeSlots
+    }
+    return [...formattedData]
+  }
+
   const fetchWeeklyShiftDetails = () => {
     const params = { id: selectedWeeklyShiftId }
     dispatch(getWeeklyShiftDetails({
       params,
-      onSuccess: (success: any) => {
-        setWeeklyData(success.weekly_group_details)
+      onSuccess: (success: any) => () => {
+        let updatedData = [...success.weekly_group_details]
+        updatedData = updatedData.map((week: any) => {
+          const updateWeek = { ...week }
+          updateWeek.week_calendar = updateWeek.week_calendar.map((weekDay: any) => {
+            let updateWeek = { ...weekDay }
+            updateWeek.time_breakdown = mergeTimeSlots(updateWeek.time_breakdown)
+            weekDay = updateWeek
+            return weekDay
+          });
+          return updateWeek
+        });
+        setWeeklyData(updatedData)
       },
-      onError: (error: string) => { },
+      onError: (error: string) => () => { },
     }))
   }
-
-
 
   return (
     <>
       <Card>
         <Container additionClass='row'>
-          <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-          <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
+          <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{selectedWeeklyShiftId ? t('editWeeklyShiftDetails') : t('weeksShiftDefinition')}</h2>
+          <Container additionClass='col mt-2 text-right '>
+            <Primary
+              size='btn-sm'
+              text={selectedWeeklyShiftId ? t('update') : t('submit')}
+              onClick={() => onSubmit()}
+            />
+          </Container>
         </Container>
         <Container col={"row"}>
           <InputText
@@ -400,12 +348,7 @@ const WeeklyShiftSelection = () => {
               setShiftName(event.target.value)
             }}
           />
-          <Container additionClass='col mt-xl-4 text-right'>
-            <Primary
-              text={selectedWeeklyShiftId ? t('update') : t('submit')}
-              onClick={() => onSubmit()}
-            />
-          </Container>
+
         </Container>
 
         <Container>
@@ -422,7 +365,6 @@ const WeeklyShiftSelection = () => {
                       className={`nav-link mb-sm-3 mb-md-0 ${it.week === isActiveWeek ? 'active' : ''}`}
                       id={`tabs-icons-text-${it.week}-tab`}
                       data-toggle="tab"
-                      href={`#tabs-icons-text-${it.week}`}
                       role="tab"
                       aria-controls={`tabs-icons-text-${it.week}`}
                       aria-selected="true"
@@ -457,26 +399,27 @@ const WeeklyShiftSelection = () => {
             })}
           </ul>
         </Container>
+        <WeekDaysList
+          datesList={weeklyData[isActiveWeek - 1]}
+          onAddClick={(index) => {
+            setOpenModel(!openModel)
+            setSelectedDayIndex(index)
+          }}
+
+          onCheckBoxClick={(index) => {
+            workingDayStatus(index)
+          }}
+
+          onDeleteClick={(el, index) => {
+            onDelete(el, index)
+          }}
+
+        // onSubmit={() => { onSubmit() }}
+        />
 
       </Card>
 
-      <WeekDaysList
-        datesList={weeklyData[isActiveWeek - 1]}
-        onAddClick={(index) => {
-          setOpenModel(!openModel)
-          setSelectedDayIndex(index)
-        }}
 
-        onCheckBoxClick={(index) => {
-          workingDayStatus(index)
-        }}
-
-        onDeleteClick={(el, index) => {
-          onDelete(el, index)
-        }}
-
-      // onSubmit={() => { onSubmit() }}
-      />
 
       <Modal showModel={openModel} toggle={() => setOpenModel(!openModel)} title={t('selectShiftTiming')}>
         <Container display={'d-flex'} additionClass={'ml-lg-2'}>

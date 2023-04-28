@@ -2,7 +2,7 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import {
   fetchAllBranchesList, postBranchAddition, updateBranchLocationRadius, postEnableBranchRefence, fetchEmployeeCheckinAssociations,
   postEmployeeCheckinAssociations,
-  PostEditBranchNameApi,fetchListAllBranchesList
+  PostEditBranchNameApi, fetchListAllBranchesList
 } from "../../helpers/backend_helper";
 import {
   FETCH_ALL_BRANCHES_LIST, POST_BRANCH_ADDITION, UPDATE_BRANCH_LOCATION_RADIUS, ENABLE_BRANCH_REFENCE,
@@ -38,18 +38,12 @@ function* getAllBranches(action) {
   try {
 
     yield put(showLoader());
-
     const response = yield call(fetchAllBranchesList, action.payload.params);
-
     if (response.success) {
-
       yield put(hideLoader());
-
-      yield put(getAllBranchesListSuccess(response.details));
+      yield put(getAllBranchesListSuccess(response));
       yield call(action.payload.onSuccess(response.details));
-
     } else {
-
       yield put(hideLoader());
       yield put(getAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
@@ -58,6 +52,8 @@ function* getAllBranches(action) {
 
     yield put(hideLoader());
     yield put(getAllBranchesListFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -74,7 +70,7 @@ function* branchAddition(action) {
 
       yield put(hideLoader());
       yield put(branchAdditionSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response.details));
 
     } else {
 
@@ -87,6 +83,8 @@ function* branchAddition(action) {
 
     yield put(hideLoader());
     yield put(branchAdditionFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -108,13 +106,15 @@ function* updateLocationRadius(action) {
 
       yield put(hideLoader());
       yield put(updateBranchLocationRadiusFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(updateBranchLocationRadiusFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -129,19 +129,21 @@ function* enableBranchRefence(action) {
 
       yield put(hideLoader());
       yield put(enableBranchRefenceSuccess(response.details));
-      yield call(action.payload.onSuccess(response));
+      yield call(action.payload.onSuccess(response.details));
 
     } else {
 
       yield put(hideLoader());
       yield put(enableBranchRefenceFailure(response.error_message));
-      yield call(action.payload.onError(response));
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(enableBranchRefenceFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -158,19 +160,21 @@ function* getEmployeeCheckinAssociations(action) {
 
       yield put(hideLoader());
       yield put(getEmployeeCheckinAssociationsSuccess(response.details));
-      yield call(action.payload.onSuccess);
+      yield call(action.payload.onSuccess(response.details));
 
     } else {
 
       yield put(hideLoader());
       yield put(getEmployeeCheckinAssociationsFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getEmployeeCheckinAssociationsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -192,13 +196,15 @@ function* updateEmployeeCheckinAssociations(action) {
 
       yield put(hideLoader());
       yield put(updatetEmployeeCheckinAssociationsFailure(response.error_message));
-      yield call(action.payload.onError);
+      yield call(action.payload.onError(response.error_message));
 
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(updatetEmployeeCheckinAssociationsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -220,6 +226,8 @@ function* updatedBranchName(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(editBranchNameFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }
@@ -232,22 +240,20 @@ function* getListAllBranches(action) {
     const response = yield call(fetchListAllBranchesList, action.payload.params);
 
     if (response.success) {
-
       yield put(hideLoader());
-
-      yield put(getListAllBranchesListSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
+      yield put(getListAllBranchesListSuccess(response.details));
 
     } else {
-
       yield put(hideLoader());
       yield put(getListAllBranchesListFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
     }
   } catch (error) {
-
     yield put(hideLoader());
     yield put(getListAllBranchesListFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
 
   }
 }

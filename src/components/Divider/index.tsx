@@ -1,6 +1,8 @@
 import React from 'react';
 
-const Divider = ({ }) => {
-  return <hr className="my-4"></hr>
+
+
+const Divider = ({ space = 4 }: any) => {
+  return <hr className={`my-${space}`}></hr>
 }
 export default Divider;

@@ -1,52 +1,121 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound } from '@components';
-import React, { useEffect, useRef, useState } from 'react';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu, TableWrapper, Search } from '@components';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName } from '../../../../store/location/actions';
-import { goTo, useNav, ROUTE, showToast, validateDefault } from '@utils';
+import { goTo, useNav, ROUTE, showToast, validateDefault, INITIAL_PAGE } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
+import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/actions';
+
+
+const DROPDOWN_MENU = [
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+]
+const DROPDOWN_MENU_1 = [
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+]
+const DROPDOWN_MENU_2 = [
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+]
+
+const ADMIN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
+]
+
+
+
+type Employee = {
+  id?: string;
+  name?: string;
+  parent_id?: string;
+  has_location?: boolean;
+  fencing_radius?: number;
+  can_update_location?: boolean;
+  geo_location_id?: string;
+  fence_admin_id?: string
+}
 
 function LocationScreen() {
 
   const dispatch = useDispatch();
   const navigation = useNav();
   const { t } = useTranslation();
+
+  const CARD_DROPDOWN_ITEM = [
+    { id: '1', name: 'My branches', value: 'CL', icon: 'ni ni-active-40' },
+  ]
+
   const [branch, setBranch] = useState<any>([])
-  const { brancheslist } = useSelector((state: any) => state.LocationReducer);
+  const { locationNumOfPages,
+    LocationCurrentPage } = useSelector((state: any) => state.LocationReducer);
+
+  const { userLoggedIn, userDetails } = useSelector(
+    (state: any) => state.AppReducer
+  );
+
+  const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
+    (state: any) => state.EmployeeReducer
+  );
+
   const [model, setModel] = useState(false);
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
-  const [modelData, setModelData] = useState<Location>();
+  const [modelData, setModelData] = useState<Location | any>();
   const [editModel, setEditModel] = useState<any>(false);
-  const [searchBranches, setsearchBranches] = useState<any>('')
+  const [searchBranches, setSearchBranches] = useState<any>('')
   const [isRefresh, setIsRefresh] = useState(false);
+  const [isOpenFenceModal, setIsOpenFenceModal] = useState(false)
+
+  const [searchEmployee, setSearchEmployee] = useState<any>('')
+  const [selectedEmployeeFenceId, setSelectedEmployeeFenceId] = useState();
+  const [selectedBranchId, setSelectedBranchId] = useState<any>();
 
   const enterPress = useKeyPress("Enter");
   const inputRef = useRef<HTMLInputElement>();
 
-  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
+  const DEFAULT_RADIUS_LIST = [30, 50, 100, 150, 200, 500, 1000];
 
   useEffect(() => {
-    const params = {};
+    getAllBranchesListData(LocationCurrentPage)
+  }, [isRefresh]);
+
+  const getAllBranchesListData = (pageNumber: number) => {
+    const params = {
+      ...(searchBranches && { q: searchBranches }),
+      page_number: pageNumber,
+    };
     dispatch(
       getAllBranchesList({
         params,
-        onSuccess: (response: any) => {
-          setBranch(response)
+        onSuccess: (response: any) => () => {
+          setBranch(response.data)
         },
-        onError: () => {
-          console.log("=========error");
+        onError: () => () => {
         },
       })
     );
-  }, [isRefresh]);
-
-
+  }
 
   useEffect(() => {
-    if (enterPress) {
-      SelectedBranchFilter()
+    if (enterPress && isOpenFenceModal === false) {
+      getAllBranchesListData(LocationCurrentPage)
+    }
+  }, [enterPress])
+
+  useEffect(() => {
+
+    if (selectedBranchId) {
+      getRegisteredFenceAdmin(INITIAL_PAGE)
+    }
+  }, [selectedBranchId])
+
+  useEffect(() => {
+    if (enterPress && isOpenFenceModal === true) {
+      getRegisteredFenceAdmin(INITIAL_PAGE);
     }
   }, [enterPress])
 
@@ -58,10 +127,102 @@ function LocationScreen() {
     }
   }, [inputRef, editBranchDetails]);
 
+  const dropdownMenuItemActionHandler = (item: any, data?: string | undefined) => {
+
+    switch (item.name) {
+      case 'Edit':
+        handleEdit(data)
+        break;
+
+      case 'Reset radius':
+        setModelData(data)
+        setModel(!model)
+        break;
+
+      case 'Enable refench':
+        enableReFetchApi(data)
+        break;
+
+      case 'Add manage fence admin':
+        proceedModelHandler(data);
+        break;
+    }
+  }
+
+  function proceedModelHandler(selectedBranch: any) {
+    setSelectedBranchId(selectedBranch);
+    setSelectedEmployeeFenceId(selectedBranch.fence_admin_id)
+    setIsOpenFenceModal(!isOpenFenceModal)
+    getRegisteredFenceAdmin(INITIAL_PAGE)
+  }
+
+  function getRegisteredFenceAdmin(pageNumber: number) {
+    const params = {
+      ...(searchEmployee && { q: searchEmployee }),
+      page_number: pageNumber,
+      ...(selectedBranchId && { branch_id: selectedBranchId.id })
+    }
+    dispatch(getEmployeesList({
+      params,
+      onSuccess: (success: any) => () => {
+        success && success?.data.length > 0 && success?.data.map((item: any) => {
+          if (item?.id == selectedBranchId?.fence_admin_id) {
+            setSelectedEmployeeFenceId(item.id)
+          }
+        })
+      },
+      onError: (error: any) => () => {
+      },
+    }))
+  }
+
+  function addFenceAdminApiHandler(item: any) {
+
+    const params = { branch_id: selectedBranchId.id, employee_id: item.id }
+
+    dispatch(addFenceAdmin({
+      params,
+      onSuccess: (success: any) => () => {
+        getAllBranchesListData(LocationCurrentPage)
+        showToast("success", success.message);
+        setIsOpenFenceModal(!isOpenFenceModal)
+        setSearchEmployee('');
+      },
+      onError: (error: string) => () => {
+        showToast("error", error);
+      },
+    }))
+
+  }
+
+
+  const conditionalMenu = (menu: any) => {
+    if (userDetails?.is_admin) {
+      return [...menu, ...ADMIN_MENU]
+    } else {
+      return menu
+    }
+  }
+
+
+
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
       return {
         name: el.name,
+        'Address': el?.address ? el?.address : '-',
+        'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.Tick} /> : <></>,
+        'Fencing Radius': el.fencing_radius + ' m',
+        "": <CommonDropdownMenu
+          data={el.has_location && el.has_location && !el.can_update_location ? conditionalMenu(DROPDOWN_MENU) : el.has_location && el.has_location && el.can_update_location ? conditionalMenu(DROPDOWN_MENU_2) : conditionalMenu(DROPDOWN_MENU_1)}
+          onItemClick={(e, item) => {
+            if (item.name === 'Reset radius') {
+              setModelData(data)
+            }
+            e.stopPropagation();
+            dropdownMenuItemActionHandler(item, el)
+          }}
+        />
       };
     });
   };
@@ -71,47 +232,35 @@ function LocationScreen() {
   };
 
   function resetRadiusApi(radius: number) {
+
     const params = { id: modelData?.geo_location_id, fencing_radius: radius }
     dispatch(updateBranchLocationRadius({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
         setModel(!model)
       },
-      onError: () => {
+      onError: () => () => {
       },
     }))
 
   }
 
-  function enableReFetchApi(branchDetail: Location) {
+  function enableReFetchApi(branchDetail: Location | any) {
 
     const params = { id: branchDetail?.id }
 
     dispatch(enableBranchRefence({
       params,
-      onSuccess: (success: any) => {
+      onSuccess: (success: any) => () => {
         showToast("success", success.message);
         setIsRefresh(!isRefresh)
       },
-      onError: () => {
+      onError: () => () => {
       },
     }))
 
-  }
-
-  const SelectedBranchFilter = () => {
-    let filteredBranch = [...branch]
-    if (searchBranches !== "") {
-      filteredBranch = filteredBranch.filter((element: any) => {
-        return element.name.replace(/\s/g, '').toLowerCase().includes(searchBranches.replace(/\s/g, '').toLowerCase())
-      })
-      setBranch(filteredBranch)
-    }
-    else {
-      setBranch(brancheslist)
-    }
   }
 
   const handleEdit = (item: any) => {
@@ -137,12 +286,12 @@ function LocationScreen() {
       }
       dispatch(editBranchName({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
           showToast("error", error);
         },
       }))
@@ -159,51 +308,84 @@ function LocationScreen() {
     setBranch(updateBranch)
   }
 
+  function paginationHandler(type: 'next' | 'prev' | 'current', position?: number) {
+    let page = type === 'next' ? currentPage + 1 : type === 'prev' ? currentPage - 1 : position;
+    getRegisteredFenceAdmin(page)
+  }
+
+  function branchPaginationHandler(
+    type: "next" | "prev" | "current",
+    position?: number
+  ) {
+    let page =
+      type === "next"
+        ? LocationCurrentPage + 1
+        : type === "prev"
+          ? LocationCurrentPage - 1
+          : position;
+    getAllBranchesListData(page)
+  }
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {branch && branch.length > 0 ? (
+        <CommonTable
+          isPagination
+          currentPage={LocationCurrentPage}
+          noOfPage={locationNumOfPages}
+          paginationNumberClick={(currentPage) => {
+            branchPaginationHandler("current", currentPage);
+          }}
+          previousClick={() => branchPaginationHandler("prev")}
+          nextClick={() => branchPaginationHandler("next")}
+          card={false}
+          displayDataSet={normalizedEmployeeLog(branch)}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [branch])
+
 
   return (
     <>
-      <Card additionClass='mx-3 row'>
-        <h2 className='mb-3'>{t('allRegisteredLocation')}</h2>
-        <Container additionClass={"col-xl-4 row ml--4"}>
-          <InputText
-            value={searchBranches}
-            col={'col'}
-            placeholder={t("searchLocation")}
-            onChange={(e) => {
-              setsearchBranches(e.target.value);
-            }}
-          />
-          <Icon type={"btn-primary"} additionClass={'col-xl-2 mt-xl-2 mt-2 mt-sm-0'} icon={Icons.Search}
-            onClick={() => {
-              SelectedBranchFilter()
-            }}
-          />
-        </Container>
-        <Container additionClass='text-right mt--3'>
-          <Primary
-            text={t("AddBranch")}
-            onClick={() => manageBranchesHandler(undefined)}
-            size={"btn-sm"}
-          />
-        </Container>
-      </Card>
-      {branch && branch.length > 0 ? (
-        <CommonTable
-          displayDataSet={normalizedEmployeeLog(branch)}
-          tableChildren={
-            <LocationTable
-              tableDataSet={branch}
-              resetRadiusOnchange={(item) => {
-                setModelData(item)
-                setModel(!model)
-              }}
-              enableReFetch={enableReFetchApi}
-              onEditClick={(item) => {
-                handleEdit(item)
-              }}
+
+      <TableWrapper
+        title={t('allRegisteredLocation')}
+        buttonChildren={
+          <Container additionClass={"d-flex justify-content-end mr-xl--4"}>
+            {userDetails?.is_admin && <Primary
+              text={t("AddBranch")}
+              onClick={() => manageBranchesHandler(undefined)}
+              size={"btn-sm"}
             />}
-        />
-      ) : <Card additionClass='mx-3'><NoRecordFound /></Card>}
+            <CommonDropdownMenu
+              data={CARD_DROPDOWN_ITEM}
+              onItemClick={(e, item) => {
+                e.stopPropagation();
+                goTo(navigation, ROUTE.ROUTE_MY_BRANCHES)
+              }}
+            />
+          </Container>
+        }
+        filterChildren={
+          <Container additionClass={"col-xl-4 row ml--4"}>
+            <InputText
+              value={searchBranches}
+              col={'col'}
+              placeholder={t("searchLocation")}
+              onChange={(e) => {
+                setSearchBranches(e.target.value);
+              }}
+            />
+            <Container additionClass='col-xl-2'>
+              <Search variant="Button" additionalClassName={' mt-xl-2 mt-1 mt-sm-0'} onClick={() => { getAllBranchesListData(LocationCurrentPage) }} />
+            </Container>
+          </Container>
+        }
+      >
+        {memoizedTable}
+      </TableWrapper>
+
       <Modal
         title={'Select Radius'}
         showModel={model}
@@ -212,9 +394,11 @@ function LocationScreen() {
           return (
             <div
               className='row align-items-center mx-4'
-              onClick={() => resetRadiusApi(el)}>
+              onClick={() => {
+                resetRadiusApi(el)
+              }}>
               <div className='row align-items-center'>
-                <span className='col text-xl text-gray'>{el}</span>
+                <span className='col text-gray'>{el}</span>
                 {modelData && modelData?.fencing_radius === el && <div className='col-2 text-right'><ImageView icon={Icons.TickActive} /></div>}
                 <Divider />
               </div>
@@ -223,6 +407,7 @@ function LocationScreen() {
         })}
 
       </Modal>
+
       <Modal title={t('editBranch')}
         showModel={editModel}
         toggle={() => setEditModel(!editModel)}>
@@ -250,53 +435,77 @@ function LocationScreen() {
           </Container>
         </>
       </Modal>
+
+      {
+        <Modal title={t('selectFenceAdminFromTheListBelow')} showModel={isOpenFenceModal} toggle={() => {
+          setIsOpenFenceModal(!isOpenFenceModal)
+          setSearchEmployee("")
+        }}>
+          <Container additionClass={"col-xl-6 row"}>
+            <InputText
+              value={searchEmployee}
+              col={'col'}
+              placeholder={t("searchEmployee")}
+              onChange={(e) => {
+                setSearchEmployee(e.target.value);
+              }}
+            />
+            <Container additionClass='col-xl-3'>
+              <Search variant={'Button'} additionalClassName=' mt-xl-2 mt-2 mt-sm-0' onClick={() => {
+                getRegisteredFenceAdmin(INITIAL_PAGE)
+              }} />
+            </Container>
+
+          </Container>
+          {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+            <CommonTable
+              card={false}
+              noHeader
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              paginationNumberClick={(currentPage) => { paginationHandler('current', currentPage) }}
+              previousClick={() => paginationHandler('prev')}
+              nextClick={() => paginationHandler('next')}
+              tableChildren={
+                <EmployeeTable
+                  employeeFenceId={selectedEmployeeFenceId}
+                  tableDataSet={registeredEmployeesList}
+                  proceedFenceAdmin={(item) => addFenceAdminApiHandler(item)}
+                />}
+            />
+          ) :
+            <NoRecordFound />
+          }
+        </Modal>
+      }
     </>
   );
 }
 
-type Location = {
-  name: string;
-  id: string;
-  has_location: boolean;
-  can_update_location: boolean;
-  parent_id: string;
-  fencing_radius: number;
-  geo_location_id: string;
-  fence_admin_id: string;
-}
+type EmployeeTableProps = {
+  tableDataSet?: Array<Employee>;
+  employeeFenceId?: any;
+  proceedFenceAdmin?: (item: Employee) => void;
 
-type LocationTableProps = {
-  tableDataSet?: Array<Location>
-  resetRadiusOnchange?: (item: Location) => void;
-  enableReFetch?: (item: Location) => void;
-  onEditClick?: (item: Location) => void;
 }
 
 
-const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch, onEditClick }: LocationTableProps) => {
+const EmployeeTable = ({ tableDataSet, employeeFenceId, proceedFenceAdmin }: EmployeeTableProps) => {
   return <div className='table-responsive'>
-    <table className='table align-items-center table-flush'>
+    <table className='table align-items-center' style={{ marginBottom: '0px' }}>
       <thead className='thead-light'>
         <tr>
           <th scope='col'>{'Name'}</th>
-          <th scope='col'>{'Fencing Radius'}</th>
           <th scope='col'>{''}</th>
-          <th scope='col'>{''}</th>
-          <th scope='col'>{''}</th>
-          <th scope='col'>{'Edit'}</th>
         </tr>
       </thead>
       <tbody>
         {
-          tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Location, index: number) => {
-            return <tr className='align-items-center'>
+          tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: Employee, index: number) => {
+            return <tr className='align-items-center' onClick={() => { if (proceedFenceAdmin) { proceedFenceAdmin(item) } }}>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{item.fencing_radius}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{item.has_location ? <Primary text={'Reset Radius'} size={'btn-sm'} onClick={() => { if (resetRadiusOnchange) resetRadiusOnchange(item) }} /> : <></>}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{(item.has_location && !item.can_update_location) && <Primary text={'Enable Refetch'} size={'btn-sm'} onClick={() => { if (enableReFetch) enableReFetch(item) }} />}</td>
-              <td style={{ whiteSpace: 'pre-wrap' }}  >{<ImageView height={20} width={20} icon={item.has_location ? Icons.Location : Icons.LocationGray} />}</td>
-              <td style={{ whiteSpace: 'pre-wrap', cursor: 'pointer' }} onClick={() => { if (onEditClick) onEditClick(item) }} >{"Edit"}</td>
-
+              <td style={{ whiteSpace: 'pre-wrap' }} >{item.id === employeeFenceId ? <ImageView icon={Icons.TickActive} /> : <></>}</td>
             </tr>
           })
         }
@@ -304,5 +513,8 @@ const LocationTable = ({ tableDataSet, resetRadiusOnchange, enableReFetch, onEdi
     </table>
   </div>
 }
+
+
+
 
 export default LocationScreen;

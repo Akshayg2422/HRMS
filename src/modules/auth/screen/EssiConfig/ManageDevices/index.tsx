@@ -59,7 +59,7 @@ function ManageDevices() {
         dispatch(
             getAllBranchesList({
                 params,
-                onSuccess: (success: object) => {
+                onSuccess: (success: object) => () => {
                     const parentBranch = branchesDropdownData.find(
                         (it: any) => it.id === dashboardDetails.company_branch.id
                     );
@@ -71,7 +71,7 @@ function ManageDevices() {
                         parentBranch,
                     ]);
                 },
-                onError: (error: string) => { },
+                onError: (error: string) => () => { },
             })
         );
     }
@@ -98,7 +98,7 @@ function ManageDevices() {
             showToast('error', t('invalidBranch'))
             return false
         }
-        
+
         else {
             return true
         }
@@ -116,11 +116,11 @@ function ManageDevices() {
             }
             dispatch(postAddEsslDevice({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     showToast("success", success.message)
                     goBack(navigation);
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));

@@ -1,14 +1,14 @@
 import { getDownloadEmployeeCheckinLogs, getMisReport } from '../../../../store/employee/actions';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card, CommonTable, ImageView, Secondary } from '@components';
+import { Card, CommonTable, ImageView, NoRecordFound, Secondary } from '@components';
 import { Icons } from '@assets';
 import moment from 'moment';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { downloadFile, formatAMPM } from '@utils';
 
 type LogReportsProps = {
-    data?: Array<any>;
+    data?: any;
     department: string;
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
@@ -26,6 +26,9 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         (state: any) => state.DashboardReducer
     );
 
+    console.log("data------>",data);
+    
+
     const {
         numOfPages,
         currentPage,
@@ -35,8 +38,8 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
     const { t } = useTranslation();
 
     const getConvertedTableData = (data: any) => {
-        let item = data.data
-        let shiftTime = data.shift_details
+        let item = data?.data
+        let shiftTime = data?.shift_details
         const updatedData = []
         let key = getDatesListBetweenStartEndDates(startDate, endDate)
         for (let i = 0; i < item.length; i++) {
@@ -86,7 +89,13 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
             page_number: pageNumber,
         };
         dispatch(getMisReport({
-            params
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
         }));
     })
 
@@ -113,37 +122,55 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         }
         dispatch(getDownloadEmployeeCheckinLogs({
             params,
-            onSuccess: (response: any) => {
+            onSuccess: (response: any) => () => {
                 downloadFile(response);
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
             },
         }));
     }
     console.log("name---->", name);
 
+
+    const memoizedTable = useMemo(() => {
+        console.log("wwwwwwwwww",data);
+        
+        return <>
+          {data?.data && data?.data?.length > 0 ? (
+            <CommonTable
+              // noHeader
+              card={false}
+              isPagination
+              currentPage={currentPage}
+              noOfPage={numOfPages}
+              paginationNumberClick={(currentPage) => {
+                paginationHandler("current", currentPage);
+              }}
+              previousClick={() => paginationHandler("prev")}
+              nextClick={() => paginationHandler("next")}
+              tableChildren={
+                <LocationTable tableDataSet={getConvertedTableData(data)}
+                    employeeLogDownload={(item: any) => {
+                        getEmployeeCheckInLogsReports(item)
+                    }} />
+            }
+              custombutton={"h5"}
+
+              // tableOnClick={(e, index, item) => {
+              //   const selectedId = registeredEmployeesList[index].id;
+              //   dispatch(getSelectedEmployeeId(selectedId));
+              //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+              // }}
+            />
+          ) : <NoRecordFound />}
+        </>
+      }, [data])
+
     return (
         <>
-            <CommonTable
-                isPagination
-                headerClass='mx--3'
-                tableTitle={name}
-                currentPage={currentPage}
-                noOfPage={numOfPages}
-                paginationNumberClick={(currentPage) => {
-                    paginationHandler("current", currentPage);
-                }}
-                previousClick={() => paginationHandler("prev")}
-                nextClick={() => paginationHandler("next")}
-                tableChildren={
-                    <LocationTable tableDataSet={getConvertedTableData(data)}
-                        employeeLogDownload={(item: any) => {
-                            getEmployeeCheckInLogsReports(item)
-                        }}
-                    />
-                }
-                custombutton={"h5"}
-            />
+            {
+               memoizedTable 
+            }
         </>
     )
 }

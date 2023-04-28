@@ -367,7 +367,9 @@ export interface InputProps extends ContainerProps {
   ref?: any;
   onFocus?: any
   defaultValue?: string
-  onKeyUp?: any
+  onKeyUp?: any,
+  showArrow?: boolean,
+  id?: any
 }
 
 export interface DatePickerProps {
@@ -382,6 +384,7 @@ export interface DatePickerProps {
   disabledDate?: any
   additionalClass?: string
   maxDate?: string
+  name?: string
 }
 
 export interface TableProps {

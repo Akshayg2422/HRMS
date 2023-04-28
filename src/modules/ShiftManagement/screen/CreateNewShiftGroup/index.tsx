@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { BackArrow, CommonTable, Container, DropDown, Icon, InputText, Primary, Card, ImageView, NoRecordFound, TableWrapper, Search } from '@components'
 import {
     useNav,
     showToast,
@@ -49,35 +49,52 @@ const CreateShiftGroup = () => {
     const [selectedEmployeesIds, setSelectedEmployeesIds] = useState([])
     const [searchSelectedEmployee, setSearchSelectedEmployee] = useState('')
     const [filteredEmployees, setFilteredEmployees] = useState([])
+    const [registeredEmployees, setRegisteredEmployees] = useState<any>([])
+    const [isShowManageEmpOnEdit, setIsShowManageEmpOnEdit] = useState(!selectedShiftGroupDetails ? true : false)
 
 
-    const [departmentId, setDepartmentId] = useState('')
-    const [designationId, setDesignationId] = useState('')
-
-    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState('')
-    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
     const [departmentsData, setDepartmentsData] = useState([{
         id: "-1",
         name: "All"
     }])
+
+    const [departmentId, setDepartmentId] = useState(departmentsData[0].id)
+    const [designationId, setDesignationId] = useState('')
+
+    const [selectedEmpListDepartmentId, setSelectedEmpListDepartmentId] = useState(departmentsData[0].id)
+    const [selectedEmpListDesignationId, setSelectedEmpListDesignationId] = useState('')
+
 
 
     useEffect(() => {
         PreFilledDetails()
         getBranchesWeeklyShiftsList()
         getDepartments()
-        dispatch(getDesignationData({}));
+        if (!selectedShiftGroupDetails || isShowManageEmpOnEdit) {
+            getDepartments()
+        }
+        const params = {}
+        dispatch(getDesignationData({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
         return () => {
             setSelectedEmployeesList([])
-            setSelectedEmpListDepartmentId("")
             setSelectedEmpListDesignationId("")
             dispatch(getDesignationGroup(undefined))
         };
     }, []);
 
     useEffect(() => {
-        getEmployeesApi(currentPage)
-    }, [departmentId, designationId])
+        if (!selectedShiftGroupDetails || isShowManageEmpOnEdit) {
+            getEmployeesApi(currentPage)
+        }
+    }, [departmentId, designationId, isShowManageEmpOnEdit])
 
     useEffect(() => {
         selectedEmployeesDepartmentFilter()
@@ -86,38 +103,47 @@ const CreateShiftGroup = () => {
 
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
-        dispatch(getBranchWeeklyShifts({ params }));
+        dispatch(getBranchWeeklyShifts({
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: any) => () => {
+
+            }
+        }));
     }
 
     const getDepartments = (() => {
         const params = {}
         dispatch(getDepartmentData({
             params,
-            onSuccess: (response: any) => {
+            onSuccess: (response: any) => () => {
                 let mergedDepartments = [...departmentsData, ...response]
                 setDepartmentsData(mergedDepartments)
             },
-            onError: (errorMessage: string) => {
+            onError: (errorMessage: string) => () => {
             },
         }));
     })
 
     const PreFilledDetails = () => {
         if (selectedShiftGroupDetails) {
-            setGroupName(selectedShiftGroupDetails.name)
-            setSelectedShift(selectedShiftGroupDetails.weekly_shift.id)
+            setGroupName(selectedShiftGroupDetails?.name)
+            setSelectedShift(selectedShiftGroupDetails?.weekly_shift?.id)
             setDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
             setSelectedEmpListDesignationId(selectedShiftGroupDetails?.weekly_shift?.designation_id)
             selectedEmployeesDepartmentFilter()
-            getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
+            getShiftEmployeesGroupDetails(selectedShiftGroupDetails?.id)
+            // getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
         } else {
             if (designationShiftGroup) {
-                setGroupName(designationShiftGroup.name)
-                setSelectedShift(designationShiftGroup.weekly_shift.id)
+                setGroupName(designationShiftGroup?.name)
+                setSelectedShift(designationShiftGroup?.weekly_shift?.id)
                 setDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 setSelectedEmpListDesignationId(designationShiftGroup?.weekly_shift?.designation_id)
                 selectedEmployeesDepartmentFilter()
-                getShiftEmployeesGroupDetails(designationShiftGroup.id)
+                getShiftEmployeesGroupDetails(designationShiftGroup?.id)
             }
         }
     }
@@ -128,21 +154,17 @@ const CreateShiftGroup = () => {
             branch_id: dashboardDetails?.company_branch?.id,      //65599068-e89b-4ffa-881d-7172d12aaa34 / 8a3f6247-dc2e-4594-9e68-ee3e807e4fc5
             page_number: pageNumber,
             ...(designationId && { designation_id: designationId }),
-            ...(departmentId && { department_id: departmentId }),
+            ...(departmentId && departmentId !== '-1' && { department_id: departmentId }),
             ...(searchEmployee && { q: searchEmployee }),
         };
 
         dispatch(getEmployeesList({
             params,
-            onSuccess: (success: any) => {
-                // if (selectedShiftGroupDetails) {
-                //     getShiftEmployeesGroupDetails(selectedShiftGroupDetails.id)
-                // }
-                // if (designationShiftGroup) {
-                //     getShiftEmployeesGroupDetails(designationShiftGroup.id)
-                // }
+            onSuccess: (success: any) => () => {
+                setRegisteredEmployees([...registeredEmployees, ...success.data])
+
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
 
             },
         }));
@@ -178,18 +200,18 @@ const CreateShiftGroup = () => {
                 name: groupName,
                 weekly_shift_id: selectedShift,
                 employee_ids: selectedEmployeesIds,
-                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails.id }),
-                ...(designationShiftGroup && { id: designationShiftGroup.id }),
+                ...(selectedShiftGroupDetails && { id: selectedShiftGroupDetails?.id }),
+                ...(designationShiftGroup && { id: designationShiftGroup?.id }),
                 designation_id: designationId
             }
             dispatch(postAddShift({
                 params,
-                onSuccess: (success: any) => {
+                onSuccess: (success: any) => () => {
                     setSelectedEmployeesIds([])
                     goBack(navigation);
                     showToast("success", success.status)
                 },
-                onError: (error: string) => {
+                onError: (error: string) => () => {
                     showToast("error", error)
                 },
             }));
@@ -223,11 +245,11 @@ const CreateShiftGroup = () => {
         }
         dispatch(getShiftEmployeesDetails({
             params,
-            onSuccess: (success: any) => {
+            onSuccess: (success: any) => () => {
                 setSelectedEmployeesList(success)
                 setFilteredEmployees(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
             },
         }));
     }
@@ -280,23 +302,26 @@ const CreateShiftGroup = () => {
 
         let updateFilteredData: any = [...selectedEmployeesList]
         updateFilteredData = updateFilteredData.filter((item: any) => {
+            if (selectedEmpListDepartmentId !== '-1') {
+                if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
+                    if (selectedEmpListDepartmentId === item.department_id) {
+                        return item
 
-            if (selectedEmpListDepartmentId && !selectedEmpListDesignationId) {
-                if (selectedEmpListDepartmentId === item.department_id) {
-                    return item
+                    }
+                }
+                else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
+                    if (selectedEmpListDesignationId === item.designation_id) {
+                        return item
 
+                    }
                 }
-            }
-            else if (selectedEmpListDesignationId && !selectedEmpListDepartmentId) {
-                if (selectedEmpListDesignationId === item.designation_id) {
-                    return item
-
+                else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
+                    if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
+                        return item
+                    }
                 }
-            }
-            else if (selectedEmpListDesignationId && selectedEmpListDepartmentId) {
-                if (selectedEmpListDesignationId === item.designation_id && selectedEmpListDepartmentId === item.department_id) {
-                    return item
-                }
+            } else {
+                return item
             }
         }
         )
@@ -304,26 +329,79 @@ const CreateShiftGroup = () => {
     }
 
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
+                <CommonTable
+                    card={false}
+                    noHeader
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    tableChildren={
+                        <EmployeeSetTable
+                            tableDataSet={registeredEmployeesList}
+                            onStatusClick={(item) => {
+                                addAnSelectedEmployees(item)
+                            }}
+                            selectedEmployeeData={selectedEmployeesList}
+                        />
+                    }
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [registeredEmployeesList, filteredEmployees])
+
+    const memoizedFilteredEmployeesTable = useMemo(() => {
+        return <>
+            {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
+                card={false}
+                noHeader
+                title={t('selectedEmployeesList')}
+                tableChildren={
+                    <SelectedEmployeeListTable
+                        tableDataSet={filteredEmployees}
+                        onRevertClick={(item) =>
+                            onRevertSelectedEmployees(item)
+                        }
+                        employeeListDataSet={registeredEmployees}
+                    />
+                }
+            /> : <NoRecordFound />}
+        </>
+    }, [filteredEmployees])
+
+
 
     return (
-        <>
-            <Card additionClass='mx--2'>
-                <Container additionClass={"mx-2 "}>
-                    <Container additionClass='row'>
-                        <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
+        <TableWrapper>
+            <div className='mx-2 mt--4'>
+                <Container additionClass={"mx-2"}>
+                    <Container additionClass='d-flex justify-content-between'>
+                        <h2 className={"col-sm col-md-11 col-xl-6"}>{selectedShiftGroupDetails ? t('editShiftGroup') : `${t('assignEmployeeToShift')} (${designationShiftGroup?.name})`}</h2>
+                        {!isShowManageEmpOnEdit && selectedShiftGroupDetails && (
+                            <Primary size={'btn-sm'} text={'Manage employee'} onClick={() => { setIsShowManageEmpOnEdit(true) }}
+                            ></Primary>
+                        )}
                     </Container>
                     {designationShiftGroup && <Container additionClass={'float-right'}>
                         <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                         ></Primary>
                     </Container>}
+
+
                     {selectedShiftGroupDetails && <Container
-                        flexDirection={"row"}
-                        additionClass={"col"}
+                        flexDirection={isShowManageEmpOnEdit ? "row" : 'column'}
+                        additionClass={isShowManageEmpOnEdit ? "col" : ''}
                         margin={'mt-4'}
-                        alignItems={"align-items-center"}
                     >
-                        <Container col={"col-xl-3 col-md-6 col-sm-12"}>
+
+                        <Container col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 `}>
                             <InputText
                                 placeholder={t('enterTheGroupName')}
                                 label={t('groupName')}
@@ -334,7 +412,7 @@ const CreateShiftGroup = () => {
                             />
                         </Container>
                         <Container
-                            col={"col-xl-3 col-md-6 col-sm-12"}
+                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12`}
                             additionClass={"xl-4"}
                         >
                             <DropDown
@@ -349,8 +427,8 @@ const CreateShiftGroup = () => {
 
                         </Container>
                         <Container
-                            col={"col-xl-3 col-md-6 col-sm-12"}
-                            additionClass={"xl-4"}
+                            col={`${isShowManageEmpOnEdit ? 'col-xl-3' : 'col-xl-5'} col-md-6 col-sm-12 `}
+                            additionClass={"xl-4"} style={{ marginTop: "1px" }}
                         >
                             <DropDown
                                 label={t('designation')}
@@ -364,145 +442,127 @@ const CreateShiftGroup = () => {
                                 }}
                             />
                         </Container>
-                        <Container additionClass={'float-right'}>
+                        <div className='float-right mb-3 ml-3' style={{ marginTop: "35px" }}>
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
-                        </Container>
+                        </div>
+
+                        {isShowManageEmpOnEdit && (
+                            <h2>{'Assign shift Employees'}</h2>
+                        )}
+
                     </Container>}
 
                 </Container>
-            </Card>
+            </div>
             <Container additionClass={'row '}>
 
                 {/**
                  * Employee List Table and search input
                  */}
 
-                <Card margin={'mt-4'} additionClass={'col-xl col-sm-3 mx-2'}>
-                    <h3>{t('allEmployees')}</h3>
-                    <Container additionClass={'row'}>
-                        <Container col={"col col-md-6 col-sm-12 mt-xl-4"} >
-                            <InputText
-                                placeholder={t('enterEmployeeName')}
-                                onChange={(e) => {
-                                    setSearchEmployee(e.target.value);
-                                }}
-                            />
-                        </Container>
-                        <Container
-                            col={"col-md-6 col-sm-12"}
-                            additionClass={"xl-4"}
-                        >
-                            <DropDown
-                                label={t('department')}
-                                placeholder={t('selectDepartment')}
-                                data={departmentDropdownData}
-                                value={departmentId}
-                                onChange={(event) => {
-                                    setDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
-                                }}
-                            />
-                        </Container>
-                    </Container>
-
-                    <Container additionClass={'row'}>
-                        <Container
-                            col={"col"}
-                            additionClass={'mb-3'}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => { proceedSearchApi() }}
-                        >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
-                        </Container>
-                    </Container>
-
-
-                    {registeredEmployeesList && registeredEmployeesList.length > 0 ? (
-                        <CommonTable
-                            noHeader
-                            isPagination
-                            currentPage={currentPage}
-                            noOfPage={numOfPages}
-                            paginationNumberClick={(currentPage) => {
-                                paginationHandler("current", currentPage);
-                            }}
-                            previousClick={() => paginationHandler("prev")}
-                            nextClick={() => paginationHandler("next")}
-                            tableChildren={
-                                <EmployeeSetTable
-                                    tableDataSet={registeredEmployeesList}
-                                    onStatusClick={(item) => {
-                                        addAnSelectedEmployees(item)
+                {!selectedShiftGroupDetails || isShowManageEmpOnEdit ? (
+                    <div className={'col-xl col-sm-3 mx-3  mt-4'}>
+                        <h3 className='mx-3 m-0'>{t('allEmployees')}</h3>
+                        <Container additionClass={'row mx-0'}>
+                            <Container col={"col col-md-6 col-sm-12 mt-xl-4 m-0"} >
+                                <InputText
+                                    label='Search'
+                                    placeholder={t('enterEmployeeName')}
+                                    onChange={(e) => {
+                                        setSearchEmployee(e.target.value);
                                     }}
-                                    selectedEmployeeData={selectedEmployeesList}
                                 />
-                            }
+                            </Container>
+                            <Container
+                                col={"col-md-6 col-sm-12"}
+                                additionClass={"xl-4 mt-4"}
+                            >
+                                <DropDown
+                                    label={t('department')}
+                                    placeholder={t('selectDepartment')}
+                                    data={departmentsData}
+                                    value={departmentId}
+                                    onChange={(event) => {
+                                        setDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
+                                    }}
+                                />
+                            </Container>
+                        </Container>
 
-                        />
-                    ) : <NoRecordFound />}
-                </Card>
+                        <Container additionClass={'row mx-0'}>
+                            <Container
+                                col={"col"}
+                                additionClass={'mb-3'}
+                                justifyContent={"justify-content-center"}
+                                alignItems={"align-items-center"}
+                            >
+                                {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+                                <Search variant="Button" onClick={() => { proceedSearchApi() }} />
+                            </Container>
+                        </Container>
+
+                        {
+                            memoizedTable
+                        }
+                    </div>
+                ) : <></>}
+
 
                 {/**
                  * Selected Employee List Table and search input
                  */}
 
-                <Card additionClass='col-xl col-sm-3 col-0 mt-4 mx-2 '>
-                    <h3>{t('selectedEmployeesList')}</h3>
-                    <Container additionClass={'row'}>
-                        <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
-                            <InputText
-                                placeholder={t('enterEmployeeName')}
-                                value={searchSelectedEmployee}
-                                onChange={(e) => {
-                                    setSearchSelectedEmployee(e.target.value)
-                                }}
-                            />
-                        </Container>
-                        <Container
-                            col={"col-md-6 col-sm-12"}
-                        >
-                            <DropDown
-                                label={t('department')}
-                                placeholder={t('selectDepartment')}
-                                data={departmentDropdownData}
-                                value={selectedEmpListDepartmentId}
-                                onChange={(event) => {
-                                    setSelectedEmpListDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
-                                }}
-                            />
-                        </Container>
-                    </Container>
+                {!selectedShiftGroupDetails || isShowManageEmpOnEdit ? (
 
-                    <Container additionClass={'row'}>
-                        <Container
-                            col={"col"}
-                            additionClass={'mb-3'}
-                            justifyContent={"justify-content-center"}
-                            alignItems={"align-items-center"}
-                            onClick={() => { SelectedEmployeeFilter() }}
-                        >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                    <div className='col-xl col-sm-3 col-0 mt-4 mx-2 '>
+                        <h3 className='m-0'>{t('selectedEmployeesList')}</h3>
+                        <Container additionClass={'row'}>
+                            <Container col={"col col-md-6 col-sm-12 mt-xl-4"}>
+                                <InputText
+                                    label='Search'
+                                    placeholder={t('enterEmployeeName')}
+                                    value={searchSelectedEmployee}
+                                    onChange={(e) => {
+                                        setSearchSelectedEmployee(e.target.value)
+                                    }}
+                                />
+                            </Container>
+                            <Container
+                                col={"col-md-6 col-sm-12"}
+                                additionClass={"mt-4"}
+                            >
+                                <DropDown
+                                    label={t('department')}
+                                    placeholder={t('selectDepartment')}
+                                    data={departmentsData}
+                                    value={selectedEmpListDepartmentId}
+                                    onChange={(event) => {
+                                        setSelectedEmpListDepartmentId(dropDownValueCheck(event.target.value, t('selectDepartment')))
+                                    }}
+                                />
+                            </Container>
                         </Container>
-                    </Container>
 
-                    {filteredEmployees && filteredEmployees.length > 0 ? <CommonTable
-                        noHeader
-                        tableTitle={t('selectedEmployeesList')}
-                        tableChildren={
-                            <SelectedEmployeeListTable
-                                tableDataSet={filteredEmployees}
-                                onRevertClick={(item) =>
-                                    onRevertSelectedEmployees(item)
-                                }
-                                employeeListDataSet={registeredEmployeesList}
-                            />
+                        <Container additionClass={'row'}>
+                            <Container
+                                col={"col"}
+                                additionClass={'mb-3'}
+                                justifyContent={"justify-content-center"}
+                                alignItems={"align-items-center"}
+
+                            >
+                                <Search variant="Button" onClick={() => { SelectedEmployeeFilter() }} />
+                            </Container>
+                        </Container>
+                        {
+                            memoizedFilteredEmployeesTable
                         }
-                    /> : <NoRecordFound />}
-                </Card>
+                    </div>
+                ) : <></>}
             </Container>
 
-        </>
+        </TableWrapper>
     )
 }
 
@@ -553,11 +613,13 @@ const EmployeeSetTable = ({
                             let equal = selectedEmployeeData?.some((it) => it.employee_pk === item.id || it.id === item.id)
 
                             return (
-                                <tr className="align-items-center">
+                                <tr className="align-items-center" style={{ cursor: 'pointer' }}
+                                    onClick={() => { if (onStatusClick) onStatusClick(item) }}
+                                >
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item?.name}${" "}(${item.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.TickActive : Icons.TickDefault} onClick={() => { if (onStatusClick) onStatusClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.TickActive : Icons.TickDefault} /></td>
 
                                 </tr>
                             );
@@ -617,7 +679,7 @@ const SelectedEmployeeListTable = ({
                                     <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${" "}(${item?.employee_id
                                         })`}</td>
                                     <td style={{ whiteSpace: "pre-wrap" }}>{item?.mobile_number}</td>
-                                    <td style={{ whiteSpace: "pre-wrap" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
+                                    <td style={{ whiteSpace: "pre-wrap", cursor: "pointer" }}><ImageView icon={equal ? Icons.DeleteSecondary : null} onClick={() => { if (onRevertClick) onRevertClick(item) }} /></td>
 
                                 </tr>
                             );

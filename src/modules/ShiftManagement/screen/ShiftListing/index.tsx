@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, useKeyPress } from '@components'
+import React, { useEffect, useMemo, useState } from 'react'
+import { BackArrow, Card, CommonTable, Container, Icon, InputText, NoRecordFound, Primary, Search, TableWrapper, useKeyPress } from '@components'
 import {
 
     goTo,
@@ -44,10 +44,10 @@ const ShiftListing = () => {
     const getBranchesWeeklyShiftsList = () => {
         const params = { branch_id: dashboardDetails?.company_branch?.id }
         dispatch(getBranchWeeklyShifts({
-            params, onSuccess: (success: any) => {
+            params, onSuccess: (success: any) => () => {
                 setShiftList(success)
             },
-            onError: (error: string) => {
+            onError: (error: string) => () => {
                 showToast("error", error);
             },
         }));
@@ -64,7 +64,7 @@ const ShiftListing = () => {
     const normalizedBranchWeeklyShifts = (branchesWeeklyShift: any) => {
         return branchesWeeklyShift && branchesWeeklyShift.length > 0 && branchesWeeklyShift.map((element: any) => {
             return {
-               "Shift Name": element.group_name,
+                "Shift Name": element.group_name,
             };
         });
     };
@@ -90,13 +90,46 @@ const ShiftListing = () => {
         }
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {shiftList && shiftList.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    card={false}
+                    displayDataSet={normalizedBranchWeeklyShifts(shiftList)}
+                    additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
+                    tableOnClick={(e: any) => {
+                    }}
+                    tableValueOnClick={(e, index, item, elv) => {
+                        const current = shiftList[index];
+                        if (elv === "Edit") {
+                            dispatch(selectedWeeklyShiftNameAction(current.group_name))
+                            manageWeeklyShiftSelectionHandler(current.id)
+                        }
+                        if (elv === "Delete") {
+                            deleteBranchShift()
+                        }
+                    }}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [shiftList])
+
     return (
         <>
-            <Container>
-                <Card additionClass={'mx-3'}>
+            <TableWrapper>
+                <div className={'mx-3 mt--4'}>
                     <Container additionClass='row'>
-                        <BackArrow additionClass={"my-2 col-sm col-xl-1"} />
-                        <h2 className={"my-2 ml-xl--5 col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
+                        <h2 className={"my-2  col-sm col-md-11 col-xl-4"}>{t('WeelelyshiftListing')}</h2>
+                        <Container additionClass="text-right col">
+                            <Primary
+                                size='btn-sm'
+                                text={t('addNew')}
+                                onClick={() => {
+                                    manageWeeklyShiftSelectionHandler(undefined)
+                                }}
+                            />
+                        </Container>
                     </Container>
                     <Container additionClass='row mt-xl-3'>
                         <InputText
@@ -111,41 +144,17 @@ const ShiftListing = () => {
                             additionClass={'mt-xl-2'}
                             justifyContent={"justify-content-center"}
                             alignItems={"align-items-center"}
-                            onClick={() => { searchHandler() }}
                         >
-                            <Icon type={"btn-primary"} icon={Icons.Search} />
+                            {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
+                            <Search variant="Button" additionalClassName={''} onClick={() => { searchHandler() }} />
                         </Container>
-                        <Container additionClass="text-right col">
-                            <Primary
-                                text={t('addNew')}
-                                onClick={() => {
-                                    manageWeeklyShiftSelectionHandler(undefined)
-                                }}
-                            />
-                        </Container>
+
                     </Container>
-                </Card>
-                {shiftList && shiftList.length > 0 ? (
-                    <Container margin={'mt-4'} additionClass={'mx-0'}>
-                        <CommonTable
-                            displayDataSet={normalizedBranchWeeklyShifts(shiftList)}
-                            additionalDataSet={EMPLOYEE_ADDITIONAL_DATA_EDIT}
-                            tableOnClick={(e: any) => {
-                            }}
-                            tableValueOnClick={(e, index, item, elv) => {
-                                const current = shiftList[index];
-                                if (elv === "Edit") {
-                                    dispatch(selectedWeeklyShiftNameAction(current.group_name))
-                                    manageWeeklyShiftSelectionHandler(current.id)
-                                }
-                                if (elv === "Delete") {
-                                    deleteBranchShift()
-                                }
-                            }}
-                        />
-                    </Container>
-                ) : <Container additionClass={'mx-3'}><NoRecordFound /></Container>}
-            </Container>
+                </div>
+                {
+                    memoizedTable
+                }
+            </TableWrapper>
         </>
     )
 }

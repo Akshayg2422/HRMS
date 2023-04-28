@@ -3,6 +3,7 @@ import { Icons } from '@assets';
 import { useDispatch, useSelector } from 'react-redux';
 import { faceReRegisterRequestAction } from '../../../../store/dashboard/actions';
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
+import { useMemo } from 'react';
 
 const RejectFaceRequest = () => {
     let dispatch = useDispatch();
@@ -37,7 +38,7 @@ const RejectFaceRequest = () => {
                         {/* <img className='ml-3' src={el?.employee_photos[3]} height={150} style={{ objectFit: "cover" }} width={100}></img> */}
                     </>,
                     "Re-register Photo": <img src={el?.log_photos_b64[0]} height={150} style={{ objectFit: "cover" }} width={100}></img>,
-                    name: `${el?.name}`,
+                    'name': `${el?.name}`,
                     "PhoneNo": el?.mobile_number,
                     "Location": el?.checkin_location,
                     "Time": el?.checkin_time ? getDisplayDateTimeFromMoment(getMomentObjFromServer(el?.checkin_time)) : '',
@@ -60,27 +61,30 @@ const RejectFaceRequest = () => {
         getEmployeeRequest(0, page);
     }
 
+    const memoizedTable = useMemo(() => {
+        return <>
+            {faceReRegisterRequestDetails && faceReRegisterRequestDetails.length > 0 ? (
+                <CommonTable
+                    noHeader
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    displayDataSet={normalizedRequestList(faceReRegisterRequestDetails)}
+                />
+            ) : <NoRecordFound />}
+        </>
+    }, [faceReRegisterRequestDetails])
 
     return (
         <div>
-            <Card>
-                {faceReRegisterRequestDetails && faceReRegisterRequestDetails?.length > 0 ? (
-                    <CommonTable
-                        noHeader
-                        isPagination
-                        currentPage={currentPage}
-                        noOfPage={numOfPages}
-                        paginationNumberClick={(currentPage) => {
-                            paginationHandler("current", currentPage);
-                        }}
-                        previousClick={() => paginationHandler("prev")}
-                        nextClick={() => paginationHandler("next")}
-                        displayDataSet={normalizedRequestList(faceReRegisterRequestDetails)}
-                    />
-                ) : (
-                    <NoRecordFound />
-                )}
-            </Card>
+            {
+                memoizedTable
+            }
         </div>
     )
 }

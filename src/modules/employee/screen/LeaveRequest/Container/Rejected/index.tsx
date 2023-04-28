@@ -3,7 +3,7 @@ import {
   changeEmployeeLeaveStatus, getEmployeeLeaves, getEmployeeLeavesSuccess, getSelectedEventId,
 } from "../../../../../../store/employee/actions";
 import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -28,9 +28,9 @@ const Rejected = () => {
     };
     dispatch(getEmployeeLeaves({
       params,
-      onSuccess: (success: object) => {
+      onSuccess: (success: object) => () => {
       },
-      onError: (error: string) => {
+      onError: (error: string) => () => {
         dispatch(getEmployeeLeavesSuccess(''))
       },
     }));
@@ -52,7 +52,7 @@ const Rejected = () => {
   const normalizedEmployeeLog = (data: any) => {
     return data && data.length > 0 && data.map((el: any) => {
       return {
-        name: `${el.name}${' '}(${el.employee_id})`,
+        Employee: `${el.name}${' '}(${el.employee_id})`,
         "Date From": el.date_from,
         "Date To": el.date_to,
         "Leave Types": el.leave_type,
@@ -76,43 +76,55 @@ const Rejected = () => {
     dispatch(
       changeEmployeeLeaveStatus({
         params,
-        onSuccess: (success: any) => {
+        onSuccess: (success: any) => () => {
           setRevertModel(!revertModel)
           fetchRejectedLeaves(currentPage);
           showToast('success', success?.status)
         },
-        onError: (error: string) => {
+        onError: (error: string) => () => {
+          showToast('error', error)
         },
       })
     );
   };
+
+  const memoizedTable = useMemo(() => {
+    return <>
+      {employeesLeaves && employeesLeaves.length > 0 ? (
+        <CommonTable
+          noHeader
+          isPagination
+          card={false}
+          currentPage={currentPage}
+          noOfPage={numOfPages}
+          paginationNumberClick={(currentPage) => {
+            paginationHandler("current", currentPage);
+          }}
+          previousClick={() => paginationHandler("prev")}
+          nextClick={() => paginationHandler("next")}
+          displayDataSet={normalizedEmployeeLog(employeesLeaves)}
+          additionalDataSet={LEAVE_STATUS_REVERT}
+          tableValueOnClick={(e, index, item, elv) => {
+            const current = employeesLeaves[index];
+            if (elv === "Revert") {
+              RevertStatusHandler(current);
+            }
+          }}
+          custombutton={"h5"}
+        />
+      ) : <NoRecordFound />}
+    </>
+  }, [employeesLeaves])
+
+
   return (
     <div>
-      <div className="row">
-        {employeesLeaves && employeesLeaves.length > 0 ? (
-          <CommonTable
-            noHeader
-            isPagination
-            currentPage={currentPage}
-            noOfPage={numOfPages}
-            paginationNumberClick={(currentPage) => {
-              paginationHandler("current", currentPage);
-            }}
-            previousClick={() => paginationHandler("prev")}
-            nextClick={() => paginationHandler("next")}
-            displayDataSet={normalizedEmployeeLog(employeesLeaves)}
-            additionalDataSet={LEAVE_STATUS_REVERT}
-            tableValueOnClick={(e, index, item, elv) => {
-              const current = employeesLeaves[index];
-              if (elv === "Revert") {
-                RevertStatusHandler(current);
-              }
-            }}
-            custombutton={"h5"}
-          />
-        ) : (
-          <NoRecordFound />
-        )}
+      <div className="">
+        <>
+          {
+            memoizedTable
+          }
+        </>
       </div>
       <Modal
         title={t("revertStatus")}

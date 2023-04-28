@@ -76,7 +76,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
   return (
     <>
       {datesList && datesList.is_working && (
-        <Card>
+        <div>
           <Container additionClass='col-lg-12  px-3'>
             {datesList.week_calendar && datesList.week_calendar.length > 0 && datesList.week_calendar.map((it: any, index: number) => {
               return listingWeekDays(it, index)
@@ -90,7 +90,7 @@ const WeekDaysList = ({ datesList, onCheckBoxClick, onAddClick, onDeleteClick, o
               />
             </div>
           </Container>} */}
-        </Card>
+        </div>
 
       )}
     </>

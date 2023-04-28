@@ -1,5 +1,5 @@
 import React from 'react'
-import { TABLE_ELEMENT_TEXT_BUTTON, TABLE_CONTENT_TYPE_REPORT, TABLE_ELEMENT_TEXT_IMAGE } from '@utils'
+import { TABLE_ELEMENT_TEXT_BUTTON, TABLE_CONTENT_TYPE_REPORT, TABLE_ELEMENT_TEXT_IMAGE, convertToUpperCase } from '@utils'
 import { Container, Badge, ImageView, Primary, Secondary, } from '@components';
 import { Icons } from '@assets'
 
@@ -16,6 +16,7 @@ interface TableProps {
   tableContentType?: number;
   comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>;
   custombutton?: string
+  customButtonColor?:string
 
 }
 
@@ -25,27 +26,27 @@ interface Element {
   elh: string
 }
 
-function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet }: TableProps) {
+function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet,customButtonColor="primary" }: TableProps) {
 
   const renderTableHeader = () => {
     if (displayDataSet) {
       const header = Object.keys(displayDataSet[0])
       return header.map(key => {
-        return <th  scope="col" key={key}>{key}</th>
+        return <th scope="col" key={key}>{key}</th>
       })
     }
   }
 
   function renderTableValue(eachObject: object) {
     return Object.keys(eachObject).map((key: string) => {
-      return <td  style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
+      return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
     })
   }
 
 
 
   function getValueElement(key: string, item: object) {
-    let element = <span>{item[key as keyof object]}</span>;
+    let element = <span>{key == 'name' || key == 'Name' || key == 'NAME' ? convertToUpperCase(item[key as keyof object]) : item[key as keyof object]}</span>;
     // switch (key) {
     //   case 'STATUS':
     //     element = <span className='text-primary'>{item[key]}</span>
@@ -77,7 +78,7 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
     let element = null;
     switch (item.elt) {
       case TABLE_ELEMENT_TEXT_BUTTON:
-        element = <span style={{ cursor: 'pointer' }} className={`text-primary ${custombutton}`}>{item.elv}</span>
+        element = <span style={{ cursor: 'pointer' }} className={`text-${item.elv == 'Reject' ? "danger" : "primary"} ${custombutton}`}>{item.elv}</span>
         break;
       case TABLE_ELEMENT_TEXT_IMAGE:
         element = <span className='text-primary'>{item.elv}</span>

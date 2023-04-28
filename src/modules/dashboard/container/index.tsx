@@ -1,5 +1,5 @@
-import Navbar from "./Navbar";
 import DashBoardCard from "./DashBoard";
 import Header from "./Header";
 
-export {Navbar, DashBoardCard, Header}
+export { DashBoardCard, Header}
+export * from './Navbar'
