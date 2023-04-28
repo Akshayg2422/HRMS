@@ -42,7 +42,10 @@ import {
   ENABLE_OFFICE_CHECK_IN,
   POST_FACE_VALIDATION_STATUS,
   FETCH_EMPLOYEE_BASIC_INFO,
-  FETCH_EMPLOYEE_ATTENDANCE_INFO
+  FETCH_EMPLOYEE_ATTENDANCE_INFO,
+  EMPLOYEE_MODIFY_REQUEST,
+  ADMIN_MODIFY_LOG,
+  CHANGE_MODIFY_LOG_STATUS
 
 } from "./actionTypes";
 
@@ -137,7 +140,13 @@ import {
   getEmployeeBasicInfoFailure,
 
   getEmployeeAttendanceInfoSuccess,
-  getEmployeeAttendanceInfoFailure
+  getEmployeeAttendanceInfoFailure,
+  postEmployeeModifyRequestSuccess,
+  postEmployeeModifyRequestFailure,
+  postAdminModifyLogSuccess,
+  postAdminModifyLogFailure,
+  changeEmployeeModifyLogStatusSuccess,
+  changeEmployeeModifyLogStatusFailure
 
 } from "./actions";
 
@@ -185,7 +194,10 @@ import {
 
   fetchEmployeeBasicInfoApi,
 
-  fetchEmployeeAttendanceInfoApi
+  fetchEmployeeAttendanceInfoApi,
+  employeeModifyRequestApi,
+  adminModifyLogApi,
+  postChangeEmployeeModifyLogStatus
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -689,6 +701,54 @@ function* applyLeave(action) {
   }
 }
 
+
+function* employeeModifyRequestSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(employeeModifyRequestApi, action.payload.params);
+
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(postEmployeeModifyRequestSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(postEmployeeModifyRequestFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(postEmployeeModifyRequestFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+
+function* adminModifyLogSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(adminModifyLogApi, action.payload.params);
+
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(postAdminModifyLogSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(postAdminModifyLogFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(postAdminModifyLogFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
 function* FetchCalendardetails(action) {
   try {
     yield put(showLoader());
@@ -697,7 +757,7 @@ function* FetchCalendardetails(action) {
     if (response.success) {
       yield put(hideLoader());
       yield put(fetchCalendardetailsSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
 
     } else {
       yield put(hideLoader());
@@ -734,6 +794,32 @@ function* changeSelectedEmployeeLeaveStatus(action) {
   } catch (error) {
     yield put(hideLoader());
     yield put(changeEmployeeLeaveStatusFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+  }
+}
+
+
+function* changeSelectedEmployeeModifyLogStatus(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(
+      postChangeEmployeeModifyLogStatus,
+      action.payload.params
+    );
+    if (response.success) {
+      yield put(hideLoader());
+      yield put(changeEmployeeModifyLogStatusSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+    } else {
+      yield put(hideLoader());
+      yield put(changeEmployeeModifyLogStatusFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(changeEmployeeModifyLogStatusFailure("Invalid Request"));
     yield call(action.payload.onError(error));
   }
 }
@@ -1274,6 +1360,9 @@ function* EmployeeSaga() {
   yield takeLatest(POST_FACE_VALIDATION_STATUS, changeAttendanceSettingsSaga);
   yield takeLatest(FETCH_EMPLOYEE_BASIC_INFO, getEmployeeBasicInfo);
   yield takeLatest(FETCH_EMPLOYEE_ATTENDANCE_INFO, getEmployeeAttendanceInfo);
+  yield takeLatest(EMPLOYEE_MODIFY_REQUEST, employeeModifyRequestSaga);
+  yield takeLatest(ADMIN_MODIFY_LOG, adminModifyLogSaga);
+  yield takeLatest(CHANGE_MODIFY_LOG_STATUS, changeSelectedEmployeeModifyLogStatus);
 
 
 }

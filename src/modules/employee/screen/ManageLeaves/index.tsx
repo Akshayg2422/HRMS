@@ -33,9 +33,6 @@ function ManageLeaves() {
     getCalendarDetails(currentPage);
   }, []);
 
-  useEffect(() => {
-    geteventsdetails();
-  }, [recall])
 
   const getCalendarDetails = (pageNumber: number) => {
     const params = {
@@ -45,7 +42,7 @@ function ManageLeaves() {
     dispatch(fetchCalendardetails({
       params,
       onSuccess: (success: any) => () => {
-
+        geteventsdetails(success?.details);
       },
       onError: (error: any) => () => {
 
@@ -63,9 +60,11 @@ function ManageLeaves() {
     });
   };
 
-  const geteventsdetails = () => {
-    calendarEvents?.days_leave?.map((item: any) => {
-      let update = {
+  const geteventsdetails = (events: any) => {
+
+    let leaves: any = []
+    events?.days_leave?.map((item: any) => {
+      leaves.push({
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
@@ -75,26 +74,30 @@ function ManageLeaves() {
             : item.status_code === 0
               ? "red"
               : "gray",
-      }
+      })
     });
-    calendarEvents?.days_absent?.map((item: any) => {
-      daysHoliday.push({
+    events?.days_absent?.map((item: any) => {
+      leaves.push({
         title: item.reason,
         start: item.date_from,
         end: item.date_to + "T23:59:00",
         color: "gray",
       });
     });
-    calendarEvents?.days_holiday?.map((item: any) => {
-      daysHoliday.push({
+    events?.days_holiday?.map((item: any) => {
+      leaves.push({
         title: item.title,
         start: item.day,
         end: item.day,
         color: "#52307c",
       });
     });
-    setRecall(true);
+    setDaysHoliday(leaves)
   };
+
+
+
+  console.log("=========>", daysHoliday);
 
 
   return (

@@ -35,7 +35,6 @@ const Rejected = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: 0,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({
@@ -68,9 +67,8 @@ const Rejected = () => {
       data.map((el: any) => {
         return {
           Employee: `${el.name}${" "}(${el.employee_id})`,
-          "Date From": el.date_from,
-          "Date To": el.date_to,
-          "Leave Types": el.leave_type,
+          "Date": el.attendance_date,
+          // "Leave Types": el.leave_type,
           Reason: el.reason,
           Branch: el.branch_name,
         };

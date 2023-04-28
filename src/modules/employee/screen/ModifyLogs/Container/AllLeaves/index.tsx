@@ -9,6 +9,7 @@ import {
 } from "@components";
 import {
   changeEmployeeLeaveStatus,
+  changeEmployeeModifyLogStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
   getModifyLogs,
@@ -39,7 +40,6 @@ const AllLeaves = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -2,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({
@@ -103,7 +103,7 @@ const AllLeaves = () => {
       status: el,
     };
     dispatch(
-      changeEmployeeLeaveStatus({
+      changeEmployeeModifyLogStatus({
         params,
         onSuccess: (success: any) => () => {
           if (el === 1) {
@@ -183,7 +183,7 @@ const AllLeaves = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_to}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
               <span>
@@ -229,7 +229,7 @@ const AllLeaves = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
               <span>
@@ -275,7 +275,7 @@ const AllLeaves = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
               <span>
@@ -310,7 +310,7 @@ const AllLeaves = () => {
 };
 type Location = {
   name: string;
-  date_from: string;
+  attendance_date: string;
   date_to: string;
   status_text: string;
   leave_type: string;
@@ -341,7 +341,7 @@ const LocationTable = ({
           <tr>
             <th scope="col">{"Employee"}</th>
             <th scope="col">{"Date"}</th>
-            <th scope="col">{"Leave Type"}</th>
+            {/* <th scope="col">{"Leave Type"}</th> */}
             <th scope="col">{"Reason"}</th>
             <th scope="col">{"Branch"}</th>
             <th scope="col">{"Status"}</th>
@@ -357,8 +357,8 @@ const LocationTable = ({
                 <tr className="align-items-center">
                   <td style={{ whiteSpace: "pre-wrap" }}>{`${convertToUpperCase(item.name)}${" "}(${item.employee_id
                     })`}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{item.attendance_date}</td>
+                  {/* <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td> */}
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}</td>

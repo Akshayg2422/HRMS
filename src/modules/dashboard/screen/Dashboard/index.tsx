@@ -8,7 +8,7 @@ import { getEmployeeAttendanceStats } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import { getMomentObjFromServer, getServerDateFromMoment, showToast, useNav } from "@utils";
 import { getListAllBranchesList } from "../../../../store/location/actions";
-import { setBranchHierarchical } from "../../../../store/dashboard/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 
 
 function Dashboard() {
@@ -66,6 +66,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
+
     if (dashboardDetails) {
       conditionalRendering(dashboardDetails)
     }
@@ -80,8 +81,8 @@ function Dashboard() {
           params,
           onSuccess: (response: any) => () => {
             const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
             dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
+            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
             setInitialCall(true)
           },
           onError: (error: any) => () => {

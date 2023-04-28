@@ -57,19 +57,30 @@ export const UPDATE_EMPLOYEE_STATUS = 'employee/updateEmployeeStatus';
 export const FETCH_LEAVE_TYPES = '/attendance/getLeaveTypes';
 
 
-export const POST_APPLY_LEAVE = '/attendance/applyLeave';
+export const POST_APPLY_LEAVE = '/attendance/v1/applyLeave';
+
 export const FETCH_CALENDAR_DETAILS = "/attendance/getCalenderDetails"
 
 
+//Modify api for modify log for employee
+export const EMPLOYEE_MODIFY_REQUEST = 'attendance/v1/modifyLogEmployee'
 
-export const POST_CHANGE_EMPLOYEE_LEAVE_STATUS = '/attendance/changeEmployeeLeaveStatus';
+//api for modify admin
 
-export const FETCH_EMPLOYEES_LEAVES = '/attendance/getEmployeesLeaves'
+export const ADMIN_MODIFY_LOG = 'attendance/v1/modifyLogAdmin'
 
-export const FETCH_MODIFY_EMPLOYEES_LEAVES = '/attendance/getEmployeesLeaves'
+export const POST_EMPLOYEE_MODIFY_LOG_STATUS  = '/attendance/v1/changeModifyLogStatus';
 
 
-export const FETCH_MY_LEAVES = "/attendance/getEmployeeLeaves"
+export const POST_CHANGE_EMPLOYEE_LEAVE_STATUS = '/attendance/v1/changeEmployeeLeaveStatus';
+
+
+export const FETCH_EMPLOYEES_LEAVES = '/attendance/v1/getEmployeesLeaves'
+
+export const FETCH_MODIFY_EMPLOYEES_LEAVES = '/attendance/v1/getModifyLogs'
+
+
+export const FETCH_MY_LEAVES = "/attendance/v1/getEmployeeLeaves"
 
 export const POST_EMPLOYEES_HOLIDAYS = '/attendance/addHoliday'
 

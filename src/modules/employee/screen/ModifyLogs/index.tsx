@@ -56,7 +56,6 @@ const ModifyLogs = () => {
       page_number: pageNumber,
       status: status,
       q: searchEmployee,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({

@@ -23,6 +23,7 @@ import {
   getCheckInDetailedLogPerDay,
   getDownloadTodayStatus,
   applyLeave,
+  postAdminModifyLog,
 } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import {
@@ -404,15 +405,14 @@ const DashBoardAttendance = ({ }) => {
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
       const params = {
-        day_status_id: markAsPresentDetails.day_status_id,
-        date_from: markAsPresentDetails.date,
-        date_to: markAsPresentDetails.date,
+        daily_log_id: markAsPresentDetails.day_status_id,
+        attendance_date: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
         is_approved: true,
         employee_id: markAsPresentDetails.emp_id,
       };
       dispatch(
-        applyLeave({
+        postAdminModifyLog({
           params,
           onSuccess: (response: any) => () => {
             showToast("success", response?.message);

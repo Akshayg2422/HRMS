@@ -188,15 +188,12 @@ function EmployeeTimeSheets() {
     <>
       <TableWrapper
         buttonChildren={
-          <div className="mr--1">
+          <div className="mr--1 ml-sm-0 ml--4" style={{ display: 'inline-block' }}>
             <Sort
               size={'btn-sm'}
               sortData={sortData}
               activeIndex={activeSort}
               onClick={(index: any, item: any) => {
-
-                console.log(index + "======");
-
                 setActiveSort(index);
                 onTabChange(index);
               }}

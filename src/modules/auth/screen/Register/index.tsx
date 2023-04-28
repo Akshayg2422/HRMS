@@ -79,7 +79,6 @@ function SignUp() {
     })
   }, [screenSize])
 
-  console.log("==============>", screenSize.dynamicHeight);
 
   const {
     registerCurrentContainer,
@@ -152,12 +151,13 @@ function SignUp() {
     if (validateName(registerAdminDetails.firstName).status === false) {
       showToast("error", t("invalidName"));
       return false;
-    } else if (
-      validateDefault(registerAdminDetails.lastName).status === false
-    ) {
-      showToast("error", t("invalidsccdName"));
-      return false;
-    }
+    } 
+    // else if (
+    //   validateDefault(registerAdminDetails.lastName).status === false
+    // ) {
+    //   showToast("error", t(""));
+    //   return false;
+    // }
     else if (
       validateMobileNumber(registerAdminDetails.mobileNumber).status === false
     ) {
@@ -173,11 +173,11 @@ function SignUp() {
       showToast("error", t("invalidGender"));
       return false;
     } else if (validateAadhar(registerAdminDetails.aadhaar).status === false) {
-      showToast("error", t("formInvalidParams"));
+      showToast("error", t("InvalidAadhaar"));
       return false;
     }
     else if (validatePAN(registerAdminDetails.pan).status === false) {
-      showToast("error", t("formInvalidParams"));
+      showToast("error", t("InvaliadPan"));
       return false;
     }
     else {
@@ -351,7 +351,7 @@ function SignUp() {
           params = { ...params, [param]: base64 };
         }
       }
-
+      
       dispatch(
         uploadCompanyDocuments({
           params,

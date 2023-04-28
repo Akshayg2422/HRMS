@@ -239,8 +239,10 @@ function Navbar({
               </>
             ) : prop.miniName !== undefined ? (
               <>
-                <span className="sidenav-mini-icon"> {prop.miniName} </span>
-                <span className="sidenav-normal"> {prop.name} </span>
+                <span className="sidenav-mini-icon" style={{
+                  color: '#FFFFFF', fontWeight: pathname === prop.path ? 'bold' : 'lighter'
+                }}> {prop.miniName} </span>
+                <span className={`${pathname === prop.path ? "sidenav-active" : "sidenav-normal "}`}> {prop.name} </span>
               </>
             ) : (
               prop.name
