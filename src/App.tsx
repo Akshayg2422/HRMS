@@ -103,11 +103,15 @@ import "sweetalert2/dist/sweetalert2.min.css";
 
 function App() {
 
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
+  );
+
+
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       <PushNotification />
-      <GetToken />
       <DeviceInfo />
       <AppProvider >
         <AppLoader />

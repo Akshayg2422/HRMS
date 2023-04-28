@@ -11,10 +11,11 @@ function ZenylogSite(props) {
 
     useEffect(() => {
         dispatch(hideLoader())
-    },[])
+    }, [])
 
     return (
         <div>
+            <h1>1</h1>
             <Navbar />
             <Home />
             <AboutUs />
