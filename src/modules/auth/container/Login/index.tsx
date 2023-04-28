@@ -55,7 +55,7 @@ function Login() {
       getValidateUser({
         params,
         onSuccess: (success: object) => () => {
-           goTo(navigate, ROUTE.ROUTE_OTP, true);
+          goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => () => {
           showToast('error', error);
@@ -96,10 +96,10 @@ function Login() {
         margin={'mt-4'}
       >
         <Logo additionClass={'col-sm-3'} />
-        {/* <Secondary
+        <Secondary
           text={t('register')}
           onClick={() => goTo(navigate, ROUTE.ROUTE_REGISTER)}
-        /> */}
+        />
       </Container>
       <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>
         {t('welcome')}

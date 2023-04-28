@@ -110,7 +110,7 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <PushNotification />
       <DeviceInfo />
       <AppProvider >
@@ -129,7 +129,7 @@ function App() {
             path={ROUTE.ROUTE_OTP}
             element={<RequireAuthExist>{<Otp />}</RequireAuthExist>}
           />
-          {/* <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} /> */}
+          <Route path={ROUTE.ROUTE_REGISTER} element={<Register />} />
           <Route
             path={ROUTE.ROUTE_DASHBOARD}
             element={<RequireAuth>{<Dashboard />}</RequireAuth>}
