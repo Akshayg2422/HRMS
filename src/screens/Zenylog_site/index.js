@@ -15,7 +15,6 @@ function ZenylogSite(props) {
 
     return (
         <div>
-            <h1>1</h1>
             <Navbar />
             <Home />
             <AboutUs />
