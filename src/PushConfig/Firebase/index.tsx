@@ -20,23 +20,21 @@ initializeApp(firebaseConfig);
 
 const messaging = getMessaging();
 
-export const requestForToken = () => {
+export const requestForToken = async () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const dispatch = useDispatch()
-    return getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk"})
-        .then((currentToken) => {
-            if (currentToken) {
-                dispatch(getFcmToken(currentToken))
-                console.log(currentToken+'device token');
-                // Perform any other neccessary action with the token
-            } else {
-                // Show permission request UI
-                console.log('No registration token available. Request permission to generate one.');
-            }
-        })
-        .catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-        });
+    try {
+        const currentToken = await getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk" });
+        if (currentToken) {
+            dispatch(getFcmToken(currentToken));
+            console.log(currentToken + 'device token');
+        } else {
+            // Show permission request UI
+            console.log('No registration token available. Request permission to generate one.');
+        }
+    } catch (err) {
+        console.log('An error occurred while retrieving token. ', err);
+    }
 };
 
 // Handle incoming messages. Called when:

@@ -39,30 +39,28 @@ function Dashboard() {
   }, [fcmToken])
 
   const getPostAppConfig = () => {
-    const params = {
-      device_model: appConfig?.model,
-      device_platform: appConfig?.platform,
-      device_brand: appConfig?.brand,
-      device_token: fcmToken
+    if (fcmToken) {
+      const params = {
+        device_model: appConfig?.model,
+        device_platform: appConfig?.platform,
+        device_brand: appConfig?.brand,
+        device_token: fcmToken
+      }
+      dispatch(postAppConfig({
+        params,
+        onSuccess: (response: any) => () => {
+          dispatch(isWebPushRegister({
+            params,
+            onSuccess: (success: any) => () => {
+            },
+            onError: (error: any) => () => {
+            }
+          }))
+        },
+        onError: () => () => {
+        },
+      }))
     }
-
-    dispatch(postAppConfig({
-      params,
-      onSuccess: (response: any) => () => {
-        const param = false
-        dispatch(isWebPushRegister({
-          param,
-          onSuccess: (success: any) => () => {
-
-          },
-          onError: (error: any) => () => {
-
-          }
-        }))
-      },
-      onError: () => () => {
-      },
-    }))
   }
 
   useEffect(() => {
@@ -84,6 +82,7 @@ function Dashboard() {
             dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
             getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
             setInitialCall(true)
+            getPostAppConfig()
           },
           onError: (error: any) => () => {
             showToast('error', error)

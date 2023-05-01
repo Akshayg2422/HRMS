@@ -62,12 +62,13 @@ function Notification() {
         <>
             <Container additionClass={" mx-1"}>
                 {broadcastMessagesData && broadcastMessagesData?.length > 0 ? broadcastMessagesData?.map((el: any) => {
+
                     return (
                         <Container additionClass={"col"}>
                             <Card>
                                 <Container additionClass={"d-flex justify-content-between"} >
                                     <Container>
-                                        <div className="h1">
+                                        <div className="h2">
                                             {el.title}
                                         </div>
                                     </Container>

@@ -13,7 +13,6 @@ const GetToken = () => {
     }, [])
 
 
-
     const pushNotification = async () => {
         const permission = await Notification.requestPermission()
         if (permission === "granted") {

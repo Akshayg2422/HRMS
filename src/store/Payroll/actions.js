@@ -55,7 +55,7 @@ import {
   IS_EDIT_SALARY_DEFINITION,
 
   GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
-  GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER
+  GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER, GET_EARNINGS, GET_EARNINGS_SUCCESS, GET_EARNINGS_FAILURE
 
 } from './actionTypes'
 
@@ -452,5 +452,31 @@ export const isEditEmployeeSalaryDefinition = (type) => {
   return {
     type: IS_EDIT_SALARY_DEFINITION,
     payload: type,
+  };
+};
+
+/**
+ * 
+ * get Earnings
+ */
+
+export const getEmployeeEarnings = (type) => {
+  return {
+    type: GET_EARNINGS,
+    payload: type,
+  };
+};
+
+export const getEmployeeEarningsSuccess = (response) => {
+  return {
+    type: GET_EARNINGS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeEarningsFailure = (error) => {
+  return {
+    type: GET_EARNINGS_FAILURE,
+    payload: error,
   };
 };

@@ -345,7 +345,7 @@ const LocationTable = ({
             <th scope="col">{"Reason"}</th>
             <th scope="col">{"Branch"}</th>
             <th scope="col">{"Status"}</th>
-            <th scope="col">{"Approve/Revert"}</th>
+            <th scope="col">{"Approve"}</th>
             <th scope="col">{"Reject"}</th>
           </tr>
         </thead>
@@ -373,26 +373,8 @@ const LocationTable = ({
                       >
                         {"Approve"}
                       </span>
-                    ) : item.status_code === 1 ? (
-                      <span
-                      // onClick={() => {
-                      //   if (onRevertClick) onRevertClick(item);
-                      // }}
-                      >
-                        {"-"}
-                      </span>
-                    ) : item.status_code === 0 ? (
-                      <span
-                        className="h5 text-primary"
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          if (onRevertClick) onRevertClick(item);
-                        }}
-                      >
-                        {"Revert"}
-                      </span>
                     ) : (
-                      <></>
+                      <>{'-'}</>
                     )}
                   </td>
                   <td style={{ whiteSpace: "pre-wrap" }}>

@@ -1,5 +1,5 @@
 import { CommonTable, Container, InputText, Modal, NoRecordFound, Primary, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
-import { applyLeave, getCheckInDetailedLogPerDay, getEmployeesCheckInLogs } from '../../../../../../store/employee/actions';
+import { applyLeave, getCheckInDetailedLogPerDay, getEmployeesCheckInLogs, postAdminModifyLog } from '../../../../../../store/employee/actions';
 import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showToast, validateDefault } from '@utils';
 import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react'
@@ -21,8 +21,14 @@ const LogView = () => {
         { id: 1, title: t("last3Months") },
         { id: 2, title: moment().format("MMMM") },
     ];
+
     const [activeSort, setActiveSort] = useState<number>(1);
     const [logPerDayModel, setLogPerDayModel] = useState<boolean>(false);
+
+    const [presentModifiedDetails, setPresentModifiedDetails] = useState<any>();
+    const [presentModifiedModel, setPresentModifiedModel] = useState<boolean>(false);
+
+
     const [markAsPresentModel, setMarkAsPresentModel] = useState<boolean>(false);
     const [markAsPresentDetails, setMarkAsPresentDetails] = useState<any>({
         date: "",
@@ -120,7 +126,7 @@ const LogView = () => {
                     cursor: el.day_status_type === 10 ? 'pointer' : '', fontWeight: 'bold',
                     color: fontColor(el.day_status_type),
                 }}
-                //  onClick={(e) => { handlePresentModified(e, el) }}
+                    onClick={(e) => { handlePresentModified(e, el) }}
                 >{el.day_status}</small></>,
 
                 "": <>
@@ -133,13 +139,13 @@ const LogView = () => {
         });
     };
 
-    // const handlePresentModified = (e: any, type: any) => {
-    //     if (type?.day_status_type === 10) {
-    //         e.stopPropagation()
-    //           setPresentModifiedDetails(type)
-    //           setPresentModifiedModel(!presentModifiedModel)
-    //     }
-    // }
+    const handlePresentModified = (e: any, type: any) => {
+        if (type?.day_status_type === 10) {
+            e.stopPropagation()
+            setPresentModifiedDetails(type)
+            setPresentModifiedModel(!presentModifiedModel)
+        }
+    }
 
     const onModify = (e: any, item: any) => {
         e.stopPropagation()
@@ -209,21 +215,17 @@ const LogView = () => {
         return true;
     };
 
-
-
     const onRequestHandler = () => {
         if (validateOnSubmit()) {
             const params = {
-                day_status_id: markAsPresentDetails.id,
-                date_from: markAsPresentDetails.date,
-                date_to: markAsPresentDetails.date,
+                daily_log_id: markAsPresentDetails.id,
+                attendance_date: markAsPresentDetails.date,
                 reason: markAsPresentDetails.reason,
                 is_approved: true,
                 employee_id: selectedEmployeeId,
             };
-
             dispatch(
-                applyLeave({
+                postAdminModifyLog({
                     params,
                     onSuccess: (response: any) => () => {
                         setMarkAsPresentModel(!markAsPresentModel);
@@ -316,6 +318,21 @@ const LogView = () => {
                         />
                         <Primary text={t("request")} onClick={() => onRequestHandler()} />
                     </Container>
+                </Container>
+            </Modal>
+            <Modal showModel={presentModifiedModel} title={t('markAsPresent')}
+                toggle={() => setPresentModifiedModel(!presentModifiedModel)} size="modal-sm">
+                <Container additionClass={'ml-3'}><span>
+                    {t("approver")}
+                    {":"}&nbsp;&nbsp;
+                    <span className="text-black">{presentModifiedDetails?.approved_by}</span>
+                </span>
+                    <br />
+                    <span>
+                        {t("reason")}
+                        {":"}&nbsp;&nbsp;
+                        <span className="text-black">{presentModifiedDetails?.note}</span>
+                    </span>
                 </Container>
             </Modal>
         </Container>

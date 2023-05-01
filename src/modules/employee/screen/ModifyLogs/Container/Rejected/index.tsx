@@ -115,14 +115,6 @@ const Rejected = () => {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(employeesModifyLeaves)}
-          additionalDataSet={LEAVE_STATUS_REVERT}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesModifyLeaves[index];
-            if (elv === "Revert") {
-              RevertStatusHandler(current);
-            }
-          }}
-          custombutton={"h5"}
         />
       ) : <NoRecordFound />}
     </>

@@ -308,5 +308,8 @@ export const fetchEmployeeBasicInfoApi = (payload) => post(url.FETCH_EMPLOYEE_BA
 
 export const fetchEmployeeAttendanceInfoApi = (payload) => post(url.GET_EMPLOYEE_ATTENDANCE_INFO_URL, payload, {})
 
+//get Employee Earning
+
+export const fetchEmployeeEarningsApi = (payload) => post(url.GET_EMPLOYEES_EARNINGS, payload, {})
 
 

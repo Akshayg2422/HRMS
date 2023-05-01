@@ -1,9 +1,9 @@
 import { Card, CommonDropdownMenu, CommonTable, Container, DatePicker, DropDown, FormTypography, FormWrapper, NoRecordFound, Primary, ScreenContainer } from '@components'
-import { getEmployeeSalaryDefinition } from '../../../../../../store/Payroll/actions';
+import { getEmployeeEarnings, getEmployeeSalaryDefinition } from '../../../../../../store/Payroll/actions';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { ROUTE, goTo, useNav, Today, ThisMonth, getServerDateFromMoment, getMomentObjFromServer, getDisplayTimeFromMoment, showToast } from '@utils';
+import { ROUTE, goTo, useNav, Today, ThisMonth, getServerDateFromMoment, getMomentObjFromServer, getDisplayTimeFromMoment, showToast, getDisplayDateTimeFromMoment, dateFormate } from '@utils';
 import { Dropdown } from 'reactstrap';
 import { Icons } from '@assets';
 import moment from 'moment';
@@ -14,7 +14,7 @@ function PayrollView() {
   const { t } = useTranslation();
   const navigation = useNav();
 
-  const sampleData = [{ name: "Total Days", days: "17" }, { name: "Working Days", days: "17" }, { name: "Holidays", days: "0" }, { name: "leaves (UnPaid) ", days: "0" }]
+  const [consolidatedEarings, setConsolidatedEarings] = useState<any>()
 
   const MONTHS = [
     {
@@ -105,7 +105,6 @@ function PayrollView() {
     getEmployeeSalaryDefinitionDetails()
   }, [])
 
-
   useEffect(() => {
     const toSeverDate = new Date(
       getServerDateFromMoment(getMomentObjFromServer(customRange.dataTo))
@@ -119,22 +118,18 @@ function PayrollView() {
     if (toSeverDate < fromServerDate) {
       showToast('info', t('dateFromToValidation'))
       setCustomRange({ ...customRange, dataTo: "" });
+    } else {
+      getEarnings()
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
   useEffect(() => {
-
-
     if (customRange.dateFrom && customRange.dataTo) {
-      const startOfMonth = moment(customRange.dateFrom).startOf('month').format('YYYY-MM-DD');
       const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
-
       if (customRange.dataTo > endOfMonth) {
         setCustomRange({ ...customRange, dataTo: endOfMonth });
       }
-
     }
-
   }, [customRange.dateFrom, customRange.dataTo])
 
 
@@ -144,15 +139,11 @@ function PayrollView() {
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
-
     setCustomRange({ ...customRange, [key]: value });
   };
 
 
-
-
   const getEmployeeSalaryDefinitionDetails = () => {
-
     //getEmployeeSalaryDefinition
     const params = {
       employee_id: selectedEmployeeDetails?.id
@@ -203,6 +194,33 @@ function PayrollView() {
 
   }
 
+  // getEmployeeEarnings
+
+  const getEarnings = () => {
+    if (customRange.dateFrom && customRange.dataTo) {
+      const params = {
+        employee_id: selectedEmployeeDetails?.id,
+        date_from: customRange.dateFrom,
+        date_to: customRange.dataTo
+      }
+      dispatch(getEmployeeEarnings({
+        params,
+        onSuccess: (success: any) => () => {
+          getStructuredConsolidatedEarings(success.details)
+        },
+        onError: (error: any) => () => {
+
+        }
+      }));
+    }
+  }
+
+  const getStructuredConsolidatedEarings = (details: any) => {
+    let structuredData = [{ key: 'Total Days', value: details?.break_down?.total }, { key: 'Holiday', value: details?.break_down?.holiday }, { key: 'Present', value: details?.break_down?.present },
+    { key: 'Alert', value: details?.break_down?.alert }, { key: 'Absent', value: details?.break_down?.absent }, { key: 'Leaves', value: details?.break_down?.leave }, { key: 'Billable Days', value: details?.break_down?.billable_days }
+    ]
+    setConsolidatedEarings(structuredData)
+  }
 
 
   return (
@@ -212,7 +230,7 @@ function PayrollView() {
         <div className='row'>
           <div className="col-lg-3 col-md-4 col-sm-12 mt--1 ">
             <DropDown
-              label='Earnings from month'
+              label='Month'
               placeholder='Select month'
               data={monthData}
               value={customMonth}
@@ -247,22 +265,20 @@ function PayrollView() {
               value={customRange.dataTo}
             />
           </div>
-
         </div>
-        <h3> Earnings Till Date </h3>
+        <h3>{'Earnings Till Date '}{`(${dateFormate(customRange.dateFrom)} ${' - '}${dateFormate(customRange.dataTo)})`}</h3>
         {
-          sampleData.map((el: any) => {
+          consolidatedEarings && consolidatedEarings.length > 0 && consolidatedEarings.map((el: any) => {
             return (
               <div className='row my-3'>
-                <span className='col-6'>{el.name} </span>
-                <span className='col-6'>{el.days} </span>
+                <span className={`${el.key === 'Billable Days' && 'h3'} col-6`}>{el.key} </span>
+                <span className={`${el.key === 'Billable Days' && 'h3'} col-6`}>{el.value} </span>
               </div>
             )
-
           })
         }
         <div className='row my-3'>
-          <span className='h3 col-6'> Payable Days </span>
+          <span className='h3 col-6'>{'Total Earnings'}</span>
           <span className='col-6'> 0 </span>
         </div>
 

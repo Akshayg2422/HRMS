@@ -34,7 +34,7 @@ const ManageBranches = () => {
     listBranchesList
   } = useSelector((state: any) => state.LocationReducer);
 
-  
+
 
   const [branchDetails, setBranchDetails] = useState({
     companyname: "",
@@ -48,6 +48,11 @@ const ManageBranches = () => {
   });
 
   useEffect(() => {
+    getBranchL()
+  }, [])
+
+
+  const getBranchL = () => {
     const params = {}
     dispatch(getListAllBranchesList({
       params,
@@ -58,7 +63,7 @@ const ManageBranches = () => {
 
       }
     }))
-  }, [])
+  }
 
 
   const validatePostParams = () => {
@@ -116,6 +121,7 @@ const ManageBranches = () => {
           params,
           onSuccess: (success: object) => () => {
             showToast("success", t("branchAddedSuccessfully"));
+            getBranchL()
             goBack(navigation)
           },
           onError: (error: string) => () => {
