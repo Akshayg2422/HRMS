@@ -55,7 +55,7 @@ function Login() {
       getValidateUser({
         params,
         onSuccess: (success: object) => () => {
-           goTo(navigate, ROUTE.ROUTE_OTP, true);
+          goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => () => {
           showToast('error', error);
@@ -81,10 +81,6 @@ function Login() {
       showToast('error', t('pleaseEnterYourMobileNumber'));
     }
   };
-
-
-  
-
 
 
   return (

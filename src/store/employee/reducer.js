@@ -147,7 +147,16 @@ import {
   FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
   FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
 
-  EMPLOYEE_VIEW_DETAILS_API_HANDLER
+  EMPLOYEE_VIEW_DETAILS_API_HANDLER,
+  EMPLOYEE_MODIFY_REQUEST,
+  EMPLOYEE_MODIFY_REQUEST_SUCCESS,
+  EMPLOYEE_MODIFY_REQUEST_FAILURE,
+  ADMIN_MODIFY_LOG,
+  ADMIN_MODIFY_LOG_SUCCESS,
+  ADMIN_MODIFY_LOG_FAILURE,
+  CHANGE_MODIFY_LOG_STATUS,
+  CHANGE_MODIFY_LOG_STATUS_SUCCESS,
+  CHANGE_MODIFY_LOG_STATUS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -797,6 +806,29 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
+    /// modify log change status
+    
+    case CHANGE_MODIFY_LOG_STATUS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case CHANGE_MODIFY_LOG_STATUS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case CHANGE_MODIFY_LOG_STATUS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
     /**
      * Add holiday events
      */
@@ -1339,6 +1371,44 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
     case FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    //  modify log for employee
+
+    case EMPLOYEE_MODIFY_REQUEST:
+      state = { ...state, loading: true };
+      break;
+    case EMPLOYEE_MODIFY_REQUEST_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case EMPLOYEE_MODIFY_REQUEST_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // api for modify admin
+
+    case ADMIN_MODIFY_LOG:
+      state = { ...state, loading: true };
+      break;
+    case ADMIN_MODIFY_LOG_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case ADMIN_MODIFY_LOG_FAILURE:
       state = {
         ...state,
         error: action.payload,

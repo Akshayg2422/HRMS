@@ -8,7 +8,7 @@ import { getEmployeeAttendanceStats } from "../../../../store/employee/actions";
 import { useTranslation } from "react-i18next";
 import { getMomentObjFromServer, getServerDateFromMoment, showToast, useNav } from "@utils";
 import { getListAllBranchesList } from "../../../../store/location/actions";
-import { setBranchHierarchical } from "../../../../store/dashboard/actions";
+import { getDashboard, setBranchHierarchical } from "../../../../store/dashboard/actions";
 
 
 function Dashboard() {
@@ -34,6 +34,8 @@ function Dashboard() {
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
 
+
+
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
@@ -46,26 +48,26 @@ function Dashboard() {
       device_token: fcmToken
     }
 
-    dispatch(postAppConfig({
-      params,
-      onSuccess: (response: any) => () => {
-        const param = false
-        dispatch(isWebPushRegister({
-          param,
-          onSuccess: (success: any) => () => {
-
-          },
-          onError: (error: any) => () => {
-
-          }
-        }))
-      },
-      onError: () => () => {
-      },
-    }))
+    if (fcmToken) {
+      dispatch(postAppConfig({
+        params,
+        onSuccess: (response: any) => () => {
+          dispatch(isWebPushRegister({
+            params,
+            onSuccess: (success: any) => () => {
+            },
+            onError: (error: any) => () => {
+            }
+          }))
+        },
+        onError: () => () => {
+        },
+      }))
+    }
   }
 
   useEffect(() => {
+
     if (dashboardDetails) {
       conditionalRendering(dashboardDetails)
     }
@@ -80,9 +82,10 @@ function Dashboard() {
           params,
           onSuccess: (response: any) => () => {
             const childIds = getAllSubBranches(response, dashboardResponse.company_branch.id)
-            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
             dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
+            getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
             setInitialCall(true)
+            getPostAppConfig()
           },
           onError: (error: any) => () => {
             showToast('error', error)

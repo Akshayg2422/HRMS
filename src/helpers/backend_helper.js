@@ -60,7 +60,22 @@ export const fetchLeaveTypes = (payload) => post(url.FETCH_LEAVE_TYPES, payload,
 export const postApplyLeave = (payload) => post(url.POST_APPLY_LEAVE, payload, {})
 export const fetchCalendarDetails = (payload) => post(url.FETCH_CALENDAR_DETAILS, payload, {})
 
+// Modify api for modify log for employee
+
+export const employeeModifyRequestApi = (payload) => post(url.EMPLOYEE_MODIFY_REQUEST, payload, {})
+
+// api for modify admin
+
+export const adminModifyLogApi = (payload) => post(url.ADMIN_MODIFY_LOG, payload, {})
+
+
+
 export const postChangeEmployeeLeaveStatus = (payload) => post(url.POST_CHANGE_EMPLOYEE_LEAVE_STATUS, payload, {})
+
+export const postChangeEmployeeModifyLogStatus = (payload) => post(url.POST_EMPLOYEE_MODIFY_LOG_STATUS, payload, {})
+
+
+
 export const postAddHolidays = (payload) => post(url.POST_EMPLOYEES_HOLIDAYS, payload, {})
 export const postDeleteHolidays = (payload) => post(url.POST_DELETE_HOLIDAYS, payload, {})
 
@@ -293,5 +308,8 @@ export const fetchEmployeeBasicInfoApi = (payload) => post(url.FETCH_EMPLOYEE_BA
 
 export const fetchEmployeeAttendanceInfoApi = (payload) => post(url.GET_EMPLOYEE_ATTENDANCE_INFO_URL, payload, {})
 
+//get Employee Earning
+
+export const fetchEmployeeEarningsApi = (payload) => post(url.GET_EMPLOYEES_EARNINGS, payload, {})
 
 

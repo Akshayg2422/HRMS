@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER,INITIAL_PAGE
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -355,6 +355,18 @@ const mergeTimeSlots = (timeSlots: any) => {
 }
 
 
+const dateFormate = (date: string) => {
+  const dateObj = new Date(date);
+  const formattedDate = dateObj.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+return formattedDate
+ // Output: "April 30, 2023"
+}
+
+
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
   validateEmail,
@@ -430,5 +442,6 @@ export {
   convertToUpperCase,
   COMMON_HEADER,
   mergeTimeSlots,
-  INITIAL_PAGE
+  INITIAL_PAGE,
+  dateFormate
 }

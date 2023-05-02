@@ -19,7 +19,6 @@ const Rejected = () => {
     (state: any) => state.DashboardReducer
   );
 
-
   const fetchRejectedLeaves = (pageNumber: number) => {
     const params = {
       ...hierarchicalBranchIds,
@@ -103,13 +102,13 @@ const Rejected = () => {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(employeesLeaves)}
-          additionalDataSet={LEAVE_STATUS_REVERT}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesLeaves[index];
-            if (elv === "Revert") {
-              RevertStatusHandler(current);
-            }
-          }}
+          // additionalDataSet={LEAVE_STATUS_REVERT}
+          // tableValueOnClick={(e, index, item, elv) => {
+          //   const current = employeesLeaves[index];
+          //   if (elv === "Revert") {
+          //     RevertStatusHandler(current);
+          //   }
+          // }}
           custombutton={"h5"}
         />
       ) : <NoRecordFound />}
@@ -139,7 +138,6 @@ const Rejected = () => {
             <span >{t('dataTo')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.date_to}</span></span><br />
             <span>{t('leaveType')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.leave_type}</span></span><br />
             <span>{t('reason')}{":"}&nbsp;&nbsp;<span className="text-black">{selectedEventId?.reason}</span></span>
-
           </Container>
           <Container
             margin={"mt-5"}

@@ -22,6 +22,7 @@ import {
   getEmployeesCheckInLogs,
   getCheckInDetailedLogPerDay,
   applyLeave,
+  postAdminModifyLog,
 } from "../../../../store/employee/actions";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -156,7 +157,7 @@ function EmployeeLog() {
     dispatch(getEmployeesCheckInLogs({
       params,
       onSuccess: (success: object) => () => {
-        setModel(!model);
+        setModel(true);
       },
       onError: (error: string) => () => {
         showToast("info", error);
@@ -165,7 +166,6 @@ function EmployeeLog() {
   }
 
   function getEmployeeCheckInDetailedLogPerDay(item: any, index: number) {
-    // setAccordion(index);
     const params = {
       date: item.date,
       user_id: selectedEmployeeDetails.id,
@@ -209,16 +209,19 @@ function EmployeeLog() {
 
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
+      
       const params = {
-        day_status_id: markAsPresentDetails.day_status_id,
-        date_from: markAsPresentDetails.date,
-        date_to: markAsPresentDetails.date,
+        daily_log_id: markAsPresentDetails.day_status_id,
+        // date_from: markAsPresentDetails.date,
+        // date_to: markAsPresentDetails.date,
+        attendance_date: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
         is_approved: true,
         employee_id: selectedEmployeeDetails.id,
       };
+
       dispatch(
-        applyLeave({
+        postAdminModifyLog({
           params,
           onSuccess: (response: any) => () => {
             showToast("success", response?.message);
@@ -241,6 +244,7 @@ function EmployeeLog() {
           },
           onError: (error: string) => () => {
             showToast("error", error);
+            setMarkAsPresentModel(!markAsPresentModel);
             setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
           },
         })

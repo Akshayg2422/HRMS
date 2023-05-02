@@ -91,7 +91,6 @@ const PushConfig = () => {
             };
             new Notification(title, options).addEventListener('click', function () {
                 routingHandler(payload)
-                // goTo(navigator, ROUTE.ROUTE_APPLY_LEAVE);
             });
         })
         .catch((err) => console.log('failed: ', err));

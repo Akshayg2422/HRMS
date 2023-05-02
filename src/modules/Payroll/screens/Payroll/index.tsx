@@ -114,13 +114,15 @@ function PayRoll() {
                 "mobile number": el.mobile_number,
                 branch: el.branch,
                 "  ":
-                    <CommonDropdownMenu
-                        data={DROPDOWN_MENU}
-                        onItemClick={(e, item) => {
-                            e.stopPropagation();
-                            dropdownMenuItemActionHandler(item, el)
-                        }}
-                    />
+                    <div className="common-menu">
+                        <CommonDropdownMenu
+                            data={DROPDOWN_MENU}
+                            onItemClick={(e, item) => {
+                                e.stopPropagation();
+                                dropdownMenuItemActionHandler(item, el)
+                            }}
+                        />
+                    </div>
             };
         });
     };
@@ -139,7 +141,7 @@ function PayRoll() {
     }
 
     const memoizedTable = useMemo(() => {
-        return <>
+        return <div>
             {registeredEmployeesList && registeredEmployeesList?.length > 0 ? (
                 <CommonTable
                     card={false}
@@ -152,14 +154,14 @@ function PayRoll() {
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-                    tableOnClick={(e, index, item) => {
-                        const selectedItem = registeredEmployeesList[index];
-                        dispatch(settingSelectedEmployeeDetails(selectedItem))
-                        goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
-                    }}
+                    // tableOnClick={(e, index, item) => {
+                    //     const selectedItem = registeredEmployeesList[index];
+                    //     dispatch(settingSelectedEmployeeDetails(selectedItem))
+                    //     goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
+                    // }}
                 />
             ) : <NoRecordFound />}
-        </>
+        </div>
     }, [registeredEmployeesList])
 
     return (
@@ -167,7 +169,7 @@ function PayRoll() {
             <TableWrapper
                 buttonChildren={
                     <Container additionClass=" mr--4">
-                        {userDetails.is_admin && (
+                        { (
                             <Container additionClass="col">
                                 <Primary
                                     additionClass="mr-1 pr-1"

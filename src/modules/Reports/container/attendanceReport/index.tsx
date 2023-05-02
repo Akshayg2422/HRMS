@@ -66,7 +66,6 @@ function AttendanceReport({ data, department, reportType, customrange, designati
       selected_date_to: customrange?.dataTo,
       download: true
     }
-    console.log("params----->", params);
     dispatch(getDownloadEmployeeCheckinLogs({
       params,
       onSuccess: (response: any) => () => {
@@ -85,12 +84,12 @@ function AttendanceReport({ data, department, reportType, customrange, designati
         //   <ImageView height={20} width={20} icon={Icons.Download} onClick={() => { getEmployeeCheckInLogsReports(el?.emp_id) }} />
         // </div>,
         "Designation": el.designation,
-        // "Total Days": el.total,
-        // "Present Days": el.present,
-        // "Leave Days": el.leave,
-        // "Holidays": el.holiday,
-        // "Absent": el.absent,
-        // "Alert": el.alert,
+        "Total Days": el.total,
+        "Present": el.present,
+        "Leave": el.leave,
+        "Holidays": el.holiday,
+        "Absent": el.absent,
+        "Alert": el.alert,
         "Billable Days": el?.billable_days,
         "  ": <CommonDropdownMenu
           data={ATTENDANCE_DROPDOWN_ITEM}

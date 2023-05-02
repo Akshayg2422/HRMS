@@ -1,9 +1,9 @@
 import { Card, CommonDropdownMenu, CommonTable, Container, DatePicker, DropDown, FormTypography, FormWrapper, NoRecordFound, Primary, ScreenContainer } from '@components'
-import { getEmployeeSalaryDefinition } from '../../../../../../store/Payroll/actions';
+import { getEmployeeEarnings, getEmployeeSalaryDefinition } from '../../../../../../store/Payroll/actions';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { ROUTE, goTo, useNav, Today, ThisMonth, getServerDateFromMoment, getMomentObjFromServer, getDisplayTimeFromMoment, showToast } from '@utils';
+import { ROUTE, goTo, useNav, Today, ThisMonth, getServerDateFromMoment, getMomentObjFromServer, getDisplayTimeFromMoment, showToast, getDisplayDateTimeFromMoment, dateFormate } from '@utils';
 import { Dropdown } from 'reactstrap';
 import { Icons } from '@assets';
 import moment from 'moment';
@@ -14,7 +14,7 @@ function PayrollView() {
   const { t } = useTranslation();
   const navigation = useNav();
 
-  const sampleData = [{ name: "Total Days", days: "17" }, { name: "Working Days", days: "17" }, { name: "Holidays", days: "0" }, { name: "leaves (UnPaid) ", days: "0" }]
+  const [consolidatedEarings, setConsolidatedEarings] = useState<any>()
 
   const MONTHS = [
     {
@@ -79,6 +79,8 @@ function PayrollView() {
   const [customMonth, setCustomMonth] = useState(MONTHS[currentMonth].id);
   const [minData, setMinData] = useState('')
   const [maxDate, setMaxData] = useState('')
+  const [salaryCriteria, setSalaryCriteria] = useState<any>()
+
 
   const CARD_DROPDOWN_ITEM = [
     { id: '1', name: `View Payslip`, value: 'PS', image: '' },
@@ -105,7 +107,6 @@ function PayrollView() {
     getEmployeeSalaryDefinitionDetails()
   }, [])
 
-
   useEffect(() => {
     const toSeverDate = new Date(
       getServerDateFromMoment(getMomentObjFromServer(customRange.dataTo))
@@ -119,22 +120,18 @@ function PayrollView() {
     if (toSeverDate < fromServerDate) {
       showToast('info', t('dateFromToValidation'))
       setCustomRange({ ...customRange, dataTo: "" });
+    } else {
+      getEarnings()
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
   useEffect(() => {
-
-
     if (customRange.dateFrom && customRange.dataTo) {
-      const startOfMonth = moment(customRange.dateFrom).startOf('month').format('YYYY-MM-DD');
       const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
-
       if (customRange.dataTo > endOfMonth) {
         setCustomRange({ ...customRange, dataTo: endOfMonth });
       }
-
     }
-
   }, [customRange.dateFrom, customRange.dataTo])
 
 
@@ -144,15 +141,11 @@ function PayrollView() {
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
-
     setCustomRange({ ...customRange, [key]: value });
   };
 
 
-
-
   const getEmployeeSalaryDefinitionDetails = () => {
-
     //getEmployeeSalaryDefinition
     const params = {
       employee_id: selectedEmployeeDetails?.id
@@ -181,6 +174,15 @@ function PayrollView() {
   }
 
 
+  const normalizedSalaryAllowanceList = (data: any) => {
+
+    return data && data.length > 0 && data.map((el: any, index: number) => {
+      return {
+        name: el.name,
+        'Amount': el.value
+      };
+    });
+  }
 
 
   function getMonthMinMaxDate(month: any) {
@@ -203,7 +205,38 @@ function PayrollView() {
 
   }
 
+  // getEmployeeEarnings
+  const getEarnings = () => {
+    if (customRange.dateFrom && customRange.dataTo) {
+      const params = {
+        employee_id: selectedEmployeeDetails?.id,
+        date_from: customRange.dateFrom,
+        date_to: customRange.dataTo
+      }
+      dispatch(getEmployeeEarnings({
+        params,
+        onSuccess: (success: any) => () => {
+          getStructuredConsolidatedEarings(success.details)
+        },
+        onError: (error: any) => () => {
 
+        }
+      }));
+    }
+  }
+
+  const getStructuredConsolidatedEarings = (details: any) => {
+    let structuredData = [{ key: 'Total Days', value: details?.break_down?.total }, { key: 'Holiday', value: details?.break_down?.holiday }, { key: 'Present', value: details?.break_down?.present },
+    { key: 'Alert', value: details?.break_down?.alert }, { key: 'Absent', value: details?.break_down?.absent }, { key: 'Leaves', value: details?.break_down?.leave }, { key: 'Billable Days', value: details?.break_down?.billable_days }
+    ]
+    let structuredSalaryData = [{ key: 'Basic Salary', value: details?.payment_info?.calculated_pay?.basic_salary }, { key: 'PF', value: details?.payment_info?.calculated_pay?.pf_employee },
+    { key: 'PT', value: details?.payment_info?.calculated_pay?.pt }, { key: 'Income Tax', value: details?.payment_info?.calculated_pay?.income_tax },
+    { key: 'Take Home', value: details?.payment_info?.calculated_pay?.take_home }]
+    setConsolidatedEarings(structuredData)
+    setSalaryCriteria({ structuredSalaryData: structuredSalaryData, allowance: details?.payment_info?.calculated_pay?.allowances })
+  }
+
+  console.log("====", salaryCriteria);
 
   return (
     // <ScreenContainer>
@@ -212,7 +245,7 @@ function PayrollView() {
         <div className='row'>
           <div className="col-lg-3 col-md-4 col-sm-12 mt--1 ">
             <DropDown
-              label='Earnings from month'
+              label='Month'
               placeholder='Select month'
               data={monthData}
               value={customMonth}
@@ -247,87 +280,115 @@ function PayrollView() {
               value={customRange.dataTo}
             />
           </div>
-
         </div>
-        <h3> Earnings Till Date </h3>
-        {
-          sampleData.map((el: any) => {
-            return (
-              <div className='row my-3'>
-                <span className='col-6'>{el.name} </span>
-                <span className='col-6'>{el.days} </span>
-              </div>
-            )
-
-          })
-        }
-        <div className='row my-3'>
-          <span className='h3 col-6'> Payable Days </span>
-          <span className='col-6'> 0 </span>
-        </div>
-
+        <h3>{`${dateFormate(customRange.dateFrom)} ${' - '}${dateFormate(customRange.dataTo)}`}</h3>
       </Card>
+      <div className='mx-4 row'>
+        <Card additionClass='col-xl-5'>
+          <h3>{'Attendance'}</h3>
+          {
+            consolidatedEarings && consolidatedEarings.length > 0 && consolidatedEarings.map((el: any) => {
+              return (
+                <div className='row my-3'>
+                  <span className={`${el.key === 'Billable Days' && 'h3'} col`}>{el.key} </span>
+                  <span className={`${el.key === 'Billable Days' && 'h3'} col-2`}>{el.value} </span>
+                </div>
+              )
+            })
+          }
+          {/* <div className='row'>
+            <span className='h3 col'>{'Total Earnings'}</span>
+            <span className='col-2'> 0 </span>
+          </div> */}
+        </Card>
+        <Card additionClass='col ml-xl-3'>
+          {!isDisablePayrollView ? (
+            <>
+              <h3>{`Salary definition`}</h3>
+              <Container additionClass={'col-xl-12 row col-sm-3'}>
+                <div className="col-xl-6">
+                  <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
+                </div>
+                <div className="col-xl-6">
+                  <FormTypography title={'Basic salary'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
+                </div>
+              </Container>
 
+              <Container additionClass={'col-xl-12 row col-sm-3 mb-3'}>
+                <div className="col-xl-6">
+                  <FormTypography title={'Allowance group name'} subTitle={employeeSalaryDefinition?.allowance_break_down?.name} />
+                </div>
+              </Container>
+
+              {employeeSalaryDefinition?.allowance_break_down?.allowances && employeeSalaryDefinition?.allowance_break_down?.allowances?.length > 0 &&
+                <Container additionClass=''>
+                  <h5 className={'text-muted ml-3 mt-2'}>{'Allowances'}</h5>
+                  <Container additionClass=''>
+                    <CommonTable
+                      card={false}
+                      displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.allowance_break_down?.allowances)}
+
+                    />
+                  </Container>
+                </Container>
+              }
+              {employeeSalaryDefinition?.deductions_group && employeeSalaryDefinition.deductions_group.length > 0 &&
+                <Container additionClass=''>
+                  <h5 className={'text-muted ml-3 mt-4'}>{'Deductions'}</h5>
+                  <Container>
+                    <CommonTable
+                      card={false}
+                      displayDataSet={normalizedAllowanceList(employeeSalaryDefinition.deductions_group)}
+                    />
+                  </Container>
+                </Container>
+              }
+            </>) :
+            <>
+              <Container additionClass='text-right'>
+                <Primary
+                  text={t('add')}
+                  onClick={() => {
+                    goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
+                    setIsDisablePayrollView(false)
+                  }}
+                  size={"btn-sm"}
+                />
+              </Container>
+              <NoRecordFound />
+            </>}
+        </Card>
+      </div>
       <Card additionClass='mx-4'>
-        {!isDisablePayrollView ? (
-          <>
-            <h3>{`${selectedEmployeeDetails?.name} 'salary definition`}</h3>
-
-            <Container additionClass={'col-xl-12 row col-sm-3'}>
-              <div className="col-xl-6">
-                <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
-              </div>
-              <div className="col-xl-6">
-                <FormTypography title={'Basic salary'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
-              </div>
-            </Container>
-
-            <Container additionClass={'col-xl-12 row col-sm-3 mb-3'}>
-              <div className="col-xl-6">
-                <FormTypography title={'Allowance group name'} subTitle={employeeSalaryDefinition?.allowance_break_down?.name} />
-              </div>
-            </Container>
-
-            {employeeSalaryDefinition?.allowance_break_down?.allowances && employeeSalaryDefinition?.allowance_break_down?.allowances?.length > 0 &&
-              <Container additionClass=''>
-                <h5 className={'text-muted ml-3 mt-2'}>{'Allowances'}</h5>
-                <Container additionClass='mx--4'>
-                  <CommonTable
-                    card={false}
-                    displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.allowance_break_down?.allowances)}
-
-                  />
-                </Container>
-              </Container>
+        <h3>{`Payable's`}</h3>
+        {salaryCriteria?.allowance && salaryCriteria?.allowance.length > 0 ? <div className='row'>
+          <div className='row col-xl-6'>
+            {salaryCriteria && salaryCriteria?.structuredSalaryData.length > 0 && salaryCriteria?.structuredSalaryData.map((el: any) => {
+              return (
+                <div className='col-xl-6'>
+                  {el.key !== 'Take Home' && <FormTypography title={el.key} subTitle={el.value} />}
+                  {el.key === 'Take Home' && <div className='mt-3'
+                    style={{ flexDirection: 'column' }}>
+                    <div className={'h4'}>{el.key} </div>
+                    <div className={'h4'}>{el.value} </div>
+                  </div>
+                  }
+                </div>
+              )
+            })
             }
-
-            {employeeSalaryDefinition?.deductions_group && employeeSalaryDefinition.deductions_group.length > 0 &&
-              <Container additionClass=''>
-                <h5 className={'text-muted ml-3 mt-4'}>{'Deductions'}</h5>
-                <Container additionClass='mx--4'>
-                  <CommonTable
-                    card={false}
-                    displayDataSet={normalizedAllowanceList(employeeSalaryDefinition.deductions_group)}
-
-                  />
-                </Container>
-              </Container>
-            }
-          </>) :
-          <>
-            <Container additionClass='text-right'>
-              <Primary
-                text={t('add')}
-                onClick={() => {
-                  goTo(navigation, ROUTE.ROUTE_SALARY_BREAK_DOWN);
-                  setIsDisablePayrollView(false)
-                }}
-                size={"btn-sm"}
+          </div>
+          <div className='col-xl-6'>
+            <h5 className={'text-muted'}>{'Allowances'}</h5>
+            <Container additionClass='mx--4'>
+              <CommonTable
+                card={false}
+                displayDataSet={normalizedSalaryAllowanceList(salaryCriteria?.allowance)}
               />
             </Container>
-            <NoRecordFound />
-          </>}
-
+          </div>
+        </div>
+          : <NoRecordFound /> }
       </Card>
     </>
 

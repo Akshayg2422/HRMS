@@ -38,8 +38,10 @@ function Charts() {
     const barChartDataSet = { labels: [], dataset: [] }
     employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.filter((el) => {
       if (el.title !== "Total") {
-        barChartDataSet.labels.push(el?.title)
-        barChartDataSet.dataset.push(el?.count)
+        if (el?.count > 0) {
+          barChartDataSet.labels.push(el?.title)
+          barChartDataSet.dataset.push(el?.count)
+        }
       }
     })
     setBarChart(barChartDataSet)
@@ -189,7 +191,7 @@ function Charts() {
                 <h6 className="surtitle">Overview</h6>
                 <h5 className="h3 mb-0">Department</h5>
               </CardHeader>
-              <CardBody style={{ overflowX: 'auto'}} className={'scroll-hidden'}>
+              <CardBody style={{ overflowX: 'auto' }} className={'scroll-hidden'}>
                 <div className="chart" style={{ width: '700px' }}>
                   <Bar
                     data={lineChartData.data}

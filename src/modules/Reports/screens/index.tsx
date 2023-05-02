@@ -413,11 +413,12 @@ function Reports() {
             </div>
           </div>
           <div>
-            {/* <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} /> */}
-            <Search variant="Button" icons={Icons.DownloadSecondary} onClick={() => downloadSampleFile()} />
+            <Icon icon={Icons.DownloadSecondary} additionClass={'col-xl-1 mb-sm-0 mb-2'} onClick={() => downloadSampleFile()} />
+            {/* <Search variant="Icon" icons={Icons.DownloadSecondary} onClick={() => downloadSampleFile()} /> */}
             <Search variant="Button" onClick={() => getReports(INITIAL_PAGE)} />
           </div>
         </div>
+
         {reportsType === "leave" &&
           <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} department={selectedDepartment} reportType={reportsType} designation={selectedDesignation} />
             : <NoRecordFound />}</>
