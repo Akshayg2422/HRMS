@@ -90,6 +90,7 @@ function RegisterUserDetail() {
         label={t('aadhar')}
         placeholder={t('typeypurAadharNo')}
         validator={validateAadhar}
+        name={'aadhaar'}
         value={registerAdminDetails.aadhaar}
         onChange={(e) => dispatch(updateAdminInput('aadhaar', inputAadharLength(e.target.value, MAX_LENGTH_AADHAR)))}
       />

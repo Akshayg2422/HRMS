@@ -12,7 +12,8 @@ import {
     ADD_EMPLOYEE_SALARY_DEFINITION,
     GET_EMPLOYEE_SALARY_DEFINITION,
     GET_ALLOWANCE_GROUPS_PAGINATED,
-    GET_COMPANY_DEDUCTIONS_PAGINATED
+    GET_COMPANY_DEDUCTIONS_PAGINATED,
+    GET_EARNINGS
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -48,7 +49,9 @@ import {
     getAllowanceGroupsPaginatedFailure,
 
     getCompanyDeductionsPaginatedSuccess,
-    getCompanyDeductionsPaginatedFailure
+    getCompanyDeductionsPaginatedFailure,
+    getEmployeeEarningsSuccess,
+    getEmployeeEarningsFailure
 } from "./actions";
 
 import {
@@ -66,7 +69,8 @@ import {
 
     addEmployeeSalaryDefinitionApi,
 
-    getEmployeeSalaryDefinitionApi
+    getEmployeeSalaryDefinitionApi,
+    fetchEmployeeEarningsApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -347,6 +351,32 @@ function* getEmployeeSalaryDefinitionSaga(action) {
     }
 }
 
+/**
+ * Employee Earnings
+ */
+
+function* getEmployeesEarningsSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(fetchEmployeeEarningsApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getEmployeeEarningsSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(getEmployeeEarningsFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getEmployeeEarningsFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
+
+
 //Watcher
 
 
@@ -362,9 +392,7 @@ function* PayrollSaga() {
     yield takeLatest(GET_EMPLOYEE_SALARY_DEFINITION, getEmployeeSalaryDefinitionSaga);
     yield takeLatest(GET_ALLOWANCE_GROUPS_PAGINATED, getAllowanceGroupsPaginatedSaga);
     yield takeLatest(GET_COMPANY_DEDUCTIONS_PAGINATED, getCompanyDeductionsPaginatedApi);
-
-
-
+    yield takeLatest(GET_EARNINGS, getEmployeesEarningsSaga);
 }
 
 export default PayrollSaga;

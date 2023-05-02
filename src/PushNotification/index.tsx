@@ -90,7 +90,7 @@ const PushNotification = () => {
             console.log("foreground message----->", payload);
             const title = payload?.data?.title;
             const options = {
-                body: payload?.notification?.body,
+                body: payload?.notification?.body || payload?.data?.message,
                 icon: Icons.LogoSmall
             };
             new Notification(title, options).addEventListener('click', function () {

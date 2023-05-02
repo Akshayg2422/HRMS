@@ -45,8 +45,12 @@ const ModifyLogs = () => {
 
   const { currentPage, currentLeaveType } = useSelector((state: any) => state.EmployeeReducer);
 
+  console.log('========>', currentLeaveType);
+
+
   useEffect(() => {
-    fetchPendingDetail(INITIAL_PAGE, currentLeaveType)
+    // fetchPendingDetail(INITIAL_PAGE, -2)
+    getLeavesDetails(active)
   }, [hierarchicalBranchIds]);
 
 
@@ -70,6 +74,7 @@ const ModifyLogs = () => {
   useEffect(() => {
     if (enterPress) {
       fetchPendingDetail(INITIAL_PAGE, currentLeaveType)
+      // getLeavesDetails(active)
     }
   }, [enterPress])
 

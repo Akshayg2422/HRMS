@@ -34,6 +34,8 @@ function Dashboard() {
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
 
+
+
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
@@ -46,23 +48,22 @@ function Dashboard() {
       device_token: fcmToken
     }
 
-    dispatch(postAppConfig({
-      params,
-      onSuccess: (response: any) => () => {
-        const param = false
-        dispatch(isWebPushRegister({
-          param,
-          onSuccess: (success: any) => () => {
-
-          },
-          onError: (error: any) => () => {
-
-          }
-        }))
-      },
-      onError: () => () => {
-      },
-    }))
+    if (fcmToken) {
+      dispatch(postAppConfig({
+        params,
+        onSuccess: (response: any) => () => {
+          dispatch(isWebPushRegister({
+            params,
+            onSuccess: (success: any) => () => {
+            },
+            onError: (error: any) => () => {
+            }
+          }))
+        },
+        onError: () => () => {
+        },
+      }))
+    }
   }
 
   useEffect(() => {
@@ -84,6 +85,7 @@ function Dashboard() {
             dispatch(setBranchHierarchical({ ids: { branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false }, name: dashboardResponse.company_branch.name }))
             getStatsDetails({ branch_id: dashboardResponse.company_branch.id, child_ids: childIds, include_child: false })
             setInitialCall(true)
+            getPostAppConfig()
           },
           onError: (error: any) => () => {
             showToast('error', error)

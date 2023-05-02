@@ -129,8 +129,6 @@ function SignUp() {
 
       }
     }));
-
-
   }
 
   const typeOfBusiness = () => {
@@ -138,7 +136,6 @@ function SignUp() {
     dispatch(getTypeOfBusiness({
       params,
       onSuccess: (success: any) => () => {
-
       },
       onError: (error: any) => () => {
 
@@ -151,7 +148,7 @@ function SignUp() {
     if (validateName(registerAdminDetails.firstName).status === false) {
       showToast("error", t("invalidName"));
       return false;
-    } 
+    }
     // else if (
     //   validateDefault(registerAdminDetails.lastName).status === false
     // ) {
@@ -293,9 +290,8 @@ function SignUp() {
         onSuccess: (response: object) => () => {
           dispatch(updateAdminInput({}))
         },
-        onError: (error: any) => () => {
-          showToast("error", error?.error_message ? error?.error_message : error?.error);
-
+        onError: (errorRes: any) => () => {
+          showToast('error', errorRes)
         },
       }));
     }
@@ -351,12 +347,12 @@ function SignUp() {
           params = { ...params, [param]: base64 };
         }
       }
-      
+
       dispatch(
         uploadCompanyDocuments({
           params,
           onSuccess: (response: object) => () => {
-            goTo(navigation, ROUTE.ROUTE_LOGIN);
+            goTo(navigation, ROUTE.ROUTE_LOGIN, true);
           },
           onError: (error: string) => () => {
             showToast("error", error);

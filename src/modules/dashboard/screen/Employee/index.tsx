@@ -195,14 +195,16 @@ function EmployeeScreen() {
         "mobile number": el.mobile_number,
         branch: el.branch,
         "  ":
-          <CommonDropdownMenu
-            data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
-            onItemClick={(e, item) => {
-              e.stopPropagation();
-              setSelectedEmployeeItem(el)
-              dropdownMenuItemActionHandler(item, el)
-            }}
-          />
+          <div className="common-menu">
+            <CommonDropdownMenu
+              data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
+              onItemClick={(e, item) => {
+                e.stopPropagation();
+                setSelectedEmployeeItem(el)
+                dropdownMenuItemActionHandler(item, el)
+              }}
+            />
+          </div>
       };
     });
   };
@@ -316,59 +318,13 @@ function EmployeeScreen() {
           showToast("success", success.status);
           setModel(!model);
         },
-        onError: (error: string) => () => { },
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };
 
-  /**
-   * Enable office checkIn
-   */
-
-  const fieldCheckInHandler = (value: boolean) => {
-    const params = {
-      can_field_checkin: value,
-      // id: employeeDetails.id
-    }
-    dispatch(postEnableFieldCheckIn({
-      params, onSuccess: (success: any) => () => {
-        showToast('success', success.message)
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-    }))
-  }
-
-  const officeCheckInHandler = (value: boolean) => {
-    const params = {
-      can_office_checkin: value,
-      // id: employeeDetails.id
-    }
-    dispatch(postEnableOfficeCheckIn({
-      params, onSuccess: (success: any) => () => {
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-    }))
-  }
-
-  const faceValidationHandler = (value: boolean) => {
-    const params = {
-      face_validation_required: value,
-      // id: employeeDetails.id
-    }
-    dispatch(changeAttendanceSettings({
-      params, onSuccess: (success: any) => () => {
-        showToast('success', success.message)
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-    }))
-
-  }
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -385,14 +341,6 @@ function EmployeeScreen() {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-        // tableOnClick={(e, index, item) => {
-        //   const selectedId = registeredEmployeesList[index].id;
-        //   const selectedObject = registeredEmployeesList[index]
-        //   dispatch(getSelectedEmployeeId(selectedId));
-        //   dispatch(settingSelectedEmployeeDetails(selectedObject))
-        //   dispatch(employeeEdit(selectedId))
-        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-        // }}
         />
       ) : <NoRecordFound />}
     </>
@@ -413,7 +361,6 @@ function EmployeeScreen() {
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
                 // e.stopPropagation();
-                console.log("============>clicked",);
                 goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
               }}
             />

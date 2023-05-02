@@ -274,4 +274,6 @@ export const GET_EMPLOYEE_SALARY_DEFINITION_URL = 'payroll/getEmployeeSalaryDefi
 
 export const GET_EMPLOYEE_ATTENDANCE_INFO_URL = 'employee/getEmployeeAttendanceInfo'
 
+// get earnings
 
+export const  GET_EMPLOYEES_EARNINGS = '/attendance/getEmployeeConsolidatedAttendance'
