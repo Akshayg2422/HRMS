@@ -361,7 +361,7 @@ function PayrollView() {
       </div>
       <Card additionClass='mx-4'>
         <h3>{`Payable's`}</h3>
-        <div className='row'>
+        {salaryCriteria?.allowance && salaryCriteria?.allowance.length > 0 ? <div className='row'>
           <div className='row col-xl-6'>
             {salaryCriteria && salaryCriteria?.structuredSalaryData.length > 0 && salaryCriteria?.structuredSalaryData.map((el: any) => {
               return (
@@ -388,6 +388,7 @@ function PayrollView() {
             </Container>
           </div>
         </div>
+          : <NoRecordFound /> }
       </Card>
     </>
 
