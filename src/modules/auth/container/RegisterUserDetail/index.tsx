@@ -76,7 +76,7 @@ function RegisterUserDetail() {
         label={t('designation')}
         placeholder={t('enterDesignation')}
         validator={validateDefault}
-        maxLength={10}
+        maxLength={20}
         onChange={(e) => dispatch(updateAdminInput('designation', e.target.value))}
       />
       <InputDefault
@@ -90,6 +90,7 @@ function RegisterUserDetail() {
         label={t('aadhar')}
         placeholder={t('typeypurAadharNo')}
         validator={validateAadhar}
+        name={'aadhaar'}
         value={registerAdminDetails.aadhaar}
         onChange={(e) => dispatch(updateAdminInput('aadhaar', inputAadharLength(e.target.value, MAX_LENGTH_AADHAR)))}
       />

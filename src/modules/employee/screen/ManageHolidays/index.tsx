@@ -75,7 +75,10 @@ const ManageHolidays = () => {
       return false;
     } else if (validateName(holidayEvents.title).status === false) {
       showToast("error", t("titlerequired"));
-    } else {
+    } else if (validateName(holidayEvents.date).status === false) {
+      showToast("error", t("Date Should Not Be Empty"));
+    }
+    else {
       return true;
     }
   };
@@ -116,7 +119,7 @@ const ManageHolidays = () => {
           <ChooseBranchFromHierarchical showCheckBox={false} />
         </Container>
 
-        
+
         <InputText
           col="col-xl-12"
           label={t("title")}

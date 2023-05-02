@@ -21,6 +21,7 @@ import {
   getCheckInDetailedLogPerDay,
   getEmployeeEachUserTimeSheets,
   applyLeave,
+  postEmployeeModifyRequest,
 } from "../../../../store/employee/actions";
 import {
   getDisplayTimeFromMoment,
@@ -117,19 +118,6 @@ function MyLog() {
     }));
   }
 
-  function getEmployeeEachUserTimeSheetsApi() {
-    dispatch(
-      getEmployeeEachUserTimeSheets({
-        type,
-        onSuccess: (success: any) => () => {
-
-        },
-        onError: (error: any) => () => {
-
-        }
-      })
-    );
-  }
 
   const normalizedEmployeeLog = (data: any) => {
     return data.slice(0).reverse().map((el: CheckInLog) => {
@@ -200,9 +188,6 @@ function MyLog() {
     );
   }
 
-  const dateTimePickerHandler = (value: string, key: string) => {
-    setMarkAsPresentDetails({ ...markAsPresentDetails, [key]: value });
-  };
   const onChangeHandler = (event: any) => {
     setMarkAsPresentDetails({
       ...markAsPresentDetails,
@@ -221,13 +206,17 @@ function MyLog() {
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
       const params = {
-        day_status_id: markAsPresentDetails.id,
-        date_from: markAsPresentDetails.date,
-        date_to: markAsPresentDetails.date,
+        // day_status_id: markAsPresentDetails.id,
+        // date_from: markAsPresentDetails.date,
+        // date_to: markAsPresentDetails.date,
+        // reason: markAsPresentDetails.reason,
+        attendance_date: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
+        daily_log_id: markAsPresentDetails.id,
+        // employee_id:
       };
       dispatch(
-        applyLeave({
+        postEmployeeModifyRequest({
           params,
           onSuccess: (response: any) => () => {
             setMarkAsPresentModel(!markAsPresentModel);

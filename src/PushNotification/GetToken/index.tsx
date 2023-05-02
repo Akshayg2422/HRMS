@@ -1,17 +1,18 @@
 import { messaging } from '../Config'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { getToken, onMessage } from "firebase/messaging"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getFcmToken } from '../../store/auth/actions'
 
 const GetToken = () => {
-
+    const { fcmToken } = useSelector(
+        (state: any) => state.AuthReducer
+    );
     const dispatch = useDispatch()
 
     useEffect(() => {
         pushNotification()
     }, [])
-
 
 
     const pushNotification = async () => {

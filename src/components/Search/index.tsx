@@ -17,7 +17,8 @@ function index({ backgroundColor = 'primary', variant = 'Button', additionalClas
     <>
       {variant === 'Button' &&
         <Button type='button' size={size} color={backgroundColor} className={`btn-icon btn-2  ${additionalClassName}`} onClick={onClick} >
-          <span className='btn-inner--icon'><ImageView icon={icons ? icons : Icons.Search} /></span>
+          {/* <span className='btn-inner--icon'><ImageView icon={icons ? icons : Icons.Search} /></span> */}
+          <span className='btn-inner--icon'>{'Search'}</span>
         </Button >
       }
       {variant === 'Icon' && <span className={`${additionalClassName}`}><ImageView additionClass='p-2' height={40} width={40} icon={Icons.SearchSecondary} style={{ cursor: 'pointer' }} onClick={onClick} /></span>}

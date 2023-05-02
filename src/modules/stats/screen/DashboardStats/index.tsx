@@ -90,25 +90,6 @@ const DashboardStats = () => {
     }));
   }
 
-  const getAllSubBranches = (branchList: any, parent_id: string) => {
-    let branchListFiltered: any = [];
-    const getChild = (branchList: any, parent_id: string) => {
-      branchList
-        .filter((it: any) => it.parent_id === parent_id)
-        .map((it2: any) => {
-          branchListFiltered.push(it2);
-          getChild(branchList, it2.id);
-          return it2;
-        });
-    };
-    getChild(branchList, parent_id);
-
-    branchListFiltered = branchListFiltered.map((it: any) => {
-      return it.id;
-    });
-    return branchListFiltered;
-  };
-
   const proceedNext = (
     attendanceType: number,
     departmentId: number | string

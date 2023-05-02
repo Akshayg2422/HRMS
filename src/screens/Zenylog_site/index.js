@@ -11,7 +11,7 @@ function ZenylogSite(props) {
 
     useEffect(() => {
         dispatch(hideLoader())
-    },[])
+    }, [])
 
     return (
         <div>

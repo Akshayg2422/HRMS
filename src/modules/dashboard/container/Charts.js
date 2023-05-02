@@ -38,8 +38,10 @@ function Charts() {
     const barChartDataSet = { labels: [], dataset: [] }
     employeeattendancedatalog && Object.keys(employeeattendancedatalog).length > 0 && employeeattendancedatalog?.cards.filter((el) => {
       if (el.title !== "Total") {
-        barChartDataSet.labels.push(el?.title)
-        barChartDataSet.dataset.push(el?.count)
+        if (el?.count > 0) {
+          barChartDataSet.labels.push(el?.title)
+          barChartDataSet.dataset.push(el?.count)
+        }
       }
     })
     setBarChart(barChartDataSet)

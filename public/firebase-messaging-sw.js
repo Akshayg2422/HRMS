@@ -8,6 +8,9 @@
 // Scripts for firebase and firebase messaging
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
+// importScripts('https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js');
+// importScripts('https://www.gstatic.com/firebasejs/8.6.8/firebase-messaging.js');
+
 
 // eslint-disable-next-line react-hooks/rules-of-hooks
 
@@ -26,7 +29,7 @@ const firebaseConfig = {
 
 
 firebase.initializeApp(firebaseConfig);
-
+const messaging = firebase.messaging();
 
 // Retrieve firebase messaging
 // const messaging = firebase.messaging();

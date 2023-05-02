@@ -50,10 +50,13 @@ import {
 
     GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
     GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER,
-    
+
     GET_ALLOWANCE_GROUPS_PAGINATED,
     GET_ALLOWANCE_GROUPS_PAGINATED_SUCCESS,
-    GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE
+    GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE,
+    GET_EARNINGS,
+    GET_EARNINGS_SUCCESS,
+    GET_EARNINGS_FAILURE
 } from './actionTypes'
 
 const initialState = {
@@ -186,7 +189,7 @@ const PayrollReducer = (state = initialState, action) => {
             break;
 
 
-            
+
         /**
         * get Allowance Groups
         */
@@ -194,14 +197,14 @@ const PayrollReducer = (state = initialState, action) => {
         case GET_ALLOWANCE_GROUPS:
             state = {
                 ...state,
-            
+
             };
             break;
         case GET_ALLOWANCE_GROUPS_SUCCESS:
             state = {
                 ...state,
                 allowanceGroupsList: action.payload,
-             
+
             };
             break;
         case GET_ALLOWANCE_GROUPS_FAILURE:
@@ -334,7 +337,7 @@ const PayrollReducer = (state = initialState, action) => {
             break;
 
 
-            
+
         /**
      * get company deductions paginated
      */
@@ -474,6 +477,30 @@ const PayrollReducer = (state = initialState, action) => {
             state = {
                 ...state,
                 isEditSalary: action.payload
+            };
+            break;
+
+        /**
+         * Total Earnings
+         */
+
+        case GET_EARNINGS:
+            state = {
+                ...state,
+                loading: true,
+            };
+            break;
+        case GET_EARNINGS_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+            };
+            break;
+        case GET_EARNINGS_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
             };
             break;
 

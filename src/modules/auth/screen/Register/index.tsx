@@ -79,7 +79,6 @@ function SignUp() {
     })
   }, [screenSize])
 
-  console.log("==============>", screenSize.dynamicHeight);
 
   const {
     registerCurrentContainer,
@@ -130,8 +129,6 @@ function SignUp() {
 
       }
     }));
-
-
   }
 
   const typeOfBusiness = () => {
@@ -139,7 +136,6 @@ function SignUp() {
     dispatch(getTypeOfBusiness({
       params,
       onSuccess: (success: any) => () => {
-
       },
       onError: (error: any) => () => {
 
@@ -152,12 +148,13 @@ function SignUp() {
     if (validateName(registerAdminDetails.firstName).status === false) {
       showToast("error", t("invalidName"));
       return false;
-    } else if (
-      validateDefault(registerAdminDetails.lastName).status === false
-    ) {
-      showToast("error", t("invalidsccdName"));
-      return false;
     }
+    // else if (
+    //   validateDefault(registerAdminDetails.lastName).status === false
+    // ) {
+    //   showToast("error", t(""));
+    //   return false;
+    // }
     else if (
       validateMobileNumber(registerAdminDetails.mobileNumber).status === false
     ) {
@@ -173,11 +170,11 @@ function SignUp() {
       showToast("error", t("invalidGender"));
       return false;
     } else if (validateAadhar(registerAdminDetails.aadhaar).status === false) {
-      showToast("error", t("formInvalidParams"));
+      showToast("error", t("InvalidAadhaar"));
       return false;
     }
     else if (validatePAN(registerAdminDetails.pan).status === false) {
-      showToast("error", t("formInvalidParams"));
+      showToast("error", t("InvaliadPan"));
       return false;
     }
     else {
@@ -293,9 +290,8 @@ function SignUp() {
         onSuccess: (response: object) => () => {
           dispatch(updateAdminInput({}))
         },
-        onError: (error: any) => () => {
-          showToast("error", error?.error_message ? error?.error_message : error?.error);
-
+        onError: (errorRes: any) => () => {
+          showToast('error', errorRes)
         },
       }));
     }
@@ -356,7 +352,7 @@ function SignUp() {
         uploadCompanyDocuments({
           params,
           onSuccess: (response: object) => () => {
-            goTo(navigation, ROUTE.ROUTE_LOGIN);
+            goTo(navigation, ROUTE.ROUTE_LOGIN, true);
           },
           onError: (error: string) => () => {
             showToast("error", error);

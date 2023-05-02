@@ -57,6 +57,7 @@ const ApplyLeave = () => {
     ).getTime();
     if (toSeverDate < fromServerDate) {
       setFormDetails({ ...fromDetails, dataTo: "" });
+      showToast('info',t('dateFromToValidation'))
     }
   }, [fromDetails.dateFrom, fromDetails.dataTo]);
 

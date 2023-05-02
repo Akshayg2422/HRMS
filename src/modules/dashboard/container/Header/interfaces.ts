@@ -1,4 +1,4 @@
 export interface HeaderProps {
-    toggleSideNav?: any;
-    sideNavOpen?: boolean;
+    headerNavOpen: any,
+    toggleHeaderNav: any
 }

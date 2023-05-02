@@ -149,7 +149,16 @@ import {
   FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
   FETCH_EMPLOYEE_ATTENDANCE_INFO_FAILURE,
 
-  EMPLOYEE_VIEW_DETAILS_API_HANDLER
+  EMPLOYEE_VIEW_DETAILS_API_HANDLER,
+  EMPLOYEE_MODIFY_REQUEST,
+  EMPLOYEE_MODIFY_REQUEST_SUCCESS,
+  EMPLOYEE_MODIFY_REQUEST_FAILURE,
+  ADMIN_MODIFY_LOG,
+  ADMIN_MODIFY_LOG_SUCCESS,
+  ADMIN_MODIFY_LOG_FAILURE,
+  CHANGE_MODIFY_LOG_STATUS,
+  CHANGE_MODIFY_LOG_STATUS_SUCCESS,
+  CHANGE_MODIFY_LOG_STATUS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -806,6 +815,31 @@ export const changeEmployeeLeaveStatusFailure = (error) => {
   };
 };
 
+
+// modify log change status
+
+export const changeEmployeeModifyLogStatus = (params) => {
+  return {
+    type: CHANGE_MODIFY_LOG_STATUS,
+    payload: params,
+  };
+};
+
+export const changeEmployeeModifyLogStatusSuccess = (response) => {
+  return {
+    type: CHANGE_MODIFY_LOG_STATUS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const changeEmployeeModifyLogStatusFailure = (error) => {
+  return {
+    type: CHANGE_MODIFY_LOG_STATUS_FAILURE,
+    payload: error,
+  };
+};
+
+
 /**
  *
  * ADD holidays
@@ -1308,7 +1342,7 @@ export const getEmployeeAttendanceInfo = (params) => {
 };
 
 export const getEmployeeAttendanceInfoSuccess = (response) => {
-  console.log("action",response);
+  console.log("action", response);
   return {
     type: FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
     payload: response,
@@ -1330,5 +1364,53 @@ export const employeeViewDetailsApiHandler = (value) => {
   return {
     type: EMPLOYEE_VIEW_DETAILS_API_HANDLER,
     payload: value,
+  };
+};
+
+
+// api for modify log for employee
+
+export const postEmployeeModifyRequest = (params) => {
+  return {
+    type: EMPLOYEE_MODIFY_REQUEST,
+    payload: params,
+  };
+};
+
+export const postEmployeeModifyRequestSuccess = (response) => {
+  return {
+    type: EMPLOYEE_MODIFY_REQUEST_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postEmployeeModifyRequestFailure = (error) => {
+  return {
+    type: EMPLOYEE_MODIFY_REQUEST_FAILURE,
+    payload: error,
+  };
+};
+
+
+/// api for modify admin
+
+export const postAdminModifyLog = (params) => {
+  return {
+    type: ADMIN_MODIFY_LOG,
+    payload: params,
+  };
+};
+
+export const postAdminModifyLogSuccess = (response) => {
+  return {
+    type: ADMIN_MODIFY_LOG_SUCCESS,
+    payload: response,
+  };
+};
+
+export const postAdminModifyLogFailure = (error) => {
+  return {
+    type: ADMIN_MODIFY_LOG_FAILURE,
+    payload: error,
   };
 };

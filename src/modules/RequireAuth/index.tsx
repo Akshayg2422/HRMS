@@ -9,87 +9,6 @@ type RequireAuthProps = {
     children: React.ReactNode;
 }
 
-const routes = [
-    {
-        collapse: true,
-        name: "Dashboards",
-        icon: "ni ni-shop text-primary",
-        state: "dashboardsCollapse",
-        views: [
-            {
-                path: "/dashboard",
-                name: "Dashboard",
-                miniName: "D",
-                component: <></>,
-                layout: "/admin",
-            },
-            {
-                path: "/alternative-dashboard",
-                name: "Alternative",
-                miniName: "A",
-                component: <></>,
-                layout: "/admin",
-            },
-        ],
-    },
-    {
-        collapse: true,
-        name: "Examples",
-        icon: "ni ni-ungroup text-orange",
-        state: "examplesCollapse",
-        views: [
-            {
-                path: "/pricing",
-                name: "Pricing",
-                miniName: "P",
-                component: <></>,
-                layout: "/auth",
-            },
-            {
-                path: "/login",
-                name: "Login",
-                miniName: "L",
-                component: <></>,
-                layout: "/auth",
-            },
-            {
-                path: "/register",
-                name: "Register",
-                miniName: "R",
-                component: <></>,
-                layout: "/auth",
-            },
-            {
-                path: "/lock",
-                name: "Lock",
-                miniName: "L",
-                component: <></>,
-                layout: "/auth",
-            },
-            {
-                path: "/timeline",
-                name: "Timeline",
-                miniName: "T",
-                component: <></>,
-                layout: "/admin",
-            },
-            {
-                path: "/profile",
-                name: "Profile",
-                miniName: "P",
-                component: <></>,
-                layout: "/admin",
-            },
-            {
-                path: "/rtl-support",
-                name: "RTL Support",
-                miniName: "RS",
-                component: <></>,
-                layout: "/rtl",
-            },
-        ],
-    },
-];
 
 export const RequireAuth = ({ children }: RequireAuthProps) => {
 
@@ -108,32 +27,36 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to={ROUTE.ROUTE_LOGIN} state={{ path: location.pathname }} />
     }
 
-    const conditionalNavbarItem = (details: any) => {
-        if (details?.is_admin) {
-            return NAV_ITEM
-        } else if (details?.is_branch_admin) {
-            let filtered = NAV_ITEM.filter((el: any) => {
-                return el.value !== 'LP'
-            })
-            return filtered
-        }
-    }
+    // const conditionalNavbarItem = (details: any) => {
+    //     if (details?.is_admin) {
+    //         return NAV_ITEM
+    //     } else if (details?.is_branch_admin) {
+    //         let filtered = NAV_ITEM.filter((el: any) => {
+    //             return el.value !== 'LP'
+    //         })
+    //         return filtered
+    //     }
+    // }
 
     const toggleSideNav = () => {
+
         if (document.body.classList.contains("g-sidenav-pinned")) {
+            console.log("======>,came");
             document.body.classList.remove("g-sidenav-pinned");
             document.body.classList.add("g-sidenav-hidden");
         } else {
+            console.log("=========>,nmnm");
             document.body.classList.add("g-sidenav-pinned");
             document.body.classList.remove("g-sidenav-hidden");
         }
         setSidenavOpen(!sidenavOpen);
     };
 
+
     return (
         <>
             {userDetails && <Navbar
-                routes={conditionalNavbarItem(userDetails)}
+                routes={NAV_ITEM}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sidenavOpen}
                 logo={{
@@ -143,9 +66,9 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                     text: '',
                 }} />}
             <div className='main-content'>
-                {dashboardDetails && dashboardDetails.user_details && <div className='sticky-top' ><Header
-                    toggleSideNav={toggleSideNav}
-                /></div>}
+                {dashboardDetails && dashboardDetails.user_details && <div className='sticky-top' >
+                    <Header headerNavOpen={sidenavOpen} toggleHeaderNav={toggleSideNav}
+                    /></div>}
                 <div className='mx-3 my-4'>
                     {children}
                 </div>

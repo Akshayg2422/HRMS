@@ -142,7 +142,7 @@ function EmployeeScreen() {
 
       },
       onError: (error: any) => () => {
-
+        showToast('error', error)
       }
     }));
   }
@@ -195,14 +195,16 @@ function EmployeeScreen() {
         "mobile number": el.mobile_number,
         branch: el.branch,
         "  ":
-          <CommonDropdownMenu
-            data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
-            onItemClick={(e, item) => {
-              e.stopPropagation();
-              setSelectedEmployeeItem(el)
-              dropdownMenuItemActionHandler(item, el)
-            }}
-          />
+          <div className="common-menu">
+            <CommonDropdownMenu
+              data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
+              onItemClick={(e, item) => {
+                e.stopPropagation();
+                setSelectedEmployeeItem(el)
+                dropdownMenuItemActionHandler(item, el)
+              }}
+            />
+          </div>
       };
     });
   };
@@ -316,59 +318,13 @@ function EmployeeScreen() {
           showToast("success", success.status);
           setModel(!model);
         },
-        onError: (error: string) => () => { },
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };
 
-  /**
-   * Enable office checkIn
-   */
-
-  const fieldCheckInHandler = (value: boolean) => {
-    const params = {
-      can_field_checkin: value,
-      // id: employeeDetails.id
-    }
-    dispatch(postEnableFieldCheckIn({
-      params, onSuccess: (success: any) => () => {
-        showToast('success', success.message)
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-    }))
-  }
-
-  const officeCheckInHandler = (value: boolean) => {
-    const params = {
-      can_office_checkin: value,
-      // id: employeeDetails.id
-    }
-    dispatch(postEnableOfficeCheckIn({
-      params, onSuccess: (success: any) => () => {
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-    }))
-  }
-
-  const faceValidationHandler = (value: boolean) => {
-    const params = {
-      face_validation_required: value,
-      // id: employeeDetails.id
-    }
-    dispatch(changeAttendanceSettings({
-      params, onSuccess: (success: any) => () => {
-        showToast('success', success.message)
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-    }))
-
-  }
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -385,14 +341,6 @@ function EmployeeScreen() {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-          // tableOnClick={(e, index, item) => {
-          //   const selectedId = registeredEmployeesList[index].id;
-          //   const selectedObject = registeredEmployeesList[index]
-          //   dispatch(getSelectedEmployeeId(selectedId));
-          //   dispatch(settingSelectedEmployeeDetails(selectedObject))
-          //   dispatch(employeeEdit(selectedId))
-          //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-          // }}
         />
       ) : <NoRecordFound />}
     </>
@@ -413,7 +361,6 @@ function EmployeeScreen() {
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
                 // e.stopPropagation();
-                console.log("============>clicked",);
                 goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
               }}
             />
@@ -464,47 +411,49 @@ function EmployeeScreen() {
           showModel={model}
           toggle={() => setModel(!model)}
         >
-          {listBranchesList.map((item: Branch, index: number) => {
-            return (
-              <div
-                onClick={() => addSelectedBranch(item)}
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="row mx-3 my-1"
+          <div >
+            {listBranchesList.map((item: Branch, index: number) => {
+              return (
+
+                <div
+                  onClick={() => addSelectedBranch(item)}
+                  style={{ cursor: 'pointer' }}
                 >
-                  <div className="col-8">
-                    <span className=" text-gray">{item.name}</span>
-                  </div>
+                  <div className="d-flex mx-3"
+                  >
+                    <div className="col-8">
+                      <span className="text-gray">{item.name}</span>
+                    </div>
 
-                  <div className="col-4 text-right">
-                    <ImageView
-                      icon={
-                        checkStatus(item.id!)
-                          ? Icons.TickActive
-                          : Icons.TickDefault
-                      }
-                    />
+                    <div className="col-4 text-right">
+                      <ImageView
+                        icon={
+                          checkStatus(item.id!)
+                            ? Icons.TickActive
+                            : Icons.TickDefault
+                        }
+                      />
+                    </div>
                   </div>
+                  {index !== listBranchesList.length - 1 && <Divider space={3} />}
                 </div>
-                {index !== listBranchesList.length - 1 && <Divider />}
-              </div>
-            );
-          })}
-
-          <Container
-            additionClass={'mt-4 sticky-bottom'}
-            justifyContent={"justify-content-end"}
-            display={"d-flex"}
-          >
-            <Secondary
-              text={t("cancel")}
-              onClick={() => setModel(!model)}
-            />
-            <Primary
-              text={t("submit")}
-              onClick={() => updateEmployeeCheckInAssociationApi()}
-            />
-          </Container>
+              );
+            })}
+            <Container
+              additionClass={'mt-4 position-sticky bottom-0 end-0 right-0'}
+              justifyContent={"justify-content-end"}
+              display={"d-flex"}
+            >
+              <Secondary
+                text={t("cancel")}
+                onClick={() => setModel(!model)}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={() => updateEmployeeCheckInAssociationApi()}
+              />
+            </Container>
+          </div>
         </Modal>
       )}
       <Modal

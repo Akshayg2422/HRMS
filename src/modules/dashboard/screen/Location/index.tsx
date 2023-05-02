@@ -2,7 +2,7 @@ import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, 
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName } from '../../../../store/location/actions';
+import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName, getListAllBranchesList } from '../../../../store/location/actions';
 import { goTo, useNav, ROUTE, showToast, validateDefault, INITIAL_PAGE } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
@@ -10,19 +10,20 @@ import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/acti
 
 
 const DROPDOWN_MENU = [
-  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 const DROPDOWN_MENU_1 = [
-  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
 ]
 const DROPDOWN_MENU_2 = [
-  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+]
+
+const ADMIN_MENU = [
+  { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
 ]
 
 
@@ -52,6 +53,9 @@ function LocationScreen() {
   const { locationNumOfPages,
     LocationCurrentPage } = useSelector((state: any) => state.LocationReducer);
 
+  const { userLoggedIn, userDetails } = useSelector(
+    (state: any) => state.AppReducer
+  );
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
@@ -192,6 +196,28 @@ function LocationScreen() {
   }
 
 
+  const conditionalMenu = (menu: any) => {
+    if (userDetails?.is_admin) {
+      return [...menu, ...ADMIN_MENU]
+    } else {
+      return menu
+    }
+  }
+
+
+  const getBranchL = () => {
+    const params = {}
+    dispatch(getListAllBranchesList({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
+  }
+
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any) => {
@@ -200,16 +226,19 @@ function LocationScreen() {
         'Address': el?.address ? el?.address : '-',
         'CheckIn fenced': el.has_location ? <ImageView height={20} width={20} icon={Icons.Tick} /> : <></>,
         'Fencing Radius': el.fencing_radius + ' m',
-        "": <CommonDropdownMenu
-          data={el.has_location && el.has_location && !el.can_update_location ? DROPDOWN_MENU : el.has_location && el.has_location && el.can_update_location ? DROPDOWN_MENU_2 : DROPDOWN_MENU_1}
-          onItemClick={(e, item) => {
-            if (item.name === 'Reset radius') {
-              setModelData(data)
-            }
-            e.stopPropagation();
-            dropdownMenuItemActionHandler(item, el)
-          }}
-        />
+        "":
+          <div className="common-menu">
+            <CommonDropdownMenu
+              data={el.has_location && el.has_location && !el.can_update_location ? conditionalMenu(DROPDOWN_MENU) : el.has_location && el.has_location && el.can_update_location ? conditionalMenu(DROPDOWN_MENU_2) : conditionalMenu(DROPDOWN_MENU_1)}
+              onItemClick={(e, item) => {
+                if (item.name === 'Reset radius') {
+                  setModelData(data)
+                }
+                e.stopPropagation();
+                dropdownMenuItemActionHandler(item, el)
+              }}
+            />
+          </div>
       };
     });
   };
@@ -277,6 +306,7 @@ function LocationScreen() {
           showToast("success", success.message);
           updateCurrentList(currentBranchDetails.id)
           setEditModel(!editModel)
+          getBranchL()
         },
         onError: (error: string) => () => {
           showToast("error", error);
@@ -340,11 +370,11 @@ function LocationScreen() {
         title={t('allRegisteredLocation')}
         buttonChildren={
           <Container additionClass={"d-flex justify-content-end mr-xl--4"}>
-            <Primary
+            {userDetails?.is_admin && <Primary
               text={t("AddBranch")}
               onClick={() => manageBranchesHandler(undefined)}
               size={"btn-sm"}
-            />
+            />}
             <CommonDropdownMenu
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {

@@ -29,7 +29,13 @@ export const fetchListAllBranchesList = (payload) => post(url.FETCH_LIST_ALL_BRA
 
 export const fetchEmployeeDetails = (payload) => post(url.FETCH_EMPLOYEE_DETAILS, payload, {})
 export const postEmployeeAddition = (payload) => post(url.POST_EMPLOYEE_ADDITION_V1, payload, {})
-export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {})
+
+
+export const postBranchAddition = (payload) => post(url.POST_BRANCH_ADDITION, payload, {}, BASE_URL_REPORTS_PROD)
+
+
+
+
 export const fetchEmployeeTimeSheets = (payload) => post(url.GET_EMPLOYEE_TIME_SHEETS, payload, {})
 export const fetchEmployeeCheckInLogs = (payload) => post(url.GET_EMPLOYEE_CHECK_IN_LOGS, payload, {})
 export const fetchEmployeeEachUserTimeSheets = (payload) => post(url.GET_EMPLOYEE_EACH_USER_TIME_SHEETS, payload, {})
@@ -54,7 +60,22 @@ export const fetchLeaveTypes = (payload) => post(url.FETCH_LEAVE_TYPES, payload,
 export const postApplyLeave = (payload) => post(url.POST_APPLY_LEAVE, payload, {})
 export const fetchCalendarDetails = (payload) => post(url.FETCH_CALENDAR_DETAILS, payload, {})
 
+// Modify api for modify log for employee
+
+export const employeeModifyRequestApi = (payload) => post(url.EMPLOYEE_MODIFY_REQUEST, payload, {})
+
+// api for modify admin
+
+export const adminModifyLogApi = (payload) => post(url.ADMIN_MODIFY_LOG, payload, {})
+
+
+
 export const postChangeEmployeeLeaveStatus = (payload) => post(url.POST_CHANGE_EMPLOYEE_LEAVE_STATUS, payload, {})
+
+export const postChangeEmployeeModifyLogStatus = (payload) => post(url.POST_EMPLOYEE_MODIFY_LOG_STATUS, payload, {})
+
+
+
 export const postAddHolidays = (payload) => post(url.POST_EMPLOYEES_HOLIDAYS, payload, {})
 export const postDeleteHolidays = (payload) => post(url.POST_DELETE_HOLIDAYS, payload, {})
 
@@ -115,7 +136,7 @@ export const getBranchAdminsApi = (payload) => post(url.GET_ADMIN_BRANCHES, payl
  * EDIT BRANCH NAME 
  */
 
-export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {})
+export const PostEditBranchNameApi = (payload) => post(url.POST_EDIT_BRANCH_NAME, payload, {}, BASE_URL_REPORTS_PROD)
 
 /**
  * employees Shift request
@@ -287,5 +308,8 @@ export const fetchEmployeeBasicInfoApi = (payload) => post(url.FETCH_EMPLOYEE_BA
 
 export const fetchEmployeeAttendanceInfoApi = (payload) => post(url.GET_EMPLOYEE_ATTENDANCE_INFO_URL, payload, {})
 
+//get Employee Earning
+
+export const fetchEmployeeEarningsApi = (payload) => post(url.GET_EMPLOYEES_EARNINGS, payload, {})
 
 

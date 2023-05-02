@@ -99,7 +99,9 @@ const AllLeaves = () => {
           fetchPendingDetail(currentPage);
           showToast('success', success?.status)
         },
-        onError: (error: string) => () => { },
+        onError: (error: string) => () => {
+          showToast('error', error)
+        },
       })
     );
   };
@@ -382,17 +384,20 @@ const LocationTable = ({
                       >
                         {"Revert"}
                       </span>
-                    ) : item.status_code === 0 ? (
+                    ) 
+                    : item.status_code === 0 ? (
                       <span
-                        className="h5 text-primary"
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => {
-                          if (onRevertClick) onRevertClick(item);
-                        }}
+                        // className="h5 text-primary"
+                        // style={{ cursor: 'pointer' }}
+                        // onClick={() => {
+                        //   if (onRevertClick) onRevertClick(item);
+                        // }}
                       >
-                        {"Revert"}
+                        {/* {"Revert"} */}
+                        {'-'}
                       </span>
-                    ) : (
+                    ) 
+                    : (
                       <></>
                     )}
                   </td>

@@ -16,15 +16,13 @@ import { resetEmployee } from '../../../../store/employee/actions';
 import { resetLocation } from '../../../../store/location/actions';
 import { availableLanguages } from '../../../../i18n';
 import { resetShiftManagement } from '../../../../store/shiftManagement/actions';
-import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { DropdownItem, DropdownMenu, DropdownToggle, Media, Nav, UncontrolledDropdown } from 'reactstrap';
+import { Col, Collapse, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, ListGroup, ListGroupItem, Media, Nav, NavItem, Navbar, NavbarBrand, Row, UncontrolledCollapse, UncontrolledDropdown, Form, UncontrolledTooltip } from 'reactstrap';
 import { HeaderProps } from './interfaces';
+import { clearNotificationCount, setIsShowBack } from '../../../../store/notifications/actions';
 
 //ROUTE_PORTFOLIO
 
-const Header = ({ toggleSideNav,
-  sideNavOpen }: HeaderProps) => {
+const Header = ({ headerNavOpen, toggleHeaderNav }: HeaderProps) => {
   const [languageModel, setLanguageModel] = useState(false);
   const [model, setModel] = useState(false);
   const [activeBranchModel, setActiveBranchModel] = useState(false);
@@ -163,34 +161,40 @@ const Header = ({ toggleSideNav,
 
   return (
     <>
-      <nav className='navbar navbar-top navbar-expand' style={{ background: '#f8f9ff' }}>
-        <div className='container-fluid'>
-          <div className='collapse navbar-collapse' id='navbarSupportedContent'>
-            <a className='nav-item d-xl-none'>
-              <div
-                className='pr-3 sidenav-toggler sidenav-toggler-white'
-                onClick={toggleSideNav}
-                data-action='sidenav-pin'
-                data-target='#sidenav-main'
-              >
-                <div className='sidenav-toggler-inner bg-primary'>
-                  <i className='sidenav-toggler-line '></i>
-                  <i className='sidenav-toggler-line '></i>
-                  <i className='sidenav-toggler-line '></i>
+      <Navbar
+        className={classnames(
+          "navbar-top navbar-expand"
+        )}
+        style={{ background: '#f8f9ff' }}
+      >
+        <Container additionClass='container-fluid'>
+          <Collapse navbar isOpen={true}>
+            <Nav className="align-items-center ml-md-auto" navbar>
+              <NavItem className="d-xl-none">
+                <div
+                  className={classnames(
+                    "pr-3 sidenav-toggler",
+                    // { active: headerNavOpen },
+                  )}
+                  onClick={toggleHeaderNav}
+                >
+                  <div className="sidenav-toggler-inner">
+                    <i className="sidenav-toggler-line bg-primary" />
+                    <i className="sidenav-toggler-line bg-primary" />
+                    <i className="sidenav-toggler-line bg-primary" /> 
+                  </div>
                 </div>
-              </div>
-            </a>
-            {showArrow && <BackArrow additionClass={`mr--1 ${isParent && 'mt--3 '}`} />}
+              </NavItem>
+            </Nav>
+            {showArrow && <BackArrow additionClass={`mr--1 ${isParent && 'mt-xl--3 '}`} />}
             <div className='col'>
               <h6 className='h2 text-primary d-inline-block mb-0'>{headerTitle}</h6>
-              {isParent && <div className='small'>
+              {isParent && <div className='small d-none d-sm-block'>
                 <span style={{ cursor: "pointer" }} onClick={() => { goBack(navigate) }}>{headerTitle} </span>
                 <span> {" / "} {getNameFromPath(pathname)}</span>
               </div>
               }
-
             </div>
-
             <ul className='navbar-nav align-items-center  ml-md-auto '>
               {/* <Notification /> */}
               <div className='mr-3 d-flex'>
@@ -248,10 +252,9 @@ const Header = ({ toggleSideNav,
                 </DropdownMenu>
               </UncontrolledDropdown>
             </Nav>
-          </div>
-        </div>
-      </nav >
-
+          </Collapse>
+        </Container>
+      </Navbar>
       <Modal
         title={'Select Language'}
         toggle={() => setLanguageModel(!languageModel)}

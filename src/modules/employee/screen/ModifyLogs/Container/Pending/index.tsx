@@ -9,6 +9,7 @@ import {
 } from "@components";
 import {
   changeEmployeeLeaveStatus,
+  changeEmployeeModifyLogStatus,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
   getModifyLogs,
@@ -37,7 +38,6 @@ const Pending = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -1,
-      leave_group: "MP",
     };
     dispatch(
       getModifyLogs({
@@ -67,9 +67,9 @@ const Pending = () => {
       data.map((el: any) => {
         return {
           Employee: `${el.name}${" "}(${el.employee_id})`,
-          "Date From": el.date_from,
-          "Date To": el.date_to,
-          "Leave Types": el.leave_type,
+          "Date": el.attendance_date,
+          // "Date To": el.date_to,
+          // "Leave Types": el.leave_type,
           Reason: el.reason,
           Branch: el.branch_name,
         };
@@ -93,7 +93,7 @@ const Pending = () => {
       status: el,
     };
     dispatch(
-      changeEmployeeLeaveStatus({
+      changeEmployeeModifyLogStatus({
         params,
         onSuccess: (success: any) => () => {
           if (el === 1) {
@@ -168,7 +168,7 @@ const Pending = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
 
@@ -215,7 +215,7 @@ const Pending = () => {
               <span>
                 {t("date")}
                 {":"}&nbsp;&nbsp;
-                <span className="text-black">{selectedEventId?.date_from}</span>
+                <span className="text-black">{selectedEventId?.attendance_date}</span>
               </span>
               <br />
               <span>

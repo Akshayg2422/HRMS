@@ -82,6 +82,7 @@ function Login() {
     }
   };
 
+
   return (
     <Container
       col={'col'}
@@ -95,15 +96,14 @@ function Login() {
         margin={'mt-4'}
       >
         <Logo additionClass={'col-sm-3'} />
-        {/* <Secondary
+        <Secondary
           text={t('register')}
           onClick={() => goTo(navigate, ROUTE.ROUTE_REGISTER)}
-        /> */}
+        />
       </Container>
       <h1 className='display-4 text-dark font-weight-bold pt-5 px-5'>
         {t('welcome')}
       </h1>
-
       <div className='col-xl-9 col-md-12 p-5 d-flex flex-column aligns-item-center  align-self-center justify-content-center' >
         <InputNumber
           label={t('mobileNumber')}

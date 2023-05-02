@@ -223,15 +223,12 @@ function* registerAdmin(action) {
     } else {
       yield put(hideLoader());
       yield put(getRegisterAdminFailure(response.error_message));
-      yield call(action.payload.onError(response.error_message));
+      yield call(action.payload.onError(response.error));
     }
   } catch (error) {
-
     yield put(hideLoader());
     yield put(getRegisterAdminFailure("Invalid Request"));
     yield call(action.payload.onError(error));
-
-
   }
 }
 
@@ -243,25 +240,20 @@ function* registerCompany(action) {
     const response = yield call(postRegisterCompany, action.payload.params);
 
     if (response.success) {
-
       yield put(hideLoader());
       yield put(getValidateCompanyDetailsSuccess(response.details));
       yield call(action.payload.onSuccess(response.details));
 
     } else {
-
       yield put(hideLoader());
       yield put(getValidateCompanyDetailsFailure(response.error_message));
       yield call(action.payload.onError(response.error_message));
-
     }
   } catch (error) {
 
     yield put(hideLoader());
     yield put(getValidateCompanyDetailsFailure("Invalid Request"));
     yield call(action.payload.onError(error));
-
-
   }
 }
 

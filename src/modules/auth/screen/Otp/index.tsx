@@ -39,7 +39,7 @@ function Otp() {
   const { t } = useTranslation();
   const enterPress = useKeyPress('Enter')
 
-  const { mobileNumber} = useSelector(
+  const { mobileNumber } = useSelector(
     (state: any) => state.AuthReducer
   );
 
@@ -97,7 +97,7 @@ function Otp() {
     dispatch(proceedSignIn({
       params,
       onSuccess: (response: LoginResponse) => async () => {
-        
+
         if (response.is_admin || response.is_branch_admin) {
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
@@ -122,6 +122,7 @@ function Otp() {
         goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
       },
       onError: (error: any) => () => {
+        showToast('error', error)
       }
     }))
   }
@@ -249,10 +250,10 @@ function Otp() {
           justifyContent={'justify-content-center'}
           alignItems={'align-items-center'}
           margin={'mt-4'}
-         
+
         >
           <OtpInput
-          //formCustomClass='ml-2'
+            //formCustomClass='ml-2'
             name='field1'
             onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
             value={otp.field1}
@@ -265,7 +266,7 @@ function Otp() {
 
           />
           <OtpInput
-           formCustomClass='ml-4'
+            formCustomClass='ml-4'
             name='field2'
             value={otp.field2}
             onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) => changeBackWardInputFocus(e)}
@@ -278,7 +279,7 @@ function Otp() {
             }}
           />
           <OtpInput
-           formCustomClass='ml-4'
+            formCustomClass='ml-4'
             name='field3'
             value={otp.field3}
             ref={inputRef3}
@@ -290,7 +291,7 @@ function Otp() {
             }}
           />
           <OtpInput
-           formCustomClass='ml-4'
+            formCustomClass='ml-4'
             name='field4'
             value={otp.field4}
             ref={inputRef4}
