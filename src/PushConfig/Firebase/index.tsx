@@ -43,7 +43,6 @@ export const requestForToken = async () => {
 export const onMessageListener = () =>
     new Promise((resolve) => {
         onMessage(messaging, (payload) => {
-            console.log('came---------->',payload);
             resolve(payload);
         });
     });

@@ -227,10 +227,11 @@ const LogView = () => {
             dispatch(
                 postAdminModifyLog({
                     params,
-                    onSuccess: (response: any) => () => {
+                    onSuccess: (response: any) => () => { 
                         setMarkAsPresentModel(!markAsPresentModel);
                         setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
                         showToast("success", response?.message);
+                        getUserCheckInLogs(1)
                     },
                     onError: (error: string) => () => {
                         showToast("error", error);

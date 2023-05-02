@@ -34,18 +34,21 @@ function Dashboard() {
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
 
+
+
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
 
   const getPostAppConfig = () => {
+    const params = {
+      device_model: appConfig?.model,
+      device_platform: appConfig?.platform,
+      device_brand: appConfig?.brand,
+      device_token: fcmToken
+    }
+
     if (fcmToken) {
-      const params = {
-        device_model: appConfig?.model,
-        device_platform: appConfig?.platform,
-        device_brand: appConfig?.brand,
-        device_token: fcmToken
-      }
       dispatch(postAppConfig({
         params,
         onSuccess: (response: any) => () => {
