@@ -178,6 +178,15 @@ function PayrollView() {
   }
 
 
+  const normalizedList = (data: any) => {
+    return data && data.length > 0 && data.map((el: any) => {
+      return {
+        name: el.key,
+        amount: el.value
+      };
+    });
+  }
+
 
   function getMonthMinMaxDate(month: any) {
     const year = new Date().getFullYear();
@@ -366,46 +375,43 @@ function PayrollView() {
       </div>
       <Card additionClass='mx-4'>
         <h3>{`Payable's`}</h3>
-        {salaryCriteria && salaryCriteria.length > 0 ? <div className='row'>
-          <div className='col-xl-6'>
-            {salaryCriteria && salaryCriteria.length > 0 && salaryCriteria.map((el: any) => {
-
-              return (
-                <div className='row col-xl-6'>
-                  {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" &&
-                    <FormTypography title={el?.title} subTitle={el?.value} />
-                  }
-                </div>
-              )
-            })
-            }
+        {salaryCriteria && salaryCriteria.length > 0 ?
+          <div>
+            <div className='row'>
+              {salaryCriteria && salaryCriteria.length > 0 && salaryCriteria.map((el: any) => {
+                return (
+                  <div className='col'>
+                    {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" &&
+                      <FormTypography title={el?.title} subTitle={el?.value} />
+                    }
+                  </div>
+                )
+              })
+              }
+            </div>
+            <div className='col ml--3 mt-3'>
+              <Container additionClass='m-0 p-0'>
+                <h4 className={'text-black'}>{'Allowances'}</h4>
+                {allowanceCalculatedPay && normalizedObjectToArray(allowanceCalculatedPay).length > 0 &&
+                  <CommonTable
+                    card={false}
+                    displayDataSet={normalizedList(normalizedObjectToArray(allowanceCalculatedPay))}
+                  />
+                }
+              </Container>
+              <Container additionClass='m-0 p-0 mt-2'>
+                <h4 className={'text-black'}>{'Deductions'}</h4>
+                {deductionsCalculatedPay && normalizedObjectToArray(deductionsCalculatedPay).length > 0 &&
+                  <CommonTable
+                    card={false}
+                    displayDataSet={normalizedList(normalizedObjectToArray(deductionsCalculatedPay))}
+                  />
+                }
+              </Container>
+            </div>
           </div>
-          <div className='row col-xl-6 mt-sm-0 mt-'>
-            <Container additionClass='col'>
-              <h4 className={'text-black'}>{'Allowances'}</h4>
-              {allowanceCalculatedPay && normalizedObjectToArray(allowanceCalculatedPay).length > 0 &&
-                normalizedObjectToArray(allowanceCalculatedPay).map((el: any) => {
-                  return (
-                    <div className='row col-xl-6'>
-                      <FormTypography title={el?.key} subTitle={el?.value} />
-                    </div>
-                  )
-                })}
-            </Container>
-            <Container additionClass='col'>
-              <h4 className={'text-black'}>{'Deductions'}</h4>
-              {deductionsCalculatedPay && normalizedObjectToArray(deductionsCalculatedPay).length > 0 &&
-                normalizedObjectToArray(deductionsCalculatedPay).map((el: any) => {
-                  return (
-                    <div className='row col-xl-6'>
-                      <FormTypography title={el?.key} subTitle={el?.value} />
-                    </div>
-                  )
-                })}
-            </Container>
-          </div>
-        </div>
-          : <NoRecordFound />}
+          : <NoRecordFound />
+        }
       </Card>
     </>
 
