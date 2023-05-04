@@ -1,9 +1,9 @@
 import React from 'react'
 
 type ScreenTitleProps = {
-    title: string;
+    title: any;
     additionclass?: string;
-    subTitle?:string;
+    subTitle?: any;
 }
 
 function FormTypography({ title, additionclass, subTitle }: ScreenTitleProps) {

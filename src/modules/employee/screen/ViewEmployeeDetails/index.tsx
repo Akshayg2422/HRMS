@@ -21,10 +21,7 @@ const ViewEmployeeDetails = () => {
     employeeDetailsViewApiHandler
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  console.log("employeeDetailsViewApiHandler", employeeDetailsViewApiHandler);
-
-
-
+  
   const componentHandler = () => {
     if (currentView === 1) {
       return <BasicView />

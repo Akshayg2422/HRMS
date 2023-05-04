@@ -156,7 +156,13 @@ import {
   ADMIN_MODIFY_LOG_FAILURE,
   CHANGE_MODIFY_LOG_STATUS,
   CHANGE_MODIFY_LOG_STATUS_SUCCESS,
-  CHANGE_MODIFY_LOG_STATUS_FAILURE
+  CHANGE_MODIFY_LOG_STATUS_FAILURE,
+  COMPANY_BASE_WEEKLY_CALENDAR,
+  COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
+  COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -807,7 +813,7 @@ const EmployeeReducer = (state = initialState, action) => {
       break;
 
     /// modify log change status
-    
+
     case CHANGE_MODIFY_LOG_STATUS:
       state = {
         ...state,
@@ -1409,6 +1415,52 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
     case ADMIN_MODIFY_LOG_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // // getCompanyBaseWeeklyCalendar
+
+    case COMPANY_BASE_WEEKLY_CALENDAR:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case COMPANY_BASE_WEEKLY_CALENDAR_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // // getCompanyBaseWeeklyCalendar
+
+    case SET_COMPANY_BASE_WEEKLY_CALENDAR:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case SET_COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE:
       state = {
         ...state,
         error: action.payload,

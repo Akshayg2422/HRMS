@@ -21,7 +21,7 @@ import {
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
   ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
   ELocker, ElockerUpload, ShiftMonthlyView, EmployeeShifts, MyBranches, EmployeeShiftRequest,
-  AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, ShiftDetailsPerDay
+  AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, ShiftDetailsPerDay, WeeklyCalendar
 } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
@@ -112,7 +112,8 @@ export {
   ManageDevices,
   FaceReRegisterRequest,
   ShiftDetailsPerDay,
-  Payslip
+  Payslip,
+  WeeklyCalendar
 }
 
 
