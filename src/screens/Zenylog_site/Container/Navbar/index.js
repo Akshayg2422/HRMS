@@ -21,9 +21,6 @@ const Navbar = (props) => {
           <a class="navbar-brand" href="#">
             <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>
           </a>
-          {/* <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-primary" aria-controls="navbar-primary" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button> */}
           <button
             aria-controls="navbar-collapse"
             aria-expanded={false}
@@ -44,7 +41,7 @@ const Navbar = (props) => {
             <div className="navbar-collapse-header">
               <Row>
                 <Col className="collapse-brand" xs="6">
-                  <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>
+                  <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>staging
                 </Col>
                 <Col className="collapse-close" xs="6">
                   <button
@@ -65,7 +62,7 @@ const Navbar = (props) => {
             </div>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <a class="nav-link "  href="#Home">Home</a>
+                <a class="nav-link " href="#Home">Home</a>
               </NavItem>
               <NavItem>
                 <a class="nav-link " href="#AboutAs">About us</a>
