@@ -19,7 +19,7 @@ const Navbar = (props) => {
       <nav class="navbar navbar-horizontal navbar-light navbar-expand-lg">
         <div class="container-fluid">
           <a class="navbar-brand" href="#">
-            <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>
+            <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img> staging
           </a>
           <button
             aria-controls="navbar-collapse"
@@ -41,7 +41,7 @@ const Navbar = (props) => {
             <div className="navbar-collapse-header">
               <Row>
                 <Col className="collapse-brand" xs="6">
-                  <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>staging
+                  <img src={Icons.NewLogo} alt="" width="100" height="25" class="d-inline-block align-text-top"></img>
                 </Col>
                 <Col className="collapse-close" xs="6">
                   <button
