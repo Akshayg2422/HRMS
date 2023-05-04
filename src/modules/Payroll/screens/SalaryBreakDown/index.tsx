@@ -1,5 +1,5 @@
 import { Card, Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
-import { goBack, goTo, ROUTE, showToast, useNav } from '@utils';
+import { goBack, goTo, inputNumberMaxLength, ROUTE, showToast, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -52,11 +52,9 @@ function SalaryBreakDown() {
 
   useEffect(() => {
     isValidBasicSalary()
-
   }, [annualCTC, basicSalary])
 
   useEffect(() => {
-
     const isError = selectedDeductions?.some((item: any) => item.error)
     if (isError) {
       setIsSubmitDisable(true)
@@ -64,8 +62,6 @@ function SalaryBreakDown() {
     else {
       setIsSubmitDisable(false)
       isValidBasicSalary()
-
-
     }
     onTotalCalculator()
   }, [selectedDeductions])
@@ -83,16 +79,13 @@ function SalaryBreakDown() {
   }, [])
 
   const getAllowanceGroupList = () => {
-
     const params = {
       page_number: -1,
 
     }
-
     dispatch(getAllowanceGroups({
       params,
       onSuccess: (success: any) => () => {
-        console.log('ooooooooooooooo', success);
 
       },
       onError: (error: any) => () => {
@@ -141,13 +134,11 @@ function SalaryBreakDown() {
 
     setEditSalaryDefinitionId(salaryDetails?.id)
     setAnnualCTC(salaryDetails.ctc)
-
     let annualCtc: any = salaryDetails.ctc
     let halfOfTheAnnual: any = 50 / 100 * annualCtc
     let annualCtcPercentage = 1 * annualCtc
     setMinimumAmount(halfOfTheAnnual)
     setMaximumAmount(annualCtcPercentage)
-
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
     const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, type: el.is_percent ? "1" : "2", error: '' }))
@@ -171,25 +162,25 @@ function SalaryBreakDown() {
       0
     );
 
-
     let remainingPercentage = AllowancePercentage > 0 ? 60 - AllowancePercentage : 60
     setRemaining(remainingPercentage)
   }
 
   const isValidBasicSalary = () => {
-
+    let minimumPercentage = 50
     if (annualCTC && !basicSalary) {
       setColor("#000000")
       setIsSubmitDisable(false)
-
     }
+
     else if (basicSalary && !annualCTC) {
       setColor("#000000")
       setIsSubmitDisable(false)
-
     }
+
     else if (annualCTC && basicSalary) {
-      if (basicSalary >= minimumAmount && basicSalary <= maximumAmount) {
+      // (basicSalary >= minimumAmount && basicSalary <= maximumAmount)
+      if (basicSalary >= minimumPercentage) {
         setColor("#000000")
         setIsSubmitDisable(false)
       }
@@ -202,12 +193,10 @@ function SalaryBreakDown() {
 
 
   const onDeductionDropdownChangeHandler = (event: string) => {
-
     const filteredDeduction = companyDeductionsList?.filter((item: any) => event === item.id)
     const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }))
     setDeductionsData([...deductionsData, ...newArr])
     setSelectedDeductions([...selectedDeductions, ...newArr])
-
   }
 
 
@@ -218,7 +207,6 @@ function SalaryBreakDown() {
   }
 
   const onChangeHandler = ((index: number, event: any, minLimit: string | number, maxLimit: string | number) => {
-
     let updatePercentage = [...selectedDeductions]
     if (updatePercentage[index].type == "1") {
       updatePercentage[index].percent = event.target.value
@@ -235,7 +223,6 @@ function SalaryBreakDown() {
           updatePercentage[index].error = ''
         }
       }
-
       setSelectedDeductions(updatePercentage)
     }
     else {
@@ -260,7 +247,6 @@ function SalaryBreakDown() {
   })
 
   const validatePostParams = () => {
-
     if (!annualCTC) {
       showToast('error', 'Cost of the company field should not be empty')
       return false
@@ -284,7 +270,6 @@ function SalaryBreakDown() {
 
   const validateDeduction = () => {
     let status = { status: false, errorMessage: '' }
-
     selectedDeductions?.map((item: any) => {
       if (item.amount == '' && (item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
         status = { status: true, errorMessage: `Deduction field should not be empty` }
@@ -366,22 +351,18 @@ function SalaryBreakDown() {
 
         </Container>
 
-
-
         <InputText
           label={t("CostOfTheCompany")}
           placeholder={t("CostOfTheCompany")}
           value={annualCTC}
           type={'number'}
           onChange={(event: any) => {
-
-            let annualCtc: any = event.target.value
-            let halfOfTheAnnual: any = 50 / 100 * annualCtc
-            let annualCtcPercentage = 1 * annualCtc
-            setMinimumAmount(halfOfTheAnnual)
-            setMaximumAmount(annualCtcPercentage)
+            // let annualCtc: any = event.target.value
+            // let halfOfTheAnnual: any = 50 / 100 * annualCtc
+            // let annualCtcPercentage = 1 * annualCtc
+            // setMinimumAmount(halfOfTheAnnual)
+            // setMaximumAmount(annualCtcPercentage)
             setAnnualCTC(event.target.value)
-
           }}
         />
         <Container>
@@ -391,7 +372,8 @@ function SalaryBreakDown() {
             value={basicSalary}
             type={'number'}
             onChange={(event: any) => {
-              setBasicSalary(event.target.value)
+              setBasicSalary(inputNumberMaxLength(event.target.value, 2))
+
             }}
           />
           <h5 className='mt--3 text-right' style={{ color: color }}>{t('MinimumCTC')}</h5>

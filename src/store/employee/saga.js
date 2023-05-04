@@ -45,7 +45,9 @@ import {
   FETCH_EMPLOYEE_ATTENDANCE_INFO,
   EMPLOYEE_MODIFY_REQUEST,
   ADMIN_MODIFY_LOG,
-  CHANGE_MODIFY_LOG_STATUS
+  CHANGE_MODIFY_LOG_STATUS,
+  COMPANY_BASE_WEEKLY_CALENDAR,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR
 
 } from "./actionTypes";
 
@@ -146,7 +148,11 @@ import {
   postAdminModifyLogSuccess,
   postAdminModifyLogFailure,
   changeEmployeeModifyLogStatusSuccess,
-  changeEmployeeModifyLogStatusFailure
+  changeEmployeeModifyLogStatusFailure,
+  CompanyBaseWeeklyCalendarSuccess,
+  CompanyBaseWeeklyCalendarFailure,
+  setCompanyBaseWeeklyCalendarSuccess,
+  setCompanyBaseWeeklyCalendarFailure
 
 } from "./actions";
 
@@ -197,7 +203,9 @@ import {
   fetchEmployeeAttendanceInfoApi,
   employeeModifyRequestApi,
   adminModifyLogApi,
-  postChangeEmployeeModifyLogStatus
+  postChangeEmployeeModifyLogStatus,
+  fetchCompanyBaseWeeklyCalendarApi,
+  postCompanyBaseWeeklyCalendarApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -1303,6 +1311,56 @@ function* getEmployeeAttendanceInfo(action) {
   }
 }
 
+// getCompanyBaseWeeklyCalendar
+
+function* getCompanyBaseWeeklyCalendarSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(fetchCompanyBaseWeeklyCalendarApi, action.payload.params);
+
+    if (response.success) {
+      yield put(CompanyBaseWeeklyCalendarSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+    } else {
+      yield put(CompanyBaseWeeklyCalendarFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(CompanyBaseWeeklyCalendarFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// SetCompanyBaseWeeklyCalendar
+
+function* setCompanyBaseWeeklyCalendarSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(postCompanyBaseWeeklyCalendarApi, action.payload.params);
+
+    if (response.success) {
+      yield put(setCompanyBaseWeeklyCalendarSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+    } else {
+      yield put(setCompanyBaseWeeklyCalendarFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(setCompanyBaseWeeklyCalendarFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
 // *** WATCHER*** //
 
 function* EmployeeSaga() {
@@ -1363,8 +1421,8 @@ function* EmployeeSaga() {
   yield takeLatest(EMPLOYEE_MODIFY_REQUEST, employeeModifyRequestSaga);
   yield takeLatest(ADMIN_MODIFY_LOG, adminModifyLogSaga);
   yield takeLatest(CHANGE_MODIFY_LOG_STATUS, changeSelectedEmployeeModifyLogStatus);
-
-
+  yield takeLatest(COMPANY_BASE_WEEKLY_CALENDAR, getCompanyBaseWeeklyCalendarSaga);
+  yield takeLatest(SET_COMPANY_BASE_WEEKLY_CALENDAR, setCompanyBaseWeeklyCalendarSaga);
 }
 
 export default EmployeeSaga;
