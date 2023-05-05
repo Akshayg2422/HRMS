@@ -209,7 +209,7 @@ function EmployeeLog() {
 
   const onRequestHandler = () => {
     if (validateOnSubmit()) {
-      
+
       const params = {
         daily_log_id: markAsPresentDetails.day_status_id,
         // date_from: markAsPresentDetails.date,
@@ -277,6 +277,9 @@ function EmployeeLog() {
         color = '#de9b00'
         break;
       case 8:
+        color = '#5d00ff'
+        break;
+      case 11:
         color = '#5d00ff'
         break;
       default:
