@@ -80,6 +80,10 @@ function PayrollView() {
   const [minData, setMinData] = useState('')
   const [maxDate, setMaxData] = useState('')
   const [salaryCriteria, setSalaryCriteria] = useState<any>()
+  const [allowanceCalculatedPay, setAllowanceCalculatedPay] = useState<any>()
+  const [deductionsCalculatedPay, setDeductionsCalculatedPay] = useState<any>()
+  const [totalEarnings, setTotalEarnings] = useState('0')
+
 
 
   const CARD_DROPDOWN_ITEM = [
@@ -174,12 +178,11 @@ function PayrollView() {
   }
 
 
-  const normalizedSalaryAllowanceList = (data: any) => {
-
-    return data && data.length > 0 && data.map((el: any, index: number) => {
+  const normalizedList = (data: any) => {
+    return data && data.length > 0 && data.map((el: any) => {
       return {
-        name: el.name,
-        'Amount': el.value
+        name: el.key,
+        amount: el.value
       };
     });
   }
@@ -229,14 +232,26 @@ function PayrollView() {
     let structuredData = [{ key: 'Total Days', value: details?.break_down?.total }, { key: 'Holiday', value: details?.break_down?.holiday }, { key: 'Present', value: details?.break_down?.present },
     { key: 'Alert', value: details?.break_down?.alert }, { key: 'Absent', value: details?.break_down?.absent }, { key: 'Leaves', value: details?.break_down?.leave }, { key: 'Billable Days', value: details?.break_down?.billable_days }
     ]
-    let structuredSalaryData = [{ key: 'Basic Salary', value: details?.payment_info?.calculated_pay?.basic_salary }, { key: 'PF', value: details?.payment_info?.calculated_pay?.pf_employee },
-    { key: 'PT', value: details?.payment_info?.calculated_pay?.pt }, { key: 'Income Tax', value: details?.payment_info?.calculated_pay?.income_tax },
-    { key: 'Take Home', value: details?.payment_info?.calculated_pay?.take_home }]
     setConsolidatedEarings(structuredData)
-    setSalaryCriteria({ structuredSalaryData: structuredSalaryData, allowance: details?.payment_info?.calculated_pay?.allowances })
+    setSalaryCriteria(details?.payment_info?.calculated_pay)
+    details?.payment_info?.calculated_pay.map((el: any) => {
+      if (el.key === 'allowance_breakdown') {
+        setAllowanceCalculatedPay(el?.value)
+      }
+    })
+    details?.payment_info?.calculated_pay.map((el: any) => {
+      if (el.title === 'Deduction Breakdown') {
+        setDeductionsCalculatedPay(el?.value)
+      }
+    })
+    setTotalEarnings(details?.earnings.toFixed(2))
   }
 
-  console.log("====", salaryCriteria);
+  const normalizedObjectToArray = (data: any) => {
+    return data && Object.entries(data).map(([key, value]) => ({ key, value }));
+  }
+
+
 
   return (
     // <ScreenContainer>
@@ -296,10 +311,10 @@ function PayrollView() {
               )
             })
           }
-          {/* <div className='row'>
+          <div className='row'>
             <span className='h3 col'>{'Total Earnings'}</span>
-            <span className='col-2'> 0 </span>
-          </div> */}
+            <span className={`${totalEarnings.length > 1 ? 'col-3' : 'col-2'} h3`}>{totalEarnings}</span>
+          </div>
         </Card>
         <Card additionClass='col ml-xl-3'>
           {!isDisablePayrollView ? (
@@ -310,7 +325,7 @@ function PayrollView() {
                   <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
                 </div>
                 <div className="col-xl-6">
-                  <FormTypography title={'Basic salary'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
+                  <FormTypography title={'Basic salary %'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
                 </div>
               </Container>
 
@@ -327,7 +342,6 @@ function PayrollView() {
                     <CommonTable
                       card={false}
                       displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.allowance_break_down?.allowances)}
-
                     />
                   </Container>
                 </Container>
@@ -361,34 +375,43 @@ function PayrollView() {
       </div>
       <Card additionClass='mx-4'>
         <h3>{`Payable's`}</h3>
-        {salaryCriteria?.allowance && salaryCriteria?.allowance.length > 0 ? <div className='row'>
-          <div className='row col-xl-6'>
-            {salaryCriteria && salaryCriteria?.structuredSalaryData.length > 0 && salaryCriteria?.structuredSalaryData.map((el: any) => {
-              return (
-                <div className='col-xl-6'>
-                  {el.key !== 'Take Home' && <FormTypography title={el.key} subTitle={el.value} />}
-                  {el.key === 'Take Home' && <div className='mt-3'
-                    style={{ flexDirection: 'column' }}>
-                    <div className={'h4'}>{el.key} </div>
-                    <div className={'h4'}>{el.value} </div>
+        {salaryCriteria && salaryCriteria.length > 0 ?
+          <div>
+            <div className='row'>
+              {salaryCriteria && salaryCriteria.length > 0 && salaryCriteria.map((el: any) => {
+                return (
+                  <div className='col'>
+                    {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" &&
+                      <FormTypography title={el?.title} subTitle={el?.value} />
+                    }
                   </div>
-                  }
-                </div>
-              )
-            })
-            }
+                )
+              })
+              }
+            </div>
+            <div className='col ml--3 mt-3'>
+              <Container additionClass='m-0 p-0'>
+                <h4 className={'text-black'}>{'Allowances'}</h4>
+                {allowanceCalculatedPay && normalizedObjectToArray(allowanceCalculatedPay).length > 0 &&
+                  <CommonTable
+                    card={false}
+                    displayDataSet={normalizedList(normalizedObjectToArray(allowanceCalculatedPay))}
+                  />
+                }
+              </Container>
+              <Container additionClass='m-0 p-0 mt-2'>
+                <h4 className={'text-black'}>{'Deductions'}</h4>
+                {deductionsCalculatedPay && normalizedObjectToArray(deductionsCalculatedPay).length > 0 &&
+                  <CommonTable
+                    card={false}
+                    displayDataSet={normalizedList(normalizedObjectToArray(deductionsCalculatedPay))}
+                  />
+                }
+              </Container>
+            </div>
           </div>
-          <div className='col-xl-6'>
-            <h5 className={'text-muted'}>{'Allowances'}</h5>
-            <Container additionClass='mx--4'>
-              <CommonTable
-                card={false}
-                displayDataSet={normalizedSalaryAllowanceList(salaryCriteria?.allowance)}
-              />
-            </Container>
-          </div>
-        </div>
-          : <NoRecordFound /> }
+          : <NoRecordFound />
+        }
       </Card>
     </>
 

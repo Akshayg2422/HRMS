@@ -158,7 +158,13 @@ import {
   ADMIN_MODIFY_LOG_FAILURE,
   CHANGE_MODIFY_LOG_STATUS,
   CHANGE_MODIFY_LOG_STATUS_SUCCESS,
-  CHANGE_MODIFY_LOG_STATUS_FAILURE
+  CHANGE_MODIFY_LOG_STATUS_FAILURE,
+  COMPANY_BASE_WEEKLY_CALENDAR,
+  COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
+  COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
+  SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1411,6 +1417,53 @@ export const postAdminModifyLogSuccess = (response) => {
 export const postAdminModifyLogFailure = (error) => {
   return {
     type: ADMIN_MODIFY_LOG_FAILURE,
+    payload: error,
+  };
+};
+
+// getCompanyBaseWeeklyCalendar
+
+export const CompanyBaseWeeklyCalendar = (params) => {
+  return {
+    type: COMPANY_BASE_WEEKLY_CALENDAR,
+    payload: params,
+  };
+};
+
+export const CompanyBaseWeeklyCalendarSuccess = (response) => {
+  return {
+    type: COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
+    payload: response,
+  };
+};
+
+export const CompanyBaseWeeklyCalendarFailure = (error) => {
+  return {
+    type: COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
+    payload: error,
+  };
+};
+
+// SetCompanyBaseWeeklyCalendar
+
+
+export const setCompanyBaseWeeklyCalendar = (params) => {
+  return {
+    type: SET_COMPANY_BASE_WEEKLY_CALENDAR,
+    payload: params,
+  };
+};
+
+export const setCompanyBaseWeeklyCalendarSuccess = (response) => {
+  return {
+    type: SET_COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
+    payload: response,
+  };
+};
+
+export const setCompanyBaseWeeklyCalendarFailure = (error) => {
+  return {
+    type: SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
     payload: error,
   };
 };

@@ -102,6 +102,9 @@ const LogView = () => {
             case 8:
                 color = '#5d00ff'
                 break;
+            case 11:
+                color = '#5d00ff'
+                break;
             default:
                 color = '#000000'
         }
@@ -227,7 +230,7 @@ const LogView = () => {
             dispatch(
                 postAdminModifyLog({
                     params,
-                    onSuccess: (response: any) => () => { 
+                    onSuccess: (response: any) => () => {
                         setMarkAsPresentModel(!markAsPresentModel);
                         setMarkAsPresentDetails({ ...markAsPresentDetails, reason: "" });
                         showToast("success", response?.message);
