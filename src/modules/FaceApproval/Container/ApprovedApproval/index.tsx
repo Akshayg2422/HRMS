@@ -6,7 +6,7 @@ import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } f
 import { getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 
 
-const ApprovedApproval = () => {
+const ApprovedApproval = ({search}:any) => {
   let dispatch = useDispatch();
 
   const { currentPage, hierarchicalBranchIds, numOfPages, employeesLoginFaceFailureDetails } =
@@ -16,7 +16,8 @@ const ApprovedApproval = () => {
     const params = {
       status: type,
       page_number: pageNumber,
-      ...hierarchicalBranchIds
+      ...hierarchicalBranchIds,
+      ...(search && { q: search })
     }
     dispatch(getEmployeesLoginFaceFailureAction({
       params,

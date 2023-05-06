@@ -5,7 +5,7 @@ import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer, sh
 import { useTranslation } from 'react-i18next';
 import { changeEmployeeFaceValidationRequestAction, faceReRegisterRequestAction, faceReRegisterRequestChangeStatus, getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 
-const PendingFaceRequest = () => {
+const PendingFaceRequest = ({ search }: any) => {
     let dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -17,7 +17,8 @@ const PendingFaceRequest = () => {
         const params = {
             status: type,
             page_number: pageNumber,
-            ...hierarchicalBranchIds
+            ...hierarchicalBranchIds,
+            ...(search && { q: search })
         }
         dispatch(faceReRegisterRequestAction({
             params,
