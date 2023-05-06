@@ -312,4 +312,13 @@ export const fetchEmployeeAttendanceInfoApi = (payload) => post(url.GET_EMPLOYEE
 
 export const fetchEmployeeEarningsApi = (payload) => post(url.GET_EMPLOYEES_EARNINGS, payload, {})
 
+// GetCompanyBaseWeeklyCalendar
+
+export const fetchCompanyBaseWeeklyCalendarApi = (payload) => post(url.GET_BASE_WEEK_CALENDAR, payload, {})
+
+// setCompanyBaseWeeklyCalendar
+
+export const postCompanyBaseWeeklyCalendarApi = (payload) => post(url.SET_BASE_WEEK_CALENDAR, payload, {})
+
+
 

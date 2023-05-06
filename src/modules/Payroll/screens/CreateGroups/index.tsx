@@ -287,6 +287,10 @@ function CreateGroup() {
                 onSuccess: (success: any) => () => {
                     getCompanyAllowanceList()
                     setAddAllowanceModel(!addAllowanceModel)
+                    setName('')
+                    setHint('')
+                    setMaximumLimit('')
+                    setIsTaxable(false)
                 },
                 onError: (error: any) => () => {
 
@@ -433,8 +437,7 @@ function CreateGroup() {
                                     <Container additionClass='col-xl-2 col-2 col-sm-0 mt-sm-0'>
                                         <CommonDropdownMenu
                                             data={DROPDOWN_ITEM}
-                                            onItemClick={(e, item) => {
-                                                e.stopPropagation()
+                                            onItemClick={() => {
                                                 setEditAllowanceItem(el)
                                                 setName(el.name)
                                                 setHint(el.name)

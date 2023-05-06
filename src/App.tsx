@@ -80,7 +80,7 @@ import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
 import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
-import { Approvals } from "./modules/employee";
+import { Approvals, WeeklyCalendar } from "./modules/employee";
 import { AddDeduction, ViewEmployeeSalaryDefinition } from "./modules/Payroll";
 import GetToken from "./PushNotification/GetToken";
 
@@ -390,6 +390,10 @@ function App() {
           <Route
             path={ROUTE.ROUTE_PAYSLIP}
             element={<RequireAuth>{<Payslip />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_WEEKLY_CALENDER}
+            element={<RequireAuth>{<WeeklyCalendar />}</RequireAuth>}
           />
 
           <Route path={"*"} element={<PageNotFound />} />

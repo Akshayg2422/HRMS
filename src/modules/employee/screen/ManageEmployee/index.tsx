@@ -95,6 +95,10 @@ const ManageEmployee = () => {
     isEdit,
   } = useSelector((state: any) => state.EmployeeReducer);
 
+  const { userLoggedIn, userDetails } = useSelector(
+    (state: any) => state.AppReducer
+  );
+
   const { dashboardDetails, hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
@@ -131,6 +135,7 @@ const ManageEmployee = () => {
   const [department, setDepartment] = useState("");
   const [designationNote, setDesignationNote] = useState('')
   const [designation, setDesignation] = useState("");
+  const [isExempted, setIsExempted] = useState(false)
   const [isRefresh, setIsRefresh] = useState(false);
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
@@ -183,7 +188,7 @@ const ManageEmployee = () => {
         })
       );
     }
-    else{
+    else {
       const parentBranch = listBranchesList.find(
         (it: any) => it.id === dashboardDetails.company_branch.id
       );
@@ -196,8 +201,6 @@ const ManageEmployee = () => {
         parentBranch,
       ]);
     }
-
-
     setDesignationNote('')
 
   }, [isRefresh]);
@@ -358,7 +361,7 @@ const ManageEmployee = () => {
         attendance_settings: {
           start_time: employeeDetails.attendanceStartTime,
           end_time: employeeDetails.attendanceEndTime,
-          is_excempt_allowed: false,
+          is_excempt_allowed: isExempted,
           associated_branch: [employeeDetails.branch],
           ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
         },
@@ -374,7 +377,6 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
-      console.log("paramss=====>", params);
       dispatch(
         employeeAddition({
           params,
@@ -466,8 +468,15 @@ const ManageEmployee = () => {
           editEmployeeDetails.shift?.id
 
       }
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.is_excempt_allowed
+      ) {
+        setIsExempted(editEmployeeDetails.attendance_settings?.is_excempt_allowed)
+      }
 
       setShiftsDropdownData(designationMatchShifts(editEmployeeDetails.designation_id))
+      console.log("==========>", isExempted);
 
     }
     setEmployeeDetails(employeeInitData);
@@ -572,10 +581,7 @@ const ManageEmployee = () => {
         onClick={onSubmit}
         buttonTittle={isEdit ? t("update") : t("submit")}
       >
-
-
         <ScreenTitle title={'Basic Information'} additionclass={'mb-4'} />
-
         <Container additionClass={'row col-xl-12  col-sm-3'}>
           <div className="col-xl-6">
             <InputText
@@ -777,6 +783,14 @@ const ManageEmployee = () => {
         <Divider />
 
         <ScreenTitle title={'Attendance Details'} additionclass={'mb-4'} />
+        {userDetails?.is_admin && <div className="col my-3">
+          <CheckBox
+            id={'3'}
+            text={"is Exempted"}
+            checked={isExempted}
+            onChange={(e) => setIsExempted(e.target.checked)}
+          />
+        </div>}
 
         <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
           {employeeDetails.shift || shiftsDropdownData.length > 0 ?

@@ -240,6 +240,9 @@ const DashBoardAttendance = ({ }) => {
       case 8:
         color = '#5d00ff'
         break;
+      case 11:
+        color = '#5d00ff'
+        break;
       default:
         color = '#000000'
     }

@@ -69,7 +69,7 @@ export const EMPLOYEE_MODIFY_REQUEST = 'attendance/v1/modifyLogEmployee'
 
 export const ADMIN_MODIFY_LOG = 'attendance/v1/modifyLogAdmin'
 
-export const POST_EMPLOYEE_MODIFY_LOG_STATUS  = '/attendance/v1/changeModifyLogStatus';
+export const POST_EMPLOYEE_MODIFY_LOG_STATUS = '/attendance/v1/changeModifyLogStatus';
 
 
 export const POST_CHANGE_EMPLOYEE_LEAVE_STATUS = '/attendance/v1/changeEmployeeLeaveStatus';
@@ -276,4 +276,12 @@ export const GET_EMPLOYEE_ATTENDANCE_INFO_URL = 'employee/getEmployeeAttendanceI
 
 // get earnings
 
-export const  GET_EMPLOYEES_EARNINGS = '/attendance/getEmployeeConsolidatedAttendance'
+export const GET_EMPLOYEES_EARNINGS = '/attendance/getEmployeeConsolidatedAttendance'
+
+// getCompanyBaseWeeklyCalendar
+
+export const GET_BASE_WEEK_CALENDAR = '/attendance/getCompanyBaseWeeklyCalendar'
+
+// getCompanyBaseWeeklyCalendar
+    
+export const SET_BASE_WEEK_CALENDAR = '/attendance/setCompanyBaseWeeklyCalendar'
