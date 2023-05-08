@@ -367,7 +367,7 @@ function SalaryBreakDown() {
         />
         <Container>
           <InputDefault
-            label={t("BasicSalary")}
+            label={t("BasicSalary %")}
             placeholder={t("BasicSalary")}
             value={basicSalary}
             type={'number'}
