@@ -7,7 +7,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Rejected = () => {
+const Rejected = ({ search }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
@@ -23,7 +23,8 @@ const Rejected = () => {
     const params = {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
-      status: 0
+      status: 0,
+      q: search,  
     };
     dispatch(getEmployeeLeaves({
       params,

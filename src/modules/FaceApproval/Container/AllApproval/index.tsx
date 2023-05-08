@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { changeEmployeeFaceValidationRequestAction, getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 import { Icons } from '@assets';
 
-const AllApproval = () => {
+const AllApproval = ({search}:any) => {
   let dispatch = useDispatch();
   const { t } = useTranslation();
   const [selectedRequest, setSelectedRequested] = useState<any>()
@@ -20,7 +20,8 @@ const AllApproval = () => {
     const params = {
       status: type,
       page_number: pageNumber,
-      ...hierarchicalBranchIds
+      ...hierarchicalBranchIds,
+      ...(search && { q: search })
     }
     dispatch(getEmployeesLoginFaceFailureAction({
       params,
