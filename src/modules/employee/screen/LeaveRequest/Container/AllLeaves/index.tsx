@@ -18,7 +18,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const AllLeaves = () => {
+const AllLeaves = ({ search }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
@@ -38,6 +38,7 @@ const AllLeaves = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -2,
+      q: search,  
     };
     dispatch(
       getEmployeeLeaves({
@@ -384,22 +385,22 @@ const LocationTable = ({
                       >
                         {"Revert"}
                       </span>
-                    ) 
-                    : item.status_code === 0 ? (
-                      <span
+                    )
+                      : item.status_code === 0 ? (
+                        <span
                         // className="h5 text-primary"
                         // style={{ cursor: 'pointer' }}
                         // onClick={() => {
                         //   if (onRevertClick) onRevertClick(item);
                         // }}
-                      >
-                        {/* {"Revert"} */}
-                        {'-'}
-                      </span>
-                    ) 
-                    : (
-                      <></>
-                    )}
+                        >
+                          {/* {"Revert"} */}
+                          {'-'}
+                        </span>
+                      )
+                        : (
+                          <></>
+                        )}
                   </td>
                   <td style={{ whiteSpace: "pre-wrap", }}>
                     {item.status_code === -1 ? (

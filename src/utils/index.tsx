@@ -122,7 +122,7 @@ const showAdminModify = (type: number | undefined) => {
   switch (type) {
     case DAY_STATUS_LATE:
     case DAY_STATUS_ABSENT:
-    case DAY_STATUS_LEAVE:
+    // case DAY_STATUS_LEAVE:
     case DAY_STATUS_ALERT:
     case DAY_STATUS_WEEK_OFF:
       showModify = true

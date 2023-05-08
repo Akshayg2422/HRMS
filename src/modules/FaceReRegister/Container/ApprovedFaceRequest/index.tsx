@@ -6,7 +6,7 @@ import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } f
 import { faceReRegisterRequestAction, getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 
 
-const ApprovedFaceRequest = () => {
+const ApprovedFaceRequest = ({ search }: any) => {
   let dispatch = useDispatch();
 
   const { currentPage, hierarchicalBranchIds, numOfPages, faceReRegisterRequestDetails } =
@@ -16,7 +16,8 @@ const ApprovedFaceRequest = () => {
     const params = {
       status: type,
       page_number: pageNumber,
-      ...hierarchicalBranchIds
+      ...hierarchicalBranchIds,
+      ...(search && { q: search })
     }
     dispatch(faceReRegisterRequestAction({
       params,

@@ -5,7 +5,7 @@ import { faceReRegisterRequestAction } from '../../../../store/dashboard/actions
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
 import { useMemo } from 'react';
 
-const RejectFaceRequest = () => {
+const RejectFaceRequest = ({ search }: any) => {
     let dispatch = useDispatch();
 
     const { currentPage, hierarchicalBranchIds, numOfPages, faceReRegisterRequestDetails } =
@@ -15,7 +15,8 @@ const RejectFaceRequest = () => {
         const params = {
             status: type,
             page_number: pageNumber,
-            ...hierarchicalBranchIds
+            ...hierarchicalBranchIds,
+            ...(search && { q: search })
         }
         dispatch(faceReRegisterRequestAction({
             params,

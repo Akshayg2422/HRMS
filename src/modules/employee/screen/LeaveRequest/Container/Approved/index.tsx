@@ -17,7 +17,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Approved = () => {
+const Approved = ({search}:any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
@@ -33,6 +33,8 @@ const Approved = () => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: 1,
+      q: search,  
+
     };
     dispatch(
       getEmployeeLeaves({

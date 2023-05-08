@@ -10,12 +10,14 @@ import { getEmployeesLoginFaceFailureAction, setFaceCurrentStatusType } from '..
 function FaceApproval() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const [searchEmployee, setSearchEmployee] = useState('')
+
 
   const REQUEST_TYPE = [
-    { id: 1, name: 'All', value: -2, component: <AllApproval /> },
-    { id: 2, name: 'Pending', value: -1, component: <PendingApproval /> },
-    { id: 3, name: 'Approved', value: 1, component: <ApprovedApproval /> },
-    { id: 4, name: 'Rejected', value: 0, component: <RejectApproval /> },
+    { id: 1, name: 'All', value: -2, component: <AllApproval search={searchEmployee} /> },
+    { id: 2, name: 'Pending', value: -1, component: <PendingApproval search={searchEmployee} /> },
+    { id: 3, name: 'Approved', value: 1, component: <ApprovedApproval search={searchEmployee} /> },
+    { id: 4, name: 'Rejected', value: 0, component: <RejectApproval search={searchEmployee} /> },
   ];
 
 
@@ -25,7 +27,7 @@ function FaceApproval() {
   const enterPress = useKeyPress("Enter");
 
   const [active, setActive] = useState(1);
-  const [searchEmployee, setSearchEmployee] = useState('')
+  // const [searchEmployee, setSearchEmployee] = useState('')
 
 
   useEffect(() => {
@@ -62,7 +64,7 @@ function FaceApproval() {
     }));
   }
 
-  
+
 
   return (
     <TableWrapper>
@@ -92,7 +94,7 @@ function FaceApproval() {
             additionClass={"mt-sm-3 mt-xl--2"}
             justifyContent={"justify-content-center"}
             alignItems={"align-items-center"}
-            // onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
+          // onClick={() => getEmployeeRequest(currentFaceType, currentPage)}
           >
             {/* <Icon type={"btn-primary"} icon={Icons.Search} /> */}
             <Search variant="Button" additionalClassName={''} onClick={() => getEmployeeRequest(currentFaceType, INITIAL_PAGE)} />
