@@ -103,15 +103,12 @@ function LogReports({ data, department, reportType, customrange, designation, at
 
 
     const getEmployeeCheckInLogsReports = (emp: any) => {
-        console.log("emp------->", emp);
-
         const params = {
             emp_id: emp?.emp_id,
             selected_date: customrange?.dateFrom,
             selected_date_to: customrange?.dataTo,
             download: true
         }
-        console.log("params----->", params);
         dispatch(getDownloadEmployeeCheckinLogs({
             params,
             onSuccess: (response: any) => () => {
@@ -125,43 +122,43 @@ function LogReports({ data, department, reportType, customrange, designation, at
 
     const memoizedTable = useMemo(() => {
         return <>
-          {data && data.length > 0 ? (
-            <CommonTable
-              // noHeader
-              card={false}
-              isPagination
-              currentPage={currentPage}
-              noOfPage={numOfPages}
-              paginationNumberClick={(currentPage) => {
-                paginationHandler("current", currentPage);
-              }}
-              previousClick={() => paginationHandler("prev")}
-              nextClick={() => paginationHandler("next")}
-              tableChildren={
-                <LocationTable tableDataSet={getConvertedTableData(data)}
-                    employeeLogDownload={(item: any) => {
-                        getEmployeeCheckInLogsReports(item)
-                    }} />
-            }
-              custombutton={"h5"}
+            {data && data.length > 0 ? (
+                <CommonTable
+                    // noHeader
+                    card={false}
+                    isPagination
+                    currentPage={currentPage}
+                    noOfPage={numOfPages}
+                    paginationNumberClick={(currentPage) => {
+                        paginationHandler("current", currentPage);
+                    }}
+                    previousClick={() => paginationHandler("prev")}
+                    nextClick={() => paginationHandler("next")}
+                    tableChildren={
+                        <LocationTable tableDataSet={getConvertedTableData(data)}
+                            employeeLogDownload={(item: any) => {
+                                getEmployeeCheckInLogsReports(item)
+                            }} />
+                    }
+                    custombutton={"h5"}
 
-              // tableOnClick={(e, index, item) => {
-              //   const selectedId = registeredEmployeesList[index].id;
-              //   dispatch(getSelectedEmployeeId(selectedId));
-              //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-              // }}
-            />
-          ) : <NoRecordFound />}
+                // tableOnClick={(e, index, item) => {
+                //   const selectedId = registeredEmployeesList[index].id;
+                //   dispatch(getSelectedEmployeeId(selectedId));
+                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+                // }}
+                />
+            ) : <NoRecordFound />}
         </>
-      }, [data])
-    
+    }, [data])
 
-      
+
+
     return (
         <>
-           {
-            memoizedTable
-           }
+            {
+                memoizedTable
+            }
         </>
     )
 }
@@ -194,7 +191,7 @@ const LocationTable = ({
             if (isString)
                 return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{key === 'emp_id' ? "" : eachObject[key as keyof object]}
                     {key === 'emp_id' && (
-                        <div style={{ cursor:'pointer'}}>
+                        <div style={{ cursor: 'pointer' }}>
                             <ImageView height={20} width={20} icon={Icons.Download} onClick={() => {
                                 if (employeeLogDownload) {
                                     employeeLogDownload(eachObject)
@@ -251,6 +248,9 @@ const LocationTable = ({
                 case 8:
                     color = '#5d00ff'
                     break;
+                case 11:
+                    color = '#5d00ff'
+                    break;
                 default:
                     color = '#000000'
             }
@@ -261,7 +261,7 @@ const LocationTable = ({
 
 
     return (
-        <div className="table-responsive">
+        <div className="table-responsive scroll-hidden">
             <table className="table align-items-center table-flush">
                 <thead className="thead-light">
                     <tr>

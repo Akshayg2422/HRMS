@@ -172,8 +172,8 @@ function PayrollView() {
     return data.map((el: any, index: number) => {
       return {
         name: el.name,
-        [el.is_percent ? 'Percent' : 'Percent']: el?.percent ? el?.percent : '',
-        [!el.is_percent ? 'Amount' : '']: el?.amount ? el?.amount : ' '
+        'Percent': el?.percent ? el?.percent : '',
+        'Amount': el?.amount ? el?.amount : ' '
       };
     });
   }

@@ -145,7 +145,7 @@ function Hierarchical({ showCheckBox = true, }: HierarchicalProps) {
 
   return (
     <div>
-      <div className="form-group">
+      <div className="form-group scroll-hidden">
         <small className="form-control-label text-black">{t("MyBranches")}</small>
         <div onClick={() => {
           if (Object.keys(hierarchicalBranch).length == 0) {
@@ -226,7 +226,7 @@ const SubLevelComponent = ({
   return (
     <>
       <div
-        className="card-header p-3"
+        className="card-header p-3 scroll-hidden"
         role="tab"
         onClick={() => collapsesToggle(item.id)}
         aria-expanded={collapseId === item.id}
@@ -250,9 +250,9 @@ const SubLevelComponent = ({
               }}
             />
           </div>  
-        </div>
+        </div>  
       </div>
-      <Collapse role="tabpanel"
+      <Collapse role="tabpanel" className="scroll-hidden"
         isOpen={collapseId === item.id}>
         <div className="card-body align-items-center">
           {item.child &&
