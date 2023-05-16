@@ -5,10 +5,11 @@ import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServ
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
-import { AttendanceReport, LeaveReports, LogReports, ShiftReports } from '../container';
+import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, SalaryReport, ShiftReports } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
 import moment from 'moment'
+import { getEmployeeEarnings } from '../../../store/Payroll/actions';
 
 
 function Reports() {
@@ -275,6 +276,90 @@ function Reports() {
     }
   };
 
+  const tableData = [
+    {
+      employee: "John Doe",
+      designation: "Software Engineer",
+      total: "11",
+      billable_days: "9",
+      net_salary: 37230.56,
+      lop_days: 5,
+      lop: 2,
+      total_Payable: 18615.28
+    },
+    {
+      employee: "Jane Smith",
+      designation: "UX Designer",
+      total: "15",
+      billable_days: "12",
+      net_salary: 47687.22,
+      lop_days: 3,
+      lop: 1,
+      total_Payable: 23924.44
+    },
+    {
+      employee: "Bob Johnson",
+      designation: "Project Manager",
+      total: "20",
+      billable_days: "18",
+      net_salary: 67282.14,
+      lop_days: 2,
+      lop: 0.5,
+      total_Payable: 33641.07
+    }
+  ];
+
+  const sample = [
+    {
+      employee: "Bob Johnson",
+      designation: "Sales Manager",
+      basic_salary: "50 (percent)",
+      working_days: 20,
+      allowance_breakdown: {
+        DA: 6000,
+        "Other Allowance": 7750,
+        "House rent allowance ": 5000
+      },
+      deduction_breakdown: {
+        TDS: 69.44,
+        "Professional Tax": 200,
+        "Employee PF Contribution": 0
+      }
+    },
+    {
+      employee: "Alice Smith",
+      designation: "Marketing Coordinator",
+      basic_salary: "35 (percent)",
+      working_days: 22,
+      allowance_breakdown: {
+        DA: 4500,
+        "Other Allowance": 6250,
+        "House rent allowance ": 4000
+      },
+      deduction_breakdown: {
+        TDS: 44.44,
+        "Professional Tax": 150,
+        "Employee PF Contribution": 0
+      }
+    },
+    {
+      employee: "John Williams",
+      designation: "Senior Developer",
+      basic_salary: "80 (percent)",
+      working_days: 21,
+      allowance_breakdown: {
+        DA: 8000,
+        "Other Allowance": 9250,
+        "House rent allowance ": 5500
+      },
+      deduction_breakdown: {
+        TDS: 99.99,
+        "Professional Tax": 300,
+        "Employee PF Contribution": 0
+      }
+    }
+  ]
+
 
   return (
     <>
@@ -435,6 +520,20 @@ function Reports() {
         {reportsType === "shift" &&
           <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
             : <NoRecordFound />}</>
+        }
+        {reportsType === "salary" &&
+          <>  {
+            // misReport && misReport.data && misReport?.data.length < 0 ?
+            <SalaryReport data={tableData} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+            // : <NoRecordFound />
+          }</>
+        }
+        {reportsType === "consolidatedSalaryReport" &&
+          <>  {
+            // misReport && misReport.data && misReport?.data.length > 0 ?
+            <ConsolidatedSalaryReport data={sample} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+            // : <NoRecordFound />
+          }</>
         }
       </TableWrapper>
     </>

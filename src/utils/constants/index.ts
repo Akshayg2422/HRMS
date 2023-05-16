@@ -152,7 +152,11 @@ export const REPORTS_TYPE = [
   { id: 'attendance', name: 'Attendance Report', value: 'attendance' },
   { id: 'leave', name: 'Leave Report', value: 'leave' },
   { id: 'log', name: 'Log Report', value: 'log' },
-  { id: 'shift', name: "Shift Report", value: "shift" }
+  { id: 'shift', name: "Shift Report", value: "shift" },
+  { id: 'salary', name: "Salary Report", value: "salary" },
+  { id: 'consolidatedSalaryReport', name: "Consolidated Salary Report", value: "consolidatedSalaryReport" }
+
+
 ];
 
 export const LEAVES_TYPE = [
