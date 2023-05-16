@@ -10,12 +10,13 @@ import { faceReRegisterRequestAction, setFaceCurrentStatusType } from '../../sto
 function FaceReRequest() {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const [searchEmployee, setSearchEmployee] = useState('')
 
   const REQUEST_TYPE = [
-    { id: 1, name: 'All', value: -2, component: <AllFFaceRequest /> },
-    { id: 2, name: 'Pending', value: -1, component: <PendingFaceRequest /> },
-    { id: 3, name: 'Approved', value: 1, component: <ApprovedFaceRequest /> },
-    { id: 4, name: 'Rejected', value: 0, component: <RejectFaceRequest /> },
+    { id: 1, name: 'All', value: -2, component: <AllFFaceRequest search={searchEmployee} /> },
+    { id: 2, name: 'Pending', value: -1, component: <PendingFaceRequest search={searchEmployee} /> },
+    { id: 3, name: 'Approved', value: 1, component: <ApprovedFaceRequest search={searchEmployee} /> },
+    { id: 4, name: 'Rejected', value: 0, component: <RejectFaceRequest search={searchEmployee} /> },
   ];
 
 
@@ -25,7 +26,6 @@ function FaceReRequest() {
   const enterPress = useKeyPress("Enter");
 
   const [active, setActive] = useState(1);
-  const [searchEmployee, setSearchEmployee] = useState('')
 
 
   useEffect(() => {

@@ -172,7 +172,8 @@ function PayrollView() {
     return data.map((el: any, index: number) => {
       return {
         name: el.name,
-        [el.is_percent ? 'Percent' : 'Amount']: el.is_percent ? el?.percent : el?.amount
+        'Percent': el?.percent ? el?.percent : '',
+        'Amount': el?.amount ? el?.amount : ' '
       };
     });
   }
@@ -302,7 +303,7 @@ function PayrollView() {
         <Card additionClass='col-xl-5'>
           <h3>{'Attendance'}</h3>
           {
-            consolidatedEarings && consolidatedEarings.length > 0 && consolidatedEarings.map((el: any) => {
+            consolidatedEarings && consolidatedEarings.length > 0 ? consolidatedEarings.map((el: any) => {
               return (
                 <div className='row my-3'>
                   <span className={`${el.key === 'Billable Days' && 'h3'} col`}>{el.key} </span>
@@ -310,22 +311,23 @@ function PayrollView() {
                 </div>
               )
             })
+              : <NoRecordFound />
           }
-          <div className='row'>
+          {salaryCriteria && salaryCriteria.length > 0 && <div className='row'>
             <span className='h3 col'>{'Total Earnings'}</span>
             <span className={`${totalEarnings.length > 1 ? 'col-3' : 'col-2'} h3`}>{totalEarnings}</span>
-          </div>
+          </div>}
         </Card>
         <Card additionClass='col ml-xl-3'>
+          <h3>{`Salary definition`}</h3>
           {!isDisablePayrollView ? (
             <>
-              <h3>{`Salary definition`}</h3>
               <Container additionClass={'col-xl-12 row col-sm-3'}>
                 <div className="col-xl-6">
                   <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
                 </div>
                 <div className="col-xl-6">
-                  <FormTypography title={'Basic salary %'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
+                  <FormTypography title={'Basic salary (In Percent)'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
                 </div>
               </Container>
 

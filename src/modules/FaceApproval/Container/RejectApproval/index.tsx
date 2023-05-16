@@ -5,7 +5,7 @@ import { getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/
 import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer } from '@utils';
 import { useMemo } from 'react';
 
-const RejectApproval = () => {
+const RejectApproval = ({ search }: any) => {
     let dispatch = useDispatch();
 
     const { currentPage, hierarchicalBranchIds, numOfPages, employeesLoginFaceFailureDetails } =
@@ -15,7 +15,8 @@ const RejectApproval = () => {
         const params = {
             status: type,
             page_number: pageNumber,
-            ...hierarchicalBranchIds
+            ...hierarchicalBranchIds,
+            ...(search && { q: search })
         }
         dispatch(getEmployeesLoginFaceFailureAction({
             params,

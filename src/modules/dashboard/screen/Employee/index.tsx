@@ -338,6 +338,7 @@ function EmployeeScreen() {
           paginationNumberClick={(currentPage) => {
             paginationHandler("current", currentPage);
           }}
+          
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}

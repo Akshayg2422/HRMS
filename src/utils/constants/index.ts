@@ -152,7 +152,11 @@ export const REPORTS_TYPE = [
   { id: 'attendance', name: 'Attendance Report', value: 'attendance' },
   { id: 'leave', name: 'Leave Report', value: 'leave' },
   { id: 'log', name: 'Log Report', value: 'log' },
-  { id: 'shift', name: "Shift Report", value: "shift" }
+  { id: 'shift', name: "Shift Report", value: "shift" },
+  { id: 'salary', name: "Salary Report", value: "salary" },
+  { id: 'consolidatedSalaryReport', name: "Consolidated Salary Report", value: "consolidatedSalaryReport" }
+
+
 ];
 
 export const LEAVES_TYPE = [
@@ -400,6 +404,8 @@ export const DAY_STATUS_LATE = 2
 export const DAY_STATUS_LEAVE = 9
 export const DAY_STATUS_ABSENT = 6
 export const DAY_STATUS_ALERT = 5
+export const DAY_STATUS_WEEK_OFF = 11
+
 
 
 export const TABLE_CONTENT_TYPE_REPORT = 1

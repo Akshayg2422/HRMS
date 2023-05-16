@@ -181,7 +181,6 @@ function EmployeeTimeSheets() {
     }
   }
 
-  console.log(type + "====");
 
 
   return (

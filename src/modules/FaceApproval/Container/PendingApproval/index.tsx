@@ -5,7 +5,7 @@ import { base64ToImage, getDisplayDateTimeFromMoment, getMomentObjFromServer, sh
 import { useTranslation } from 'react-i18next';
 import { changeEmployeeFaceValidationRequestAction, getEmployeesLoginFaceFailureAction } from '../../../../store/dashboard/actions';
 
-const PendingApproval = () => {
+const PendingApproval = ({ search }: any) => {
   let dispatch = useDispatch();
   const { t } = useTranslation();
 
@@ -17,7 +17,8 @@ const PendingApproval = () => {
     const params = {
       status: type,
       page_number: pageNumber,
-      ...hierarchicalBranchIds
+      ...hierarchicalBranchIds,
+      ...(search && { q: search })
     }
     dispatch(getEmployeesLoginFaceFailureAction({
       params,
@@ -126,7 +127,7 @@ const FaceTable = ({ tableDataSet, onApprovedClick, onRevertClick }: FaceTablePr
           tableDataSet && tableDataSet.length > 0 && tableDataSet.map((item: any, index: number) => {
             return <tr className='align-items-center'>
               <td className='' ><div><ImageView height={150} width={100} style={{ objectFit: "cover" }} icon={item?.employee_photos[0]} />
-                <ImageView additionClass='ml-3' height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[3]} /></div></td>
+                <ImageView additionClass='ml-3' height={150} style={{ objectFit: "cover" }} width={100} icon={item?.employee_photos[3] ? item.employee_photos[3] : item.employee_photos[2]} /></div></td>
               <td style={{ whiteSpace: 'pre-wrap' }}  ><ImageView height={150} style={{ objectFit: "cover" }} width={100} icon={base64ToImage(item?.log_photos_b64)} /></td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item.name}</td>
               <td style={{ whiteSpace: 'pre-wrap' }}  >{item?.mobile_number}</td>

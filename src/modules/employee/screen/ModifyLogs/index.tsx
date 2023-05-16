@@ -28,28 +28,24 @@ const ModifyLogs = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
 
+  const [searchEmployee, setSearchEmployee] = useState("");
 
   const LEAVE_TYPES = [
-    { id: 1, name: 'All', value: -2, component: <AllLeaves /> },
-    { id: 2, name: 'Pending', value: -1, component: <Pending /> },
-    { id: 3, name: 'Approved', value: 1, component: <Approved /> },
-    { id: 4, name: 'Rejected', value: 0, component: <Rejected /> },
+    { id: 1, name: 'All', value: -2, component: <AllLeaves search={searchEmployee} /> },
+    { id: 2, name: 'Pending', value: -1, component: <Pending search={searchEmployee} /> },
+    { id: 3, name: 'Approved', value: 1, component: <Approved search={searchEmployee} /> },
+    { id: 4, name: 'Rejected', value: 0, component: <Rejected search={searchEmployee} /> },
   ];
 
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  const [searchEmployee, setSearchEmployee] = useState("");
   const [active, setActive] = useState(1);
   const enterPress = useKeyPress("Enter");
 
   const { currentPage, currentLeaveType } = useSelector((state: any) => state.EmployeeReducer);
 
-  console.log('========>', currentLeaveType);
-
-
   useEffect(() => {
-    // fetchPendingDetail(INITIAL_PAGE, -2)
     getLeavesDetails(active)
   }, [hierarchicalBranchIds]);
 

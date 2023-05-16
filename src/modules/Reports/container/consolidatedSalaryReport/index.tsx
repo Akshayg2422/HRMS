@@ -19,7 +19,7 @@ type LogReportsProps = {
 };
 
 
-function LogReports({ data, department, reportType, customrange, designation, attendanceType, startDate, endDate }: LogReportsProps) {
+function ConsolidatedSalaryReport({ data, department, reportType, customrange, designation, attendanceType, startDate, endDate }: LogReportsProps) {
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -38,12 +38,12 @@ function LogReports({ data, department, reportType, customrange, designation, at
         for (let i = 0; i < data.length; i++) {
             let { days, name, designation, emp_id } = data[i]
             let updateObject = { name, emp_id, designation }
-            if (key && key.length > 0) {
-                key.forEach((each: any) => {
-                    const index = days.findIndex((day: any) => day.date === each)
-                    updateObject = { ...updateObject, [each]: index !== '-1' ? days[index] : {} }
-                })
-            }
+            // if (key && key.length > 0) {
+            //     key.forEach((each: any) => {
+            //         // const index = days.findIndex((day: any) => day.date === each)
+            //         updateObject = { ...updateObject, [each]: index !== '-1' ? days[index] : {} }
+            //     })
+            // }
             updatedData[i] = updateObject
         }
         return updatedData
@@ -285,4 +285,4 @@ const LocationTable = ({
     );
 };
 
-export { LogReports }
+export { ConsolidatedSalaryReport }

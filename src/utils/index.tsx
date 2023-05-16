@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -122,8 +122,9 @@ const showAdminModify = (type: number | undefined) => {
   switch (type) {
     case DAY_STATUS_LATE:
     case DAY_STATUS_ABSENT:
-    case DAY_STATUS_LEAVE:
+    // case DAY_STATUS_LEAVE:
     case DAY_STATUS_ALERT:
+    case DAY_STATUS_WEEK_OFF:
       showModify = true
       break;
     default:
