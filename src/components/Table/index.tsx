@@ -16,7 +16,8 @@ interface TableProps {
   tableContentType?: number;
   comparisonDataSet?: Array<{ key: string, elt: number, elv: any, elh: string }>;
   custombutton?: string
-  customButtonColor?:string
+  customButtonColor?: string
+  customClass?: string
 
 }
 
@@ -26,20 +27,20 @@ interface Element {
   elh: string
 }
 
-function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet,customButtonColor="primary" }: TableProps) {
+function index({ displayDataSet, tableDataSet, custombutton, customClass, additionalDataSet, tableOnClick, tableValueOnClick, tableContentType, comparisonDataSet, customButtonColor = "primary" }: TableProps) {
 
   const renderTableHeader = () => {
     if (displayDataSet) {
       const header = Object.keys(displayDataSet[0])
       return header.map(key => {
-        return <th scope="col" key={key}>{key}</th>
+        return <th className={`${customClass}`} scope="col" key={key}>{key}</th>
       })
     }
   }
 
   function renderTableValue(eachObject: object) {
     return Object.keys(eachObject).map((key: string) => {
-      return <td style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
+      return <td  style={{ whiteSpace: 'pre-wrap' }} key={key} >{tableContentType ? getTableRowElement(key, eachObject) : getValueElement(key, eachObject)}</td>
     })
   }
 
@@ -89,7 +90,7 @@ function index({ displayDataSet, tableDataSet, custombutton, additionalDataSet, 
 
 
   return (
-    <div className="table-responsive">
+    <div className="table-responsive scroll-hidden">
       <table className="table align-items-center table-flush">
         <thead className="thead-light">
           <tr>

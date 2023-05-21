@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress, TableWrapper, Search } from '@components'
 import { Icons } from '@assets'
-import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, INITIAL_PAGE, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
+import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, INITIAL_PAGE, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, ThisMonth, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
@@ -9,7 +9,6 @@ import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, S
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
 import moment from 'moment'
-import { getEmployeeEarnings } from '../../../store/Payroll/actions';
 
 
 function Reports() {
@@ -49,8 +48,6 @@ function Reports() {
   const [shiftSelectedDesignation, setShiftSelectedDesignation] = useState<any>(shiftDesignationData[0]?.id);
   const [selectedAttendanceType, setSelectedAttendanceType] = useState(ATTENDANCE_TYPE[0].type)
   const [initialRender, setInitialRender] = useState(true)
-
-
   const [customRange, setCustomRange] = useState({
     dateFrom: Today,
     dataTo: Today,
@@ -59,6 +56,7 @@ function Reports() {
     dateFrom: Today,
     dataTo: Today,
   });
+  const [initialSalary, setInitialSalary] = useState(true)
 
   useEffect(() => {
     getDepartments()
@@ -76,6 +74,11 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
+    if ((reportsType === 'salary_basic') || (reportsType === 'salary_breakdown')) {
+      setCustomRange({ ...customRange, dateFrom: ThisMonth });
+    } else {
+      setCustomRange({ ...customRange, dateFrom: Today });
+    }
     reportsType !== 'shift' && getReports(INITIAL_PAGE)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
@@ -180,7 +183,7 @@ function Reports() {
         designation_id: reportsType !== 'shift' ? selectedDesignation : shiftSelectedDesignation,
         ...(reportsType === 'shift' && { shift_id: selectedShift }),
         download: false,
-        selected_date: customRange.dateFrom,
+        selected_date: initialSalary && (reportsType === 'salary_basic') || (reportsType === 'salary_breakdown') ? ThisMonth : customRange.dateFrom,
         selected_date_to: customRange.dataTo,
         page_number: pageNumber,
       };
@@ -196,8 +199,6 @@ function Reports() {
   })
 
   useEffect(() => {
-
-
     if (customRange.dateFrom && customRange.dataTo) {
       const startOfMonth = moment(customRange.dateFrom).startOf('month').format('YYYY-MM-DD');
       const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
@@ -212,8 +213,8 @@ function Reports() {
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
-
     setCustomRange({ ...customRange, [key]: value });
+    setInitialSalary(false)
   };
 
   const validateParams = () => {
@@ -252,7 +253,7 @@ function Reports() {
     if (validateParams()) {
       setLogRange({ ...logRange, dataTo: customRange.dataTo, dateFrom: customRange.dateFrom });
       const params = {
-        report_type: reportsType,
+        report_type: reportsType === 'salary_basic1' ? "salary_basic" : reportsType,
         ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
         ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
         ...(searchEmployee && { q: searchEmployee }),
@@ -275,90 +276,6 @@ function Reports() {
       }));
     }
   };
-
-  const tableData = [
-    {
-      employee: "John Doe",
-      designation: "Software Engineer",
-      total: "11",
-      billable_days: "9",
-      net_salary: 37230.56,
-      lop_days: 5,
-      lop: 2,
-      total_Payable: 18615.28
-    },
-    {
-      employee: "Jane Smith",
-      designation: "UX Designer",
-      total: "15",
-      billable_days: "12",
-      net_salary: 47687.22,
-      lop_days: 3,
-      lop: 1,
-      total_Payable: 23924.44
-    },
-    {
-      employee: "Bob Johnson",
-      designation: "Project Manager",
-      total: "20",
-      billable_days: "18",
-      net_salary: 67282.14,
-      lop_days: 2,
-      lop: 0.5,
-      total_Payable: 33641.07
-    }
-  ];
-
-  const sample = [
-    {
-      employee: "Bob Johnson",
-      designation: "Sales Manager",
-      basic_salary: "50 (percent)",
-      working_days: 20,
-      allowance_breakdown: {
-        DA: 6000,
-        "Other Allowance": 7750,
-        "House rent allowance ": 5000
-      },
-      deduction_breakdown: {
-        TDS: 69.44,
-        "Professional Tax": 200,
-        "Employee PF Contribution": 0
-      }
-    },
-    {
-      employee: "Alice Smith",
-      designation: "Marketing Coordinator",
-      basic_salary: "35 (percent)",
-      working_days: 22,
-      allowance_breakdown: {
-        DA: 4500,
-        "Other Allowance": 6250,
-        "House rent allowance ": 4000
-      },
-      deduction_breakdown: {
-        TDS: 44.44,
-        "Professional Tax": 150,
-        "Employee PF Contribution": 0
-      }
-    },
-    {
-      employee: "John Williams",
-      designation: "Senior Developer",
-      basic_salary: "80 (percent)",
-      working_days: 21,
-      allowance_breakdown: {
-        DA: 8000,
-        "Other Allowance": 9250,
-        "House rent allowance ": 5500
-      },
-      deduction_breakdown: {
-        TDS: 99.99,
-        "Professional Tax": 300,
-        "Employee PF Contribution": 0
-      }
-    }
-  ]
 
 
   return (
@@ -521,18 +438,18 @@ function Reports() {
           <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
             : <NoRecordFound />}</>
         }
-        {reportsType === "salary" &&
+        {reportsType === "salary_basic" &&
           <>  {
-            // misReport && misReport.data && misReport?.data.length < 0 ?
-            <SalaryReport data={tableData} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
-            // : <NoRecordFound />
+            misReport && misReport.data && misReport?.data.length > 0 ?
+              <SalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              : <NoRecordFound />
           }</>
         }
-        {reportsType === "consolidatedSalaryReport" &&
+        {reportsType === "salary_breakdown" &&
           <>  {
-            // misReport && misReport.data && misReport?.data.length > 0 ?
-            <ConsolidatedSalaryReport data={sample} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
-            // : <NoRecordFound />
+            misReport && misReport.data && misReport?.data?.length > 0 ?
+              <ConsolidatedSalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              : <NoRecordFound />
           }</>
         }
       </TableWrapper>

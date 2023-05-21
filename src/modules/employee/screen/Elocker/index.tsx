@@ -3,7 +3,7 @@ import { Icons } from '@assets';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import { showToast, useNav, validateName } from '@utils';
+import { convertToUpperCase, showToast, useNav, validateName } from '@utils';
 import { attachUserDocument, getEmployeeDocument } from '../../../../store/employee/actions';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
@@ -248,7 +248,7 @@ function ELocker() {
             </TableWrapper>
 
 
-            <Modal size={'modal-sm'} title={viewDocument.name} showModel={model} toggle={() => setModel(!model)} >
+            <Modal size={'modal-sm'} title={convertToUpperCase(viewDocument.name)} showModel={model} toggle={() => setModel(!model)} >
                 {viewDocument && viewDocument.attachments && viewDocument.attachments.length > 0 ? viewDocument.attachments.map((el: any) => {
                     return (
                         <>

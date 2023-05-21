@@ -22,6 +22,7 @@ function SalaryReport({ data, department, reportType, customrange, designation }
         (state: any) => state.DashboardReducer
     );
 
+
     const {
         numOfPages,
         currentPage,
@@ -61,14 +62,14 @@ function SalaryReport({ data, department, reportType, customrange, designation }
     const normalizedEmployee = (data: any) => {
         return data && data.length > 0 && data.map((el: any) => {
             return {
-                name: el.employee,
+                name: el.name,
                 "Designation": el.designation,
-                "Total Days": el.total,
-                "Billable Days": el.billable_days,
-                "LOP Days": '-',
-                "Net Salary": el.net_salary,
-                "LOP": "-",
-                "Total Payable": el.total_Payable
+                "Total Days": el?.break_down?.total,
+                "Billable Days": el?.break_down?.payable_days,
+                "LOP Days": el?.break_down?.lop_days,
+                "Net Salary": el?.salary_till_date?.gross_pay,
+                "LOP": el?.salary_till_date?.lop_pay_till_date,
+                "Total Payable": el?.salary_till_date?.pay_till_date
             };
         });
     };

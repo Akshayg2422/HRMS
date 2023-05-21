@@ -153,8 +153,8 @@ export const REPORTS_TYPE = [
   { id: 'leave', name: 'Leave Report', value: 'leave' },
   { id: 'log', name: 'Log Report', value: 'log' },
   { id: 'shift', name: "Shift Report", value: "shift" },
-  { id: 'salary', name: "Salary Report", value: "salary" },
-  { id: 'consolidatedSalaryReport', name: "Consolidated Salary Report", value: "consolidatedSalaryReport" }
+  { id: 'salary_basic', name: "Salary Report", value: "salary_basic" },
+  { id: 'salary_breakdown', name: "Detailed Salary Report", value: "salary_breakdown" }
 
 
 ];

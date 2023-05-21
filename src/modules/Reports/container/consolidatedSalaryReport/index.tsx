@@ -6,6 +6,7 @@ import { Icons } from '@assets';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
 import { downloadFile } from '@utils';
+import { Row } from 'reactstrap';
 
 type LogReportsProps = {
     data?: Array<any>;
@@ -24,6 +25,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
         (state: any) => state.DashboardReducer
     );
 
+
     const {
         numOfPages,
         currentPage,
@@ -32,37 +34,6 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
     let dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const getConvertedTableData = (data: any) => {
-        const updatedData = []
-        let key = getDatesListBetweenStartEndDates(startDate, endDate)
-        for (let i = 0; i < data.length; i++) {
-            let { days, name, designation, emp_id } = data[i]
-            let updateObject = { name, emp_id, designation }
-            // if (key && key.length > 0) {
-            //     key.forEach((each: any) => {
-            //         // const index = days.findIndex((day: any) => day.date === each)
-            //         updateObject = { ...updateObject, [each]: index !== '-1' ? days[index] : {} }
-            //     })
-            // }
-            updatedData[i] = updateObject
-        }
-        return updatedData
-    }
-
-    const getDatesListBetweenStartEndDates = (
-        startDate: moment.MomentInput,
-        stopDate: moment.MomentInput,
-    ) => {
-        const dateObj = [];
-        let currentDate = moment(startDate);
-        stopDate = moment(stopDate);
-        while (currentDate <= stopDate) {
-            dateObj.push(moment(currentDate).format('YYYY-MM-DD'));
-            currentDate = moment(currentDate).add(1, 'days');
-        }
-
-        return dateObj;
-    };
 
     const getReports = ((pageNumber: number) => {
         const params = {
@@ -102,29 +73,74 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
     }
 
 
-    const getEmployeeCheckInLogsReports = (emp: any) => {
-        const params = {
-            emp_id: emp?.emp_id,
-            selected_date: customrange?.dateFrom,
-            selected_date_to: customrange?.dataTo,
-            download: true
-        }
-        dispatch(getDownloadEmployeeCheckinLogs({
-            params,
-            onSuccess: (response: any) => () => {
-                downloadFile(response);
-            },
-            onError: (error: string) => () => {
-            },
-        }));
+
+    const normalizedEmployee = (data: any) => {
+        return data && data.length > 0 && data.map((el: any) => {
+            return {
+                employee: el.name,
+                designation: el.designation,
+                "working Days": 21,
+                "Total Days": el?.break_down?.total,
+                "Billable Days": el?.break_down?.payable_days,
+                "Allowance": renderNormalizer(AllowancesNormalizer(el?.salary_till_date?.calculated_pay), true),
+                "Deduction": renderNormalizer(deductionNormalizer(el?.salary_till_date?.calculated_pay), false),
+                "Net Salary": el?.salary_till_date?.gross_pay
+            };
+        });
+    };
+
+
+    const AllowancesNormalizer = (item: any) => {
+        const allowanceData: any[] = []
+        item && item.length > 0 && item.map((el: any) => {
+            if (el.key === 'allowance_breakdown') {
+                allowanceData.push(el.value)
+            }
+        })
+        return allowanceData
     }
 
+    const deductionNormalizer = (item: any) => {
+        const deductionData: any[] = []
+        item && item.length > 0 && item.map((el: any) => {
+            if (el.key === 'deduction_breakdown') {
+                deductionData.push(el.value)
+            }
+        })
+        return deductionData
+    }
+
+
+
+    const renderNormalizer = (data: any, status: any) => {
+        const item = data && data[0]
+        const convertedData = Object.entries(item).map(([key, value]) => ({
+            key: key,
+            value: value
+        }));
+        return (
+            <div style={{ flexDirection: 'column' }}>
+                {convertedData && convertedData.length > 0 && convertedData.map((el: any) => {
+                    return (
+                        <>
+                            {el.value !== 0 && <th scope="col">
+                                <div>
+                                    {el.key}
+                                </div>
+                                <div className={`font-weight-normal mt-2 text-center ${status ? 'text-success' : 'text-danger'}`}>{el.value}</div>
+                            </th>}
+                        </>
+                    )
+                })
+                }
+            </div >
+        )
+    }
 
     const memoizedTable = useMemo(() => {
         return <>
             {data && data.length > 0 ? (
                 <CommonTable
-                    // noHeader
                     card={false}
                     isPagination
                     currentPage={currentPage}
@@ -134,19 +150,9 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
                     }}
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
-                    tableChildren={
-                        <LocationTable tableDataSet={getConvertedTableData(data)}
-                            employeeLogDownload={(item: any) => {
-                                getEmployeeCheckInLogsReports(item)
-                            }} />
-                    }
+                    displayDataSet={normalizedEmployee(data)}
                     custombutton={"h5"}
-
-                // tableOnClick={(e, index, item) => {
-                //   const selectedId = registeredEmployeesList[index].id;
-                //   dispatch(getSelectedEmployeeId(selectedId));
-                //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-                // }}
+                    customClass='text-center'
                 />
             ) : <NoRecordFound />}
         </>

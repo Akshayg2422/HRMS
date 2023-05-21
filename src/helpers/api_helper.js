@@ -4,10 +4,10 @@ import { ASYN_USER_AUTH } from '@utils'
 //apply base url for axios
 const STAGING = 'http://3.7.59.39';
 
-const LOCAL_DEV = 'http://192.168.227.204:8003';
+const LOCAL_DEV = 'http://192.168.195.204:8001';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
-const LOCAL_PROD = 'http://15.206.224.132:8002';
+const LOCAL_PROD = 'http://103.118.188.135:8008';
 
 const PRE_PROD = 'http://15.206.224.132'
 
@@ -21,27 +21,27 @@ const PROD_WEB = 'https://webapi.zenyq.com';
 // export const BASE_URL_REPORTS_PROD_1 = 'https://reports.zenyq.com'; ////
 
 
-export const REACT_APP_APP_URL = STAGING_WEB;
+export const REACT_APP_APP_URL = PROD_WEB;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 // process.env.REACT_APP_APP_URL;
 
-// export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
+export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
 
-// export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
+export const BASE_URL_REPORTS_PROD = 'https://reports.zenyq.com'; ////
 
-// export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuserweb.zenyq.com'; ////
+export const BASE_URL_VALIDATE_USER_PROD = 'https://validateuserweb.zenyq.com'; ////
 
-// export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
+export const BASE_URL_ONBOARD_PROD = 'https://onboard.zenyq.com'; ////
 
 
-export const BASE_URL_AUTH_PROD = ''; ////
+// export const BASE_URL_AUTH_PROD = ''; ////
 
-export const BASE_URL_REPORTS_PROD = ''; ////
+// export const BASE_URL_REPORTS_PROD = ''; ////
 
-export const BASE_URL_VALIDATE_USER_PROD = ''; ////
+// export const BASE_URL_VALIDATE_USER_PROD = ''; ////
 
-export const BASE_URL_ONBOARD_PROD = ''; ////
+// export const BASE_URL_ONBOARD_PROD = ''; ////
 
 
 const axiosApi = axios.create({
