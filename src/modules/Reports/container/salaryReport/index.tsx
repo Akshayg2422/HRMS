@@ -64,9 +64,11 @@ function SalaryReport({ data, department, reportType, customrange, designation }
             return {
                 name: el.name,
                 "Designation": el.designation,
+                "Branch": el.branch,
                 "Total Days": el?.break_down?.total,
-                "Billable Days": el?.break_down?.payable_days,
+                "Payable Days": el?.break_down?.payable_days,
                 "LOP Days": el?.break_down?.lop_days,
+                "Gross Salary":el?.salary_till_date?.gross_pay,
                 "Net Salary": el?.salary_till_date?.gross_pay,
                 "LOP": el?.salary_till_date?.lop_pay_till_date,
                 "Total Payable": el?.salary_till_date?.pay_till_date

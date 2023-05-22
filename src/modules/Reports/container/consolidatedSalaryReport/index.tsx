@@ -79,6 +79,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
             return {
                 employee: el.name,
                 designation: el.designation,
+                "Branch":el.branch,
                 "working Days": 21,
                 "Total Days": el?.break_down?.total,
                 "Billable Days": el?.break_down?.payable_days,
