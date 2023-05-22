@@ -35,6 +35,7 @@ interface CommonTableProps {
   filterChildren?: React.ReactNode
   buttonChildren?: React.ReactNode,
   header?: boolean
+  customClass?:string
 }
 
 
@@ -51,7 +52,7 @@ interface GetPaginatorSetProps {
   currentPage?: number;
   totalPages?: number;
 }
-const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton, filterChildren, buttonChildren }: CommonTableProps) => {
+const CommonTable = ({ card = true, header, title, customClass,displayDataSet, tableDataSet, headerClass, additionalDataSet, noRecordText = 'No Data Found', tableOnClick, tableValueOnClick, noHeader, noOfPage, currentPage, isPagination, previousClick, nextClick, paginationNumberClick, buttonText, buttonOnClock, comparisonDataSet, tableChildren, custombutton, filterChildren, buttonChildren }: CommonTableProps) => {
 
   const CommonHeader = ({ children }: CommonHeaderProps) => {
     return (
@@ -146,7 +147,7 @@ const CommonTable = ({ card = true, header, title, displayDataSet, tableDataSet,
   const renderTable = () => {
     return (
       <>
-        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} />}
+        {tableChildren ? <>{tableChildren}</> : <Table displayDataSet={displayDataSet} tableDataSet={tableDataSet} additionalDataSet={additionalDataSet} tableOnClick={tableOnClick} tableValueOnClick={tableValueOnClick} custombutton={custombutton} comparisonDataSet={comparisonDataSet} customClass={customClass} />}
         {isPagination && <GetPaginatorSet currentPage={currentPage} totalPages={noOfPage} />}
       </>
     );
