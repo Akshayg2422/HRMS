@@ -59,7 +59,7 @@ function ViewEmployeeSalaryDefinition() {
                             <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
                         </div>
                         <div className="col-xl-6">
-                            <FormTypography title={`Basic salary %`} subTitle={employeeSalaryDefinition?.base_salary_percent} />
+                            <FormTypography title={`Basic salary (In Percent)`} subTitle={employeeSalaryDefinition?.base_salary_percent} />
                         </div>
                     </Container>
                     <Container additionClass={'col-xl-12 row col-sm-3 mb-3'}>

@@ -120,11 +120,11 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
 const showAdminModify = (type: number | undefined) => {
   let showModify = false
   switch (type) {
-    case DAY_STATUS_LATE:
+    // case DAY_STATUS_LATE:
     case DAY_STATUS_ABSENT:
-    // case DAY_STATUS_LEAVE:
+    case DAY_STATUS_LEAVE:
     case DAY_STATUS_ALERT:
-    case DAY_STATUS_WEEK_OFF:
+    // case DAY_STATUS_WEEK_OFF:
       showModify = true
       break;
     default:

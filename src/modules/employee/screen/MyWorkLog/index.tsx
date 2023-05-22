@@ -9,6 +9,7 @@ import {
   Card,
   BackArrow,
   TableWrapper,
+  ImageView,
 } from "@components";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
@@ -33,6 +34,7 @@ import {
 import index from "@src/components/Table";
 import { Item } from "@src/screens/Zenylog_site/components/Input";
 import { ManageLeaves, Navbar } from "@modules";
+import { Icons } from "@assets";
 
 type CheckInLog = {
   date?: string;
@@ -48,13 +50,14 @@ type CheckInLog = {
 type TimeSheetResponse = {
   id?: string;
   details?: string;
-  attachments?: [];
+  attachments?: any;
   time_stamp?: string;
   address?: {
     address_text?: string;
     location_latitude?: string;
     location_longitude?: string;
   };
+  
 };
 
 function MyWorkLog() {
@@ -117,7 +120,6 @@ function MyWorkLog() {
       })
     );
 
-    console.log(JSON.stringify(employeeEachUserSheets) + "======");
   }
 
 
@@ -129,6 +131,15 @@ function MyWorkLog() {
           getMomentObjFromServer(it.time_stamp)
         ),
         address: it.address?.address_text ? it.address?.address_text : "      -",
+        "": <ImageView icon={Icons.Eye} 
+        // onClick={
+        //   () => {
+        //     setAttachment(it?.attachments);
+        //     setAttachmentModel(!attachmentModel);
+        //   }
+        // } 
+        />
+
       };
     });
   };
@@ -162,12 +173,6 @@ function MyWorkLog() {
             setAttachment(attachment);
             setAttachmentModel(!attachmentModel);
           }}
-
-        // tableOnClick={(e, index, item) => {
-        //   const selectedId = registeredEmployeesList[index].id;
-        //   dispatch(getSelectedEmployeeId(selectedId));
-        //   goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
-        // }}
         />
       ) : <NoRecordFound />}
     </>

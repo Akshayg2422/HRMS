@@ -71,6 +71,9 @@ function Charts() {
       // case "Leave":
       //   color = '#2445ff'
       //   break;
+      // case "Leave":
+      //   color = '#2445ff'
+      //   break;
       default:
         color = '#000000'
     }

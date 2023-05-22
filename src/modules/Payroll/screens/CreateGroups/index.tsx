@@ -271,16 +271,14 @@ function CreateGroup() {
     }
 
     const onAllowanceAdd = () => {
-
         const params = {
             name: name,
-            hint: hint ? hint : name,
+            hint: hint,
             calendar_year: calendarYear,
             is_taxable: isTaxable,
             max_limit: maximumLimit ? maximumLimit : -1,
             ...(isEditCompanyAllowance && editAllowanceItem && { id: editAllowanceItem?.id })
         }
-
         if (validateAllowanceAddParams()) {
             dispatch(addCompanyAllowance({
                 params,
@@ -291,9 +289,10 @@ function CreateGroup() {
                     setHint('')
                     setMaximumLimit('')
                     setIsTaxable(false)
+                    showToast('success', success?.message)
                 },
                 onError: (error: any) => () => {
-
+                    showToast('error', error)
                 }
             }));
         }
@@ -330,12 +329,7 @@ function CreateGroup() {
 
                 <Container>
                     {selectedAllowances && selectedAllowances?.length > 0 && selectedAllowances?.map((el: any, i: number) => {
-
                         const isEditData = selectedAllowanceEditData?.some((item: any) => item.allowance_id === el.allowance_id)
-
-
-
-
                         return (
                             <Container additionClass='row'>
                                 <Container additionClass={'col-xl-5 col col-sm-0'}>
@@ -438,9 +432,9 @@ function CreateGroup() {
                                         <CommonDropdownMenu
                                             data={DROPDOWN_ITEM}
                                             onItemClick={() => {
-                                                setEditAllowanceItem(el)
+                                                setEditAllowanceItem(el)    
                                                 setName(el.name)
-                                                setHint(el.name)
+                                                setHint(el?.hint)
                                                 setMaximumLimit(el.max_limit)
                                                 setIsTaxable(el.is_taxable)
                                                 setIsEditCompanyAllowance(true)

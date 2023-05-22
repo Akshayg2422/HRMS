@@ -172,8 +172,8 @@ function PayrollView() {
     return data.map((el: any, index: number) => {
       return {
         name: el.name,
-        [el.is_percent ? 'Percent' : 'Percent']: el?.percent ? el?.percent : '',
-        [!el.is_percent ? 'Amount' : '']: el?.amount ? el?.amount : ' '
+        'Percent': el?.percent ? el?.percent : '',
+        'Amount': el?.amount ? el?.amount : ' '
       };
     });
   }
@@ -230,22 +230,24 @@ function PayrollView() {
   }
 
   const getStructuredConsolidatedEarings = (details: any) => {
+    console.log("details===========>",details);
+    
     let structuredData = [{ key: 'Total Days', value: details?.break_down?.total }, { key: 'Holiday', value: details?.break_down?.holiday }, { key: 'Present', value: details?.break_down?.present },
-    { key: 'Alert', value: details?.break_down?.alert }, { key: 'Absent', value: details?.break_down?.absent }, { key: 'Leaves', value: details?.break_down?.leave }, { key: 'Billable Days', value: details?.break_down?.billable_days }
+    { key: 'Alert', value: details?.break_down?.alert }, { key: 'Absent', value: details?.break_down?.absent }, { key: 'Leaves', value: details?.break_down?.leave }, { key: 'Billable Days', value: details?.break_down?.payable_days }
     ]
     setConsolidatedEarings(structuredData)
-    setSalaryCriteria(details?.payment_info?.calculated_pay)
-    details?.payment_info?.calculated_pay.map((el: any) => {
+    setSalaryCriteria(details?.salary_till_date?.calculated_pay)
+    details?.salary_till_date?.calculated_pay.map((el: any) => {
       if (el.key === 'allowance_breakdown') {
         setAllowanceCalculatedPay(el?.value)
       }
     })
-    details?.payment_info?.calculated_pay.map((el: any) => {
-      if (el.title === 'Deduction Breakdown') {
+    details?.salary_till_date?.calculated_pay.map((el: any) => {
+      if (el.key === 'deduction_breakdown') {
         setDeductionsCalculatedPay(el?.value)
       }
     })
-    setTotalEarnings(details?.earnings.toFixed(2))
+    setTotalEarnings(details?.salary_till_date?.pay_till_date.toFixed(2))
   }
 
   const normalizedObjectToArray = (data: any) => {
@@ -327,7 +329,7 @@ function PayrollView() {
                   <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
                 </div>
                 <div className="col-xl-6">
-                  <FormTypography title={'Basic salary %'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
+                  <FormTypography title={'Basic salary (In Percent)'} subTitle={employeeSalaryDefinition?.base_salary_percent} />
                 </div>
               </Container>
 

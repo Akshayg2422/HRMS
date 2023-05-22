@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { Card, Container, DropDown, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound, MyActiveBranches, MultiselectHierarchical, useKeyPress, TableWrapper, Search } from '@components'
 import { Icons } from '@assets'
-import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, INITIAL_PAGE, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
+import { ATTENDANCE_TYPE, downloadFile, dropDownValueCheck, getMomentObjFromServer, getServerDateFromMoment, INITIAL_PAGE, REPORTS_TYPE, showToast, TABLE_CONTENT_TYPE_REPORT, ThisMonth, Today } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData } from '../../../store/employee/actions';
-import { AttendanceReport, LeaveReports, LogReports, ShiftReports } from '../container';
+import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, SalaryReport, ShiftReports } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
 import moment from 'moment'
@@ -48,8 +48,6 @@ function Reports() {
   const [shiftSelectedDesignation, setShiftSelectedDesignation] = useState<any>(shiftDesignationData[0]?.id);
   const [selectedAttendanceType, setSelectedAttendanceType] = useState(ATTENDANCE_TYPE[0].type)
   const [initialRender, setInitialRender] = useState(true)
-
-
   const [customRange, setCustomRange] = useState({
     dateFrom: Today,
     dataTo: Today,
@@ -58,6 +56,7 @@ function Reports() {
     dateFrom: Today,
     dataTo: Today,
   });
+  const [initialSalary, setInitialSalary] = useState(true)
 
   useEffect(() => {
     getDepartments()
@@ -75,6 +74,11 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
+    if ((reportsType === 'salary_basic') || (reportsType === 'salary_breakdown')) {
+      setCustomRange({ ...customRange, dateFrom: ThisMonth });
+    } else {
+      setCustomRange({ ...customRange, dateFrom: Today });
+    }
     reportsType !== 'shift' && getReports(INITIAL_PAGE)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
@@ -179,7 +183,7 @@ function Reports() {
         designation_id: reportsType !== 'shift' ? selectedDesignation : shiftSelectedDesignation,
         ...(reportsType === 'shift' && { shift_id: selectedShift }),
         download: false,
-        selected_date: customRange.dateFrom,
+        selected_date: initialSalary && (reportsType === 'salary_basic') || (reportsType === 'salary_breakdown') ? ThisMonth : customRange.dateFrom,
         selected_date_to: customRange.dataTo,
         page_number: pageNumber,
       };
@@ -195,8 +199,6 @@ function Reports() {
   })
 
   useEffect(() => {
-
-
     if (customRange.dateFrom && customRange.dataTo) {
       const startOfMonth = moment(customRange.dateFrom).startOf('month').format('YYYY-MM-DD');
       const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
@@ -211,8 +213,8 @@ function Reports() {
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
-
     setCustomRange({ ...customRange, [key]: value });
+    setInitialSalary(false)
   };
 
   const validateParams = () => {
@@ -251,7 +253,7 @@ function Reports() {
     if (validateParams()) {
       setLogRange({ ...logRange, dataTo: customRange.dataTo, dateFrom: customRange.dateFrom });
       const params = {
-        report_type: reportsType,
+        report_type: reportsType === 'salary_basic1' ? "salary_basic" : reportsType,
         ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
         ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
         ...(searchEmployee && { q: searchEmployee }),
@@ -435,6 +437,20 @@ function Reports() {
         {reportsType === "shift" &&
           <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
             : <NoRecordFound />}</>
+        }
+        {reportsType === "salary_basic" &&
+          <>  {
+            misReport && misReport.data && misReport?.data.length > 0 ?
+              <SalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              : <NoRecordFound />
+          }</>
+        }
+        {reportsType === "salary_breakdown" &&
+          <>  {
+            misReport && misReport.data && misReport?.data?.length > 0 ?
+              <ConsolidatedSalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              : <NoRecordFound />
+          }</>
         }
       </TableWrapper>
     </>
