@@ -1,4 +1,4 @@
-import { Card, Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
+import { Card, CheckBox, Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
 import { goBack, goTo, inputNumberMaxLength, ROUTE, showToast, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -39,6 +39,8 @@ function SalaryBreakDown() {
   const [selectedDefinitionEditData, setSelectedDefinitionEditData] = useState<any>([])
   const [isDisablePayrollView, setIsDisablePayrollView] = useState(false)
   const [deductionsData, setDeductionsData] = useState<any>([])
+  const [autoDebitTds, setAutoDebitTds] = useState(false)
+  const [autoDebitPf, setAutoDebitPf] = useState(false)
 
 
   const { allowanceGroupsList, companyDeductionsList, selectedEmployeeDetails, isEditSalary } = useSelector(
@@ -139,6 +141,8 @@ function SalaryBreakDown() {
     let annualCtcPercentage = 1 * annualCtc
     setMinimumAmount(halfOfTheAnnual)
     setMaximumAmount(annualCtcPercentage)
+    setAutoDebitPf(salaryDetails?.auto_debit_pf)
+    setAutoDebitTds(salaryDetails?.auto_debit_tds)
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
     const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, type: el.is_percent ? "1" : "2", error: '' }))
@@ -318,6 +322,8 @@ function SalaryBreakDown() {
       base_salary_percent: basicSalary,
       employee_id: selectedEmployeeDetails.id,
       calendar_year: calendarYear,
+      auto_debit_pf:autoDebitPf,
+      auto_debit_tds:autoDebitTds,
       allowance_break_down_group_id: allowanceGroup,
       deductions_group_ids: isEditSalary ? modifiedApiKeys() : filteredApiKeys ? filteredApiKeys : [],
       ...(isEditSalary && { id: editSalaryDefinitionId })
@@ -378,6 +384,29 @@ function SalaryBreakDown() {
           />
           <h5 className='mt--3 text-right' style={{ color: color }}>{t('MinimumCTC')}</h5>
         </Container>
+        <Container additionClass='row my-4'>
+          <Container additionClass='col-auto'>
+            <CheckBox
+              id={'1'}
+              text={"Auto Debit TDS"}
+              checked={autoDebitTds}
+              onChange={(e) => {
+                setAutoDebitTds(e.target.checked)
+              }}
+            />
+          </Container>
+          <Container additionClass='col-auto'>
+            <CheckBox
+              id={'2'}
+              text={"Auto Debit PF"}
+              checked={autoDebitPf}
+              onChange={(e) => {
+                setAutoDebitPf(e.target.checked)
+              }}
+            />
+          </Container>
+        </Container>
+
         <div className="row align-items-center">
           <div className="col mt--2">
             <DropDown
