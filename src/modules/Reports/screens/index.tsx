@@ -441,14 +441,14 @@ function Reports() {
         {reportsType === "salary_basic" &&
           <>  {
             misReport && misReport.data && misReport?.data.length > 0 ?
-              <SalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              <SalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
               : <NoRecordFound />
           }</>
         }
         {reportsType === "salary_breakdown" &&
           <>  {
             misReport && misReport.data && misReport?.data?.length > 0 ?
-              <ConsolidatedSalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={shiftSelectedDesignation} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              <ConsolidatedSalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} endDate={logRange.dataTo} startDate={logRange.dateFrom}  />
               : <NoRecordFound />
           }</>
         }
