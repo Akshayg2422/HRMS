@@ -1,4 +1,5 @@
 import { CommonTable, NoRecordFound } from '@components';
+import { getMisReport } from '../../../../store/employee/actions';
 import React, { useMemo } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -47,15 +48,15 @@ function SalaryReport({ data, department, reportType, customrange, designation }
             selected_date_to: customrange?.dataTo,
             page_number: pageNumber,
         };
-        // dispatch(getMisReport({
-        //     params,
-        //     onSuccess: (success: any) => () => {
+        dispatch(getMisReport({
+            params,
+            onSuccess: (success: any) => () => {
 
-        //     },
-        //     onError: (error: any) => () => {
+            },
+            onError: (error: any) => () => {
 
-        //     }
-        // }));
+            }
+        }));
     })
 
 
@@ -67,11 +68,11 @@ function SalaryReport({ data, department, reportType, customrange, designation }
                 "Branch": el.branch,
                 "Total Days": el?.break_down?.total,
                 "Payable Days": el?.break_down?.payable_days,
-                "LOP Days": el?.break_down?.lop_days,
-                "Gross Salary":el?.salary_till_date?.gross_pay,
-                "Net Salary": el?.salary_till_date?.gross_pay,
-                "LOP": el?.salary_till_date?.lop_pay_till_date,
-                "Total Payable": el?.salary_till_date?.pay_till_date
+                "LOP Days": el?.break_down?.lop_days ? el?.break_down?.lop_days : '-',
+                "Gross Salary": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay :"-",
+                "Net Salary": el?.salary_till_date?.net_salary ? el?.salary_till_date?.net_salary : "-",
+                "LOP": el?.salary_till_date?.lop_pay_till_date ? el?.salary_till_date?.lop_pay_till_date : "-",
+                "Total Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.pay_till_date : "-"
             };
         });
     };

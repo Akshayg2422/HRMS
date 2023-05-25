@@ -14,13 +14,12 @@ type LogReportsProps = {
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
     designation: string
-    attendanceType: any
     startDate: string
     endDate: string
 };
 
 
-function ConsolidatedSalaryReport({ data, department, reportType, customrange, designation, attendanceType, startDate, endDate }: LogReportsProps) {
+function ConsolidatedSalaryReport({ data, department, reportType, customrange, designation, startDate, endDate }: LogReportsProps) {
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -38,7 +37,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
     const getReports = ((pageNumber: number) => {
         const params = {
             report_type: reportType,
-            ...(reportType === "log" ? { attendance_type: attendanceType } : { attendance_type: -1 }),
+            attendance_type: -1,
             ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
             designation_id: designation,
             department_id: department,
@@ -79,13 +78,15 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
             return {
                 employee: el.name,
                 designation: el.designation,
-                "Branch":el.branch,
-                "working Days": 21,
+                "Branch": el.branch,
                 "Total Days": el?.break_down?.total,
-                "Billable Days": el?.break_down?.payable_days,
+                "Payable Days": el?.break_down?.payable_days,
+                "LOP Days": el?.break_down?.lop_days,
+                "Gross Salary": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay : '-',
                 "Allowance": renderNormalizer(AllowancesNormalizer(el?.salary_till_date?.calculated_pay), true),
                 "Deduction": renderNormalizer(deductionNormalizer(el?.salary_till_date?.calculated_pay), false),
-                "Net Salary": el?.salary_till_date?.gross_pay
+                "Net Salary": el?.salary_till_date?.net_salary ? el?.salary_till_date?.net_salary : '-',
+                "Total Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.pay_till_date : '-'
             };
         });
     };
@@ -114,14 +115,14 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
 
 
     const renderNormalizer = (data: any, status: any) => {
-        const item = data && data[0]
+        const item = data && data.length > 0 && data[0]
         const convertedData = Object.entries(item).map(([key, value]) => ({
             key: key,
             value: value
         }));
         return (
             <div style={{ flexDirection: 'column' }}>
-                {convertedData && convertedData.length > 0 && convertedData.map((el: any) => {
+                {convertedData && convertedData.length > 0 ? convertedData.map((el: any) => {
                     return (
                         <>
                             {el.value !== 0 && <th scope="col">
@@ -133,7 +134,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
                         </>
                     )
                 })
-                }
+                    : <div className='font-weight-normal mt-2 text-center'>{"-"}</div>}
             </div >
         )
     }
