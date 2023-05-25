@@ -433,7 +433,6 @@ const CreateShiftGroup = () => {
                             <DropDown
                                 label={t('designation')}
                                 placeholder={t('selectDesignation')}
-                                showArrow={false}
                                 isDisabled={true}
                                 data={designationDropdownData}
                                 value={designationId}
@@ -446,15 +445,15 @@ const CreateShiftGroup = () => {
                             <Primary text={selectedShiftGroupDetails ? t('update') : t('submit')} onClick={() => { onSubmitAddShift() }}
                             ></Primary>
                         </div>
-
-                        {isShowManageEmpOnEdit && (
-                            <h2>{'Assign shift Employees'}</h2>
-                        )}
-
                     </Container>}
-
+                </Container>
+                <Container additionClass='ml-4'>
+                    {isShowManageEmpOnEdit && (
+                        <h2>{'Assign shift Employees'}</h2>
+                    )}
                 </Container>
             </div>
+
             <Container additionClass={'row '}>
 
                 {/**
