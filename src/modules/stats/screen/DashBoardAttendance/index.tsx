@@ -38,6 +38,7 @@ import {
   dropDownValueCheckByEvent,
   dropDownValueCheck,
   INITIAL_PAGE,
+  showApprovedBy,
 } from "@utils";
 import { Today, ThisWeek, ThisMonth, LastMonth, LastWeek } from "@utils";
 import { Icons } from "@assets";
@@ -168,8 +169,11 @@ const DashBoardAttendance = ({ }) => {
     });
     setMarkAsPresentModel(!markAsPresentModel);
   }
+
+
   const normalizedEmployee = (data: any) => {
     return data.map((el: any) => {
+
       return {
         name: el.name,
         "Mobile Number": el.mobile_number,
@@ -193,7 +197,11 @@ const DashBoardAttendance = ({ }) => {
           color: fontColor(el.per_day_details?.day_status_type)
         }}
           onClick={(e) => { handlePresentModified(e, el) }}
-        >{el.per_day_details ? el.per_day_details.day_status : "-"}</div>,
+        >{el.per_day_details ? el.per_day_details.day_status : "-"}{showApprovedBy(el?.per_day_details?.day_status_type) ? <div className="text-xs" style={{ color: 'black', fontWeight: 'lighter', }}>
+          {el?.approved_by !== null ? `${`By - ${el?.approved_by}`}` : ""}
+        </div> : <></>}</div>,
+
+
         'Modify': <>{showAdminModify(el?.per_day_details?.day_status_type) ?
           <Secondary text={t("modify")} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, el) }} />
           : '-'}</>
@@ -637,7 +645,7 @@ const DashBoardAttendance = ({ }) => {
         <Container additionClass={'ml-3'}><span>
           {t("approver")}
           {":"}&nbsp;&nbsp;
-          <span className="text-black">{presentModifiedDetails?.per_day_details?.approved_by}</span>
+          <span className="text-black">{presentModifiedDetails?.approved_by}</span>
         </span>
           <br />
           <span>

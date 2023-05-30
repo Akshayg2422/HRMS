@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   validateBasicSalary
 } from "@utils";
-import { addEmployeeSalaryDefinition, getAllowanceGroups, getCompanyDeductions, getEmployeeSalaryDefinition, isEditEmployeeSalaryDefinition } from '../../../../store/Payroll/actions';
+import { addCompanyDeduction, addEmployeeSalaryDefinition, getAllowanceGroups, getCompanyDeductions, getEmployeeSalaryDefinition, isEditEmployeeSalaryDefinition } from '../../../../store/Payroll/actions';
 import { Icons } from '@assets';
 import { log } from 'console';
 
@@ -39,8 +39,11 @@ function SalaryBreakDown() {
   const [selectedDefinitionEditData, setSelectedDefinitionEditData] = useState<any>([])
   const [isDisablePayrollView, setIsDisablePayrollView] = useState(false)
   const [deductionsData, setDeductionsData] = useState<any>([])
+  const [deductionsDropDownData, setDeductionsDropDownData] = useState<any>([])
+
   const [autoDebitTds, setAutoDebitTds] = useState(false)
   const [autoDebitPf, setAutoDebitPf] = useState(false)
+  const [edit, setEdit] = useState(false)
 
 
   const { allowanceGroupsList, companyDeductionsList, selectedEmployeeDetails, isEditSalary } = useSelector(
@@ -88,7 +91,6 @@ function SalaryBreakDown() {
     dispatch(getAllowanceGroups({
       params,
       onSuccess: (success: any) => () => {
-
       },
       onError: (error: any) => () => {
 
@@ -106,6 +108,9 @@ function SalaryBreakDown() {
     dispatch(getCompanyDeductions({
       params,
       onSuccess: (success: any) => () => {
+        const filteredDeductions = success && success.length > 0 && success?.filter((it: any) => it.type !== "PF")
+        setDeductionsDropDownData(filteredDeductions)
+
       },
       onError: (error: any) => () => {
 
@@ -114,7 +119,6 @@ function SalaryBreakDown() {
   }
 
   const getEmployeeSalaryDefinitionDetails = () => {
-
     const params = {
       employee_id: selectedEmployeeDetails?.id
     }
@@ -123,6 +127,7 @@ function SalaryBreakDown() {
       params,
       onSuccess: (success: any) => () => {
         prefillSalaryDefinitions(success?.details)
+
       },
       onError: (error: any) => () => {
         if (!error.success) {
@@ -133,7 +138,6 @@ function SalaryBreakDown() {
   }
 
   const prefillSalaryDefinitions = (salaryDetails: any) => {
-
     setEditSalaryDefinitionId(salaryDetails?.id)
     setAnnualCTC(salaryDetails.ctc)
     let annualCtc: any = salaryDetails.ctc
@@ -141,14 +145,14 @@ function SalaryBreakDown() {
     let annualCtcPercentage = 1 * annualCtc
     setMinimumAmount(halfOfTheAnnual)
     setMaximumAmount(annualCtcPercentage)
-    setAutoDebitPf(salaryDetails?.auto_debit_pf)
-    setAutoDebitTds(salaryDetails?.auto_debit_tds)
+    setAutoDebitPf(salaryDetails?.base_configuration?.auto_calculate_pf)
+    setAutoDebitTds(salaryDetails?.base_configuration?.auto_calculate_tds)
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
     const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, type: el.is_percent ? "1" : "2", error: '' }))
     setSelectedDefinitionEditData(newKeyAddedArray)
     setSelectedDeductions(newKeyAddedArray)
-
+    setEdit(true)
   }
 
   const onTotalCalculator = () => {
@@ -198,7 +202,7 @@ function SalaryBreakDown() {
 
   const onDeductionDropdownChangeHandler = (event: string) => {
     const filteredDeduction = companyDeductionsList?.filter((item: any) => event === item.id)
-    const newArr = filteredDeduction?.map((el: any) => ({ ...el, deduction_id: el.id, percent: '', amount: '', is_percent: false, type: "1", error: '' }))
+    const newArr = filteredDeduction?.map((el: any) => ({ ...el, percent: '', amount: '', is_percent: false, type: "2", error: '' }))
     setDeductionsData([...deductionsData, ...newArr])
     setSelectedDeductions([...selectedDeductions, ...newArr])
   }
@@ -207,7 +211,9 @@ function SalaryBreakDown() {
   const onDeleteAllowence = (item: any) => {
     const filteredPeople = selectedDeductions?.filter((it: any) => it.id !== item.id)
     setSelectedDeductions(filteredPeople)
-
+    if (item?.name) {
+      setAutoDebitPf(false)
+    }
   }
 
   const onChangeHandler = ((index: number, event: any, minLimit: string | number, maxLimit: string | number) => {
@@ -282,6 +288,7 @@ function SalaryBreakDown() {
     return status
   }
 
+
   const modifiedApiKeys = () => {
 
     const editData = selectedDefinitionEditData.map((el: any) => {
@@ -322,15 +329,15 @@ function SalaryBreakDown() {
       base_salary_percent: basicSalary,
       employee_id: selectedEmployeeDetails.id,
       calendar_year: calendarYear,
-      auto_debit_pf:autoDebitPf,
-      auto_debit_tds:autoDebitTds,
+      auto_calculate_pf: autoDebitPf,
+      auto_calculate_tds: autoDebitTds,
       allowance_break_down_group_id: allowanceGroup,
       deductions_group_ids: isEditSalary ? modifiedApiKeys() : filteredApiKeys ? filteredApiKeys : [],
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
 
-    if (validatePostParams()) {
 
+    if (validatePostParams()) {
       dispatch(addEmployeeSalaryDefinition({
         params,
         onSuccess: (success: any) => () => {
@@ -345,6 +352,96 @@ function SalaryBreakDown() {
 
   }
   const isPercentageExist = selectedDeductions && selectedDeductions?.some((item: any) => item.type === "1")
+
+  const onDeductionAdd = () => {
+    const params = {
+      name: 'PF',
+      hint: '',
+      calendar_year: calendarYear,
+      min_limit: -1,
+      max_limit: -1,
+      type: 'PF'
+    }
+    dispatch(addCompanyDeduction({
+      params,
+      onSuccess: (success: any) => () => {
+        getCompanyDeductionsList()
+      },
+      onError: (error: any) => () => {
+      }
+    }));
+  }
+
+  //   if(isPfExist)
+  //   onDeductionDropdownChangeHandler(isPfExist[0].id)
+  // } else if(isPfExist && isPfExist.length < 0) {
+  //   onDeductionAdd(status)
+
+  // const addDebitPfObj = (status: any) => {
+  //   console.log("==========>", status);
+  //   console.log("=======companyDeductionsList=====>", companyDeductionsList);
+  //   let isPfExist = companyDeductionsList && companyDeductionsList.length > 0 && companyDeductionsList.some((el: any) => el?.type === 'PF')
+  //   const pfId = companyDeductionsList.find((el: any) => el?.type === 'PF')
+  //   if (status) {
+  //     if (isPfExist) {
+  //       onDeductionDropdownChangeHandler(pfId.id)
+  //     } else {
+  //       onDeductionAdd(status)
+  //     }
+  //   } else if (status === false) {
+  //     setAutoDebitPf(false)
+  //     onDeleteAllowence(pfId.id)
+  //   }
+  // }
+
+
+  const pfIsExists = () => {
+    let id: any = ''
+    companyDeductionsList && companyDeductionsList.length > 0 && companyDeductionsList.filter((el: any) => {
+      if (el.type === 'PF') {
+        id = el
+      }
+    })
+    return id
+  }
+
+  useEffect(() => {
+    if (autoDebitPf) {
+      onHandleDebitPf(autoDebitPf)
+    }
+  }, [companyDeductionsList])
+
+  console.log("=======>", selectedDefinitionEditData);
+
+  const onHandleDebitPf = (status: any) => {
+    const isEditPfExists = selectedDefinitionEditData && selectedDefinitionEditData.length > 0 && selectedDefinitionEditData.some((el: any) => el.name === 'PF')
+    console.log("========>", isEditPfExists);
+
+    if (!edit) {
+      setAutoDebitPf(status)
+      if (status) {
+        if (pfIsExists()) {
+          onDeductionDropdownChangeHandler(pfIsExists()?.id)
+        } else {
+          onDeductionAdd()
+        }
+      } else if (!status) {
+        onDeleteAllowence(pfIsExists())
+      }
+    } else if (edit && !isEditPfExists) {
+      setAutoDebitPf(status)
+      if (status) {
+        if (pfIsExists()) {
+          onDeductionDropdownChangeHandler(pfIsExists()?.id)
+        } else {
+          onDeductionAdd()
+        }
+      } else if (!status) {
+        onDeleteAllowence(pfIsExists())
+      }
+    }
+  }
+
 
 
   return (
@@ -384,29 +481,6 @@ function SalaryBreakDown() {
           />
           <h5 className='mt--3 text-right' style={{ color: color }}>{t('MinimumCTC')}</h5>
         </Container>
-        <Container additionClass='row my-4'>
-          <Container additionClass='col-auto'>
-            <CheckBox
-              id={'1'}
-              text={"Auto Debit TDS"}
-              checked={autoDebitTds}
-              onChange={(e) => {
-                setAutoDebitTds(e.target.checked)
-              }}
-            />
-          </Container>
-          <Container additionClass='col-auto'>
-            <CheckBox
-              id={'2'}
-              text={"Auto Debit PF"}
-              checked={autoDebitPf}
-              onChange={(e) => {
-                setAutoDebitPf(e.target.checked)
-              }}
-            />
-          </Container>
-        </Container>
-
         <div className="row align-items-center">
           <div className="col mt--2">
             <DropDown
@@ -428,6 +502,34 @@ function SalaryBreakDown() {
         <div className="mb-3">
           <h3>{'Deduction breakdown'}</h3>
         </div>
+        <Container additionClass='my-4'>
+          <Container additionClass=''>
+            <CheckBox
+              id={'1'}
+              text={"Auto Debit TDS"}
+              checked={autoDebitTds}
+              onChange={(e) => {
+                if (!isEditSalary) {
+                  setAutoDebitTds(e.target.checked)
+                }
+              }}
+            />
+          </Container>
+          <Container additionClass='my-3'>
+            <CheckBox
+              id={'2'}
+              text={"Debit PF"}
+              checked={autoDebitPf}
+              onChange={(e) => {
+                // setAutoDebitPf(e.target.checked)
+                onHandleDebitPf(e.target.checked)
+
+                // addDebitPfObj(e.target.checked)
+              }}
+            />
+          </Container>
+        </Container>
+
 
         {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
 
@@ -447,7 +549,7 @@ function SalaryBreakDown() {
               </Container>
               <Container additionClass={'col-xl-3 col col-sm-0'}>
                 <Container additionClass='row mt-4'>
-                  <DropDown
+                  {/* <DropDown
                     additionClass='col-xl-7'
                     data={ALLOWANCE_TYPE}
                     placeholder={t('selectType')}
@@ -460,7 +562,7 @@ function SalaryBreakDown() {
                       updatePercentage[i].error = ''
                       setSelectedDeductions(updatePercentage)
                     }}
-                  />
+                  /> */}
                   <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
                     {!isEditData ?
                       <ImageView icon={Icons.Remove} onClick={() => {
@@ -506,7 +608,7 @@ function SalaryBreakDown() {
           <DropDown
             label={t("DeductionGroup")}
             placeholder={t("DeductionGroup")}
-            data={companyDeductionsList}
+            data={deductionsDropDownData}
             value={deduction}
             onChange={(e) => {
               setDeduction(e.target.value)

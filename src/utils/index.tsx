@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF, DAY_STATUS_PRESENT_MODIFIED
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -124,7 +124,7 @@ const showAdminModify = (type: number | undefined) => {
     case DAY_STATUS_ABSENT:
     case DAY_STATUS_LEAVE:
     case DAY_STATUS_ALERT:
-    // case DAY_STATUS_WEEK_OFF:
+      // case DAY_STATUS_WEEK_OFF:
       showModify = true
       break;
     default:
@@ -133,6 +133,22 @@ const showAdminModify = (type: number | undefined) => {
   }
   return showModify;
 }
+
+const showApprovedBy = (type: number | undefined) => {
+  let showApprover = false
+  switch (type) {
+    case DAY_STATUS_LEAVE:
+    case DAY_STATUS_PRESENT_MODIFIED:
+      showApprover = true
+      break;
+    default:
+      showApprover = false
+      break;
+  }
+  return showApprover;
+}
+
+
 
 
 const getObjectFromArrayByKey = (array: any, key: string, value: string) => {
@@ -363,8 +379,8 @@ const dateFormate = (date: string) => {
     day: "numeric",
     year: "numeric",
   });
-return formattedDate
- // Output: "April 30, 2023"
+  return formattedDate
+  // Output: "April 30, 2023"
 }
 
 
@@ -444,5 +460,6 @@ export {
   COMMON_HEADER,
   mergeTimeSlots,
   INITIAL_PAGE,
-  dateFormate
+  dateFormate,
+  showApprovedBy
 }

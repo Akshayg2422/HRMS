@@ -72,6 +72,7 @@ const Rejected = ({ search }: any) => {
           // "Leave Types": el.leave_type,
           Reason: el.reason,
           Branch: el.branch_name,
+          "Rejected By": el.approved_by !== null ? el.approved_by : "-",
         };
       })
     );

@@ -17,8 +17,9 @@ function DeductionGroupList() {
     let dispatch = useDispatch();
     const [addAllowanceModel, setAddAllowanceModel] = useState(false)
     const [selectAllowanceModel, setSelectAddAllowanceModel] = useState(false)
-    const [defaultState, setDefaultState] = useState([{ id: 1, name: "Muthu" }, { id: 2, name: "Iniyan" }, { id: 3, name: "Puma" }])
     const [selectedAllowences, setSelectedAllowences] = useState<any>([])
+    const [deductionsData, setDeductionsData] = useState<any>([])
+
 
     const { companyDeductionsList, numOfPages, currentPage } = useSelector(
         (state: any) => state.PayrollReducer
@@ -43,6 +44,8 @@ function DeductionGroupList() {
         dispatch(getCompanyDeductionsPaginated({
             params,
             onSuccess: (success: any) => () => {
+                const filteredDeductions = success && success?.data.length > 0 && success?.data?.filter((it: any) => it.type !== "PF")
+                setDeductionsData(filteredDeductions)
             },
             onError: (error: any) => () => {
 
@@ -99,7 +102,7 @@ function DeductionGroupList() {
                     }}
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
-                    displayDataSet={normalizedAllowanceList(companyDeductionsList?.data)}
+                    displayDataSet={normalizedAllowanceList(deductionsData)}
                     tableOnClick={(e, index, item) => {
 
                     }}

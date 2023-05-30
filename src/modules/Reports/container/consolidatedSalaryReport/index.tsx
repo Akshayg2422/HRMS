@@ -129,7 +129,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
                                 <div>
                                     {el?.key}
                                 </div>
-                                <div className={`font-weight-normal mt-2 text-center ${status ? 'text-success' : 'text-danger'}`}>{el?.value.toFixed(0)}</div>
+                                <div className={`font-weight-normal mt-2 text-center ${status ? 'text-success' : 'text-danger'}`}>{el?.value}</div>
                             </th>}
                         </>
                     )

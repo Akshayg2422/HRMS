@@ -1,6 +1,6 @@
 import { CommonTable, Container, InputText, Modal, NoRecordFound, Primary, ScreenContainer, Secondary, Sort, Table, TableWrapper } from '@components';
 import { applyLeave, getCheckInDetailedLogPerDay, getEmployeesCheckInLogs, postAdminModifyLog } from '../../../../../../store/employee/actions';
-import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showToast, validateDefault } from '@utils';
+import { getDisplayTimeFromMoment, getMomentObjFromServer, showAdminModify, showApprovedBy, showToast, validateDefault } from '@utils';
 import moment from 'moment';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -130,7 +130,9 @@ const LogView = () => {
                     color: fontColor(el.day_status_type),
                 }}
                     onClick={(e) => { handlePresentModified(e, el) }}
-                >{el.day_status}</small></>,
+                >{el.day_status}{showApprovedBy(el?.day_status_type) ?
+                    <div className="text-small" style={{ color: 'black', fontWeight: 'lighter', }}>{`By - ${el?.approved_by}`}</div>
+                    : <></>}</small></>,
 
                 "": <>
                     {<small className="mb-0 col" >{showAdminModify(el?.day_status_type) ?
