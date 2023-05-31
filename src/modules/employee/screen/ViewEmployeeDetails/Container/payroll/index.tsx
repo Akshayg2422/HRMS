@@ -82,7 +82,7 @@ function PayrollView() {
   const [salaryCriteria, setSalaryCriteria] = useState<any>()
   const [allowanceCalculatedPay, setAllowanceCalculatedPay] = useState<any>()
   const [deductionsCalculatedPay, setDeductionsCalculatedPay] = useState<any>()
-  const [totalEarnings, setTotalEarnings] = useState('0')
+  const [totalEarnings, setTotalEarnings] = useState<any>(0)
 
 
 
@@ -386,7 +386,7 @@ function PayrollView() {
                 return (
                   <div className='col'>
                     {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" &&
-                      <FormTypography title={el?.title} subTitle={el?.value} />
+                      <FormTypography title={el?.title} subTitle={el?.value.toFixed(0)} />
                     }
                   </div>
                 )

@@ -320,6 +320,7 @@ type Location = {
   reason: string;
   id: string;
   employee_id: string;
+  approved_by: string;
 };
 
 type LocationTableProps = {
@@ -362,7 +363,7 @@ const LocationTable = ({
                   {/* <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td> */}
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}</td>
+                  <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}<br />{item.status_code !== -1 ? <small>{`${item.approved_by !== null ? `By -${item.approved_by}` : ''}`}</small> : <></>}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>
                     {item.status_code === -1 ? (
                       <span

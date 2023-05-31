@@ -5,7 +5,7 @@ import { Card, CommonTable, ImageView, NoRecordFound, Secondary } from '@compone
 import { Icons } from '@assets';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
-import { downloadFile } from '@utils';
+import { downloadFile, showApprovedBy } from '@utils';
 
 type LogReportsProps = {
     data?: Array<any>;
@@ -203,6 +203,7 @@ const LocationTable = ({
             else {
                 let startTime = eachObject[key as keyof object]?.start_time
                 let endTime = eachObject[key as keyof object]?.end_time
+                let showApprover = showApprovedBy(eachObject[key as keyof object]?.attendance_status_code)
                 return <td className='text-center' style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
                     {eachObject[key as keyof object] ? <div className="column">
                         {!startTime && !endTime ? <h6>{"-"}</h6> : <>
@@ -214,7 +215,7 @@ const LocationTable = ({
                         </div> */}
                         {<h6 className="text-center" style={{
                             color: getTextColor(eachObject[key as keyof object]?.attendance_status_code)
-                        }}>{eachObject[key as keyof object]?.day_status}</h6>}
+                        }}>{eachObject[key as keyof object]?.day_status}{showApprover && <>{eachObject[key as keyof object]?.approved_by ? <div>{`By - ${eachObject[key as keyof object]?.approved_by}`}</div> : <div>{'-'}</div>}</>}</h6>}
                         {/* {eachObject[key as keyof object]?.attendance_status_code === 6 ? <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> : null} */}
                     </div> : <h6 className='ml-2'>{'N/A'}</h6>}
                 </div></td>
