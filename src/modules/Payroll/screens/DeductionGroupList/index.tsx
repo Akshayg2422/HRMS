@@ -67,7 +67,9 @@ function DeductionGroupList() {
     }
 
     const normalizedAllowanceList = (data: any) => {
-        return data.map((el: any, index: number) => {
+        console.log("=====>", data);
+
+        return data && data.length > 0 && data.map((el: any, index: number) => {
             return {
                 name: el.name,
                 "": <CommonDropdownMenu
@@ -90,7 +92,7 @@ function DeductionGroupList() {
 
     const memoizedTable = useMemo(() => {
         return <>
-            {companyDeductionsList?.data && companyDeductionsList?.data?.length > 0 ? (
+            {deductionsData && deductionsData.length > 0 ? (
                 <CommonTable
                     // noHeader
                     card={false}
@@ -109,7 +111,7 @@ function DeductionGroupList() {
                 />
             ) : <NoRecordFound />}
         </>
-    }, [companyDeductionsList?.data])
+    }, [deductionsData])
 
 
     return (
