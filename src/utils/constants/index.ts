@@ -405,6 +405,9 @@ export const DAY_STATUS_LEAVE = 9
 export const DAY_STATUS_ABSENT = 6
 export const DAY_STATUS_ALERT = 5
 export const DAY_STATUS_WEEK_OFF = 11
+export const DAY_STATUS_PRESENT_MODIFIED = 10
+
+
 
 
 

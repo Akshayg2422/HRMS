@@ -21,7 +21,6 @@ function AddDeduction() {
     const [maximumLimit, setMaximumLimit] = useState('')
     const [minimumLimit, setMinimumLimit] = useState('')
     const calendarYear = '2023-12-31'
-    console.log("selectedDeductionDetails", selectedDeductionDetails);
 
 
     useEffect(() => {
@@ -50,11 +49,11 @@ function AddDeduction() {
 
         const params = {
             name: name,
-            hint: hint ? hint : name,
+            hint: hint,
             calendar_year: calendarYear,
             min_limit: minimumLimit ? minimumLimit : -1,
             max_limit: maximumLimit ? maximumLimit : -1,
-            ...(selectedDeductionDetails && selectedDeductionDetails && { id: selectedDeductionDetails?.id })
+            ...(selectedDeductionDetails && selectedDeductionDetails && { id: selectedDeductionDetails?.id }),
         }
 
         if (validatePostParams()) {

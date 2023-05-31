@@ -17,7 +17,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Approved = ({search}:any) => {
+const Approved = ({ search }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
@@ -33,7 +33,7 @@ const Approved = ({search}:any) => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: 1,
-      q: search,  
+      q: search,
 
     };
     dispatch(
@@ -70,6 +70,7 @@ const Approved = ({search}:any) => {
           "Leave Types": el.leave_type,
           Reason: el.reason,
           Branch: el.branch_name,
+          "Approved By": el.approved_by !== null ? el.approved_by : "-",
         };
       })
     );

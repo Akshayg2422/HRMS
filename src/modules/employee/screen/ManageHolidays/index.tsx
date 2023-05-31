@@ -118,8 +118,6 @@ const ManageHolidays = () => {
         <Container additionClass="col-xl-12">
           <ChooseBranchFromHierarchical showCheckBox={false} />
         </Container>
-
-
         <InputText
           col="col-xl-12"
           label={t("title")}
@@ -135,7 +133,7 @@ const ManageHolidays = () => {
           <DatePicker
             title={t("pleaseSelect")}
             icon={Icons.Calendar}
-            minDate={Today}
+            // minDate={Today}
             iconPosition={"append"}
             name={'date'}
             value={holidayEvents.date}

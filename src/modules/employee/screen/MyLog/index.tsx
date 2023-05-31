@@ -31,6 +31,7 @@ import {
   useNav,
   validateDefault,
   showAdminModify,
+  showApprovedBy,
 } from "@utils";
 
 type CheckInLog = {
@@ -120,7 +121,7 @@ function MyLog() {
 
 
   const normalizedEmployeeLog = (data: any) => {
-    return data.slice(0).reverse().map((el: CheckInLog) => {
+    return data.slice(0).reverse().map((el: any) => {
       return {
         date: el.date,
         in: el.start_time
@@ -135,7 +136,7 @@ function MyLog() {
           color: fontColor(el.day_status_type),
         }}
         //  onClick={(e) => { handlePresentModified(e, item) }}
-        >{el.day_status}</span>,
+        >{el.day_status}{showApprovedBy(el?.day_status_type) ? <div className="text-xs" style={{color:'black',fontWeight: 'lighter',}}>{`By - ${el?.approved_by}`}</div> : <></>}</span>,
         "Request": <>{showAdminModify(el.day_status_type) ?
           <Secondary text={'Request'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
           : '-'}</>
