@@ -136,7 +136,7 @@ function MyLog() {
           color: fontColor(el.day_status_type),
         }}
         //  onClick={(e) => { handlePresentModified(e, item) }}
-        >{el.day_status}{showApprovedBy(el?.day_status_type) ? <div className="text-xs" style={{color:'black',fontWeight: 'lighter',}}>{`By - ${el?.approved_by}`}</div> : <></>}</span>,
+        >{el.day_status}{el?.approved_by && showApprovedBy(el?.day_status_type) ? <div className="text-xs" style={{color:'black',fontWeight: 'lighter',}}>{`By - ${el?.approved_by}`}</div> : <></>}</span>,
         "Request": <>{showAdminModify(el.day_status_type) ?
           <Secondary text={'Request'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => onModify(e, el)} />
           : '-'}</>
