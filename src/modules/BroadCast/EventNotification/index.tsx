@@ -103,7 +103,7 @@ function EventNotification() {
                                 <Container additionClass={"col"}>
                                     <Card>
                                         <Container additionClass={"row "} >
-                                            <div className="h1 col">
+                                            <div className="h2 col">
                                                 {el.title}
                                             </div>
 

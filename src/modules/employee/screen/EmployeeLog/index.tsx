@@ -441,7 +441,7 @@ function EmployeeLog() {
                         <small className="mb-0 p-0 col" style={{
                           cursor: item.day_status_type === 10 ? 'pointer' : '', fontWeight: 'bold',
                           color: fontColor(item.day_status_type),
-                        }} onClick={(e) => { handlePresentModified(e, item) }}>{item.day_status}{showApprovedBy(item?.day_status_type) ?
+                        }} onClick={(e) => { handlePresentModified(e, item) }}>{item.day_status}{item?.approved_by && showApprovedBy(item?.day_status_type) ?
                           <div className="text-xs" style={{ color: 'black', fontWeight: 'lighter', }}>{`By - ${item?.approved_by}`}</div>
                           : <></>}</small>
 

@@ -80,7 +80,8 @@ function MyLeaves() {
         datefrom: el.date_from,
         dateto: el.date_to,
         reason: el.reason,
-        Status: el.status_text,
+        Status: <div>{el.status_text}<br />{el.status_code !== -1 ? <small>{`${el.approved_by !== null ? `By -${el.approved_by}` : ''}`}</small> : <></>}</div>
+        ,
       };
     });
   };
@@ -142,9 +143,9 @@ function MyLeaves() {
         </div>
         <h1 className="ml-4">{t("leaveList")}</h1>
         <>
-         {
-          memoizedTable
-         }
+          {
+            memoizedTable
+          }
         </>
       </Container>
     </TableWrapper>

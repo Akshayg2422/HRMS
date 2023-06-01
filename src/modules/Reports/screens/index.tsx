@@ -8,7 +8,6 @@ import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisRepo
 import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, SalaryReport, ShiftReports } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
-import moment from 'moment'
 
 
 function Reports() {
@@ -49,7 +48,7 @@ function Reports() {
   const [selectedAttendanceType, setSelectedAttendanceType] = useState(ATTENDANCE_TYPE[0].type)
   const [initialRender, setInitialRender] = useState(true)
   const [customRange, setCustomRange] = useState({
-    dateFrom: Today,
+    dateFrom: ThisMonth,
     dataTo: Today,
   });
   const [logRange, setLogRange] = useState({
@@ -74,13 +73,10 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
-    if ((reportsType === 'salary_basic') || (reportsType === 'salary_breakdown')) {
-      setCustomRange({ ...customRange, dateFrom: ThisMonth });
-    } else {
-      setCustomRange({ ...customRange, dateFrom: Today });
-    }
+    // setDate(reportsType)
     reportsType !== 'shift' && getReports(INITIAL_PAGE)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
+
 
 
   useEffect(() => {
@@ -198,18 +194,19 @@ function Reports() {
     }
   })
 
-  useEffect(() => {
-    if (customRange.dateFrom && customRange.dataTo) {
-      const startOfMonth = moment(customRange.dateFrom).startOf('month').format('YYYY-MM-DD');
-      const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
+  // const setDate = (type: any) => {
 
-      if (customRange.dataTo > endOfMonth) {
-        setCustomRange({ ...customRange, dataTo: endOfMonth });
-      }
-
-    }
-
-  }, [customRange.dateFrom, customRange.dataTo])
+  //   let changeDate = customRange
+  //   let dateFrom = Today
+  //   if ((reportsType == 'salary_basic')) {
+  //     changeDate.dateFrom = ThisMonth
+  //   } else if (reportsType === 'salary_breakdown') {
+  //     changeDate.dateFrom = ThisMonth
+  //   } else {
+  //     changeDate.dateFrom = Today
+  //   }
+  //   setCustomRange({ ...changeDate });
+  // }
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
@@ -448,7 +445,7 @@ function Reports() {
         {reportsType === "salary_breakdown" &&
           <>  {
             misReport && misReport.data && misReport?.data?.length > 0 ?
-              <ConsolidatedSalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} endDate={logRange.dataTo} startDate={logRange.dateFrom}  />
+              <ConsolidatedSalaryReport data={misReport.data} department={selectedDepartment} reportType={reportsType} customrange={customRange} designation={selectedDesignation} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
               : <NoRecordFound />
           }</>
         }

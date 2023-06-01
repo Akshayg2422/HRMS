@@ -411,11 +411,9 @@ function SalaryBreakDown() {
     }
   }, [companyDeductionsList])
 
-  console.log("=======>", selectedDefinitionEditData);
 
   const onHandleDebitPf = (status: any) => {
     const isEditPfExists = selectedDefinitionEditData && selectedDefinitionEditData.length > 0 && selectedDefinitionEditData.some((el: any) => el.name === 'PF')
-    console.log("========>", isEditPfExists);
 
     if (!edit) {
       setAutoDebitPf(status)
@@ -509,9 +507,7 @@ function SalaryBreakDown() {
               text={"Auto Debit TDS"}
               checked={autoDebitTds}
               onChange={(e) => {
-                if (!isEditSalary) {
                   setAutoDebitTds(e.target.checked)
-                }
               }}
             />
           </Container>
