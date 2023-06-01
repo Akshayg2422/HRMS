@@ -54,6 +54,9 @@ function SalaryBreakDown() {
     (state: any) => state.AuthReducer
   );
 
+  // dispatch(isEditEmployeeSalaryDefinition(!isEditSalary))
+
+
 
   useEffect(() => {
     isValidBasicSalary()
@@ -131,6 +134,7 @@ function SalaryBreakDown() {
       },
       onError: (error: any) => () => {
         if (!error.success) {
+          dispatch(isEditEmployeeSalaryDefinition(!isEditSalary))
           setIsDisablePayrollView(true)
         }
       }
@@ -372,28 +376,6 @@ function SalaryBreakDown() {
     }));
   }
 
-  //   if(isPfExist)
-  //   onDeductionDropdownChangeHandler(isPfExist[0].id)
-  // } else if(isPfExist && isPfExist.length < 0) {
-  //   onDeductionAdd(status)
-
-  // const addDebitPfObj = (status: any) => {
-  //   console.log("==========>", status);
-  //   console.log("=======companyDeductionsList=====>", companyDeductionsList);
-  //   let isPfExist = companyDeductionsList && companyDeductionsList.length > 0 && companyDeductionsList.some((el: any) => el?.type === 'PF')
-  //   const pfId = companyDeductionsList.find((el: any) => el?.type === 'PF')
-  //   if (status) {
-  //     if (isPfExist) {
-  //       onDeductionDropdownChangeHandler(pfId.id)
-  //     } else {
-  //       onDeductionAdd(status)
-  //     }
-  //   } else if (status === false) {
-  //     setAutoDebitPf(false)
-  //     onDeleteAllowence(pfId.id)
-  //   }
-  // }
-
 
   const pfIsExists = () => {
     let id: any = ''
@@ -500,14 +482,14 @@ function SalaryBreakDown() {
         <div className="mb-3">
           <h3>{'Deduction breakdown'}</h3>
         </div>
-        <Container additionClass='my-4'>
+        {/* <Container additionClass='my-4'>
           <Container additionClass=''>
             <CheckBox
               id={'1'}
               text={"Auto Debit TDS"}
               checked={autoDebitTds}
               onChange={(e) => {
-                  setAutoDebitTds(e.target.checked)
+                setAutoDebitTds(e.target.checked)
               }}
             />
           </Container>
@@ -524,8 +506,26 @@ function SalaryBreakDown() {
               }}
             />
           </Container>
-        </Container>
+        </Container> */}
+        <div className='my-3'>
+          <Container additionClass='d-flex'>
+            <td className="col-auto col-sm-0 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={autoDebitTds ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+             setAutoDebitTds(!autoDebitTds)
+            }} /></td>
+            <Container additionClass='col-auto col-sm-0 my-1'>
+              <h5>{"Auto Debit TDS"}</h5>
+            </Container>
 
+          </Container>
+          <Container additionClass='d-flex'>
+            <td className="col-auto col-sm-0 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={autoDebitPf ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+               onHandleDebitPf(!autoDebitPf)
+            }} /></td>
+            <Container additionClass='col-auto col-sm-0 my-1'>
+              <h5>{"Debit PF"}</h5>
+            </Container>
+          </Container>
+        </div>
 
         {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
 
