@@ -120,7 +120,7 @@ function BroadCast() {
                                     <Container additionClass={"d-flex justify-content-between"} >
                                         <Container>
                                             <div className="h2">
-                                                {el.title.toUpperCase()}
+                                                {el.title}
                                             </div>
                                         </Container>
                                         <Container additionClass='d-flex justify-content-between'>

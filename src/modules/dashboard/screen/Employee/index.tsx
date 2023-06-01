@@ -338,10 +338,17 @@ function EmployeeScreen() {
           paginationNumberClick={(currentPage) => {
             paginationHandler("current", currentPage);
           }}
-          
+
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
+          tableOnClick={(e, index, item) => {
+            const selectedItem = registeredEmployeesList[index]
+            dispatch(getSelectedEmployeeId(selectedItem.id));
+            dispatch(settingSelectedEmployeeDetails(selectedItem))
+            dispatch(employeeEdit(selectedItem.id))
+            goTo(navigation, ROUTE.ROUTE_VIEW_EMPLOYEE_DETAILS);
+          }}
         />
       ) : <NoRecordFound />}
     </>

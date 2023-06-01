@@ -115,12 +115,11 @@ function Notifications() {
                             <Card
                                 style={{ cursor: 'pointer' }}
                                 onClick={() => {
-                                    console.log("card clicked");
                                     handleRoute(el)
                                 }}>
                                 <Container additionClass={"d-flex justify-content-between"} >
                                     <Container>
-                                        <div className="h1">
+                                        <div className="h2">
                                             {el.title}
                                         </div>
                                     </Container>

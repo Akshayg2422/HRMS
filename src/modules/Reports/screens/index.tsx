@@ -48,7 +48,7 @@ function Reports() {
   const [selectedAttendanceType, setSelectedAttendanceType] = useState(ATTENDANCE_TYPE[0].type)
   const [initialRender, setInitialRender] = useState(true)
   const [customRange, setCustomRange] = useState({
-    dateFrom: Today,
+    dateFrom: ThisMonth,
     dataTo: Today,
   });
   const [logRange, setLogRange] = useState({
@@ -73,7 +73,7 @@ function Reports() {
   }, [enterPress])
 
   useEffect(() => {
-    setDate(reportsType)
+    // setDate(reportsType)
     reportsType !== 'shift' && getReports(INITIAL_PAGE)
   }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
@@ -194,19 +194,19 @@ function Reports() {
     }
   })
 
-  const setDate = (type: any) => {
+  // const setDate = (type: any) => {
 
-    let changeDate = customRange
-    let dateFrom = Today
-    if ((reportsType == 'salary_basic')) {
-      changeDate.dateFrom = ThisMonth
-    } else if (reportsType === 'salary_breakdown') {
-      changeDate.dateFrom = ThisMonth
-    } else {
-      changeDate.dateFrom = Today
-    }
-    setCustomRange({ ...changeDate });
-  }
+  //   let changeDate = customRange
+  //   let dateFrom = Today
+  //   if ((reportsType == 'salary_basic')) {
+  //     changeDate.dateFrom = ThisMonth
+  //   } else if (reportsType === 'salary_breakdown') {
+  //     changeDate.dateFrom = ThisMonth
+  //   } else {
+  //     changeDate.dateFrom = Today
+  //   }
+  //   setCustomRange({ ...changeDate });
+  // }
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
