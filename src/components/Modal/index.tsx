@@ -11,10 +11,11 @@ interface ModelProps {
   saveChange?: () => void;
   showModel?: boolean;
   footer?: boolean;
-  style?:any
+  style?: any
+  AdditionalClass?: string
 }
 
-const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChange, footer,style }: ModelProps) => {
+const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChange, footer, style,AdditionalClass }: ModelProps) => {
   const [modalShow, setModelShow] = useState<any>('');
   const [display, setDisplay] = useState('none')
 
@@ -47,7 +48,7 @@ const Modal = ({ children, title, size = 'modal-lg', toggle, showModel, saveChan
 
   return (
     <ReactModal
-      className={`modal-dialog-centered ${size} scroll-hidden`}
+      className={`modal-dialog-centered ${size}  ${AdditionalClass} scroll-hidden`}
       isOpen={modalShow}
       toggle={toggle}
       fade={false}
