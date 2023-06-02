@@ -420,8 +420,6 @@ function SalaryBreakDown() {
     }
   }
 
-
-
   return (
     <ScreenContainer>
       <Card>
@@ -480,31 +478,6 @@ function SalaryBreakDown() {
         <div className="mb-3">
           <h3>{'Deduction breakdown'}</h3>
         </div>
-        {/* <Container additionClass='my-4'>
-          <Container additionClass=''>
-            <CheckBox
-              id={'1'}
-              text={"Auto Debit TDS"}
-              checked={autoDebitTds}
-              onChange={(e) => {
-                setAutoDebitTds(e.target.checked)
-              }}
-            />
-          </Container>
-          <Container additionClass='my-3'>
-            <CheckBox
-              id={'2'}
-              text={"Debit PF"}
-              checked={autoDebitPf}
-              onChange={(e) => {
-                // setAutoDebitPf(e.target.checked)
-                onHandleDebitPf(e.target.checked)
-
-                // addDebitPfObj(e.target.checked)
-              }}
-            />
-          </Container>
-        </Container> */}
         <Container additionClass='row'>
           <Container additionClass='col-xl-6'>
             <div className='my-3'>
@@ -523,17 +496,58 @@ function SalaryBreakDown() {
                 <Container additionClass='col-auto col-sm-0 my-1'>
                   <h5>{"Debit PF"}</h5>
                 </Container>
+                <Container additionClass='col   ml-sm-0 ml-4'>
+                  {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
+                    const isEditData = selectedDefinitionEditData?.some((item: any) => item.deduction_id === el.deduction_id)
+                    let match = el?.deduction_id ? el?.deduction_id : el.id
+                    return (
+                      <>
+                        <Container additionClass='row'>
+                          {match === pfIsExists()?.id && (
+                            <>
+                              <Container additionClass={''}>
+                                <InputNumber
+                                  value={el.type == "1" ? el.percent : el.amount}
+                                  additionClass={'col-xl-4'}
+                                  onChange={(event: any) => {
+                                    onChangeHandler(i, event, el.min_limit, el.max_limit);
+                                  }}
+                                />
+
+                              </Container>
+                              <Container additionClass={'col-xl-3 col col-sm-0'}>
+                                <Container additionClass='row '>
+                                  <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
+                                    {!isEditData ?
+                                      <ImageView icon={Icons.Remove} onClick={() => {
+                                        onDeleteAllowence(el)
+                                      }} /> :
+                                      <></>
+                                    }
+                                  </td>
+                                </Container>
+                              </Container>
+                              <h6 className='text-danger mt--3'>{el.error}</h6>
+                            </>
+                          )}
+                        </Container>
+                      </>
+                    )
+                  })}
+                </Container>
               </Container>
             </div>
             <div className='mt--3  mb-2'>
               {deductionsDropDownData && deductionsDropDownData.length > 0 && deductionsDropDownData.map((element: any) => {
+
                 const isDeductionExist = selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.some((item: any) => {
                   let match = item?.deduction_id ? item?.deduction_id : item.id
                   return match === element?.id
                 })
+
                 return (
-                  <div>
-                    <Container additionClass='d-flex'>
+                  <div className='row'>
+                    <Container additionClass='d-flex col-auto'>
                       <td className="col-auto col-sm-0 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={isDeductionExist ? Icons.TickActive : Icons.TickDefault} onClick={() => {
                         if (!isDeductionExist) {
                           onDeductionDropdownChangeHandler(element?.id)
@@ -545,12 +559,53 @@ function SalaryBreakDown() {
                         <h5>{element?.name}</h5>
                       </Container>
                     </Container>
+                    <Container additionClass='col   ml-sm-0 ml-4'>
+                      {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
+
+                        const isEditData = selectedDefinitionEditData?.some((item: any) => item.deduction_id === el.deduction_id)
+                        let match = el?.deduction_id ? el?.deduction_id : el.id
+
+                        return (
+                          <>
+                            <Container additionClass='row'>
+                              {match === element.id && (
+                                <>
+                                  <Container additionClass={''}>
+                                    <InputNumber
+                                      value={el.type == "1" ? el.percent : el.amount}
+                                      additionClass={'col-xl-4'}
+                                      onChange={(event: any) => {
+                                        onChangeHandler(i, event, el.min_limit, el.max_limit);
+                                      }}
+                                    />
+
+                                  </Container>
+                                  <Container additionClass={'col-xl-3 col col-sm-0'}>
+                                    <Container additionClass='row '>
+                                      <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
+                                        {!isEditData ?
+                                          <ImageView icon={Icons.Remove} onClick={() => {
+                                            onDeleteAllowence(el)
+                                          }} /> :
+                                          <></>
+                                        }
+                                      </td>
+                                    </Container>
+                                  </Container>
+                                  <h6 className='text-danger mt--3'>{el.error}</h6>
+                                </>
+                              )}
+                            </Container>
+                          </>
+                        )
+                      })}
+                    </Container>
                   </div>
                 )
               })}
             </div>
           </Container>
-          <Container additionClass='col-xl-6 ml-sm-0 ml-4'>
+          {/* <Container additionClass='col-xl-6 ml-sm-0 ml-4'>
             {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
 
               const isEditData = selectedDefinitionEditData?.some((item: any) => item.deduction_id === el.deduction_id)
@@ -582,7 +637,7 @@ function SalaryBreakDown() {
                 </Container>
               )
             })}
-          </Container>
+          </Container> */}
         </Container>
         {/* {isPercentageExist && (
           <h5 className="font-weight-light" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{t('remaining')}<strong className="font-weight-bold" style={{ color: remaining < 0 ? "#FF5733" : "#000000" }}>{remaining + ' %'}</strong></h5>
