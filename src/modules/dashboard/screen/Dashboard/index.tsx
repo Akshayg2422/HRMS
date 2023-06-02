@@ -35,7 +35,6 @@ function Dashboard() {
   );
 
 
-
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
