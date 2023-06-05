@@ -54,6 +54,7 @@ function AddDeduction() {
             min_limit: minimumLimit ? minimumLimit : -1,
             max_limit: maximumLimit ? maximumLimit : -1,
             ...(selectedDeductionDetails && selectedDeductionDetails && { id: selectedDeductionDetails?.id }),
+            
         }
 
         if (validatePostParams()) {
