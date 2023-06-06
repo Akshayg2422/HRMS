@@ -296,7 +296,7 @@ function Navbar({
       <div className="navbar-inner">
         <Collapse navbar isOpen={true}>
           <Nav navbar>{createLinks(routes)}
-            <small className={"text-white text-version"}>Version: 1.41</small>
+            <small className={"text-white text-version"}>Version: 1.42</small>
           </Nav>
         </Collapse>
       </div>

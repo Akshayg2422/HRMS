@@ -72,7 +72,7 @@ function SalaryReport({ data, department, reportType, customrange, designation }
                 "Gross Salary": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay :"-",
                 "Net Salary": el?.salary_till_date?.net_salary ? el?.salary_till_date?.net_salary : "-",
                 "LOP": el?.salary_till_date?.lop_pay_till_date ? el?.salary_till_date?.lop_pay_till_date : "-",
-                "Total Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.pay_till_date : "-"
+                "Net Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.gross_pay_till_date_after_deductions : "-"
             };
         });
     };

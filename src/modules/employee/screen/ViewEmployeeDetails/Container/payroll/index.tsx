@@ -247,7 +247,7 @@ function PayrollView() {
         setDeductionsCalculatedPay(el?.value)
       }
     })
-    setTotalEarnings(details?.salary_till_date?.pay_till_date.toFixed(2))
+    setTotalEarnings(details?.salary_till_date?.gross_pay_till_date_after_deductions.toFixed(2))
   }
 
   const normalizedObjectToArray = (data: any) => {
@@ -326,7 +326,7 @@ function PayrollView() {
             <>
               <Container additionClass={'col-xl-12 row col-sm-3'}>
                 <div className="col-xl-6">
-                  <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
+                  <FormTypography title={'Cost of the company (Yearly)'} subTitle={employeeSalaryDefinition?.ctc} />
                 </div>
                 <div className="col-xl-6">
                   <FormTypography title={'Basic salary (In Percent)'} subTitle={employeeSalaryDefinition?.base_salary_percent} />

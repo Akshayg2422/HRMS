@@ -85,6 +85,7 @@ function AttendanceReport({ data, department, reportType, customrange, designati
         "Present": el.present,
         "Leave": el.leave,
         "Holidays": el.holiday,
+        "Week Off": el?.week_off ? el?.week_off : '-',
         "Absent": el.absent,
         "Alert": el.alert,
         "Billable Days": el?.billable_days,

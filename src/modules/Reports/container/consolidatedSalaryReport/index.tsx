@@ -74,7 +74,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
 
 
     const normalizedEmployee = (data: any) => {
-        return data && data.length > 0 && data.map((el: any) => {
+        return data && data.length > 0 && data.map((el: any) => {            
             return {
                 employee: el.name,
                 designation: el.designation,
@@ -82,11 +82,11 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
                 "Total Days": el?.break_down?.total,
                 "Payable Days": el?.break_down?.payable_days,
                 "LOP Days": el?.break_down?.lop_days,
-                "Gross Salary": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay : '-',
+                "Basic Pay": el?.salary_till_date?.base_pay ? el?.salary_till_date?.base_pay : '-',
                 "Allowance": renderNormalizer(AllowancesNormalizer(el?.salary_till_date?.calculated_pay), true),
+                "Gross Salary": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay : '-',
                 "Deduction": renderNormalizer(deductionNormalizer(el?.salary_till_date?.calculated_pay), false),
-                "Net Salary": el?.salary_till_date?.net_salary ? el?.salary_till_date?.net_salary : '-',
-                "Total Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.pay_till_date : '-'
+                "Net Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.gross_pay_till_date_after_deductions : '-'
             };
         });
     };
