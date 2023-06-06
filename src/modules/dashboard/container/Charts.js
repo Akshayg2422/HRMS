@@ -66,14 +66,14 @@ function Charts() {
         color = '#ff0f3f'
         break;
       case "Leave":
-        color = '#2445ff'
+        color = '#de9b00'
         break;
-      // case "Leave":
-      //   color = '#2445ff'
-      //   break;
-      // case "Leave":
-      //   color = '#2445ff'
-      //   break;
+      case "Holiday":
+        color = '#5d00ff'
+        break;
+      case "Week Off":
+        color = '#5d00ff'
+        break;
       default:
         color = '#000000'
     }

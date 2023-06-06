@@ -203,7 +203,7 @@
     "searchGroup": "Search Group",
     "searchWeeklyShift": "Search Weekly Shift",
     "SalaryCalculation": "Salary Calculation",
-    "CostOfTheCompany": "Cost Of The Company (CTC)",
+    "CostOfTheCompany": "Cost Of The Company (CTC - Yearly ) ",
     "BasicSalary": "Basic Salary",
     "MinimumCTC": "* Minimum 50% Of CTC",
     "AllowanceGroup": "Allowance Group",
@@ -495,9 +495,9 @@
     "invalidDistrict": "District field cannot be empty",
     "minimumLimit": "Minimum limit",
     "maximumLimit": "Maximum limit",
-    "editAllowanceGroup":"Edit Allowance group",
-    "selectType":"Select Type",
-    "isTaxable":"Is taxable",
-    "remaining":"Remaining  "
+    "editAllowanceGroup": "Edit Allowance group",
+    "selectType": "Select Type",
+    "isTaxable": "Is taxable",
+    "remaining": "Remaining  "
   }
 }

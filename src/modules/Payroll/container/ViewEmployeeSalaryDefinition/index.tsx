@@ -16,7 +16,6 @@ function ViewEmployeeSalaryDefinition() {
 
     useEffect(() => {
         getEmployeeSalaryDefinitionDetails()
-
     }, [])
 
 
@@ -50,13 +49,13 @@ function ViewEmployeeSalaryDefinition() {
     }
 
     return (
-        <ScreenContainer>
+        <div className='scroll-hidden' style={{ overflow: 'auto', height: '90vh', }}>
             {!isDisablePayrollView ? (
                 <Card>
                     <h3>{`${selectedEmployeeDetails?.name}'s salary definition`}</h3>
                     <Container additionClass={'col-xl-12 row col-sm-3'}>
                         <div className="col-xl-6">
-                            <FormTypography title={'Cost of the company'} subTitle={employeeSalaryDefinition?.ctc} />
+                            <FormTypography title={'Cost of the company (Yearly)'} subTitle={employeeSalaryDefinition?.ctc} />
                         </div>
                         <div className="col-xl-6">
                             <FormTypography title={`Basic salary (In Percent)`} subTitle={employeeSalaryDefinition?.base_salary_percent} />
@@ -91,9 +90,10 @@ function ViewEmployeeSalaryDefinition() {
                             </Container>
                         </Container>
                     }
-
-                </Card>) : <Card> <NoRecordFound /></Card>}
-        </ScreenContainer>
+                </Card>
+            ) : <Card> <NoRecordFound /></Card>
+            }
+        </div>
     )
 }
 
