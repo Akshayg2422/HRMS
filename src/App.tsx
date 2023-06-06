@@ -100,7 +100,7 @@ import "react-notification-alert/dist/animate.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "sweetalert2/dist/sweetalert2.min.css";
 
-  
+
 function App() {
 
   const { dashboardDetails } = useSelector(
