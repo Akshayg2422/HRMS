@@ -85,14 +85,14 @@ function AddDeduction() {
                     }}
                 />
 
-                <InputText
-                    label={t('hint')}
-                    placeholder={t('hint')}
+                {/* <InputText
+                    label={t('Note')}
+                    placeholder={t('Note')}
                     value={hint}
                     onChange={(event) => {
                         setHint(event.target.value);
                     }}
-                />
+                /> */}
 
                 <InputText
                     label={t('minimumLimit')}

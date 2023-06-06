@@ -130,7 +130,7 @@ const LogView = () => {
                     color: fontColor(el.day_status_type),
                 }}
                     onClick={(e) => { handlePresentModified(e, el) }}
-                >{el.day_status}{showApprovedBy(el?.day_status_type) ?
+                >{el.day_status}{showApprovedBy(el?.day_status_type) && el?.approved_by  ?
                     <div className="text-small" style={{ color: 'black', fontWeight: 'lighter', }}>{`By - ${el?.approved_by}`}</div>
                     : <></>}</small></>,
 
