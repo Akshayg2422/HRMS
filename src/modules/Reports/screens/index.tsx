@@ -8,6 +8,7 @@ import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisRepo
 import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, SalaryReport, ShiftReports } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
+import moment from 'moment';
 
 
 function Reports() {
@@ -35,10 +36,67 @@ function Reports() {
     name: "All"
   }])
 
+  const MONTHS = [
+    {
+      id: "0",
+      name: "January",
+    },
+    {
+      id: "1",
+      name: "February",
+    },
+    {
+      id: "2",
+      name: "March",
+    },
+    {
+      id: "3",
+      name: "April",
+    },
+    {
+      id: "4",
+      name: "May",
+    },
+    {
+      id: "5",
+      name: "June",
+    },
+    {
+      id: "6",
+      name: "July",
+    },
+    {
+      id: "7",
+      name: "August",
+    },
+    {
+      id: "8",
+      name: "September",
+    },
+    {
+      id: "9",
+      name: "October",
+    },
+    {
+      id: "10",
+      name: "November",
+    },
+    {
+      id: "11",
+      name: "December",
+    }
+  ]
+
+  const currentMonth = new Date().getMonth();
+  const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+
+
+  const [monthData, setMonthData] = useState(MONTHS);
   const [shiftGroupData, setShiftGroupData] = useState<any>([])
   const [shiftName, setShiftName] = useState<any>([])
   const [designationFilterShiftGroupData, setDesignationFilterShiftGroupData] = useState<any>([])
 
+  const [customMonth, setCustomMonth] = useState(MONTHS[currentMonth].id);
 
   const [shiftDesignationData, setShiftDesignationData] = useState<any>([])
   const [selectedDepartment, setSelectedDepartment] = useState(departmentsData[0].id);
@@ -56,6 +114,12 @@ function Reports() {
     dataTo: Today,
   });
   const [initialSalary, setInitialSalary] = useState(true)
+  const [minData, setMinData] = useState('')
+  const [maxDate, setMaxData] = useState('')
+
+  useEffect(() => {
+    reportsType !== 'shift' && getReports(INITIAL_PAGE)
+  }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
   useEffect(() => {
     getDepartments()
@@ -72,11 +136,11 @@ function Reports() {
     }
   }, [enterPress])
 
-  useEffect(() => {
-    // setDate(reportsType)
-    reportsType !== 'shift' && getReports(INITIAL_PAGE)
-  }, [selectedDepartment, reportsType, selectedDesignation, selectedAttendanceType, hierarchicalBranchIds])
 
+  useEffect(() => {
+    const filteredMonth = MONTHS.filter((el: any) => el.id <= currentMonth)
+    setMonthData(filteredMonth);
+  }, [])
 
 
   useEffect(() => {
@@ -134,6 +198,43 @@ function Reports() {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
+
+  useEffect(() => {
+    if (customRange.dateFrom && customRange.dataTo) {
+      const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
+      if (customRange.dataTo > endOfMonth) {
+        setCustomRange({ ...customRange, dataTo: endOfMonth });
+      }
+    }
+  }, [customRange.dateFrom, customRange.dataTo])
+
+  useEffect(() => {
+    getMonthMinMaxDate(customMonth)
+  }, [customMonth])
+
+
+  function getMonthMinMaxDate(month: any) {
+    const year = new Date().getFullYear();
+    const date = new Date(year, month, 1);
+    const minDate = new Date(date.getFullYear(), date.getMonth(), 1);
+    const maxDate = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    const dateFrom = getServerDateFromMoment(getMomentObjFromServer(minDate))
+    const dataTo = getServerDateFromMoment(getMomentObjFromServer(maxDate))
+    if (month != currentMonth) {
+      setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: dataTo, });
+      setMinData(dateFrom)
+      setMaxData(dataTo)
+    }
+    else {
+      setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: Today, });
+      setMinData(startOfMonth)
+      setMaxData(Today)
+    }
+
+  }
+
+
+
   const getBranchShiftsList = () => {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
@@ -166,6 +267,7 @@ function Reports() {
     return shiftName
   }
 
+
   const getReports = ((pageNumber: number) => {
     if (validateParams()) {
       setLogRange({ ...logRange, dataTo: customRange.dataTo, dateFrom: customRange.dateFrom });
@@ -183,7 +285,6 @@ function Reports() {
         selected_date_to: customRange.dataTo,
         page_number: pageNumber,
       };
-
       dispatch(getMisReport({
         params,
         onSuccess: (response: any) => () => {
@@ -193,20 +294,6 @@ function Reports() {
       }));
     }
   })
-
-  // const setDate = (type: any) => {
-
-  //   let changeDate = customRange
-  //   let dateFrom = Today
-  //   if ((reportsType == 'salary_basic')) {
-  //     changeDate.dateFrom = ThisMonth
-  //   } else if (reportsType === 'salary_breakdown') {
-  //     changeDate.dateFrom = ThisMonth
-  //   } else {
-  //     changeDate.dateFrom = Today
-  //   }
-  //   setCustomRange({ ...changeDate });
-  // }
 
 
   const dateTimePickerHandler = (value: string, key: string) => {
@@ -250,7 +337,7 @@ function Reports() {
     if (validateParams()) {
       setLogRange({ ...logRange, dataTo: customRange.dataTo, dateFrom: customRange.dateFrom });
       const params = {
-        report_type: reportsType === 'salary_basic1' ? "salary_basic" : reportsType,
+        report_type: reportsType,
         ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
         ...(reportsType === "log" ? { attendance_type: selectedAttendanceType } : { attendance_type: -1 }),
         ...(searchEmployee && { q: searchEmployee }),
@@ -384,13 +471,25 @@ function Reports() {
                 }}
               />
             </div>
+            <div className="col-lg-3 col-md-4 col-sm-12 mt--1 ">
+              <DropDown
+                label='Month'
+                placeholder='Select month'
+                data={monthData}
+                value={customMonth}
+                onChange={(e) => {
+                  setCustomMonth(e.target.value)
+                }}
+              />
+            </div>
             <div className='col-sm-3'>
               <h5 className=''>{t("startDate")}</h5>
               <DatePicker
                 additionalClass='pt-1'
                 placeholder={"Select Date"}
                 icon={Icons.Calendar}
-                maxDate={Today}
+                minDate={minData}
+                maxDate={maxDate}
                 iconPosition={"prepend"}
                 onChange={(date: string) =>
                   dateTimePickerHandler(date, "dateFrom")
@@ -404,7 +503,8 @@ function Reports() {
                 additionalClass='pt-1'
                 placeholder={"Select Date"}
                 icon={Icons.Calendar}
-                maxDate={Today}
+                minDate={minData}
+                maxDate={maxDate}
                 iconPosition={"append"}
                 onChange={(date: string) => dateTimePickerHandler(date, "dataTo")}
                 value={customRange.dataTo}

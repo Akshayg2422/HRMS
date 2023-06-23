@@ -47,7 +47,10 @@ import {
   ADMIN_MODIFY_LOG,
   CHANGE_MODIFY_LOG_STATUS,
   COMPANY_BASE_WEEKLY_CALENDAR,
-  SET_COMPANY_BASE_WEEKLY_CALENDAR
+  SET_COMPANY_BASE_WEEKLY_CALENDAR,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES,
+  GET_EMPLOYEE_LEAVE_TYPES,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS
 
 } from "./actionTypes";
 
@@ -152,7 +155,13 @@ import {
   CompanyBaseWeeklyCalendarSuccess,
   CompanyBaseWeeklyCalendarFailure,
   setCompanyBaseWeeklyCalendarSuccess,
-  setCompanyBaseWeeklyCalendarFailure
+  setCompanyBaseWeeklyCalendarFailure,
+  getEmployeeBranchWiseLeavesSuccess,
+  getEmployeeBranchWiseLeavesFailure,
+  getEmployeeBranchLeaveTypeSuccess,
+  getEmployeeBranchLeaveTypeFailure,
+  updateEmployeeAllocatedDaysSuccess,
+  updateEmployeeAllocatedDaysFailure
 
 } from "./actions";
 
@@ -205,7 +214,10 @@ import {
   adminModifyLogApi,
   postChangeEmployeeModifyLogStatus,
   fetchCompanyBaseWeeklyCalendarApi,
-  postCompanyBaseWeeklyCalendarApi
+  postCompanyBaseWeeklyCalendarApi,
+  postBranchWiseEmployeesLeavesApi,
+  getEmployeeLeaveTypesApi,
+  postUpdateEmployeeAllocatedDaysApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -974,13 +986,13 @@ function* getReportsSaga(action) {
     yield put(showLoader());
     const response = yield call(fetchMisReportsLog, action.payload.params);
     if (response.success) {
-      yield put(hideLoader());
       yield put(getMisReportSuccess(response.details));
       yield call(action.payload.onSuccess(response));
-    } else {
       yield put(hideLoader());
+    } else {
       yield call(action.payload.onError(response));
       yield put(getMisReportFailure(response.error_message));
+      yield put(hideLoader());
     }
   } catch (error) {
     yield put(hideLoader());
@@ -1361,6 +1373,82 @@ function* setCompanyBaseWeeklyCalendarSaga(action) {
   }
 }
 
+// 
+function* getEmployeeBranchWiseLeavesSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(postBranchWiseEmployeesLeavesApi, action.payload.params);
+
+    if (response.success) {
+      yield put(getEmployeeBranchWiseLeavesSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+    } else {
+      yield put(getEmployeeBranchWiseLeavesFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeBranchWiseLeavesFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// getEmployeeLeaveTypes
+
+function* getEmployeeLeaveTypesSaga(action) {
+  try {
+    yield put(showLoader());
+
+    const response = yield call(getEmployeeLeaveTypesApi, action.payload.params);
+
+    if (response.success) {
+      yield put(getEmployeeBranchLeaveTypeSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+    } else {
+      yield put(getEmployeeBranchLeaveTypeFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeBranchLeaveTypeFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// updateEmployeeAllocatedDays
+function* updateEmployeeAllocatedDaysSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(postUpdateEmployeeAllocatedDaysApi, action.payload.params);
+
+    if (response.success) {
+      yield put(updateEmployeeAllocatedDaysSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
+      yield put(hideLoader());
+    } else {
+      yield put(updateEmployeeAllocatedDaysFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(updateEmployeeAllocatedDaysFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+
+
+
+
 // *** WATCHER*** //
 
 function* EmployeeSaga() {
@@ -1423,6 +1511,10 @@ function* EmployeeSaga() {
   yield takeLatest(CHANGE_MODIFY_LOG_STATUS, changeSelectedEmployeeModifyLogStatus);
   yield takeLatest(COMPANY_BASE_WEEKLY_CALENDAR, getCompanyBaseWeeklyCalendarSaga);
   yield takeLatest(SET_COMPANY_BASE_WEEKLY_CALENDAR, setCompanyBaseWeeklyCalendarSaga);
+  yield takeLatest(GET_EMPLOYEE_BRANCH_WISE_LEAVES, getEmployeeBranchWiseLeavesSaga);
+  yield takeLatest(GET_EMPLOYEE_LEAVE_TYPES, getEmployeeLeaveTypesSaga);
+  yield takeLatest(UPDATE_EMPLOYEE_ALLOCATED_DAYS, updateEmployeeAllocatedDaysSaga);
+  
 }
 
 export default EmployeeSaga;

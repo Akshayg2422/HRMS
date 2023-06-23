@@ -4,26 +4,33 @@ import { ASYN_USER_AUTH } from '@utils'
 //apply base url for axios
 const STAGING = 'http://3.7.59.39';
 
-const LOCAL_DEV = 'http://192.168.43.116:8005';
+const LOCAL_DEV = 'http://192.168.4.136:8005';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
 const LOCAL_PROD = 'http://103.118.93.204:8002';
 
 const PRE_PROD = 'http://15.206.224.132'
 
-const SAMPLE_IP = 'http://3.109.244.227:8000';
+const SAMPLE_IP = 'http://103.195.246.107:8045';
 
 const STAGING_WEB = 'https://preprod.zenyq.com/';
 
 // const PROD = 'https://api.zenyq.com';
 const PROD_WEB = 'https://webapi.zenyq.com';
 
+const PROD_WEB_2 = 'https://webapi2.zenyq.com';
+
+
+const PROD_MOBILE = 'https://mobileapi2.zenyq.com';
+
+
 // export const BASE_URL_REPORTS_PROD_1 = 'https://reports.zenyq.com'; ////
 
 
-export const REACT_APP_APP_URL = PROD_WEB;
+export const REACT_APP_APP_URL = LOCAL_DEV;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
+
 // process.env.REACT_APP_APP_URL;
 
 export const BASE_URL_AUTH_PROD = 'https://webauth.zenyq.com'; ////
@@ -79,7 +86,6 @@ export async function get(url, config) {
     .get(url, {
       ...config,
       headers: await getHeaders(),
-
     })
     .then((response) => response.data);
 }

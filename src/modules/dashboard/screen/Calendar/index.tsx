@@ -23,7 +23,7 @@ import {
   deleteHoliday,
 } from "../../../../store/employee/actions";
 import {
-  EMPLOYEE_ADDITIONAL_DATA,
+  convertFrom24To12Format,
   goTo,
   ROUTE,
   showToast,
@@ -37,7 +37,7 @@ export const DROPDOWN_MENU = [
 ]
 
 const CARD_DROPDOWN_ITEM = [
-  { id: '1', name: `manageLeaveTypes`, value: 'CL', icon: 'ni ni-active-40' },
+  { id: '1', name: `Manage Leave Types`, value: 'CL', icon: 'fas fa-window-restore' },
 ]
 
 function Calendar() {
@@ -103,8 +103,10 @@ function Calendar() {
     return data?.map((el: any, index: number) => {
       return {
         day: el.day,
+        'Time': el?.time && convertFrom24To12Format(el?.time),
         title: el.title,
         description: el.description,
+        "Created By": el.created_by ? el.created_by : '-',
         "": <CommonDropdownMenu
           data={DROPDOWN_MENU}
           onItemClick={(e, item) => {
@@ -248,7 +250,6 @@ function Calendar() {
             displayDataSet={normalizedEmployeeLog(
               calendarEvents?.days_holiday
             )}
-
             custombutton={"h5"}
           />
         ) : <NoRecordFound />}

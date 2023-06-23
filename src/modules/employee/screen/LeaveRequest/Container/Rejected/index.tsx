@@ -1,16 +1,18 @@
 import { CommonTable, Container, Modal, NoRecordFound, Primary, Secondary } from "@components";
 import {
-  changeEmployeeLeaveStatus, getEmployeeLeaves, getEmployeeLeavesSuccess, getSelectedEventId,
+  changeEmployeeLeaveStatus, getEmployeeLeaveHistory, getEmployeeLeaves, getEmployeeLeavesSuccess, getLeavesByTypes, getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { INITIAL_PAGE, LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, ROUTE, goTo, showToast, useNav } from "@utils";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Rejected = ({ search }: any) => {
+const Rejected = ({ search, date }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
+  const navigation = useNav();
+
 
   const { employeesLeaves, numOfPages, currentPage, selectedEventId } = useSelector(
     (state: any) => state.EmployeeReducer
@@ -24,7 +26,8 @@ const Rejected = ({ search }: any) => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: 0,
-      q: search,  
+      q: search,
+      data: date
     };
     dispatch(getEmployeeLeaves({
       params,
@@ -89,6 +92,23 @@ const Rejected = ({ search }: any) => {
     );
   };
 
+  const fetchleaveDetail = (id: any) => {
+    const params = {
+      status: -1,
+      page_number: INITIAL_PAGE,
+      employee_id: id
+    };
+    dispatch(getLeavesByTypes({
+      params,
+      onSuccess: (success: any) => () => {
+        goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEES_LEAVES);
+
+      },
+      onError: (error: any) => () => {
+      }
+    }));
+  };
+
   const memoizedTable = useMemo(() => {
     return <>
       {employeesLeaves && employeesLeaves.length > 0 ? (
@@ -111,6 +131,11 @@ const Rejected = ({ search }: any) => {
           //     RevertStatusHandler(current);
           //   }
           // }}
+          tableOnClick={(e, index, item) => {
+            const data = employeesLeaves[index]
+            dispatch(getEmployeeLeaveHistory(data))
+            fetchleaveDetail(data?.employee_company_info_id)
+          }}
           custombutton={"h5"}
         />
       ) : <NoRecordFound />}

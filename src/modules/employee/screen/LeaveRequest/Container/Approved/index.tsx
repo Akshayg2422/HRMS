@@ -8,19 +8,23 @@ import {
 } from "@components";
 import {
   changeEmployeeLeaveStatus,
+  getEmployeeLeaveHistory,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getLeavesByTypes,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { INITIAL_PAGE, LEAVE_STATUS_REVERT, LEAVE_STATUS_UPDATE, ROUTE, goTo, showToast, useNav } from "@utils";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Approved = ({ search }: any) => {
+const Approved = ({ search,date }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const [revertModel, setRevertModel] = useState(false);
+  const navigation = useNav();
+
 
   const { numOfPages, currentPage, employeesLeaves, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
@@ -34,7 +38,7 @@ const Approved = ({ search }: any) => {
       page_number: pageNumber,
       status: 1,
       q: search,
-
+      data: date
     };
     dispatch(
       getEmployeeLeaves({
@@ -102,6 +106,23 @@ const Approved = ({ search }: any) => {
     );
   };
 
+  const fetchleaveDetail = (id: any) => {
+    const params = {
+      status: -1,
+      page_number: INITIAL_PAGE,
+      employee_id: id
+    };
+    dispatch(getLeavesByTypes({
+      params,
+      onSuccess: (success: any) => () => {
+        goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEES_LEAVES);
+
+      },
+      onError: (error: any) => () => {
+      }
+    }));
+  };
+
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -118,12 +139,17 @@ const Approved = ({ search }: any) => {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(employeesLeaves)}
-          additionalDataSet={LEAVE_STATUS_REVERT}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesLeaves[index];
-            if (elv === "Revert") {
-              RevertStatusHandler(current);
-            }
+          // additionalDataSet={LEAVE_STATUS_REVERT}
+          // tableValueOnClick={(e, index, item, elv) => {
+          //   const current = employeesLeaves[index];
+          //   if (elv === "Revert") {
+          //     RevertStatusHandler(current);
+          //   }
+          // }}
+          tableOnClick={(e,index,item) => {
+            const data = employeesLeaves[index]
+            dispatch(getEmployeeLeaveHistory(data))
+            fetchleaveDetail(data?.employee_company_info_id)            
           }}
           custombutton={"h5"}
         />

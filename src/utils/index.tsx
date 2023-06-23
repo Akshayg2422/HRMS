@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF, DAY_STATUS_PRESENT_MODIFIED, DAY_STATUS_NA
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF, DAY_STATUS_PRESENT_MODIFIED, DAY_STATUS_NA, DAY_STATUS_HOLIDAYS
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -140,6 +140,7 @@ const showApprovedBy = (type: number | undefined) => {
   switch (type) {
     case DAY_STATUS_LEAVE:
     case DAY_STATUS_PRESENT_MODIFIED:
+    case DAY_STATUS_HOLIDAYS:
       showApprover = true
       break;
     default:
@@ -272,6 +273,7 @@ export function toDate(dStr: any, format: string) {
   else
     return "Invalid Format";
 }
+
 
 export const convertFrom24To12Format = (time24: any) => {
   const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);

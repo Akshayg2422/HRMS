@@ -21,7 +21,7 @@ import {
   Portfolio, InActiveEmployeeList, ApplyLeave, LeaveRequest,
   ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
   ELocker, ElockerUpload, ShiftMonthlyView, EmployeeShifts, MyBranches, EmployeeShiftRequest,
-  AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, ShiftDetailsPerDay, WeeklyCalendar
+  AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, ShiftDetailsPerDay, WeeklyCalendar, ManageEmployeeLeaves
 } from './employee';
 
 import { ManageBranches } from './dashboard/screen/Location/screen';
@@ -36,7 +36,7 @@ import { Reports } from "./Reports"
 
 import fenceAdmin from './fenceAdmin'
 import { WeeklyShiftSelection, ShiftGroup, ShiftListing, CreateShiftGroup, ShiftRequest, CreateNewDesignationGroup } from './ShiftManagement';
-import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGroup, Payslip } from './Payroll'
+import { PayRoll, SalaryBreakDown, AllowanceGroup, DeductionGroupList, CreateGroup, Payslip, OthersPayGroupList, OtherPayCreate } from './Payroll'
 import { FaceApproval } from './FaceApproval'
 import { BroadCast, ManageBroadCast } from './BroadCast'
 import { Notifications, ManageRequest } from './notifications'
@@ -113,7 +113,10 @@ export {
   FaceReRegisterRequest,
   ShiftDetailsPerDay,
   Payslip,
-  WeeklyCalendar
+  WeeklyCalendar,
+  ManageEmployeeLeaves,
+  OthersPayGroupList,
+  OtherPayCreate
 }
 
 

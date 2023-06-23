@@ -162,7 +162,17 @@ import {
   COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
   SET_COMPANY_BASE_WEEKLY_CALENDAR,
   SET_COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
-  SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE
+  SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES_SUCCESS,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES_FAILURE,
+  GET_EMPLOYEE_LEAVE_HISTORY,
+  GET_EMPLOYEE_LEAVE_TYPES,
+  GET_EMPLOYEE_LEAVE_TYPES_SUCCESS,
+  GET_EMPLOYEE_LEAVE_TYPES_FAILURE,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS_SUCCESS,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -210,7 +220,8 @@ const initialState = {
   currentLeaveType: -2,
   getEmployeeBasicInfo: undefined,
   employeeAttendanceInfoDetails: undefined,
-  employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false }
+  employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false },
+  employeeLeaveHistory: []
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1467,6 +1478,83 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+    // 
+
+    case GET_EMPLOYEE_BRANCH_WISE_LEAVES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_EMPLOYEE_BRANCH_WISE_LEAVES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case GET_EMPLOYEE_BRANCH_WISE_LEAVES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    case GET_EMPLOYEE_LEAVE_HISTORY:
+      state = {
+        ...state,
+        employeeLeaveHistory: action.payload,
+      };
+      break;
+
+    // getEmployeeLeaveTypes
+
+    case GET_EMPLOYEE_LEAVE_TYPES:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_EMPLOYEE_LEAVE_TYPES_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case GET_EMPLOYEE_LEAVE_TYPES_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // updateEmployeeAllocatedDays
+
+    case UPDATE_EMPLOYEE_ALLOCATED_DAYS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case UPDATE_EMPLOYEE_ALLOCATED_DAYS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
 
     /**
      * Default

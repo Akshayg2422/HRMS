@@ -285,3 +285,24 @@ export const GET_BASE_WEEK_CALENDAR = '/attendance/getCompanyBaseWeeklyCalendar'
 // getCompanyBaseWeeklyCalendar
     
 export const SET_BASE_WEEK_CALENDAR = '/attendance/setCompanyBaseWeeklyCalendar'
+
+// branchWiseEmployeesLeaves
+
+export const GET_BRANCH_WISE_EMPLOYEE_LEAVES = '/attendance/v1/branchWiseEmployeesLeaves'
+
+// getEmployeeLeaveTypes
+
+export const GET_EMPLOYEE_LEAVE_TYPES = '/attendance/getEmployeeLeaveTypes'
+
+// updateEmployeeAllocatedDays
+
+export const UPDATE_EMPLOYEE_ALLOCATED_DAYS = '/attendance/updateEmployeeLeaveTypeAllocatedDays'
+
+// addCompanyIncentive
+
+export const ADD_COMPANY_INCENTIVE = '/payroll/addCompanyIncentive'
+
+// getCompanyIncentives
+
+export const GET_COMPANY_INCENTIVE = '/payroll/getCompanyIncentives'
+

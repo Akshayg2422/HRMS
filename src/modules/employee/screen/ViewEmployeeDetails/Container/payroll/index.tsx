@@ -72,6 +72,7 @@ function PayrollView() {
   const [monthData, setMonthData] = useState(MONTHS);
 
   const startOfMonth = moment().startOf('month').format('YYYY-MM-DD');
+
   const [customRange, setCustomRange] = useState({
     dateFrom: startOfMonth,
     dataTo: Today,
@@ -129,6 +130,7 @@ function PayrollView() {
     }
   }, [customRange.dateFrom, customRange.dataTo]);
 
+
   useEffect(() => {
     if (customRange.dateFrom && customRange.dataTo) {
       const endOfMonth = moment(customRange.dateFrom).endOf('month').format('YYYY-MM-DD');
@@ -150,7 +152,6 @@ function PayrollView() {
 
 
   const getEmployeeSalaryDefinitionDetails = () => {
-    //getEmployeeSalaryDefinition
     const params = {
       employee_id: selectedEmployeeDetails?.id
     }
@@ -189,6 +190,17 @@ function PayrollView() {
   }
 
 
+
+  const normalizedOtherPayList = (data: any) => {
+    return data && data.length > 0 && data.map((el: any) => {
+      return {
+        name: el.name,
+        amount: el.amount
+      };
+    });
+  }
+
+
   function getMonthMinMaxDate(month: any) {
     const year = new Date().getFullYear();
     const date = new Date(year, month, 1);
@@ -197,7 +209,7 @@ function PayrollView() {
     const dateFrom = getServerDateFromMoment(getMomentObjFromServer(minDate))
     const dataTo = getServerDateFromMoment(getMomentObjFromServer(maxDate))
     if (month != currentMonth) {
-      setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: dataTo, });
+      setCustomRange({ ...customRange, dateFrom: dateFrom, dataTo: dataTo });
       setMinData(dateFrom)
       setMaxData(dataTo)
     }
@@ -230,8 +242,6 @@ function PayrollView() {
   }
 
   const getStructuredConsolidatedEarings = (details: any) => {
-    console.log("details===========>",details);
-    
     let structuredData = [{ key: 'Total Days', value: details?.break_down?.total }, { key: 'Holiday', value: details?.break_down?.holiday }, { key: 'Present', value: details?.break_down?.present },
     { key: 'Alert', value: details?.break_down?.alert }, { key: 'Absent', value: details?.break_down?.absent }, { key: 'Leaves', value: details?.break_down?.leave }, { key: 'Billable Days', value: details?.break_down?.payable_days }
     ]
@@ -247,7 +257,7 @@ function PayrollView() {
         setDeductionsCalculatedPay(el?.value)
       }
     })
-    setTotalEarnings(details?.salary_till_date?.gross_pay_till_date_after_deductions.toFixed(2))
+    setTotalEarnings(details?.salary_till_date?.gross_pay_till_date_after_deductions?.toFixed(2))
   }
 
   const normalizedObjectToArray = (data: any) => {
@@ -350,6 +360,17 @@ function PayrollView() {
                   </Container>
                 </Container>
               }
+              {employeeSalaryDefinition?.incentives_group && employeeSalaryDefinition?.incentives_group?.length > 0 &&
+                <Container additionClass=''>
+                  <h5 className={'text-muted ml-3 mt-2'}>{'Other Pays'}</h5>
+                  <Container additionClass=''>
+                    <CommonTable
+                      card={false}
+                      displayDataSet={normalizedOtherPayList(employeeSalaryDefinition?.incentives_group)}
+                    />
+                  </Container>
+                </Container>
+              }
               {employeeSalaryDefinition?.deductions_group && employeeSalaryDefinition.deductions_group.length > 0 &&
                 <Container additionClass=''>
                   <h5 className={'text-muted ml-3 mt-4'}>{'Deductions'}</h5>
@@ -386,7 +407,7 @@ function PayrollView() {
                 return (
                   <div className='col'>
                     {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" &&
-                      <FormTypography title={el?.title} subTitle={el?.value.toFixed(0)} />
+                      <FormTypography title={el?.title} subTitle={el?.value} />
                     }
                   </div>
                 )

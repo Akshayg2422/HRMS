@@ -56,7 +56,14 @@ import {
     GET_ALLOWANCE_GROUPS_PAGINATED_FAILURE,
     GET_EARNINGS,
     GET_EARNINGS_SUCCESS,
-    GET_EARNINGS_FAILURE
+    GET_EARNINGS_FAILURE,
+    SET_COMPANY_INCENTIVE,
+    SET_COMPANY_INCENTIVE_SUCCESS,
+    SET_COMPANY_INCENTIVE_FAILURE,
+    GET_COMPANY_INCENTIVE,
+    GET_COMPANY_INCENTIVE_SUCCESS,
+    GET_COMPANY_INCENTIVE_FAILURE,
+    SETTING_SELECTED_INCENTIVE_DETAILS
 } from './actionTypes'
 
 const initialState = {
@@ -73,7 +80,10 @@ const initialState = {
     selectedDeductionDetails: undefined,
     selectedEmployeeDetails: undefined,
     employeeSalaryDefinition: undefined,
-    isEditSalary: false
+    isEditSalary: false,
+    companyIncentiveList: [],
+    selectedIncentiveDetails: undefined,
+
 };
 
 
@@ -501,6 +511,68 @@ const PayrollReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload,
                 loading: false,
+            };
+            break;
+
+        // SET_COMPANY_INCENTIVE
+
+        case SET_COMPANY_INCENTIVE:
+            state = {
+                ...state,
+                loading: true,
+            };
+            break;
+        case SET_COMPANY_INCENTIVE_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+            };
+            break;
+        case SET_COMPANY_INCENTIVE_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+            break;
+
+        // get COMPANY_INCENTIVE
+
+        case GET_COMPANY_INCENTIVE:
+            state = {
+                ...state,
+                companyIncentiveList: [],
+                numOfPages: 0,
+                currentPage: 1,
+                loading: true,
+            };
+            break;
+        case GET_COMPANY_INCENTIVE_SUCCESS:
+            state = {
+                ...state,
+                loading: false,
+                companyIncentiveList: action.payload.data,
+                numOfPages: action.payload.num_pages,
+                currentPage:
+                    action.payload.next_page === -1
+                        ? action.payload.num_pages
+                        : action.payload.next_page - 1,
+            };
+            break;
+        case GET_COMPANY_INCENTIVE_FAILURE:
+            state = {
+                ...state,
+                error: action.payload,
+                loading: false,
+            };
+            break;
+
+        // SETTING_SELECTED_INCENTIVE_DETAILS
+
+        case SETTING_SELECTED_INCENTIVE_DETAILS:
+            state = {
+                ...state,
+                selectedIncentiveDetails: action.payload
             };
             break;
 

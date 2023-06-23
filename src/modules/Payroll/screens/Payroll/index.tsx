@@ -7,7 +7,6 @@ import {
     ChooseBranchFromHierarchical,
     NoRecordFound,
     TableWrapper,
-    CommonDropdownMenu,
     Primary,
     Search,
     useKeyPress,
@@ -195,10 +194,11 @@ function PayRoll() {
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-                // tableOnClick={(e, index, item) => {
-                //     const selectedItem = registeredEmployeesList[index];
-                //     dispatch(settingSelectedEmployeeDetails(selectedItem))
-                // }}
+                    tableOnClick={(e, index, item) => {
+                        const selectedItem = registeredEmployeesList[index];
+                        setSelectedItem(selectedItem)
+                        checkIsSalaryDefinitionExists(selectedItem?.id)
+                    }}
                 />
             ) : <NoRecordFound />}
         </div>
@@ -208,6 +208,7 @@ function PayRoll() {
         <>
             <TableWrapper
                 buttonChildren={
+                    // userDetails?.is_admin && 
                     <Container additionClass=" mr--4">
                         {(
                             <Container additionClass="col">
@@ -222,6 +223,12 @@ function PayRoll() {
                                     size={'btn-sm'}
                                     text={'Deductions'}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
+                                />
+                                 <Primary
+                                    additionClass="mt-2 mt-sm-0 mt-lg-0"
+                                    size={'btn-sm'}
+                                    text={'Others Pay'}
+                                    onClick={() => goTo(navigation, ROUTE.ROUTE_OTHERS_PAY)}
                                 />
                             </Container>
                         )}

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   validateBasicSalary
 } from "@utils";
-import { addCompanyDeduction, addEmployeeSalaryDefinition, getAllowanceGroups, getCompanyDeductions, getEmployeeSalaryDefinition, isEditEmployeeSalaryDefinition } from '../../../../store/Payroll/actions';
+import { addCompanyDeduction, addEmployeeSalaryDefinition, getAllowanceGroups, getCompanyDeductions, getCompanyIncentive, getEmployeeSalaryDefinition, isEditEmployeeSalaryDefinition } from '../../../../store/Payroll/actions';
 import { Icons } from '@assets';
 import { log } from 'console';
 
@@ -40,13 +40,21 @@ function SalaryBreakDown() {
   const [isDisablePayrollView, setIsDisablePayrollView] = useState(false)
   const [deductionsData, setDeductionsData] = useState<any>([])
   const [deductionsDropDownData, setDeductionsDropDownData] = useState<any>([])
+  const [OtherPayData, setOtherPayData] = useState<any>([])
+
+
+  const [selectedOtherPayData, setSelectedOtherPayData] = useState<any>([])
+  const [editSelectedOtherPayData, setEditSelectedOtherPayData] = useState<any>([])
+  const [newlyAddedOtherPayData, setNewlyAddedOtherPayData] = useState<any>([])
+
+
 
   const [autoDebitTds, setAutoDebitTds] = useState(false)
   const [autoDebitPf, setAutoDebitPf] = useState(false)
   const [edit, setEdit] = useState(false)
 
 
-  const { allowanceGroupsList, companyDeductionsList, selectedEmployeeDetails, isEditSalary } = useSelector(
+  const { allowanceGroupsList, companyDeductionsList, companyIncentiveList, selectedEmployeeDetails, isEditSalary } = useSelector(
     (state: any) => state.PayrollReducer
   );
 
@@ -77,6 +85,7 @@ function SalaryBreakDown() {
   useEffect(() => {
     getAllowanceGroupList()
     getCompanyDeductionsList()
+    getCompanyOtherPayList()
     if (isEditSalary) {
       getEmployeeSalaryDefinitionDetails()
     }
@@ -121,6 +130,25 @@ function SalaryBreakDown() {
     }));
   }
 
+
+
+  const getCompanyOtherPayList = () => {
+
+    const params = {
+      page_number: -1
+    }
+
+    dispatch(getCompanyIncentive({
+      params,
+      onSuccess: (success: any) => () => {
+        setOtherPayData(success?.details)
+      },
+      onError: (error: any) => () => {
+
+      }
+    }));
+  }
+
   const getEmployeeSalaryDefinitionDetails = () => {
     const params = {
       employee_id: selectedEmployeeDetails?.id
@@ -142,6 +170,8 @@ function SalaryBreakDown() {
   }
 
   const prefillSalaryDefinitions = (salaryDetails: any) => {
+    console.log("==============>", salaryDetails);
+
     setEditSalaryDefinitionId(salaryDetails?.id)
     setAnnualCTC(salaryDetails.ctc)
     let annualCtc: any = salaryDetails.ctc
@@ -155,6 +185,8 @@ function SalaryBreakDown() {
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
     const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, type: el.is_percent ? "1" : "2", error: '' }))
     setSelectedDefinitionEditData(newKeyAddedArray)
+    setSelectedOtherPayData(salaryDetails?.incentives_group)
+    setEditSelectedOtherPayData(salaryDetails?.incentives_group)
     setSelectedDeductions(newKeyAddedArray)
     setEdit(true)
   }
@@ -212,12 +244,39 @@ function SalaryBreakDown() {
   }
 
 
+  const onOtherPayChangeHandler = (event: string) => {
+
+
+    let filteredOtherPay: any = [...selectedOtherPayData]
+
+    const isExists = selectedOtherPayData && selectedOtherPayData.length > 0 && selectedOtherPayData.some((el: any) => event === el.id)
+
+    if (isExists) {
+      filteredOtherPay = filteredOtherPay && filteredOtherPay.length > 0 && filteredOtherPay.filter((el: any) => event !== el.id)
+
+    } else {
+      const addOtherPay = OtherPayData?.filter((item: any) => item.id === event)
+      const addNewKey = { ...addOtherPay[0], amount: '' }
+      filteredOtherPay = [...filteredOtherPay, addNewKey]
+    }
+
+    setSelectedOtherPayData(filteredOtherPay)
+  }
+
+  const onChangeIncentiveHandler = (index: any, value: any) => {
+    let updatedAmount = [...selectedOtherPayData]
+    updatedAmount[index].amount = value
+    setSelectedOtherPayData(updatedAmount)
+  }
+
+  const onDeleteOtherPay = (event: any) => {
+    const filteredPay = selectedOtherPayData && selectedOtherPayData.length > 0 && selectedOtherPayData.filter((el: any) => event !== el.id)
+    setSelectedOtherPayData(filteredPay)
+  }
+
   const onDeleteAllowence = (item: any) => {
     const filteredPeople = selectedDeductions?.filter((it: any) => it.id !== item.id)
     setSelectedDeductions(filteredPeople)
-    if (item?.name === 'PF') {
-      setAutoDebitPf(false)
-    }
   }
 
   const onChangeHandler = ((index: number, event: any, minLimit: string | number, maxLimit: string | number) => {
@@ -277,6 +336,10 @@ function SalaryBreakDown() {
       showToast('error', validateDeduction().errorMessage)
       return false
     }
+    else if (validateOtherPay().status) {
+      showToast('error', validateOtherPay().errorMessage)
+      return false
+    }
     else {
       return true
     }
@@ -287,6 +350,16 @@ function SalaryBreakDown() {
     selectedDeductions?.map((item: any) => {
       if (item.amount == '' && (item.percent == 0 || item.percent == '') || item.percent == '' && (item.amount == 0 || item.amount == '')) {
         status = { status: true, errorMessage: `Deduction field should not be empty` }
+      }
+    })
+    return status
+  }
+
+  const validateOtherPay = () => {
+    let status = { status: false, errorMessage: '' }
+    selectedOtherPayData?.map((item: any) => {
+      if (item?.amount === '') {
+        status = { status: true, errorMessage: `OtherPay field should not be empty` }
       }
     })
     return status
@@ -317,6 +390,56 @@ function SalaryBreakDown() {
 
   }
 
+
+
+
+  const modifiedOtherPay = () => {
+
+    // console.log("==========>", editSelectedOtherPayData);
+
+    // const editData = editSelectedOtherPayData && editSelectedOtherPayData.length > 0 && editSelectedOtherPayData.map((el: any) => {
+
+    //   return {
+    //     id: el.id,
+    //     amount: el.amount
+    //   }
+    // })
+
+    // const newlyAddedData = newlyAddedOtherPayData && newlyAddedOtherPayData.length > 0 && newlyAddedOtherPayData.map((el: any) => {
+    //   return {
+    //     incentive_id: el.id,
+    //     amount: parseInt(el.amount)
+    //   }
+    // })
+
+
+    // return [...editData, ...newlyAddedData]
+    if (isEditSalary) {
+      let editFilterData: any = []
+      selectedOtherPayData && selectedOtherPayData.length > 0 && selectedOtherPayData.map((item: any) => {
+        if ("incentive_id" in item) {
+          editFilterData = [...editFilterData, { id: item.id, amount: parseInt(item.amount) }]
+        } else {
+          editFilterData = [...editFilterData, {
+            incentive_id: item.id
+            , amount: parseInt(item.amount)
+          }
+          ]
+        }
+      })
+
+      return editFilterData
+    } else {
+      const filteredOtherPayKeys = selectedOtherPayData?.map((el: any) => {
+        return {
+          "incentive_id": el.id,
+          "amount": parseInt(el.amount)
+        }
+      })
+      return filteredOtherPayKeys
+    }
+  }
+
   const onSubmit = () => {
 
     const filteredApiKeys = selectedDeductions?.map((el: any) => {
@@ -325,6 +448,13 @@ function SalaryBreakDown() {
         percent: parseInt(el.percent),
         amount: parseInt(el.amount),
         is_percent: el.type == "1" ? true : false
+      }
+    })
+
+    const filteredOtherPayKeys = selectedOtherPayData?.map((el: any) => {
+      return {
+        "incentive_id": el.id,
+        "amount": parseInt(el.amount)
       }
     })
 
@@ -337,6 +467,7 @@ function SalaryBreakDown() {
       auto_calculate_tds: autoDebitTds,
       allowance_break_down_group_id: allowanceGroup,
       deductions_group_ids: isEditSalary ? modifiedApiKeys() : filteredApiKeys ? filteredApiKeys : [],
+      incentive_group_ids: isEditSalary ? modifiedOtherPay() : filteredOtherPayKeys ? filteredOtherPayKeys : [],
       ...(isEditSalary && { id: editSalaryDefinitionId })
     }
 
@@ -356,69 +487,6 @@ function SalaryBreakDown() {
 
   }
 
-  const onDeductionAdd = () => {
-    const params = {
-      name: 'PF',
-      hint: '',
-      calendar_year: calendarYear,
-      min_limit: -1,
-      max_limit: -1,
-      type: 'PF'
-    }
-    dispatch(addCompanyDeduction({
-      params,
-      onSuccess: (success: any) => () => {
-        getCompanyDeductionsList()
-      },
-      onError: (error: any) => () => {
-      }
-    }));
-  }
-
-
-  const pfIsExists = () => {
-    let id: any = ''
-    companyDeductionsList && companyDeductionsList.length > 0 && companyDeductionsList.filter((el: any) => {
-      if (el.type === 'PF') {
-        id = el
-      }
-    })
-    return id
-  }
-
-  useEffect(() => {
-    if (autoDebitPf) {
-      onHandleDebitPf(autoDebitPf)
-    }
-  }, [companyDeductionsList])
-
-
-  const onHandleDebitPf = (status: any) => {
-    const isEditPfExists = selectedDefinitionEditData && selectedDefinitionEditData.length > 0 && selectedDefinitionEditData.some((el: any) => el.name === 'PF')
-    if (!edit) {
-      setAutoDebitPf(status)
-      if (status) {
-        if (pfIsExists()) {
-          onDeductionDropdownChangeHandler(pfIsExists()?.id)
-        } else {
-          onDeductionAdd()
-        }
-      } else if (!status) {
-        onDeleteAllowence(pfIsExists())
-      }
-    } else if (edit && !isEditPfExists) {
-      setAutoDebitPf(status)
-      if (status) {
-        if (pfIsExists()) {
-          onDeductionDropdownChangeHandler(pfIsExists()?.id)
-        } else {
-          onDeductionAdd()
-        }
-      } else if (!status) {
-        onDeleteAllowence(pfIsExists())
-      }
-    }
-  }
 
   return (
     <ScreenContainer>
@@ -476,70 +544,80 @@ function SalaryBreakDown() {
           /> */}
         </div>
         <div className="mb-3">
+          <h3>{'Others Pay'}</h3>
+        </div>
+        <Container additionClass='col-xl-6'>
+          <div className='mt-3  mb-2'>
+            {OtherPayData && OtherPayData.length > 0 && OtherPayData.map((element: any) => {
+              const isDeductionExist = selectedOtherPayData && selectedOtherPayData?.length > 0 && selectedOtherPayData?.some((item: any) => {
+                let match = item?.incentive_id ? item?.incentive_id : item.id
+                return match === element?.id
+              })
+
+              return (
+                <div className='row'>
+                  <Container additionClass='d-flex col-auto'>
+                    <td className="col-auto col-sm-0 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={isDeductionExist ? Icons.TickActive : Icons.TickDefault} onClick={() => {
+                      onOtherPayChangeHandler(element?.id)
+                    }} /></td>
+                    <Container additionClass='col-auto col-sm-0 my-1'>
+                      <h5>{element?.name}</h5>
+                    </Container>
+                  </Container>
+                  <Container additionClass='col   ml-sm-0 ml-4'>
+                    {selectedOtherPayData && selectedOtherPayData?.length > 0 && selectedOtherPayData?.map((el: any, i: number) => {
+
+                      const isEditData = editSelectedOtherPayData?.some((item: any) => item.id === el.id)
+                      let match = el?.incentive_id ? el?.incentive_id : el.id
+
+                      return (
+                        <>
+                          <Container additionClass='row'>
+                            {match === element.id && (
+                              <>
+                                <Container additionClass={''}>
+                                  <InputNumber
+                                    value={el.amount}
+                                    additionClass={'col-xl-4'}
+                                    onChange={(event: any) => {
+                                      onChangeIncentiveHandler(i, event.target.value);
+                                    }}
+                                  />
+
+                                </Container>
+                                <Container additionClass={'col-xl-3 col col-sm-0'}>
+                                  <Container additionClass='row '>
+                                    <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
+                                      {!isEditData ?
+                                        <ImageView icon={Icons.Remove} onClick={() => {
+                                          onDeleteOtherPay(el?.id)
+                                        }} /> :
+                                        <></>
+                                      }
+                                    </td>
+                                  </Container>
+                                </Container>
+                                <h6 className='text-danger mt--3'>{el.error}</h6>
+                              </>
+                            )}
+                          </Container>
+                        </>
+                      )
+                    })}
+                  </Container>
+                </div>
+              )
+            })}
+          </div>
+        </Container>
+
+        <div className="mb-3">
           <h3>{'Deduction breakdown'}</h3>
         </div>
         <Container additionClass='row'>
           <Container additionClass='col-xl-6'>
-            <div className='my-3'>
-              <Container additionClass='d-flex'>
-                <td className="col-auto col-sm-0 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={autoDebitTds ? Icons.TickActive : Icons.TickDefault} onClick={() => {
-                  setAutoDebitTds(!autoDebitTds)
-                }} /></td>
-                <Container additionClass='col-auto col-sm-0 my-1'>
-                  <h5>{"Auto Debit TDS"}</h5>
-                </Container>
-              </Container>
-              <Container additionClass='d-flex'>
-                <td className="col-auto col-sm-0 mt-sm-0" style={{ whiteSpace: "pre-wrap" }}><ImageView icon={autoDebitPf ? Icons.TickActive : Icons.TickDefault} onClick={() => {
-                  onHandleDebitPf(!autoDebitPf)
-                }} /></td>
-                <Container additionClass='col-auto col-sm-0 my-1'>
-                  <h5>{"Debit PF"}</h5>
-                </Container>
-                <Container additionClass='col   ml-sm-0 ml-4'>
-                  {selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.map((el: any, i: number) => {
-                    const isEditData = selectedDefinitionEditData?.some((item: any) => item.deduction_id === el.deduction_id)
-                    let match = el?.deduction_id ? el?.deduction_id : el.id
-                    return (
-                      <>
-                        <Container additionClass='row'>
-                          {match === pfIsExists()?.id && (
-                            <>
-                              <Container additionClass={''}>
-                                <InputNumber
-                                  value={el.type == "1" ? el.percent : el.amount}
-                                  additionClass={'col-xl-4'}
-                                  onChange={(event: any) => {
-                                    onChangeHandler(i, event, el.min_limit, el.max_limit);
-                                  }}
-                                />
-
-                              </Container>
-                              <Container additionClass={'col-xl-3 col col-sm-0'}>
-                                <Container additionClass='row '>
-                                  <td className='col-xl col col-sm-0 mt-3 ' style={{ whiteSpace: "pre-wrap" }}>
-                                    {!isEditData ?
-                                      <ImageView icon={Icons.Remove} onClick={() => {
-                                        onDeleteAllowence(el)
-                                      }} /> :
-                                      <></>
-                                    }
-                                  </td>
-                                </Container>
-                              </Container>
-                              <h6 className='text-danger mt--3'>{el.error}</h6>
-                            </>
-                          )}
-                        </Container>
-                      </>
-                    )
-                  })}
-                </Container>
-              </Container>
-            </div>
-            <div className='mt--3  mb-2'>
+            <div className='mt-3  mb-2'>
               {deductionsDropDownData && deductionsDropDownData.length > 0 && deductionsDropDownData.map((element: any) => {
-
                 const isDeductionExist = selectedDeductions && selectedDeductions?.length > 0 && selectedDeductions?.some((item: any) => {
                   let match = item?.deduction_id ? item?.deduction_id : item.id
                   return match === element?.id

@@ -55,7 +55,10 @@ import {
   IS_EDIT_SALARY_DEFINITION,
 
   GET_SALARY_ALLOWANCE, GET_SALARY_ALLOWANCE_FAILURE, GET_SALARY_ALLOWANCE_SUCCESS,
-  GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER, GET_EARNINGS, GET_EARNINGS_SUCCESS, GET_EARNINGS_FAILURE
+  GET_TAX_SECTIONS, GET_TAX_SECTIONS_FAILURE, GET_TAX_SECTIONS_SUCCESS, RESET_REDUCER, 
+  GET_EARNINGS, GET_EARNINGS_SUCCESS, GET_EARNINGS_FAILURE, SET_COMPANY_INCENTIVE, 
+  SET_COMPANY_INCENTIVE_SUCCESS, SET_COMPANY_INCENTIVE_FAILURE, GET_COMPANY_INCENTIVE,
+   GET_COMPANY_INCENTIVE_SUCCESS, GET_COMPANY_INCENTIVE_FAILURE, SETTING_SELECTED_INCENTIVE_DETAILS
 
 } from './actionTypes'
 
@@ -478,5 +481,61 @@ export const getEmployeeEarningsFailure = (error) => {
   return {
     type: GET_EARNINGS_FAILURE,
     payload: error,
+  };
+};
+
+// SET_COMPANY_INCENTIVE
+
+export const setCompanyIncentive = (type) => {
+  return {
+    type: SET_COMPANY_INCENTIVE,
+    payload: type,
+  };
+};
+
+export const setCompanyIncentiveSuccess = (response) => {
+  return {
+    type: SET_COMPANY_INCENTIVE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const setCompanyIncentiveFailure = (error) => {
+  return {
+    type: SET_COMPANY_INCENTIVE_FAILURE,
+    payload: error,
+  };
+};
+
+// GET_COMPANY_INCENTIVE'
+
+
+export const getCompanyIncentive = (type) => {
+  return {
+    type: GET_COMPANY_INCENTIVE,
+    payload: type,
+  };
+};
+
+export const getCompanyIncentiveSuccess = (response) => {
+  return {
+    type: GET_COMPANY_INCENTIVE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getCompanyIncentiveFailure = (error) => {
+  return {
+    type: GET_COMPANY_INCENTIVE_FAILURE,
+    payload: error,
+  };
+};
+
+// SETTING_SELECTED_INCENTIVE_DETAILS
+
+export const settingSelectedIncentiveGroupDetails = (type) => {
+  return {
+    type: SETTING_SELECTED_INCENTIVE_DETAILS,
+    payload: type,
   };
 };
