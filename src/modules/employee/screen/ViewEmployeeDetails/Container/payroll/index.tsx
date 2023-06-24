@@ -406,7 +406,7 @@ function PayrollView() {
               {salaryCriteria && salaryCriteria.length > 0 && salaryCriteria.map((el: any) => {
                 return (
                   <div className='col'>
-                    {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" &&
+                    {el?.key !== "allowance_breakdown" && el?.key !== "deduction_breakdown" && el.key !== 'other_income_breakdown' &&
                       <FormTypography title={el?.title} subTitle={el?.value} />
                     }
                   </div>
