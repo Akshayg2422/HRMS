@@ -387,6 +387,16 @@ const dateFormate = (date: string) => {
 }
 
 
+const HFSW_ID = "e87b92e6-8e3e-484f-9d79-d4bc24bd5fb5"
+
+const isHfwsBranch = (id: string) => {
+  let status = false
+  if (HFSW_ID === id) {
+    status = true;
+  }
+  return status
+}
+
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
   validateEmail,
@@ -464,5 +474,6 @@ export {
   mergeTimeSlots,
   INITIAL_PAGE,
   dateFormate,
-  showApprovedBy
+  showApprovedBy,
+  isHfwsBranch
 }

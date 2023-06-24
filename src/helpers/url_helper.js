@@ -306,3 +306,9 @@ export const ADD_COMPANY_INCENTIVE = '/payroll/addCompanyIncentive'
 
 export const GET_COMPANY_INCENTIVE = '/payroll/getCompanyIncentives'
 
+
+// getHfwsStartEndTime
+
+export const GET_HFWS_BRANCH_SHIFT_TIME = '/attendance/getHfwsStartEndTime'
+
+

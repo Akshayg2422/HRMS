@@ -170,7 +170,6 @@ function SalaryBreakDown() {
   }
 
   const prefillSalaryDefinitions = (salaryDetails: any) => {
-    console.log("==============>", salaryDetails);
 
     setEditSalaryDefinitionId(salaryDetails?.id)
     setAnnualCTC(salaryDetails.ctc)
@@ -394,26 +393,6 @@ function SalaryBreakDown() {
 
 
   const modifiedOtherPay = () => {
-
-    // console.log("==========>", editSelectedOtherPayData);
-
-    // const editData = editSelectedOtherPayData && editSelectedOtherPayData.length > 0 && editSelectedOtherPayData.map((el: any) => {
-
-    //   return {
-    //     id: el.id,
-    //     amount: el.amount
-    //   }
-    // })
-
-    // const newlyAddedData = newlyAddedOtherPayData && newlyAddedOtherPayData.length > 0 && newlyAddedOtherPayData.map((el: any) => {
-    //   return {
-    //     incentive_id: el.id,
-    //     amount: parseInt(el.amount)
-    //   }
-    // })
-
-
-    // return [...editData, ...newlyAddedData]
     if (isEditSalary) {
       let editFilterData: any = []
       selectedOtherPayData && selectedOtherPayData.length > 0 && selectedOtherPayData.map((item: any) => {
@@ -536,12 +515,6 @@ function SalaryBreakDown() {
 
             />
           </div>
-          {/* <Icon
-            text={"+"}
-            onClick={() => {
-              goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)
-            }}
-          /> */}
         </div>
         <div className="mb-3">
           <h3>{'Others Pay'}</h3>

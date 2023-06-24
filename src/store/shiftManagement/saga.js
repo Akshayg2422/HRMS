@@ -13,7 +13,8 @@ import {
     GET_SHIFT_REQUESTED_EMPLOYEES,
     GET_SHIFT_REQUESTED_STATUS,
     POST_REQUEST_SHIFT_CHANGE,
-    POST_CHANGE_SHIFT_CHANGE
+    POST_CHANGE_SHIFT_CHANGE,
+    GET_HFWS_BRANCH_SHIFT
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -44,12 +45,14 @@ import {
     postRequestShiftChangeFailure,
     postChangeShiftChangeSuccess,
     postChangeShiftChangeFailure,
+    getHfwsBranchShiftSuccess,
+    getHfwsBranchShiftFailure,
 } from "./actions";
 
 import {
     postAddWeeklyShift, fetchBranchShifts, fetchBranchWeeklyShifts, postAddShiftApi, fetchWeeklyShiftDetailsApi,
     fetchShiftEmployeesApi, fetchMyShiftsApi, fetchEmployeeWithShiftsApi, PostEmployeeWithChangeShiftApi,
-    getShiftRequestedEmployeesApi, getShiftRequestedStatusApi, postRequestShiftChangeApi, postChangeEmployeeShiftApi
+    getShiftRequestedEmployeesApi, getShiftRequestedStatusApi, postRequestShiftChangeApi, postChangeEmployeeShiftApi, getHfwsBranchShiftApi
 } from "../../helpers/backend_helper";
 import { showLoader, hideLoader } from "../loader/actions";
 
@@ -367,6 +370,28 @@ function* changeShiftChangeSaga(action) {
     }
 }
 
+// hfwsBranchShifts
+
+function* getHfwsBranchShiftsSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(getHfwsBranchShiftApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getHfwsBranchShiftSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(getHfwsBranchShiftFailure(response.error_message));
+            yield call(action.payload.onError(response.error_message));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getHfwsBranchShiftFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
 
 //Watcher
 
@@ -384,6 +409,8 @@ function* ShiftManagementSaga() {
     yield takeLatest(GET_SHIFT_REQUESTED_STATUS, shiftRequestedStatusSaga);
     yield takeLatest(POST_REQUEST_SHIFT_CHANGE, shiftRequestShiftChangeSaga);
     yield takeLatest(POST_CHANGE_SHIFT_CHANGE, changeShiftChangeSaga);
+    yield takeLatest(GET_HFWS_BRANCH_SHIFT, getHfwsBranchShiftsSaga);
+
 }
 
 export default ShiftManagementSaga;

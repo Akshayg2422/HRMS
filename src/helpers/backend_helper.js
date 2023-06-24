@@ -341,3 +341,8 @@ export const postCompanyIncentiveApi = (payload) => post(url.ADD_COMPANY_INCENTI
 // getCompanyIncentives
 
 export const getCompanyIncentiveApi = (payload) => post(url.GET_COMPANY_INCENTIVE, payload, {})
+
+//GET_HFWS_BRANCH_SHIFT_TIME 
+
+export const getHfwsBranchShiftApi = (payload) => post(url.GET_HFWS_BRANCH_SHIFT_TIME, payload, {})
+

@@ -83,6 +83,8 @@ function PayrollView() {
   const [salaryCriteria, setSalaryCriteria] = useState<any>()
   const [allowanceCalculatedPay, setAllowanceCalculatedPay] = useState<any>()
   const [deductionsCalculatedPay, setDeductionsCalculatedPay] = useState<any>()
+  const [othersCalculatedPay, setOthersCalculatedPay] = useState<any>()
+
   const [totalEarnings, setTotalEarnings] = useState<any>(0)
 
 
@@ -257,6 +259,11 @@ function PayrollView() {
         setDeductionsCalculatedPay(el?.value)
       }
     })
+    details?.salary_till_date?.calculated_pay.map((el: any) => {
+      if (el.key === 'other_income_breakdown') {
+        setOthersCalculatedPay(el?.value)
+      }
+    })
     setTotalEarnings(details?.salary_till_date?.gross_pay_till_date_after_deductions?.toFixed(2))
   }
 
@@ -424,6 +431,15 @@ function PayrollView() {
                   />
                 }
               </Container>
+              {othersCalculatedPay && normalizedObjectToArray(othersCalculatedPay).length > 0 && <Container additionClass='m-0 p-0 mt-2'>
+                <h4 className={'text-black'}>{'Other Pays'}</h4>
+                {othersCalculatedPay && normalizedObjectToArray(othersCalculatedPay).length > 0 &&
+                  <CommonTable
+                    card={false}
+                    displayDataSet={normalizedList(normalizedObjectToArray(othersCalculatedPay))}
+                  />
+                }
+              </Container>}
               <Container additionClass='m-0 p-0 mt-2'>
                 <h4 className={'text-black'}>{'Deductions'}</h4>
                 {deductionsCalculatedPay && normalizedObjectToArray(deductionsCalculatedPay).length > 0 &&

@@ -208,7 +208,7 @@ function PayRoll() {
         <>
             <TableWrapper
                 buttonChildren={
-                    // userDetails?.is_admin && 
+                    userDetails?.is_admin && 
                     <Container additionClass=" mr--4">
                         {(
                             <Container additionClass="col">
