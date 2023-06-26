@@ -94,7 +94,7 @@ const Rejected = ({ search, date }: any) => {
 
   const fetchleaveDetail = (id: any) => {
     const params = {
-      status: -1,
+      status: -2,
       page_number: INITIAL_PAGE,
       employee_id: id
     };

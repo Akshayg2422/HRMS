@@ -18,6 +18,7 @@ import {
   Divider,
   ImageView,
   NoRecordFound,
+  SearchableDropdown,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -43,7 +44,8 @@ import {
   dropDownValueCheckByEvent,
   MAX_LENGTH_AADHAR,
   convertTo24Hour,
-  isHfwsBranch
+  isHfwsBranch,
+  getDropDownFormatter
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -115,7 +117,7 @@ const ManageEmployee = () => {
 
 
 
-  const [employeeDetails, setEmployeeDetails] = useState({
+  const [employeeDetails, setEmployeeDetails] = useState<any>({
     firstName: "",
     lastName: "",
     mobileNumber: "",
@@ -124,8 +126,8 @@ const ManageEmployee = () => {
     bloodGroup: "",
     panNo: "",
     aadharrNo: "",
-    designation: "",
-    department: "",
+    designation: '',
+    department: '',
     branch: dashboardDetails?.company_branch?.id,
     dateOfJoining: new Date(),
     dob: "",
@@ -155,7 +157,6 @@ const ManageEmployee = () => {
   const [isBranchShiftDataExist, setIsBranchShiftExist] = useState(false)
 
   // getHfwsBranchShift
-
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -343,10 +344,10 @@ const ManageEmployee = () => {
       showToast("error", t("invalidGender"));
       return false;
     }
-    else if (Object.keys(employeeDetails.designation).length === 0) {
+    else if (Object.keys(employeeDetails.designation?.id).length === 0) {
       showToast("error", t("invalidDesignation"));
       return false;
-    } else if (Object.keys(employeeDetails.department).length === 0) {
+    } else if (Object.keys(employeeDetails.department?.id).length === 0) {
       showToast("error", t("invalidDepartment"));
       return false;
     } else if (Object.keys(employeeDetails.branch).length === 0) {
@@ -380,8 +381,8 @@ const ManageEmployee = () => {
         ...(employeeDetails.aadharrNo && {
           aadhar_number: employeeDetails.aadharrNo,
         }),
-        designation_id: employeeDetails.designation,
-        department_id: employeeDetails.department,
+        designation_id: employeeDetails.designation.id,
+        department_id: employeeDetails.department.id,
         branch_id: employeeDetails.branch,
         gender: employeeDetails.gender,
         ...(employeeDetails.bloodGroup && {
@@ -400,10 +401,10 @@ const ManageEmployee = () => {
             getMomentObjFromServer(employeeDetails.dateOfJoining)
           ),
         }),
-        dob: 
-        getServerDateFromMoment(
-          getMomentObjFromServer(employeeDetails.dob)
-        ),
+        dob:
+          getServerDateFromMoment(
+            getMomentObjFromServer(employeeDetails.dob)
+          ),
         ...(employeeDetails.kgid_No && {
           kgid_number: employeeDetails.kgid_No,
         }),
@@ -455,11 +456,11 @@ const ManageEmployee = () => {
         employeeInitData.bloodGroup = editEmployeeDetails.blood_group;
 
       if (editEmployeeDetails.designation_id) {
-        employeeInitData.designation = editEmployeeDetails.designation_id;
+        employeeInitData.designation = getObjectFromArrayByKey(designationDropdownData, "id", editEmployeeDetails.designation_id);
       }
 
       if (editEmployeeDetails.department_id)
-        employeeInitData.department = editEmployeeDetails.department_id;
+        employeeInitData.department = getObjectFromArrayByKey(departmentDropdownData, "id", editEmployeeDetails.department_id);
 
       if (editEmployeeDetails.branch_id)
         employeeInitData.branch = editEmployeeDetails.branch_id;
@@ -515,7 +516,7 @@ const ManageEmployee = () => {
 
 
   const hsfwBranchEditShift = (startTime: string, endTime: string) => {
-    hfwsBranchShifts && hfwsBranchShifts.length > 0 && hfwsBranchShifts.map((el: any, index: any) => {      
+    hfwsBranchShifts && hfwsBranchShifts.length > 0 && hfwsBranchShifts.map((el: any, index: any) => {
       if (convertTo24Hour(startTime).trim() === convertTo24Hour(el.start_time).trim() && convertTo24Hour(endTime).trim() === convertTo24Hour(el.end_time).trim()) {
         setHfswSelectedShiftIndex(index)
       }
@@ -599,16 +600,23 @@ const ManageEmployee = () => {
     setDepartmentModel(!departmentModel);
   }
 
-  const handleDesignationChange = (event: { target: { value: any } }) => {
+  const handleDesignationChange = (event: any) => {
     setEmployeeDetails(prevDetails => ({
       ...prevDetails,
-      designation: event.target.value
+      designation: event
     }));
     setEmployeeDetails(prevDetails => ({
       ...prevDetails,
       shift: ''
     }));
-    setShiftsDropdownData(designationMatchShifts(event.target.value))
+    setShiftsDropdownData(designationMatchShifts(event))
+  }
+
+  const handleDepartmentChange = (event: any) => {
+    setEmployeeDetails(prevDetails => ({
+      ...prevDetails,
+      department: event
+    }));
   }
 
 
@@ -732,8 +740,8 @@ const ManageEmployee = () => {
         <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
             <div className="row align-items-center">
-              <div className="col mt--2">
-                <DropDown
+              <div className="col mb-3">
+                {/* <DropDown
                   label={t("designation")}
                   placeholder={t("enterDesignation")}
                   data={designationDropdownData}
@@ -742,18 +750,24 @@ const ManageEmployee = () => {
                   onChange={(event) => {
                     handleDesignationChange(event)
                   }}
-                />
+                /> */}
+                <SearchableDropdown selected={employeeDetails.designation} data={getDropDownFormatter(designationDropdownData)} heading={t("designation")} placeHolder={t("enterDesignation")} onChange={(event) => {
+                  handleDesignationChange(event)
+                }} />
+
               </div>
-              {dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && <Icon
-                text={"+"}
-                onClick={() => setDesignationModel(!designationModel)}
-              />}
+              <div className="mt-3">
+                {dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && <Icon
+                  text={"+"}
+                  onClick={() => setDesignationModel(!designationModel)}
+                />}
+              </div>
             </div>
           </div>
           <div className="col-xl-6">
             <div className="row align-items-center">
-              <div className="col mt--2">
-                <DropDown
+              <div className="col mb-3">
+                {/* <DropDown
                   label={t("department")}
                   placeholder={t("enterDepartment")}
                   data={departmentDropdownData}
@@ -762,10 +776,14 @@ const ManageEmployee = () => {
                   onChange={(event) =>
                     onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
                   }
-                />
+                /> */}
+                <SearchableDropdown selected={employeeDetails.department} data={getDropDownFormatter(departmentDropdownData)} heading={t("department")} placeHolder={t("enterDepartment")} onChange={(event) => {
+                  handleDepartmentChange(event)
+                }} />
               </div>
               {dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && <Icon
                 text={"+"}
+                additionClass="mt-3"
                 onClick={() => setDepartmentModel(!departmentModel)}
               />}
             </div>
@@ -1035,26 +1053,12 @@ const ManageEmployee = () => {
                     // setCurrentEmployeeShiftId(el.id)
                   }}
                 >
-                  <h4 className="col fw-normal">{el.start_time}</h4>{"To"}
-                  <h4 className="col fw-normal">{el.end_time}</h4>
+                  <h4 className="col fw-normal">{el.display_text}</h4>
                   <td className="col-2" onClick={() => { handleHfswShiftSelect(el, index) }} style={{ whiteSpace: "pre-wrap", cursor: 'pointer' }}><ImageView icon={index === hfswSelectedShiftIndex ? Icons.TickActive : Icons.TickDefault} /></td>
 
                 </Container>
               )
             })}
-            {/* <Container
-                            margin={'m-3'}
-                            justifyContent={'justify-content-end'}
-                            display={'d-flex'}>
-                            <Secondary
-                                text={t('cancel')}
-                                onClick={() => setHfswShiftModel(!hfswShiftModel)}
-                            />
-                            <Primary
-                                text={t('update')}
-                                onClick={() => { onChangeShift() }}
-                            />
-                        </Container> */}
           </Container> : <NoRecordFound />}
         </Container>
       </Modal>

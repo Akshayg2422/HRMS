@@ -96,7 +96,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
 
   }
 
-  let toastElement = null;
+  let toastElement: any = null;
   switch (type) {
     case 'success':
       toastElement = toast.success(message, style)
@@ -397,6 +397,18 @@ const isHfwsBranch = (id: string) => {
   return status
 }
 
+
+const getDropDownFormatter = (data: any) => {
+  return data && data?.map((item: any) => {
+    return {
+      text: item.name,
+      id: item.id,
+    }
+  })
+}
+
+
+
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
   validateEmail,
@@ -475,5 +487,6 @@ export {
   INITIAL_PAGE,
   dateFormate,
   showApprovedBy,
-  isHfwsBranch
+  isHfwsBranch,
+  getDropDownFormatter
 }

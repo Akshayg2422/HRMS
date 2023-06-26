@@ -74,7 +74,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
 
 
     const normalizedEmployee = (data: any) => {
-        return data && data.length > 0 && data.map((el: any) => {            
+        return data && data.length > 0 && data.map((el: any) => {
             return {
                 employee: el.name,
                 designation: el.designation,
@@ -84,6 +84,7 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
                 "LOP Days": el?.break_down?.lop_days,
                 "Basic Pay": el?.salary_till_date?.base_pay ? el?.salary_till_date?.base_pay : '-',
                 "Allowance": renderNormalizer(AllowancesNormalizer(el?.salary_till_date?.calculated_pay), true),
+                "Other Pay": renderNormalizer(otherPayNormalizer(el?.salary_till_date?.calculated_pay), true),
                 "Gross Salary": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay : '-',
                 "Deduction": renderNormalizer(deductionNormalizer(el?.salary_till_date?.calculated_pay), false),
                 "Net Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.gross_pay_till_date_after_deductions : '-'
@@ -110,6 +111,16 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
             }
         })
         return deductionData
+    }
+
+    const otherPayNormalizer = (item: any) => {
+        const otherPayData: any[] = []
+        item && item.length > 0 && item.map((el: any) => {
+            if (el.key === 'other_income_breakdown') {
+                otherPayData.push(el.value)
+            }
+        })
+        return otherPayData
     }
 
 
