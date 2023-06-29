@@ -45,7 +45,7 @@ import {
   MAX_LENGTH_AADHAR,
   convertTo24Hour,
   isHfwsBranch,
-  getDropDownFormatter
+  getDropDownFormatter,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -114,6 +114,8 @@ const ManageEmployee = () => {
   const { hfwsBranchShifts } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
+  
+  const INITIAL_COMPANY_BRANCH = { id: dashboardDetails?.company_branch?.id, text: dashboardDetails?.company_branch?.name }
 
 
 
@@ -128,7 +130,7 @@ const ManageEmployee = () => {
     aadharrNo: "",
     designation: '',
     department: '',
-    branch: dashboardDetails?.company_branch?.id,
+    branch: INITIAL_COMPANY_BRANCH,
     dateOfJoining: new Date(),
     dob: "",
     kgid_No: "",
@@ -383,7 +385,7 @@ const ManageEmployee = () => {
         }),
         designation_id: employeeDetails.designation.id,
         department_id: employeeDetails.department.id,
-        branch_id: employeeDetails.branch,
+        branch_id: employeeDetails.branch.id,
         gender: employeeDetails.gender,
         ...(employeeDetails.bloodGroup && {
           blood_group: employeeDetails.bloodGroup,
@@ -463,7 +465,7 @@ const ManageEmployee = () => {
         employeeInitData.department = getObjectFromArrayByKey(departmentDropdownData, "id", editEmployeeDetails.department_id);
 
       if (editEmployeeDetails.branch_id)
-        employeeInitData.branch = editEmployeeDetails.branch_id;
+        employeeInitData.branch = getObjectFromArrayByKey(companyBranchDropdownData, "id", editEmployeeDetails.branch_id);
 
       if (editEmployeeDetails.employment_type)
         employeeInitData.employeeType = editEmployeeDetails.employment_type;
@@ -616,6 +618,13 @@ const ManageEmployee = () => {
     setEmployeeDetails(prevDetails => ({
       ...prevDetails,
       department: event
+    }));
+  }
+
+  const handleBranchChange = (event: any) => {
+    setEmployeeDetails(prevDetails => ({
+      ...prevDetails,
+      branch: event
     }));
   }
 
@@ -792,7 +801,7 @@ const ManageEmployee = () => {
 
         <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
-            <DropDown
+            {/* <DropDown
               label={t("branch")}
               placeholder={t("branch")}
               data={companyBranchDropdownData}
@@ -801,7 +810,10 @@ const ManageEmployee = () => {
               onChange={(event) => {
                 onChangeHandler(dropDownValueCheckByEvent(event, t("branch")))
               }}
-            />
+            /> */}
+            <SearchableDropdown selected={employeeDetails.branch} data={getDropDownFormatter(companyBranchDropdownData)} heading={t("branch")} placeHolder={t("branch")} onChange={(event) => {
+              handleBranchChange(event)
+            }} />
           </div>
           <div className="col-xl-6">
             <DropDown

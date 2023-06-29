@@ -44,11 +44,11 @@ function SearchableDropdown({ variant = 'default', data, heading, selected, clas
     return (
         <>
             <InputHeading heading={heading}/>
-            <div className='mt-2 '>
+            <div className='mt-2 overflow-hidden'>
                 <Select2
                     data={data}
                     data-minimum-results-for-search={inputType}
-                    className={`${className} select2-container`}
+                    className={`${className} select2-container `}
                     value={selected && selected.id}
                     options={{
                         placeholder: placeHolder

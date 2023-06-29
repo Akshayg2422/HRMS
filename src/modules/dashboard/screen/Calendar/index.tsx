@@ -29,7 +29,6 @@ import {
   showToast,
   useNav,
 } from "@utils";
-import { t } from "i18next";
 
 export const DROPDOWN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
@@ -49,9 +48,10 @@ function Calendar() {
   const { calendarEvents, numOfPages, currentPage, selectedEventId } =
     useSelector((state: any) => state.EmployeeReducer);
 
-  const { hierarchicalBranchIds } = useSelector(
+  const { hierarchicalBranchIds, dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
+
 
   useEffect(() => {
     getCalendarDetails(currentPage);
@@ -71,6 +71,8 @@ function Calendar() {
       }
     }));
   };
+
+  // dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin
 
   function paginationHandler(
     type: "next" | "prev" | "current",
@@ -107,13 +109,16 @@ function Calendar() {
         title: el.title,
         description: el.description,
         "Created By": el.created_by ? el.created_by : '-',
-        "": <CommonDropdownMenu
-          data={DROPDOWN_MENU}
-          onItemClick={(e, item) => {
-            e.stopPropagation();
-            dropdownMenuItemActionHandler(item, el, index)
-          }}
-        />
+        "Created Date": el.holiday_created_date ? el.holiday_created_date : '-',
+        ...(dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && {
+          "": <CommonDropdownMenu
+            data={DROPDOWN_MENU}
+            onItemClick={(e, item) => {
+              e.stopPropagation();
+              dropdownMenuItemActionHandler(item, el, index)
+            }}
+          />
+        })
       };
     });
   };

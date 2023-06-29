@@ -233,8 +233,6 @@ function Reports() {
 
   }
 
-
-
   const getBranchShiftsList = () => {
     const params = { branch_id: dashboardDetails?.company_branch?.id }
     dispatch(getBranchShifts({
@@ -243,7 +241,7 @@ function Reports() {
         setShiftGroupData(success)
       },
       onError: (error: string) => () => {
-        showToast("error", error);
+        showToast("error", error);  
       },
     }));
   }

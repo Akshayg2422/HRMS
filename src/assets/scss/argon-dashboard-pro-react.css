@@ -1568,6 +1568,7 @@ html.rtl {
 
 .select2-container .select2-selection__placeholder {
   font-size: 14px;
+  white-space: nowrap;
 }
 .select2-container .select2-selection__rendered {
   font-size: 15px;
