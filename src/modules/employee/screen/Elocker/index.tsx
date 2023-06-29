@@ -72,7 +72,6 @@ function ELocker() {
         const params = {
             ...(search && { q: search })
         };
-        console.log("asdsdsd");
 
         dispatch(getEmployeeDocument({
             params,

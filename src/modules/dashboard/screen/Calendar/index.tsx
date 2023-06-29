@@ -110,7 +110,6 @@ function Calendar() {
         description: el.description,
         "Created By": el.created_by ? el.created_by : '-',
         "Created Date": el.holiday_created_date ? el.holiday_created_date : '-',
-        ...(dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && {
           "": <CommonDropdownMenu
             data={DROPDOWN_MENU}
             onItemClick={(e, item) => {
@@ -118,7 +117,6 @@ function Calendar() {
               dropdownMenuItemActionHandler(item, el, index)
             }}
           />
-        })
       };
     });
   };

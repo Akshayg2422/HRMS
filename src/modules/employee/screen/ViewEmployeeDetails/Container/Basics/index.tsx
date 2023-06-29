@@ -133,7 +133,6 @@ const BasicView = () => {
             getEmployeeBasicInfo({
                 params,
                 onSuccess: (response: EmployeeDetail) => () => {
-                    console.log("responseeee------->", response);
 
                     preFillEmployeeDetails(response);
                     setShowEnableContainers(true)

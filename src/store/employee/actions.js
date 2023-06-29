@@ -1358,7 +1358,6 @@ export const getEmployeeAttendanceInfo = (params) => {
 };
 
 export const getEmployeeAttendanceInfoSuccess = (response) => {
-  console.log("action", response);
   return {
     type: FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
     payload: response,

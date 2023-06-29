@@ -315,7 +315,6 @@ const PayrollReducer = (state = initialState, action) => {
          */
 
         case SETTING_SELECTED_ALLOWANCE_GROUP_DETAILS:
-            console.log("reducer---->", action.payload);
             state = {
                 ...state,
                 selectedAllowanceGroupDetails: action.payload
@@ -388,7 +387,6 @@ const PayrollReducer = (state = initialState, action) => {
          */
 
         case SETTING_SELECTED_DEDUCTION_DETAILS:
-            console.log("reducer-===--->", action.payload);
 
             state = {
                 ...state,

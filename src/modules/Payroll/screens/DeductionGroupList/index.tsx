@@ -67,7 +67,6 @@ function DeductionGroupList() {
     }
 
     const normalizedAllowanceList = (data: any) => {
-        console.log("=====>", data);
 
         return data && data.length > 0 && data.map((el: any, index: number) => {
             return {

@@ -87,7 +87,6 @@ const PushNotification = () => {
 
     onMessageListener()
         .then((payload: any) => {
-            console.log("foreground message----->", payload);
             const title = payload?.data?.title;
             const options = {
                 body: payload?.notification?.body || payload?.data?.message,

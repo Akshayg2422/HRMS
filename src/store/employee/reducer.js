@@ -1359,7 +1359,6 @@ const EmployeeReducer = (state = initialState, action) => {
       state = { ...state, loading: true };
       break;
     case FETCH_EMPLOYEE_BASIC_INFO_SUCCESS:
-      console.log("action.payload");
       state = {
         ...state,
         loading: false,
@@ -1381,7 +1380,6 @@ const EmployeeReducer = (state = initialState, action) => {
       state = { ...state, loading: true };
       break;
     case FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS:
-      console.log("action.payload-->", action.payload);
       state = {
         ...state,
         employeeAttendanceInfoDetails: action.payload

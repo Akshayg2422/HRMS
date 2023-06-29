@@ -853,7 +853,6 @@ function* addHolidayEvents(action) {
     yield put(showLoader());
 
     const response = yield call(postAddHolidays, action.payload.params);
-    console.log("response------>", response);
     if (response.success) {
       yield put(hideLoader());
       yield put(addHolidaySuccess(response.details));

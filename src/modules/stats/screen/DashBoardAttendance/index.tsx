@@ -98,7 +98,6 @@ const DashBoardAttendance = ({ }) => {
     getTodayStats(INITIAL_PAGE);
   }, [selectedAttendance, selectedDepartment, customselectedDate]);
 
-  console.log("routeParams", routeParams)
 
 
   useEffect(() => {

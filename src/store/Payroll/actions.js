@@ -337,8 +337,6 @@ export const getCompanyDeductionsPaginatedFailure = (error) => {
  */
 
 export const settingSelectedDeductionDetails = (type) => {
-  console.log("typeeee--->", type);
-
   return {
     type: SETTING_SELECTED_DEDUCTION_DETAILS,
     payload: type,
@@ -349,7 +347,6 @@ export const settingSelectedDeductionDetails = (type) => {
  * setting selected group allowance details
  */
 export const settingSelectedAllowanceGroupDetails = (type) => {
-  console.log("typeeee", type);
   return {
     type: SETTING_SELECTED_ALLOWANCE_GROUP_DETAILS,
     payload: type,
@@ -451,7 +448,6 @@ export const getEmployeeSalaryDefinitionFailure = (error) => {
  */
 
 export const isEditEmployeeSalaryDefinition = (type) => {
-  console.log("type",type);
   return {
     type: IS_EDIT_SALARY_DEFINITION,
     payload: type,

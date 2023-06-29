@@ -97,7 +97,6 @@ function ManageLeaves() {
 
 
 
-  console.log("=========>", daysHoliday);
 
 
   return (

@@ -16,10 +16,8 @@ function DocumentUpload() {
     let reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log("log", reader.result, "ddd===========>");
 
       let encoded = reader && reader.result && reader.result.toString().replace(/^data:(.*,)?/, '');
-      console.log('encoded', encoded);
 
       dispatch(updateDocumentsInput(encoded ? encoded : '', index));
     }

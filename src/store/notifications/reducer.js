@@ -106,7 +106,6 @@ const NotificationReducer = (state = initialState, action) => {
       break;
     case FETCH_NOTIFICATIONS_SUCCESS:
       const notification = action.payload;
-      console.log('notificationData', notification);
       state = {
         ...state,
         loading: false,

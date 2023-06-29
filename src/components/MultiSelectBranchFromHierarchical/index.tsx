@@ -53,7 +53,6 @@ function MultiselectHierarchical({ showActiveBranch = true }: HierarchicalProps)
           }
         },
         onError: () => () => {
-          console.log("=========error");
         },
       })
     );

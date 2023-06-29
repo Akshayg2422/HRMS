@@ -27,7 +27,7 @@ export const requestForToken = async () => {
         const currentToken = await getToken(messaging, { vapidKey: "BPXo_a_-7x6w9d8P5CoFLfq_Y0rg2IsCg-Qsvm8n31h0lGyQFo7eq3rkgepLrzLi2TstqYCGaY9YSqjkre65PYk" });
         if (currentToken) {
             dispatch(getFcmToken(currentToken));
-            console.log(currentToken + 'device token');
+            // console.log(currentToken + 'device token');
         } else {
             // Show permission request UI
             console.log('No registration token available. Request permission to generate one.');

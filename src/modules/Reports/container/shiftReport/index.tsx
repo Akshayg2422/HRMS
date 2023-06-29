@@ -26,7 +26,6 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         (state: any) => state.DashboardReducer
     );
 
-    console.log("data------>",data);
     
 
     const {
@@ -129,11 +128,9 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
             },
         }));
     }
-    console.log("name---->", name);
 
 
     const memoizedTable = useMemo(() => {
-        console.log("wwwwwwwwww",data);
         
         return <>
           {data?.data && data?.data?.length > 0 ? (

@@ -52,8 +52,6 @@ const ManageEmployeeLeaves = ({ search }: any) => {
 
   const normalizedEmployeeLog = (data: any) => {
     return data && data.length > 0 && data.map((el: any) => {
-      console.log("=============>", el);
-
       return {
         Employee: `${el.name}${' '}(${el.employee_id})`,
         "Date From": el.date_from,
