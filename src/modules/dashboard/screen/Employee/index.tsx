@@ -285,13 +285,14 @@ function EmployeeScreen() {
     const branchExists = updateSelectedBranch.some(
       (eachBranch) => eachBranch.id === item.id
     );
+
     if (branchExists) {
-      if (updateSelectedBranch.length != 1) {
+      if (defaultBranchId !== item.id) {
         updateSelectedBranch = updateSelectedBranch.filter(
           (eachItem) => eachItem.id !== item.id
         );
       } else {
-        showToast("info", 'Atleast one Branch should exists');
+        showToast("info", 'Parent Branch Cannot Been Removed');
       }
     } else {
       updateSelectedBranch = [...updateSelectedBranch, item];

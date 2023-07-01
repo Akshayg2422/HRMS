@@ -117,7 +117,7 @@ function Calendar() {
               dropdownMenuItemActionHandler(item, el, index)
             }}
           />
-      };
+        };
     });
   };
 

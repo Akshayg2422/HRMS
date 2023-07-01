@@ -4,7 +4,7 @@ import { ASYN_USER_AUTH } from '@utils'
 //apply base url for axios
 const STAGING = 'http://3.7.59.39';
 
-const LOCAL_DEV = 'http://192.168.181.136:8003';
+const LOCAL_DEV = 'http://192.168.225.136:8003';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
 const LOCAL_PROD = 'http://103.118.93.204:8002';

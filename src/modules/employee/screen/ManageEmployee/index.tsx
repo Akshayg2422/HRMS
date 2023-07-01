@@ -930,6 +930,7 @@ const ManageEmployee = () => {
                   title={t("pleaseSelect")}
                   icon={Icons.Time}
                   iconPosition={"append"}
+                  disabled
                   value={employeeDetails.attendanceStartTime}
                   onChange={(time: any) => {
                     timePickerHandler(time, "attendanceStartTime")
@@ -942,6 +943,7 @@ const ManageEmployee = () => {
                   title={t("pleaseSelect")}
                   icon={Icons.Time}
                   iconPosition={"append"}
+                  disabled
                   value={employeeDetails.attendanceEndTime}
                   onChange={(time: any) => {
                     timePickerHandler(time, "attendanceEndTime");

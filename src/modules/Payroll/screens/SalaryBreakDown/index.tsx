@@ -1,4 +1,4 @@
-import { Card, CheckBox, Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
+import { Card, CheckBox, CommonTable, Container, DropDown, FormWrapper, Icon, ImageView, InputDefault, InputNumber, InputText, Modal, Primary, ScreenContainer } from '@components'
 import { goBack, goTo, inputNumberMaxLength, ROUTE, showToast, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   validateBasicSalary
 } from "@utils";
-import { addCompanyDeduction, addEmployeeSalaryDefinition, getAllowanceGroups, getCompanyDeductions, getCompanyIncentive, getEmployeeSalaryDefinition, isEditEmployeeSalaryDefinition } from '../../../../store/Payroll/actions';
+import { addCompanyDeduction, addEmployeeSalaryDefinition, getAllowanceGroupDetails, getAllowanceGroups, getCompanyDeductions, getCompanyIncentive, getEmployeeSalaryDefinition, isEditEmployeeSalaryDefinition } from '../../../../store/Payroll/actions';
 import { Icons } from '@assets';
 import { log } from 'console';
 
@@ -45,7 +45,7 @@ function SalaryBreakDown() {
 
   const [selectedOtherPayData, setSelectedOtherPayData] = useState<any>([])
   const [editSelectedOtherPayData, setEditSelectedOtherPayData] = useState<any>([])
-  const [newlyAddedOtherPayData, setNewlyAddedOtherPayData] = useState<any>([])
+  const [allowanceDetails, setAllowanceDetails] = useState<any>([])
 
 
 
@@ -169,6 +169,22 @@ function SalaryBreakDown() {
     }));
   }
 
+  const getAllowanceDetails = (item: any) => {
+
+    const params = {
+      id: item
+    }
+    dispatch(getAllowanceGroupDetails({
+      params,
+      onSuccess: (success: any) => () => {
+        setAllowanceDetails(success.details?.allowance_break_down?.allowance_items)
+      },
+      onError: (error: any) => () => {
+        showToast('error', error)
+      }
+    }));
+  }
+
   const prefillSalaryDefinitions = (salaryDetails: any) => {
 
     setEditSalaryDefinitionId(salaryDetails?.id)
@@ -182,6 +198,7 @@ function SalaryBreakDown() {
     setAutoDebitTds(salaryDetails?.base_configuration?.auto_calculate_tds)
     setBasicSalary(salaryDetails.base_salary_percent)
     setAllowanceGroup(salaryDetails?.allowance_break_down?.id)
+    getAllowanceDetails(salaryDetails?.allowance_break_down?.id)
     const newKeyAddedArray = salaryDetails?.deductions_group?.map((el: any) => ({ ...el, type: el.is_percent ? "1" : "2", error: '' }))
     setSelectedDefinitionEditData(newKeyAddedArray)
     setSelectedOtherPayData(salaryDetails?.incentives_group)
@@ -466,6 +483,22 @@ function SalaryBreakDown() {
 
   }
 
+  const showAllowanceGroupDetails = (value: any) => {
+    setAllowanceGroup(value)
+    getAllowanceDetails(value)
+  }
+
+  const normalizedAllowanceList = (data: any) => {
+
+    return data.map((el: any, index: number) => {
+      return {
+        name: el.name,
+        'Percent': el?.percent ? el?.percent : '-',
+        'Amount': el?.amount ? el?.amount : '-'
+      };
+    });
+  }
+
 
   return (
     <ScreenContainer>
@@ -511,11 +544,17 @@ function SalaryBreakDown() {
               placeholder={t("AllowanceGroup")}
               data={allowanceGroupsList}
               value={allowanceGroup}
-              onChange={(e) => setAllowanceGroup(e.target.value)}
-
+              onChange={(e) => showAllowanceGroupDetails(e.target.value)}
             />
           </div>
         </div>
+        {allowanceDetails && allowanceDetails.length > 0 && 
+        <Container additionClass='my-2'>
+          <CommonTable
+            card={false}
+            displayDataSet={normalizedAllowanceList(allowanceDetails)}
+          />
+        </Container>}
         <div className="mb-3">
           <h3>{'Others Pay'}</h3>
         </div>
