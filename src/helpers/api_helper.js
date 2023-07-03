@@ -4,7 +4,7 @@ import { ASYN_USER_AUTH } from '@utils'
 //apply base url for axios
 const STAGING = 'http://3.7.59.39';
 
-const LOCAL_DEV = 'http://192.168.225.136:8003';
+const LOCAL_DEV = 'http://192.168.225.136:8006';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
 const LOCAL_PROD = 'http://103.118.93.204:8002';
@@ -28,7 +28,7 @@ const PROD_MOBILE = 'https://mobileapi2.zenyq.com';
 
 
 
-export const REACT_APP_APP_URL = PROD_WEB
+export const REACT_APP_APP_URL = LOCAL_DEV
 ;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 

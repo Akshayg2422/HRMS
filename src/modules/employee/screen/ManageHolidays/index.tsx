@@ -37,11 +37,10 @@ const ManageHolidays = () => {
   const { hierarchicalBranchIds } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  const { selectedEventId, leaveFromDate } = useSelector(
+  const { selectedEventId, leaveFromDate,calendarEvents } = useSelector(
     (state: any) => state.EmployeeReducer
   );
-
-
+ 
   useEffect(() => {
     if (selectedEventId !== undefined) {
       getPrefilledEventDetails();
@@ -108,6 +107,23 @@ const ManageHolidays = () => {
     }
   };
 
+
+  const disableDate = (data: any) => {
+    return (
+      data &&
+      data.length > 0 &&
+      data.map((el: any) => {
+        let filteredlist = {};
+        filteredlist = {
+          from: el.day,
+          to: el.day,
+        };
+        return filteredlist;
+      })
+    );
+  };
+
+
   return (
     <ScreenContainer >
       <FormWrapper
@@ -116,7 +132,7 @@ const ManageHolidays = () => {
         buttonTittle={selectedEventId ? t("update") : t("addHoildays")}
       >
         <Container additionClass="col-xl-12">
-          <ChooseBranchFromHierarchical showCheckBox={false} />
+          <ChooseBranchFromHierarchical />
         </Container>
         <InputText
           col="col-xl-12"
@@ -134,6 +150,7 @@ const ManageHolidays = () => {
             title={t("pleaseSelect")}
             icon={Icons.Calendar}
             // minDate={Today}
+            disabledDate={disableDate(calendarEvents.days_holiday)}
             iconPosition={"append"}
             name={'date'}
             value={holidayEvents.date}

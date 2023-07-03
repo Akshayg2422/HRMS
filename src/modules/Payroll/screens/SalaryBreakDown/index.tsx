@@ -181,6 +181,7 @@ function SalaryBreakDown() {
       },
       onError: (error: any) => () => {
         showToast('error', error)
+        setAllowanceDetails([])
       }
     }));
   }

@@ -395,7 +395,7 @@ const ManageEmployee = () => {
           start_time: employeeDetails.attendanceStartTime,
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: isExempted,
-          associated_branch: [employeeDetails.branch],
+          associated_branch: [employeeDetails.branch?.id],
           ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
         },
         ...(employeeDetails.dateOfJoining && {
