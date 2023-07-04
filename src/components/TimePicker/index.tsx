@@ -6,14 +6,14 @@ import { Icons } from "@assets";
 import './style.css'
 
 
-function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...props }: DatePickerProps) {
+function TimePicker({ icon, iconPosition, onChange, value, defaultValue, disabled = false, ...props }: DatePickerProps) {
 
   const timePickerRef = useRef<any>(null);
 
   const openTimePicker = () => {
     if (timePickerRef.current) {
       timePickerRef.current.flatpickr.open();
-      
+
     }
   }
 
@@ -38,7 +38,7 @@ function TimePicker({ icon, iconPosition, onChange, value, defaultValue, ...prop
             dateFormat: "h:i K",
             time_24hr: false
           }}
-          
+          disabled={disabled}
           value={value}
           onChange={handleChange}
         />

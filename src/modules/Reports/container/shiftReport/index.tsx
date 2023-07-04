@@ -26,7 +26,6 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         (state: any) => state.DashboardReducer
     );
 
-    console.log("data------>",data);
     
 
     const {
@@ -40,7 +39,7 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
     const getConvertedTableData = (data: any) => {
         let item = data?.data
         let shiftTime = data?.shift_details
-        const updatedData = []
+        const updatedData:any = []
         let key = getDatesListBetweenStartEndDates(startDate, endDate)
         for (let i = 0; i < item.length; i++) {
             let { days, name, designation, emp_id } = item[i]
@@ -52,7 +51,7 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
                     updateObject = { ...updateObject, [each]: index !== '-1' ? days[index] : {} }
                 })
             }
-            updatedData[i] = updateObject
+            updatedData[i] = updateObject as never
         }
         return updatedData
     }
@@ -63,7 +62,7 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
         startDate: moment.MomentInput,
         stopDate: moment.MomentInput,
     ) => {
-        const dateObj = [];
+        const dateObj:any = [];
         let currentDate = moment(startDate);
         stopDate = moment(stopDate);
         while (currentDate <= stopDate) {
@@ -129,11 +128,9 @@ function ShiftReports({ data, shiftid, department, reportType, name, customrange
             },
         }));
     }
-    console.log("name---->", name);
 
 
     const memoizedTable = useMemo(() => {
-        console.log("wwwwwwwwww",data);
         
         return <>
           {data?.data && data?.data?.length > 0 ? (

@@ -175,7 +175,6 @@ function EmployeeLog() {
       getCheckInDetailedLogPerDay({
         params,
         onSuccess: (response: any) => () => {
-          console.log('----------------->');
         },
         onError: (error: string) => () => {
         },
@@ -213,8 +212,6 @@ function EmployeeLog() {
 
       const params = {
         daily_log_id: markAsPresentDetails.day_status_id,
-        // date_from: markAsPresentDetails.date,
-        // date_to: markAsPresentDetails.date,
         attendance_date: markAsPresentDetails.date,
         reason: markAsPresentDetails.reason,
         is_approved: true,
@@ -444,8 +441,6 @@ function EmployeeLog() {
                         }} onClick={(e) => { handlePresentModified(e, item) }}>{item.day_status}{item?.approved_by && showApprovedBy(item?.day_status_type) ?
                           <div className="text-xs" style={{ color: 'black', fontWeight: 'lighter', }}>{`By - ${item?.approved_by}`}</div>
                           : <></>}</small>
-
-
 
                         <small className="mb-0 col" >{showAdminModify(item?.day_status_type) ?
                           <Secondary text={t('modify')} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} onClick={(e: any) => { onModify(e, item) }} />

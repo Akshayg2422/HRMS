@@ -49,7 +49,7 @@ function ShiftDetailsPerDay() {
         const firstDayOfMonth = new Date(year, month, 1);
         const firstWeekOfMonth = getWeekNumber(firstDayOfMonth);
 
-        const dates = [];
+        const dates:any = [];
         for (let i = 1; i <= numDays; i++) {
             const date = new Date(year, month, i);
             const dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'long' });

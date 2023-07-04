@@ -5,7 +5,7 @@ import {
   LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,
   WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
-  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF, DAY_STATUS_PRESENT_MODIFIED, DAY_STATUS_NA
+  DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF, DAY_STATUS_PRESENT_MODIFIED, DAY_STATUS_NA, DAY_STATUS_HOLIDAYS
 } from './constants'
 import {
   validateMobileNumber, validateName,
@@ -96,7 +96,7 @@ const showToast = (type: 'success' | 'error' | 'default' | 'info', message: stri
 
   }
 
-  let toastElement = null;
+  let toastElement: any = null;
   switch (type) {
     case 'success':
       toastElement = toast.success(message, style)
@@ -140,6 +140,7 @@ const showApprovedBy = (type: number | undefined) => {
   switch (type) {
     case DAY_STATUS_LEAVE:
     case DAY_STATUS_PRESENT_MODIFIED:
+    case DAY_STATUS_HOLIDAYS:
       showApprover = true
       break;
     default:
@@ -273,6 +274,7 @@ export function toDate(dStr: any, format: string) {
     return "Invalid Format";
 }
 
+
 export const convertFrom24To12Format = (time24: any) => {
   const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
   const period = +sHours < 12 ? 'AM' : 'PM';
@@ -385,6 +387,28 @@ const dateFormate = (date: string) => {
 }
 
 
+const HFSW_ID = "e87b92e6-8e3e-484f-9d79-d4bc24bd5fb5"
+
+const isHfwsBranch = (id: string) => {
+  let status = false
+  if (HFSW_ID === id) {
+    status = true;
+  }
+  return status
+}
+
+
+const getDropDownFormatter = (data: any) => {
+  return data && data?.map((item: any) => {
+    return {
+      text: item.name,
+      id: item.id,
+    }
+  })
+}
+
+
+
 export {
   WELCOME_CARD, WELCOME_NOTE, isExist, GENDER_LIST, NAV_ITEM, ROUTE, useNav, HEADER_MENU, SORT_BUTTON, goTo, validateMobileNumber, validateName,
   validateEmail,
@@ -462,5 +486,7 @@ export {
   mergeTimeSlots,
   INITIAL_PAGE,
   dateFormate,
-  showApprovedBy
+  showApprovedBy,
+  isHfwsBranch,
+  getDropDownFormatter
 }

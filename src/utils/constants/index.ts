@@ -72,6 +72,9 @@ export const ROUTE = {
   ROUTE_VIEW_EMPLOYEE_SALARY_DEFINITION: '/view-employee-salary-definition',
   ROUTE_PAYSLIP: '/payslip',
   ROUTE_WEEKLY_CALENDER: '/weekly-calender',
+  ROUTE_MANAGE_EMPLOYEES_LEAVES: '/manage-employee-leaves',
+  ROUTE_OTHERS_PAY: '/others-pay',
+  ROUTE_CREATE_OTHERS_PAY: '/create-others-pay',
 }
 
 
@@ -123,6 +126,10 @@ export const CHILD_PATH = [
   { path: "/deduction-group-List", parent: '/payroll', name: 'Deduction Groups', showBack: true, showBreadCrums: true },
   { path: "/add-deduction", parent: '/payroll', name: 'Manage Deduction', showBack: true, showBreadCrums: true },
   { path: "/view-employee-salary-definition", parent: '/payroll', name: 'Employee Salary Definition', showBack: true, showBreadCrums: true },
+  { path: "/manage-employee-leaves", parent: '/approvals', name: 'ManageEmployeeLeaves', showBack: true, showBreadCrums: true },
+  { path: "/others-pay", parent: '/payroll', name: 'Other Pay List', showBack: true, showBreadCrums: true },
+  { path: "/create-others-pay", parent: '/payroll', name: 'Create Other Pay', showBack: true, showBreadCrums: true },
+
 
 ]
 
@@ -407,6 +414,8 @@ export const DAY_STATUS_ALERT = 5
 export const DAY_STATUS_WEEK_OFF = 11
 export const DAY_STATUS_PRESENT_MODIFIED = 10
 export const DAY_STATUS_NA = 13
+export const DAY_STATUS_HOLIDAYS = 8
+
 
 
 

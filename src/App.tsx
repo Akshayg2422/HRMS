@@ -80,8 +80,8 @@ import { AppProvider } from "@contexts";
 import { PushConfig } from './PushConfig'
 import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
-import { Approvals, WeeklyCalendar } from "./modules/employee";
-import { AddDeduction, ViewEmployeeSalaryDefinition } from "./modules/Payroll";
+import { Approvals, ManageEmployeeLeaves, WeeklyCalendar } from "./modules/employee";
+import { AddDeduction, OtherPayCreate, OthersPayGroupList, ViewEmployeeSalaryDefinition } from "./modules/Payroll";
 import GetToken from "./PushNotification/GetToken";
 
 import RefundPolicy from "./screens/RefundPolicy";
@@ -395,7 +395,18 @@ function App() {
             path={ROUTE.ROUTE_WEEKLY_CALENDER}
             element={<RequireAuth>{<WeeklyCalendar />}</RequireAuth>}
           />
-
+          <Route
+            path={ROUTE.ROUTE_MANAGE_EMPLOYEES_LEAVES}
+            element={<RequireAuth>{<ManageEmployeeLeaves />}</RequireAuth>}
+          />
+           <Route
+            path={ROUTE.ROUTE_OTHERS_PAY}
+            element={<RequireAuth>{<OthersPayGroupList/>}</RequireAuth>}
+          />
+           <Route
+            path={ROUTE.ROUTE_CREATE_OTHERS_PAY}
+            element={<RequireAuth>{<OtherPayCreate/>}</RequireAuth>}
+          />
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
         <ToastContainer />

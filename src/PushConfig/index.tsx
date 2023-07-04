@@ -44,7 +44,6 @@ const PushConfig = () => {
 
     const routingHandler = (payload: any) => {
 
-        console.log("calledd");
         const route_type = JSON.parse( payload?.data?.extra_data.replace(/'/g, '"')).route_type
 
         if (route_type === NOTI_TYPE_BROADCAST_MESSAGE) {
@@ -82,8 +81,6 @@ const PushConfig = () => {
 
     onMessageListener()
         .then((payload: any) => {
-            console.log("-------->", JSON.stringify(payload));
-
             const title = payload?.data?.title;
             const options = {
                 body: payload?.data?.message,

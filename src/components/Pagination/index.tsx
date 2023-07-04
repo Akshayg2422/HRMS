@@ -10,14 +10,13 @@ interface GetPaginatorSetProps {
 }
 
 interface ChildComponentProps {
-    text: number;
-
+    text: any;
 }
 
 const Pagination = ({ currentPage, totalPages, noOfPage, previousClick, nextClick, paginationNumberClick, additionalClass }: GetPaginatorSetProps) => {
     if (currentPage && totalPages) {
 
-        const children = [];
+        const children:any = [];
         if (currentPage && noOfPage) {
 
 

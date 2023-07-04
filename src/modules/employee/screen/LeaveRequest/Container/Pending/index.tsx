@@ -9,18 +9,22 @@ import {
 } from "@components";
 import {
   changeEmployeeLeaveStatus,
+  getEmployeeLeaveHistory,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getLeavesByTypes,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { INITIAL_PAGE, LEAVE_STATUS_UPDATE, ROUTE, goTo, showToast, useNav } from "@utils";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const Pending = ({search}:any) => {
+const Pending = ({ search }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const navigation = useNav();
+
 
   const [approveModel, setApproveModel] = useState(false);
   const [rejectModel, setRejectModel] = useState(false);
@@ -37,7 +41,7 @@ const Pending = ({search}:any) => {
       ...hierarchicalBranchIds,
       page_number: pageNumber,
       status: -1,
-      q: search,  
+      q: search,
     };
     dispatch(
       getEmployeeLeaves({
@@ -114,6 +118,22 @@ const Pending = ({search}:any) => {
     );
   };
 
+  const fetchleaveDetail = (id: any) => {
+    const params = {
+      status: -2,
+      page_number: INITIAL_PAGE,
+      employee_id: id
+    };
+    dispatch(getLeavesByTypes({
+      params,
+      onSuccess: (success: any) => () => {
+        goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEES_LEAVES);
+
+      },
+      onError: (error: any) => () => {
+      }
+    }));
+  };
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -130,17 +150,21 @@ const Pending = ({search}:any) => {
           previousClick={() => paginationHandler("prev")}
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(employeesLeaves)}
-          additionalDataSet={LEAVE_STATUS_UPDATE}
-          tableValueOnClick={(e, index, item, elv) => {
-            const current = employeesLeaves[index];
-            if (elv === "Approve") {
-              manageApproveStatus(current);
-            }
-            if (elv === "Reject") {
-              manageRejectStatus(current);
-            }
+          // additionalDataSet={LEAVE_STATUS_UPDATE}
+          // tableValueOnClick={(e, index, item, elv) => {
+          //   const current = employeesLeaves[index];
+          //   if (elv === "Approve") {
+          //     manageApproveStatus(current);
+          //   }
+          //   if (elv === "Reject") {
+          //     manageRejectStatus(current);
+          //   }
+          // }}
+          tableOnClick={(e,index,item) => {
+            const data = employeesLeaves[index]
+            dispatch(getEmployeeLeaveHistory(data))
+            fetchleaveDetail(data?.employee_company_info_id)            
           }}
-
           custombutton={"h5"}
         />
       ) : <NoRecordFound />}

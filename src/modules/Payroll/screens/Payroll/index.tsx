@@ -7,12 +7,12 @@ import {
     ChooseBranchFromHierarchical,
     NoRecordFound,
     TableWrapper,
-    CommonDropdownMenu,
     Primary,
     Search,
     useKeyPress,
     Modal,
     ImageView,
+    CommonDropdownMenu,
 } from "@components";
 import React, { useEffect, useMemo, useState } from "react";
 import { Icons } from "@assets";
@@ -41,6 +41,13 @@ export const EDIT_DROPDOWN_MENU = [
 ]
 
 
+export const PAYROLL_SUB_MENU = [
+    { id: '1', name: 'Allowances', value: 'AL', icon: 'fas fa-badge-percent' },
+    { id: '2', name: 'Deductions', value: 'DL', icon: 'fas fa-window-restore' },
+    { id: '3', name: 'Others Pay', value: 'OP', icon: 'fas fa-window-restore' },
+]
+
+
 
 function PayRoll() {
     let dispatch = useDispatch();
@@ -64,7 +71,9 @@ function PayRoll() {
         (state: any) => state.AuthReducer
     );
 
-    const { hierarchicalBranchIds } = useSelector(
+
+
+    const { hierarchicalBranchIds,dashboardDetails } = useSelector(
         (state: any) => state.DashboardReducer
     );
 
@@ -195,10 +204,11 @@ function PayRoll() {
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
                     displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
-                // tableOnClick={(e, index, item) => {
-                //     const selectedItem = registeredEmployeesList[index];
-                //     dispatch(settingSelectedEmployeeDetails(selectedItem))
-                // }}
+                    tableOnClick={(e, index, item) => {
+                        const selectedItem = registeredEmployeesList[index];
+                        setSelectedItem(selectedItem)
+                        checkIsSalaryDefinitionExists(selectedItem?.id)
+                    }}
                 />
             ) : <NoRecordFound />}
         </div>
@@ -208,7 +218,8 @@ function PayRoll() {
         <>
             <TableWrapper
                 buttonChildren={
-                    <Container additionClass=" mr--4">
+                    userDetails?.is_admin && dashboardDetails?.permission_details?.is_parent_branch &&
+                    <Container additionClass=" mr--3">
                         {(
                             <Container additionClass="col">
                                 <Primary
@@ -223,8 +234,28 @@ function PayRoll() {
                                     text={'Deductions'}
                                     onClick={() => goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)}
                                 />
+                                <Primary
+                                    additionClass="mt-2 mt-sm-0 mt-lg-0"
+                                    size={'btn-sm'}
+                                    text={'Others Pay'}
+                                    onClick={() => goTo(navigation, ROUTE.ROUTE_OTHERS_PAY)}
+                                />
                             </Container>
                         )}
+                        {/* <CommonDropdownMenu
+                            data={PAYROLL_SUB_MENU}
+                            onItemClick={(e, item) => {
+                                e.stopPropagation();
+                                if (item.name === 'Allowances') {
+                                    goTo(navigation, ROUTE.ROUTE_ALLOWANCE_GROUP)
+                                } else if (item.name === 'Deductions') {
+                                    goTo(navigation, ROUTE.ROUTE_DEDUCTION_GROUP)
+                                } else if (item.name === 'Others Pay') {
+                                    goTo(navigation, ROUTE.ROUTE_OTHERS_PAY)
+                                }
+                                // dropdownMenuItemActionHandler(item, el)
+                            }}
+                        /> */}
                     </Container>
                 }
 

@@ -90,7 +90,6 @@ const LaunchScreenSecondary = () => {
   }, [displaySeconds]);
 
   useEffect(()=>{
-    console.log("dfsdddddddd", currentUserIndex, displaySeconds )
     if(currentUserIndex >3 && displaySeconds == 0)
     
     {goTo(navigate, ROUTE.ROUTE_LAUNCH_SUCCESS, true)

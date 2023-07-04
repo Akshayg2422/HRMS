@@ -68,17 +68,11 @@ export const DROPDOWN_MENU_ADMIN = [
   { id: '1', name: 'View', value: 'PF', image: Icons.View },
   { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
   { id: '3', name: 'Assign Location', value: 'LG', image: Icons.Location_Gray },
-  // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
-  // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
-  // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 export const DROPDOWN_MENU_BRANCH_ADMIN = [
   { id: '1', name: 'View', value: 'PF', image: Icons.View },
   { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
-  // { id: '4', name: 'Enable office checkIn', value: 'LG', icon: 'ni ni-button-power' },
-  // { id: '5', name: 'Enable field checkIn', value: 'LG', icon: 'ni ni-button-power' },
-  // { id: '6', name: 'Enable face validation', value: 'LG', icon: 'ni ni-button-power' },
 ]
 
 function EmployeeScreen() {
@@ -291,10 +285,15 @@ function EmployeeScreen() {
     const branchExists = updateSelectedBranch.some(
       (eachBranch) => eachBranch.id === item.id
     );
+
     if (branchExists) {
-      updateSelectedBranch = updateSelectedBranch.filter(
-        (eachItem) => eachItem.id !== item.id
-      );
+      if (defaultBranchId !== item.id) {
+        updateSelectedBranch = updateSelectedBranch.filter(
+          (eachItem) => eachItem.id !== item.id
+        );
+      } else {
+        showToast("info", 'Parent Branch Cannot Been Removed');
+      }
     } else {
       updateSelectedBranch = [...updateSelectedBranch, item];
     }

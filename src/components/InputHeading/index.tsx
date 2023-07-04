@@ -2,11 +2,12 @@ import React from 'react'
 
 interface HeadingProps {
   heading?: string;
+  classname?: string;
 }
-function index({heading}: HeadingProps) {
+function index({ heading, classname }: HeadingProps) {
   return (
     <>
-      {heading && <small className="form-control-label">
+      {heading && <small className={`${classname} form-control-label`}>
         {heading}
       </small>}
     </>

@@ -306,7 +306,6 @@ export const faceReRegisterRequestAction = (params) => {
 };
 
 export const faceReRegisterRequestActionSuccess = (response) => {
-  console.log("----ActionResponce", response);
   return {
     type: FACE_RE_REGISTER_REQUEST_SUCCESS,
     payload: response,

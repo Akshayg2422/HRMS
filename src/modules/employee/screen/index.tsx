@@ -24,10 +24,10 @@ import ManageLeaveTypes from './manageLeaveTypes'
 import FaceReRegisterRequest from './FaceReRegisterRequest'
 import Approvals from './Approvals'
 import WeeklyCalendar from './WeeklyCalendar'
-
+import ManageEmployeeLeaves from './LeaveRequest/Container/ManageEmployeeLeaves'
 export {
     ManageEmployee, EmployeeLog, EmployeeWorkBook, Portfolio, InActiveEmployeeList,
     ApplyLeave, LeaveRequest, ManageHolidays, ManageLeaves, MyLog, MyWorkLog, MyLeaves, ModifyLogs,
     ELocker, ElockerUpload, EmployeeShifts, MyBranches, ShiftMonthlyView, ShiftDetailsPerDay,
-    EmployeeShiftRequest, AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, Approvals, WeeklyCalendar
+    EmployeeShiftRequest, AvailableLeaves, LeaveTypes, ManageLeaveTypes, FaceReRegisterRequest, Approvals, WeeklyCalendar,ManageEmployeeLeaves
 }

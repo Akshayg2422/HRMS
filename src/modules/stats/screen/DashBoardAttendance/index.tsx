@@ -98,7 +98,6 @@ const DashBoardAttendance = ({ }) => {
     getTodayStats(INITIAL_PAGE);
   }, [selectedAttendance, selectedDepartment, customselectedDate]);
 
-  console.log("routeParams", routeParams)
 
 
   useEffect(() => {
@@ -198,7 +197,7 @@ const DashBoardAttendance = ({ }) => {
         }}
           onClick={(e) => { handlePresentModified(e, el) }}
         >{el.per_day_details ? el.per_day_details.day_status : "-"}{showApprovedBy(el?.per_day_details?.day_status_type) ? <div className="text-xs" style={{ color: 'black', fontWeight: 'lighter', }}>
-          {el?.approved_by !== null ? `${`By - ${el?.approved_by}`}` : ""}
+          {el?.per_day_details?.approved_by !== null ? `${`By - ${el?.per_day_details?.approved_by}`}` : ""}
         </div> : <></>}</div>,
 
 

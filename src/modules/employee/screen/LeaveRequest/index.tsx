@@ -2,6 +2,7 @@ import {
   Card,
   ChooseBranchFromHierarchical,
   Container,
+  DatePicker,
   Icon,
   InputText,
   Search,
@@ -12,7 +13,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Pending, Approved, Rejected, AllLeaves } from "./Container";
-import { INITIAL_PAGE, LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { INITIAL_PAGE, LEAVE_STATUS_UPDATE, Today, showToast } from "@utils";
 import {
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
@@ -23,6 +24,7 @@ const LeaveRequest = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const enterPress = useKeyPress("Enter");
+  const [date, setDate] = useState(Today)
 
 
   const { hierarchicalBranchIds } = useSelector(
@@ -34,17 +36,17 @@ const LeaveRequest = () => {
   const { currentPage } = useSelector((state: any) => state.EmployeeReducer);
 
   const LEAVE_TYPE = [
-    { id: 1, name: 'All', value: -2, component: <AllLeaves search={searchEmployee} /> },
-    { id: 2, name: 'Pending', value: -1, component: <Pending search={searchEmployee} /> },
-    { id: 3, name: 'Approved', value: 1, component: <Approved search={searchEmployee} /> },
-    { id: 4, name: 'Rejected', value: 0, component: <Rejected search={searchEmployee} /> },
+    { id: 1, name: 'All', value: -2, component: <AllLeaves search={searchEmployee} date={date} /> },
+    { id: 2, name: 'Pending', value: -1, component: <Pending search={searchEmployee} date={date} /> },
+    { id: 3, name: 'Approved', value: 1, component: <Approved search={searchEmployee} date={date} /> },
+    { id: 4, name: 'Rejected', value: 0, component: <Rejected search={searchEmployee} date={date} /> },
   ];
 
   const [currentStatusId, setCurrentStatusId] = useState<number>(-2);
 
   useEffect(() => {
     fetchPendingDetail(INITIAL_PAGE, currentStatusId);
-  }, [hierarchicalBranchIds]);
+  }, [hierarchicalBranchIds, date]);
 
 
   useEffect(() => {
@@ -60,6 +62,7 @@ const LeaveRequest = () => {
       page_number: pageNumber,
       status: statusId,
       q: searchEmployee,
+      date: date,
     };
     dispatch(
       getEmployeeLeaves({
@@ -73,6 +76,10 @@ const LeaveRequest = () => {
   function proceedSearchApi() {
     fetchPendingDetail(INITIAL_PAGE, currentStatusId);
   }
+
+  const dateTimePickerHandler = (value: string, key: string) => {
+    setDate(value)
+  };
 
   return (
     <>
@@ -99,6 +106,19 @@ const LeaveRequest = () => {
             >
               <ChooseBranchFromHierarchical />
             </Container>
+            <div className='col-sm-3'>
+              <h5 className=''>{t("Date")}</h5>
+              <DatePicker
+                placeholder={"Select Date"}
+                icon={Icons.Calendar}
+                // maxDate={Today}
+                iconPosition={"prepend"}
+                onChange={(date: string) =>
+                  dateTimePickerHandler(date, "dateFrom")
+                }
+                value={date}
+              />
+            </div>
             <Container
               col={"col"}
               additionClass={"mt-sm-3 mb-xl-3"}

@@ -43,7 +43,10 @@ import {
   POST_CHANGE_SHIFT_CHANGE_SUCCESS,
   POST_CHANGE_SHIFT_CHANGE_FAILURE,
   CURRENT_STATUS_TYPE,
-  DESIGNATION_GROUP_DETAILS
+  DESIGNATION_GROUP_DETAILS,
+  GET_HFWS_BRANCH_SHIFT,
+  GET_HFWS_BRANCH_SHIFT_SUCCESS,
+  GET_HFWS_BRANCH_SHIFT_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -63,7 +66,8 @@ const initialState = {
   shiftRequestedEmployees: [],
   requestList: [],
   currentType: -2,
-  designationShiftGroup: {}
+  designationShiftGroup: {},
+  hfwsBranchShifts: []
 };
 
 const ShiftManagementReducer = (state = initialState, action) => {
@@ -443,6 +447,28 @@ const ShiftManagementReducer = (state = initialState, action) => {
       break;
 
     // ******************************** //
+    // getHfwsStartEndTime
+
+    case GET_HFWS_BRANCH_SHIFT:
+      state = {
+        ...state,
+      };
+      break;
+    case GET_HFWS_BRANCH_SHIFT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        hfwsBranchShifts: action.payload,
+      };
+      break;
+
+    case GET_HFWS_BRANCH_SHIFT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     case RESET_REDUCER:
       state = initialState;
