@@ -48,6 +48,17 @@ function ViewEmployeeSalaryDefinition() {
         });
     }
 
+
+    const normalizedOtherPayList = (data: any) => {
+
+        return data.map((el: any, index: number) => {
+            return {
+                name: el.name,
+                'Amount': el?.amount
+            };
+        });
+    }
+
     return (
         <div className='scroll-hidden' style={{ overflow: 'auto', height: '90vh', }}>
             {!isDisablePayrollView ? (
@@ -73,6 +84,17 @@ function ViewEmployeeSalaryDefinition() {
                                 <CommonTable
                                     card={false}
                                     displayDataSet={normalizedAllowanceList(employeeSalaryDefinition?.allowance_break_down?.allowances)}
+                                />
+                            </Container>
+                        </Container>
+                    }
+                    {employeeSalaryDefinition?.incentives_group && employeeSalaryDefinition.incentives_group.length > 0 &&
+                        <Container additionClass=''>
+                            <h5 className={'text-muted ml-3 mt-4'}>{'Other Pays'}</h5>
+                            <Container additionClass=''>
+                                <CommonTable
+                                    card={false}
+                                    displayDataSet={normalizedOtherPayList(employeeSalaryDefinition?.incentives_group)}
 
                                 />
                             </Container>

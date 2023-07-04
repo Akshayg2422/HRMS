@@ -9,18 +9,21 @@ import {
 } from "@components";
 import {
   changeEmployeeLeaveStatus,
+  getEmployeeLeaveHistory,
   getEmployeeLeaves,
   getEmployeeLeavesSuccess,
+  getLeavesByTypes,
   getSelectedEventId,
 } from "../../../../../../store/employee/actions";
-import { LEAVE_STATUS_UPDATE, showToast } from "@utils";
+import { INITIAL_PAGE, LEAVE_STATUS_UPDATE, ROUTE, goTo, showToast, useNav } from "@utils";
 import React, { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 
-const AllLeaves = ({ search }: any) => {
+const AllLeaves = ({ search, date }: any) => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
+  const navigation = useNav();
 
   const [approveModel, setApproveModel] = useState(false);
   const [rejectModel, setRejectModel] = useState(false);
@@ -39,6 +42,7 @@ const AllLeaves = ({ search }: any) => {
       page_number: pageNumber,
       status: -2,
       q: search,
+      data: date
     };
     dispatch(
       getEmployeeLeaves({
@@ -107,6 +111,22 @@ const AllLeaves = ({ search }: any) => {
     );
   };
 
+  const fetchleaveDetail = (id: any) => {
+    const params = {
+      status: -2,
+      page_number: INITIAL_PAGE,
+      employee_id: id
+    };
+    dispatch(getLeavesByTypes({
+      params,
+      onSuccess: (success: any) => () => {
+        goTo(navigation, ROUTE.ROUTE_MANAGE_EMPLOYEES_LEAVES);
+
+      },
+      onError: (error: any) => () => {
+      }
+    }));
+  };
 
   const memoizedTable = useMemo(() => {
     return <>
@@ -125,12 +145,16 @@ const AllLeaves = ({ search }: any) => {
           tableChildren={
             <LocationTable
               tableDataSet={employeesLeaves}
-              onRevertClick={(item) => manageRevertStatus(item)}
-              onApproveClick={(item) => {
-                manageApproveStatus(item);
-              }}
-              onRejectClick={(item) => {
-                manageRejectStatus(item);
+              // onRevertClick={(item) => manageRevertStatus(item)}
+              // onApproveClick={(item) => {
+              //   manageApproveStatus(item);
+              // }}
+              // onRejectClick={(item) => {
+              //   manageRejectStatus(item);
+              // }}
+              tableOnClick={(item) => {
+                dispatch(getEmployeeLeaveHistory(item))
+                fetchleaveDetail(item.employee_company_info_id)
               }}
             />
           }
@@ -320,11 +344,12 @@ type Location = {
   id: string;
   employee_id: string;
   approved_by: string;
+  employee_company_info_id: any
 };
 
 type LocationTableProps = {
   tableDataSet?: Array<Location>;
-  onRevertClick?: (item: Location) => void;
+  tableOnClick?: (item: Location) => void;
   onApproveClick?: (item: Location) => void;
   onRejectClick?: (item: Location) => void;
 };
@@ -333,7 +358,7 @@ const LocationTable = ({
   tableDataSet,
   onApproveClick,
   onRejectClick,
-  onRevertClick,
+  tableOnClick,
 }: LocationTableProps) => {
   return (
     <div className="table-responsive">
@@ -347,8 +372,8 @@ const LocationTable = ({
             <th scope="col">{"Reason"}</th>
             <th scope="col">{"Branch"}</th>
             <th scope="col">{"Status"}</th>
-            <th scope="col">{"Approve/Revert"}</th>
-            <th scope="col">{"Reject"}</th>
+            {/* <th scope="col">{"Approve/Revert"}</th>
+            <th scope="col">{"Reject"}</th> */}
           </tr>
         </thead>
         <tbody>
@@ -356,15 +381,17 @@ const LocationTable = ({
             tableDataSet.length > 0 &&
             tableDataSet.map((item: Location, index: number) => {
               return (
-                <tr className="align-items-center">
+                <tr className="align-items-center" onClick={() => {
+                  if (tableOnClick) tableOnClick(item);
+                }}>
                   <td style={{ whiteSpace: "pre-wrap" }}>{`${item.name}${' '}(${item.employee_id})`}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_from}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.date_to}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.leave_type}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.reason}</td>
                   <td style={{ whiteSpace: "pre-wrap" }}>{item.branch_name}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}<br/>{item.status_code !== -1 ? <small>{`${item.approved_by !== null ? `By -${item.approved_by}` : ''}`}</small> : <></>}</td>
-                  <td style={{ whiteSpace: "pre-wrap" }} >
+                  <td style={{ whiteSpace: "pre-wrap" }}>{item.status_text}<br />{item.status_code !== -1 ? <small>{`${item.approved_by !== null ? `By -${item.approved_by}` : ''}`}</small> : <></>}</td>
+                  {/* <td style={{ whiteSpace: "pre-wrap" }} >
                     {item.status_code === -1 ? (
                       <span
                         className="h5 text-primary "
@@ -389,21 +416,21 @@ const LocationTable = ({
                     )
                       : item.status_code === 0 ? (
                         <span
-                        // className="h5 text-primary"
-                        // style={{ cursor: 'pointer' }}
-                        // onClick={() => {
-                        //   if (onRevertClick) onRevertClick(item);
-                        // }}
+                        className="h5 text-primary"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          if (onRevertClick) onRevertClick(item);
+                        }}
                         >
-                          {/* {"Revert"} */}
+                          {"Revert"}
                           {'-'}
                         </span>
                       )
                         : (
                           <></>
                         )}
-                  </td>
-                  <td style={{ whiteSpace: "pre-wrap", }}>
+                  </td> */}
+                  {/* <td style={{ whiteSpace: "pre-wrap", }}>
                     {item.status_code === -1 ? (
                       <span
                         style={{ cursor: 'pointer' }}
@@ -417,7 +444,7 @@ const LocationTable = ({
                     ) : (
                       <>{"-"}</>
                     )}
-                  </td>
+                  </td> */}
                 </tr>
               );
             })}

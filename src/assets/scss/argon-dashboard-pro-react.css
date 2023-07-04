@@ -1566,6 +1566,18 @@ html.rtl {
   }
 }
 
+.select2-container .select2-selection__placeholder {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.select2-container .select2-selection__rendered {
+  font-size: 15px;
+  margin: auto;
+}
+.select2-container .select2-results__option {
+  cursor: pointer;
+}
+
 :root {
   --blue: #5e72e4;
   --indigo: #5603ad;

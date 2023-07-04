@@ -7,9 +7,9 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { showToast } from '@utils';
+import { isHfwsBranch, showToast } from '@utils';
 import { Icons } from '@assets';
-import { getBranchShifts, postEmployeeShiftChange } from "../../../../../../store/shiftManagement/actions";
+import { getBranchShifts, getHfwsBranchShift, postEmployeeShiftChange } from "../../../../../../store/shiftManagement/actions";
 
 
 
@@ -26,12 +26,15 @@ const AttendanceView = () => {
     const { hierarchicalBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
-
+    const { hfwsBranchShifts } = useSelector(
+        (state: any) => state.ShiftManagementReducer
+      );
 
     const [changeShiftModel, setChangeShiftModel] = useState(false);
     const [shiftsList, setShiftList] = useState<any>()
     const [currentEmployeeShiftId, setCurrentEmployeeShiftId] = useState<any>()
     const [defaultShiftId, setDefaultShiftId] = useState<any>()
+    const [hfswShiftModel, setHfswShiftModel] = useState(false)
 
 
 
@@ -47,6 +50,7 @@ const AttendanceView = () => {
     const [attendanceSettingsId, setAttendanceSettingsId] = useState('')
     useEffect(() => {
         getEmployeeDetailsAPi()
+        // isHfwsBranch('e87b92e6-8e3e-484f-9d79-d4bc24bd5fb5') && getHfwsBranchShiftDetails()
     }, [])
 
 
@@ -84,6 +88,20 @@ const AttendanceView = () => {
             })
         );
     };
+
+    const getHfwsBranchShiftDetails = () => {
+        const params = {}
+        dispatch(getHfwsBranchShift({
+          params,
+          onSuccess: (success: any) => () => {
+    
+          },
+          onError: (error: string) => () => {
+            showToast('error', error)
+          },
+    
+        }));
+      }
 
     const convertFrom24To12Format = (time24: any) => {
         const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
@@ -192,6 +210,14 @@ const AttendanceView = () => {
         setShiftList(shifts)
         setChangeShiftModel(!changeShiftModel)
     }
+
+
+    // const handleHfswShiftSelect = (item: any, index: number) => {
+    //     setHfswSelectedShiftIndex(index)
+    //     // setEmployeeDetails({ ...employeeDetails, attendanceStartTime: convertTo24Hour(item.start_time).trim(),attendanceEndTime: convertTo24Hour(item.end_time).trim() });
+    //     setHfswShiftModel(!hfswShiftModel)
+    //   }
+
 
     return (
         <ScreenContainer>

@@ -208,7 +208,6 @@ function* FaceReRegisterRequestSaga(action) {
   try {
     yield put(showLoader());
     const response = yield call(faceReRegisterRequestApi, action.payload.params);
-    console.log("res-->", response);
     if (response.success) {
       yield put(hideLoader());
       yield put(faceReRegisterRequestActionSuccess(response));

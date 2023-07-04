@@ -4,24 +4,22 @@ import { goTo, INITIAL_PAGE, ROUTE, useNav } from '@utils'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { CreateGroup, getCompanyDeductions, getCompanyDeductionsPaginated, settingSelectedDeductionDetails } from '../../../../store/Payroll/actions';
+import { CreateGroup, getCompanyDeductions, getCompanyDeductionsPaginated, getCompanyIncentive, settingSelectedDeductionDetails, settingSelectedIncentiveGroupDetails } from '../../../../store/Payroll/actions';
 
 const DROPDOWN_ITEM = [
     { id: '1', name: 'Edit', value: 'CL', icon: 'ni ni-active-40' },
 ]
 
-function DeductionGroupList() {
+function OthersPayGroupList() {
 
     const navigation = useNav();
     const { t } = useTranslation();
     let dispatch = useDispatch();
-    const [addAllowanceModel, setAddAllowanceModel] = useState(false)
-    const [selectAllowanceModel, setSelectAddAllowanceModel] = useState(false)
     const [selectedAllowences, setSelectedAllowences] = useState<any>([])
     const [deductionsData, setDeductionsData] = useState<any>([])
 
 
-    const { companyDeductionsList, numOfPages, currentPage } = useSelector(
+    const { companyIncentiveList, numOfPages, currentPage } = useSelector(
         (state: any) => state.PayrollReducer
     );
 
@@ -31,21 +29,20 @@ function DeductionGroupList() {
     }
 
     useEffect(() => {
-        getCompanyDeductionsList(INITIAL_PAGE)
+        getCompanyOthersPayList(INITIAL_PAGE)
     }, [])
 
 
-    const getCompanyDeductionsList = (pageNumber: number) => {
+    const getCompanyOthersPayList = (pageNumber: number) => {
 
         const params = {
             page_number: pageNumber
         }
 
-        dispatch(getCompanyDeductionsPaginated({
+        dispatch(getCompanyIncentive({
             params,
             onSuccess: (success: any) => () => {
-                const filteredDeductions = success && success?.data.length > 0 && success?.data?.filter((it: any) => it.type !== "PF")
-                setDeductionsData(filteredDeductions)
+
             },
             onError: (error: any) => () => {
 
@@ -63,11 +60,10 @@ function DeductionGroupList() {
                 : type === "prev"
                     ? currentPage - 1
                     : position;
-        getCompanyDeductionsList(page);
+        getCompanyOthersPayList(page);
     }
 
     const normalizedAllowanceList = (data: any) => {
-
         return data && data.length > 0 && data.map((el: any, index: number) => {
             return {
                 name: el.name,
@@ -84,14 +80,14 @@ function DeductionGroupList() {
     };
 
     const manageRouteHandler = (item: any) => {
-        item ? dispatch(settingSelectedDeductionDetails(item)) : dispatch(settingSelectedDeductionDetails(undefined))
-        goTo(navigation, ROUTE.ROUTE_ADD_DEDUCTION)
+        item ? dispatch(settingSelectedIncentiveGroupDetails(item)) : dispatch(settingSelectedIncentiveGroupDetails(undefined))
+        goTo(navigation, ROUTE.ROUTE_CREATE_OTHERS_PAY)
     }
 
 
     const memoizedTable = useMemo(() => {
         return <>
-            {deductionsData && deductionsData.length > 0 ? (
+            {companyIncentiveList && companyIncentiveList.length > 0 ? (
                 <CommonTable
                     // noHeader
                     card={false}
@@ -103,26 +99,25 @@ function DeductionGroupList() {
                     }}
                     previousClick={() => paginationHandler("prev")}
                     nextClick={() => paginationHandler("next")}
-                    displayDataSet={normalizedAllowanceList(deductionsData)}
+                    displayDataSet={normalizedAllowanceList(companyIncentiveList)}
                     tableOnClick={(e, index, item) => {
 
                     }}
                 />
             ) : <NoRecordFound />}
         </>
-    }, [deductionsData])
+    }, [companyIncentiveList])
 
 
     return (
         <>
             <TableWrapper
-                title={t('DeductionGroupList')}
+                title={t('Others Pay List')}
                 buttonChildren={
                     <Primary
                         text={t("add")}
                         additionClass={'col-sm-0 mr--1'}
                         onClick={() => {
-                            dispatch(CreateGroup('Deduction'))
                             manageRouteHandler(undefined)
                         }
                         }
@@ -137,4 +132,4 @@ function DeductionGroupList() {
     )
 }
 
-export default DeductionGroupList
+export default OthersPayGroupList

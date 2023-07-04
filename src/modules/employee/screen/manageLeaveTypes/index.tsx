@@ -24,12 +24,6 @@ function ManageLeaveTypes() {
         MonthlyDayLimit: ''
     })
 
-    // const [showFieldWeekly, setShowFieldWeekly] = useState(true)
-    // const [showFieldMonthly, setShowFieldMonthly] = useState(true)
-    // const [isNew, setIsNew] = useState({
-    //     weekly: true,
-    //     monthly: true
-    // })
 
     useEffect(() => {
         if (editLeaveTypesDetails) {
@@ -41,34 +35,8 @@ function ManageLeaveTypes() {
                 MonthlyDayLimit: !checkIsDefault(editLeaveTypesDetails.max_days_per_month) ? '' : editLeaveTypesDetails.max_days_per_month,
                 weeklyDayLimit: !checkIsDefault(editLeaveTypesDetails.max_days_per_week) ? '' : editLeaveTypesDetails.max_days_per_week
             })
-            // setIsNew({ ...isNew, weekly: !checkIsDefault(editLeaveTypesDetails.max_days_per_week), monthly: !checkIsDefault(editLeaveTypesDetails.max_days_per_month) })
         }
     }, [])
-
-
-
-
-    // useEffect(() => {
-    //     if (!isNew.weekly) {
-    //         if (!typeDetails.weeklyLimit) {
-    //             setShowFieldWeekly(!showFieldWeekly)
-    //             setTypeDetails({ ...typeDetails, weeklyDayLimit: '' })
-    //         } else {
-    //             setShowFieldWeekly(true)
-    //         }
-    //     }
-
-    //     if (!isNew.monthly) {
-    //         if (typeDetails.MonthlyDayLimit && !typeDetails.monthlyLimit) {
-    //             setShowFieldMonthly(!showFieldMonthly)
-    //             setTypeDetails({ ...typeDetails, MonthlyDayLimit: '' })
-    //         }
-    //         else {
-    //             setShowFieldMonthly(true)
-    //         }
-    //     }
-
-    // }, [typeDetails.weeklyLimit, typeDetails.monthlyLimit])
 
     const checkIsDefault = (status: number) => {
         let type
@@ -111,10 +79,6 @@ function ManageLeaveTypes() {
             showToast("error", t("invalidMonthlyLimit"));
             return false
         }
-        // else if (typeDetails.weeklyDayLimit > 7) {
-        //     showToast("info", "Weekly limit should not exceed 7 days");
-        //     return false
-        // }
         return true
     }
 
@@ -135,7 +99,7 @@ function ManageLeaveTypes() {
                 allocated_days: typeDetails.allocated_leaves,
                 ...(editLeaveTypesDetails && { id: typeDetails.id }),
                 max_days_per_month: !typeDetails.monthlyLimit ? -1 : parseInt(typeDetails.MonthlyDayLimit),
-                max_days_per_week: !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit)
+                max_days_per_week: !typeDetails.weeklyLimit ? -1 : parseInt(typeDetails.weeklyDayLimit),
             }
             dispatch(
                 updateLeaveType({
@@ -157,7 +121,7 @@ function ManageLeaveTypes() {
         <ScreenContainer>
             <FormWrapper
                 title={editLeaveTypesDetails ? t('editType') : t('addType')}
-                buttonTittle={t('update')}
+                buttonTittle={editLeaveTypesDetails ? t('update') : t('submit')}
                 onClick={onsubmit}
             >
                 <InputText
@@ -170,6 +134,7 @@ function ManageLeaveTypes() {
                         onChangeHandler(event);
                     }}
                 />
+                
                 <InputNumber
                     label={t("allocatedDays")}
                     placeholder={t("EnterAllocatedDays")}

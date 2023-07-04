@@ -43,7 +43,10 @@ import {
   POST_CHANGE_SHIFT_CHANGE_SUCCESS,
   POST_CHANGE_SHIFT_CHANGE_FAILURE,
   CURRENT_STATUS_TYPE,
-  DESIGNATION_GROUP_DETAILS
+  DESIGNATION_GROUP_DETAILS,
+  GET_HFWS_BRANCH_SHIFT,
+  GET_HFWS_BRANCH_SHIFT_SUCCESS,
+  GET_HFWS_BRANCH_SHIFT_FAILURE
 } from "./actionTypes";
 
 
@@ -414,5 +417,28 @@ export const getDesignationGroup = (data) => {
   return {
     type: DESIGNATION_GROUP_DETAILS,
     payload: data,
+  };
+};
+
+// getHfwsStartEndTime
+
+export const getHfwsBranchShift = (params) => {
+  return {
+    type: GET_HFWS_BRANCH_SHIFT,
+    payload: params,
+  };
+};
+
+export const getHfwsBranchShiftSuccess = (response) => {
+  return {
+    type: GET_HFWS_BRANCH_SHIFT_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getHfwsBranchShiftFailure = (error) => {
+  return {
+    type: GET_HFWS_BRANCH_SHIFT_FAILURE,
+    payload: error,
   };
 };

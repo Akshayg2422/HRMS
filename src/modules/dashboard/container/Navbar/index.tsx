@@ -51,6 +51,7 @@ function Navbar({
   const dynamicActiveNav = () => {
     NAV_ITEM.filter((el: any, index: number) => {
       if (pathname === el.path && pathname !== "/approvals") {
+
         dispatch(currentNavIndex(el.path));
       }
       else {
@@ -99,6 +100,7 @@ function Navbar({
 
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName: string) => {
+
     let path = location.pathname
     NAV_ITEM.filter((el: any, index: number) => {
       if (pathname === el.path && pathname !== "/approvals") {
@@ -118,11 +120,13 @@ function Navbar({
                   }
                 })
               }
+
             })
           }
         })
       }
     })
+
     return path === routeName ? "active" : '';
   };
   // makes the sidenav normal on hover (actually when mouse enters on it)

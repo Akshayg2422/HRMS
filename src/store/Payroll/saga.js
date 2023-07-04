@@ -13,7 +13,9 @@ import {
     GET_EMPLOYEE_SALARY_DEFINITION,
     GET_ALLOWANCE_GROUPS_PAGINATED,
     GET_COMPANY_DEDUCTIONS_PAGINATED,
-    GET_EARNINGS
+    GET_EARNINGS,
+    SET_COMPANY_INCENTIVE,
+    GET_COMPANY_INCENTIVE
 } from "./actionTypes";
 
 //  import {addWeeklyShiftSuccess,addWeeklyShiftFailure} './actions'
@@ -51,7 +53,11 @@ import {
     getCompanyDeductionsPaginatedSuccess,
     getCompanyDeductionsPaginatedFailure,
     getEmployeeEarningsSuccess,
-    getEmployeeEarningsFailure
+    getEmployeeEarningsFailure,
+    setCompanyIncentiveSuccess,
+    setCompanyIncentiveFailure,
+    getCompanyIncentiveSuccess,
+    getCompanyIncentiveFailure
 } from "./actions";
 
 import {
@@ -70,7 +76,9 @@ import {
     addEmployeeSalaryDefinitionApi,
 
     getEmployeeSalaryDefinitionApi,
-    fetchEmployeeEarningsApi
+    fetchEmployeeEarningsApi,
+    postCompanyIncentiveApi,
+    getCompanyIncentiveApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -376,6 +384,52 @@ function* getEmployeesEarningsSaga(action) {
     }
 }
 
+// SET_COMPANY_INCENTIVE
+
+
+function* setCompanyIncentiveSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(postCompanyIncentiveApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(setCompanyIncentiveSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(setCompanyIncentiveFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(setCompanyIncentiveFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
+
+// get_COMPANY_INCENTIVE
+
+function* getCompanyIncentiveSaga(action) {
+    try {
+        yield put(showLoader());
+        const response = yield call(getCompanyIncentiveApi, action.payload.params);
+        if (response.success) {
+            yield put(hideLoader());
+            yield put(getCompanyIncentiveSuccess(response.details));
+            yield call(action.payload.onSuccess(response));
+        } else {
+            yield put(hideLoader());
+            yield put(getCompanyIncentiveFailure(response.error_message));
+            yield call(action.payload.onError(response));
+        }
+    } catch (error) {
+        yield put(hideLoader());
+        yield put(getCompanyIncentiveFailure("Invalid Request"));
+        yield call(action.payload.onError(error));
+
+    }
+}
 
 //Watcher
 
@@ -393,6 +447,8 @@ function* PayrollSaga() {
     yield takeLatest(GET_ALLOWANCE_GROUPS_PAGINATED, getAllowanceGroupsPaginatedSaga);
     yield takeLatest(GET_COMPANY_DEDUCTIONS_PAGINATED, getCompanyDeductionsPaginatedApi);
     yield takeLatest(GET_EARNINGS, getEmployeesEarningsSaga);
+    yield takeLatest(SET_COMPANY_INCENTIVE, setCompanyIncentiveSaga);
+    yield takeLatest(GET_COMPANY_INCENTIVE, getCompanyIncentiveSaga);
 }
 
 export default PayrollSaga;

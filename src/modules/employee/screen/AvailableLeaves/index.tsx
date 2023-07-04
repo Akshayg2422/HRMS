@@ -1,5 +1,5 @@
 import { BackArrow, Container, Card, CommonTable, NoRecordFound, Primary } from '@components';
-import { getLeaveFromDate, getLeaveTypes, getLeaveTypesDetails } from '../../../../store/employee/actions';
+import { getEmployeeBranchLeaveType, getLeaveFromDate, getLeaveTypes, getLeaveTypesDetails } from '../../../../store/employee/actions';
 import { goTo, ROUTE, showToast, useNav } from '@utils';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,10 +19,10 @@ function AvailableLeaves() {
     const fetchLeaveTypes = () => {
         const params = {};
         dispatch(
-            getLeaveTypes({
+            getEmployeeBranchLeaveType({
                 params,
                 onSuccess: (success: any) => () => {
-                    setLeaveTypes(success.leave_types);
+                    setLeaveTypes(success?.details?.leave_types);
                 },
                 onError: (error: string) => () => {
                     showToast("error", error);

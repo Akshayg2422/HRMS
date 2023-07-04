@@ -62,7 +62,6 @@ function SalaryReport({ data, department, reportType, customrange, designation }
 
     const normalizedEmployee = (data: any) => {
         return data && data.length > 0 && data.map((el: any) => {
-            console.log("==========>", el);
 
             return {
                 name: el.name,
@@ -72,7 +71,8 @@ function SalaryReport({ data, department, reportType, customrange, designation }
                 "Payable Days": el?.break_down?.payable_days,
                 "LOP Days": el?.break_down?.lop_days ? el?.break_down?.lop_days : '-',
                 "Gross Payable": el?.salary_till_date?.gross_pay ? el?.salary_till_date?.gross_pay : "-",
-                // "Net Salary": el?.salary_till_date?.net_salary ? el?.salary_till_date?.net_salary : "-",
+                // "Net Salary": el?.salary_till_date?.net_salary ? el?.salary_till_date?.net_salary : "-",total_other_income
+                "Other Pay": el?.salary_till_date?.total_other_income ? el?.salary_till_date?.total_other_income : "-",
                 "Total Deducible": el?.salary_till_date?.total_deductions ? el?.salary_till_date?.total_deductions : "-",
                 "LOP": el?.salary_till_date?.lop_pay_till_date ? el?.salary_till_date?.lop_pay_till_date : "-",
                 "Net Payable": el?.salary_till_date?.pay_till_date ? el?.salary_till_date?.gross_pay_till_date_after_deductions : "-"

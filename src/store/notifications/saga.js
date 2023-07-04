@@ -60,7 +60,6 @@ function* getBroadcastMessageSaga(action) {
         yield put(showLoader());
 
         const response = yield call(fetchBroadcastMessageApi, action.payload.params);
-        console.log("response", response);
         if (response.success) {
             yield put(hideLoader());
             yield put(getBroadcastMessageSuccess(response?.details));
@@ -87,7 +86,6 @@ function* getNotificationsSaga(action) {
         yield put(showLoader());
 
         const response = yield call(getNotificationsApi, action.payload.params);
-        console.log("response", response);
         if (response.success) {
             yield put(hideLoader());
             yield put(getNotificationsSuccess(response?.details));

@@ -33,7 +33,7 @@ function LogReports({ data, department, reportType, customrange, designation, at
     const { t } = useTranslation();
 
     const getConvertedTableData = (data: any) => {
-        const updatedData = []
+        const updatedData:any = []
         let key = getDatesListBetweenStartEndDates(startDate, endDate)
         for (let i = 0; i < data.length; i++) {
             let { days, name, designation, emp_id } = data[i]
@@ -53,7 +53,7 @@ function LogReports({ data, department, reportType, customrange, designation, at
         startDate: moment.MomentInput,
         stopDate: moment.MomentInput,
     ) => {
-        const dateObj = [];
+        const dateObj:any = [];
         let currentDate = moment(startDate);
         stopDate = moment(stopDate);
         while (currentDate <= stopDate) {

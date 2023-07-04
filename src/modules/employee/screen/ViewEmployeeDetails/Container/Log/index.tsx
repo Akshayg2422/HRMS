@@ -322,7 +322,7 @@ const LogView = () => {
                                 });
                             }}
                         />
-                        <Primary text={t("request")} onClick={() => onRequestHandler()} />
+                        <Primary text={t("modify")} onClick={() => onRequestHandler()} />
                     </Container>
                 </Container>
             </Modal>

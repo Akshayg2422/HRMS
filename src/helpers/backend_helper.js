@@ -320,5 +320,29 @@ export const fetchCompanyBaseWeeklyCalendarApi = (payload) => post(url.GET_BASE_
 
 export const postCompanyBaseWeeklyCalendarApi = (payload) => post(url.SET_BASE_WEEK_CALENDAR, payload, {})
 
+// branchWiseEmployeesLeaves
 
+
+export const postBranchWiseEmployeesLeavesApi = (payload) => post(url.GET_BRANCH_WISE_EMPLOYEE_LEAVES, payload, {})
+
+
+// getEmployeeLeaveTypes
+
+export const getEmployeeLeaveTypesApi = (payload) => post(url.GET_EMPLOYEE_LEAVE_TYPES, payload, {})
+
+// updateEmployeeAllocatedDays
+
+export const postUpdateEmployeeAllocatedDaysApi = (payload) => post(url.UPDATE_EMPLOYEE_ALLOCATED_DAYS, payload, {})
+
+// addCompanyIncentive
+
+export const postCompanyIncentiveApi = (payload) => post(url.ADD_COMPANY_INCENTIVE, payload, {})
+
+// getCompanyIncentives
+
+export const getCompanyIncentiveApi = (payload) => post(url.GET_COMPANY_INCENTIVE, payload, {})
+
+//GET_HFWS_BRANCH_SHIFT_TIME 
+
+export const getHfwsBranchShiftApi = (payload) => post(url.GET_HFWS_BRANCH_SHIFT_TIME, payload, {})
 

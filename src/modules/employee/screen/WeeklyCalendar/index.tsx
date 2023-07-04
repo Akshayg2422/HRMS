@@ -1,6 +1,6 @@
 import { Card, CommonTable, Container, ImageView, Modal, NoRecordFound, Primary, Secondary } from '@components';
 import { CompanyBaseWeeklyCalendar, setCompanyBaseWeeklyCalendar } from '../../../../store/employee/actions';
-import { useNav } from '@utils';
+import { showToast, useNav } from '@utils';
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -74,6 +74,7 @@ function WeeklyCalendar() {
                 onSuccess: (success: any) => () => {
                     setEditModel(!editModel)
                     fetchCompanyBaseWeeklyCalendarDetails()
+                    showToast('success',success?.message)
                 },
                 onError: (error: string) => () => {
                 },

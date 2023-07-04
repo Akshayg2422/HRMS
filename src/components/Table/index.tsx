@@ -76,7 +76,7 @@ function index({ displayDataSet, tableDataSet, custombutton, customClass, additi
   }
 
   function getElement(item: Element) {
-    let element = null;
+    let element:any = null;
     switch (item.elt) {
       case TABLE_ELEMENT_TEXT_BUTTON:
         element = <span style={{ cursor: 'pointer' }} className={`text-${item.elv == 'Reject' ? "danger" : "primary"} ${custombutton}`}>{item.elv}</span>

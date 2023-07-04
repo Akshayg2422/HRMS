@@ -81,7 +81,7 @@ const CommonTable = ({ card = true, header, title, customClass,displayDataSet, t
   const GetPaginatorSet = ({ currentPage, totalPages }: GetPaginatorSetProps) => {
     if (currentPage && totalPages) {
 
-      const children = [];
+      const children:any = [];
       if (currentPage && noOfPage) {
         let current_page = currentPage;
         let total_pages = noOfPage;

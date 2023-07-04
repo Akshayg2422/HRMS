@@ -142,7 +142,6 @@ function MyBranches() {
         } else {
             updateSelectedBranch = item.admin_branch_ids;
         }
-        console.log("updateSelectedBranch", updateSelectedBranch);
 
         setAssociatedBranch(updateSelectedBranch)
         setAdminId(item)

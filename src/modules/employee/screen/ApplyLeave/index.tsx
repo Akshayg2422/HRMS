@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   applyLeave,
   fetchCalendardetails,
+  getEmployeeBranchLeaveType,
   getLeaveTypes,
 } from "../../../../../src/store/employee/actions";
 import moment from "moment";
@@ -117,11 +118,11 @@ const ApplyLeave = () => {
   const fetchLeaveTypes = () => {
     const params = {};
     dispatch(
-      getLeaveTypes({
+      getEmployeeBranchLeaveType({
         params,
         onSuccess: (success: any) => () => {
-          setLeaveTypes(FilterDropdown(success.leave_types));
-          setDropDownData(success.leave_types)
+          setLeaveTypes(FilterDropdown(success?.details?.leave_types));
+          setDropDownData(success?.details?.leave_types)
         },
         onError: (error: string) => () => {
           showToast("error", error);

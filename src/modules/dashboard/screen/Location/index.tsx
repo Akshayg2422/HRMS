@@ -8,18 +8,17 @@ import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
 import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/actions';
 
-
 const DROPDOWN_MENU = [
-  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'fas fa-redo-alt' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
-  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'fas fa-users-cog' },
 ]
 const DROPDOWN_MENU_1 = [
-  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'fas fa-users-cog' },
 ]
 const DROPDOWN_MENU_2 = [
-  { id: '2', name: 'Reset radius', value: 'CL', icon: 'ni ni-active-40' },
-  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'ni ni-pin-3' },
+  { id: '2', name: 'Reset radius', value: 'CL', icon: 'fas fa-redo-alt' },
+  { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'fas fa-users-cog' },
 ]
 
 const ADMIN_MENU = [
@@ -46,7 +45,7 @@ function LocationScreen() {
   const { t } = useTranslation();
 
   const CARD_DROPDOWN_ITEM = [
-    { id: '1', name: 'My branches', value: 'CL', icon: 'ni ni-active-40' },
+    { id: '1', name: 'My branches', value: 'CL', icon: 'fas fa-code-branch' },
   ]
 
   const [branch, setBranch] = useState<any>([])

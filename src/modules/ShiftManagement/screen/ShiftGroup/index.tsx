@@ -23,9 +23,8 @@ import { t } from 'i18next';
 export const DROPDOWN_MENU = [
     { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
 ]
-
 const CARD_DROPDOWN_ITEM = [
-    { id: '1', name: `${t("manageWeeklyShifts")}`, value: 'CL', icon: 'ni ni-active-40' },
+    { id: '1', name: `${t("manageWeeklyShifts")}`, value: 'CL', icon: 'fas fa-stream' },
 ]
 
 const ShiftGroup = () => {

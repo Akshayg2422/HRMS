@@ -164,7 +164,17 @@ import {
   COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
   SET_COMPANY_BASE_WEEKLY_CALENDAR,
   SET_COMPANY_BASE_WEEKLY_CALENDAR_SUCCESS,
-  SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE
+  SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES_SUCCESS,
+  GET_EMPLOYEE_BRANCH_WISE_LEAVES_FAILURE,
+  GET_EMPLOYEE_LEAVE_HISTORY,
+  GET_EMPLOYEE_LEAVE_TYPES,
+  GET_EMPLOYEE_LEAVE_TYPES_SUCCESS,
+  GET_EMPLOYEE_LEAVE_TYPES_FAILURE,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS_SUCCESS,
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1348,7 +1358,6 @@ export const getEmployeeAttendanceInfo = (params) => {
 };
 
 export const getEmployeeAttendanceInfoSuccess = (response) => {
-  console.log("action", response);
   return {
     type: FETCH_EMPLOYEE_ATTENDANCE_INFO_SUCCESS,
     payload: response,
@@ -1464,6 +1473,89 @@ export const setCompanyBaseWeeklyCalendarSuccess = (response) => {
 export const setCompanyBaseWeeklyCalendarFailure = (error) => {
   return {
     type: SET_COMPANY_BASE_WEEKLY_CALENDAR_FAILURE,
+    payload: error,
+  };
+};
+
+
+//branchWiseEmployeesLeaves
+
+
+export const getEmployeeBranchWiseLeaves = (params) => {
+  return {
+    type: GET_EMPLOYEE_BRANCH_WISE_LEAVES,
+    payload: params,
+  };
+};
+
+export const getEmployeeBranchWiseLeavesSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_BRANCH_WISE_LEAVES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeBranchWiseLeavesFailure = (error) => {
+  return {
+    type: GET_EMPLOYEE_BRANCH_WISE_LEAVES_FAILURE,
+    payload: error,
+  };
+};
+
+//set employee leave history
+export const getEmployeeLeaveHistory = (item) => {
+  return {
+    type: GET_EMPLOYEE_LEAVE_HISTORY,
+    payload: item,
+  };
+};
+
+
+
+
+//getEmployeeLeaveType 
+
+export const getEmployeeBranchLeaveType = (params) => {
+  return {
+    type: GET_EMPLOYEE_LEAVE_TYPES,
+    payload: params,
+  };
+};
+
+export const getEmployeeBranchLeaveTypeSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_LEAVE_TYPES_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeBranchLeaveTypeFailure = (error) => {
+  return {
+    type: GET_EMPLOYEE_LEAVE_TYPES_FAILURE,
+    payload: error,
+  };
+};
+
+
+// updateEmployeeAllocatedDays
+
+export const updateEmployeeAllocatedDays = (params) => {
+  return {
+    type: UPDATE_EMPLOYEE_ALLOCATED_DAYS,
+    payload: params,
+  };
+};
+
+export const updateEmployeeAllocatedDaysSuccess = (response) => {
+  return {
+    type: UPDATE_EMPLOYEE_ALLOCATED_DAYS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const updateEmployeeAllocatedDaysFailure = (error) => {
+  return {
+    type: UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE,
     payload: error,
   };
 };

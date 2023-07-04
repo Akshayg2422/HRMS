@@ -22,7 +22,6 @@ function DeviceInfo() {
             const model = deviceInfo[1].trim();
             dispatch(getAppConfigData({ brand, model, platform }))
         }
-        console.log("=========>runed");
 
     }, []);
 

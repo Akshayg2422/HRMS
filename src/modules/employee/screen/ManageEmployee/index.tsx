@@ -16,6 +16,9 @@ import {
   ScreenContainer,
   ScreenTitle,
   Divider,
+  ImageView,
+  NoRecordFound,
+  SearchableDropdown,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -40,7 +43,9 @@ import {
   Today,
   dropDownValueCheckByEvent,
   MAX_LENGTH_AADHAR,
-  convertTo24Hour
+  convertTo24Hour,
+  isHfwsBranch,
+  getDropDownFormatter,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -55,7 +60,7 @@ import {
   employeeAddition,
 } from "../../../../store/employee/actions";
 
-import { getBranchShifts, getMyShifts } from "../../../../store/shiftManagement/actions";
+import { getBranchShifts, getHfwsBranchShift, getMyShifts } from "../../../../store/shiftManagement/actions";
 import { getListAllBranchesList } from "../../../../store/location/actions";
 
 type EmployeeDetail = {
@@ -106,9 +111,15 @@ const ManageEmployee = () => {
   const { listBranchesList } =
     useSelector((state: any) => state.LocationReducer);
 
+  const { hfwsBranchShifts } = useSelector(
+    (state: any) => state.ShiftManagementReducer
+  );
+  
+  const INITIAL_COMPANY_BRANCH = { id: dashboardDetails?.company_branch?.id, text: dashboardDetails?.company_branch?.name }
 
 
-  const [employeeDetails, setEmployeeDetails] = useState({
+
+  const [employeeDetails, setEmployeeDetails] = useState<any>({
     firstName: "",
     lastName: "",
     mobileNumber: "",
@@ -117,15 +128,15 @@ const ManageEmployee = () => {
     bloodGroup: "",
     panNo: "",
     aadharrNo: "",
-    designation: "",
-    department: "",
-    branch: dashboardDetails?.company_branch?.id,
+    designation: '',
+    department: '',
+    branch: INITIAL_COMPANY_BRANCH,
     dateOfJoining: new Date(),
     dob: "",
     kgid_No: "",
     employeeType: "",
-    attendanceStartTime: "10:00",
-    attendanceEndTime: "18:00",
+    attendanceStartTime: isHfwsBranch(dashboardDetails?.company?.id) ? '' : "10:00",
+    attendanceEndTime: isHfwsBranch(dashboardDetails?.company?.id) ? '' : "18:00",
     shift: ''
   });
   const [shiftGroup, setShiftGroup] = useState<any>()
@@ -137,12 +148,17 @@ const ManageEmployee = () => {
   const [designation, setDesignation] = useState("");
   const [isExempted, setIsExempted] = useState(false)
   const [isRefresh, setIsRefresh] = useState(false);
+  const [hfswShiftModel, setHfswShiftModel] = useState(false)
+  const [hfswSelectedShiftIndex, setHfswSelectedShiftIndex] = useState<any>()
+
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
   const [shiftsDropdownData, setShiftsDropdownData] =
     useState<any>([]);
 
   const [isBranchShiftDataExist, setIsBranchShiftExist] = useState(false)
+
+  // getHfwsBranchShift
 
   const getAllSubBranches = (branchList: any, parent_id: string) => {
     const branchListFiltered: any = [];
@@ -161,7 +177,7 @@ const ManageEmployee = () => {
   useEffect(() => {
     departmentData()
     designationData()
-
+    isHfwsBranch(dashboardDetails?.company?.id) && getHfwsBranchShiftDetails()
     getBranchShiftsList()
 
     if (listBranchesList.length === 0) {
@@ -204,6 +220,7 @@ const ManageEmployee = () => {
     setDesignationNote('')
 
   }, [isRefresh]);
+
 
   useEffect(() => {
     if (isEdit) {
@@ -295,6 +312,22 @@ const ManageEmployee = () => {
     return shifts
   }
 
+
+
+  const getHfwsBranchShiftDetails = () => {
+    const params = {}
+    dispatch(getHfwsBranchShift({
+      params,
+      onSuccess: (success: any) => () => {
+
+      },
+      onError: (error: string) => () => {
+        showToast('error', error)
+      },
+
+    }));
+  }
+
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
       showToast("error", t("invalidName"));
@@ -313,10 +346,10 @@ const ManageEmployee = () => {
       showToast("error", t("invalidGender"));
       return false;
     }
-    else if (Object.keys(employeeDetails.designation).length === 0) {
+    else if (Object.keys(employeeDetails.designation?.id).length === 0) {
       showToast("error", t("invalidDesignation"));
       return false;
-    } else if (Object.keys(employeeDetails.department).length === 0) {
+    } else if (Object.keys(employeeDetails.department?.id).length === 0) {
       showToast("error", t("invalidDepartment"));
       return false;
     } else if (Object.keys(employeeDetails.branch).length === 0) {
@@ -350,9 +383,9 @@ const ManageEmployee = () => {
         ...(employeeDetails.aadharrNo && {
           aadhar_number: employeeDetails.aadharrNo,
         }),
-        designation_id: employeeDetails.designation,
-        department_id: employeeDetails.department,
-        branch_id: employeeDetails.branch,
+        designation_id: employeeDetails.designation.id,
+        department_id: employeeDetails.department.id,
+        branch_id: employeeDetails.branch.id,
         gender: employeeDetails.gender,
         ...(employeeDetails.bloodGroup && {
           blood_group: employeeDetails.bloodGroup,
@@ -362,7 +395,7 @@ const ManageEmployee = () => {
           start_time: employeeDetails.attendanceStartTime,
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: isExempted,
-          associated_branch: [employeeDetails.branch],
+          associated_branch: [employeeDetails.branch?.id],
           ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
         },
         ...(employeeDetails.dateOfJoining && {
@@ -370,9 +403,10 @@ const ManageEmployee = () => {
             getMomentObjFromServer(employeeDetails.dateOfJoining)
           ),
         }),
-        dob: getServerDateFromMoment(
-          getMomentObjFromServer(employeeDetails.dob)
-        ),
+        dob:
+          getServerDateFromMoment(
+            getMomentObjFromServer(employeeDetails.dob)
+          ),
         ...(employeeDetails.kgid_No && {
           kgid_number: employeeDetails.kgid_No,
         }),
@@ -424,14 +458,14 @@ const ManageEmployee = () => {
         employeeInitData.bloodGroup = editEmployeeDetails.blood_group;
 
       if (editEmployeeDetails.designation_id) {
-        employeeInitData.designation = editEmployeeDetails.designation_id;
+        employeeInitData.designation = getObjectFromArrayByKey(designationDropdownData, "id", editEmployeeDetails.designation_id);
       }
 
       if (editEmployeeDetails.department_id)
-        employeeInitData.department = editEmployeeDetails.department_id;
+        employeeInitData.department = getObjectFromArrayByKey(departmentDropdownData, "id", editEmployeeDetails.department_id);
 
       if (editEmployeeDetails.branch_id)
-        employeeInitData.branch = editEmployeeDetails.branch_id;
+        employeeInitData.branch = getObjectFromArrayByKey(companyBranchDropdownData, "id", editEmployeeDetails.branch_id);
 
       if (editEmployeeDetails.employment_type)
         employeeInitData.employeeType = editEmployeeDetails.employment_type;
@@ -476,12 +510,20 @@ const ManageEmployee = () => {
       }
 
       setShiftsDropdownData(designationMatchShifts(editEmployeeDetails.designation_id))
-      console.log("==========>", isExempted);
 
     }
+    hsfwBranchEditShift(employeeInitData.attendanceStartTime, employeeInitData.attendanceEndTime)
     setEmployeeDetails(employeeInitData);
   };
 
+
+  const hsfwBranchEditShift = (startTime: string, endTime: string) => {
+    hfwsBranchShifts && hfwsBranchShifts.length > 0 && hfwsBranchShifts.map((el: any, index: any) => {
+      if (convertTo24Hour(startTime).trim() === convertTo24Hour(el.start_time).trim() && convertTo24Hour(endTime).trim() === convertTo24Hour(el.end_time).trim()) {
+        setHfswSelectedShiftIndex(index)
+      }
+    })
+  }
 
 
   const onChangeHandler = (e: any) => {
@@ -560,17 +602,39 @@ const ManageEmployee = () => {
     setDepartmentModel(!departmentModel);
   }
 
-  const handleDesignationChange = (event: { target: { value: any } }) => {
+  const handleDesignationChange = (event: any) => {
     setEmployeeDetails(prevDetails => ({
       ...prevDetails,
-      designation: event.target.value
+      designation: event
     }));
     setEmployeeDetails(prevDetails => ({
       ...prevDetails,
       shift: ''
     }));
-    setShiftsDropdownData(designationMatchShifts(event.target.value))
+    setShiftsDropdownData(designationMatchShifts(event))
   }
+
+  const handleDepartmentChange = (event: any) => {
+    setEmployeeDetails(prevDetails => ({
+      ...prevDetails,
+      department: event
+    }));
+  }
+
+  const handleBranchChange = (event: any) => {
+    setEmployeeDetails(prevDetails => ({
+      ...prevDetails,
+      branch: event
+    }));
+  }
+
+
+  const handleHfswShiftSelect = (item: any, index: number) => {
+    setHfswSelectedShiftIndex(index)
+    setEmployeeDetails({ ...employeeDetails, attendanceStartTime: convertTo24Hour(item.start_time).trim(), attendanceEndTime: convertTo24Hour(item.end_time).trim() });
+    setHfswShiftModel(!hfswShiftModel)
+  }
+
 
 
   return (
@@ -685,8 +749,8 @@ const ManageEmployee = () => {
         <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
             <div className="row align-items-center">
-              <div className="col mt--2">
-                <DropDown
+              <div className="col mb-3">
+                {/* <DropDown
                   label={t("designation")}
                   placeholder={t("enterDesignation")}
                   data={designationDropdownData}
@@ -695,18 +759,24 @@ const ManageEmployee = () => {
                   onChange={(event) => {
                     handleDesignationChange(event)
                   }}
-                />
+                /> */}
+                <SearchableDropdown selected={employeeDetails.designation} data={getDropDownFormatter(designationDropdownData)} heading={t("designation")} placeHolder={t("enterDesignation")} onChange={(event) => {
+                  handleDesignationChange(event)
+                }} />
+
               </div>
-              <Icon
-                text={"+"}
-                onClick={() => setDesignationModel(!designationModel)}
-              />
+              <div className="mt-3">
+                {dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && <Icon
+                  text={"+"}
+                  onClick={() => setDesignationModel(!designationModel)}
+                />}
+              </div>
             </div>
           </div>
           <div className="col-xl-6">
             <div className="row align-items-center">
-              <div className="col mt--2">
-                <DropDown
+              <div className="col mb-3">
+                {/* <DropDown
                   label={t("department")}
                   placeholder={t("enterDepartment")}
                   data={departmentDropdownData}
@@ -715,19 +785,23 @@ const ManageEmployee = () => {
                   onChange={(event) =>
                     onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
                   }
-                />
+                /> */}
+                <SearchableDropdown selected={employeeDetails.department} data={getDropDownFormatter(departmentDropdownData)} heading={t("department")} placeHolder={t("enterDepartment")} onChange={(event) => {
+                  handleDepartmentChange(event)
+                }} />
               </div>
-              <Icon
+              {dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin && <Icon
                 text={"+"}
+                additionClass="mt-3"
                 onClick={() => setDepartmentModel(!departmentModel)}
-              />
+              />}
             </div>
           </div>
         </Container>
 
         <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
-            <DropDown
+            {/* <DropDown
               label={t("branch")}
               placeholder={t("branch")}
               data={companyBranchDropdownData}
@@ -736,7 +810,10 @@ const ManageEmployee = () => {
               onChange={(event) => {
                 onChangeHandler(dropDownValueCheckByEvent(event, t("branch")))
               }}
-            />
+            /> */}
+            <SearchableDropdown selected={employeeDetails.branch} data={getDropDownFormatter(companyBranchDropdownData)} heading={t("branch")} placeHolder={t("branch")} onChange={(event) => {
+              handleBranchChange(event)
+            }} />
           </div>
           <div className="col-xl-6">
             <DropDown
@@ -765,7 +842,7 @@ const ManageEmployee = () => {
               }
             />
           </div>
-          <div className="col-xl-6">
+          {/* <div className="col-xl-6">
             <InputDefault
               label={t("kgid")}
               placeholder={t("kgid")}
@@ -777,7 +854,7 @@ const ManageEmployee = () => {
                 onChangeHandler(event);
               }}
             />
-          </div>
+          </div> */}
         </Container>
 
         <Divider />
@@ -791,9 +868,19 @@ const ManageEmployee = () => {
             onChange={(e) => setIsExempted(e.target.checked)}
           />
         </div>}
+        {isHfwsBranch(dashboardDetails?.company?.id) && <Container additionClass='text-right'>
+          <Primary
+            text={t('Shift')}
+            onClick={() => {
+              setHfswShiftModel(!hfswShiftModel)
+            }}
+            size={"btn-sm"}
+          />
+        </Container>
+        }
 
         <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
-          {employeeDetails.shift || shiftsDropdownData.length > 0 ?
+          {employeeDetails.shift || shiftsDropdownData.length > 0 && !isHfwsBranch(dashboardDetails?.company?.id) ?
             <div className="col-xl-6">
               <DropDown
                 label={t("shiftss")}
@@ -807,7 +894,7 @@ const ManageEmployee = () => {
               />
             </div> : <></>
           }
-          {!employeeDetails.shift &&
+          {!employeeDetails.shift && !isHfwsBranch(dashboardDetails?.company?.id) &&
             <>
               <div className="col-xl-6">
                 <h5 className="mb-2">{t("startTime")}</h5>
@@ -833,6 +920,36 @@ const ManageEmployee = () => {
                   }}
                 />
               </div>
+            </>
+          }
+          {isHfwsBranch(dashboardDetails?.company?.id) &&
+            <>
+              {employeeDetails.attendanceStartTime && <div className="col-xl-6">
+                <h5 className="mb-2">{t("startTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  disabled
+                  value={employeeDetails.attendanceStartTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceStartTime")
+                  }}
+                />
+              </div>}
+              {employeeDetails.attendanceEndTime && <div className="col-xl-6">
+                <h5 className="mb-2">{t("endTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  disabled
+                  value={employeeDetails.attendanceEndTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceEndTime");
+                  }}
+                />
+              </div>}
             </>
           }
         </Container>
@@ -868,207 +985,6 @@ const ManageEmployee = () => {
             />
           </div>
         </Container>
-        {/* <InputText
-          label={t("fullName")}
-          placeholder={t("typeYourName")}
-          validator={validateName}
-          value={employeeDetails.firstName}
-          name={"firstName"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
-        />
-        <InputText
-          label={t("lastName")}
-          placeholder={t("typeLastName")}
-          validator={validateDefault}
-          value={employeeDetails.lastName}
-          name={"lastName"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
-        />
-        <InputNumber
-          label={t("mobileNumber")}
-          placeholder={t("enterYourMobileNumber")}
-          validator={validateMobileNumber}
-          value={employeeDetails.mobileNumber}
-          name={"mobileNumber"}
-          onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
-        />
-        <InputMail
-          label={t("email")}
-          placeholder={t("enterYourEmail")}
-          validator={validateEmail}
-          value={employeeDetails.e_Mail}
-          name={"e_Mail"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
-        />
-        <DropDown
-          label={t("gender")}
-          placeholder={t("selectYourGender")}
-          data={GENDER_LIST}
-          name={"gender"}
-          value={employeeDetails.gender}
-          onChange={(event) => {
-            onChangeHandler(dropDownValueCheckByEvent(event, t("selectYourGender")));
-          }}
-        />
-        <DropDown
-          label={t("bloodGroup")}
-          placeholder={t("enterBloodGroup")}
-          data={BLOOD_GROUP_LIST}
-          name={"bloodGroup"}
-          value={employeeDetails.bloodGroup}
-          onChange={(event) => {
-            // onChangeHandler(event);
-            onChangeHandler(dropDownValueCheckByEvent(event, t("enterBloodGroup")));
-
-          }}
-        />
-
-        <InputDefault
-          label={t("pan")}
-          placeholder={t("enterPanNUmber")}
-          maxLength={10}
-          validator={validatePAN}
-          value={employeeDetails.panNo}
-          name={"panNo"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
-        />
-        <InputDefault
-          label={t("aadhar")}
-          placeholder={t("typeypurAadharNo")}
-          validator={validateAadhar}
-          value={employeeDetails.aadharrNo}
-          name={"aadharrNo"}
-          onChange={(event) => {
-            mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_AADHAR), "aadharrNo")
-          }}
-        />
-        <div className="row align-items-center">
-          <div className="col mt--2">
-            <DropDown
-              label={t("designation")}
-              placeholder={t("enterDesignation")}
-              data={designationDropdownData}
-              name={"designation"}
-              value={employeeDetails.designation}
-              onChange={(event) => {
-                handleDesignationChange(event)
-              }}
-            />
-          </div>
-          <Icon
-            text={"+"}
-            onClick={() => setDesignationModel(!designationModel)}
-          />
-        </div>
-        {designationNote && <p className="text-right h6 mr-md-6  mt--3 mr-xl-6">{designationNote}</p>}
-        <div className="row align-items-center">
-          <div className="col mt--2">
-            <DropDown
-              label={t("department")}
-              placeholder={t("enterDepartment")}
-              data={departmentDropdownData}
-              value={employeeDetails.department}
-              name={"department"}
-              onChange={(event) =>
-                onChangeHandler(dropDownValueCheckByEvent(event, t("enterDepartment")))
-              }
-            />
-          </div>
-          <Icon
-            text={"+"}
-            onClick={() => setDepartmentModel(!departmentModel)}
-          />
-        </div>
-        <DropDown
-          label={t("branch")}
-          placeholder={t("branch")}
-          data={companyBranchDropdownData}
-          name={"branch"}
-          value={employeeDetails.branch}
-          onChange={(event) => {
-            onChangeHandler(dropDownValueCheckByEvent(event, t("branch")))
-          }}
-        />
-        <DropDown
-          label={t("category")}
-          placeholder={t("category")}
-          name={"employeeType"}
-          data={EMPLOYEE_TYPE}
-          value={employeeDetails.employeeType}
-          onChange={(event) =>
-            onChangeHandler(dropDownValueCheckByEvent(event, t("category")))
-          }
-        />
-        <h5>{t("dataOfJoining")}</h5>
-        <DatePicker
-          title={t("pleaseSelect")}
-          icon={Icons.Calendar}
-          iconPosition={"append"}
-          value={employeeDetails.dateOfJoining}
-          onChange={(date: string) =>
-            dateTimePickerHandler(date, "dateOfJoining")
-          }
-        />
-        <h5>{t("dateofBirth")}</h5>
-        <DatePicker
-          icon={Icons.Calendar}
-          iconPosition={"append"}
-          maxDate={Today}
-          onChange={(date: string) => dateTimePickerHandler(date, "dob")}
-          value={employeeDetails.dob}
-        />
-        <InputDefault
-          label={t("kgid")}
-          placeholder={t("kgid")}
-          maxLength={10}
-          validator={validateDefault}
-          value={employeeDetails.kgid_No}
-          name={"kgid_No"}
-          onChange={(event) => {
-            onChangeHandler(event);
-          }}
-        />
-        <h4 className="mb-4">{t("attendanceDetails")}</h4> */}
-        {/* {employeeDetails.shift || shiftsDropdownData.length > 0 ? (
-          <DropDown
-            label={t("shiftss")}
-            placeholder={t("SelectShift")}
-            data={shiftsDropdownData}
-            name={"shift"}
-            value={employeeDetails.shift}
-            onChange={(event) =>
-              onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
-            }
-          />) : <></>} */}
-        {/* {!employeeDetails.shift && <>
-          <h5 className="mb-2">{t("startTime")}</h5>
-          <TimePicker
-            title={t("pleaseSelect")}
-            icon={Icons.Time}
-            iconPosition={"append"}
-            value={employeeDetails.attendanceStartTime}
-            onChange={(time: any) => {
-              timePickerHandler(time, "attendanceStartTime")
-            }}
-          />
-          <h5 className="mb-2">{t("endTime")}</h5>
-          <TimePicker
-            title={t("pleaseSelect")}
-            icon={Icons.Time}
-            iconPosition={"append"}
-            value={employeeDetails.attendanceEndTime}
-            onChange={(time: any) => {
-              timePickerHandler(time, "attendanceEndTime");
-            }}
-          /></>} */}
       </FormWrapper>
       <Modal
         title={t("department")}
@@ -1137,6 +1053,28 @@ const ManageEmployee = () => {
             </Container>
           </Container>
         }
+      </Modal>
+      <Modal showModel={hfswShiftModel}
+        title={t('Shift Timing')}
+        size={"modal-sm"}
+        toggle={() => setHfswShiftModel(!hfswShiftModel)}>
+        <Container>
+          {hfwsBranchShifts && hfwsBranchShifts.length > 0 ? <Container>
+            {hfwsBranchShifts && hfwsBranchShifts.length > 0 && hfwsBranchShifts.map((el: any, index: any) => {
+              return (
+                <Container additionClass="p-2 row"
+                  onClick={() => {
+                    // setCurrentEmployeeShiftId(el.id)
+                  }}
+                >
+                  <h4 className="col fw-normal">{el.display_text}</h4>
+                  <td className="col-2" onClick={() => { handleHfswShiftSelect(el, index) }} style={{ whiteSpace: "pre-wrap", cursor: 'pointer' }}><ImageView icon={index === hfswSelectedShiftIndex ? Icons.TickActive : Icons.TickDefault} /></td>
+
+                </Container>
+              )
+            })}
+          </Container> : <NoRecordFound />}
+        </Container>
       </Modal>
     </ScreenContainer>
   );
