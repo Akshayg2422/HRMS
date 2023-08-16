@@ -46,6 +46,12 @@ import {
   convertTo24Hour,
   isHfwsBranch,
   getDropDownFormatter,
+  MARITAL_STATUS_LIST,
+  GROUP_LIST,
+  DOMAIN,
+  HFWS_SPECLILISATION,
+  HFWS_ORGANISATION,
+  HFWS_QUALIFICATIONS,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -86,13 +92,18 @@ type EmployeeDetail = {
   dob?: string;
   kgid_number?: string;
   shift?: any
+  qualification: any,
+  branch_group: any,
+  organisation: any,
+  marital_status: any,
+  specialization: any
 };
 
 const ManageEmployee = () => {
   const navigation = useNav();
   const { t } = useTranslation();
   let dispatch = useDispatch();
-
+  const isHfws = localStorage.getItem(DOMAIN);
   const {
     designationDropdownData,
     departmentDropdownData,
@@ -114,7 +125,7 @@ const ManageEmployee = () => {
   const { hfwsBranchShifts } = useSelector(
     (state: any) => state.ShiftManagementReducer
   );
-  
+
   const INITIAL_COMPANY_BRANCH = { id: dashboardDetails?.company_branch?.id, text: dashboardDetails?.company_branch?.name }
 
 
@@ -137,7 +148,12 @@ const ManageEmployee = () => {
     employeeType: "",
     attendanceStartTime: isHfwsBranch(dashboardDetails?.company?.id) ? '' : "10:00",
     attendanceEndTime: isHfwsBranch(dashboardDetails?.company?.id) ? '' : "18:00",
-    shift: ''
+    shift: '',
+    maritalStatus: MARITAL_STATUS_LIST[0].id,
+    qualification: HFWS_QUALIFICATIONS[HFWS_QUALIFICATIONS.length - 1].id,
+    specialization: HFWS_SPECLILISATION[HFWS_SPECLILISATION.length - 1].id,
+    group: GROUP_LIST[GROUP_LIST.length - 1].id,
+    organisation: HFWS_ORGANISATION[0].id
   });
   const [shiftGroup, setShiftGroup] = useState<any>()
   const [departmentModel, setDepartmentModel] = useState(false);
@@ -346,13 +362,13 @@ const ManageEmployee = () => {
       showToast("error", t("invalidGender"));
       return false;
     }
-    else if (Object.keys(employeeDetails.designation?.id).length === 0) {
+    else if (employeeDetails.designation === '') {
       showToast("error", t("invalidDesignation"));
       return false;
-    } else if (Object.keys(employeeDetails.department?.id).length === 0) {
+    } else if (employeeDetails.department === '') {
       showToast("error", t("invalidDepartment"));
       return false;
-    } else if (Object.keys(employeeDetails.branch).length === 0) {
+    } else if (employeeDetails.branch === '') {
       showToast("error", t("invalidBranch"));
       return false;
     }
@@ -363,11 +379,16 @@ const ManageEmployee = () => {
     else if (!employeeDetails.dob) {
       showToast("error", t("invalidDOB"));
       return false;
+    } else if (employeeDetails?.attendanceStartTime === '' && employeeDetails?.attendanceEndTime === '') {
+      showToast("error", "Please Select Shift Time");
+      return false
     }
     else {
       return true;
     }
   };
+
+  console.log("=============>", employeeDetails);
 
   const onSubmit = () => {
     if (validatePostParams()) {
@@ -391,6 +412,11 @@ const ManageEmployee = () => {
           blood_group: employeeDetails.bloodGroup,
         }),
         employment_type: employeeDetails.employeeType,
+        ...(isHfws === 'HFWS' && { qualification: employeeDetails.qualification }),
+        ...(isHfws === 'HFWS' && { marital_status: employeeDetails.maritalStatus }),
+        ...(isHfws === 'HFWS' && { specialization: employeeDetails.specialization }),
+        ...(isHfws === 'HFWS' && { branch_group: employeeDetails.group }),
+        ...(isHfws === 'HFWS' && { organisation: employeeDetails.organisation }),
         attendance_settings: {
           start_time: employeeDetails.attendanceStartTime,
           end_time: employeeDetails.attendanceEndTime,
@@ -411,6 +437,7 @@ const ManageEmployee = () => {
           kgid_number: employeeDetails.kgid_No,
         }),
       };
+
       dispatch(
         employeeAddition({
           params,
@@ -493,6 +520,40 @@ const ManageEmployee = () => {
       )
         employeeInitData.attendanceEndTime =
           editEmployeeDetails.attendance_settings?.end_time;
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.qualification
+      )
+        employeeInitData.qualification =
+          editEmployeeDetails.qualification;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.specialization
+      )
+        employeeInitData.specialization =
+          editEmployeeDetails.specialization;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.marital_status
+      )
+        employeeInitData.maritalStatus =
+          editEmployeeDetails.marital_status;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.branch_group
+      )
+        employeeInitData.group =
+          editEmployeeDetails.branch_group;
+
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.organisation
+      )
+        employeeInitData.organisation =
+          editEmployeeDetails.organisation;
 
       if (
         editEmployeeDetails &&
@@ -739,8 +800,33 @@ const ManageEmployee = () => {
               value={employeeDetails.dob}
             />
           </div>
-
+          {isHfws === 'HFWS' && <div className="col-xl-6 mt--2">
+            <DropDown
+              label={t("Marital Status")}
+              placeholder={t("Enter Marital Status")}
+              data={MARITAL_STATUS_LIST}
+              name={"maritalStatus"}
+              value={employeeDetails.maritalStatus}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Marital Status")));
+              }}
+            />
+          </div>}
         </Container>
+        {isHfws === 'HFWS' && <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          <div className="col-xl-6 mt--4">
+            <DropDown
+              label={t("Qualification")}
+              placeholder={t("Enter Your Qualification")}
+              data={HFWS_QUALIFICATIONS}
+              name={"qualification"}
+              value={employeeDetails.qualification}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Qualification")));
+              }}
+            />
+          </div>
+        </Container>}
 
         <Divider />
 
@@ -855,6 +941,49 @@ const ManageEmployee = () => {
               }}
             />
           </div> */}
+          {isHfws === 'HFWS' && <div className="col-xl-6 mt--2">
+            <DropDown
+              label={t("Specialization")}
+              placeholder={t("Enter Your Specialization")}
+              data={HFWS_SPECLILISATION}
+              name={"specialization"}
+              value={employeeDetails.specialization}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your specialization")));
+              }}
+            />
+          </div>}
+        </Container>
+        {isHfws === 'HFWS' && <Container additionClass={'col-xl-12 row col-sm-3'}>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("Group")}
+              placeholder={t("Enter Your Group")}
+              data={GROUP_LIST}
+              name={"group"}
+              value={employeeDetails.group}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Group")));
+              }}
+            />
+          </div>
+          <div className="col-xl-6">
+            <DropDown
+              label={t("Organisation")}
+              placeholder={t("Enter Your Organisation")}
+              data={HFWS_ORGANISATION}
+              name={"organisation"}
+              value={employeeDetails.organisation}
+              onChange={(event) => {
+                // onChangeHandler(event);
+                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Organisation")));
+
+              }}
+            />
+          </div>
+        </Container>}
+        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+
         </Container>
 
         <Divider />

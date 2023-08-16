@@ -9,7 +9,8 @@ import {
   getMaxLengthForNumberInputs,
   goBack,
   ASYN_USER_AUTH,
-  goTo
+  goTo,
+  DOMAIN
 } from '@utils';
 
 import { useTranslation } from 'react-i18next';
@@ -237,7 +238,10 @@ function Otp() {
           <small>{t('verificationCode') + '+91-' + mobileNumber}</small>
           <small
             className='ml-2 text-primary text-center'
-            role='button' onClick={() => goTo(navigate, ROUTE.ROUTE_LOGIN, true)}>
+            role='button' onClick={async () => {
+              await localStorage.setItem(DOMAIN, '');
+              goTo(navigate, ROUTE.ROUTE_LOGIN, true)
+            }}>
             {t('edit')}
           </small>
         </Container>
