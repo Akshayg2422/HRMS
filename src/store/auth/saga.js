@@ -588,7 +588,7 @@ function* AuthSaga() {
 
   yield takeLatest(SET_ESSL_CONFIG, postEsslConfigSaga);
   yield takeLatest(GET_ESSL_CONFIG, fetchEsslConfigSaga);
-  yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
+  // yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
   yield takeLatest(GET_ESSL_DEVICES, fetchEsslDevicesSaga);
   yield takeLatest(SYNC_ESSL_DEVICE_USERS, syncEsslDeviceUsersSaga);
   yield takeLatest(WEB_PUSH_REGISTER, webPushRegisterSaga);

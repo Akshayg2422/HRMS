@@ -223,7 +223,7 @@ export const addEsslDeviceApi = (payload) => post(url.ADD_ESSL_DEVICE, payload, 
 
 //get ESSL devices
 
-export const getEsslDevicesApi = (payload) => post(url.GET_ESSL_DEVICES, payload, {})
+// export const getEsslDevicesApi = (payload) => post(url.GET_ESSL_DEVICES, payload, {})
 
 //sync essl device users
 
@@ -346,3 +346,28 @@ export const getCompanyIncentiveApi = (payload) => post(url.GET_COMPANY_INCENTIV
 
 export const getHfwsBranchShiftApi = (payload) => post(url.GET_HFWS_BRANCH_SHIFT_TIME, payload, {})
 
+// getSyncDataApi
+
+export const getSyncDataApi = (payload) => post(url.GET_SYNC_DATA, payload, {})
+
+// updateCompanyGenericShift
+
+export const updateCompanyGenericShiftApi = (payload) => post(url.UPDATE_COMPANY_GENERIC_SHIFT_URL, payload, {})
+
+// add Devices
+
+export const addEsslDevicesApi = (payload) => post(url.ADD_ESSL_DEVICE_URL, payload, {})
+
+// get Devices
+export const getEsslDevicesApi = (payload) => post(url.GET_ESSL_DEVICE_URL, payload, {})
+
+// remove Devices
+export const removeEsslDevicesApi = (payload) => post(url.REMOVE_ESSL_DEVICE_URL, payload, {})
+
+// updateEmployeesDeviceDetail
+
+export const updateEmployeesDeviceDetailApi = (payload) => post(url.UPDATE_EMPLOYEE_DEVICE_DETAILS_URL, payload, {})
+
+// getEmployeesDeviceDetail
+
+export const getEmployeesDeviceDetailApi = (payload) => post(url.GET_EMPLOYEE_DEVICE_DETAILS_URL, payload, {})

@@ -309,6 +309,35 @@ export const GET_COMPANY_INCENTIVE = '/payroll/getCompanyIncentives'
 
 // getHfwsStartEndTime
 
-export const GET_HFWS_BRANCH_SHIFT_TIME = '/attendance/getHfwsStartEndTime'
+export const GET_HFWS_BRANCH_SHIFT_TIME = '/attendance/getHfwsStartEndTime' 
+
+// syncData
+
+export const GET_SYNC_DATA = '/authentication/v1/syncData' 
+
+
+// updateCompanyGenericShift
+
+export const UPDATE_COMPANY_GENERIC_SHIFT_URL = '/authentication/updateCompanyGenericShift' 
+
+// Add Devices
+
+export const ADD_ESSL_DEVICE_URL = '/company/addDevice' 
+
+// get Devices
+
+export const GET_ESSL_DEVICE_URL = '/company/getDevices' 
+
+// remove Devices
+
+export const REMOVE_ESSL_DEVICE_URL = '/company/removeDevice' 
+
+// updateEmployeesDeviceDetail
+
+export const UPDATE_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/updateEmployeesDeviceDetail' 
+
+// getEmployeesDeviceDetail
+
+export const GET_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/getEmployeesDeviceDetail' 
 
 

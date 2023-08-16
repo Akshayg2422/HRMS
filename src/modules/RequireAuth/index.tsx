@@ -27,16 +27,16 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to={ROUTE.ROUTE_LOGIN} state={{ path: location.pathname }} />
     }
 
-    // const conditionalNavbarItem = (details: any) => {
-    //     if (details?.is_admin) {
-    //         return NAV_ITEM
-    //     } else if (details?.is_branch_admin) {
-    //         let filtered = NAV_ITEM.filter((el: any) => {
-    //             return el.value !== 'LP'
-    //         })
-    //         return filtered
-    //     }
-    // }
+    const conditionalNavbarItem = (navs: any) => {
+        if (userDetails?.is_admin) {
+            return navs
+        } else if (userDetails?.is_branch_admin) {
+            let filtered = navs.filter((el: any) => {
+                return el.value !== 'WC' && el.value !== 'GS' 
+            })
+            return filtered
+        }
+    }
 
     const toggleSideNav = () => {
 
@@ -54,7 +54,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     return (
         <>
             {userDetails && <Navbar
-                routes={NAV_ITEM}
+                routes={conditionalNavbarItem(NAV_ITEM)}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sidenavOpen}
                 logo={{

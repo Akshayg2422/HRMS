@@ -11,7 +11,7 @@ const LOCAL_PROD = 'http://103.118.93.204:8002';
 
 const PRE_PROD = 'http://15.206.224.132'
 
-const SAMPLE_IP = 'http://103.195.246.107:8045';
+const SAMPLE_IP = 'https://7947-103-118-189-1.ngrok-free.app/';
 
 const STAGING_WEB = 'https://preprod.zenyq.com/';
 
@@ -23,13 +23,10 @@ const PROD_WEB_2 = 'https://webapi2.zenyq.com';
 
 const PROD_MOBILE = 'https://mobileapi2.zenyq.com';
 
-
 // export const BASE_URL_REPORTS_PROD_1 = 'https://reports.zenyq.com'; ////
 
-
-
 export const REACT_APP_APP_URL = PROD_WEB
-;
+  ;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 
