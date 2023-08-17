@@ -18,6 +18,7 @@ import {
   ASYN_USER_AUTH,
   inputNumberMaxLength,
   MAX_LENGTH_MOBILE_NUMBER,
+  DOMAIN,
 } from '@utils';
 
 import { useTranslation } from 'react-i18next';
@@ -50,11 +51,11 @@ function Login() {
   }, [enterPress])
 
   const proceedValidateUser = (params: object) => {
-
     dispatch(
       getValidateUser({
         params,
-        onSuccess: (success: object) => () => {
+        onSuccess: (success: any) => async () => {
+          await localStorage.setItem(DOMAIN, success?.code);
           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
         onError: (error: string) => () => {
@@ -69,7 +70,7 @@ function Login() {
   };
 
 
-  
+
   const proceedValidateUserApi = () => {
 
     const value = mobileRef.current?.value

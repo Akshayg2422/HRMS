@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ASYN_USER_AUTH } from '@utils'
+import { ASYN_USER_AUTH, DOMAIN } from '@utils'
 
 //apply base url for axios
 const STAGING = 'http://3.7.59.39';
@@ -11,7 +11,7 @@ const LOCAL_PROD = 'http://103.118.93.204:8002';
 
 const PRE_PROD = 'http://15.206.224.132'
 
-const SAMPLE_IP = 'http://103.195.246.107:8045';
+const SAMPLE_IP = 'https://11cc-103-118-189-10.ngrok-free.app/';
 
 const STAGING_WEB = 'https://preprod.zenyq.com/';
 
@@ -28,8 +28,7 @@ const PROD_MOBILE = 'https://mobileapi2.zenyq.com';
 
 
 
-export const REACT_APP_APP_URL = PROD_WEB
-  ;
+export const REACT_APP_APP_URL = PROD_WEB;
 // 'http://localhost:8000' 
 // 'http://43.204.233.45' 
 
@@ -92,13 +91,23 @@ export async function get(url, config) {
     .then((response) => response.data);
 }
 
+const BASE_URL_HFWS = "https://hfwsprimary.zenyq.com"
+// const BASE_URL_HFWS = "https://afeb-103-118-190-4.ngrok-free.app"
+
 export async function post(url, data, config, baseUrlType) {
 
   baseUrlType = baseUrlType || REACT_APP_APP_URL
 
-  const baseUrl = axios.create({
-    baseURL: baseUrlType,
-  });
+  const isHfws = await localStorage.getItem(DOMAIN);
+
+
+  const baseUrl = isHfws === 'HFWS' ?
+    axios.create({
+      baseURL: BASE_URL_HFWS,
+    }) : axios.create({
+      baseURL: baseUrlType,
+    });
+
 
   let headers = { ...await getHeaders() }
 
@@ -114,11 +123,18 @@ export async function post(url, data, config, baseUrlType) {
 
 
 export async function postHeader(url, data, config, baseUrlType) {
-  baseUrlType = baseUrlType || REACT_APP_APP_URL
 
-  const baseUrl = axios.create({
-    baseURL: baseUrlType,
-  });
+
+  baseUrlType = baseUrlType || REACT_APP_APP_URL
+  const isHfws = await localStorage.getItem(DOMAIN);
+
+
+  const baseUrl = isHfws === 'HFWS' ?
+    axios.create({
+      baseURL: BASE_URL_HFWS,
+    }) : axios.create({
+      baseURL: baseUrlType,
+    });
 
   let headers = { ...await getHeaders() }
 
