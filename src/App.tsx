@@ -399,13 +399,13 @@ function App() {
             path={ROUTE.ROUTE_MANAGE_EMPLOYEES_LEAVES}
             element={<RequireAuth>{<ManageEmployeeLeaves />}</RequireAuth>}
           />
-           <Route
+          <Route
             path={ROUTE.ROUTE_OTHERS_PAY}
-            element={<RequireAuth>{<OthersPayGroupList/>}</RequireAuth>}
+            element={<RequireAuth>{<OthersPayGroupList />}</RequireAuth>}
           />
-           <Route
+          <Route
             path={ROUTE.ROUTE_CREATE_OTHERS_PAY}
-            element={<RequireAuth>{<OtherPayCreate/>}</RequireAuth>}
+            element={<RequireAuth>{<OtherPayCreate />}</RequireAuth>}
           />
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
