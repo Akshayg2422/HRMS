@@ -7,7 +7,7 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { isHfwsBranch, showToast } from '@utils';
+import { DOMAIN, isHfwsBranch, showToast } from '@utils';
 import { Icons } from '@assets';
 import { getBranchShifts, getHfwsBranchShift, postEmployeeShiftChange } from "../../../../../../store/shiftManagement/actions";
 
@@ -17,7 +17,7 @@ const AttendanceView = () => {
 
     const { t } = useTranslation();
     let dispatch = useDispatch();
-
+    const isHfws = localStorage.getItem(DOMAIN);
     const {
         selectedEmployeeId,
         employeeAttendanceInfoDetails
@@ -28,7 +28,7 @@ const AttendanceView = () => {
     );
     const { hfwsBranchShifts } = useSelector(
         (state: any) => state.ShiftManagementReducer
-      );
+    );
 
     const [changeShiftModel, setChangeShiftModel] = useState(false);
     const [shiftsList, setShiftList] = useState<any>()
@@ -50,7 +50,6 @@ const AttendanceView = () => {
     const [attendanceSettingsId, setAttendanceSettingsId] = useState('')
     useEffect(() => {
         getEmployeeDetailsAPi()
-        // isHfwsBranch('e87b92e6-8e3e-484f-9d79-d4bc24bd5fb5') && getHfwsBranchShiftDetails()
     }, [])
 
 
@@ -92,16 +91,16 @@ const AttendanceView = () => {
     const getHfwsBranchShiftDetails = () => {
         const params = {}
         dispatch(getHfwsBranchShift({
-          params,
-          onSuccess: (success: any) => () => {
-    
-          },
-          onError: (error: string) => () => {
-            showToast('error', error)
-          },
-    
+            params,
+            onSuccess: (success: any) => () => {
+
+            },
+            onError: (error: string) => () => {
+                showToast('error', error)
+            },
+
         }));
-      }
+    }
 
     const convertFrom24To12Format = (time24: any) => {
         const [sHours, minutes] = time24.match(/([0-9]{1,2}):([0-9]{2})/).slice(1);
@@ -233,7 +232,7 @@ const AttendanceView = () => {
                     )}
                 </Container>
 
-                <Container additionClass="mb-3 mt-4">
+                {isHfws !== "HFWS" && <Container additionClass="mb-3 mt-4">
                     <CheckBox
                         id={'1'}
                         text={t("enableOfficeCheckIn")}
@@ -258,7 +257,7 @@ const AttendanceView = () => {
                             faceValidationHandler(e.target.checked)
                         }}
                     />
-                </Container>
+                </Container>}
 
                 <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
                     {employeeDetails.shift &&

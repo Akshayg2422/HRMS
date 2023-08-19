@@ -5,6 +5,7 @@ import {
   FormWrapper,
   ScreenContainer,
   Container,
+  SearchableDropdown,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -19,6 +20,7 @@ import {
   MARITAL_STATUS_LIST,
   dropDownValueCheckByEvent,
   DOMAIN,
+  getDropDownFormatter,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -40,7 +42,7 @@ const ManageBranches = () => {
 
   const isHfws = localStorage.getItem(DOMAIN);
 
-  const [branchDetails, setBranchDetails] = useState({
+  const [branchDetails, setBranchDetails] = useState<any>({
     companyname: "",
     displaycompanyname: "",
     parentbranch: "",
@@ -119,9 +121,10 @@ const ManageBranches = () => {
         district: branchDetails.district,
         state: branchDetails.state,
         pincode: branchDetails.pincode,
-        parent: branchDetails.parentbranch,
+        parent: branchDetails.parentbranch?.id,
         ...(isHfws === 'HFWS' && { branch_type: branchDetails.branchType })
       };
+
       dispatch(
         branchAddition({
           params,
@@ -145,6 +148,13 @@ const ManageBranches = () => {
   const NumberHandler = (value: string, key: string) => {
     setBranchDetails({ ...branchDetails, [key]: value });
   };
+
+  const handleParentBranchChange = (event: any) => {
+    setBranchDetails(prevDetails => ({
+      ...prevDetails,
+      parentbranch: event
+    }));
+  }
 
   return (
     <ScreenContainer>
@@ -180,7 +190,7 @@ const ManageBranches = () => {
             />
           </div>
           <div className="col-xl-6">
-            <DropDown
+            {/* <DropDown
               label={t("Parent Branch")}
               placeholder={t("Parent Branch")}
               data={listBranchesList}
@@ -189,7 +199,10 @@ const ManageBranches = () => {
               onChange={(event) => {
                 onChangeHandler(event);
               }}
-            />
+            /> */}
+            <SearchableDropdown selected={branchDetails.parentbranch} data={getDropDownFormatter(listBranchesList)} heading={t("Parent Branch")} placeHolder={t("Parent Branch")} onChange={(event) => {
+              handleParentBranchChange(event)
+            }} />
           </div>
           {isHfws === 'HFWS' && <div className="col-xl-6">
             <DropDown

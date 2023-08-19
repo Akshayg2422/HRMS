@@ -52,6 +52,7 @@ import {
   HFWS_SPECLILISATION,
   HFWS_ORGANISATION,
   HFWS_QUALIFICATIONS,
+  EMPLOYEE_TYPE_HFWS,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -354,7 +355,7 @@ const ManageEmployee = () => {
       showToast("error", t("invalidNumber"));
       return false;
     }
-    else if (validateEmail(employeeDetails.e_Mail).status === false || employeeDetails.e_Mail === "") {
+    else if (validateEmail(employeeDetails.e_Mail).status === false || employeeDetails.e_Mail === "" && isHfws !== 'HFWS') {
       showToast("error", t("invalidEmail"));
       return false;
     }
@@ -388,7 +389,6 @@ const ManageEmployee = () => {
     }
   };
 
-  console.log("=============>", employeeDetails);
 
   const onSubmit = () => {
     if (validatePostParams()) {
@@ -399,7 +399,7 @@ const ManageEmployee = () => {
           last_name: employeeDetails.lastName,
         }),
         mobile_number: employeeDetails.mobileNumber,
-        email: employeeDetails.e_Mail,
+        ...(isHfws !== "HFWS" && { email: employeeDetails.e_Mail }),
         ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
         ...(employeeDetails.aadharrNo && {
           aadhar_number: employeeDetails.aadharrNo,
@@ -424,7 +424,7 @@ const ManageEmployee = () => {
           associated_branch: [employeeDetails.branch?.id],
           ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
         },
-        ...(employeeDetails.dateOfJoining && {
+        ...(employeeDetails.dateOfJoining && isHfws !== "HFWS" && {
           date_of_joining: getServerDateFromMoment(
             getMomentObjFromServer(employeeDetails.dateOfJoining)
           ),
@@ -732,9 +732,7 @@ const ManageEmployee = () => {
               }}
             />
           </div>
-        </Container>
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
             <InputNumber
               label={t("mobileNumber")}
@@ -745,7 +743,7 @@ const ManageEmployee = () => {
               onChange={(event) => mobileNumberHandler(inputNumberMaxLength(event.target.value, MAX_LENGTH_MOBILE_NUMBER), "mobileNumber")}
             />
           </div>
-          <div className="col-xl-6">
+          {isHfws !== "HFWS" && <div className="col-xl-6">
             <InputMail
               label={t("email")}
               placeholder={t("enterYourEmail")}
@@ -756,10 +754,8 @@ const ManageEmployee = () => {
                 onChangeHandler(event);
               }}
             />
-          </div>
-        </Container>
+          </div>}
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
             <DropDown
               label={t("gender")}
@@ -786,9 +782,7 @@ const ManageEmployee = () => {
               }}
             />
           </div>
-        </Container>
 
-        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
           <div className="col-xl-6">
             <h5>{t("dateofBirth")}</h5>
             <DatePicker
@@ -812,22 +806,21 @@ const ManageEmployee = () => {
               }}
             />
           </div>}
+          {isHfws === 'HFWS' &&
+            <div className="col-xl-6 mt--2">
+              <DropDown
+                label={t("Qualification")}
+                placeholder={t("Enter Your Qualification")}
+                data={HFWS_QUALIFICATIONS}
+                name={"qualification"}
+                value={employeeDetails.qualification}
+                onChange={(event) => {
+                  onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Qualification")));
+                }}
+              />
+            </div>
+          }
         </Container>
-        {isHfws === 'HFWS' && <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
-          <div className="col-xl-6 mt--4">
-            <DropDown
-              label={t("Qualification")}
-              placeholder={t("Enter Your Qualification")}
-              data={HFWS_QUALIFICATIONS}
-              name={"qualification"}
-              value={employeeDetails.qualification}
-              onChange={(event) => {
-                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Qualification")));
-              }}
-            />
-          </div>
-        </Container>}
-
         <Divider />
 
         <ScreenTitle title={'Company Details'} additionclass={'mb-4'} />
@@ -883,9 +876,7 @@ const ManageEmployee = () => {
               />}
             </div>
           </div>
-        </Container>
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
             {/* <DropDown
               label={t("branch")}
@@ -906,17 +897,15 @@ const ManageEmployee = () => {
               label={t("category")}
               placeholder={t("category")}
               name={"employeeType"}
-              data={EMPLOYEE_TYPE}
+              data={isHfws !== "HFWS" ? EMPLOYEE_TYPE : EMPLOYEE_TYPE_HFWS}
               value={employeeDetails.employeeType}
               onChange={(event) =>
                 onChangeHandler(dropDownValueCheckByEvent(event, t("category")))
               }
             />
           </div>
-        </Container>
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
-          <div className="col-xl-6">
+          {isHfws !== "HFWS" && <div className="col-xl-6">
             <h5>{t("dataOfJoining")}</h5>
             <DatePicker
               title={t("pleaseSelect")}
@@ -927,7 +916,7 @@ const ManageEmployee = () => {
                 dateTimePickerHandler(date, "dateOfJoining")
               }
             />
-          </div>
+          </div>}
           {/* <div className="col-xl-6">
             <InputDefault
               label={t("kgid")}
@@ -953,35 +942,37 @@ const ManageEmployee = () => {
               }}
             />
           </div>}
-        </Container>
-        {isHfws === 'HFWS' && <Container additionClass={'col-xl-12 row col-sm-3'}>
-          <div className="col-xl-6">
-            <DropDown
-              label={t("Group")}
-              placeholder={t("Enter Your Group")}
-              data={GROUP_LIST}
-              name={"group"}
-              value={employeeDetails.group}
-              onChange={(event) => {
-                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Group")));
-              }}
-            />
-          </div>
-          <div className="col-xl-6">
-            <DropDown
-              label={t("Organisation")}
-              placeholder={t("Enter Your Organisation")}
-              data={HFWS_ORGANISATION}
-              name={"organisation"}
-              value={employeeDetails.organisation}
-              onChange={(event) => {
-                // onChangeHandler(event);
-                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Organisation")));
+          {isHfws === 'HFWS' &&
+            <>
+              <div className="col-xl-6">
+                <DropDown
+                  label={t("Group")}
+                  placeholder={t("Enter Your Group")}
+                  data={GROUP_LIST}
+                  name={"group"}
+                  value={employeeDetails.group}
+                  onChange={(event) => {
+                    onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Group")));
+                  }}
+                />
+              </div>
+              <div className="col-xl-6">
+                <DropDown
+                  label={t("Organisation")}
+                  placeholder={t("Enter Your Organisation")}
+                  data={HFWS_ORGANISATION}
+                  name={"organisation"}
+                  value={employeeDetails.organisation}
+                  onChange={(event) => {
+                    // onChangeHandler(event);
+                    onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Your Organisation")));
 
-              }}
-            />
-          </div>
-        </Container>}
+                  }}
+                />
+              </div>
+            </>
+          }
+        </Container>
         <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
 
         </Container>

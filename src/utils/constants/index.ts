@@ -3,6 +3,10 @@ import moment from 'moment';
 import { Route } from 'react-router-dom';
 
 
+export const DOMAIN = 'DOMAIN';
+
+
+
 export const ROUTE = {
   ROUTE_DASHBOARD: '/dashboard',
   ROUTE_EMPLOYEE: '/employee',
@@ -155,6 +159,11 @@ export const EMPLOYEE_TYPE = [
   { id: 'Contract', name: 'Contract', value: 'Contract' },
 ];
 
+export const EMPLOYEE_TYPE_HFWS = [
+  { id: 'Regular', name: 'Regular', value: 'Regular' },
+  { id: 'Contractual InSource', name: 'Contractual InSource', value: 'Contractual InSource' },
+];
+
 export const REPORTS_TYPE = [
   { id: 'attendance', name: 'Attendance Report', value: 'attendance' },
   { id: 'leave', name: 'Leave Report', value: 'leave' },
@@ -262,8 +271,28 @@ export const HFWS_QUALIFICATIONS = [
   { id: 'DM', name: 'DM', value: 'DM' },
   { id: 'M Ch', name: 'M Ch', value: 'M Ch' },
   { id: 'BDS', name: 'BDS', value: 'BDS' },
+  { id: 'MDS', name: 'MDS', value: 'MDS' },
+  { id: 'GNM', name: 'GNM', value: 'GNM' },
+  { id: 'M Sc', name: 'M Sc', value: 'M Sc' },
   { id: 'B Sc', name: 'B Sc', value: 'B Sc' },
   { id: 'B Tech', name: 'B Tech', value: 'B Tech' },
+  { id: 'B.Pharm', name: 'B.Pharm', value: 'B.Pharm' },
+  { id: 'D.Pharm', name: 'D.Pharm', value: 'D.Pharm' },
+  { id: 'Pharm.D', name: 'Pharm.D', value: 'Pharm.D' },
+  { id: 'MPT', name: 'MPT', value: 'MPT' },
+  { id: 'BPT', name: 'BPT', value: 'BPT' },
+  { id: 'M.Optom', name: 'M.Optom', value: 'M.Optom' },
+  { id: 'B.Optom', name: 'B.Optom', value: 'B.Optom' },
+  { id: 'BAMS', name: 'BAMS', value: 'BAMS' },
+  { id: 'MD Ayurveda', name: 'MD Ayurveda', value: 'MD Ayurveda' },
+  { id: 'BHMS', name: 'BHMS', value: 'BHMS' },
+  { id: 'MD Homeopathy', name: 'MD Homeopathy', value: 'MD Homeopathy' },
+  { id: 'BUMS', name: 'BUMS', value: 'BUMS' },
+  { id: 'MD Unani', name: 'MD Unani', value: 'MD Unani' },
+  { id: 'BSMS', name: 'BSMS', value: 'BSMS' },
+  { id: 'MD Siddha', name: 'MD Siddha', value: 'MD Siddha' },
+  { id: 'BMLT', name: 'BMLT', value: 'BMLT' },
+  { id: 'MMLT', name: 'MMLT', value: 'MMLT' },
   { id: 'DNB', name: 'DNB', value: 'DNB' },
   { id: 'B Com', name: 'B Com', value: 'B Com' },
   { id: 'M Com', name: 'M Com', value: 'M Com' },
@@ -272,25 +301,37 @@ export const HFWS_QUALIFICATIONS = [
   { id: 'None of the above', name: 'None of the above', value: 'None of the above' },
 ];
 
+
+
 export const OFFICE_TYPE = [
-  { id: "District Health Office", name: 'District Health Office', value: 'District Health Office' },
-  { id: "Taluk Head Office", name: 'Taluk Head Office', value: 'Taluk Head Office' },
-  { id: "District Leprosy Office", name: 'District Leprosy Office', value: 'District Leprosy Office' },
-  { id: "Reproductive and Child Health Office", name: 'Reproductive and Child Health Office', value: 'Reproductive and Child Health Office' },
-  { id: "Tuberculosis Office", name: 'Tuberculosis Office', value: 'Tuberculosis Office' },
-  { id: "District Surveillance Office", name: 'District Surveillance Office', value: 'District Surveillance Office' },
-  { id: "District Training Center Office", name: 'District Training Center Office', value: 'District Training Center Office' },
-  { id: "Auxiliary Nurse Midwife Training Center", name: 'Auxiliary Nurse Midwife Training Center', value: 'Auxiliary Nurse Midwife Training Center' },
-  { id: "District Hospital", name: 'District Hospital', value: 'District Hospital' },
-  { id: "Taluk Hospital / General Hospital", name: 'Taluk Hospital / General Hospital', value: 'Taluk Hospital / General Hospital' },
-  { id: "Community Health Centers", name: 'Community Health Centers', value: 'Community Health Centers' },
-  { id: "Primary Health Center / Urban PHC", name: 'Primary Health Center / Urban PHC', value: 'Primary Health Center / Urban PHC' },
-  { id: "Mother and Child Hospital", name: 'Mother and Child Hospital', value: 'Mother and Child Hospital' },
-  { id: "District Vector-borne Disease Control Office", name: 'District Vector-borne Disease Control Office', value: 'District Vector-borne Disease Control Office' },
-  { id: "District Malaria Office", name: 'District Malaria Office', value: 'District Malaria Office' },
-  { id: "Epidemic Diseases Hospital", name: 'Epidemic Diseases Hospital', value: 'Epidemic Diseases Hospital' },
+  { id: 'District Health Office', name: 'District Health Office', value: 'District Health Office' },
+  { id: 'Taluk Head Office', name: 'Taluk Head Office', value: 'Taluk Head Office' },
+  { id: 'District Leprosy Office', name: 'District Leprosy Office', value: 'District Leprosy Office' },
+  { id: 'Reproductive and Child Health Office', name: 'Reproductive and Child Health Office', value: 'Reproductive and Child Health Office' },
+  { id: 'Tuberculosis Office', name: 'Tuberculosis Office', value: 'Tuberculosis Office' },
+  { id: 'District Surveillance Office', name: 'District Surveillance Office', value: 'District Surveillance Office' },
+  { id: 'District Training Center Office', name: 'District Training Center Office', value: 'District Training Center Office' },
+  { id: 'Auxiliary Nurse Midwife Training Center', name: 'Auxiliary Nurse Midwife Training Center', value: 'Auxiliary Nurse Midwife Training Center' },
+  { id: 'District Hospital', name: 'District Hospital', value: 'District Hospital' },
+  { id: 'Taluk Hospital / General Hospital', name: 'Taluk Hospital / General Hospital', value: 'Taluk Hospital / General Hospital' },
+  { id: 'Community Health Centers', name: 'Community Health Centers', value: 'Community Health Centers' },
+  { id: 'Primary Health Center / Urban PHC', name: 'Primary Health Center / Urban PHC', value: 'Primary Health Center / Urban PHC' },
+  { id: 'Mother and Child Hospital', name: 'Mother and Child Hospital', value: 'Mother and Child Hospital' },
+  { id: 'District Vector-borne Disease Control Office', name: 'District Vector-borne Disease Control Office', value: 'District Vector-borne Disease Control Office' },
+  { id: 'District Malaria Office', name: 'District Malaria Office', value: 'District Malaria Office' },
+  { id: 'Epidemic Diseases Hospital', name: 'Epidemic Diseases Hospital', value: 'Epidemic Diseases Hospital' },
+  { id: 'Namma Clinic', name: 'Namma Clinic', value: 'Namma Clinic' },
+  { id: 'HWC - Health And Wellness Center', name: 'HWC - Health And Wellness Center', value: 'HWC - Health And Wellness Center' },
+  { id: 'UMC- Urban Maternity Center', name: 'UMC- Urban Maternity Center', value: 'UMC- Urban Maternity Center' },
+  { id: 'KFD Field Station', name: 'KFD Field Station', value: 'KFD Field Station' },
+  { id: 'FPA - Family Planning Association', name: 'FPA - Family Planning Association', value: 'FPA - Family Planning Association' },
+  { id: 'DDW - Dist Drug Warehouse', name: 'DDW - Dist Drug Warehouse', value: 'DDW - Dist Drug Warehouse' },
+  { id: 'RTC - Regional Training Center', name: 'RTC - Regional Training Center', value: 'RTC - Regional Training Center' },
+  { id: 'DFWO', name: 'DFWO', value: 'DFWO' },
   { id: 'None of the above', name: 'None of the above', value: 'None of the above' },
-]
+];
+
+
 
 export const HFWS_ORGANISATION = [
   { id: 'HFWS', name: 'HFWS', value: 'HFWS' },
@@ -600,7 +641,6 @@ export const INITIAL_PAGE = 1
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
 
-export const DOMAIN = 'DOMAIN';
 
 
 export const LANGUAGE_LIST = [
