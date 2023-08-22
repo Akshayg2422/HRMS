@@ -311,4 +311,7 @@ export const GET_COMPANY_INCENTIVE = '/payroll/getCompanyIncentives'
 
 export const GET_HFWS_BRANCH_SHIFT_TIME = '/attendance/getHfwsStartEndTime'
 
+// delete Branch
+
+export const DELETE_BRANCH_URL = '/company/deleteBranch'
 

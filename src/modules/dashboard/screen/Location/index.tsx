@@ -1,9 +1,9 @@
-import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu, TableWrapper, Search } from '@components';
+import { Container, CommonTable, Modal, Divider, Primary, ImageView, InputText, Icon, Card, Secondary, useKeyPress, InputDefault, NoRecordFound, CommonDropdownMenu, TableWrapper, Search, DropDown } from '@components';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Navbar } from '../../container';
 import { useDispatch, useSelector } from 'react-redux';
-import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName, getListAllBranchesList } from '../../../../store/location/actions';
-import { goTo, useNav, ROUTE, showToast, validateDefault, INITIAL_PAGE } from '@utils';
+import { getAllBranchesList, updateBranchLocationRadius, enableBranchRefence, editBranchName, getListAllBranchesList, deleteBranch } from '../../../../store/location/actions';
+import { goTo, useNav, ROUTE, showToast, validateDefault, INITIAL_PAGE, DOMAIN, OFFICE_TYPE, dropDownValueCheckByEvent } from '@utils';
 import { Icons } from '@assets'
 import { useTranslation } from 'react-i18next';
 import { getEmployeesList, addFenceAdmin } from '../../../../store/employee/actions';
@@ -12,6 +12,7 @@ const DROPDOWN_MENU = [
   { id: '2', name: 'Reset radius', value: 'CL', icon: 'fas fa-redo-alt' },
   { id: '3', name: 'Enable refench', value: 'LG', icon: 'ni ni-button-power' },
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'fas fa-users-cog' },
+
 ]
 const DROPDOWN_MENU_1 = [
   { id: '4', name: 'Add manage fence admin', value: 'LG', icon: 'fas fa-users-cog' },
@@ -23,6 +24,11 @@ const DROPDOWN_MENU_2 = [
 
 const ADMIN_MENU = [
   { id: '1', name: 'Edit', value: 'PF', image: Icons.Pencil },
+
+]
+
+const SUPER_ADMIN = [
+  { id: '1', name: "Delete", value: "DT", icon: "fas fa-trash" },
 ]
 
 
@@ -44,6 +50,9 @@ function LocationScreen() {
   const navigation = useNav();
   const { t } = useTranslation();
 
+  const isHfws = localStorage.getItem(DOMAIN);
+
+
   const CARD_DROPDOWN_ITEM = [
     { id: '1', name: 'My branches', value: 'CL', icon: 'fas fa-code-branch' },
   ]
@@ -52,8 +61,12 @@ function LocationScreen() {
   const { locationNumOfPages,
     LocationCurrentPage } = useSelector((state: any) => state.LocationReducer);
 
-  const { userLoggedIn, userDetails } = useSelector(
+  const { userDetails } = useSelector(
     (state: any) => state.AppReducer
+  );
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
   );
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
@@ -61,6 +74,8 @@ function LocationScreen() {
   );
 
   const [model, setModel] = useState(false);
+  const [deleteBranchModel, setDeleteBranchModel] = useState(false)
+  const [deleteBranchDetails, setDeleteBranchDetails] = useState<any>('')
   const [editBranchDetails, setEditBranchDetails] = useState('');
   const [currentBranchDetails, setCurrentBranchDetails] = useState<any>('')
   const [modelData, setModelData] = useState<Location | any>();
@@ -72,6 +87,7 @@ function LocationScreen() {
   const [searchEmployee, setSearchEmployee] = useState<any>('')
   const [selectedEmployeeFenceId, setSelectedEmployeeFenceId] = useState();
   const [selectedBranchId, setSelectedBranchId] = useState<any>();
+  const [branchType, setBranchType] = useState('')
 
   const enterPress = useKeyPress("Enter");
   const inputRef = useRef<HTMLInputElement>();
@@ -145,6 +161,11 @@ function LocationScreen() {
       case 'Add manage fence admin':
         proceedModelHandler(data);
         break;
+
+      case 'Delete':
+        setDeleteBranchDetails(data)
+        setDeleteBranchModel(!deleteBranchModel)
+        break;
     }
   }
 
@@ -196,9 +217,16 @@ function LocationScreen() {
 
 
   const conditionalMenu = (menu: any) => {
-    if (userDetails?.is_admin) {
+    const { is_super_admin } = dashboardDetails?.permission_details
+    const { is_admin } = dashboardDetails?.permission_details
+
+    if (isHfws === 'HFWS' && is_super_admin) {
+      return [...menu, ...ADMIN_MENU, ...SUPER_ADMIN]
+    }
+    else if (is_admin) {
       return [...menu, ...ADMIN_MENU]
-    } else {
+    }
+    else {
       return menu
     }
   }
@@ -281,6 +309,7 @@ function LocationScreen() {
   const handleEdit = (item: any) => {
     setEditBranchDetails(item.name)
     setCurrentBranchDetails(item)
+    setBranchType(item?.branch_type)
     setEditModel(!editModel)
   };
 
@@ -362,6 +391,24 @@ function LocationScreen() {
   }, [branch])
 
 
+
+  const deleteBranchApiHandler = () => {
+    const params = {
+      "id": deleteBranchDetails?.id
+    }
+    dispatch(deleteBranch({
+      params,
+      onSuccess: (success: any) => () => {
+        showToast('success', success?.message)
+        setDeleteBranchModel(!deleteBranchModel)
+      },
+      onError: (error: string) => () => {
+        showToast("error", error);
+      },
+    }))
+  }
+
+
   return (
     <>
 
@@ -439,6 +486,18 @@ function LocationScreen() {
               setEditBranchDetails(event.target.value)
             }}
           />
+          {isHfws === 'HFWS' && <div className="col-xl-6">
+            <DropDown
+              label={t("Type")}
+              placeholder={t("Enter Type")}
+              data={OFFICE_TYPE}
+              name={"branchType"}
+              value={branchType}
+              onChange={(event) => {
+                setBranchType(dropDownValueCheckByEvent(event, t("Enter Type")));
+              }}
+            />
+          </div>}
           <Container margin={"mt-5"} additionClass={"text-right"}>
             <Secondary
               text={t("cancel")}
@@ -495,6 +554,31 @@ function LocationScreen() {
           }
         </Modal>
       }
+      <Modal
+        title={'Delete Branch'}
+        showModel={deleteBranchModel}
+        toggle={() => setDeleteBranchModel(!deleteBranchModel)}>
+        <Container>
+          <div className='text-center mb-5'>
+            <span className='ml-3'>{'Once Branch Deleted , Employees under This Branch will Be Also Deleted And No Recovery,'}</span>
+            <span className='ml-3 h4'>{'Are You Sure Click Proceed To Delete Branch'}</span>
+          </div>
+          <Container
+            margin={'m-3'}
+            justifyContent={'justify-content-end'}
+            display={'d-flex'}>
+            <Secondary
+              text={t('cancel')}
+              onClick={() => setDeleteBranchModel(!deleteBranchModel)}
+            />
+            <Primary
+              text={t('proceed')}
+              onClick={() => deleteBranchApiHandler()}
+            />
+          </Container>
+        </Container>
+
+      </Modal>
     </>
   );
 }

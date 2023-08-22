@@ -346,3 +346,7 @@ export const getCompanyIncentiveApi = (payload) => post(url.GET_COMPANY_INCENTIV
 
 export const getHfwsBranchShiftApi = (payload) => post(url.GET_HFWS_BRANCH_SHIFT_TIME, payload, {})
 
+// Delete Branch
+
+export const deleteBranchApi = (payload) => post(url.DELETE_BRANCH_URL, payload, {})
+

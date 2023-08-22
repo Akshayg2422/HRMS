@@ -2,14 +2,15 @@ import { takeLatest, put, call } from "redux-saga/effects";
 import {
   fetchAllBranchesList, postBranchAddition, updateBranchLocationRadius, postEnableBranchRefence, fetchEmployeeCheckinAssociations,
   postEmployeeCheckinAssociations,
-  PostEditBranchNameApi, fetchListAllBranchesList
+  PostEditBranchNameApi, fetchListAllBranchesList, deleteBranchApi
 } from "../../helpers/backend_helper";
 import {
   FETCH_ALL_BRANCHES_LIST, POST_BRANCH_ADDITION, UPDATE_BRANCH_LOCATION_RADIUS, ENABLE_BRANCH_REFENCE,
   GET_EMPLOYEE_CHECKIN_ASSOCIATIONS,
   UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS,
   EDIT_BRANCH_NAME,
-  FETCH_LIST_ALL_BRANCHES_LIST
+  FETCH_LIST_ALL_BRANCHES_LIST,
+  DELETE_BRANCH
 } from "./actionsType";
 import {
   getAllBranchesListFailure, getAllBranchesListSuccess, branchAdditionSuccess, branchAdditionFailure,
@@ -24,7 +25,9 @@ import {
   editBranchNameSuccess,
   editBranchNameFailure,
   getListAllBranchesListSuccess,
-  getListAllBranchesListFailure
+  getListAllBranchesListFailure,
+  deleteBranchSuccess,
+  deleteBranchFailure
 } from "./actions";
 
 
@@ -258,6 +261,34 @@ function* getListAllBranches(action) {
   }
 }
 
+// delete Branch
+
+function* deleteBranchSaga(action) {
+  try {
+
+    yield put(showLoader());
+
+    const response = yield call(deleteBranchApi, action.payload.params);
+
+    if (response.success) {
+      yield put(hideLoader());
+      yield call(action.payload.onSuccess(response));
+      yield put(deleteBranchSuccess(response.details));
+
+    } else {
+      yield put(hideLoader());
+      yield put(deleteBranchFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(deleteBranchFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+
+  }
+}
+
 
 function* LocationSaga() {
 
@@ -269,6 +300,7 @@ function* LocationSaga() {
   yield takeLatest(GET_EMPLOYEE_CHECKIN_ASSOCIATIONS, getEmployeeCheckinAssociations);
   yield takeLatest(UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS, updateEmployeeCheckinAssociations);
   yield takeLatest(EDIT_BRANCH_NAME, updatedBranchName)
+  yield takeLatest(DELETE_BRANCH, deleteBranchSaga)
 
 }
 
