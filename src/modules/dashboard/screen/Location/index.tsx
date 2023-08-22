@@ -326,7 +326,8 @@ function LocationScreen() {
       const params = {
         id: currentBranchDetails.id,
         name: editBranchDetails,
-        display_name: editBranchDetails
+        display_name: editBranchDetails,
+        ...(isHfws === 'HFWS' && { branch_type: branchType })
       }
       dispatch(editBranchName({
         params,
