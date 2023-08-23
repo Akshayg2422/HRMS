@@ -561,8 +561,8 @@ function LocationScreen() {
         toggle={() => setDeleteBranchModel(!deleteBranchModel)}>
         <Container>
           <div className='text-center mb-5'>
-            <span className='ml-3'>{'Once Branch Deleted , Employees under This Branch will Be Also Deleted And No Recovery,'}</span>
-            <span className='ml-3 h4'>{'Are You Sure Click Proceed To Delete Branch'}</span>
+            <span className='ml-3'>{'Deleting branch will delete all its sub-braches and all the employees associated with the branch and sub branch, Click on delete to confirm'}</span>
+            {/* <span className='ml-3 h4'>{'Are You Sure Click Proceed To Delete Branch'}</span> */}
           </div>
           <Container
             margin={'m-3'}
@@ -573,7 +573,8 @@ function LocationScreen() {
               onClick={() => setDeleteBranchModel(!deleteBranchModel)}
             />
             <Primary
-              text={t('proceed')}
+              text={t('delete')}
+              variant='btn-danger'
               onClick={() => deleteBranchApiHandler()}
             />
           </Container>
