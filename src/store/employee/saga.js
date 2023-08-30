@@ -1597,7 +1597,7 @@ function* updateEmployeeDeviceSaga(action) {
     const response = yield call(updateEmployeesDeviceDetailApi, action.payload.params);
     if (response.success) {
       yield put(updateEmployeeDeviceDetailsSuccess(response.details));
-      yield call(action.payload.onSuccess(response.details));
+      yield call(action.payload.onSuccess(response));
       yield put(hideLoader());
     } else {
       yield put(updateEmployeeDeviceDetailsFailure(response.error_message));

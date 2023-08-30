@@ -25,6 +25,7 @@ import {
     ROUTE,
     useNav,
     goTo,
+    DOMAIN,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -95,6 +96,7 @@ const BasicView = () => {
     const [branchesExist, setBranchesExist] = useState(false);
     const [showEnableContainers, setShowEnableContainers] = useState(false);
 
+    const isHfws = localStorage.getItem(DOMAIN);
 
     const [employeeDetails, setEmployeeDetails] = useState({
         id: '',
@@ -122,7 +124,7 @@ const BasicView = () => {
     });
 
     useEffect(() => {
-            getEmployeeDetailsAPi();
+        getEmployeeDetailsAPi();
     }, []);
 
     const getEmployeeDetailsAPi = () => {
@@ -270,9 +272,9 @@ const BasicView = () => {
                     <div className="col-xl-6">
                         <FormTypography title={t("mobileNumber")} subTitle={employeeDetails.mobileNumber} />
                     </div>
-                    <div className="col-xl-6">
+                    {isHfws !== "HFWS" && <div className="col-xl-6">
                         <FormTypography title={t("email")} subTitle={employeeDetails.e_Mail} />
-                    </div>
+                    </div>}
                 </Container>
 
                 <Container additionClass={'col-xl-12 row col-sm-3'}>

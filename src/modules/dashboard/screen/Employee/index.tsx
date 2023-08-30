@@ -198,7 +198,7 @@ function EmployeeScreen() {
         return el.value !== 'AD'
       })
       return filtered
-    }else{
+    } else {
       return menu
     }
   }
@@ -407,6 +407,8 @@ function EmployeeScreen() {
               setSelectedDevice(success?.device_id)
               setUserId(success?.reference_id)
             }
+
+
           } else {
             showToast("error", "No Devices Added for this Branch To Assign")
           }
@@ -443,8 +445,10 @@ function EmployeeScreen() {
           setSelectedDevice('')
           setUserId('')
           getEmployeesApi(INITIAL_PAGE);
+          showToast('success', success?.status)
         },
         onError: (error: any) => () => {
+          showToast('error', error)
         },
       }))
     }
