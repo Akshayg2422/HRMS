@@ -23,7 +23,6 @@ const PROD_WEB_2 = 'https://webapi2.zenyq.com';
 
 const PROD_MOBILE = 'https://mobileapi2.zenyq.com';
 
-
 // export const BASE_URL_REPORTS_PROD_1 = 'https://reports.zenyq.com'; ////
 
 

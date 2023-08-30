@@ -62,8 +62,10 @@ import {
   ManageDevices,
   FaceReRegisterRequest,
   ShiftDetailsPerDay,
-  Payslip
+  Payslip,
   // DashBoardOtp
+  GenericShift,
+  EsslDevices
 } from "@modules";
 import { EventNotification } from "./modules/BroadCast";
 import { Notification } from "./modules/dashboard/container/Notification";
@@ -82,7 +84,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { PushNotification } from "./PushNotification";
 import { Approvals, ManageEmployeeLeaves, WeeklyCalendar } from "./modules/employee";
 import { AddDeduction, OtherPayCreate, OthersPayGroupList, ViewEmployeeSalaryDefinition } from "./modules/Payroll";
-import GetToken from "./PushNotification/GetToken";
 
 import RefundPolicy from "./screens/RefundPolicy";
 
@@ -110,7 +111,7 @@ function App() {
 
   return (
     <>
-      <AutoLogout />
+      {/* <AutoLogout /> */}
       <PushNotification />
       <DeviceInfo />
       <AppProvider >
@@ -406,6 +407,14 @@ function App() {
           <Route
             path={ROUTE.ROUTE_CREATE_OTHERS_PAY}
             element={<RequireAuth>{<OtherPayCreate />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_GENERIC_SHIFT}
+            element={<RequireAuth>{<GenericShift />}</RequireAuth>}
+          />
+          <Route
+            path={ROUTE.ROUTE_ESSL_DEVICES}
+            element={<RequireAuth>{<EsslDevices/>}</RequireAuth>}
           />
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>

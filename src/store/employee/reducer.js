@@ -172,7 +172,28 @@ import {
   GET_EMPLOYEE_LEAVE_TYPES_FAILURE,
   UPDATE_EMPLOYEE_ALLOCATED_DAYS,
   UPDATE_EMPLOYEE_ALLOCATED_DAYS_SUCCESS,
-  UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE,
+  FETCH_SYNC_DATA,
+  FETCH_SYNC_DATA_SUCCESS,
+  FETCH_SYNC_DATA_FAILURE,
+  UPDATE_COMPANY_GENERIC_SHIFT,
+  UPDATE_COMPANY_GENERIC_SHIFT_SUCCESS,
+  UPDATE_COMPANY_GENERIC_SHIFT_FAILURE,
+  ADD_ESSL_DEVICE,
+  ADD_ESSL_DEVICE_SUCCESS,
+  ADD_ESSL_DEVICE_FAILURE,
+  GET_ESSL_DEVICE,
+  GET_ESSL_DEVICE_SUCCESS,
+  GET_ESSL_DEVICE_FAILURE,
+  REMOVE_ESSL_DEVICE,
+  REMOVE_ESSL_DEVICE_SUCCESS,
+  REMOVE_ESSL_DEVICE_FAILURE,
+  GET_EMPLOYEE_DEVICE_DETAILS,
+  GET_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
+  GET_EMPLOYEE_DEVICE_DETAILS_FAILURE,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -221,7 +242,8 @@ const initialState = {
   getEmployeeBasicInfo: undefined,
   employeeAttendanceInfoDetails: undefined,
   employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false },
-  employeeLeaveHistory: []
+  employeeLeaveHistory: [],
+  syncDetails: undefined
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1553,6 +1575,168 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
+    // syncData
+
+    case FETCH_SYNC_DATA:
+      state = {
+        ...state,
+        loading: true,
+        syncDetails: undefined
+      };
+      break;
+    case FETCH_SYNC_DATA_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        syncDetails: action.payload?.sync_data
+      };
+      break;
+
+    case FETCH_SYNC_DATA_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    // UPDATE_COMPANY_GENERIC_SHIFT
+
+    case UPDATE_COMPANY_GENERIC_SHIFT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case UPDATE_COMPANY_GENERIC_SHIFT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case UPDATE_COMPANY_GENERIC_SHIFT_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // Add Devices
+
+    case ADD_ESSL_DEVICE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ADD_ESSL_DEVICE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case ADD_ESSL_DEVICE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+    // get Devices
+    case GET_ESSL_DEVICE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case GET_ESSL_DEVICE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case GET_ESSL_DEVICE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // remove  Devices
+
+    case REMOVE_ESSL_DEVICE:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+
+    case REMOVE_ESSL_DEVICE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case REMOVE_ESSL_DEVICE_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // GET_EMPLOYEE_DEVICE_DETAILS
+
+    case GET_EMPLOYEE_DEVICE_DETAILS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+
+    case GET_EMPLOYEE_DEVICE_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case GET_EMPLOYEE_DEVICE_DETAILS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // UPDATE_EMPLOYEE_DEVICE_DETAILS
+
+    case UPDATE_EMPLOYEE_DEVICE_DETAILS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+
+    case UPDATE_EMPLOYEE_DEVICE_DETAILS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+
+    case UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     /**
      * Default

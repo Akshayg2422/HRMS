@@ -110,14 +110,14 @@ function Calendar() {
         description: el.description,
         "Created By": el.created_by ? el.created_by : '-',
         "Created Date": el.holiday_created_date ? el.holiday_created_date : '-',
-          "": <CommonDropdownMenu
-            data={DROPDOWN_MENU}
-            onItemClick={(e, item) => {
-              e.stopPropagation();
-              dropdownMenuItemActionHandler(item, el, index)
-            }}
-          />
-        };
+        "": <CommonDropdownMenu
+          data={DROPDOWN_MENU}
+          onItemClick={(e, item) => {
+            e.stopPropagation();
+            dropdownMenuItemActionHandler(item, el, index)
+          }}
+        />
+      };
     });
   };
 
@@ -228,14 +228,14 @@ function Calendar() {
                 text={t("addHoildays")}
                 onClick={handleAddHolidays}
               />
-
-              <CommonDropdownMenu
-                data={CARD_DROPDOWN_ITEM}
-                onItemClick={(e, item) => {
-                  e.stopPropagation();
-                  goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
-                }}
-              />
+              {dashboardDetails?.permission_details?.is_parent_branch && dashboardDetails?.permission_details?.is_admin &&
+                <CommonDropdownMenu
+                  data={CARD_DROPDOWN_ITEM}
+                  onItemClick={(e, item) => {
+                    e.stopPropagation();
+                    goTo(navigation, ROUTE.ROUTE_LEAVES_TYPES)
+                  }}
+                />}
             </div>
           </Container>
           <Container additionClass="col-xl-3">
