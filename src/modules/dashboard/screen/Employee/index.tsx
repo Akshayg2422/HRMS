@@ -14,7 +14,9 @@ import {
   CommonDropdownMenu,
   Divider,
   TableWrapper,
-  Search
+  Search,
+  DropDown,
+  InputDefault
 
 } from "@components";
 import React, { useEffect, useState, useMemo } from "react";
@@ -26,15 +28,20 @@ import {
   ROUTE,
   showToast,
   INITIAL_PAGE,
+  dropDownValueCheckByEvent,
+  dropDownValueCheck,
+  DOMAIN,
 } from "@utils";
 import {
   changeAttendanceSettings,
   employeeEdit,
   getEmployeesList,
+  getEsslDevice,
   getSelectedEmployeeId,
   getUpdateEmployeeStatus,
   postEnableFieldCheckIn,
   postEnableOfficeCheckIn,
+  updateEmployeeDeviceDetails,
 
   // changeAttendanceSettings,
   // postEnableFieldCheckIn,
@@ -68,11 +75,13 @@ export const DROPDOWN_MENU_ADMIN = [
   { id: '1', name: 'View', value: 'PF', image: Icons.View },
   { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
   { id: '3', name: 'Assign Location', value: 'LG', image: Icons.Location_Gray },
+  { id: '4', name: 'Face Device', value: 'AD', image: Icons.EsslDevice },
 ]
 
 export const DROPDOWN_MENU_BRANCH_ADMIN = [
   { id: '1', name: 'View', value: 'PF', image: Icons.View },
   { id: '2', name: 'Delete', value: 'CL', image: Icons.Delete_1 },
+  { id: '4', name: 'Face Device', value: 'AD', image: Icons.EsslDevice },
 ]
 
 function EmployeeScreen() {
@@ -95,13 +104,22 @@ function EmployeeScreen() {
   const [ProfilePictureModel, setProfilePictureModel] = useState(false)
   const [selectedEmployeeItem, setSelectedEmployeeItem] = useState<any>()
   const [model, setModel] = useState(false);
+  const [assignDeviceModel, setAssignDeviceModel] = useState(false)
+  const [devices, setDevices] = useState<any>()
+  const [selectedDevice, setSelectedDevice] = useState<any>()
+  const [userId, setUserId] = useState('')
 
 
   const navigation = useNav();
   const enterPress = useKeyPress("Enter");
+  const isHfws = localStorage.getItem(DOMAIN);
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
+  );
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
   );
 
   const { associatedBranch, associatedId, defaultBranchId, listBranchesList } =
@@ -166,6 +184,22 @@ function EmployeeScreen() {
       case 'Assign Location':
         getEmployeeAssociationBranch(data.id)
         break;
+
+      case 'Face Device':
+        setSelectedEmployeeItem(data)
+        getDevicesApiHandler(data.id)
+        break;
+    }
+  }
+
+  const conditionalMenu = (menu: any) => {
+    if (isHfws === "HFWS") {
+      let filtered = menu.filter((el: any) => {
+        return el.value !== 'AD'
+      })
+      return filtered
+    }else{
+      return menu
     }
   }
 
@@ -191,7 +225,7 @@ function EmployeeScreen() {
         "  ":
           <div className="common-menu">
             <CommonDropdownMenu
-              data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
+              data={userDetails.is_admin ? conditionalMenu(DROPDOWN_MENU_ADMIN) : userDetails.is_branch_admin ? conditionalMenu(DROPDOWN_MENU_ADMIN) : []}
               onItemClick={(e, item) => {
                 e.stopPropagation();
                 setSelectedEmployeeItem(el)
@@ -354,6 +388,68 @@ function EmployeeScreen() {
   }, [registeredEmployeesList])
 
 
+
+  // Assign Device
+
+  const getDevicesApiHandler = (id: any) => {
+    const params = {
+      // branch_id: hierarchicalBranchIds.branch_id,
+      employee_id: id
+    };
+    dispatch(
+      getEsslDevice({
+        params,
+        onSuccess: (success: any) => () => {
+          if (success?.devices.length > 0) {
+            setDevices(success?.devices)
+            setAssignDeviceModel(!assignDeviceModel)
+            if (success?.reference_id !== -1) {
+              setSelectedDevice(success?.device_id)
+              setUserId(success?.reference_id)
+            }
+          } else {
+            showToast("error", "No Devices Added for this Branch To Assign")
+          }
+        },
+        onError: (error: any) => () => {
+        },
+      })
+    );
+  };
+
+  const validateParamsHandler = () => {
+    if (selectedDevice === '') {
+      showToast('error', 'Please select device')
+      return false;
+    } else if (userId === '') {
+      showToast('error', `User ID Can't Be Empty`)
+      return false;
+    }
+    return true
+  }
+
+  const employeeAssignDeviceHandler = () => {
+    if (validateParamsHandler()) {
+      const params = {
+        device_id: selectedDevice,
+        reference_id: parseInt(userId),
+        employee_id: selectedEmployeeItem?.id
+      }
+
+      dispatch(updateEmployeeDeviceDetails({
+        params,
+        onSuccess: (success: any) => () => {
+          setAssignDeviceModel(!assignDeviceModel)
+          setSelectedDevice('')
+          setUserId('')
+          getEmployeesApi(INITIAL_PAGE);
+        },
+        onError: (error: any) => () => {
+        },
+      }))
+    }
+  }
+
   return (
     <>
       <TableWrapper
@@ -500,6 +596,56 @@ function EmployeeScreen() {
             alt='Image placeholder'
             icon={showEmployeeProfile?.face_photo}
           /> : <NoRecordFound />}
+        </Container>
+      </Modal>
+      <Modal
+        title={'Face Device'}
+        showModel={assignDeviceModel}
+        size={'modal-lg'}
+        toggle={() => {
+          setAssignDeviceModel(!assignDeviceModel)
+          setUserId('')
+          setSelectedDevice('')
+        }
+        }
+      >
+        <div className="mt--4 h4">{`For Employee ${selectedEmployeeItem?.name}`}</div>
+        <Container additionClass="col-xl-6">
+          {devices && devices.length > 0 ?
+            <DropDown
+              label={t("Devices")}
+              placeholder={"Select Device"}
+              data={devices}
+              name={"selectedDevice"}
+              value={selectedDevice}
+              onChange={(event) =>
+                setSelectedDevice(dropDownValueCheck(event.target.value, 'Select Device'))}
+            />
+            : <></>
+          }
+          <InputDefault
+            label={'User ID'}
+            placeholder={'Enter User ID'}
+            value={userId}
+            name={"userId"}
+            onChange={(event) => {
+              setUserId(event.target.value)
+            }}
+          />
+        </Container>
+        <Container margin={"mt-5"} additionClass={"text-right"}>
+          <Secondary
+            text={t("cancel")}
+            onClick={() => {
+              setAssignDeviceModel(!assignDeviceModel)
+              setUserId('')
+              setSelectedDevice('')
+            }}
+          />
+          <Primary
+            text={t("submit")}
+            onClick={() => employeeAssignDeviceHandler()}
+          />
         </Container>
       </Modal>
     </>

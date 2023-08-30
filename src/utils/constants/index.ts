@@ -3,6 +3,10 @@ import moment from 'moment';
 import { Route } from 'react-router-dom';
 
 
+export const DOMAIN = 'DOMAIN';
+
+
+
 export const ROUTE = {
   ROUTE_DASHBOARD: '/dashboard',
   ROUTE_EMPLOYEE: '/employee',
@@ -75,6 +79,8 @@ export const ROUTE = {
   ROUTE_MANAGE_EMPLOYEES_LEAVES: '/manage-employee-leaves',
   ROUTE_OTHERS_PAY: '/others-pay',
   ROUTE_CREATE_OTHERS_PAY: '/create-others-pay',
+  ROUTE_GENERIC_SHIFT: '/generic-shift',
+  ROUTE_ESSL_DEVICES: '/essl-Devices',
 }
 
 
@@ -152,7 +158,12 @@ export const GENDER_LIST = [
 export const EMPLOYEE_TYPE = [
   { id: 'Regular', name: 'Regular', value: 'Regular' },
   { id: 'OutSourced', name: 'OutSourced', value: 'OutSourced' },
-  { id: 'Guest', name: 'Guest', value: 'Guest' },
+  { id: 'Contract', name: 'Contract', value: 'Contract' },
+];
+
+export const EMPLOYEE_TYPE_HFWS = [
+  { id: 'Regular', name: 'Regular', value: 'Regular' },
+  { id: 'Contractual InSource', name: 'Contractual InSource', value: 'Contractual InSource' },
 ];
 
 export const REPORTS_TYPE = [
@@ -162,15 +173,13 @@ export const REPORTS_TYPE = [
   { id: 'shift', name: "Shift Report", value: "shift" },
   { id: 'salary_basic', name: "Salary Report", value: "salary_basic" },
   { id: 'salary_breakdown', name: "Detailed Salary Report", value: "salary_breakdown" }
-
-
 ];
 
 export const LEAVES_TYPE = [
   { id: 'All', name: 'All', value: -2 },
   { id: 'Pending Leave', name: 'Pending Leave', value: -1, },
   { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
-  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
+  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 }, 
 ];
 
 
@@ -237,9 +246,128 @@ export const BLOOD_GROUP_LIST = [
 ];
 // single-copy-04
 
+export const MARITAL_STATUS_LIST = [
+  { id: 'Single', name: 'Single', value: 'Single' },
+  { id: 'Married', name: 'Married', value: 'Married' },
+];
+
+
+export const GROUP_LIST = [
+  { id: 'A', name: 'A', value: 'A' },
+  { id: 'B', name: 'B', value: 'B' },
+  { id: 'C', name: 'C', value: 'C' },
+  { id: 'D', name: 'D', value: 'D' },
+  { id: 'None of the above', name: 'None of the above', value: 'None of the above' },
+];
+
+
+export const HFWS_QUALIFICATIONS = [
+  { id: 'MBBS', name: 'MBBS', value: 'MBBS' },
+  { id: 'MD', name: 'MD', value: 'MD' },
+  { id: 'MS', name: 'MS', value: 'MS' },
+  { id: 'DIP', name: 'DIP', value: 'DIP' },
+  { id: 'DM', name: 'DM', value: 'DM' },
+  { id: 'M Ch', name: 'M Ch', value: 'M Ch' },
+  { id: 'BDS', name: 'BDS', value: 'BDS' },
+  { id: 'MDS', name: 'MDS', value: 'MDS' },
+  { id: 'GNM', name: 'GNM', value: 'GNM' },
+  { id: 'M Sc', name: 'M Sc', value: 'M Sc' },
+  { id: 'B Sc', name: 'B Sc', value: 'B Sc' },
+  { id: 'B Tech', name: 'B Tech', value: 'B Tech' },
+  { id: 'B.Pharm', name: 'B.Pharm', value: 'B.Pharm' },
+  { id: 'D.Pharm', name: 'D.Pharm', value: 'D.Pharm' },
+  { id: 'Pharm.D', name: 'Pharm.D', value: 'Pharm.D' },
+  { id: 'MPT', name: 'MPT', value: 'MPT' },
+  { id: 'BPT', name: 'BPT', value: 'BPT' },
+  { id: 'M.Optom', name: 'M.Optom', value: 'M.Optom' },
+  { id: 'B.Optom', name: 'B.Optom', value: 'B.Optom' },
+  { id: 'BAMS', name: 'BAMS', value: 'BAMS' },
+  { id: 'MD Ayurveda', name: 'MD Ayurveda', value: 'MD Ayurveda' },
+  { id: 'BHMS', name: 'BHMS', value: 'BHMS' },
+  { id: 'MD Homeopathy', name: 'MD Homeopathy', value: 'MD Homeopathy' },
+  { id: 'BUMS', name: 'BUMS', value: 'BUMS' },
+  { id: 'MD Unani', name: 'MD Unani', value: 'MD Unani' },
+  { id: 'BSMS', name: 'BSMS', value: 'BSMS' },
+  { id: 'MD Siddha', name: 'MD Siddha', value: 'MD Siddha' },
+  { id: 'BMLT', name: 'BMLT', value: 'BMLT' },
+  { id: 'MMLT', name: 'MMLT', value: 'MMLT' },
+  { id: 'DNB', name: 'DNB', value: 'DNB' },
+  { id: 'B Com', name: 'B Com', value: 'B Com' },
+  { id: 'M Com', name: 'M Com', value: 'M Com' },
+  { id: 'BBA', name: 'BBA', value: 'BBA' },
+  { id: 'MBA', name: 'MBA', value: 'MBA' },
+  { id: 'None of the above', name: 'None of the above', value: 'None of the above' },
+];
 
 
 
+export const OFFICE_TYPE = [
+  { id: 'District Health Office', name: 'District Health Office', value: 'District Health Office' },
+  { id: 'Taluk Head Office', name: 'Taluk Head Office', value: 'Taluk Head Office' },
+  { id: 'District Leprosy Office', name: 'District Leprosy Office', value: 'District Leprosy Office' },
+  { id: 'Reproductive and Child Health Office', name: 'Reproductive and Child Health Office', value: 'Reproductive and Child Health Office' },
+  { id: 'Tuberculosis Office', name: 'Tuberculosis Office', value: 'Tuberculosis Office' },
+  { id: 'District Surveillance Office', name: 'District Surveillance Office', value: 'District Surveillance Office' },
+  { id: 'District Training Center Office', name: 'District Training Center Office', value: 'District Training Center Office' },
+  { id: 'Auxiliary Nurse Midwife Training Center', name: 'Auxiliary Nurse Midwife Training Center', value: 'Auxiliary Nurse Midwife Training Center' },
+  { id: 'District Hospital', name: 'District Hospital', value: 'District Hospital' },
+  { id: 'Taluk Hospital / General Hospital', name: 'Taluk Hospital / General Hospital', value: 'Taluk Hospital / General Hospital' },
+  { id: 'Community Health Centers', name: 'Community Health Centers', value: 'Community Health Centers' },
+  { id: 'Primary Health Center / Urban PHC', name: 'Primary Health Center / Urban PHC', value: 'Primary Health Center / Urban PHC' },
+  { id: 'Mother and Child Hospital', name: 'Mother and Child Hospital', value: 'Mother and Child Hospital' },
+  { id: 'District Vector-borne Disease Control Office', name: 'District Vector-borne Disease Control Office', value: 'District Vector-borne Disease Control Office' },
+  { id: 'District Malaria Office', name: 'District Malaria Office', value: 'District Malaria Office' },
+  { id: 'Epidemic Diseases Hospital', name: 'Epidemic Diseases Hospital', value: 'Epidemic Diseases Hospital' },
+  { id: 'Namma Clinic', name: 'Namma Clinic', value: 'Namma Clinic' },
+  { id: 'HWC - Health And Wellness Center', name: 'HWC - Health And Wellness Center', value: 'HWC - Health And Wellness Center' },
+  { id: 'UMC- Urban Maternity Center', name: 'UMC- Urban Maternity Center', value: 'UMC- Urban Maternity Center' },
+  { id: 'KFD Field Station', name: 'KFD Field Station', value: 'KFD Field Station' },
+  { id: 'FPA - Family Planning Association', name: 'FPA - Family Planning Association', value: 'FPA - Family Planning Association' },
+  { id: 'DDW - Dist Drug Warehouse', name: 'DDW - Dist Drug Warehouse', value: 'DDW - Dist Drug Warehouse' },
+  { id: 'RTC - Regional Training Center', name: 'RTC - Regional Training Center', value: 'RTC - Regional Training Center' },
+  { id: 'DFWO', name: 'DFWO', value: 'DFWO' },
+  { id: 'None of the above', name: 'None of the above', value: 'None of the above' },
+];
+
+
+
+export const HFWS_ORGANISATION = [
+  { id: 'HFWS', name: 'HFWS', value: 'HFWS' },
+  { id: 'NHM', name: 'NHM', value: 'NHM' }
+]
+
+
+export const HFWS_SPECLILISATION = [
+  { "id": "Anesthesia", "name": "Anesthesia", "value": "Anesthesia" },
+  { "id": "Medical Faculty", "name": "Medical Faculty", "value": "Medical Faculty" },
+  { "id": "Paediatrics", "name": "Paediatrics", "value": "Paediatrics" },
+  { "id": "DVL - Dermatology, Venereology & Leprosy", "name": "DVL - Dermatology, Venereology & Leprosy", "value": "DVL - Dermatology, Venereology & Leprosy" },
+  { "id": "OBG - Obstetrics & Gynaecology", "name": "OBG - Obstetrics & Gynaecology", "value": "OBG - Obstetrics & Gynaecology" },
+  { "id": "Oto-Rhino-Laryngol", "name": "Oto-Rhino-Laryngol", "value": "Oto-Rhino-Laryngol" },
+  { "id": "Ophthalmology", "name": "Ophthalmology", "value": "Ophthalmology" },
+  { "id": "Radio Diagnosis", "name": "Radio Diagnosis", "value": "Radio Diagnosis" },
+  { "id": "Psychiatry", "name": "Psychiatry", "value": "Psychiatry" },
+  { "id": "Psychological Medicine", "name": "Psychological Medicine", "value": "Psychological Medicine" },
+  { "id": "Pathology", "name": "Pathology", "value": "Pathology" },
+  { "id": "Microbiology", "name": "Microbiology", "value": "Microbiology" },
+  { "id": "Community Medicine", "name": "Community Medicine", "value": "Community Medicine" },
+  { "id": "General Medicine", "name": "General Medicine", "value": "General Medicine" },
+  { "id": "Emergency Medicine", "name": "Emergency Medicine", "value": "Emergency Medicine" },
+  { "id": "Forensic Medicine", "name": "Forensic Medicine", "value": "Forensic Medicine" },
+  { "id": "Radiotherapy", "name": "Radiotherapy", "value": "Radiotherapy" },
+  { "id": "TB & Respiratory Medicine", "name": "TB & Respiratory Medicine", "value": "TB & Respiratory Medicine" },
+  { "id": "Respiratory Medicine", "name": "Respiratory Medicine", "value": "Respiratory Medicine" },
+  { "id": "Orthopedics", "name": "Orthopedics", "value": "Orthopedics" },
+  { "id": "Aerospace Medicine", "name": "Aerospace Medicine", "value": "Aerospace Medicine" },
+  { "id": "Anatomy", "name": "Anatomy", "value": "Anatomy" },
+  { "id": "Hospital Administration", "name": "Hospital Administration", "value": "Hospital Administration" },
+  { "id": "Physical Medicine & Rehabilitation", "name": "Physical Medicine & Rehabilitation", "value": "Physical Medicine & Rehabilitation" },
+  { "id": "General Surgery", "name": "General Surgery", "value": "General Surgery" },
+  { "id": "Pharmacology", "name": "Pharmacology", "value": "Pharmacology" },
+  { "id": "Physiology", "name": "Physiology", "value": "Physiology" },
+  { "id": "Biochemistry", "name": "Biochemistry", "value": "Biochemistry" },
+  { 'id': 'None of the above', 'name': 'None of the above', 'value': 'None of the above' },
+];
 
 export const NAV_ITEM = [
   { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", path: ROUTE.ROUTE_DASHBOARD, layout: '', },
@@ -334,6 +462,8 @@ export const NAV_ITEM = [
   // { id: '21', name: 'ESSL Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG, is_admin : true },
   // { id: '22', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS, is_admin: false },
   { id: '20', name: 'Weekly Calendar', value: 'WC', icon: 'ni ni-album-2', image: '', path: ROUTE.ROUTE_WEEKLY_CALENDER, layout: '' },
+  { id: '21', name: 'Generic Time', value: 'GT', icon: 'fas fa-th-list', image: '', path: ROUTE.ROUTE_GENERIC_SHIFT, layout: '' },
+  { id: '22', name: 'Face Device', value: 'FD', icon: 'fas fa-tablet-alt', image: '', path: ROUTE.ROUTE_ESSL_DEVICES, layout: '' },
   // { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', image: Icons.Clients, route: ROUTE.ROUTE_PORTFOLIO },
 
 ];
@@ -510,6 +640,7 @@ export const LEAVE_STATUS_REVERT = [
 export const INITIAL_PAGE = 1
 
 export const ASYN_USER_AUTH = 'ZENYLOG::USER_AUTH';
+
 
 
 export const LANGUAGE_LIST = [

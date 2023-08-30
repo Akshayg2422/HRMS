@@ -20,7 +20,10 @@ import {
   EDIT_BRANCH_NAME_FAILURE,
   FETCH_LIST_ALL_BRANCHES_LIST,
   FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS,
-  FETCH_LIST_ALL_BRANCHES_LIST_FAILURE
+  FETCH_LIST_ALL_BRANCHES_LIST_FAILURE,
+  DELETE_BRANCH,
+  DELETE_BRANCH_SUCCESS,
+  DELETE_BRANCH_FAILURE
 } from "./actionsType"
 
 
@@ -219,6 +222,30 @@ export const editBranchNameSuccess = (response) => {
 export const editBranchNameFailure = (error) => {
   return {
     type: EDIT_BRANCH_NAME_FAILURE,
+    payload: error,
+  };
+};
+
+// delete Branch
+
+export const deleteBranch = (params) => {
+  return {
+    type: DELETE_BRANCH,
+    payload: params,
+
+  };
+};
+
+export const deleteBranchSuccess = (response) => {
+  return {
+    type: DELETE_BRANCH_SUCCESS,
+    payload: response,
+  };
+};
+
+export const deleteBranchFailure = (error) => {
+  return {
+    type: DELETE_BRANCH_FAILURE,
     payload: error,
   };
 };

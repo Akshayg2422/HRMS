@@ -358,20 +358,20 @@ function* getTypeOfBusiness(action) {
 function* postAppConfigDetailsSaga(action) {
   try {
 
-    yield put(showLoader());
+    // yield put(showLoader());
 
     const response = yield call(postAppConfigDetailsApi, action.payload.params);
 
     if (response.success) {
 
-      yield put(hideLoader());
+      // yield put(hideLoader());
       yield put(postAppConfigSuccess(response.details));
       yield call(action.payload.onSuccess(response));
 
 
     } else {
 
-      yield put(hideLoader());
+      // yield put(hideLoader());
       yield put(postAppConfigFailure(response.error_message));
       yield call(action.payload.onError(response));
 
@@ -379,7 +379,7 @@ function* postAppConfigDetailsSaga(action) {
     }
   } catch (error) {
 
-    yield put(hideLoader());
+    // yield put(hideLoader());
     yield put(postAppConfigFailure("Invalid Request"));
     yield call(action.payload.onError(error));
 
@@ -588,7 +588,7 @@ function* AuthSaga() {
 
   yield takeLatest(SET_ESSL_CONFIG, postEsslConfigSaga);
   yield takeLatest(GET_ESSL_CONFIG, fetchEsslConfigSaga);
-  yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
+  // yield takeLatest(ADD_ESSL_DEVICE, postAddEsslDeviceSaga);
   yield takeLatest(GET_ESSL_DEVICES, fetchEsslDevicesSaga);
   yield takeLatest(SYNC_ESSL_DEVICE_USERS, syncEsslDeviceUsersSaga);
   yield takeLatest(WEB_PUSH_REGISTER, webPushRegisterSaga);

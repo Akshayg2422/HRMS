@@ -15,7 +15,7 @@ import {
   UPDATE_EMPLOYEE_CHECKIN_ASSOCIATIONS_REDUCER,
   RESET_REDUCER,
   EDIT_BRANCH_NAME,
-  EDIT_BRANCH_NAME_FAILURE, EDIT_BRANCH_NAME_SUCCESS, FETCH_LIST_ALL_BRANCHES_LIST, FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS, FETCH_LIST_ALL_BRANCHES_LIST_FAILURE
+  EDIT_BRANCH_NAME_FAILURE, EDIT_BRANCH_NAME_SUCCESS, FETCH_LIST_ALL_BRANCHES_LIST, FETCH_LIST_ALL_BRANCHES_LIST_SUCCESS, FETCH_LIST_ALL_BRANCHES_LIST_FAILURE, DELETE_BRANCH, DELETE_BRANCH_SUCCESS, DELETE_BRANCH_FAILURE
 } from "./actionsType";
 
 
@@ -228,6 +228,25 @@ const LocationReducer = (state = initialState, action) => {
       };
       break;
 
+    // delete Branch
+    case DELETE_BRANCH:
+      state = { ...state, loading: true };
+      break;
+    case DELETE_BRANCH_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case DELETE_BRANCH_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
+
+    // 
     case RESET_REDUCER:
       state = initialState;
       break;

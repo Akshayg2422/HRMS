@@ -5,6 +5,7 @@ import {
   FormWrapper,
   ScreenContainer,
   Container,
+  SearchableDropdown,
 } from "@components";
 import { Icons } from "@assets";
 import {
@@ -15,7 +16,11 @@ import {
   validateAddress,
   validatePincode,
   goBack,
-  inputNumberMaxLength
+  inputNumberMaxLength,
+  MARITAL_STATUS_LIST,
+  dropDownValueCheckByEvent,
+  DOMAIN,
+  getDropDownFormatter,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -24,6 +29,7 @@ import {
   getListAllBranchesList,
   branchAddition
 } from '../../../../../../store/location/actions';
+import { OFFICE_TYPE } from "@utils";
 
 const ManageBranches = () => {
   const navigation = useNav();
@@ -34,17 +40,18 @@ const ManageBranches = () => {
     listBranchesList
   } = useSelector((state: any) => state.LocationReducer);
 
+  const isHfws = localStorage.getItem(DOMAIN);
 
-
-  const [branchDetails, setBranchDetails] = useState({
+  const [branchDetails, setBranchDetails] = useState<any>({
     companyname: "",
     displaycompanyname: "",
     parentbranch: "",
-    address: "",
-    city: "",
-    district: "",
-    state: "",
-    pincode: ""
+    address: "-",
+    city: "-",
+    district: "-",
+    state: "-",
+    pincode: "-",
+    branchType: OFFICE_TYPE[OFFICE_TYPE.length - 1].id
   });
 
   useEffect(() => {
@@ -81,24 +88,24 @@ const ManageBranches = () => {
       showToast("error", t("Parent Branch should not be empty"))
     }
 
-    else if (validateDefault(branchDetails.address).status === false) {
-      showToast("error", t("invalidAddress"));
-      return false;
-    }
-    else if (validateDefault(branchDetails.city).status === false) {
-      showToast("error", t("invalidCity"));
-      return false;
-    }
-    else if (validateDefault(branchDetails.district).status === false) {
-      showToast("error", t("invalidDistrict"));
-      return false;
-    } else if (validateDefault(branchDetails.state).status === false) {
-      showToast("error", t("invalidState"));
-      return false;
-    } else if (validatePincode(branchDetails.pincode).status === false) {
-      showToast("error", t("invalidPincode"));
-      return false;
-    }
+    // else if (validateDefault(branchDetails.address).status === false) {
+    //   showToast("error", t("invalidAddress"));
+    //   return false;
+    // }
+    // else if (validateDefault(branchDetails.city).status === false) {
+    //   showToast("error", t("invalidCity"));
+    //   return false;
+    // }
+    // else if (validateDefault(branchDetails.district).status === false) {
+    //   showToast("error", t("invalidDistrict"));
+    //   return false;
+    // } else if (validateDefault(branchDetails.state).status === false) {
+    //   showToast("error", t("invalidState"));
+    //   return false;
+    // } else if (validatePincode(branchDetails.pincode).status === false) {
+    //   showToast("error", t("invalidPincode"));
+    //   return false;
+    // }
     else {
       return true;
     }
@@ -114,8 +121,10 @@ const ManageBranches = () => {
         district: branchDetails.district,
         state: branchDetails.state,
         pincode: branchDetails.pincode,
-        parent: branchDetails.parentbranch
+        parent: branchDetails.parentbranch?.id,
+        ...(isHfws === 'HFWS' && { branch_type: branchDetails.branchType })
       };
+
       dispatch(
         branchAddition({
           params,
@@ -139,6 +148,13 @@ const ManageBranches = () => {
   const NumberHandler = (value: string, key: string) => {
     setBranchDetails({ ...branchDetails, [key]: value });
   };
+
+  const handleParentBranchChange = (event: any) => {
+    setBranchDetails(prevDetails => ({
+      ...prevDetails,
+      parentbranch: event
+    }));
+  }
 
   return (
     <ScreenContainer>
@@ -173,11 +189,8 @@ const ManageBranches = () => {
               }}
             />
           </div>
-        </Container>
-
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
-            <DropDown
+            {/* <DropDown
               label={t("Parent Branch")}
               placeholder={t("Parent Branch")}
               data={listBranchesList}
@@ -186,8 +199,23 @@ const ManageBranches = () => {
               onChange={(event) => {
                 onChangeHandler(event);
               }}
-            />
+            /> */}
+            <SearchableDropdown selected={branchDetails.parentbranch} data={getDropDownFormatter(listBranchesList)} heading={t("Parent Branch")} placeHolder={t("Parent Branch")} onChange={(event) => {
+              handleParentBranchChange(event)
+            }} />
           </div>
+          {isHfws === 'HFWS' && <div className="col-xl-6">
+            <DropDown
+              label={t("Type")}
+              placeholder={t("Enter Type")}
+              data={OFFICE_TYPE}
+              name={"branchType"}
+              value={branchDetails.branchType}
+              onChange={(event) => {
+                onChangeHandler(dropDownValueCheckByEvent(event, t("Enter Type")));
+              }}
+            />
+          </div>}
           <div className="col-xl-6">
             <InputText
               label={t("Communication Address")}
@@ -200,9 +228,7 @@ const ManageBranches = () => {
               }}
             />
           </div>
-        </Container>
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
 
             <InputText
@@ -228,11 +254,8 @@ const ManageBranches = () => {
               }}
             />
           </div>
-        </Container>
 
-        <Container additionClass={'col-xl-12 row col-sm-3'}>
           <div className="col-xl-6">
-
             <InputText
               label={t("State")}
               placeholder={t("State")}
@@ -256,8 +279,9 @@ const ManageBranches = () => {
             />
           </div>
         </Container>
+
       </FormWrapper>
-    </ScreenContainer>
+    </ScreenContainer >
   );
 };
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { NAV_ITEM, ROUTE } from '@utils'
+import { DOMAIN, NAV_ITEM, ROUTE } from '@utils'
 import { Header, Navbar } from '@modules'
 import { Icons } from '@assets';
 
@@ -13,6 +13,7 @@ type RequireAuthProps = {
 export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     const [sidenavOpen, setSidenavOpen] = React.useState(true);
+    const isHfws = localStorage.getItem(DOMAIN);
 
 
     const location = useLocation()
@@ -27,16 +28,33 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         return <Navigate to={ROUTE.ROUTE_LOGIN} state={{ path: location.pathname }} />
     }
 
-    // const conditionalNavbarItem = (details: any) => {
-    //     if (details?.is_admin) {
-    //         return NAV_ITEM
-    //     } else if (details?.is_branch_admin) {
-    //         let filtered = NAV_ITEM.filter((el: any) => {
-    //             return el.value !== 'LP'
-    //         })
-    //         return filtered
-    //     }
-    // }
+    const conditionalNavbarItem = (navs: any) => {
+        const { is_super_admin } = dashboardDetails?.permission_details
+        const { is_admin } = dashboardDetails?.permission_details
+        const { is_branch_admin } = dashboardDetails?.permission_details
+        if (is_admin) {
+            if (isHfws === 'HFWS') {
+                let filtered = navs.filter((el: any) => {
+                    return el.value !== 'PR' && el.value !== "SM" && el.value !== "FD"
+                })
+                return filtered
+            } else {
+                return navs
+            }
+        } else if (is_branch_admin) {
+            if (isHfws !== 'HFWS') {
+                let filtered = navs.filter((el: any) => {
+                    return el.value !== 'WC' && el.value !== "HC"
+                })
+                return filtered
+            } else {
+                let filtered = navs.filter((el: any) => {
+                    return el.value !== 'WC' && el.value !== "HC" && el.value !== 'PR' && el.value !== "SM"  && el.value !== "FD"
+                })
+                return filtered
+            }
+        }
+    }
 
     const toggleSideNav = () => {
 
@@ -54,7 +72,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     return (
         <>
             {userDetails && <Navbar
-                routes={NAV_ITEM}
+                routes={conditionalNavbarItem(NAV_ITEM)}
                 toggleSideNav={toggleSideNav}
                 sideNavOpen={sidenavOpen}
                 logo={{

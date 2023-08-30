@@ -50,7 +50,14 @@ import {
   SET_COMPANY_BASE_WEEKLY_CALENDAR,
   GET_EMPLOYEE_BRANCH_WISE_LEAVES,
   GET_EMPLOYEE_LEAVE_TYPES,
-  UPDATE_EMPLOYEE_ALLOCATED_DAYS
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS,
+  FETCH_SYNC_DATA,
+  UPDATE_COMPANY_GENERIC_SHIFT,
+  ADD_ESSL_DEVICE,
+  GET_ESSL_DEVICE,
+  REMOVE_ESSL_DEVICE,
+  GET_EMPLOYEE_DEVICE_DETAILS,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS
 
 } from "./actionTypes";
 
@@ -161,7 +168,21 @@ import {
   getEmployeeBranchLeaveTypeSuccess,
   getEmployeeBranchLeaveTypeFailure,
   updateEmployeeAllocatedDaysSuccess,
-  updateEmployeeAllocatedDaysFailure
+  updateEmployeeAllocatedDaysFailure,
+  getSyncDataSuccess,
+  getSyncDataFailure,
+  updateCompanyGenericShiftSuccess,
+  updateCompanyGenericShiftFailure,
+  addEsslDeviceSuccess,
+  addEsslDeviceFailure,
+  getEsslDeviceSuccess,
+  getEsslDeviceFailure,
+  removeEsslDeviceSuccess,
+  removeEsslDeviceFailure,
+  updateEmployeeDeviceDetailsSuccess,
+  updateEmployeeDeviceDetailsFailure,
+  getEmployeeDeviceDetailsSuccess,
+  getEmployeeDeviceDetailsFailure
 
 } from "./actions";
 
@@ -217,7 +238,14 @@ import {
   postCompanyBaseWeeklyCalendarApi,
   postBranchWiseEmployeesLeavesApi,
   getEmployeeLeaveTypesApi,
-  postUpdateEmployeeAllocatedDaysApi
+  postUpdateEmployeeAllocatedDaysApi,
+  getSyncDataApi,
+  updateCompanyGenericShiftApi,
+  addEsslDevicesApi,
+  getEsslDevicesApi,
+  removeEsslDevicesApi,
+  updateEmployeesDeviceDetailApi,
+  getEmployeesDeviceDetailApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -1444,9 +1472,168 @@ function* updateEmployeeAllocatedDaysSaga(action) {
   }
 }
 
+// syncData
 
+function* getSyncDataSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(getSyncDataApi, action.payload.params);
 
+    if (response.success) {
+      yield put(getSyncDataSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(getSyncDataFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getSyncDataFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
 
+  }
+}
+
+// UPDATE_COMPANY_GENERIC_SHIFT
+
+function* updateCompanyGenericShiftSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(updateCompanyGenericShiftApi, action.payload.params);
+
+    if (response.success) {
+      yield put(updateCompanyGenericShiftSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(updateCompanyGenericShiftFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(updateCompanyGenericShiftFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// Add Devices
+
+function* addEsslDevicesSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(addEsslDevicesApi, action.payload.params);
+    if (response.success) {
+      yield put(addEsslDeviceSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(addEsslDeviceFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(addEsslDeviceFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// get Devices 
+
+function* getEsslDevicesSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(getEsslDevicesApi, action.payload.params);
+    if (response.success) {
+      yield put(getEsslDeviceSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(getEsslDeviceFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEsslDeviceFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// remove Devices
+
+function* removeEsslDevicesSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(removeEsslDevicesApi, action.payload.params);
+    if (response.success) {
+      yield put(removeEsslDeviceSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(removeEsslDeviceFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(removeEsslDeviceFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// UPDATE_EMPLOYEE_DEVICE_DETAILS
+
+function* updateEmployeeDeviceSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(updateEmployeesDeviceDetailApi, action.payload.params);
+    if (response.success) {
+      yield put(updateEmployeeDeviceDetailsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(updateEmployeeDeviceDetailsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(updateEmployeeDeviceDetailsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
+// GET_EMPLOYEE_DEVICE_DETAILS
+
+function* getEmployeeDeviceSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(getEmployeesDeviceDetailApi, action.payload.params);
+    if (response.success) {
+      yield put(getEmployeeDeviceDetailsSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(getEmployeeDeviceDetailsFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getEmployeeDeviceDetailsFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
 
 // *** WATCHER*** //
 
@@ -1513,6 +1700,13 @@ function* EmployeeSaga() {
   yield takeLatest(GET_EMPLOYEE_BRANCH_WISE_LEAVES, getEmployeeBranchWiseLeavesSaga);
   yield takeLatest(GET_EMPLOYEE_LEAVE_TYPES, getEmployeeLeaveTypesSaga);
   yield takeLatest(UPDATE_EMPLOYEE_ALLOCATED_DAYS, updateEmployeeAllocatedDaysSaga);
+  yield takeLatest(FETCH_SYNC_DATA, getSyncDataSaga);
+  yield takeLatest(UPDATE_COMPANY_GENERIC_SHIFT, updateCompanyGenericShiftSaga);
+  yield takeLatest(ADD_ESSL_DEVICE, addEsslDevicesSaga);
+  yield takeLatest(GET_ESSL_DEVICE, getEsslDevicesSaga);
+  yield takeLatest(REMOVE_ESSL_DEVICE, removeEsslDevicesSaga);
+  yield takeLatest(GET_EMPLOYEE_DEVICE_DETAILS, getEmployeeDeviceSaga);
+  yield takeLatest(UPDATE_EMPLOYEE_DEVICE_DETAILS, updateEmployeeDeviceSaga);
   
 }
 
