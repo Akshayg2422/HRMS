@@ -30,6 +30,7 @@ import {
   INITIAL_PAGE,
   dropDownValueCheckByEvent,
   dropDownValueCheck,
+  DOMAIN,
 } from "@utils";
 import {
   changeAttendanceSettings,
@@ -111,9 +112,14 @@ function EmployeeScreen() {
 
   const navigation = useNav();
   const enterPress = useKeyPress("Enter");
+  const isHfws = localStorage.getItem(DOMAIN);
 
   const { registeredEmployeesList, numOfPages, currentPage } = useSelector(
     (state: any) => state.EmployeeReducer
+  );
+
+  const { dashboardDetails } = useSelector(
+    (state: any) => state.DashboardReducer
   );
 
   const { associatedBranch, associatedId, defaultBranchId, listBranchesList } =
@@ -186,6 +192,17 @@ function EmployeeScreen() {
     }
   }
 
+  const conditionalMenu = (menu: any) => {
+    if (isHfws === "HFWS") {
+      let filtered = menu.filter((el: any) => {
+        return el.value !== 'AD'
+      })
+      return filtered
+    }else{
+      return menu
+    }
+  }
+
 
   const normalizedEmployeeLog = (data: any) => {
     return data.map((el: any, index: number) => {
@@ -208,7 +225,7 @@ function EmployeeScreen() {
         "  ":
           <div className="common-menu">
             <CommonDropdownMenu
-              data={userDetails.is_admin ? DROPDOWN_MENU_ADMIN : userDetails.is_branch_admin ? DROPDOWN_MENU_ADMIN : []}
+              data={userDetails.is_admin ? conditionalMenu(DROPDOWN_MENU_ADMIN) : userDetails.is_branch_admin ? conditionalMenu(DROPDOWN_MENU_ADMIN) : []}
               onItemClick={(e, item) => {
                 e.stopPropagation();
                 setSelectedEmployeeItem(el)
@@ -581,7 +598,6 @@ function EmployeeScreen() {
           /> : <NoRecordFound />}
         </Container>
       </Modal>
-      {console.log('selectedEmployeeItem',selectedEmployeeItem)}
       <Modal
         title={'Face Device'}
         showModel={assignDeviceModel}

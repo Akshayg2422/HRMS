@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom'
 import { useSelector } from "react-redux";
-import { NAV_ITEM, ROUTE } from '@utils'
+import { DOMAIN, NAV_ITEM, ROUTE } from '@utils'
 import { Header, Navbar } from '@modules'
 import { Icons } from '@assets';
 
@@ -13,6 +13,7 @@ type RequireAuthProps = {
 export const RequireAuth = ({ children }: RequireAuthProps) => {
 
     const [sidenavOpen, setSidenavOpen] = React.useState(true);
+    const isHfws = localStorage.getItem(DOMAIN);
 
 
     const location = useLocation()
@@ -28,13 +29,30 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
     }
 
     const conditionalNavbarItem = (navs: any) => {
-        if (userDetails?.is_admin) {
-            return navs
-        } else if (userDetails?.is_branch_admin) {
-            let filtered = navs.filter((el: any) => {
-                return el.value !== 'WC' && el.value !== 'GS' 
-            })
-            return filtered
+        const { is_super_admin } = dashboardDetails?.permission_details
+        const { is_admin } = dashboardDetails?.permission_details
+        const { is_branch_admin } = dashboardDetails?.permission_details
+        if (is_admin) {
+            if (isHfws === 'HFWS') {
+                let filtered = navs.filter((el: any) => {
+                    return el.value !== 'PR' && el.value !== "SM" && el.value !== "FD"
+                })
+                return filtered
+            } else {
+                return navs
+            }
+        } else if (is_branch_admin) {
+            if (isHfws !== 'HFWS') {
+                let filtered = navs.filter((el: any) => {
+                    return el.value !== 'WC' && el.value !== "HC"
+                })
+                return filtered
+            } else {
+                let filtered = navs.filter((el: any) => {
+                    return el.value !== 'WC' && el.value !== "HC" && el.value !== 'PR' && el.value !== "SM"  && el.value !== "FD"
+                })
+                return filtered
+            }
         }
     }
 

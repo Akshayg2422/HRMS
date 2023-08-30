@@ -44,7 +44,6 @@ import {
   dropDownValueCheckByEvent,
   MAX_LENGTH_AADHAR,
   convertTo24Hour,
-  isHfwsBranch,
   getDropDownFormatter,
   GROUP_LIST,
   DOMAIN,
@@ -124,10 +123,6 @@ const ManageEmployee = () => {
 
   const { listBranchesList } =
     useSelector((state: any) => state.LocationReducer);
-
-  const { hfwsBranchShifts } = useSelector(
-    (state: any) => state.ShiftManagementReducer
-  );
 
   const INITIAL_COMPANY_BRANCH = { id: dashboardDetails?.company_branch?.id, text: dashboardDetails?.company_branch?.name }
 
@@ -261,7 +256,7 @@ const ManageEmployee = () => {
       onSuccess: (success: any) => () => {
         const { company_generic_shifts } = success?.sync_data?.company_info
         if (company_generic_shifts.length > 0) {
-          setEnableShift(true)
+          !isEdit && setEnableShift(true)
         }
         let normalizedData: any = []
         company_generic_shifts.length > 0 && company_generic_shifts.map((el: any) => {
@@ -582,7 +577,7 @@ const ManageEmployee = () => {
         editEmployeeDetails.attendance_settings?.is_excempt_allowed
       ) {
         setIsExempted(editEmployeeDetails.attendance_settings?.is_excempt_allowed)
-      }
+      }      
       if (
         editEmployeeDetails &&
         editEmployeeDetails.attendance_settings?.enable_generic_shift
@@ -718,20 +713,20 @@ const ManageEmployee = () => {
   }, [employeeDetails.attendanceStartTime, employeeDetails.attendanceEndTime,])
 
   const editGenericShiftDetails = (start_Time: any, end_time: any) => {
-    let data
     if (start_Time && end_time) {
       syncDetails && syncDetails.length > 0 && syncDetails.map((el: any, index: any) => {
         if (convertTo24HourFormat(start_Time) == convertTo24HourFormat(el.startTime) && convertTo24HourFormat(end_time) == convertTo24HourFormat(el.endTime)) {
-          // data = 
           setSelectedGenericShift(syncDetails[index].id)
         }
       })
     }
-
-
   }
 
-
+  useEffect(() => {
+    if (!enableShift) {
+      setEmployeeDetails({ ...employeeDetails, attendanceStartTime: "10:00", attendanceEndTime: "18:00" })
+    }
+  }, [enableShift])
 
   return (
     <ScreenContainer>

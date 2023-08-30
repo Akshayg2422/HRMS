@@ -462,8 +462,8 @@ export const NAV_ITEM = [
   // { id: '21', name: 'ESSL Config', value: 'EC', icon: 'ni ni-vector', image: Icons.MyBranches, route: ROUTE.ROUTE_ESSI_CONFIG, is_admin : true },
   // { id: '22', name: 'Notifications', value: 'NS', icon: 'ni ni-bell-55', image: Icons.MyBranches, route: ROUTE.ROUTE_NOTIFICATIONS, is_admin: false },
   { id: '20', name: 'Weekly Calendar', value: 'WC', icon: 'ni ni-album-2', image: '', path: ROUTE.ROUTE_WEEKLY_CALENDER, layout: '' },
-  { id: '21', name: 'Generic Shift', value: 'GS', icon: 'fas fa-th-list', image: '', path: ROUTE.ROUTE_GENERIC_SHIFT, layout: '' },
-  { id: '22', name: 'Add Devices', value: 'AD', icon: 'fas fa-tablet-alt', image: '', path: ROUTE.ROUTE_ESSL_DEVICES, layout: '' },
+  { id: '21', name: 'Generic Time', value: 'GT', icon: 'fas fa-th-list', image: '', path: ROUTE.ROUTE_GENERIC_SHIFT, layout: '' },
+  { id: '22', name: 'Face Device', value: 'FD', icon: 'fas fa-tablet-alt', image: '', path: ROUTE.ROUTE_ESSL_DEVICES, layout: '' },
   // { id: '12', name: 'My Portfolio', value: 'MP', icon: 'ni ni-single-02', image: Icons.Clients, route: ROUTE.ROUTE_PORTFOLIO },
 
 ];
