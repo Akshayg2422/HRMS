@@ -64,7 +64,7 @@ function GenericShift() {
   const addNewHandler = async () => {
     if (validateOnSubmit()) {
       const newlyAddedShiftTime = {
-        id: parseInt(syncDetails[syncDetails.length - 1].id) + 1,
+        id: syncDetails.length > 1 ? parseInt(syncDetails[syncDetails.length - 1]?.id) + 1 : 1,
         "end_time": Time.outTime,
         "start_time": Time.inTime,
         "display_text": `${convertFrom24To12Format(Time.inTime)} to ${convertFrom24To12Format(Time.outTime)}`

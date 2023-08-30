@@ -7,19 +7,20 @@ import {
   InputNumber,
 } from "@components";
 import { useSelector } from "react-redux";
-import { getGenderByValue, getImageUri } from "@utils";
+import { DOMAIN, getGenderByValue, getImageUri } from "@utils";
 import { useTranslation } from "react-i18next";
 import { Icons } from "@assets";
-import { Col,Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 
 const Profile = () => {
+  const isHfws = localStorage.getItem(DOMAIN);
 
   const { t } = useTranslation();
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
-  
+
   return (
     <Container additionClass="row justify-content-center my-4 m-0">
       <Card additionClass={"col-lg-12 col-md-8"}>
@@ -54,13 +55,13 @@ const Profile = () => {
               value={dashboardDetails.user_details.mobile_number}
             />
           </div>
-          <div className="col-lg-6 col-md-6 col-sm-12">
+          {isHfws !== "HFWS" && <div className="col-lg-6 col-md-6 col-sm-12">
             <InputDefault
               disabled={true}
               label={t("email")}
               value={dashboardDetails.user_details.email}
             />
-          </div>
+          </div>}
           <div className="col-lg-6 col-md-6 col-sm-12">
             <InputDefault
               disabled={true}
@@ -74,7 +75,7 @@ const Profile = () => {
               label={t("companyBranch")}
               value={dashboardDetails.company_branch.name}
             />
-          </div> 
+          </div>
         </Container>
       </Card>
     </Container>

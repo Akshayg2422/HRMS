@@ -21,6 +21,10 @@ function EsslDevices() {
     (state: any) => state.DashboardReducer
   );
 
+  const CARD_DROPDOWN_ITEM = [
+    { id: '1', name: `Edit`, value: 'ED', image: Icons.Edit },
+  ]
+
   useEffect(() => {
     getDevicesApiHandler()
   }, [hierarchicalBranchIds.branch_id])
@@ -36,7 +40,7 @@ function EsslDevices() {
           setDevices(success?.devices)
         },
         onError: (error: any) => () => {
-          showToast('error',error)
+          showToast('error', error)
         },
       })
     );
@@ -72,7 +76,7 @@ function EsslDevices() {
             getDevicesApiHandler()
           },
           onError: (error: any) => () => {
-            showToast('error',error)
+            showToast('error', error)
           },
         })
       );
@@ -110,7 +114,7 @@ function EsslDevices() {
           getDevicesApiHandler()
         },
         onError: (error: any) => () => {
-          showToast('error',error)
+          showToast('error', error)
         },
       })
     );
