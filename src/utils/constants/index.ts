@@ -372,7 +372,7 @@ export const HFWS_SPECLILISATION = [
 const hfwsConditionSideNavChildren = (layout: any) => {
   if (isHfws === 'HFWS') {
     let filtered = layout.filter((el: any) => {
-      return el.value !== 'ES' && el.value !== "SR"
+      return el.miniName !== 'ES' && el.miniName !== "SR"
     })
     return filtered
   } else {

@@ -121,7 +121,7 @@ function EmployeeScreen() {
   const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-
+  const { is_admin } = dashboardDetails?.permission_details
   const { associatedBranch, associatedId, defaultBranchId, listBranchesList } =
     useSelector((state: any) => state.LocationReducer);
 
@@ -464,13 +464,13 @@ function EmployeeScreen() {
               e.stopPropagation();
               manageEmployeeHandler('')
             }} />
-            <CommonDropdownMenu
+            {is_admin && <CommonDropdownMenu
               data={CARD_DROPDOWN_ITEM}
               onItemClick={(e, item) => {
                 // e.stopPropagation();
                 goTo(navigation, ROUTE.ROUTE_INACTIVE_EMPLOYEE_LIST)
               }}
-            />
+            />}
           </Container>
         }
         filterChildren={
