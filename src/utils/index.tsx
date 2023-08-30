@@ -222,18 +222,28 @@ const getDateFormat = (date: string) => {
   return new Date('Wed Jul 20 2022 ' + date + ':00 GMT+0530 (IST)');
 };
 
-function convertTo24Hour(s: any) {
-  let AMPM = s.slice(-2);
-  let formattedTime = s.slice(0, -2).split(":")[0].length === 1 ? "0" + s.slice(0, -2).split(":")[0] : s.slice(0, -2).split(":")[0]
-  let timeArr = s.slice(0, -2).split(":");
-  let convertedTime = [formattedTime, timeArr[1]]
-  if (AMPM === "AM" && convertedTime[0] === "12") {
-    convertedTime[0] = "00";
-  } else if (AMPM === "PM") {
-    convertedTime[0] = (convertedTime[0] % 12) + 12
+function convertTo24Hour(s: any) {  
+  if (s !== undefined && s.length >= 7) { // Ensure the input has at least 7 characters
+    let AMPM = s.slice(-2);
+    let timeArr = s.slice(0, -2).split(":");
+    let hours = parseInt(timeArr[0], 10); // Parse hours as an integer
+    
+    if (AMPM === "AM" && hours === 12) {
+      hours = 0;
+    } else if (AMPM === "PM") {
+      hours = (hours % 12) + 12;
+    }
+    
+    // Format hours to have leading zeros
+    let formattedHours = hours.toString().padStart(2, '0');
+    let formattedTime = `${formattedHours}:${timeArr[1]}`;
+    
+    return formattedTime;
+  } else {
+    return '';
   }
-  return convertedTime.join(":");
 }
+
 
 const convertToUpperCase = (data: string) => {
   if (data) {

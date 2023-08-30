@@ -46,13 +46,14 @@ import {
   convertTo24Hour,
   isHfwsBranch,
   getDropDownFormatter,
-  MARITAL_STATUS_LIST,
   GROUP_LIST,
   DOMAIN,
   HFWS_SPECLILISATION,
   HFWS_ORGANISATION,
   HFWS_QUALIFICATIONS,
   EMPLOYEE_TYPE_HFWS,
+  dropDownValueCheck,
+  MARITAL_STATUS_LIST,
 } from "@utils";
 import { useTranslation } from "react-i18next";
 import { useState, useEffect } from "react";
@@ -65,6 +66,7 @@ import {
   addDepartment,
   addDesignation,
   employeeAddition,
+  getSyncData,
 } from "../../../../store/employee/actions";
 
 import { getBranchShifts, getHfwsBranchShift, getMyShifts } from "../../../../store/shiftManagement/actions";
@@ -88,6 +90,7 @@ type EmployeeDetail = {
     start_time: string;
     end_time: string;
     is_excempt_allowed: boolean;
+    enable_generic_shift: boolean;
   };
   date_of_joining?: string;
   dob?: string;
@@ -108,15 +111,14 @@ const ManageEmployee = () => {
   const {
     designationDropdownData,
     departmentDropdownData,
-    branchesDropdownData,
     isEdit,
   } = useSelector((state: any) => state.EmployeeReducer);
 
-  const { userLoggedIn, userDetails } = useSelector(
+  const { userDetails } = useSelector(
     (state: any) => state.AppReducer
   );
 
-  const { dashboardDetails, hierarchicalBranchIds } = useSelector(
+  const { dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
 
@@ -130,6 +132,8 @@ const ManageEmployee = () => {
   const INITIAL_COMPANY_BRANCH = { id: dashboardDetails?.company_branch?.id, text: dashboardDetails?.company_branch?.name }
 
 
+  const [syncDetails, setSyncDetails] = useState<any>('')
+  const [enableShift, setEnableShift] = useState(false)
 
   const [employeeDetails, setEmployeeDetails] = useState<any>({
     firstName: "",
@@ -147,14 +151,14 @@ const ManageEmployee = () => {
     dob: "",
     kgid_No: "",
     employeeType: "",
-    attendanceStartTime: isHfwsBranch(dashboardDetails?.company?.id) ? '' : "10:00",
-    attendanceEndTime: isHfwsBranch(dashboardDetails?.company?.id) ? '' : "18:00",
     shift: '',
     maritalStatus: MARITAL_STATUS_LIST[0].id,
     qualification: HFWS_QUALIFICATIONS[HFWS_QUALIFICATIONS.length - 1].id,
     specialization: HFWS_SPECLILISATION[HFWS_SPECLILISATION.length - 1].id,
     group: GROUP_LIST[GROUP_LIST.length - 1].id,
-    organisation: HFWS_ORGANISATION[0].id
+    organisation: HFWS_ORGANISATION[0].id,
+    attendanceStartTime: "10:00",
+    attendanceEndTime: "18:00",
   });
   const [shiftGroup, setShiftGroup] = useState<any>()
   const [departmentModel, setDepartmentModel] = useState(false);
@@ -165,8 +169,7 @@ const ManageEmployee = () => {
   const [designation, setDesignation] = useState("");
   const [isExempted, setIsExempted] = useState(false)
   const [isRefresh, setIsRefresh] = useState(false);
-  const [hfswShiftModel, setHfswShiftModel] = useState(false)
-  const [hfswSelectedShiftIndex, setHfswSelectedShiftIndex] = useState<any>()
+  const [selectedGenericShift, setSelectedGenericShift] = useState(syncDetails[0])
 
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
@@ -192,9 +195,9 @@ const ManageEmployee = () => {
   };
 
   useEffect(() => {
+    getSyncDataApiHAndler()
     departmentData()
     designationData()
-    isHfwsBranch(dashboardDetails?.company?.id) && getHfwsBranchShiftDetails()
     getBranchShiftsList()
 
     if (listBranchesList.length === 0) {
@@ -247,6 +250,30 @@ const ManageEmployee = () => {
       setDesignationNote("* Changing Designation Will Impact in Shift")
     }
   }, [isRefresh, isBranchShiftDataExist])
+
+
+  const getSyncDataApiHAndler = () => {
+    const params = {
+      sync: []
+    }
+    dispatch(getSyncData({
+      params,
+      onSuccess: (success: any) => () => {
+        const { company_generic_shifts } = success?.sync_data?.company_info
+        if (company_generic_shifts.length > 0) {
+          setEnableShift(true)
+        }
+        let normalizedData: any = []
+        company_generic_shifts.length > 0 && company_generic_shifts.map((el: any) => {
+          return normalizedData = [...normalizedData, { name: el.display_text, id: el.id, startTime: el.start_time, endTime: el.end_time }]
+        })
+        setSyncDetails(normalizedData)
+      },
+      onError: (error: any) => () => {
+
+      }
+    }))
+  }
 
 
   const departmentData = () => {
@@ -315,11 +342,11 @@ const ManageEmployee = () => {
     }));
   }
 
-  const designationMatchShifts = (id: any) => {
+  const designationMatchShifts = (item: any) => {
     let shifts: any[] = []
-    if (id) {
+    if (item.id) {
       shiftGroup && shiftGroup.length > 0 && shiftGroup.map((el: any) => {
-        if (el?.weekly_shift?.designation_id === id) {
+        if (el?.weekly_shift?.designation_id === item.id) {
           shifts = [...shifts, el]
         }
       })
@@ -329,21 +356,6 @@ const ManageEmployee = () => {
     return shifts
   }
 
-
-
-  const getHfwsBranchShiftDetails = () => {
-    const params = {}
-    dispatch(getHfwsBranchShift({
-      params,
-      onSuccess: (success: any) => () => {
-
-      },
-      onError: (error: string) => () => {
-        showToast('error', error)
-      },
-
-    }));
-  }
 
   const validatePostParams = () => {
     if (validateName(employeeDetails.firstName).status === false) {
@@ -422,7 +434,8 @@ const ManageEmployee = () => {
           end_time: employeeDetails.attendanceEndTime,
           is_excempt_allowed: isExempted,
           associated_branch: [employeeDetails.branch?.id],
-          ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } })
+          ...(employeeDetails.shift && { shift_settings: { shift_id: employeeDetails.shift } }),
+          enable_generic_shift: enableShift
         },
         ...(employeeDetails.dateOfJoining && isHfws !== "HFWS" && {
           date_of_joining: getServerDateFromMoment(
@@ -569,22 +582,20 @@ const ManageEmployee = () => {
       ) {
         setIsExempted(editEmployeeDetails.attendance_settings?.is_excempt_allowed)
       }
+      if (
+        editEmployeeDetails &&
+        editEmployeeDetails.attendance_settings?.enable_generic_shift
+      ) {
+        setEnableShift(editEmployeeDetails.attendance_settings?.enable_generic_shift)
+      }
 
       setShiftsDropdownData(designationMatchShifts(editEmployeeDetails.designation_id))
 
     }
-    hsfwBranchEditShift(employeeInitData.attendanceStartTime, employeeInitData.attendanceEndTime)
+    editGenericShiftDetails(employeeInitData.attendanceStartTime, employeeInitData.attendanceEndTime)
     setEmployeeDetails(employeeInitData);
   };
 
-
-  const hsfwBranchEditShift = (startTime: string, endTime: string) => {
-    hfwsBranchShifts && hfwsBranchShifts.length > 0 && hfwsBranchShifts.map((el: any, index: any) => {
-      if (convertTo24Hour(startTime).trim() === convertTo24Hour(el.start_time).trim() && convertTo24Hour(endTime).trim() === convertTo24Hour(el.end_time).trim()) {
-        setHfswSelectedShiftIndex(index)
-      }
-    })
-  }
 
 
   const onChangeHandler = (e: any) => {
@@ -664,11 +675,11 @@ const ManageEmployee = () => {
   }
 
   const handleDesignationChange = (event: any) => {
-    setEmployeeDetails(prevDetails => ({
+    setEmployeeDetails((prevDetails: any) => ({
       ...prevDetails,
       designation: event
     }));
-    setEmployeeDetails(prevDetails => ({
+    setEmployeeDetails((prevDetails: any) => ({
       ...prevDetails,
       shift: ''
     }));
@@ -676,24 +687,47 @@ const ManageEmployee = () => {
   }
 
   const handleDepartmentChange = (event: any) => {
-    setEmployeeDetails(prevDetails => ({
+    setEmployeeDetails((prevDetails: any) => ({
       ...prevDetails,
       department: event
     }));
   }
 
   const handleBranchChange = (event: any) => {
-    setEmployeeDetails(prevDetails => ({
+    setEmployeeDetails((prevDetails: any) => ({
       ...prevDetails,
       branch: event
     }));
   }
 
+  const convertTo24HourFormat = (time) => {
+    const [hours, minutes, seconds] = time.split(':').map(Number);
 
-  const handleHfswShiftSelect = (item: any, index: number) => {
-    setHfswSelectedShiftIndex(index)
-    setEmployeeDetails({ ...employeeDetails, attendanceStartTime: convertTo24Hour(item.start_time).trim(), attendanceEndTime: convertTo24Hour(item.end_time).trim() });
-    setHfswShiftModel(!hfswShiftModel)
+    if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59 || seconds < 0 || seconds > 59) {
+      return '';
+    }
+
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    if (isEdit) {
+      editGenericShiftDetails(employeeDetails.attendanceStartTime, employeeDetails.attendanceEndTime)
+    }
+  }, [employeeDetails.attendanceStartTime, employeeDetails.attendanceEndTime,])
+
+  const editGenericShiftDetails = (start_Time: any, end_time: any) => {
+    let data
+    if (start_Time && end_time) {
+      syncDetails && syncDetails.length > 0 && syncDetails.map((el: any, index: any) => {
+        if (convertTo24HourFormat(start_Time) == convertTo24HourFormat(el.startTime) && convertTo24HourFormat(end_time) == convertTo24HourFormat(el.endTime)) {
+          // data = 
+          setSelectedGenericShift(syncDetails[index].id)
+        }
+      })
+    }
+
+
   }
 
 
@@ -980,70 +1014,44 @@ const ManageEmployee = () => {
         <Divider />
 
         <ScreenTitle title={'Attendance Details'} additionclass={'mb-4'} />
-        {userDetails?.is_admin && <div className="col my-3">
+        {userDetails?.is_admin && <div className="col row my-3">
           <CheckBox
             id={'3'}
             text={"is Exempted"}
             checked={isExempted}
             onChange={(e) => setIsExempted(e.target.checked)}
           />
+          <div className="ml-3">
+            {syncDetails && syncDetails.length > 0 && <CheckBox
+              id={'4'}
+              text={"Enable Shift"}
+              checked={enableShift}
+              onChange={(e) => setEnableShift(e.target.checked)}
+            />}
+          </div>
         </div>}
-        {isHfwsBranch(dashboardDetails?.company?.id) && <Container additionClass='text-right'>
-          <Primary
-            text={t('Shift')}
-            onClick={() => {
-              setHfswShiftModel(!hfswShiftModel)
-            }}
-            size={"btn-sm"}
-          />
-        </Container>
-        }
 
-        <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
-          {employeeDetails.shift || shiftsDropdownData.length > 0 && !isHfwsBranch(dashboardDetails?.company?.id) ?
+        {syncDetails && syncDetails.length > 0 ? <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          {syncDetails && syncDetails.length > 0 && enableShift ?
             <div className="col-xl-6">
               <DropDown
-                label={t("shiftss")}
-                placeholder={t("SelectShift")}
-                data={shiftsDropdownData}
-                name={"shift"}
-                value={employeeDetails.shift}
-                onChange={(event) =>
-                  onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
+                label={t("Shift Time")}
+                placeholder={"Select shift Time"}
+                data={syncDetails}
+                name={"selectedDevice"}
+                value={selectedGenericShift}
+                onChange={(event) => {
+                  setSelectedGenericShift(dropDownValueCheck(event.target.value, 'Select shift Time'))
+                  syncDetails.map((el: any) => {
+                    if (el.id == event.target.value) {
+                      setEmployeeDetails({ ...employeeDetails, attendanceStartTime: el.startTime, attendanceEndTime: el.endTime })
+                    }
+                  })
+                }
                 }
               />
-            </div> : <></>
-          }
-          {!employeeDetails.shift && !isHfwsBranch(dashboardDetails?.company?.id) &&
-            <>
-              <div className="col-xl-6">
-                <h5 className="mb-2">{t("startTime")}</h5>
-                <TimePicker
-                  title={t("pleaseSelect")}
-                  icon={Icons.Time}
-                  iconPosition={"append"}
-                  value={employeeDetails.attendanceStartTime}
-                  onChange={(time: any) => {
-                    timePickerHandler(time, "attendanceStartTime")
-                  }}
-                />
-              </div>
-              <div className="col-xl-6">
-                <h5 className="mb-2">{t("endTime")}</h5>
-                <TimePicker
-                  title={t("pleaseSelect")}
-                  icon={Icons.Time}
-                  iconPosition={"append"}
-                  value={employeeDetails.attendanceEndTime}
-                  onChange={(time: any) => {
-                    timePickerHandler(time, "attendanceEndTime");
-                  }}
-                />
-              </div>
-            </>
-          }
-          {isHfwsBranch(dashboardDetails?.company?.id) &&
-            <>
+            </div>
+            : <>
               {employeeDetails.attendanceStartTime && <div className="col-xl-6">
                 <h5 className="mb-2">{t("startTime")}</h5>
                 <TimePicker
@@ -1072,7 +1080,107 @@ const ManageEmployee = () => {
               </div>}
             </>
           }
-        </Container>
+        </Container> : <Container additionClass={'col-xl-12 row col-sm-3 mb-4'}>
+          {employeeDetails.shift || shiftsDropdownData.length > 0 ?
+            <div className="col-xl-6">
+              <DropDown
+                label={t("shiftss")}
+                placeholder={t("SelectShift")}
+                data={shiftsDropdownData}
+                name={"shift"}
+                value={employeeDetails.shift}
+                onChange={(event) =>
+                  onChangeHandler(dropDownValueCheckByEvent(event, t("SelectShift")))
+                }
+              />
+            </div> : <>
+              {employeeDetails.attendanceStartTime && <div className="col-xl-6">
+                <h5 className="mb-2">{t("startTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  disabled
+                  value={employeeDetails.attendanceStartTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceStartTime")
+                  }}
+                />
+              </div>}
+              {employeeDetails.attendanceEndTime && <div className="col-xl-6">
+                <h5 className="mb-2">{t("endTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  disabled
+                  value={employeeDetails.attendanceEndTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceEndTime");
+                  }}
+                />
+              </div>}
+            </>
+          }
+          {/* {!employeeDetails.shift && !isHfwsBranch(dashboardDetails?.company?.id) &&
+            <>
+              <div className="col-xl-6">
+                <h5 className="mb-2">{t("startTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  value={employeeDetails.attendanceStartTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceStartTime")
+                  }}
+                />
+              </div>
+              <div className="col-xl-6">
+                <h5 className="mb-2">{t("endTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  value={employeeDetails.attendanceEndTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceEndTime");
+                  }}
+                />
+              </div>
+            </>
+          } */}
+          {/* {isHfwsBranch(dashboardDetails?.company?.id) &&
+            <>
+              {employeeDetails.attendanceStartTime && <div className="col-xl-6">
+                <h5 className="mb-2">{t("startTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  disabled
+                  value={employeeDetails.attendanceStartTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceStartTime")
+                  }}
+                />
+              </div>}
+              {employeeDetails.attendanceEndTime && <div className="col-xl-6">
+                <h5 className="mb-2">{t("endTime")}</h5>
+                <TimePicker
+                  title={t("pleaseSelect")}
+                  icon={Icons.Time}
+                  iconPosition={"append"}
+                  disabled
+                  value={employeeDetails.attendanceEndTime}
+                  onChange={(time: any) => {
+                    timePickerHandler(time, "attendanceEndTime");
+                  }}
+                />
+              </div>}
+            </>
+          } */}
+        </Container>}
 
         <Divider />
 
@@ -1174,7 +1282,7 @@ const ManageEmployee = () => {
           </Container>
         }
       </Modal>
-      <Modal showModel={hfswShiftModel}
+      {/* <Modal showModel={hfswShiftModel}
         title={t('Shift Timing')}
         size={"modal-sm"}
         toggle={() => setHfswShiftModel(!hfswShiftModel)}>
@@ -1195,7 +1303,7 @@ const ManageEmployee = () => {
             })}
           </Container> : <NoRecordFound />}
         </Container>
-      </Modal>
+      </Modal> */}
     </ScreenContainer>
   );
 };

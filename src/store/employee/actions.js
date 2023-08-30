@@ -174,7 +174,28 @@ import {
   GET_EMPLOYEE_LEAVE_TYPES_FAILURE,
   UPDATE_EMPLOYEE_ALLOCATED_DAYS,
   UPDATE_EMPLOYEE_ALLOCATED_DAYS_SUCCESS,
-  UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE
+  UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE,
+  FETCH_SYNC_DATA,
+  FETCH_SYNC_DATA_SUCCESS,
+  FETCH_SYNC_DATA_FAILURE,
+  UPDATE_COMPANY_GENERIC_SHIFT,
+  UPDATE_COMPANY_GENERIC_SHIFT_SUCCESS,
+  UPDATE_COMPANY_GENERIC_SHIFT_FAILURE,
+  ADD_ESSL_DEVICE,
+  ADD_ESSL_DEVICE_SUCCESS,
+  ADD_ESSL_DEVICE_FAILURE,
+  GET_ESSL_DEVICE,
+  GET_ESSL_DEVICE_SUCCESS,
+  GET_ESSL_DEVICE_FAILURE,
+  REMOVE_ESSL_DEVICE,
+  REMOVE_ESSL_DEVICE_SUCCESS,
+  REMOVE_ESSL_DEVICE_FAILURE,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
+  UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE,
+  GET_EMPLOYEE_DEVICE_DETAILS,
+  GET_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
+  GET_EMPLOYEE_DEVICE_DETAILS_FAILURE
 } from "./actionTypes";
 
 // Delete Account
@@ -1556,6 +1577,169 @@ export const updateEmployeeAllocatedDaysSuccess = (response) => {
 export const updateEmployeeAllocatedDaysFailure = (error) => {
   return {
     type: UPDATE_EMPLOYEE_ALLOCATED_DAYS_FAILURE,
+    payload: error,
+  };
+};
+
+// syncData
+
+export const getSyncData = (params) => {
+  return {
+    type: FETCH_SYNC_DATA,
+    payload: params,
+  };
+};
+
+export const getSyncDataSuccess = (response) => {
+  return {
+    type: FETCH_SYNC_DATA_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getSyncDataFailure = (error) => {
+  return {
+    type: FETCH_SYNC_DATA_FAILURE,
+    payload: error,
+  };
+};
+
+// UPDATE_COMPANY_GENERIC_SHIFT
+
+export const updateCompanyGenericShift = (params) => {
+  return {
+    type: UPDATE_COMPANY_GENERIC_SHIFT,
+    payload: params,
+  };
+};
+
+export const updateCompanyGenericShiftSuccess = (response) => {
+  return {
+    type: UPDATE_COMPANY_GENERIC_SHIFT_SUCCESS,
+    payload: response,
+  };
+};
+
+export const updateCompanyGenericShiftFailure = (error) => {
+  return {
+    type: UPDATE_COMPANY_GENERIC_SHIFT_FAILURE,
+    payload: error,
+  };
+};
+
+// Add Devices
+
+
+export const addEsslDevice = (params) => {
+  return {
+    type: ADD_ESSL_DEVICE,
+    payload: params,
+  };
+};
+
+export const addEsslDeviceSuccess = (response) => {
+  return {
+    type: ADD_ESSL_DEVICE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const addEsslDeviceFailure = (error) => {
+  return {
+    type: ADD_ESSL_DEVICE_FAILURE,
+    payload: error,
+  };
+};
+
+// get Devices
+
+export const getEsslDevice = (params) => {
+  return {
+    type: GET_ESSL_DEVICE,
+    payload: params,
+  };
+};
+
+export const getEsslDeviceSuccess = (response) => {
+  return {
+    type: GET_ESSL_DEVICE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEsslDeviceFailure = (error) => {
+  return {
+    type: GET_ESSL_DEVICE_FAILURE,
+    payload: error,
+  };
+};
+
+// remove Devices
+
+export const removeEsslDevice = (params) => {
+  return {
+    type: REMOVE_ESSL_DEVICE,
+    payload: params,
+  };
+};
+
+export const removeEsslDeviceSuccess = (response) => {
+  return {
+    type: REMOVE_ESSL_DEVICE_SUCCESS,
+    payload: response,
+  };
+};
+
+export const removeEsslDeviceFailure = (error) => {
+  return {
+    type: REMOVE_ESSL_DEVICE_FAILURE,
+    payload: error,
+  };
+};
+
+//  UPDATE_EMPLOYEE_DEVICE_DETAILS
+
+
+export const updateEmployeeDeviceDetails = (params) => {
+  return {
+    type: UPDATE_EMPLOYEE_DEVICE_DETAILS,
+    payload: params,
+  };
+};
+
+export const updateEmployeeDeviceDetailsSuccess = (response) => {
+  return {
+    type: UPDATE_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const updateEmployeeDeviceDetailsFailure = (error) => {
+  return {
+    type: UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE,
+    payload: error,
+  };
+};
+
+// getEmployeeDeviceDetails
+
+export const getEmployeeDeviceDetails = (params) => {
+  return {
+    type: GET_EMPLOYEE_DEVICE_DETAILS,
+    payload: params,
+  };
+};
+
+export const getEmployeeDeviceDetailsSuccess = (response) => {
+  return {
+    type: GET_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
+    payload: response,
+  };
+};
+
+export const getEmployeeDeviceDetailsFailure = (error) => {
+  return {
+    type: GET_EMPLOYEE_DEVICE_DETAILS_FAILURE,
     payload: error,
   };
 };
