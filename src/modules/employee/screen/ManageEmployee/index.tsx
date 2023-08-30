@@ -407,9 +407,9 @@ const ManageEmployee = () => {
       const params = {
         ...(isEdit && { id: isEdit }),
         first_name: employeeDetails.firstName,
-        ...(employeeDetails.lastName && {
-          last_name: employeeDetails.lastName,
-        }),
+        // ...(employeeDetails.lastName && {
+        //   last_name: employeeDetails.lastName,
+        // }),
         mobile_number: employeeDetails.mobileNumber,
         ...(isHfws !== "HFWS" && { email: employeeDetails.e_Mail }),
         ...(employeeDetails.panNo && { pan: employeeDetails.panNo }),
@@ -451,6 +451,7 @@ const ManageEmployee = () => {
         }),
       };
 
+
       dispatch(
         employeeAddition({
           params,
@@ -473,8 +474,8 @@ const ManageEmployee = () => {
       if (editEmployeeDetails.first_name)
         employeeInitData.firstName = editEmployeeDetails.first_name;
 
-      if (editEmployeeDetails.last_name)
-        employeeInitData.lastName = editEmployeeDetails.last_name;
+      // if (editEmployeeDetails.last_name)
+      //   employeeInitData.lastName = editEmployeeDetails.last_name;
 
       if (editEmployeeDetails.mobile_number)
         employeeInitData.mobileNumber = editEmployeeDetails.mobile_number;
@@ -754,7 +755,7 @@ const ManageEmployee = () => {
               }}
             />
           </div>
-          <div className="col-xl-6">
+          {/* <div className="col-xl-6">
             <InputText
               label={t("lastName")}
               placeholder={t("typeLastName")}
@@ -765,7 +766,7 @@ const ManageEmployee = () => {
                 onChangeHandler(event);
               }}
             />
-          </div>
+          </div> */}
 
           <div className="col-xl-6">
             <InputNumber
@@ -929,7 +930,7 @@ const ManageEmployee = () => {
           <div className="col-xl-6">
             <DropDown
               label={t("category")}
-              placeholder={t("category")}
+              placeholder={"Select Category"}
               name={"employeeType"}
               data={isHfws !== "HFWS" ? EMPLOYEE_TYPE : EMPLOYEE_TYPE_HFWS}
               value={employeeDetails.employeeType}
