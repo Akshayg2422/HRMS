@@ -1,9 +1,9 @@
 import { Icons } from '@assets'
 import moment from 'moment';
-import { Route } from 'react-router-dom';
-
 
 export const DOMAIN = 'DOMAIN';
+
+const isHfws = localStorage.getItem(DOMAIN);
 
 
 
@@ -179,7 +179,7 @@ export const LEAVES_TYPE = [
   { id: 'All', name: 'All', value: -2 },
   { id: 'Pending Leave', name: 'Pending Leave', value: -1, },
   { id: 'Approved Leave', name: 'Approved Leave', value: 1 },
-  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 }, 
+  { id: 'Rejected Leave', name: 'Rejected Leave', value: 0 },
 ];
 
 
@@ -369,6 +369,83 @@ export const HFWS_SPECLILISATION = [
   { 'id': 'None of the above', 'name': 'None of the above', 'value': 'None of the above' },
 ];
 
+const hfwsConditionSideNavChildren = (layout: any) => {
+  if (isHfws === 'HFWS') {
+    let filtered = layout.filter((el: any) => {
+      return el.value !== 'ES' && el.value !== "SR"
+    })
+    return filtered
+  } else {
+    return layout
+  }
+}
+
+const SIDE_NAV_SUB_LAYOUT = [
+  {
+    id: 1,
+    path: ROUTE.ROUTE_LEAVE_REQUEST,
+    name: "Employees Leaves",
+    miniName: "EL",
+    layout: "",
+    // icon:'ni ni-album-2 ml-sm-4' 
+  },
+  {
+    id: 2,
+    path: ROUTE.ROUTE_MODIFY_LOGS,
+    name: "Modify logs",
+    miniName: "ML",
+    layout: "",
+    // icon:'ni ni-ruler-pencil ml-sm-4'
+
+  },
+  {
+    id: 3,
+    path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
+    name: "Employees shifts",
+    miniName: "ES",
+    layout: "",
+    // icon:'ni ni-time-alarm ml-sm-4'
+
+  },
+  {
+    id: 4,
+    path: ROUTE.ROUTE_SHIFT_REQUEST,
+    name: "Shift Request",
+    miniName: "SR",
+    layout: "",
+    // icon:'ni ni-bullet-list-67 ml-sm-4'
+
+  },
+  {
+    id: 5,
+    path: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
+    name: "Face Re-register",
+    miniName: "FR",
+    layout: "",
+    // icon: 'ni ni-badge ml-sm-4'
+
+  },
+  {
+    id: 6,
+    path: ROUTE.ROUTE_LOG_APPROVAL,
+    name: "Log Approval",
+    miniName: "LA",
+    layout: "",
+    // icon: 'ni ni-circle-08 ml-sm-4'
+
+  },
+  {
+    id: 7,
+    path: ROUTE.ROUTE_FACE_RE_REQUEST,
+    name: "Face Approval",
+    miniName: "FA",
+    layout: "",
+    // icon: 'ni ni-image ml-sm-4'
+
+  },
+]
+
+
 export const NAV_ITEM = [
   { id: '1', name: 'Dashboard', value: 'DA', icon: 'ni ni-chart-pie-35', image: "", path: ROUTE.ROUTE_DASHBOARD, layout: '', },
   { id: '2', name: 'Employees Portfolio', value: 'EP', icon: 'ni ni-ungroup', image: Icons.EmployeeSecondary, path: ROUTE.ROUTE_EMPLOYEE, layout: '' },
@@ -381,70 +458,7 @@ export const NAV_ITEM = [
   { id: '9', name: 'Calendar', value: 'HC', icon: 'ni ni-calendar-grid-58', image: Icons.CalendarSecondary, path: ROUTE.ROUTE_CALENDAR, layout: '' },
   {
     id: '23', name: 'Approvals', value: 'AP', icon: 'ni ni-folder-17', image: Icons.MyBranches, path: ROUTE.ROUTE_APPROVALS, is_admin: false, layout: '', collapse: true,
-    views: [
-      {
-        id: 1,
-        path: ROUTE.ROUTE_LEAVE_REQUEST,
-        name: "Employees Leaves",
-        miniName: "EL",
-        layout: "",
-        // icon:'ni ni-album-2 ml-sm-4' 
-      },
-      {
-        id: 2,
-        path: ROUTE.ROUTE_MODIFY_LOGS,
-        name: "Modify logs",
-        miniName: "ML",
-        layout: "",
-        // icon:'ni ni-ruler-pencil ml-sm-4'
-
-      },
-      {
-        id: 3,
-        path: ROUTE.ROUTE_EMPLOYEES_SHIFTS,
-        name: "Employees shifts",
-        miniName: "ES",
-        layout: "",
-        // icon:'ni ni-time-alarm ml-sm-4'
-
-      },
-      {
-        id: 4,
-        path: ROUTE.ROUTE_SHIFT_REQUEST,
-        name: "Shift Request",
-        miniName: "SR",
-        layout: "",
-        // icon:'ni ni-bullet-list-67 ml-sm-4'
-
-      },
-      {
-        id: 5,
-        path: ROUTE.ROUTE_FACE_RE_REGISTER_REQUEST,
-        name: "Face Re-register",
-        miniName: "FR",
-        layout: "",
-        // icon: 'ni ni-badge ml-sm-4'
-
-      },
-      {
-        id: 6,
-        path: ROUTE.ROUTE_LOG_APPROVAL,
-        name: "Log Approval",
-        miniName: "LA",
-        layout: "",
-        // icon: 'ni ni-circle-08 ml-sm-4'
-
-      },
-      {
-        id: 7,
-        path: ROUTE.ROUTE_FACE_RE_REQUEST,
-        name: "Face Approval",
-        miniName: "FA",
-        layout: "",
-        // icon: 'ni ni-image ml-sm-4'
-
-      },
-    ],
+    views: hfwsConditionSideNavChildren(SIDE_NAV_SUB_LAYOUT)
   },
   // { id: '10', name: 'Employees Leaves', value: 'ES', icon: 'ni ni-album-2', image: Icons.EMPLOYEELEAVES, route: ROUTE.ROUTE_LEAVE_REQUEST },
   // { id: '11', name: 'Modify Logs', value: 'ML', icon: 'ni ni-ruler-pencil', image: Icons.Modify_Logs, route: ROUTE.ROUTE_MODIFY_LOGS },
