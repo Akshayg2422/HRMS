@@ -1,10 +1,11 @@
 import React from "react";
 import { Icons } from "@assets";
 import { Card, Container, ImageView } from "@components";
-import { ROUTE, useNav } from "@utils";
+import { DOMAIN, ROUTE, useNav } from "@utils";
 
 function PortFolio() {
   const navigate = useNav();
+  const isHfws = localStorage.getItem(DOMAIN);
 
   const MY_PORTFOLIO_ITEM = [
     {
@@ -57,18 +58,30 @@ function PortFolio() {
       route: ROUTE.ROUTE_EMPLOYEE_SHIFT_REQUEST,
       icon: Icons.MY_SHIFTS,
     },
-    {
-      id: "8",
-      name: "Apply Leave",
-      value: "AL",
-      route: ROUTE.ROUTE_AVAILABLE_LEAVES,
-      icon: Icons.ApplyLeave,
-    }
+    // {
+    //   id: "8",
+    //   name: "Apply Leave",
+    //   value: "AL",
+    //   route: ROUTE.ROUTE_AVAILABLE_LEAVES,
+    //   icon: Icons.ApplyLeave,
+    // }
   ];
+
+
+  const conditionalItem = (cards: any) => {
+    if (isHfws === 'HFWS') {
+      let filtered = cards.filter((el: any) => {
+        return el.value !== 'MS' && el.value !== "SC" 
+      })
+      return filtered
+    } else {
+      return cards
+    }
+  }
 
   return (
     <Container flexDirection={"row"} margin={"mt-3"} style={{ cursor: 'pointer' }}>
-      {MY_PORTFOLIO_ITEM.map((it, index) => {
+      {conditionalItem(MY_PORTFOLIO_ITEM).map((it, index) => {
         return (
           <Container additionClass={"col-xl-3 col-md-6"}>
             {/* <Card
