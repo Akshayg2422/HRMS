@@ -1,4 +1,4 @@
-import { Card, ChooseBranchFromHierarchical, CommonTable, Container, ImageView, InputDefault, Modal, NoRecordFound, Primary, Secondary, TableWrapper } from '@components';
+import { Card, ChooseBranchFromHierarchical, CommonDropdownMenu, CommonTable, Container, ImageView, InputDefault, Modal, NoRecordFound, Primary, Secondary, TableWrapper } from '@components';
 import { addEsslDevice, getEsslDevice, removeEsslDevice } from '../../../../store/employee/actions';
 import { showToast, useNav } from '@utils';
 import React, { useEffect, useMemo, useState } from 'react'
@@ -11,6 +11,8 @@ function EsslDevices() {
   const navigation = useNav();
   const dispatch = useDispatch();
   const [devices, setDevices] = useState<any>()
+  const [isEditDevices, setIsEditDevices] = useState(false)
+
   const [addDevicesModel, setAddDevicesModel] = useState(false)
   const [removeDevicesModel, setRemoveDevicesModel] = useState(false)
   const [selectedDeviceId, setSelectedDeviceId] = useState('')
@@ -22,7 +24,8 @@ function EsslDevices() {
   );
 
   const CARD_DROPDOWN_ITEM = [
-    { id: '1', name: `Edit`, value: 'ED', image: Icons.Edit },
+    // { id: '1', name: `Edit`, value: 'ED', image: Icons.Edit },
+    { id: '2', name: `Delete`, value: 'DT', image: Icons.Delete_1 },
   ]
 
   useEffect(() => {
@@ -62,6 +65,7 @@ function EsslDevices() {
   const addDevicesApiHandler = () => {
     if (validateOnSubmit()) {
       const params = {
+        ...(isEditDevices && { id: '' }),
         name: deviceName,
         serial_number: serialNumber,
         branch_id: hierarchicalBranchIds.branch_id
@@ -89,13 +93,30 @@ function EsslDevices() {
       return {
         name: el.name,
         serialNumber: el.serial_number,
-        "": <ImageView
-          height={'18'}
-          alt='Menu Icon'
-          icon={Icons.Remove}
-          onClick={() => {
-            setSelectedDeviceId(el?.id)
-            setRemoveDevicesModel(!removeDevicesModel)
+        // "": <ImageView
+        //   height={'18'}
+        //   alt='Menu Icon'
+        //   icon={Icons.Remove}
+        //   onClick={() => {
+        //     setSelectedDeviceId(el?.id)
+        //     setRemoveDevicesModel(!removeDevicesModel)
+        //   }}{id: 'da0faa87-6017-4d56-9a85-09ef2e8b21d2', name: 'Testing 01', serial_number: '00000006'}
+        // />
+        "": <CommonDropdownMenu
+          data={CARD_DROPDOWN_ITEM}
+          onItemClick={(e, item) => {
+            e.stopPropagation()
+            e.stopPropagation();
+            if (item?.name === 'Edit') {
+              setIsEditDevices(true)
+              setSelectedDeviceId(el?.id)
+              setDeviceName(el?.name)
+              setSerialNumber(el?.serial_number)
+              setAddDevicesModel(!addDevicesModel)
+            } else if (item?.name === 'Delete') {
+              setSelectedDeviceId(el?.id)
+              setRemoveDevicesModel(!removeDevicesModel)
+            }
           }}
         />
       };
@@ -143,6 +164,7 @@ function EsslDevices() {
           <Container additionClass={" d-flex justify-content-end"}>
             <Primary size={'btn-sm'} text={'Add Device'} additionClass={''}
               onClick={(e: { stopPropagation: () => void; }) => {
+                setIsEditDevices(false)
                 e.stopPropagation();
                 setAddDevicesModel(!addDevicesModel)
               }} />
@@ -157,7 +179,7 @@ function EsslDevices() {
           memoizedTable
         }
       </TableWrapper>
-      <Modal showModel={addDevicesModel} title={'Add Device'}
+      <Modal showModel={addDevicesModel} title={isEditDevices ? "Edit Device" : 'Add Device'}
         toggle={() => {
           setAddDevicesModel(!addDevicesModel)
           setDeviceName('')
