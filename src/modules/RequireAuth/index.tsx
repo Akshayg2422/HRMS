@@ -49,7 +49,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
                 return filtered
             } else {
                 let filtered = navs.filter((el: any) => {
-                    return el.value !== 'WC' && el.value !== "HC" && el.value !== 'PR' && el.value !== "SM"  && el.value !== "FD"
+                    return el.value !== 'WC' && el.value !== "HC" && el.value !== 'PR' && el.value !== "SM" && el.value !== "FD"
                 })
                 return filtered
             }
