@@ -34,7 +34,6 @@ function Dashboard() {
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
 
-console.log('==============dashboardDetails-============>',JSON.stringify(dashboardDetails))
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])
