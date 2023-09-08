@@ -44,7 +44,7 @@ export const RequireAuth = ({ children }: RequireAuthProps) => {
         } else if (is_branch_admin) {
             if (isHfws !== 'HFWS') {
                 let filtered = navs.filter((el: any) => {
-                    return el.value !== 'WC' && el.value !== "HC"
+                    return el.value !== 'WC' && el.value !== "HC" && el.value !== "GT"
                 })
                 return filtered
             } else {
