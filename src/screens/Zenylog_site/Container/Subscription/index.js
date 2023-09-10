@@ -1,6 +1,7 @@
 import { useNav } from '@utils';
 import { Container } from 'reactstrap';
 import { useState, useEffect } from 'react';
+import './index.css'
 
 
 function Subscription() {
@@ -71,33 +72,28 @@ function Subscription() {
       reports: ['Geo Fence Location', 'Attendance', 'Office Check-in', 'Remote Check-in'],
       input: (
         <div className="input-container d-flex justify-content-between" style={{ fontSize: '12px' }}>
-          <label>
-            <h5 className="text-dark">No of Employees</h5>
-          </label>
-          <input
-            type="number"
-            value={amountOneMonth}
-            onChange={(e) => setAmountOneMonth(e.target.value)}
-            style={{ width: '50px' }}
-          />
+          <div class="inputContainer">
+            <input required="required" id="inputField" placeholder={'No of Employees'} type="number" value={amountOneMonth} onChange={(e) => setAmountOneMonth(e.target.value)} />
+            <label class="usernameLabel h5" for="inputField">No Of Employees</label>
+            <svg viewBox="0 0 448 512" class="userIcon"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
+          </div>
         </div>
-
       ),
       paragraph: (
-        <div className={'pt-1'} style={{ fontSize: '12px' }}>
+        <div className={'pt-2'} style={{ fontSize: '12px' }}>
           <div className={'d-flex justify-content-between'}>
-            <h5>Base Amount: </h5>
+            <h5 className=''>Base Amount: </h5>
             <div>
               <p>{`₹${amountOneMonth * 30}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
-            <h5>GST(18%): </h5>
+          <div className={'d-flex justify-content-between mt--2'}>
+            <h5 className={''}>GST(18%): </h5>
             <div>
               <p>{`₹${((amountOneMonth * 30) * 0.18).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>Total Payable:</h5>
             <div>
               <p>{`₹${finalPayableOneMonth}`}</p>
@@ -112,47 +108,43 @@ function Subscription() {
       title: '6 Months',
       price: '₹300',
       amount: '300 JD',
-      reports: ['Geo Fence Location', 'Attendance', 'Office Check-in', 'Remote Check-in', 'Time Sheets'],
+      reports: ['Geo Fence Location', 'Attendance', 'Office Check-in'],
       input: (
         <div className="input-container d-flex justify-content-between" style={{ fontSize: '12px' }}>
-          <label>
-            <h5 className="text-dark">No of Employees</h5>
-          </label>
-          <input
-            type="number"
-            value={amountSixMonth}
-            onChange={(e) => setAmountSixMonth(e.target.value)}
-            style={{ width: '50px' }}
-          />
+          <div class="inputContainer">
+            <input required="required" id="inputField" placeholder={'No of Employees'} type="number" value={amountSixMonth} onChange={(e) => setAmountSixMonth(e.target.value)} />
+            <label class="usernameLabel h5" for="inputField">No Of Employees</label>
+            <svg viewBox="0 0 448 512" class="userIcon"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
+          </div>
         </div>
       ),
       paragraph: (
-        <div className={'pt-1'} style={{ fontSize: '12px' }}>
+        <div className={'pt-2'} style={{ fontSize: '12px' }}>
           <div className={'d-flex justify-content-between'}>
             <h5>Base Amount:</h5>
             <div>
               <p>{`₹${(amountSixMonth * 180).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
-            <h5 className={'text-green'}>Discount 10%:</h5>
+          <div className={'d-flex justify-content-between mt--2'}>
+            <h5 style={{ color: '#00f700' }}>Discount 10%:</h5>
             <div>
               <p>{`₹${((amountSixMonth * 180 * 0.1).toFixed())}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>Payable:</h5>
             <div>
               <p>{`₹${((amountSixMonth * 180) - (amountSixMonth * 180 * 0.1)).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>GST(18%):</h5>
             <div>
               <p>{`₹${(((amountSixMonth * 180) - (amountSixMonth * 180 * 0.1)) * 0.18).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>Total Payable:</h5>
             <div>
               <p>{`₹${finalPayableSixMonth}`}</p>
@@ -167,47 +159,43 @@ function Subscription() {
       title: '1 Year',
       price: '₹400',
       amount: '400 JD',
-      reports: ['Geo Fence Location', 'Attendance', 'Office Check-in', 'Remote Check-in', 'Time Sheets', 'Pay Slips', 'View Timesheets'],
+      reports: ['Geo Fence Location', 'Attendance', 'Office Check-in', 'Remote Check-in'],
       input: (
         <div className="input-container d-flex justify-content-between" style={{ fontSize: '12px' }}>
-          <label>
-            <h5 className="text-dark">No of Employees</h5>
-          </label>
-          <input
-            type="number"
-            value={amountOneYear}
-            onChange={(e) => setAmountOneYear(e.target.value)}
-            style={{ width: '50px' }}
-          />
+          <div class="inputContainer">
+            <input required="required" id="inputField" placeholder={'No of Employees'} type="number" value={amountOneYear} onChange={(e) => setAmountOneYear(e.target.value)} />
+            <label class="usernameLabel h5" for="inputField">No Of Employees</label>
+            <svg viewBox="0 0 448 512" class="userIcon"><path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"></path></svg>
+          </div>
         </div>
       ),
       paragraph: (
-        <div className={'pt-1'} style={{ fontSize: '12px' }}>
+        <div className={'pt-2'} style={{ fontSize: '12px' }}>
           <div className={'d-flex justify-content-between'}>
             <h5>Base Amount:</h5>
             <div>
               <p>{`₹${(amountOneYear * 360).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
-            <h5 className={'text-green'}>Discount 25%:</h5>
+          <div className={'d-flex justify-content-between mt--2'}>
+            <h5 style={{ color: '#00f700' }}>Discount 25%:</h5>
             <div>
               <p>{`₹${((amountOneYear * 360 * 0.25).toFixed())}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>Payable:</h5>
             <div>
               <p>{`₹${((amountOneYear * 360) - (amountOneYear * 360 * 0.25)).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>GST(18%):</h5>
             <div>
               <p>{`₹${(((amountOneYear * 360) - (amountOneYear * 360 * 0.25)) * 0.18).toFixed()}`}</p>
             </div>
           </div>
-          <div className={'d-flex justify-content-between'}>
+          <div className={'d-flex justify-content-between mt--2'}>
             <h5>Total Payable:</h5>
             <div>
               <p>{`₹${finalPayableOneYear}`}</p>
@@ -225,7 +213,7 @@ function Subscription() {
     <Container fluid>
       <section style={{ backgroundColor: '#ffffff' }} className="pb-5" id="pricing-now-ui">
 
-        <h1 className="card-header text-website-primary">Our <u>Pricing</u></h1>
+        <h1 className="card-header text-website-primary mx-6">Our <u>Pricing</u></h1>
         <div className=" position-relative">
           <div className="container pb-lg-8 pb-7 pt-4 postion-relative z-index-2 position-relative">
             <div className="row">
@@ -233,7 +221,7 @@ function Subscription() {
                 <span className="text-primary mb-2 h3">Pricing</span>
                 <h3 className="text-black">Ready to get our subscription?</h3>
                 <p className="custom-text-color">
-                  Based on the license you get, you will have direct access to our team <br /> learn more about ZenyQ.
+                Choose your subscription plan to unlock direct access to our team and explore the transformative potential of ZenyQ.
                 </p>
               </div>
             </div>
@@ -272,15 +260,16 @@ function Subscription() {
                       ))}
                     </div>
                     <div className="text-sm-start text-center text-white pb-3 px-4">
-                      {/* <div>
-                                            <img className={'mb-1'} src={Icons} alt="..." height={60} width={60} />
-                                            <p className="mb-1">{option.amount}</p>
-                                        </div> */}
                       <div className={'input-container'}>{option.input}</div>
                       <div className={'text-dark'}>{option.paragraph}</div>
                       {option.price === 'FREE' ? (
                         <div
                           className="custom-color border-0 col mt-1"
+                          style={{
+                            padding: '12px 15px',
+                            borderRadius: '6px',
+                            fontWeight: 'bold'
+                          }}
 
                         // onClick={option.onClick}
                         >
@@ -298,7 +287,13 @@ function Subscription() {
                             width: '100%',
                           }}
                         >
-                          <div className="custom-color text-center text-white border-0 col mt-1">
+                          <div className="custom-color text-center text-white border-0 col mt-1"
+                            style={{
+                              padding: '12px 15px',
+                              borderRadius: '6px',
+                              fontWeight: 'bold'
+                            }}
+                          >
                             Buy Now
                           </div>
                         </a>
