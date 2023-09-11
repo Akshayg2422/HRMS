@@ -1,10 +1,12 @@
-import { useNav } from '@utils';
 import { Container } from 'reactstrap';
 import { useState, useEffect } from 'react';
 import './index.css'
+import { ROUTE, goTo, useNav } from '@utils';
 
 
 function Subscription() {
+
+  const navigation = useNav();
 
   const [amountOneMonth, setAmountOneMonth] = useState(10);
   const [finalPayableOneMonth, setFinalPayableOneMonth] = useState(0);
@@ -63,7 +65,7 @@ function Subscription() {
       price: 'FREE',
       amount: '1 JD',
       reports: ['Geo Fence Location', 'Attendance', 'Office Check-in'],
-      // onClick: () => { goTo(ROUTES['auth-module'].login) }
+      onClick: () => {goTo(navigation, ROUTE.ROUTE_REGISTER, true);}
     },
     {
       title: '1 Month',
@@ -221,7 +223,7 @@ function Subscription() {
                 <span className="text-primary mb-2 h3">Pricing</span>
                 <h3 className="text-black">Ready to get our subscription?</h3>
                 <p className="custom-text-color">
-                Choose your subscription plan to unlock direct access to our team and explore the transformative potential of ZenyQ.
+                  Choose your subscription plan to unlock direct access to our team and explore the transformative potential of ZenyQ.
                 </p>
               </div>
             </div>
@@ -270,8 +272,7 @@ function Subscription() {
                             borderRadius: '6px',
                             fontWeight: 'bold'
                           }}
-
-                        // onClick={option.onClick}
+                          onClick={option.onClick}
                         >
                           Try Now
                         </div>
