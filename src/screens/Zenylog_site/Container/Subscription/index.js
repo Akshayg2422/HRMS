@@ -65,7 +65,7 @@ function Subscription() {
       price: 'FREE',
       amount: '1 JD',
       reports: ['Geo Fence Location', 'Attendance', 'Office Check-in'],
-      onClick: () => {goTo(navigation, ROUTE.ROUTE_REGISTER, true);}
+      onClick: () => { goTo(navigation, ROUTE.ROUTE_REGISTER, true); }
     },
     {
       title: '1 Month',
