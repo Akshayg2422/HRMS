@@ -104,7 +104,7 @@ function Subscription() {
         </div>
 
       ),
-      link: `https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=${finalPayableOneMonth}`
+      link: `https://zenyq.maplebellprivatelimited.in/authentication/payment/?name=subscription&amount=${finalPayableOneMonth}`
     },
     {
       title: '6 Months',
@@ -155,7 +155,7 @@ function Subscription() {
 
         </div>
       ),
-      link: `https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=${finalPayableSixMonth}`
+      link: `https://zenyq.maplebellprivatelimited.in/authentication/payment/?name=subscription&amount=${finalPayableSixMonth}`
     },
     {
       title: '1 Year',
@@ -206,7 +206,7 @@ function Subscription() {
 
         </div>
       ),
-      link: `https://mockeazyprimary.leorainfotech.in/authentication/payment/?name=subscription&amount=${finalPayableOneYear}`
+      link: `https://zenyq.maplebellprivatelimited.in/authentication/payment/?name=subscription&amount=${finalPayableOneYear}`
     },
 
   ];
