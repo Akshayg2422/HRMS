@@ -5,7 +5,7 @@ import { Card, CommonTable, ImageView, NoRecordFound, Secondary } from '@compone
 import { Icons } from '@assets';
 import moment from 'moment';
 import { useEffect, useMemo } from 'react';
-import { downloadFile } from '@utils';
+import { downloadFile, getArrayFromArrayOfObject } from '@utils';
 import { Row } from 'reactstrap';
 
 type LogReportsProps = {
@@ -18,11 +18,17 @@ type LogReportsProps = {
     endDate: string
       //i do this
   departments?: Array<any>;
-  designations?: Array<any>
+  designations?: Array<any>;
+  qualifications?: Array<any>;
+  categorys?:Array<any>;
+  genders?:Array<any>;
+  bloodGroups?:Array<any>;
+  martialStatus?:Array<any>;
+  agencys?:Array<any>;
 };
 
 
-function ConsolidatedSalaryReport({ data, department, reportType, customrange, designation, startDate, endDate }: LogReportsProps) {
+function ConsolidatedSalaryReport({ data, departments, reportType, customrange, designations, startDate, endDate ,categorys,qualifications,genders,bloodGroups,martialStatus,agencys}: LogReportsProps) {
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -44,6 +50,14 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
             ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
             // designation_id: designation,
             // department_id: department,
+            ...( departments && departments.length>0&& { department_ids:getArrayFromArrayOfObject(departments,'id') }),
+            ... (designations && designations?.length>0 && {designation_ids:getArrayFromArrayOfObject(designations,'id')}),
+            ...( genders && genders.length>0 &&{genders:getArrayFromArrayOfObject(genders,'id')}),
+        ...(bloodGroups && bloodGroups.length>0 &&{blood_groups:getArrayFromArrayOfObject(bloodGroups,'id')}),
+        ...(martialStatus && martialStatus.length>0 &&{marital_statuss:getArrayFromArrayOfObject(martialStatus,'id')}),
+        ...(qualifications && qualifications.length>0 &&{qualifications:getArrayFromArrayOfObject(qualifications,'id')}),
+        ...(agencys && agencys.length>0 && {vendor_ids:getArrayFromArrayOfObject(agencys,'id')}),
+        ...( categorys && categorys.length>0 && {employment_types:getArrayFromArrayOfObject(categorys,'id')}),
             download: false,
             ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
             selected_date: customrange?.dateFrom,

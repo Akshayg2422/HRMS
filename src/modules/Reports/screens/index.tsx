@@ -772,33 +772,33 @@ const [selectedCategory, setSelectedCategory] = useState([]);
         </div>
 
         {reportsType === "leave" &&
-          <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} departments={selectedDepartments}  reportType={reportsType} designations={selectedDesignations} />
+          <> {misReport && misReport.data && misReport?.data.length > 0 ? <LeaveReports data={misReport.data} customrange={customRange} departments={selectedDepartments}  reportType={reportsType} designations={selectedDesignations} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency} />
             : <NoRecordFound />}</>
         }
         {reportsType === "attendance" && <>
-          {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} departments={selectedDepartments} reportType={reportsType} designations={selectedDesignations} />
+          {misReport && misReport.data && misReport?.data.length > 0 ? <AttendanceReport data={misReport.data} customrange={customRange} departments={selectedDepartments} reportType={reportsType} designations={selectedDesignations} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency} />
             : <NoRecordFound />}
         </>
         }
         {reportsType === "log" &&
-          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency}/>
             : <NoRecordFound />}</>
         }
         {reportsType === "shift" &&
-          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={shiftSelectedDesignations} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <ShiftReports data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={shiftSelectedDesignations} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom}  qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency}/>
             : <NoRecordFound />}</>
         }
         {reportsType === "salary_basic" &&
           <>  {
             misReport && misReport.data && misReport?.data.length > 0 ?
-              <SalaryReport data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              <SalaryReport data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} attendanceType={selectedAttendanceType} shiftid={selectedShift} name={shiftName} endDate={logRange.dataTo} startDate={logRange.dateFrom} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency} />
               : <NoRecordFound />
           }</>
         }
         {reportsType === "salary_breakdown" &&
           <>  {
             misReport && misReport.data && misReport?.data?.length > 0 ?
-              <ConsolidatedSalaryReport data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} endDate={logRange.dataTo} startDate={logRange.dateFrom} />
+              <ConsolidatedSalaryReport data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} endDate={logRange.dataTo} startDate={logRange.dateFrom} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency} />
               : <NoRecordFound />
           }</>
         }
