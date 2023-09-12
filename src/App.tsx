@@ -111,7 +111,7 @@ function App() {
 
   return (
     <>
-      {/* <AutoLogout /> */}
+      <AutoLogout />
       <PushNotification />
       <DeviceInfo />
       <AppProvider >
@@ -414,7 +414,7 @@ function App() {
           />
           <Route
             path={ROUTE.ROUTE_ESSL_DEVICES}
-            element={<RequireAuth>{<EsslDevices/>}</RequireAuth>}
+            element={<RequireAuth>{<EsslDevices />}</RequireAuth>}
           />
           <Route path={"*"} element={<PageNotFound />} />
         </Routes>
