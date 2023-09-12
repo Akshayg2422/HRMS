@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import { Card, Container, DropDown, DateRangePicker, Icon, Table, InputText, ChooseBranchFromHierarchical, DatePicker, CommonTable, Primary, AllHierarchical, NoRecordFound } from '@components'
 import { Icons } from '@assets'
-import { getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, TABLE_CONTENT_TYPE_REPORT, Today } from '@utils';
+import { getMomentObjFromServer, getServerDateFromMoment, REPORTS_TYPE, TABLE_CONTENT_TYPE_REPORT, Today,DOMAIN } from '@utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getMisReport } from '../../../../store/employee/actions';
@@ -9,10 +9,13 @@ import { getMisReport } from '../../../../store/employee/actions';
 
 type LeaveReportProps = {
     data?: Array<any>;
-    department: string;
+    //i do it
+    designations?: Array<any>;
+    departments?: Array<any>;
+    department?: string;
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
-    designation: string
+    designation?: string
 
 }
 
@@ -23,8 +26,9 @@ function LeaveReports({ data, department, reportType, customrange, designation }
         (state: any) => state.DashboardReducer
     );
 
+console.log('leave-====>')
     const {
-        numOfPages,
+        numOfPages, 
         currentPage,
     } = useSelector((state: any) => state.EmployeeReducer);
 
@@ -49,8 +53,9 @@ function LeaveReports({ data, department, reportType, customrange, designation }
             report_type: reportType,
             attendance_type: '-1',
             ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
-            designation_id: designation,
-            department_id: department,
+            // designation_id: designation,
+            // department_id: department,
+            
             download: false,
             ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
             selected_date: customrange?.dateFrom,
@@ -70,6 +75,7 @@ function LeaveReports({ data, department, reportType, customrange, designation }
 
 
     const normalizedEmployee = (data: any) => {
+        console.log(data,"data=====?")
         return data && data.length > 0 && data.map((el: any) => {
             return {
                 name: el.name,

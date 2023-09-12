@@ -195,7 +195,10 @@ import {
   UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE,
   GET_EMPLOYEE_DEVICE_DETAILS,
   GET_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
-  GET_EMPLOYEE_DEVICE_DETAILS_FAILURE
+  GET_EMPLOYEE_DEVICE_DETAILS_FAILURE,
+  GET_VENDERS,
+  GET_VENDERS_FAILURE,
+  GET_VENDERS_SUCCESS
 } from "./actionTypes";
 
 // Delete Account
@@ -1743,3 +1746,24 @@ export const getEmployeeDeviceDetailsFailure = (error) => {
     payload: error,
   };
 };
+
+//GET VENDER
+
+export const getVender =(params)=>{
+  return{
+    type:GET_VENDERS,
+    payload:params,
+  }
+}
+export const getVenderSuccess =(response)=>{
+  return{
+    type:GET_VENDERS_SUCCESS,
+    payload:response,
+  }
+}
+export const getVenderFailure =(error)=>{
+  return{
+    type:GET_VENDERS_FAILURE,
+    payload:error,
+  }
+}

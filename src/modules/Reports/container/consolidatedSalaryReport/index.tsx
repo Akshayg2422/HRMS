@@ -10,12 +10,15 @@ import { Row } from 'reactstrap';
 
 type LogReportsProps = {
     data?: Array<any>;
-    department: string;
+    department?: string;
     reportType: string;
     customrange: { dateFrom: string, dataTo: string };
-    designation: string
+    designation?: string
     startDate: string
     endDate: string
+      //i do this
+  departments?: Array<any>;
+  designations?: Array<any>
 };
 
 
@@ -39,8 +42,8 @@ function ConsolidatedSalaryReport({ data, department, reportType, customrange, d
             report_type: reportType,
             attendance_type: -1,
             ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
-            designation_id: designation,
-            department_id: department,
+            // designation_id: designation,
+            // department_id: department,
             download: false,
             ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
             selected_date: customrange?.dateFrom,

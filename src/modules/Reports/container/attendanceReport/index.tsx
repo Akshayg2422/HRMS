@@ -10,10 +10,13 @@ import { Icons } from '@assets';
 
 type AttendanceReportProps = {
   data?: Array<any>;
-  department: string;
+  department?: string;
   reportType: string;
   customrange: { dateFrom: string, dataTo: string };
-  designation: string
+  designation?: string
+  //i do this
+  departments?: Array<any>;
+  designations?: Array<any>
 };
 
 const ATTENDANCE_DROPDOWN_ITEM = [
@@ -38,9 +41,9 @@ function AttendanceReport({ data, department, reportType, customrange, designati
     const params = {
       report_type: reportType,
       ...(hierarchicalBranchIds.include_child && { child_ids: hierarchicalBranchIds?.child_ids }),
-      designation_id: designation,
+      // designation_id: designation,
       attendance_type: '-1',
-      department_id: department,
+      // department_id: department,
       download: false,
       ...(hierarchicalAllBranchIds !== -1 && { branch_ids: [hierarchicalBranchIds.branch_id] }),
       selected_date: customrange?.dateFrom,

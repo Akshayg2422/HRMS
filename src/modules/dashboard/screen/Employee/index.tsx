@@ -376,7 +376,9 @@ function EmployeeScreen() {
           nextClick={() => paginationHandler("next")}
           displayDataSet={normalizedEmployeeLog(registeredEmployeesList)}
           tableOnClick={(e, index, item) => {
+
             const selectedItem = registeredEmployeesList[index]
+       
             dispatch(getSelectedEmployeeId(selectedItem.id));
             dispatch(settingSelectedEmployeeDetails(selectedItem))
             dispatch(employeeEdit(selectedItem.id))

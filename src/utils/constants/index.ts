@@ -4,7 +4,7 @@ import moment from 'moment';
 export const DOMAIN = 'DOMAIN';
 
 const isHfws = localStorage.getItem(DOMAIN);
-
+console.log(isHfws,"...............")
 
 
 export const ROUTE = {
