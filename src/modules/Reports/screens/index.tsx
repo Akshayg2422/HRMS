@@ -526,7 +526,7 @@ const [selectedCategory, setSelectedCategory] = useState([]);
               <DropDown
                 additionClass={''}
                 label={"Department"}
-                placeholder={"Select Department"}
+                placeholder={"Select Department"}P
                 data={departmentsData}
                 value={selectedDepartment}
                 onChange={(event) => {
