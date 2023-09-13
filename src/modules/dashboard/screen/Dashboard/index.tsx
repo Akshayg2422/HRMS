@@ -34,7 +34,6 @@ function Dashboard() {
     getServerDateFromMoment(getMomentObjFromServer(new Date()))
   );
 
-
   useEffect(() => {
     getPostAppConfig()
   }, [fcmToken])

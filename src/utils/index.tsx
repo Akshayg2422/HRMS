@@ -173,6 +173,15 @@ const getDropDownValueByName = (dropDownArray: any, id: string) => {
   }
 };
 
+//department designation id
+export function getArrayFromArrayOfObject(data: Array<any>, key: string) {
+  let modifiedArr: any = [];
+  if (data && data.length > 0) {
+    data.forEach((el: any) => { modifiedArr = [...modifiedArr, el[key]]; });
+  }
+  return modifiedArr;
+}
+
 //moment
 
 const getMomentObjFromServer = (date: any) => {

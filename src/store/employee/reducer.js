@@ -193,7 +193,10 @@ import {
   GET_EMPLOYEE_DEVICE_DETAILS_FAILURE,
   UPDATE_EMPLOYEE_DEVICE_DETAILS,
   UPDATE_EMPLOYEE_DEVICE_DETAILS_SUCCESS,
-  UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE
+  UPDATE_EMPLOYEE_DEVICE_DETAILS_FAILURE,
+  GET_VENDERS,
+  GET_VENDERS_SUCCESS,
+  GET_VENDERS_FAILURE
 } from "./actionTypes";
 
 const initialState = {
@@ -243,7 +246,8 @@ const initialState = {
   employeeAttendanceInfoDetails: undefined,
   employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false },
   employeeLeaveHistory: [],
-  syncDetails: undefined
+  syncDetails: undefined,
+getVenderList:undefined,
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1091,6 +1095,7 @@ const EmployeeReducer = (state = initialState, action) => {
         misReport: [],
         numOfPages: 0,
         currentPage: 1,
+        loading: true,
       };
       break;
     case GET_MIS_REPORT_SUCCESS:
@@ -1737,6 +1742,31 @@ const EmployeeReducer = (state = initialState, action) => {
         loading: false,
       };
       break;
+
+      //get vender
+
+      case GET_VENDERS:
+        state = {
+          ...state,
+          loading: true,
+        };
+        break;
+  
+      case GET_VENDERS_SUCCESS:
+        state = {
+          ...state,
+          getVenderList:action.payload,
+          loading: false,
+        };
+        break;
+  
+      case GET_VENDERS_FAILURE:
+        state = {
+          ...state,
+          error: action.payload,
+          loading: false,
+        };
+        break;
 
     /**
      * Default
