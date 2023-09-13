@@ -226,7 +226,7 @@ const [selectedCategory, setSelectedCategory] = useState([]);
     dispatch(getVender({
       params,
       onSuccess: (response: any) => () => {
-       console.log(response,"response====>")
+     
       },
       onError: (errorMessage: string) => () => {
       },
