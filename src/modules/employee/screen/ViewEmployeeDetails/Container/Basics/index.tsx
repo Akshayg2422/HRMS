@@ -118,10 +118,13 @@ const BasicView = () => {
         attendanceStartTime: "",
         attendanceEndTime: "",
         shift: "",
+        pic:"",
         faceRegisterEnable: false,
         canFieldCheckIn: false,
         canOfficeCheckIn: false
     });
+
+    console.log(employeeDetails,":employeeDetails=====>")
 
     useEffect(() => {
         getEmployeeDetailsAPi();
@@ -135,7 +138,7 @@ const BasicView = () => {
             getEmployeeBasicInfo({
                 params,
                 onSuccess: (response: EmployeeDetail) => () => {
-
+console.log(response,"rrrrrrrrrrrrrrrrrr")
                     preFillEmployeeDetails(response);
                     setShowEnableContainers(true)
                 },
@@ -146,7 +149,7 @@ const BasicView = () => {
         );
     };
 
-
+//selectedEmployeeDetails
     const preFillEmployeeDetails = (editEmployeeDetails: any) => {
 
         let employeeInitData = employeeDetails;
@@ -154,6 +157,9 @@ const BasicView = () => {
         if (editEmployeeDetails) {
             if (editEmployeeDetails.first_name) {
                 employeeInitData.firstName = editEmployeeDetails.first_name;
+            }
+            if (editEmployeeDetails.pic) {
+                employeeInitData.pic = editEmployeeDetails.pic;
             }
 
             // if (
@@ -266,15 +272,26 @@ const BasicView = () => {
                     <div className="col-xl-6">
                         <FormTypography title={t("lastName")} subTitle={employeeDetails.lastName ? employeeDetails.lastName : '-'} />
                     </div>
+      
+        
                 </Container>
 
                 <Container additionClass={'col-xl-12 row col-sm-3'}>
                     <div className="col-xl-6">
                         <FormTypography title={t("mobileNumber")} subTitle={employeeDetails.mobileNumber} />
                     </div>
-                    {isHfws !== "HFWS" && <div className="col-xl-6">
+                    {isHfws !== "HFWS" && <div className="col-xl-4 ">
                         <FormTypography title={t("email")} subTitle={employeeDetails.e_Mail} />
                     </div>}
+                    <div className="col-xl-2 mt-xl--5 mt-lg--5">
+            <ImageView
+            //   style={{ objectFit: 'cover' }}
+              height={'102px'}
+              width={'100px'}
+              additionClass={"rounded-circle"}
+              icon={employeeDetails.pic?employeeDetails.pic: Icons.ProfilePlaceHolder}
+            />
+            </div>
                 </Container>
 
                 <Container additionClass={'col-xl-12 row col-sm-3'}>

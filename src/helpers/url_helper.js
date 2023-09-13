@@ -344,3 +344,6 @@ export const GET_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/getEmployeesDeviceDeta
 
 export const DELETE_BRANCH_URL = '/company/deleteBranch'
 
+//get vender
+export const GET_VENDER_URL = '/company/getVendors'
+

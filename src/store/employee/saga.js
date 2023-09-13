@@ -57,7 +57,8 @@ import {
   GET_ESSL_DEVICE,
   REMOVE_ESSL_DEVICE,
   GET_EMPLOYEE_DEVICE_DETAILS,
-  UPDATE_EMPLOYEE_DEVICE_DETAILS
+  UPDATE_EMPLOYEE_DEVICE_DETAILS,
+  GET_VENDERS
 
 } from "./actionTypes";
 
@@ -182,7 +183,9 @@ import {
   updateEmployeeDeviceDetailsSuccess,
   updateEmployeeDeviceDetailsFailure,
   getEmployeeDeviceDetailsSuccess,
-  getEmployeeDeviceDetailsFailure
+  getEmployeeDeviceDetailsFailure,
+  getVenderSuccess,
+  getVenderFailure
 
 } from "./actions";
 
@@ -245,7 +248,8 @@ import {
   getEsslDevicesApi,
   removeEsslDevicesApi,
   updateEmployeesDeviceDetailApi,
-  getEmployeesDeviceDetailApi
+  getEmployeesDeviceDetailApi,
+  getVenderApi
 } from "../../helpers/backend_helper";
 
 import { showLoader, hideLoader } from "../loader/actions";
@@ -1635,6 +1639,30 @@ function* getEmployeeDeviceSaga(action) {
   }
 }
 
+
+// GET_VENDER
+
+function* getVenderSaga(action) {
+  try {
+    yield put(showLoader());
+    const response = yield call(getVenderApi, action.payload.params);
+    if (response.success) {
+      yield put(getVenderSuccess(response.details));
+      yield call(action.payload.onSuccess(response.details));
+      yield put(hideLoader());
+    } else {
+      yield put(getVenderFailure(response.error_message));
+      yield call(action.payload.onError(response.error_message));
+      yield put(hideLoader());
+    }
+  } catch (error) {
+    yield put(hideLoader());
+    yield put(getVenderFailure("Invalid Request"));
+    yield call(action.payload.onError(error));
+
+  }
+}
+
 // *** WATCHER*** //
 
 function* EmployeeSaga() {
@@ -1708,6 +1736,7 @@ function* EmployeeSaga() {
   yield takeLatest(GET_EMPLOYEE_DEVICE_DETAILS, getEmployeeDeviceSaga);
   yield takeLatest(UPDATE_EMPLOYEE_DEVICE_DETAILS, updateEmployeeDeviceSaga);
   
+  yield takeLatest(GET_VENDERS, getVenderSaga);
 }
 
 export default EmployeeSaga;

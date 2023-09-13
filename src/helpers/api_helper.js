@@ -4,7 +4,7 @@ import { ASYN_USER_AUTH, DOMAIN } from '@utils'
 //apply base url for axios
 const STAGING = 'http://3.7.59.39';
 
-const LOCAL_DEV = 'http://192.168.225.136:8006';
+const LOCAL_DEV = 'https://275a-103-118-189-4.ngrok-free.app/';
 // const LOCAL_DEV = 'http://15.206.224.132:8000';
 
 const LOCAL_PROD = 'http://103.118.93.204:8002';
@@ -91,7 +91,7 @@ export async function get(url, config) {
 }
 
 const BASE_URL_HFWS = "https://hfwsprimary.zenyq.com"
-// const BASE_URL_HFWS = "https://afeb-103-118-190-4.ngrok-free.app"
+// const BASE_URL_HFWS = "https://275a-103-118-189-4.ngrok-free.app/"
 
 export async function post(url, data, config, baseUrlType) {
 
