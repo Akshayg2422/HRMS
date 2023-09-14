@@ -34,7 +34,7 @@ function LeaveReports({ data, departments, reportType, customrange, designations
         (state: any) => state.DashboardReducer
     );
 
-console.log('leave-====>')
+
     const {
         numOfPages, 
         currentPage,
@@ -90,7 +90,7 @@ console.log('leave-====>')
 
 
     const normalizedEmployee = (data: any) => {
-        console.log(data,"data=====?")
+       
         return data && data.length > 0 && data.map((el: any) => {
             return {
                 name: el.name,

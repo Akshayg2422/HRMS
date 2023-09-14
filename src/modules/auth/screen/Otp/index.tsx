@@ -98,7 +98,7 @@ function Otp() {
     dispatch(proceedSignIn({
       params,
       onSuccess: (response: LoginResponse) => async () => {
-        console.log(response,"jjjjjjjjjj")
+       
         if (response.is_admin || response.is_branch_admin) {
           await localStorage.setItem(ASYN_USER_AUTH, response.token);
           const params = { userLoggedIn: true, token: response.token, userDetails: response, mobileNumber: mobileNumber }
@@ -120,7 +120,7 @@ function Otp() {
     dispatch(getDashboard({
       DashboardParams,
       onSuccess: (success: any) => () => {
-        console.log(success,"===========>")
+        
         goTo(navigate, ROUTE.ROUTE_DASHBOARD, true)
       },
       onError: (error: any) => () => {

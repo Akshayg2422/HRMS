@@ -28,7 +28,7 @@ type LogReportsProps = {
 };
 
 
-function LogReports({ data, departments, reportType, customrange, designations, attendanceType, startDate, endDate,categorys,qualifications,genders,bloodGroups,martialStatus,agencys }: LogReportsProps) {
+function RegisterReport({ data, departments, reportType, customrange, designations, attendanceType, startDate, endDate,categorys,qualifications,genders,bloodGroups,martialStatus,agencys }: LogReportsProps) {
     const { hierarchicalBranchIds, hierarchicalAllBranchIds } = useSelector(
         (state: any) => state.DashboardReducer
     );
@@ -195,17 +195,24 @@ const LocationTable = ({
 
     const renderTableHeader = () => {
         if (tableDataSet) {
+            console.log(tableDataSet,"tableDataSet===///")
             const mostkeys = tableDataSet.sort(
                 (a: {}, b: {}) => Object.keys(b).length - Object.keys(a).length
             )[0];
 
             const header = Object.keys(mostkeys)
             return header.map(key => {
-                return <th scope="col" key={key}>{key === 'emp_id' ? '' : key.trim()}</th>
+               
+                let date:any=new Date(key.trim())
+                return(<> <th scope="col" key={key}>{key === 'emp_id' ? '' :key==='designation'?key.trim():key==='name'?key.trim():date.getDate()}</th>
+               
+                </>
+                )
             })
         }
     }
     function renderTableValue(eachObject: any) {
+    
         return Object.keys(eachObject).map((key: string) => {
             const isString = typeof (eachObject[key as keyof object]) === 'string'
             if (isString)
@@ -224,6 +231,8 @@ const LocationTable = ({
                 let startTime = eachObject[key as keyof object]?.start_time
                 let endTime = eachObject[key as keyof object]?.end_time
                 let showApprover = showApprovedBy(eachObject[key as keyof object]?.attendance_status_code)
+                let dayStatus=eachObject[key as keyof object]?.day_status
+                console.log(eachObject[key as keyof object]?.approved_by ,"eachObject[key as keyof object]?.approved_by ===")
                 return <td className='text-center' style={{ whiteSpace: 'pre-wrap' }} key={key} ><div className="d-flex">
                     {eachObject[key as keyof object] ? <div className="column">
                         {!startTime && !endTime ? <h6>{"-"}</h6> : <>
@@ -235,9 +244,9 @@ const LocationTable = ({
                         </div> */}
                         {<h6 className="text-center" style={{
                             color: getTextColor(eachObject[key as keyof object]?.attendance_status_code)
-                        }}>{eachObject[key as keyof object]?.day_status}{showApprover && <>{eachObject[key as keyof object]?.approved_by ? <div>{`By - ${eachObject[key as keyof object]?.approved_by}`}</div> : <div>{'-'}</div>}</>}</h6>}
+                        }}>{dayStatus==='Absent'?'A':dayStatus==='Week Off'?'W':dayStatus==='Yet To Start'?'':dayStatus==='Leave'?'L':dayStatus==='Holiday'?'H':dayStatus==='Present'?'P':'-'}{showApprover && <>{eachObject[key as keyof object]?.approved_by ? <div>{`By - ${eachObject[key as keyof object]?.approved_by}`}</div> : <div>{'-'}</div>}</>}</h6>}
                         {/* {eachObject[key as keyof object]?.attendance_status_code === 6 ? <Secondary additionClass={'ml--3'} text={'Modify'} size={'btn-sm'} style={{ borderRadius: '20px', fontSize: '8px' }} /> : null} */}
-                    </div> : <h6 className='ml-2'>{'N/A'}</h6>}
+                    </div> : <h6 className='ml-2'>{'-'}</h6>}
                 </div></td>
             }
         })
@@ -306,4 +315,4 @@ const LocationTable = ({
     );
 };
 
-export { LogReports }
+export { RegisterReport }

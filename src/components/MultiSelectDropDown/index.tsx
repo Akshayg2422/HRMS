@@ -26,7 +26,7 @@ const MultiSelectDropDown = ({
     }, [defaultValue])
 
     const handleSelect = (selectedOptions: any,selectedList:any) => {
-        console.log(selectedOptions,selectedList)
+      
         if(selectedList.id==='-1'){
             let initialSelect=[{id: '-1', name: 'All', value: ''}]
             setSelectedOptions([])
@@ -35,8 +35,8 @@ const MultiSelectDropDown = ({
         }
         else {
              let filterData=selectedOptions.filter((el)=>el.id!=='-1')
-             console.log(filterData,"filterData===>")
-console.log('pppppppppppp')
+             
+
             setSelectedOptions(filterData)
             onSelect(filterData)
 

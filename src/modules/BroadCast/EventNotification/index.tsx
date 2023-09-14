@@ -68,7 +68,7 @@ function EventNotification() {
         getBroadcastMessagesList(page);
     }
 
-    console.log("broadcastMessagesData", broadcastMessagesData);
+  
 
     return (
         <>
