@@ -378,5 +378,6 @@ export const getEmployeesDeviceDetailApi = (payload) => post(url.GET_EMPLOYEE_DE
 
 //get vender
 
-export const getVenderApi = (payload) => post(url.GET_VENDER_URL, payload, {})
+export const getVenderApi = (payload) => post(url.GET_VENDER_URL, payload, {})//get employee details
+export const addVendorApi = (payload) => post(url.ADD_VENDER_URL, payload, {})
 

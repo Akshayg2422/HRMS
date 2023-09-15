@@ -16,8 +16,6 @@ import {
   ScreenContainer,
   ScreenTitle,
   Divider,
-  ImageView,
-  NoRecordFound,
   SearchableDropdown,
 } from "@components";
 import { Icons } from "@assets";
@@ -66,10 +64,13 @@ import {
   addDesignation,
   employeeAddition,
   getSyncData,
+  getVender,
+  addVender
 } from "../../../../store/employee/actions";
 
 import { getBranchShifts, getHfwsBranchShift, getMyShifts } from "../../../../store/shiftManagement/actions";
 import { getListAllBranchesList } from "../../../../store/location/actions";
+import { log } from "console";
 
 type EmployeeDetail = {
   id?: string;
@@ -99,7 +100,8 @@ type EmployeeDetail = {
   branch_group: any,
   organisation: any,
   marital_status: any,
-  specialization: any
+  specialization: any,
+  vendor_id: any
 };
 
 const ManageEmployee = () => {
@@ -107,10 +109,15 @@ const ManageEmployee = () => {
   const { t } = useTranslation();
   let dispatch = useDispatch();
   const isHfws = localStorage.getItem(DOMAIN);
+
+
+  console.log(isHfws);
+
   const {
     designationDropdownData,
     departmentDropdownData,
     isEdit,
+    getVenderList
   } = useSelector((state: any) => state.EmployeeReducer);
 
   const { userDetails } = useSelector(
@@ -125,6 +132,11 @@ const ManageEmployee = () => {
     useSelector((state: any) => state.LocationReducer);
 
   const INITIAL_COMPANY_BRANCH = { id: dashboardDetails?.company_branch?.id, text: dashboardDetails?.company_branch?.name }
+
+  const BRANCH_CODE = dashboardDetails?.permission_details?.company_code
+
+  console.log(BRANCH_CODE);
+
 
 
   const [syncDetails, setSyncDetails] = useState<any>('')
@@ -154,6 +166,7 @@ const ManageEmployee = () => {
     organisation: HFWS_ORGANISATION[0].id,
     attendanceStartTime: "10:00",
     attendanceEndTime: "18:00",
+    vendor_id: {}
   });
   const [shiftGroup, setShiftGroup] = useState<any>()
   const [departmentModel, setDepartmentModel] = useState(false);
@@ -165,6 +178,11 @@ const ManageEmployee = () => {
   const [isExempted, setIsExempted] = useState(false)
   const [isRefresh, setIsRefresh] = useState(false);
   const [selectedGenericShift, setSelectedGenericShift] = useState(syncDetails[0])
+
+
+  const [addAgentModal, setAddAgentModal] = useState(false);
+  const [agentName, setAgentName] = useState("");
+
 
   const [companyBranchDropdownData, setCompanyBranchDropdownData] =
     useState<any>();
@@ -194,6 +212,7 @@ const ManageEmployee = () => {
     departmentData()
     designationData()
     getBranchShiftsList()
+    getVenderData()
 
     if (listBranchesList.length === 0) {
       const params = {};
@@ -246,6 +265,19 @@ const ManageEmployee = () => {
     }
   }, [isRefresh, isBranchShiftDataExist])
 
+
+
+  const getVenderData = (() => {
+    const params = {}
+    dispatch(getVender({
+      params,
+      onSuccess: (response: any) => () => {
+      },
+      onError: (errorMessage: string) => () => {
+      },
+    }))
+
+  })
 
   const getSyncDataApiHAndler = () => {
     const params = {
@@ -413,6 +445,7 @@ const ManageEmployee = () => {
         }),
         designation_id: employeeDetails.designation.id,
         department_id: employeeDetails.department.id,
+        ...(BRANCH_CODE === "WTC" && employeeDetails.vendor_id && { vendor_id: employeeDetails.vendor_id.id }),
         branch_id: employeeDetails.branch.id,
         gender: employeeDetails.gender,
         ...(employeeDetails.bloodGroup && {
@@ -447,6 +480,10 @@ const ManageEmployee = () => {
       };
 
 
+      console.log(JSON.stringify(params) + '====params');
+
+
+
       dispatch(
         employeeAddition({
           params,
@@ -463,6 +500,10 @@ const ManageEmployee = () => {
   };
 
   const preFillEmployeeDetails = (editEmployeeDetails: EmployeeDetail) => {
+
+
+    console.log(JSON.stringify(editEmployeeDetails) + '====editEmployeeDetails');
+
 
     let employeeInitData = { ...employeeDetails };
     if (editEmployeeDetails) {
@@ -502,6 +543,10 @@ const ManageEmployee = () => {
 
       if (editEmployeeDetails.branch_id)
         employeeInitData.branch = getObjectFromArrayByKey(companyBranchDropdownData, "id", editEmployeeDetails.branch_id);
+
+      if (editEmployeeDetails.vendor_id)
+        employeeInitData.vendor_id = getObjectFromArrayByKey(getVenderList, "id", editEmployeeDetails.vendor_id);
+
 
       if (editEmployeeDetails.employment_type)
         employeeInitData.employeeType = editEmployeeDetails.employment_type;
@@ -577,7 +622,9 @@ const ManageEmployee = () => {
         editEmployeeDetails.attendance_settings?.is_excempt_allowed
       ) {
         setIsExempted(editEmployeeDetails.attendance_settings?.is_excempt_allowed)
-      }      
+      }
+
+
       if (
         editEmployeeDetails &&
         editEmployeeDetails.attendance_settings?.enable_generic_shift
@@ -635,6 +682,31 @@ const ManageEmployee = () => {
     }
   }
 
+
+  function submitAgentApiHandler() {
+
+
+
+    if (agentName.trim() !== "") {
+      const params = { name: agentName.trim() };
+      dispatch(
+        addVender({
+          params,
+          onSuccess: (success: any) => () => {
+            setAddAgentModal(false);
+            setIsRefresh(!isRefresh);
+            showToast('success', success?.message)
+          },
+          onError: (error: string) => () => {
+            showToast('error', error)
+          },
+        })
+      );
+    } else {
+      showToast('error', "Agent name not valid")
+    }
+
+  }
   const validateDepartmentPostParams = () => {
     return validateDefault(department).status;
   };
@@ -670,6 +742,12 @@ const ManageEmployee = () => {
     setDepartmentModel(!departmentModel);
   }
 
+
+  const handleCancelAgentModal = () => {
+    setAgentName("");
+    setAddAgentModal(false);
+  }
+
   const handleDesignationChange = (event: any) => {
     setEmployeeDetails((prevDetails: any) => ({
       ...prevDetails,
@@ -680,6 +758,16 @@ const ManageEmployee = () => {
       shift: ''
     }));
     setShiftsDropdownData(designationMatchShifts(event))
+  }
+
+
+  const handleAgentChange = (selected: any) => {
+
+    setEmployeeDetails((prevDetails: any) => ({
+      ...prevDetails,
+      vendor_id: selected
+    }));
+
   }
 
   const handleDepartmentChange = (event: any) => {
@@ -727,6 +815,10 @@ const ManageEmployee = () => {
       setEmployeeDetails({ ...employeeDetails, attendanceStartTime: "10:00", attendanceEndTime: "18:00" })
     }
   }, [enableShift])
+
+
+  console.log(isHfws + '====');
+
 
   return (
     <ScreenContainer>
@@ -859,16 +951,6 @@ const ManageEmployee = () => {
           <div className="col-xl-6">
             <div className="row align-items-center">
               <div className="col mb-3">
-                {/* <DropDown
-                  label={t("designation")}
-                  placeholder={t("enterDesignation")}
-                  data={designationDropdownData}
-                  name={"designation"}
-                  value={employeeDetails.designation}
-                  onChange={(event) => {
-                    handleDesignationChange(event)
-                  }}
-                /> */}
                 <SearchableDropdown selected={employeeDetails.designation} data={getDropDownFormatter(designationDropdownData)} heading={t("designation")} placeHolder={t("enterDesignation")} onChange={(event) => {
                   handleDesignationChange(event)
                 }} />
@@ -947,6 +1029,31 @@ const ManageEmployee = () => {
               }
             />
           </div>}
+
+          {BRANCH_CODE === "WTC" && <div className="col-xl-6">
+            <div className="row align-items-center">
+              <div className="col mb-3">
+                <SearchableDropdown
+                  selected={employeeDetails.vendor_id}
+                  data={getDropDownFormatter(getVenderList)}
+                  heading={t("agent")}
+                  placeHolder={t("selectAgent")}
+                  onChange={(event) => {
+                    handleAgentChange(event)
+                  }} />
+
+              </div>
+              <div className="mt-3">
+                <Icon
+                  text={"+"}
+                  onClick={() => {
+                    setAddAgentModal(true)
+                  }}
+                />
+              </div>
+            </div>
+          </div>
+          }
           {/* <div className="col-xl-6">
             <InputDefault
               label={t("kgid")}
@@ -1273,6 +1380,37 @@ const ManageEmployee = () => {
               <Primary
                 text={t("submit")}
                 onClick={() => submitDesignation()}
+              />
+            </Container>
+          </Container>
+        }
+      </Modal>
+
+      <Modal
+        title={t("agent")}
+        showModel={addAgentModal}
+        toggle={handleCancelAgentModal}
+      >
+        {
+          <Container>
+            <div className="col-xl-7 col-md-10">
+              <InputText
+                placeholder={t("agent")}
+                validator={validateDefault}
+                value={agentName}
+                onChange={(e) => {
+                  setAgentName(e.target.value);
+                }}
+              />
+            </div>
+            <Container margin={"mt-5"} additionClass={"text-right"}>
+              <Secondary
+                text={t("cancel")}
+                onClick={handleCancelAgentModal}
+              />
+              <Primary
+                text={t("submit")}
+                onClick={submitAgentApiHandler}
               />
             </Container>
           </Container>
