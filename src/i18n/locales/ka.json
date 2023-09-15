@@ -213,6 +213,6 @@
   "theGroupNameCantBeEmpty": "The Group name can't be empty",
   "invalidShift": "Invalid Shift",
   "selectEmployee": "Select Employees to add to the group",
-  "agent": "Agent",
-  "selectAgent": "Select your Agent"
+  "agent": "Agency",
+  "selectAgent": "Select your Agency"
 }

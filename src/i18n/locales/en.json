@@ -499,7 +499,7 @@
     "selectType": "Select Type",
     "isTaxable": "Is taxable",
     "remaining": "Remaining  ",
-    "agent": "Agent",
-    "selectAgent": "Select your Agent"
+    "agent": "Agency",
+    "selectAgent": "Select your Agency"
   }
 }
