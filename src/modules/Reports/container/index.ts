@@ -4,7 +4,8 @@ import { LeaveReports } from './leaveReport'
 import { ShiftReports } from './shiftReport'
 import {SalaryReport} from './salaryReport'
 import {ConsolidatedSalaryReport} from "./consolidatedSalaryReport"
+import {RegisterReport}from"./RegisterReport"
 
 export {
-    AttendanceReport, LogReports, LeaveReports, ShiftReports,SalaryReport,ConsolidatedSalaryReport
+    AttendanceReport, LogReports, LeaveReports, ShiftReports,SalaryReport,ConsolidatedSalaryReport,RegisterReport
 }

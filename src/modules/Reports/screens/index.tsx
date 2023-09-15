@@ -5,7 +5,7 @@ import { ATTENDANCE_TYPE, BLOOD_GROUP_LIST, DOMAIN, downloadFile, dropDownValueC
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { getDepartmentData, getDesignationData, getDownloadMisReport, getMisReport, resetMisReportData ,getVender} from '../../../store/employee/actions';
-import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, SalaryReport, ShiftReports } from '../container';
+import { AttendanceReport, ConsolidatedSalaryReport, LeaveReports, LogReports, SalaryReport, ShiftReports,RegisterReport } from '../container';
 import { multiSelectBranch } from '../../../store/dashboard/actions';
 import { getBranchShifts } from '../../../store/shiftManagement/actions';
 import moment from 'moment';
@@ -18,12 +18,10 @@ function Reports() {
     currentPage,
     getVenderList
   } = useSelector((state: any) => state.EmployeeReducer);
-  console.log(getVenderList,"getVenderList====>?")
-
   const { hierarchicalBranchIds, hierarchicalAllBranchIds, multiSelectHierarchicalBranch, dashboardDetails } = useSelector(
     (state: any) => state.DashboardReducer
   );
-  console.log(dashboardDetails,"dashboardDetails====>")
+
   const enterPress = useKeyPress("Enter");
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -462,7 +460,6 @@ const [selectedCategory, setSelectedCategory] = useState([]);
                 value={reportsType} label={t('misReport')}
                 data={REPORTS_TYPE}
                 onChange={(event) => {
-                 
                   setReportsType(dropDownValueCheck(event.target.value, 'Select Report'))
                   setSelectedAttendanceType(ATTENDANCE_TYPE[0].type)
                   dispatch(resetMisReportData([]))
@@ -526,7 +523,7 @@ const [selectedCategory, setSelectedCategory] = useState([]);
               <DropDown
                 additionClass={''}
                 label={"Department"}
-                placeholder={"Select Department"}
+                placeholder={"Select Department"}P
                 data={departmentsData}
                 value={selectedDepartment}
                 onChange={(event) => {
@@ -782,6 +779,11 @@ const [selectedCategory, setSelectedCategory] = useState([]);
         }
         {reportsType === "log" &&
           <>  {misReport && misReport.data && misReport?.data.length > 0 ? <LogReports data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency}/>
+            : <NoRecordFound />}</>
+        }
+
+{reportsType === "Register" &&
+          <>  {misReport && misReport.data && misReport?.data.length > 0 ? <RegisterReport data={misReport.data} departments={selectedDepartments} reportType={reportsType} customrange={customRange} designations={selectedDesignations} attendanceType={selectedAttendanceType} endDate={logRange.dataTo} startDate={logRange.dateFrom} qualifications={selectedQualification} categorys={selectedCategory}genders={selectedGender}bloodGroups={selectedBloodGroup}martialStatus={selectedMartialStatus} agencys={selectedAgency}/>
             : <NoRecordFound />}</>
         }
         {reportsType === "shift" &&

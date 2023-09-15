@@ -4,7 +4,7 @@ import moment from 'moment';
 export const DOMAIN = 'DOMAIN';
 
 const isHfws = localStorage.getItem(DOMAIN);
-console.log(isHfws,"...............")
+
 
 
 export const ROUTE = {
@@ -170,7 +170,8 @@ export const REPORTS_TYPE = [
   { id: 'attendance', name: 'Attendance Report', value: 'attendance' },
   { id: 'leave', name: 'Leave Report', value: 'leave' },
   { id: 'log', name: 'Log Report', value: 'log' },
-  { id: 'shift', name: "Shift Report", value: "shift" },
+  { id: 'Register', name: 'Register Report', value: 'Register ' },
+  // { id: 'shift', name: "Shift Report", value: "shift" },
   { id: 'salary_basic', name: "Salary Report", value: "salary_basic" },
   { id: 'salary_breakdown', name: "Detailed Salary Report", value: "salary_breakdown" }
 ];

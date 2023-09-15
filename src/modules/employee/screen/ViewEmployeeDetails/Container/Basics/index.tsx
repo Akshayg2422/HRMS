@@ -124,7 +124,7 @@ const BasicView = () => {
         canOfficeCheckIn: false
     });
 
-    console.log(employeeDetails,":employeeDetails=====>")
+   
 
     useEffect(() => {
         getEmployeeDetailsAPi();
@@ -138,7 +138,7 @@ const BasicView = () => {
             getEmployeeBasicInfo({
                 params,
                 onSuccess: (response: EmployeeDetail) => () => {
-console.log(response,"rrrrrrrrrrrrrrrrrr")
+
                     preFillEmployeeDetails(response);
                     setShowEnableContainers(true)
                 },
@@ -266,10 +266,10 @@ console.log(response,"rrrrrrrrrrrrrrrrrr")
                 <ScreenTitle title={'Basic Information'} />
 
                 <Container additionClass={'col-xl-12 row col-sm-3'}>
-                    <div className="col-xl-6">
+                    <div className="col-xl-6 col-lg-6">
                         <FormTypography title={t("fullName")} subTitle={employeeDetails.firstName} />
                     </div>
-                    <div className="col-xl-6">
+                    <div className="col-xl-4 col-lg-4">
                         <FormTypography title={t("lastName")} subTitle={employeeDetails.lastName ? employeeDetails.lastName : '-'} />
                     </div>
       
@@ -277,13 +277,13 @@ console.log(response,"rrrrrrrrrrrrrrrrrr")
                 </Container>
 
                 <Container additionClass={'col-xl-12 row col-sm-3'}>
-                    <div className="col-xl-6">
+                    <div className="col-xl-6 col-lg-6">
                         <FormTypography title={t("mobileNumber")} subTitle={employeeDetails.mobileNumber} />
                     </div>
-                    {isHfws !== "HFWS" && <div className="col-xl-4 ">
+                    {isHfws !== "HFWS" && <div className="col-xl-4  col-lg-4 ">
                         <FormTypography title={t("email")} subTitle={employeeDetails.e_Mail} />
                     </div>}
-                    <div className="col-xl-2 mt-xl--5 mt-lg--5">
+                    <div className="col-xl-2 mt-xl--5 mt-lg--5 col-lg-2">
             <ImageView
             //   style={{ objectFit: 'cover' }}
               height={'102px'}

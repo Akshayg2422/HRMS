@@ -30,7 +30,7 @@ const ATTENDANCE_DROPDOWN_ITEM = [
 ]
 
 function AttendanceReport({ data, departments, reportType, customrange, designations,categorys,qualifications,genders,bloodGroups,martialStatus,agencys }: AttendanceReportProps) {
-  console.log(departments,"departments===>",designations)
+
 
   let dispatch = useDispatch();
 
