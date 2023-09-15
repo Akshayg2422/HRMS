@@ -283,7 +283,7 @@ export const GET_EMPLOYEES_EARNINGS = '/attendance/getEmployeeConsolidatedAttend
 export const GET_BASE_WEEK_CALENDAR = '/attendance/getCompanyBaseWeeklyCalendar'
 
 // getCompanyBaseWeeklyCalendar
-    
+
 export const SET_BASE_WEEK_CALENDAR = '/attendance/setCompanyBaseWeeklyCalendar'
 
 // branchWiseEmployeesLeaves
@@ -309,36 +309,36 @@ export const GET_COMPANY_INCENTIVE = '/payroll/getCompanyIncentives'
 
 // getHfwsStartEndTime
 
-export const GET_HFWS_BRANCH_SHIFT_TIME = '/attendance/getHfwsStartEndTime' 
+export const GET_HFWS_BRANCH_SHIFT_TIME = '/attendance/getHfwsStartEndTime'
 
 // syncData
 
-export const GET_SYNC_DATA = '/authentication/v1/syncData' 
+export const GET_SYNC_DATA = '/authentication/v1/syncData'
 
 
 // updateCompanyGenericShift
 
-export const UPDATE_COMPANY_GENERIC_SHIFT_URL = '/authentication/updateCompanyGenericShift' 
+export const UPDATE_COMPANY_GENERIC_SHIFT_URL = '/authentication/updateCompanyGenericShift'
 
 // Add Devices
 
-export const ADD_ESSL_DEVICE_URL = '/company/addDevice' 
+export const ADD_ESSL_DEVICE_URL = '/company/addDevice'
 
 // get Devices
 
-export const GET_ESSL_DEVICE_URL = '/company/getDevices' 
+export const GET_ESSL_DEVICE_URL = '/company/getDevices'
 
 // remove Devices
 
-export const REMOVE_ESSL_DEVICE_URL = '/company/removeDevice' 
+export const REMOVE_ESSL_DEVICE_URL = '/company/removeDevice'
 
 // updateEmployeesDeviceDetail
 
-export const UPDATE_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/updateEmployeesDeviceDetail' 
+export const UPDATE_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/updateEmployeesDeviceDetail'
 
 // getEmployeesDeviceDetail
 
-export const GET_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/getEmployeesDeviceDetail' 
+export const GET_EMPLOYEE_DEVICE_DETAILS_URL = '/employee/getEmployeesDeviceDetail'
 
 // delete Branch
 
@@ -346,4 +346,5 @@ export const DELETE_BRANCH_URL = '/company/deleteBranch'
 
 //get vender
 export const GET_VENDER_URL = '/company/getVendors'
+export const ADD_VENDER_URL = '/company/addVendors'
 

@@ -247,7 +247,7 @@ const initialState = {
   employeeDetailsViewApiHandler: { basicInfo: false, attendanceInfo: false, logInfo: false, payrollInfo: false },
   employeeLeaveHistory: [],
   syncDetails: undefined,
-getVenderList:undefined,
+  getVenderList: undefined,
 };
 
 const EmployeeReducer = (state = initialState, action) => {
@@ -1743,30 +1743,30 @@ const EmployeeReducer = (state = initialState, action) => {
       };
       break;
 
-      //get vender
+    //get vender
 
-      case GET_VENDERS:
-        state = {
-          ...state,
-          loading: true,
-        };
-        break;
-  
-      case GET_VENDERS_SUCCESS:
-        state = {
-          ...state,
-          getVenderList:action.payload,
-          loading: false,
-        };
-        break;
-  
-      case GET_VENDERS_FAILURE:
-        state = {
-          ...state,
-          error: action.payload,
-          loading: false,
-        };
-        break;
+    case GET_VENDERS:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+
+    case GET_VENDERS_SUCCESS:
+      state = {
+        ...state,
+        getVenderList: action.payload,
+        loading: false,
+      };
+      break;
+
+    case GET_VENDERS_FAILURE:
+      state = {
+        ...state,
+        error: action.payload,
+        loading: false,
+      };
+      break;
 
     /**
      * Default

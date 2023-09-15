@@ -2,8 +2,8 @@ import {
   WELCOME_CARD, WELCOME_NOTE, REQUEST_TYPE_SUBSET, getRequestType, GENDER_LIST, REQUEST_TYPE, EMPLOYEE_TYPE, BLOOD_GROUP_LIST, NAV_ITEM, ROUTE, HEADER_MENU, SORT_BUTTON, TABLE_ELEMENT_TEXT_BUTTON, EMPLOYEE_ADDITIONAL_DATA,
   TABLE_CONTENT_TYPE_REPORT, ASYN_USER_AUTH, TABLE_ELEMENT_TEXT_IMAGE, ENABLE_EMPLOYEE_DATA, LANGUAGE_LIST,
   MAX_LENGTH_MOBILE_NUMBER, MAX_LENGTH_AADHAR, LEAVE_STATUS_UPDATE, MY_PORTFOLIO_ITEM, LEAVES_TYPE,
-  LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST,HFWS_ORGANISATION,EMPLOYEE_TYPE_HFWS,
-  WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD, MARITAL_STATUS_LIST, GROUP_LIST, DOMAIN,HFWS_QUALIFICATIONS,HFWS_SPECLILISATION,OFFICE_TYPE,
+  LEAVE_STATUS_REVERT, DOWNLOAD_RANGE, Today, ThisWeek, ThisMonth, LastMonth, LastWeek, WEEK_LIST, HFWS_ORGANISATION, EMPLOYEE_TYPE_HFWS,
+  WEEK_DAY_LIST, REPORTS_TYPE, MAX_LENGTH_PAN_CARD, MARITAL_STATUS_LIST, GROUP_LIST, DOMAIN, HFWS_QUALIFICATIONS, HFWS_SPECLILISATION, OFFICE_TYPE,
   EMPLOYEE_ADDITIONAL_DATA_EDIT, ATTENDANCE_TYPE, DAY_STATUS_LATE, DAY_STATUS_LEAVE,
   DAY_STATUS_ABSENT, DAY_STATUS_ALERT, EMPLOYEES_SHIFT_DATA_EDIT, CHILD_PATH, COMMON_HEADER, INITIAL_PAGE, DAY_STATUS_WEEK_OFF, DAY_STATUS_PRESENT_MODIFIED, DAY_STATUS_NA, DAY_STATUS_HOLIDAYS
 } from './constants'
@@ -231,22 +231,22 @@ const getDateFormat = (date: string) => {
   return new Date('Wed Jul 20 2022 ' + date + ':00 GMT+0530 (IST)');
 };
 
-function convertTo24Hour(s: any) {  
+function convertTo24Hour(s: any) {
   if (s !== undefined && s.length >= 7) { // Ensure the input has at least 7 characters
     let AMPM = s.slice(-2);
     let timeArr = s.slice(0, -2).split(":");
     let hours = parseInt(timeArr[0], 10); // Parse hours as an integer
-    
+
     if (AMPM === "AM" && hours === 12) {
       hours = 0;
     } else if (AMPM === "PM") {
       hours = (hours % 12) + 12;
     }
-    
+
     // Format hours to have leading zeros
     let formattedHours = hours.toString().padStart(2, '0');
     let formattedTime = `${formattedHours}:${timeArr[1]}`;
-    
+
     return formattedTime;
   } else {
     return '';

@@ -498,6 +498,8 @@
     "editAllowanceGroup": "Edit Allowance group",
     "selectType": "Select Type",
     "isTaxable": "Is taxable",
-    "remaining": "Remaining  "
+    "remaining": "Remaining  ",
+    "agent": "Agency",
+    "selectAgent": "Select your Agency"
   }
 }

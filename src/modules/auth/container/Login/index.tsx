@@ -55,7 +55,6 @@ function Login() {
       getValidateUser({
         params,
         onSuccess: (success: any) => async () => {
-        
           await localStorage.setItem(DOMAIN, success?.code);
           goTo(navigate, ROUTE.ROUTE_OTP, true);
         },
