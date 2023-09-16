@@ -46,7 +46,7 @@ const Contact = (props) => {
     <>
       <div id="Contact" className="container-fluid pt-3">
         <div className="card container-fluid">
-          <h1 class="card-header text-website-primary">Contact{' '}<u>us</u></h1>
+          <h1 class="card-header text-website-primary mx-6">Contact{' '}<u>us</u></h1>
           <div className="row card-body">
             <div className="col-sm-6">
               <h1 className="mt-5 text-primary">Get a quote</h1>
@@ -55,7 +55,7 @@ const Contact = (props) => {
                 to you within 24 hours
               </p>
 
-              <div className="flex-row  mt-5">
+              <div className="d-flex align-items-stretch mt-5">
                 <img
                   className="ml-3"
                   src={Icons.Mobile}
@@ -64,7 +64,7 @@ const Contact = (props) => {
                 />
                 <p className="ml-3 ">+91 93424 99299</p>
               </div>
-              <div className="flex-row mt-4">
+              <div className="d-flex align-items-stretch mt-4">
                 <img
                   className="ml-3"
                   src={Icons.Mail}
@@ -73,9 +73,9 @@ const Contact = (props) => {
                 ></img>
                 <p className="ml-3">maplebell.official@gmail.com</p>
               </div>
-              <div className="flex-row mt-4">
+              <div className="d-flex align-items-stretch mt-4">
                 <img
-                  className="ml-3 mt-2"
+                  className="ml-3"
                   src={Icons.Location}
                   height={"35px"}
                   width={"30px"}
@@ -85,7 +85,7 @@ const Contact = (props) => {
                   <br /> Rajajinagar, Bengaluru - 560010
                 </p>
               </div>
-              <div class="card-profile-stats d-flex  justify-content-center container">
+              <div class="card-profile-stats d-flex  justify-content-start container">
                 <div>
                   <img src={Icons.Instagram} height="30px" width={"30px"}></img>
                 </div>
