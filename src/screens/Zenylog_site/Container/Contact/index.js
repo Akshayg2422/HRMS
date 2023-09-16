@@ -44,7 +44,7 @@ const Contact = (props) => {
 
   return (
     <>
-      <div id="Contact" className="container-fluid pt-3">
+      <div id="Contact" className="container-fluid pt-4">
         <div className="card container-fluid">
           <h1 class="card-header text-website-primary mx-6">Contact{' '}<u>us</u></h1>
           <div className="row card-body">
